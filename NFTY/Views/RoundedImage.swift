@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct RoundedImage: View {
+    var nft: NFT
+    
     var body: some View {
         
         VStack {
-            Image("Dracocat")
+            Image(lan"Dracocat")
                 .resizable()
                 .background(Color.yellow)
             
@@ -37,6 +39,6 @@ struct RoundedImage: View {
 
 struct RoundedImage_Previews: PreviewProvider {
     static var previews: some View {
-        RoundedImage()
+        RoundedImage(nft:nfts[0])
     }
 }

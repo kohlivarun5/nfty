@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,11 @@
 		4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */; };
 		4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7E3262B31D300C58AF9 /* MapView.swift */; };
 		4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */; };
+		4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */; };
+		4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
+		4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
+		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
+		4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB9A808262B451F00C58AF9 /* URLImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +56,10 @@
 		4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImage.swift; sourceTree = "<group>"; };
 		4FB9A7E3262B31D300C58AF9 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImage.swift; sourceTree = "<group>"; };
+		4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = landmarkData.json; sourceTree = "<group>"; };
+		4FB9A7F2262B3A5700C58AF9 /* NFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFT.swift; sourceTree = "<group>"; };
+		4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,14 +111,13 @@
 		4FB9A7AF262B28A300C58AF9 /* NFTY */ = {
 			isa = PBXGroup;
 			children = (
+				4FB9A7F9262B3B3000C58AF9 /* Resources */,
 				4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */,
-				4FB9A7B2262B28A300C58AF9 /* ContentView.swift */,
+				4FB9A7F8262B3B1A00C58AF9 /* Model */,
+				4FB9A7F7262B3B0600C58AF9 /* Views */,
 				4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */,
 				4FB9A7B9262B28A400C58AF9 /* Info.plist */,
 				4FB9A7B6262B28A400C58AF9 /* Preview Content */,
-				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
-				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
-				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
 			);
 			path = NFTY;
 			sourceTree = "<group>";
@@ -139,6 +148,35 @@
 			path = NFTYUITests;
 			sourceTree = "<group>";
 		};
+		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4FB9A7B2262B28A300C58AF9 /* ContentView.swift */,
+				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
+				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
+				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
+				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4FB9A802262B435400C58AF9 /* punks.json */,
+				4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -155,6 +193,9 @@
 			dependencies = (
 			);
 			name = NFTY;
+			packageProductDependencies = (
+				4FB9A808262B451F00C58AF9 /* URLImage */,
+			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
 			productType = "com.apple.product-type.application";
@@ -226,6 +267,9 @@
 				Base,
 			);
 			mainGroup = 4FB9A7A4262B28A300C58AF9;
+			packageReferences = (
+				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
+			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -244,6 +288,8 @@
 			files = (
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
+				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,
+				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,9 +316,11 @@
 			files = (
 				4FB9A7B3262B28A300C58AF9 /* ContentView.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
+				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
 				4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */,
+				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +634,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4FB9A808262B451F00C58AF9 /* URLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FB9A7A5262B28A300C58AF9 /* Project object */;
 }
