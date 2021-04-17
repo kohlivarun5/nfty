@@ -42,7 +42,7 @@ struct NftDetail: View {
                     
                 })
                 .ignoresSafeArea(edges: .top)
-            HStack {
+            HStack(alignment: .top) {
                 VStack(alignment:.leading) {
                     Text(nft.name)
                         .font(.title)

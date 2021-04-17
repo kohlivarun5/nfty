@@ -21,7 +21,7 @@ var USD_PER_ETH=2200.0;
 struct UsdText: View {
     var eth:Double
     var body: some View {
-        Text(currencyFormatter.string(for:eth)!)
+        Text(currencyFormatter.string(for:(eth * USD_PER_ETH))!)
     }
 }
 
