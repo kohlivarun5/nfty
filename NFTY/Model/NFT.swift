@@ -10,9 +10,9 @@ import SwiftUI
 
 struct NFT: Hashable, Codable {
     var address: String
-    var tokenId: Int
-    var name: String
-    var url: String
-    var eth: Float
+   var tokenId: String
+   var name: String
+   var url: URL
+   var eth: Double
 }
 
