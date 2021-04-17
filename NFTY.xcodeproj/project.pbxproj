@@ -13,6 +13,8 @@
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
 		4FB9A7C3262B28A400C58AF9 /* NFTYTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7C2262B28A400C58AF9 /* NFTYTests.swift */; };
 		4FB9A7CE262B28A400C58AF9 /* NFTYUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7CD262B28A400C58AF9 /* NFTYUITests.swift */; };
+		4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */; };
+		4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7E3262B31D300C58AF9 /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NFTYUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7CD262B28A400C58AF9 /* NFTYUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYUITests.swift; sourceTree = "<group>"; };
 		4FB9A7CF262B28A400C58AF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleImage.swift; sourceTree = "<group>"; };
+		4FB9A7E3262B31D300C58AF9 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 				4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */,
 				4FB9A7B9262B28A400C58AF9 /* Info.plist */,
 				4FB9A7B6262B28A400C58AF9 /* Preview Content */,
+				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
+				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
 			);
 			path = NFTY;
 			sourceTree = "<group>";
@@ -260,7 +266,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB9A7B3262B28A300C58AF9 /* ContentView.swift in Sources */,
+				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
+				4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
