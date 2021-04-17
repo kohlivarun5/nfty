@@ -1,5 +1,5 @@
 //
-//  RoundedImage.swift
+//  NftDetail.swift
 //  NFTY
 //
 //  Created by Varun Kohli on 4/17/21.
@@ -8,14 +8,11 @@
 import SwiftUI
 import URLImage
 
-struct RoundedImage: View {
-    
+struct NftDetail: View {
     var nft:NFT
-    
     var body: some View {
         
         VStack {
-            
             URLImage(
                 url:nft.url,
                 empty: {
@@ -40,39 +37,31 @@ struct RoundedImage: View {
                     image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .padding()
                     .background(Color.yellow)
                     //.resizable()
                     
                 })
-            
+                .ignoresSafeArea(edges: .top)
             HStack {
                 VStack(alignment:.leading) {
                     Text(nft.name)
+                        .font(.title)
                     Text("#\(nft.tokenId)")
+                        .font(.title2)
                 }
                 Spacer()
                 UsdText(eth:nft.eth)
+                        .font(.title)
             }
             .font(.subheadline)
             .padding()
+            Spacer()
         }
-        
-        .border(Color.secondary)
-        .frame(width: 300.0)
-        .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
-        .shadow(radius: 3)
-        
     }
 }
 
-struct RoundedImage_Previews: PreviewProvider {
+struct NftDetail_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            RoundedImage(nft:nfts[10])
-            RoundedImage(nft:nfts[0])
-        }
+        NftDetail(nft:nfts[0])
     }
 }

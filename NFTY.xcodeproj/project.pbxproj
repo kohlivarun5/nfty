@@ -22,6 +22,8 @@
 		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
 		4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB9A808262B451F00C58AF9 /* URLImage */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
+		4FB9A816262B528300C58AF9 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A815262B528300C58AF9 /* ListView.swift */; };
+		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
+		4FB9A815262B528300C58AF9 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,8 +158,10 @@
 			isa = PBXGroup;
 			children = (
 				4FB9A7B2262B28A300C58AF9 /* ContentView.swift */,
+				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
 				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
+				4FB9A815262B528300C58AF9 /* ListView.swift */,
 				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
 			);
@@ -322,9 +328,11 @@
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
+				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
 				4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
+				4FB9A816262B528300C58AF9 /* ListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
