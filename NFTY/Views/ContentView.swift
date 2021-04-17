@@ -12,10 +12,9 @@ struct ContentView: View {
         NavigationView {
             ListView()
         }
-        .navigationTitle("Crypto NFTs")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitle("NFTy", displayMode: .inline)
         .navigationBarHidden(true)
-        .navigationBarTitle("", displayMode: .inline)
+        
     }
 }
 
