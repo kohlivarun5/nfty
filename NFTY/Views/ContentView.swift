@@ -39,9 +39,9 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationBarTitle("NFTY")
         }
-        .navigationBarTitle("NFTY")
-        .navigationBarHidden(true)
+        
         
     }
 }
