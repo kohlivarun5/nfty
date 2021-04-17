@@ -38,6 +38,7 @@ struct RoundedImage: View {
                 },
                 content: { image in                // Content view
                     image
+                    .interpolation(.none) 
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()

@@ -35,6 +35,7 @@ struct NftDetail: View {
                 },
                 content: { image in                // Content view
                     image
+                    .interpolation(.none)    
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .background(Color.yellow)
