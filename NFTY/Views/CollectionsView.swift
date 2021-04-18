@@ -30,6 +30,7 @@ struct CollectionsView: View {
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
+                    .scaleEffect(collection.sampleScaling, anchor: .center)
                   
                   Image(collection.url2)
                     .interpolation(.low)
@@ -37,6 +38,7 @@ struct CollectionsView: View {
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
+                    .scaleEffect(collection.sampleScaling, anchor: .center)
                   
                 }
                 HStack {
@@ -46,12 +48,14 @@ struct CollectionsView: View {
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
+                    .scaleEffect(collection.sampleScaling, anchor: .center)
                   Image(collection.url4)
                     .interpolation(.low)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
+                    .scaleEffect(collection.sampleScaling, anchor: .center)
                 }
               }
               .background(collection.themeColor)

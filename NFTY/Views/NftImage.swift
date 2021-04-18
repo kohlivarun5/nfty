@@ -16,8 +16,7 @@ struct NftImage: View {
       URLImage(
         url:url,
         options: URLImageOptions(
-          expireAfter: 60 * 60 * 24 * 10,
-          cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: nil) // Return cached image or download after delay
+          expireAfter: 60 * 60 * 24 * 10
         ),
         empty: {
           Text("")
