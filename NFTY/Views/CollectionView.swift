@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CollectionView.swift
 //  NFTY
 //
 //  Created by Varun Kohli on 4/17/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct CollectionView: View {
     
     @State private var showSorted = false
     @State private var filterZeros = false
@@ -39,15 +39,17 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationBarTitle("NFTY")
+            .navigationBarTitle("Collections")
+            .navigationBarHidden(true)
+            .ignoresSafeArea(edges: .top)
         }
         
         
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct CollectionView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+      CollectionView()
     }
 }
