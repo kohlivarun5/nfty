@@ -8,6 +8,14 @@
 import SwiftUI
 import URLImage
 
+var SAMPLE_PUNKS = [
+  "SamplePunk1",
+  "SamplePunk2",
+  "SamplePunk3",
+  "SamplePunk4",
+  "SamplePunk5"
+]
+
 struct RoundedImage: View {
     
     var nft:NFT
@@ -24,13 +32,16 @@ struct RoundedImage: View {
                 },
                 inProgress: { progress in
                   
-                  Image("Dracocat")
+                  Image(
+                    SAMPLE_PUNKS[
+                      Int.random(in: 0..<SAMPLE_PUNKS.count)
+                      ])
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
                     .background(Color.yellow)
-                    .blur(radius:5)
+                    .blur(radius:7)
                 },
                 failure: { error, retry in         // Display error and retry button
                     VStack {
