@@ -22,30 +22,27 @@ struct CollectionView: View {
   }
   
   var body: some View {
-    NavigationView {
-      List {
-        Toggle(isOn: $showSorted) {
-          Text("Sort Low to High")
-        }
-        Toggle(isOn: $filterZeros) {
-          Text("Filter Zero")
-        }
-        
-        ForEach(
-          sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
-          ZStack {
-            RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4],themeColor:collection.themeColor)
-              .padding()
-            NavigationLink(destination: NftDetail(nft:nft,themeColor:collection.themeColor)) {}
-              .hidden()
-          }
+   
+    List {
+      Toggle(isOn: $showSorted) {
+        Text("Sort Low to High")
+      }
+      Toggle(isOn: $filterZeros) {
+        Text("Filter Zero")
+      }
+      
+      ForEach(
+        sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
+        ZStack {
+          RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4],themeColor:collection.themeColor)
+            .padding()
+          NavigationLink(destination: NftDetail(nft:nft,themeColor:collection.themeColor)) {}
+            .hidden()
         }
       }
-      .navigationBarTitle("",displayMode:.inline)
-      .navigationBarHidden(true)
     }
-    
-    
+    .navigationBarTitle(collection.name)
+ 
   }
 }
 
