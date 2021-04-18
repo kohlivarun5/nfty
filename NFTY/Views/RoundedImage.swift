@@ -10,47 +10,14 @@ import URLImage
 
 struct RoundedImage: View {
     
-    var nft:NFT
+  var nft:NFT
+  var samples : [String]
     
     var body: some View {
         
         VStack {
+          NftImage(url:nft.url,samples:samples)
             
-            URLImage(
-                url:nft.url,
-                empty: {
-                    Text("")
-                    // This view is displayed before download starts
-                },
-                inProgress: { progress in
-                  
-                  Image(
-                    SAMPLE_PUNKS[
-                      Int.random(in: 0..<SAMPLE_PUNKS.count)
-                      ])
-                    .interpolation(.none)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .background(Color.yellow)
-                    .blur(radius:7)
-                },
-                failure: { error, retry in         // Display error and retry button
-                    VStack {
-                        Text(error.localizedDescription)
-                        Button("Retry", action: retry)
-                    }
-                },
-                content: { image in                // Content view
-                    image
-                    .interpolation(.none) 
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .background(Color.yellow)
-                    //.resizable()
-                    
-                })
             
             HStack {
                 VStack(alignment:.leading) {
@@ -77,8 +44,7 @@ struct RoundedImage: View {
 struct RoundedImage_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            RoundedImage(nft:CrypotPunksNfts[10])
-            RoundedImage(nft:CrypotPunksNfts[0])
+          RoundedImage(nft:CrypotPunksNfts[10],samples:SAMPLE_PUNKS)
         }
     }
 }

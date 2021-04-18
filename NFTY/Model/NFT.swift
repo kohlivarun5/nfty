@@ -26,17 +26,16 @@ struct CollectionInfo: Hashable, Codable {
   var nfts:[NFT]
 }
 
-var SAMPLE_PUNKS = [
+var SAMPLE_PUNKS : [String] = [
   "SamplePunk1",
   "SamplePunk2",
   "SamplePunk3",
-  "SamplePunk4",
-  "SamplePunk5"
+  "SamplePunk4"
 ]
 
 var CrypotPunksNfts : [NFT] = load("punks.json")
 
-var CryptoPunksCollection = CollectionInfo(url1:"SamplePunk1",url2:"SamplePunk2",url3:"SamplePunk3",url4:"SamplePunk4",name:String("CRYPTOPUNKS"),totalSupply:10000,nfts:CrypotPunksNfts)
+var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts)
 
 var COLLECTIONS: [CollectionInfo]=[
   CryptoPunksCollection

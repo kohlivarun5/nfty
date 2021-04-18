@@ -34,7 +34,7 @@ struct CollectionView: View {
         ForEach(
           sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
           ZStack {
-            RoundedImage(nft:nft)
+            RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4])
               .padding()
             NavigationLink(destination: NftDetail(nft:nft)) {}
               .hidden()
