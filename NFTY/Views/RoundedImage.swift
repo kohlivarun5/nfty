@@ -36,8 +36,8 @@ struct RoundedImage: View {
         .frame(width: 250.0)
         .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
-        .shadow(radius: 3)
+            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 1))
+        .shadow(color:Color.primary,radius: 3)
         
     }
 }

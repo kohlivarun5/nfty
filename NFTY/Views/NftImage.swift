@@ -36,9 +36,11 @@ struct NftImage: View {
               .aspectRatio(contentMode: .fit)
               .padding()
               .background(themeColor)
-              .blur(radius:7)
+              .blur(radius:20)
             ProgressView(value:progress)
-              .progressViewStyle(CircularProgressViewStyle())
+              .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
+              .scaleEffect(2.0, anchor: .center)
+
           }
         },
         failure: { error, retry in         // Display error and retry button
