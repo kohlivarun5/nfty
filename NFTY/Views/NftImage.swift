@@ -21,16 +21,21 @@ struct NftImage: View {
         },
         inProgress: { progress in
           
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .background(themeColor)
-            .blur(radius:7)
+          ZStack {
+              
+            Image(
+              samples[
+                Int.random(in: 0..<samples.count)
+              ])
+              .interpolation(.none)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding()
+              .background(themeColor)
+              .blur(radius:7)
+            ProgressView(value:progress)
+              .progressViewStyle(CircularProgressViewStyle())
+          }
         },
         failure: { error, retry in         // Display error and retry button
           VStack {
