@@ -27,6 +27,7 @@ struct CollectionInfo {
   var totalSupply: Int
   var nfts:[NFT]
   var themeColor:Color
+  var blur:CGFloat
 }
 
 var SAMPLE_PUNKS : [String] = [
@@ -36,10 +37,26 @@ var SAMPLE_PUNKS : [String] = [
   "SamplePunk4"
 ]
 
+var SAMPLE_KITTIES : [String] = [
+  "SampleKitty1",
+  "SampleKitty2",
+  "SampleKitty3",
+  "SampleKitty4"
+]
+
 var CrypotPunksNfts : [NFT] = load("punks.json")
 
-var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts,themeColor:Color.yellow)
+var CryptoKittiesNfts : [NFT] = [
+  NFT(address:"0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",tokenId:"0",name:"CryptoKitties",url:URL(string:"https://lh3.googleusercontent.com/09Q6Gad0HMStguSvskhWiLgKvOIY5Q9FpO5l5r-HfN8V-zKVDn4PrhXqwp3RfKwUS6NM9PzCrxlNGWhRz79-fQ76gI8e7Tn9zndotw=s0")!,eth:0.0),
+  NFT(address:"0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",tokenId:"1",name:"CryptoKitties",url:URL(string:"https://lh3.googleusercontent.com/09Q6Gad0HMStguSvskhWiLgKvOIY5Q9FpO5l5r-HfN8V-zKVDn4PrhXqwp3RfKwUS6NM9PzCrxlNGWhRz79-fQ76gI8e7Tn9zndotw=s0")!,eth:0.0),
+  NFT(address:"0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",tokenId:"2",name:"CryptoKitties",url:URL(string:"https://lh3.googleusercontent.com/09Q6Gad0HMStguSvskhWiLgKvOIY5Q9FpO5l5r-HfN8V-zKVDn4PrhXqwp3RfKwUS6NM9PzCrxlNGWhRz79-fQ76gI8e7Tn9zndotw=s0")!,eth:0.0),
+  NFT(address:"0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",tokenId:"3",name:"CryptoKitties",url:URL(string:"https://lh3.googleusercontent.com/09Q6Gad0HMStguSvskhWiLgKvOIY5Q9FpO5l5r-HfN8V-zKVDn4PrhXqwp3RfKwUS6NM9PzCrxlNGWhRz79-fQ76gI8e7Tn9zndotw=s0")!,eth:0.0)
+]
+
+var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts,themeColor:Color.yellow,blur:2)
+var CryptoKittiesCollection = CollectionInfo(url1:SAMPLE_KITTIES[0],url2:SAMPLE_KITTIES[1],url3:SAMPLE_KITTIES[2],url4:SAMPLE_KITTIES[3],name:"CryptoKitties",totalSupply:1997622,nfts:CryptoKittiesNfts,themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),blur:0.75)
 
 var COLLECTIONS: [CollectionInfo]=[
-  CryptoPunksCollection
+  CryptoPunksCollection,
+  CryptoKittiesCollection
 ]

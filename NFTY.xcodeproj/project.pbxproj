@@ -10,6 +10,7 @@
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
+		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
+		4F6D3994262BFE4F007E79BB /* kitties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kitties.json; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB9A802262B435400C58AF9 /* punks.json */,
+				4F6D3994262BFE4F007E79BB /* kitties.json */,
 				4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */,
 			);
 			path = Resources;
@@ -298,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,

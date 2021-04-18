@@ -26,7 +26,7 @@ struct RoundedImage: View {
                     Text("#\(nft.tokenId)")
                 }
                 Spacer()
-                UsdText(eth:nft.eth)
+              UsdText(eth:nft.eth)
             }
             .font(.subheadline)
             .padding()

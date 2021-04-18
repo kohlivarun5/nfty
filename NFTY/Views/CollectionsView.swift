@@ -29,29 +29,29 @@ struct CollectionsView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
-                    .blur(radius:2)
+                    .blur(radius:collection.blur)
                   
                   Image(collection.url2)
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
-                    .blur(radius:2)
+                    .blur(radius:collection.blur)
                   
                 }
                 HStack {
-                  Image(collection.url2)
-                    .interpolation(.none)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit).padding()
-                    .background(collection.themeColor)
-                    .blur(radius:2)
                   Image(collection.url3)
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
-                    .blur(radius:2)
+                    .blur(radius:collection.blur)
+                  Image(collection.url4)
+                    .interpolation(.none)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit).padding()
+                    .background(collection.themeColor)
+                    .blur(radius:collection.blur)
                 }
               }
               .background(collection.themeColor)
