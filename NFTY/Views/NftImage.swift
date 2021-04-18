@@ -53,6 +53,7 @@ struct NftImage: View {
           //.resizable()
           
         })
+        .animation(.default)
       
     }
 }
