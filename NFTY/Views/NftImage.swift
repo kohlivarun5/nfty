@@ -11,6 +11,7 @@ import URLImage
 struct NftImage: View {
   var url : URL
   var samples : [String]
+  var themeColor : Color
     var body: some View {
       URLImage(
         url:url,
@@ -28,7 +29,7 @@ struct NftImage: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
-            .background(Color.yellow)
+            .background(themeColor)
             .blur(radius:7)
         },
         failure: { error, retry in         // Display error and retry button
@@ -43,7 +44,7 @@ struct NftImage: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
-            .background(Color.yellow)
+            .background(themeColor)
           //.resizable()
           
         })
@@ -53,6 +54,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
     static var previews: some View {
-      NftImage(url:URL(string:"SamplePunk1")!,samples:SAMPLE_PUNKS)
+      NftImage(url:URL(string:"SamplePunk1")!,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.themeColor)
     }
 }

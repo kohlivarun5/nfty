@@ -10,6 +10,7 @@ import URLImage
 
 struct NftDetail: View {
   var nft:NFT
+  var themeColor : Color
   var body: some View {
     
     VStack {
@@ -38,7 +39,7 @@ struct NftDetail: View {
             .interpolation(.none)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .background(Color.yellow)
+            .background(themeColor)
           //.resizable()
           
         })
@@ -64,6 +65,6 @@ struct NftDetail: View {
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CrypotPunksNfts[0])
+    NftDetail(nft:CrypotPunksNfts[0],themeColor:CryptoPunksCollection.themeColor)
   }
 }

@@ -12,11 +12,12 @@ struct RoundedImage: View {
     
   var nft:NFT
   var samples : [String]
+  var themeColor : Color
     
     var body: some View {
         
         VStack {
-          NftImage(url:nft.url,samples:samples)
+          NftImage(url:nft.url,samples:samples,themeColor:themeColor)
             
             
             HStack {
@@ -44,7 +45,7 @@ struct RoundedImage: View {
 struct RoundedImage_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-          RoundedImage(nft:CrypotPunksNfts[10],samples:SAMPLE_PUNKS)
+          RoundedImage(nft:CrypotPunksNfts[10],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.themeColor)
         }
     }
 }

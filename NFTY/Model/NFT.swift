@@ -16,7 +16,9 @@ struct NFT: Hashable, Codable {
    var eth: Double
 }
 
-struct CollectionInfo: Hashable, Codable {
+
+
+struct CollectionInfo {
   var url1: String
   var url2: String
   var url3: String
@@ -24,6 +26,7 @@ struct CollectionInfo: Hashable, Codable {
   var name: String
   var totalSupply: Int
   var nfts:[NFT]
+  var themeColor:Color
 }
 
 var SAMPLE_PUNKS : [String] = [
@@ -35,7 +38,7 @@ var SAMPLE_PUNKS : [String] = [
 
 var CrypotPunksNfts : [NFT] = load("punks.json")
 
-var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts)
+var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts,themeColor:Color.yellow)
 
 var COLLECTIONS: [CollectionInfo]=[
   CryptoPunksCollection

@@ -28,14 +28,14 @@ struct CollectionsView: View {
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
-                    .background(Color.yellow)
+                    .background(collection.themeColor)
                     .blur(radius:2)
                   
                   Image(collection.url2)
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
-                    .background(Color.yellow)
+                    .background(collection.themeColor)
                     .blur(radius:2)
                   
                 }
@@ -44,17 +44,17 @@ struct CollectionsView: View {
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
-                    .background(Color.yellow)
+                    .background(collection.themeColor)
                     .blur(radius:2)
                   Image(collection.url3)
                     .interpolation(.none)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
-                    .background(Color.yellow)
+                    .background(collection.themeColor)
                     .blur(radius:2)
                 }
               }
-              .background(Color.yellow)
+              .background(collection.themeColor)
               
               
               
