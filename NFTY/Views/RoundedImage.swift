@@ -22,13 +22,15 @@ struct RoundedImage: View {
                     Text("")
                     // This view is displayed before download starts
                 },
-                inProgress: { progress -> Text in  // Display progress
-                    /* if let progress = progress {
-                        return Text(formatter.string(from: progress as NSNumber) ?? "Loading...")
-                    }
-                    else { */
-                        return Text("Loading...")
-                    //}
+                inProgress: { progress in
+                  
+                  Image("Dracocat")
+                    .interpolation(.none)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .background(Color.yellow)
+                    .blur(radius:5)
                 },
                 failure: { error, retry in         // Display error and retry button
                     VStack {
