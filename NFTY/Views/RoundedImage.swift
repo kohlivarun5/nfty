@@ -8,14 +8,6 @@
 import SwiftUI
 import URLImage
 
-var SAMPLE_PUNKS = [
-  "SamplePunk1",
-  "SamplePunk2",
-  "SamplePunk3",
-  "SamplePunk4",
-  "SamplePunk5"
-]
-
 struct RoundedImage: View {
     
     var nft:NFT
@@ -85,8 +77,8 @@ struct RoundedImage: View {
 struct RoundedImage_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            RoundedImage(nft:nfts[10])
-            RoundedImage(nft:nfts[0])
+            RoundedImage(nft:CrypotPunksNfts[10])
+            RoundedImage(nft:CrypotPunksNfts[0])
         }
     }
 }

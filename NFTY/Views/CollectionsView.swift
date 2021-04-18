@@ -9,32 +9,20 @@ import SwiftUI
 
 struct CollectionsView: View {
   
+  var collections : [CollectionInfo]
+  
   @State private var showSorted = false
   @State private var filterZeros = false
   
-  func sorted(l:[NFT]) -> [NFT] {
-    showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
-  }
-  func filtered(l:[NFT]) -> [NFT] {
-    filterZeros ? l.filter({$0.eth != 0}) : l
-  }
   
   var body: some View {
     NavigationView {
       List {
-        Toggle(isOn: $showSorted) {
-          Text("Sort Low to High")
-        }
-        Toggle(isOn: $filterZeros) {
-          Text("Filter Zero")
-        }
-        
-        ForEach(
-          sorted(l:filtered(l:nfts)),id:\.tokenId) { nft in
+        ForEach(collections,id:\.name) { collection in
           ZStack {
-            RoundedImage(nft:nft)
+            RoundedImage(nft:CrypotPunksNfts[0])
               .padding()
-            NavigationLink(destination: NftDetail(nft:nft)) {}
+            NavigationLink(destination: CollectionView(collection:collection)) {}
               .hidden()
           }
         }
@@ -42,13 +30,12 @@ struct CollectionsView: View {
       .navigationBarTitle("Collections")
       .ignoresSafeArea(edges: .top)
     }
-    
-    
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 
 struct CollectionsView_Previews: PreviewProvider {
   static var previews: some View {
-    CollectionView()
+    CollectionsView(collections:COLLECTIONS)
   }
 }

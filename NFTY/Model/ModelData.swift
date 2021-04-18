@@ -7,8 +7,6 @@
 
 import Foundation
 
-var nfts: [NFT] = load("punks.json")
-
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data
 

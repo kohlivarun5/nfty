@@ -64,6 +64,6 @@ struct NftDetail: View {
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:nfts[0])
+    NftDetail(nft:CrypotPunksNfts[0])
   }
 }
