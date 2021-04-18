@@ -25,14 +25,14 @@ struct CollectionsView: View {
               VStack {
                 HStack {
                   Image(collection.url1)
-                    .interpolation(.none)
+                    .interpolation(.low)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
                   
                   Image(collection.url2)
-                    .interpolation(.none)
+                    .interpolation(.low)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
@@ -41,13 +41,13 @@ struct CollectionsView: View {
                 }
                 HStack {
                   Image(collection.url3)
-                    .interpolation(.none)
+                    .interpolation(.low)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
                     .blur(radius:collection.blur)
                   Image(collection.url4)
-                    .interpolation(.none)
+                    .interpolation(.low)
                     .resizable()
                     .aspectRatio(contentMode: .fit).padding()
                     .background(collection.themeColor)
