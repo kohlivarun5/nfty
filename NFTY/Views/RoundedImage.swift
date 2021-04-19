@@ -8,57 +8,17 @@
 import SwiftUI
 import URLImage
 
-var SAMPLE_PUNKS = [
-  "SamplePunk1",
-  "SamplePunk2",
-  "SamplePunk3",
-  "SamplePunk4",
-  "SamplePunk5"
-]
-
 struct RoundedImage: View {
     
-    var nft:NFT
+  var nft:NFT
+  var samples : [String]
+  var themeColor : Color
     
     var body: some View {
         
         VStack {
+          NftImage(url:nft.url,samples:samples,themeColor:themeColor)
             
-            URLImage(
-                url:nft.url,
-                empty: {
-                    Text("")
-                    // This view is displayed before download starts
-                },
-                inProgress: { progress in
-                  
-                  Image(
-                    SAMPLE_PUNKS[
-                      Int.random(in: 0..<SAMPLE_PUNKS.count)
-                      ])
-                    .interpolation(.none)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .background(Color.yellow)
-                    .blur(radius:7)
-                },
-                failure: { error, retry in         // Display error and retry button
-                    VStack {
-                        Text(error.localizedDescription)
-                        Button("Retry", action: retry)
-                    }
-                },
-                content: { image in                // Content view
-                    image
-                    .interpolation(.none) 
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .background(Color.yellow)
-                    //.resizable()
-                    
-                })
             
             HStack {
                 VStack(alignment:.leading) {
@@ -66,7 +26,7 @@ struct RoundedImage: View {
                     Text("#\(nft.tokenId)")
                 }
                 Spacer()
-                UsdText(eth:nft.eth)
+              UsdText(eth:nft.eth)
             }
             .font(.subheadline)
             .padding()
@@ -76,8 +36,8 @@ struct RoundedImage: View {
         .frame(width: 250.0)
         .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
-        .shadow(radius: 3)
+            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 1))
+        .shadow(color:Color.primary,radius: 3)
         
     }
 }
@@ -85,8 +45,7 @@ struct RoundedImage: View {
 struct RoundedImage_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            RoundedImage(nft:nfts[10])
-            RoundedImage(nft:nfts[0])
+          RoundedImage(nft:CrypotPunksNfts[10],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.themeColor)
         }
     }
 }

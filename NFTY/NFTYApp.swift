@@ -11,7 +11,7 @@ import SwiftUI
 struct NFTYApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          CollectionsView(collections:COLLECTIONS)
         }
     }
 }
