@@ -10,61 +10,38 @@ import URLImage
 
 struct NftDetail: View {
   var nft:NFT
+  var samples:[String]
   var themeColor : Color
   var body: some View {
     
     VStack {
-      URLImage(
-        url:nft.url,
-        empty: {
-          Text("")
-          // This view is displayed before download starts
-        },
-        inProgress: { progress -> Text in  // Display progress
-          /* if let progress = progress {
-           return Text(formatter.string(from: progress as NSNumber) ?? "Loading...")
-           }
-           else { */
-          return Text("Loading...")
-          //}
-        },
-        failure: { error, retry in         // Display error and retry button
-          VStack {
-            Text(error.localizedDescription)
-            Button("Retry", action: retry)
-          }
-        },
-        content: { image in                // Content view
-          image
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .background(themeColor)
-          //.resizable()
-          
-        })
-        .ignoresSafeArea(edges: .top)
+      VStack {
+        NftImage(url:nft.url,samples:samples,themeColor:themeColor)
+        .padding()
+      }
+      .background(themeColor)
       
-      HStack(alignment: .top) {
+      HStack() {
         VStack(alignment:.leading) {
           Text(nft.name)
-            .font(.title)
+            .font(.headline)
           Text("#\(nft.tokenId)")
-            .font(.title2)
+            .font(.subheadline)
         }
         Spacer()
         UsdText(eth:nft.eth)
           .font(.title)
       }
-      .font(.subheadline)
       .padding()
+
       Spacer()
     }
+    .ignoresSafeArea(edges: .top)
   }
 }
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CrypotPunksNfts[0],themeColor:CryptoPunksCollection.themeColor)
+    NftDetail(nft:CrypotPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.themeColor)
   }
 }

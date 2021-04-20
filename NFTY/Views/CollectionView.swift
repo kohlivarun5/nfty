@@ -42,10 +42,11 @@ struct CollectionView: View {
       }
       ForEach(
         sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
+        let samples = [collection.url1,collection.url2,collection.url3,collection.url4];
         ZStack {
-          RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4],themeColor:collection.themeColor)
+          RoundedImage(nft:nft,samples:samples,themeColor:collection.themeColor)
             .padding()
-          NavigationLink(destination: NftDetail(nft:nft,themeColor:collection.themeColor)) {}
+          NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:collection.themeColor)) {}
             .hidden()
         }
       }
