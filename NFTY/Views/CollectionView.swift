@@ -21,23 +21,35 @@ struct CollectionView: View {
     filterZeros ? l.filter({$0.eth != 0}) : l
   }
   
+  struct FillAll: View {
+    let color: Color
+    
+    var body: some View {
+      GeometryReader { proxy in
+        self.color.frame(width: proxy.size.width * 1.3).fixedSize()
+      }
+    }
+  }
+  
   var body: some View {
    
     List {
-      Toggle(isOn: $showSorted) {
-        Text("Sort Low to High")
-      }
-      Toggle(isOn: $filterZeros) {
-        Text("Filter Zero")
-      }
-      
-      ForEach(
-        sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
-        ZStack {
-          RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4],themeColor:collection.themeColor)
-            .padding()
-          NavigationLink(destination: NftDetail(nft:nft,themeColor:collection.themeColor)) {}
-            .hidden()
+      Section(header:VStack {
+            Toggle(isOn: $showSorted) {
+              Text("Sort Low to High")
+            }
+            Toggle(isOn: $filterZeros) {
+              Text("Filter Zero")
+            }
+      }.padding().background(Color.clear)) {
+        ForEach(
+          sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
+          ZStack {
+            RoundedImage(nft:nft,samples:[collection.url1,collection.url2,collection.url3,collection.url4],themeColor:collection.themeColor)
+              .padding()
+            NavigationLink(destination: NftDetail(nft:nft,themeColor:collection.themeColor)) {}
+              .hidden()
+          }
         }
       }
     }

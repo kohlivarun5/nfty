@@ -14,6 +14,13 @@ struct CollectionsView: View {
   @State private var showSorted = false
   @State private var filterZeros = false
   
+  private func sampleImage(url:String,collection:CollectionInfo) -> some View {
+    Image(url)
+      .interpolation(.none)
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .padding(collection.samplePadding)
+  }
    
   var body: some View {
     NavigationView {
@@ -24,48 +31,21 @@ struct CollectionsView: View {
             VStack{
               VStack {
                 HStack {
-                  Image(collection.url1)
-                    .interpolation(.low)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit).padding()
-                    .background(collection.themeColor)
-                    .blur(radius:collection.blur)
-                    .scaleEffect(collection.sampleScaling, anchor: .center)
-                  
-                  Image(collection.url2)
-                    .interpolation(.low)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit).padding()
-                    .background(collection.themeColor)
-                    .blur(radius:collection.blur)
-                    .scaleEffect(collection.sampleScaling, anchor: .center)
-                  
+                  sampleImage(url:collection.url1,collection:collection)
+                  sampleImage(url:collection.url2,collection:collection)
                 }
                 HStack {
-                  Image(collection.url3)
-                    .interpolation(.low)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit).padding()
-                    .background(collection.themeColor)
-                    .blur(radius:collection.blur)
-                    .scaleEffect(collection.sampleScaling, anchor: .center)
-                  Image(collection.url4)
-                    .interpolation(.low)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit).padding()
-                    .background(collection.themeColor)
-                    .blur(radius:collection.blur)
-                    .scaleEffect(collection.sampleScaling, anchor: .center)
+                  sampleImage(url:collection.url3,collection:collection)
+                  sampleImage(url:collection.url4,collection:collection)
                 }
               }
               .background(collection.themeColor)
-              
-              
+                           
               
               HStack {
                 Text(collection.name)
               }
-              .font(.subheadline)
+              .font(.headline)
               .padding()
               
             }
