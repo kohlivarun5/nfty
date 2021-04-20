@@ -16,7 +16,7 @@ func formatter() -> Formatter {
     return currencyFormatter
 }
 var currencyFormatter = formatter()
-var USD_PER_ETH=2200.0;
+var USD_PER_ETH=2300.0;
 
 struct UsdText: View {
     var eth:Double
