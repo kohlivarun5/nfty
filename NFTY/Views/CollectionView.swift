@@ -48,7 +48,7 @@ struct CollectionView: View {
         Section(header:
                   ZStack {
                     
-                    VisualEffectView(effect: UIBlurEffect(style: .dark))
+                    VisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
                       .edgesIgnoringSafeArea(.all)
                     
                     VStack {
@@ -57,17 +57,19 @@ struct CollectionView: View {
                         Text("Top").tag(1)
                       }
                       .pickerStyle(SegmentedPickerStyle())
-                      Toggle(isOn: $showSorted) {
-                        Text("Sort Low to High")
-                      }
-                      Toggle(isOn: $filterZeros) {
-                        Text("Filter Zero")
-                      }
+                      .padding()
                     }
-                    .padding()
                     
                   }
         ) {
+          VStack {
+            Toggle(isOn: $showSorted) {
+              Text("Sort Low to High")
+            }
+            Toggle(isOn: $filterZeros) {
+              Text("Filter Zero")
+            }
+          }.padding()
           
           
           ForEach(
