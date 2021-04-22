@@ -17,7 +17,7 @@ struct CollectionView: View {
   
   private var info : CollectionInfo
   
-  @ObservedObject var recentTrades : CryptoPunksTrades
+  @ObservedObject var recentTrades : NftRecentTradesObject
   
   @State private var showSorted = false
   @State private var filterZeros = false
