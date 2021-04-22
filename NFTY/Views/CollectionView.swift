@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PromiseKit
 
 struct VisualEffectView: UIViewRepresentable {
   var effect: UIVisualEffect?
