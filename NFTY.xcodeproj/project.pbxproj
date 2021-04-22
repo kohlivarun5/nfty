@@ -26,6 +26,10 @@
 		4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB9A808262B451F00C58AF9 /* URLImage */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
+		4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
+		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
+		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
+		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +74,7 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
+		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
+				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
+				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
+				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,
 			);
 			path = Model;
@@ -210,6 +219,9 @@
 			name = NFTY;
 			packageProductDependencies = (
 				4FB9A808262B451F00C58AF9 /* URLImage */,
+				4FC744722630FD7D0060FC6D /* Web3PromiseKit */,
+				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
+				4FC744762630FD7D0060FC6D /* Web3 */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -284,6 +296,7 @@
 			mainGroup = 4FB9A7A4262B28A300C58AF9;
 			packageReferences = (
 				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
+				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -331,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
@@ -666,6 +680,14 @@
 				minimumVersion = 2.2.3;
 			};
 		};
+		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Boilertalk/Web3.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -673,6 +695,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */;
 			productName = URLImage;
+		};
+		4FC744722630FD7D0060FC6D /* Web3PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3PromiseKit;
+		};
+		4FC744742630FD7D0060FC6D /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3ContractABI;
+		};
+		4FC744762630FD7D0060FC6D /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
