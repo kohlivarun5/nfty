@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PromiseKit
 
 struct VisualEffectView: UIViewRepresentable {
   var effect: UIVisualEffect?
@@ -15,13 +16,20 @@ struct VisualEffectView: UIViewRepresentable {
 
 struct CollectionView: View {
   
-  var collection : CollectionInfo
+  private var info : CollectionInfo
+  
+  @ObservedObject var recentTrades : CryptoPunksTrades
   
   @State private var showSorted = false
   @State private var filterZeros = false
   @State private var selectedNumber = 0
   
   @State private var action: String? = ""
+  
+  init(collection:Collection) {
+    self.info = collection.info;
+    self.recentTrades = collection.data.recentTrades;
+  }
 
   
   func sorted(l:[NFT]) -> [NFT] {
@@ -73,24 +81,27 @@ struct CollectionView: View {
           
           
           ForEach(
-            sorted(l:filtered(l:collection.nfts)),id:\.tokenId) { nft in
-            let samples = [collection.url1,collection.url2,collection.url3,collection.url4];
+            sorted(l:filtered(l:recentTrades.recentTrades)),id:\.tokenId) { nft in
+            let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:collection.themeColor)
+              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
                   self.action = nft.tokenId
                 }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:collection.themeColor),tag:nft.tokenId,selection:$action) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:nft.tokenId,selection:$action) {}
                 .hidden()
             }
           }
         }.textCase(nil)
       }
     }
-    .navigationBarTitle(collection.name)
+    .navigationBarTitle(info.name)
+    .onAppear {
+      self.recentTrades.getRecentTrades();
+    }
  
   }
 }

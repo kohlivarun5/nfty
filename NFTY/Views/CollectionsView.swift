@@ -9,41 +9,41 @@ import SwiftUI
 
 struct CollectionsView: View {
   
-  var collections : [CollectionInfo]
+  var collections : [Collection]
   
   @State private var showSorted = false
   @State private var filterZeros = false
   
-  private func sampleImage(url:String,collection:CollectionInfo) -> some View {
+  private func sampleImage(url:String,collection:Collection) -> some View {
     Image(url)
       .interpolation(.none)
       .resizable()
       .aspectRatio(contentMode: .fit)
-      .padding(collection.samplePadding)
+      .padding(collection.info.samplePadding)
   }
    
   var body: some View {
     NavigationView {
       List {
-        ForEach(collections,id:\.name) { collection in
+        ForEach(collections,id:\.info.name) { collection in
           ZStack {
             
             VStack{
               VStack {
                 HStack {
-                  sampleImage(url:collection.url1,collection:collection)
-                  sampleImage(url:collection.url2,collection:collection)
+                  sampleImage(url:collection.info.url1,collection:collection)
+                  sampleImage(url:collection.info.url2,collection:collection)
                 }
                 HStack {
-                  sampleImage(url:collection.url3,collection:collection)
-                  sampleImage(url:collection.url4,collection:collection)
+                  sampleImage(url:collection.info.url3,collection:collection)
+                  sampleImage(url:collection.info.url4,collection:collection)
                 }
               }
-              .background(collection.themeColor)
+              .background(collection.info.themeColor)
                            
               
               HStack {
-                Text(collection.name)
+                Text(collection.info.name)
               }
               .font(.headline)
               .padding()

@@ -8,33 +8,49 @@
 import Foundation
 
 import Web3
-
-// Optional
 import Web3PromiseKit
 import Web3ContractABI
 
-let logger = Logger()
-
 protocol NftRecentTrades {
-  func getRecentTrades() -> Promise<[NFT]>
+  var recentTrades: [NFT] { get }
+  var recentTradesPublished: Published<[NFT]> { get }
+  var recentTradesPublisher: Published<[NFT]>.Publisher { get }
+  
+  func getRecentTrades()
 }
 
-
-struct CryptoTrades : NftRecentTrades {
-  private var web3 = Web3(rpcURL: "https://mainnet.infura.io/<your_infura_id>")
-  private var contractAddress = try EthereumAddress(hex: "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0", eip55: true)
-  private var contractJsonABI = "<your contract ABI as a JSON string>".data(using: .utf8)!
-  private var contract = try web3.eth.Contract(json: contractJsonABI, abiKey: nil, address: contractAddress)
+class CryptoPunksTrades : ObservableObject,NftRecentTrades {
+  
+  @Published var recentTrades: [NFT] = []
+  var recentTradesPublished: Published<[NFT]> { _recentTrades }
+  var recentTradesPublisher: Published<[NFT]>.Publisher { $recentTrades }
+  
+  
+  private var web3 : Web3
+  private var contractAddress : EthereumAddress
+  private var contractJsonABI : Data
+  private var contract : GenericERC721Contract
+  
+  init() {
+    web3 = Web3(rpcURL: "https://mainnet.infura.io/b4287cfd0a6b4849bd0ca79e144d3921")
+    contractAddress = try! EthereumAddress(hex: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb", eip55: false)
+    contractJsonABI = loadData("CryptoPunksAbi.json");
+    print(String(decoding: contractJsonABI, as: UTF8.self));
+    contract = web3.eth.Contract(type:GenericERC721Contract.self, address: contractAddress);
+  }
+  
   func getRecentTrades() {
-    
+    print("Called getRecentTrades");
     // Get balance of some address
     firstly {
-      try contract["balanceOf"]!(EthereumAddress(hex: "0x3edB3b95DDe29580FFC04b46A68a31dD46106a4a", eip55: true)).call()
+      try! contract.balanceOf(address:EthereumAddress(hex: "0xf4b4a58974524e183c275f3c6ea895bc2368e738", eip55: false)).call()
     }.done { outputs in
-      logger.info("Balance=\(outputs["_balance"] as? BigUInt))")
-      // print(outputs["_balance"] as? BigUInt)
-    }.catch { error in
-      print(error)
+      print(outputs);
+      self.recentTrades = CrypotPunksNfts
+    }.catch {
+      print($0);
+      self.recentTrades = CrypotPunksNfts
     }
+    
   }
 }

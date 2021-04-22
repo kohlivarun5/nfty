@@ -28,3 +28,12 @@ func load<T: Decodable>(_ filename: String) -> T {
         fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
     }
 }
+
+func loadData(_ filename: String) -> Data {
+  guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
+  else {
+    fatalError("Couldn't find \(filename) in main bundle.")
+  }  
+  return try! Data(contentsOf: file)
+  
+}
