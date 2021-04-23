@@ -15,13 +15,20 @@ public struct EthereumGetLogParams: Codable {
   public var fromBlock: EthereumQuantityTag?
   public var toBlock: EthereumQuantityTag?
   public var address: EthereumAddress?
+  public var topics:[String]
+}
+
+public struct EthereumLogData: Codable {
+  public var blockNumber: EthereumQuantity
+  public var data : String
+  public var topics : [String]
 }
    
 extension Web3.Eth {
   public typealias Web3ResponseCompletion<Result: Codable> = (_ resp: Web3Response<Result>) -> Void
   public func getLogs(
     params: EthereumGetLogParams,
-    response: @escaping Web3ResponseCompletion<EthereumData>
+    response: @escaping Web3ResponseCompletion<[EthereumLogData]>
   ) {
     let req = RPCRequest<[EthereumGetLogParams]>(
       id: properties.rpcId,
@@ -29,12 +36,13 @@ extension Web3.Eth {
       method: "eth_getLogs",
       params: [params]
     )
+    print(params)
     
     properties.provider.send(request: req, response: response)
   }
 }
 
-var web3 = Web3(rpcURL: "https://mainnet.infura.io/b4287cfd0a6b4849bd0ca79e144d3921")
+var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 
 struct CryptoPunksContract {
   private var contractAddress = try! EthereumAddress(hex: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb", eip55: false)
@@ -46,7 +54,7 @@ struct CryptoPunksContract {
   func getRecentTrades() {
     print("Called getRecentTrades");
     // Get balance of some address
-    return web3.eth.getLogs(params:EthereumGetLogParams(fromBlock:.block(4984423),toBlock:.latest,address:contractAddress)) { result in
+    return web3.eth.getLogs(params:EthereumGetLogParams(fromBlock:.block(12290614),toBlock:.latest,address:contractAddress)) { result in
       print(result)
     }
     
