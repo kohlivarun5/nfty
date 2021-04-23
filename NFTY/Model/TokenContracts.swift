@@ -18,12 +18,6 @@ public struct EthereumGetLogParams: Codable {
   public var topics:[String]?
 }
 
-public struct EthereumLogData: Codable {
-  public var blockNumber: EthereumQuantity
-  public var data : String
-  public var topics : [String]
-}
-
 extension Web3.Eth {
   public typealias Web3ResponseCompletion<Result: Codable> = (_ resp: Web3Response<Result>) -> Void
   public func getLogs(

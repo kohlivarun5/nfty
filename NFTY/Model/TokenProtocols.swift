@@ -31,8 +31,8 @@ class CryptoPunksTrades : NftRecentTradesObject {
       return
     }
     contract.getRecentTrades() { (nft,isFinal) in
-      self.isLoading = !isFinal
       DispatchQueue.main.async {
+        if (isFinal) { self.isLoading = false }
         self.recentTrades.append(nft)
       }
     }
@@ -63,8 +63,8 @@ class CryptoKittiesTrades : NftRecentTradesObject {
       return
     }
     contract.getRecentTrades() { (nft,isFinal) in
-      self.isLoading = !isFinal
       DispatchQueue.main.async {
+        if (isFinal) { self.isLoading = false }
         self.recentTrades.append(nft)
       }
     }
