@@ -13,6 +13,8 @@
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
 		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
+		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
+		4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -58,6 +60,7 @@
 		4F6D3994262BFE4F007E79BB /* kitties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kitties.json; sourceTree = "<group>"; };
 		4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CryptoPunksAbi.json; sourceTree = "<group>"; };
 		4F856BB72632620400BB5E07 /* TokenContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenContracts.swift; sourceTree = "<group>"; };
+		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -86,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
@@ -139,6 +143,7 @@
 				4FB9A7F7262B3B0600C58AF9 /* Views */,
 				4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */,
 				4FB9A7B9262B28A400C58AF9 /* Info.plist */,
+				4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */,
 				4FB9A7B6262B28A400C58AF9 /* Preview Content */,
 			);
 			path = NFTY;
@@ -228,6 +233,7 @@
 				4FC744722630FD7D0060FC6D /* Web3PromiseKit */,
 				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
 				4FC744762630FD7D0060FC6D /* Web3 */,
+				4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -303,6 +309,7 @@
 			packageReferences = (
 				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
 				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
+				4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -326,6 +333,7 @@
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,7 +537,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTY;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -551,7 +559,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTY;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -684,6 +692,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 		4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
@@ -703,6 +719,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
 		4FB9A808262B451F00C58AF9 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */;
