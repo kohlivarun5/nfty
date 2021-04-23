@@ -56,9 +56,30 @@ class CryptoKittiesTrades : NftRecentTradesObject {
   
   private var contract = CryptoKittiesAuction()
   
+  private var isLoading = false
+  
+  private func loadMore() {
+    guard !isLoading else {
+      return
+    }
+    contract.getRecentTrades() { (nft,isFinal) in
+      self.isLoading = !isFinal
+      DispatchQueue.main.async {
+        self.recentTrades.append(nft)
+      }
+    }
+  }
+  
   override func getRecentTrades(currentIndex:Int?) {
-    contract.getRecentTrades() { nft in
-      self.recentTrades.append(nft)
+    print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
+    guard let index = currentIndex else {
+      loadMore()
+      return
+    }
+    
+    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
+    if index >= thresholdIndex {
+      loadMore()
     }
   }
 }

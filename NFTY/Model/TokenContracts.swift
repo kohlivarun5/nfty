@@ -91,7 +91,7 @@ class CryptoPunksContract {
   }
 }
 
-struct CryptoKittiesAuction {
+class CryptoKittiesAuction {
   
   private var AuctionSuccessful: SolidityEvent {
     // event AuctionSuccessful(uint256 tokenId, uint256 totalPrice, address winner);
@@ -110,6 +110,9 @@ struct CryptoKittiesAuction {
   private var name = "CryptoKitties"
   private var contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
   private var saleAuctionContractAddress = try! EthereumAddress(hex: "0xb1690C08E213a35Ed9bAb7B318DE14420FB57d8C", eip55: false)
+  private var fromBlock : BigUInt = 12290614
+  private var blockDecrements : BigUInt = 10000
+  private var toBlock = EthereumQuantityTag.latest
   
   private func getKitty(tokenId:BigUInt) -> Promise<Kitty> {
     return Promise { seal in
@@ -130,12 +133,12 @@ struct CryptoKittiesAuction {
     }
   }
   
-  func getRecentTrades(response: @escaping (NFT) -> Void) {
+  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
     print("Called getRecentTrades");
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
-        fromBlock:.block(12290614), // TODO
-        toBlock:.latest,
+        fromBlock:.block(fromBlock),
+        toBlock:toBlock,
         address:saleAuctionContractAddress,
         topics: [
           web3.eth.abi.encodeEventSignature(self.AuctionSuccessful)
@@ -143,25 +146,24 @@ struct CryptoKittiesAuction {
       )
     ) { result in
       if case let logs? = result.result {
-        logs.forEach {
-          do {
-            let res = try web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:$0);
-            let tokenId = res["tokenId"] as! BigUInt;
-            firstly {
-              getKitty(tokenId:tokenId)
-            }.done { kitty  in
-              if (!kitty.image_url.hasSuffix(".svg")) {
-                response(NFT(
-                  address:contractAddressHex,
-                  tokenId:String(tokenId),
-                  name:name,
-                  url:URL(string:kitty.image_url)!,
-                  eth:Double(res["totalPrice"] as! BigUInt) / 1e18
-                ))
-              }
+        self.toBlock = EthereumQuantityTag.block(self.fromBlock)
+        self.fromBlock = self.fromBlock - self.blockDecrements
+        logs.indices.forEach { index in
+          let log = logs[index];
+          let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+          let tokenId = res["tokenId"] as! BigUInt;
+          firstly {
+            self.getKitty(tokenId:tokenId)
+          }.done { kitty  in
+            if (!kitty.image_url.hasSuffix(".svg")) {
+              response(NFT(
+                address:self.contractAddressHex,
+                tokenId:String(tokenId),
+                name:self.name,
+                url:URL(string:kitty.image_url)!,
+                eth:Double(res["totalPrice"] as! BigUInt) / 1e18
+              ),index == logs.count - 1)
             }
-          } catch {
-            print("Unexpected error: \(error).")
           }
         }
       }
