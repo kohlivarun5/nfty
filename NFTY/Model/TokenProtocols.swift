@@ -25,7 +25,9 @@ class CryptoPunksTrades : NftRecentTradesObject {
   private var contract = CryptoPunksContract()
   
   override func getRecentTrades() {
-    contract.getRecentTrades()
+    contract.getRecentTrades() { nft in
+      self.recentTrades.append(nft)
+    }
   }
 }
 
