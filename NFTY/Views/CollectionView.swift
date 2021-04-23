@@ -78,9 +78,9 @@ struct CollectionView: View {
             }
           }.padding()
           
-          
-          ForEach(
-            sorted(l:filtered(l:recentTrades.recentTrades)),id:\.tokenId) { nft in
+          let data = sorted(l:filtered(l:recentTrades.recentTrades));
+          ForEach(data.indices,id: \.self) { index in
+            let nft = data[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
               RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
@@ -92,6 +92,8 @@ struct CollectionView: View {
               
               NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:nft.tokenId,selection:$action) {}
                 .hidden()
+            }.onAppear {
+              self.recentTrades.getRecentTrades(currentIndex:index);
             }
           }
         }.textCase(nil)
@@ -99,7 +101,7 @@ struct CollectionView: View {
     }
     .navigationBarTitle(info.name)
     .onAppear {
-      self.recentTrades.getRecentTrades();
+      self.recentTrades.getRecentTrades(currentIndex: nil);
     }
  
   }

@@ -60,7 +60,7 @@ class CryptoPunksContract {
   private var blockDecrements : BigUInt = 10000
   private var toBlock = EthereumQuantityTag.latest
   
-  func getRecentTrades(response: @escaping (NFT) -> Void) {
+  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
     print("Called getRecentTrades");
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
@@ -75,27 +75,16 @@ class CryptoPunksContract {
       if case let logs? = result.result {
         self.toBlock = EthereumQuantityTag.block(self.fromBlock)
         self.fromBlock = self.fromBlock - self.blockDecrements
-        logs.forEach { log in
-          /* switch(self.toBlock.tagType) {
-            case .block(let blockNumber) :
-              if (log.blockNumber!.quantity < blockNumber) {
-                self.toBlock = EthereumQuantityTag.block(log.blockNumber!.quantity)
-              }
-            default:
-              self.toBlock = EthereumQuantityTag.block(log.blockNumber!.quantity)
-          }*/
-          do {
-            let res = try web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
-            response(NFT(
-              address:self.addressHex,
-              tokenId:String(res["punkIndex"] as! BigUInt),
-              name:"CryptoPunks",
-              url:URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(res["punkIndex"] as! BigUInt))).png")!,
-              eth:Double(res["value"] as! BigUInt) / 1e18
-            ))
-          } catch {
-            print("Unexpected error: \(error).")
-          }
+        logs.indices.forEach { index in
+          let log = logs[index];
+          let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+          response(NFT(
+            address:self.addressHex,
+            tokenId:String(res["punkIndex"] as! BigUInt),
+            name:"CryptoPunks",
+            url:URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(res["punkIndex"] as! BigUInt))).png")!,
+            eth:Double(res["value"] as! BigUInt) / 1e18
+          ),index == logs.count - 1)
         }
       }
     }
