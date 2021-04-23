@@ -63,6 +63,13 @@ struct CollectionsView: View {
         }
       }
       .navigationBarTitle("Collections")
+      .navigationBarItems(trailing: NavigationLink(destination: FavoritesView(collection:CryptoPunksCollection)) {
+        Image(systemName: "heart.circle")
+          .font(.system(size: 28))
+          //.imageScale(.large)
+          .frame(width: 44, height: 44, alignment: .trailing)
+          .foregroundColor(.red)
+      })
       .ignoresSafeArea(edges: .top)
     }
     .navigationViewStyle(StackNavigationViewStyle())
