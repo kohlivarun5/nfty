@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct NFT: Hashable, Codable {
-    var address: String
+   var address: String
    var tokenId: String
    var name: String
    var url: URL

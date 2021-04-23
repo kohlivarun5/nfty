@@ -33,31 +33,11 @@ class CryptoPunksTrades : NftRecentTradesObject {
 
 class CryptoKittiesTrades : NftRecentTradesObject {
   
-  private var web3 : Web3
-  private var contractAddress : EthereumAddress
-  private var contractJsonABI : Data
-  var contract : GenericERC721Contract
-  
-  override init() {
-    web3 = Web3(rpcURL: "https://mainnet.infura.io/b4287cfd0a6b4849bd0ca79e144d3921")
-    contractAddress = try! EthereumAddress(hex: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb", eip55: false)
-    contractJsonABI = loadData("CryptoPunksAbi.json");
-    print(String(decoding: contractJsonABI, as: UTF8.self));
-    contract = web3.eth.Contract(type:GenericERC721Contract.self, address: contractAddress);
-  }
+  private var contract = CryptoKittiesAuction()
   
   override func getRecentTrades() {
-    print("Called getRecentTrades");
-    // Get balance of some address
-    firstly {
-      try! contract.balanceOf(address:EthereumAddress(hex: "0xf4b4a58974524e183c275f3c6ea895bc2368e738", eip55: false)).call()
-    }.done { outputs in
-      print(outputs);
-      self.recentTrades = CryptoKittiesNfts
-    }.catch {
-      print($0);
-      self.recentTrades = CryptoKittiesNfts
+    contract.getRecentTrades() { nft in
+      self.recentTrades.append(nft)
     }
-    
   }
 }
