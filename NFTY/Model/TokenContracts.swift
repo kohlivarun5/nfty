@@ -42,7 +42,7 @@ extension Web3.Eth {
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 
-struct CryptoPunksContract {
+class CryptoPunksContract {
   
   private var PunkBought: SolidityEvent {
     let inputs: [SolidityEvent.Parameter] = [
@@ -56,13 +56,16 @@ struct CryptoPunksContract {
   
   private var name = "CryptoPunks"
   private var addressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+  private var fromBlock : BigUInt = 12290614
+  private var blockDecrements : BigUInt = 10000
+  private var toBlock = EthereumQuantityTag.latest
   
   func getRecentTrades(response: @escaping (NFT) -> Void) {
     print("Called getRecentTrades");
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
-        fromBlock:.block(12290614), // TODO
-        toBlock:.latest,
+        fromBlock:.block(fromBlock),
+        toBlock: toBlock,
         address:try! EthereumAddress(hex: addressHex, eip55: false),
         topics: [
           web3.eth.abi.encodeEventSignature(self.PunkBought)
@@ -70,11 +73,21 @@ struct CryptoPunksContract {
       )
     ) { result in
       if case let logs? = result.result {
-        logs.forEach {
+        self.toBlock = EthereumQuantityTag.block(self.fromBlock)
+        self.fromBlock = self.fromBlock - self.blockDecrements
+        logs.forEach { log in
+          /* switch(self.toBlock.tagType) {
+            case .block(let blockNumber) :
+              if (log.blockNumber!.quantity < blockNumber) {
+                self.toBlock = EthereumQuantityTag.block(log.blockNumber!.quantity)
+              }
+            default:
+              self.toBlock = EthereumQuantityTag.block(log.blockNumber!.quantity)
+          }*/
           do {
-            let res = try web3.eth.abi.decodeLog(event:self.PunkBought,from:$0);
+            let res = try web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
             response(NFT(
-              address:addressHex,
+              address:self.addressHex,
               tokenId:String(res["punkIndex"] as! BigUInt),
               name:"CryptoPunks",
               url:URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(res["punkIndex"] as! BigUInt))).png")!,
