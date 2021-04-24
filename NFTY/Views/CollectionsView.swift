@@ -64,11 +64,11 @@ struct CollectionsView: View {
       }
       .navigationBarTitle("Collections")
       .navigationBarItems(trailing: NavigationLink(destination: FavoritesView()) {
-        Image(systemName: "heart.circle")
+        Image(systemName: "person.crop.circle.fill")
           .font(.system(size: 28))
           //.imageScale(.large)
           .frame(width: 44, height: 44, alignment: .trailing)
-          .foregroundColor(.red)
+          .foregroundColor(.secondary)
       })
       .ignoresSafeArea(edges: .top)
     }
