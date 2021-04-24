@@ -9,6 +9,9 @@ import SwiftUI
 import URLImage
 
 struct NftDetail: View {
+  
+  var firebase = FirebaseDb()
+  
   var nft:NFT
   var samples:[String]
   var themeColor : Color
@@ -20,6 +23,9 @@ struct NftDetail: View {
         .padding()
       }
       .background(themeColor)
+      .onTapGesture(count:2) {
+        firebase.addFavorite(address: nft.address, tokenId: nft.tokenId);
+      }
       
       HStack() {
         VStack(alignment:.leading) {

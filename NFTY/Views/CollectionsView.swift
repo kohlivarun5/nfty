@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CollectionsView: View {
   
-  var collections : [Collection]
+  var collections : [String:Collection]
   
   @State private var showSorted = false
   @State private var filterZeros = false
@@ -25,7 +25,7 @@ struct CollectionsView: View {
   var body: some View {
     NavigationView {
       List {
-        ForEach(collections,id:\.info.name) { collection in
+        ForEach(collections.map {$0.value},id:\.info.name) { collection in
           ZStack {
             
             VStack{
@@ -63,7 +63,7 @@ struct CollectionsView: View {
         }
       }
       .navigationBarTitle("Collections")
-      .navigationBarItems(trailing: NavigationLink(destination: FavoritesView(collection:CryptoPunksCollection)) {
+      .navigationBarItems(trailing: NavigationLink(destination: FavoritesView()) {
         Image(systemName: "heart.circle")
           .font(.system(size: 28))
           //.imageScale(.large)
