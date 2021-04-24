@@ -11,6 +11,8 @@
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
+		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; };
+		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -26,6 +28,10 @@
 		4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB9A808262B451F00C58AF9 /* URLImage */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
+		4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
+		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
+		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
+		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +56,8 @@
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
 		4F6D3994262BFE4F007E79BB /* kitties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kitties.json; sourceTree = "<group>"; };
+		4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CryptoPunksAbi.json; sourceTree = "<group>"; };
+		4F856BB72632620400BB5E07 /* TokenContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenContracts.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -70,6 +78,7 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
+		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +86,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
+				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
+				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +189,8 @@
 			isa = PBXGroup;
 			children = (
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
+				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
+				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
 				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,
 			);
 			path = Model;
@@ -185,6 +199,7 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
 				4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */,
@@ -210,6 +225,9 @@
 			name = NFTY;
 			packageProductDependencies = (
 				4FB9A808262B451F00C58AF9 /* URLImage */,
+				4FC744722630FD7D0060FC6D /* Web3PromiseKit */,
+				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
+				4FC744762630FD7D0060FC6D /* Web3 */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -284,6 +302,7 @@
 			mainGroup = 4FB9A7A4262B28A300C58AF9;
 			packageReferences = (
 				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
+				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -302,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
+				4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,
@@ -331,8 +351,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
+				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
@@ -502,7 +524,7 @@
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -524,7 +546,7 @@
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -542,6 +564,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
 				INFOPLIST_FILE = NFTYTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -563,6 +586,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
 				INFOPLIST_FILE = NFTYTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -583,6 +607,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
 				INFOPLIST_FILE = NFTYUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -602,6 +627,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
 				INFOPLIST_FILE = NFTYUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -666,6 +692,14 @@
 				minimumVersion = 2.2.3;
 			};
 		};
+		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Boilertalk/Web3.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -673,6 +707,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */;
 			productName = URLImage;
+		};
+		4FC744722630FD7D0060FC6D /* Web3PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3PromiseKit;
+		};
+		4FC744742630FD7D0060FC6D /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3ContractABI;
+		};
+		4FC744762630FD7D0060FC6D /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct NFT: Hashable, Codable {
-    var address: String
+   var address: String
    var tokenId: String
    var name: String
    var url: URL
@@ -25,10 +25,25 @@ struct CollectionInfo {
   var url4: String
   var name: String
   var totalSupply: Int
-  var nfts:[NFT]
   var themeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
+}
+
+class CollectionData {
+  var recentTrades: NftRecentTradesObject
+  init(recentTrades:NftRecentTradesObject) {
+    self.recentTrades = recentTrades
+  }
+}
+
+class Collection {
+  var info : CollectionInfo
+  var data : CollectionData
+  init(info:CollectionInfo,data:CollectionData) {
+    self.info = info;
+    self.data = data;
+  }
 }
 
 var SAMPLE_PUNKS : [String] = [
@@ -45,14 +60,14 @@ var SAMPLE_KITTIES : [String] = [
   "SampleKitty4"
 ]
 
-var CrypotPunksNfts : [NFT] = load("punks.json")
+var CryptoPunksNfts : [NFT] = load("punks.json")
 
 var CryptoKittiesNfts : [NFT] = load("kitties.json")
 
-var CryptoPunksCollection = CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CRYPTOPUNKS",totalSupply:10000,nfts:CrypotPunksNfts,themeColor:Color.yellow,blur:0,samplePadding:10)
-var CryptoKittiesCollection = CollectionInfo(url1:SAMPLE_KITTIES[0],url2:SAMPLE_KITTIES[1],url3:SAMPLE_KITTIES[2],url4:SAMPLE_KITTIES[3],name:"CryptoKitties",totalSupply:1997622,nfts:CryptoKittiesNfts,themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),blur:0,samplePadding:0)
+var CryptoPunksCollection = Collection(info:CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CryptoPunks",totalSupply:10000,themeColor:Color.yellow,blur:0,samplePadding:10),data:CollectionData(recentTrades:CryptoPunksTrades()))
+var CryptoKittiesCollection = Collection(info:CollectionInfo(url1:SAMPLE_KITTIES[0],url2:SAMPLE_KITTIES[1],url3:SAMPLE_KITTIES[2],url4:SAMPLE_KITTIES[3],name:"CryptoKitties",totalSupply:1997622,themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),blur:0,samplePadding:0),data:CollectionData(recentTrades: CryptoKittiesTrades()))
 
-var COLLECTIONS: [CollectionInfo]=[
+var COLLECTIONS: [Collection]=[
   CryptoPunksCollection,
   CryptoKittiesCollection
 ]

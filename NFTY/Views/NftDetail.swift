@@ -42,6 +42,6 @@ struct NftDetail: View {
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CrypotPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.themeColor)
+    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor)
   }
 }
