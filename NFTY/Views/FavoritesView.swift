@@ -64,7 +64,6 @@ struct FavoritesView: View {
           }
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
         }
-        //self.favorites.append(NFT(address:address,tokenId: UInt(tokenId)!,name:"CryptoPunks",url:URL(string:"URL")!,eth:0))
       }
     }
   }

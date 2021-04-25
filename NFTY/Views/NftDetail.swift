@@ -10,11 +10,8 @@ import URLImage
 
 struct NftDetail: View {
   
-  @State private var isFavorite : Bool = false
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
-  var firebase = FirebaseDb()
-  
+   
   var nft:NFT
   var samples:[String]
   var themeColor : Color
@@ -31,7 +28,7 @@ struct NftDetail: View {
             Spacer()
             VStack {
               Spacer()
-              FavButton(isFavorite:self.isFavorite, nft:nft,firebase:firebase)
+              FavButton(nft:nft,size:.large)
             }
           }
         }
@@ -56,12 +53,6 @@ struct NftDetail: View {
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
-    .onAppear {
-      firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
-        //print(data);
-        self.isFavorite = data.value as? Bool ?? false
-      }
-    }
   }
 }
 
