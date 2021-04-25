@@ -11,6 +11,7 @@ import URLImage
 struct NftDetail: View {
   
   @State private var isFavorite : Bool = false
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   var firebase = FirebaseDb()
   
@@ -59,6 +60,14 @@ struct NftDetail: View {
       
       Spacer()
     }
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(leading:
+                          Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+                            HStack {
+                              Image(systemName: "chevron.backward")
+                                .foregroundColor(Color(UIColor.darkGray))
+                            }
+                          }))
     .ignoresSafeArea(edges: .top)
     .onAppear {
       firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
