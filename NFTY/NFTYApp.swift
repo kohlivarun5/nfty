@@ -19,10 +19,10 @@ struct NFTYApp: App {
           CollectionsView(collections:COLLECTIONS)
             .navigationBarTitle("Collections")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .tabItem {
           Label("Collections", systemImage: "list.bullet.rectangle")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         
         NavigationView {
           FavoritesView()
@@ -31,6 +31,7 @@ struct NFTYApp: App {
         .tabItem {
           Label("Favorites", systemImage: "heart.text.square")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
       }
     }
   }

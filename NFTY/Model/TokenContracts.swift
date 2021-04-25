@@ -95,13 +95,14 @@ class CryptoPunksContract : ContractInterface {
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFT> {
-    return Promise { seal in seal.fulfill(NFT(
-      address:self.contractAddressHex,
-      tokenId:tokenId,
-      name:self.name,
-      url:self.imageUrl(tokenId)!,
-      eth:0
-    )) }
+    return Promise { seal in
+      seal.fulfill(NFT(
+        address:self.contractAddressHex,
+        tokenId:tokenId,
+        name:self.name,
+        url:self.imageUrl(tokenId)!,
+        eth:0
+      )) }
   }
   
 }
@@ -186,6 +187,16 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFT> {
-    return Promise { seal in seal.reject(NSError()) }
+    
+    return firstly {
+      self.getKitty(tokenId:BigUInt(tokenId))
+    }.compactMap { kitty  in
+      NFT(
+        address:self.contractAddressHex,
+        tokenId:UInt(tokenId),
+        name:self.name,
+        url:URL(string:kitty.image_url)!,
+        eth:0)
+    }
   }
 }

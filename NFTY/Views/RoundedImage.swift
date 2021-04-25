@@ -18,7 +18,7 @@ struct RoundedImage: View {
         
         VStack {
           NftImage(url:nft.url,samples:samples,themeColor:themeColor)
-            
+            .animation(.default)
             
             HStack {
                 VStack(alignment:.leading) {

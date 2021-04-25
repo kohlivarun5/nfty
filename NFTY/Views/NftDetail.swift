@@ -10,14 +10,14 @@ import URLImage
 
 struct NftDetail: View {
   
-  @State private var isFavorite : Bool? = nil
+  @State private var isFavorite : Bool = false
   
   var firebase = FirebaseDb()
   
   var nft:NFT
   var samples:[String]
   var themeColor : Color
-   
+  
   var body: some View {
     
     VStack {
@@ -25,25 +25,20 @@ struct NftDetail: View {
       VStack {
         ZStack {
           NftImage(url:nft.url,samples:samples,themeColor:themeColor)
-            //.padding()
-          switch(self.isFavorite) {
-            case .none:
-              HStack {}
-            case .some(let isFav):
-              HStack(alignment:.bottom) {
-                Spacer()
-                VStack {
-                  Spacer()
-                  Image(systemName: isFav ? "heart.fill" : "heart")
-                    .foregroundColor(.red)
-                    .font(.largeTitle)
-                    .frame(width: 44, height: 44)
-                }
-                .padding()
-                .onTapGesture(count:2) {
-                  firebase.addFavorite(address: nft.address, tokenId: nft.tokenId,isFavorite:!isFav);
-                }
-              }
+          //.padding()
+          HStack(alignment:.bottom) {
+            Spacer()
+            VStack {
+              Spacer()
+              Image(systemName: self.isFavorite ? "heart.fill" : "heart")
+                .foregroundColor(.red)
+                .font(.largeTitle)
+                .frame(width: 44, height: 44)
+            }
+            .padding()
+            .onTapGesture(count:self.isFavorite ? 2 : 1) {
+              firebase.addFavorite(address: nft.address, tokenId: nft.tokenId,isFavorite:!self.isFavorite);
+            }
           }
         }
       }
@@ -67,8 +62,8 @@ struct NftDetail: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
-        print(data);
-        self.isFavorite = data.value as? Bool
+        //print(data);
+        self.isFavorite = data.value as? Bool ?? false
       }
     }
   }
