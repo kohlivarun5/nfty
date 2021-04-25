@@ -100,7 +100,7 @@ struct CollectionView: View {
             }
           }
         }.textCase(nil)
-      }
+      }.animation(.default)
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)

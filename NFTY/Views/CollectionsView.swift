@@ -60,7 +60,7 @@ struct CollectionsView: View {
             .hidden()
         }
       }
-    }
+    }.animation(.default)
   }
 }
 

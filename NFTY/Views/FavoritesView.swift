@@ -117,7 +117,7 @@ struct FavoritesView: View {
             }
           }
         }.textCase(nil)
-      }
+      }.animation(.default)
     }
     .onAppear {
       firebase.observeUserFavorites {
