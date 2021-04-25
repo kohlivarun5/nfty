@@ -87,10 +87,10 @@ struct CollectionView: View {
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
-                  self.action = nft.tokenId
+                  self.action = String(nft.tokenId)
                 }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:nft.tokenId,selection:$action) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:String(nft.tokenId),selection:$action) {}
                 .hidden()
             }.onAppear {
               self.recentTrades.getRecentTrades(currentIndex:index);

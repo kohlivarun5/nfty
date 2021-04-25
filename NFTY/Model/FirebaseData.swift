@@ -24,9 +24,9 @@ struct FirebaseDb {
     }
   }
   
-  func addFavorite(address:String,tokenId:String) {
+  func addFavorite(address:String,tokenId:UInt) {
     if let uuid = UIDevice.current.identifierForVendor?.uuidString {
-      getFavoritesNode(uuid).child(address).child(tokenId).setValue(true)
+      getFavoritesNode(uuid).child(address).child(String(tokenId)).setValue(true)
     }
   }
   

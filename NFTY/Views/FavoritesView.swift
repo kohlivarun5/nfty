@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PromiseKit
 
 struct FavoritesView: View {
   
@@ -14,11 +15,11 @@ struct FavoritesView: View {
   private var firebase = FirebaseDb()
    
   typealias FavoritesDict = [String : [String : Bool]]
-  @State private var favorites : FavoritesDict = [:]
+  @State private var favorites : [NFT] = []
   
   @State private var showSorted = false
   @State private var filterZeros = false
-  @State private var selectedTokenId: String? = ""
+  @State private var selectedTokenId: UInt? = nil
   
   func sorted(_ l:[NFT]) -> [NFT] {
     showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
@@ -26,14 +27,17 @@ struct FavoritesView: View {
   func filtered(_ l:[NFT]) -> [NFT] {
     filterZeros ? l.filter({$0.eth != 0}) : l
   }
-  func dictToNfts(_ dict:FavoritesDict) -> [NFT] {
-    var res : [NFT] = [];
+  func dictToNfts(_ dict:FavoritesDict) -> Void {
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
-        res.append(NFT(address:address,tokenId: tokenId,name:"CryptoPunks",url:URL(string:"URL")!,eth:0))
+        firstly {
+          collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
+        }.done { nft in
+          self.favorites.append(nft)
+        }
+        //self.favorites.append(NFT(address:address,tokenId: UInt(tokenId)!,name:"CryptoPunks",url:URL(string:"URL")!,eth:0))
       }
     }
-    return res;
   }
   
   struct FillAll: View {
@@ -67,10 +71,10 @@ struct FavoritesView: View {
                   } */
         ) {
           
-          let data = sorted(filtered(dictToNfts(self.favorites)));
+          let data = sorted(filtered(self.favorites));
           ForEach(data.indices,id: \.self) { index in
             let nft = data[index];
-            let info = COLLECTIONS[nft.name]!.info;
+            let info = collectionsFactory.getByAddress(nft.address)!.info;
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
               RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
@@ -88,7 +92,7 @@ struct FavoritesView: View {
     }
     .onAppear {
       firebase.observeUserFavorites {
-        self.favorites = $0.value as? [String : [String : Bool]] ?? [:];
+        dictToNfts($0.value as? [String : [String : Bool]] ?? [:])
       }
     }
   }

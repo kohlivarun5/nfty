@@ -12,8 +12,13 @@ import Web3PromiseKit
 import Web3ContractABI
 
 // https://www.donnywals.com/implementing-an-infinite-scrolling-list-with-swiftui-and-combine/
+
+protocol HasContractInterface {
+  var contract : ContractInterface { get }
+}
+
 class NftRecentTradesObject : ObservableObject {
-  
+  init () {}
   @Published var recentTrades: [NFT] = []
   var recentTradesPublished: Published<[NFT]> { _recentTrades }
   var recentTradesPublisher: Published<[NFT]>.Publisher { $recentTrades }
@@ -23,7 +28,7 @@ class NftRecentTradesObject : ObservableObject {
 
 class CryptoPunksTrades : NftRecentTradesObject {
     
-  private var contract = CryptoPunksContract()
+  var contract : ContractInterface = CryptoPunksContract()
   private var isLoading = false
   
   private func loadMore() {
@@ -52,9 +57,9 @@ class CryptoPunksTrades : NftRecentTradesObject {
   }
 }
 
-class CryptoKittiesTrades : NftRecentTradesObject {
+class CryptoKittiesTrades : NftRecentTradesObject,HasContractInterface {
   
-  private var contract = CryptoKittiesAuction()
+  var contract : ContractInterface = CryptoKittiesAuction()
   
   private var isLoading = false
   

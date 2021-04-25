@@ -36,8 +36,14 @@ extension Web3.Eth {
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 
-class CryptoPunksContract {
+protocol ContractInterface {
   
+  var contractAddressHex: String { get }
+  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) -> Void
+  func getToken(_ tokenId:UInt) -> Promise<NFT>
+}
+
+class CryptoPunksContract : ContractInterface {
   private var PunkBought: SolidityEvent {
     let inputs: [SolidityEvent.Parameter] = [
       SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
@@ -49,10 +55,14 @@ class CryptoPunksContract {
   }
   
   private var name = "CryptoPunks"
-  private var addressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+  var contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
   private var fromBlock : BigUInt = 12290614
   private var blockDecrements : BigUInt = 10000
   private var toBlock = EthereumQuantityTag.latest
+  
+  private func imageUrl(_ tokenId:UInt) -> URL? {
+    return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
+  }
   
   func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
     // print("Called getRecentTrades");
@@ -60,7 +70,7 @@ class CryptoPunksContract {
       params:EthereumGetLogParams(
         fromBlock:.block(fromBlock),
         toBlock: toBlock,
-        address:try! EthereumAddress(hex: addressHex, eip55: false),
+        address:try! EthereumAddress(hex: contractAddressHex, eip55: false),
         topics: [
           web3.eth.abi.encodeEventSignature(self.PunkBought)
         ]
@@ -73,19 +83,30 @@ class CryptoPunksContract {
           let log = logs[index];
           let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
           response(NFT(
-            address:self.addressHex,
-            tokenId:String(res["punkIndex"] as! BigUInt),
-            name:"CryptoPunks",
-            url:URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(res["punkIndex"] as! BigUInt))).png")!,
+            address:self.contractAddressHex,
+            tokenId:UInt(res["punkIndex"] as! BigUInt),
+            name:self.name,
+            url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!,
             eth:Double(res["value"] as! BigUInt) / 1e18
           ),index == logs.count - 1)
         }
       }
     }
   }
+  
+  func getToken(_ tokenId: UInt) -> Promise<NFT> {
+    return Promise { seal in seal.fulfill(NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      url:self.imageUrl(tokenId)!,
+      eth:0
+    )) }
+  }
+  
 }
 
-class CryptoKittiesAuction {
+class CryptoKittiesAuction : ContractInterface {
   
   private var AuctionSuccessful: SolidityEvent {
     // event AuctionSuccessful(uint256 tokenId, uint256 totalPrice, address winner);
@@ -102,7 +123,7 @@ class CryptoKittiesAuction {
   }
   
   private var name = "CryptoKitties"
-  private var contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
+  var contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
   private var saleAuctionContractAddress = try! EthereumAddress(hex: "0xb1690C08E213a35Ed9bAb7B318DE14420FB57d8C", eip55: false)
   private var fromBlock : BigUInt = 12290614
   private var blockDecrements : BigUInt = 10000
@@ -152,7 +173,7 @@ class CryptoKittiesAuction {
             if (!kitty.image_url.hasSuffix(".svg")) {
               response(NFT(
                 address:self.contractAddressHex,
-                tokenId:String(tokenId),
+                tokenId:UInt(tokenId),
                 name:self.name,
                 url:URL(string:kitty.image_url)!,
                 eth:Double(res["totalPrice"] as! BigUInt) / 1e18
@@ -162,5 +183,9 @@ class CryptoKittiesAuction {
         }
       }
     }
+  }
+  
+  func getToken(_ tokenId: UInt) -> Promise<NFT> {
+    return Promise { seal in seal.reject(NSError()) }
   }
 }

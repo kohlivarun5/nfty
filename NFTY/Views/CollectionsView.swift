@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CollectionsView: View {
   
-  var collections : [String:Collection]
+  var collections : [Collection]
   
   @State private var showSorted = false
   @State private var filterZeros = false
@@ -24,7 +24,7 @@ struct CollectionsView: View {
   
   var body: some View {
     List {
-      ForEach(collections.map {$0.value},id:\.info.name) { collection in
+      ForEach(collections,id:\.info.name) { collection in
         ZStack {
           
           VStack{
