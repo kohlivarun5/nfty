@@ -31,14 +31,7 @@ struct NftDetail: View {
             Spacer()
             VStack {
               Spacer()
-              Image(systemName: self.isFavorite ? "heart.fill" : "heart")
-                .foregroundColor(.red)
-                .font(.largeTitle)
-                .frame(width: 44, height: 44)
-            }
-            .padding()
-            .onTapGesture(count:self.isFavorite ? 2 : 1) {
-              firebase.addFavorite(address: nft.address, tokenId: nft.tokenId,isFavorite:!self.isFavorite);
+              FavButton(isFavorite:self.isFavorite, nft:nft,firebase:firebase)
             }
           }
         }
@@ -61,13 +54,7 @@ struct NftDetail: View {
       Spacer()
     }
     .navigationBarBackButtonHidden(true)
-    .navigationBarItems(leading:
-                          Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
-                            HStack {
-                              Image(systemName: "chevron.backward")
-                                .foregroundColor(Color(UIColor.darkGray))
-                            }
-                          }))
+    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
     .onAppear {
       firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in

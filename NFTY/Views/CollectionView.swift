@@ -103,13 +103,7 @@ struct CollectionView: View {
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
-    .navigationBarItems(leading:
-                          Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
-                            HStack {
-                              Image(systemName: "chevron.backward")
-                                .foregroundColor(Color(UIColor.darkGray))
-                            }
-                          }))
+    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil);
     }
