@@ -7,7 +7,18 @@
 
 import Foundation
 import SwiftUI
-import BigInt
+import Web3
+
+enum TradeEventType {
+  case offer
+  case bought
+}
+
+struct TradeEvent {
+  var type : TradeEventType
+  var value : BigUInt
+  var blockNumber : EthereumQuantity
+}
 
 struct NFT: Hashable, Codable {
    var address: String

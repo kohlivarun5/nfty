@@ -15,7 +15,7 @@ public struct EthereumGetLogParams: Codable {
   public var fromBlock: EthereumQuantityTag?
   public var toBlock: EthereumQuantityTag?
   public var address: EthereumAddress?
-  public var topics:[String]?
+  public var topics:[String?]
 }
 
 extension Web3.Eth {
@@ -39,41 +39,37 @@ var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e14
 protocol ContractInterface {
   
   var contractAddressHex: String { get }
-  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) -> Void
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFT>
 }
 
-class CryptoPunksContract : ContractInterface {
-  private var PunkBought: SolidityEvent {
-    let inputs: [SolidityEvent.Parameter] = [
-      SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
-      SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
-      SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true),
-      SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
-    ]
-    return SolidityEvent(name: "PunkBought", anonymous: false, inputs: inputs)
-  }
-  
-  private var name = "CryptoPunks"
-  var contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-  private var fromBlock : BigUInt = 12290614
+class LogsFetcher {
   private var blockDecrements : BigUInt = 10000
   private var toBlock = EthereumQuantityTag.latest
   
-  private func imageUrl(_ tokenId:UInt) -> URL? {
-    return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
+  let event : SolidityEvent
+  var fromBlock : BigUInt
+  var address : String
+  var topics : [String?]
+  
+  init(event:SolidityEvent,fromBlock:BigUInt,address:String,indexedTopics:[String?]) {
+    self.event = event;
+    self.fromBlock = fromBlock;
+    self.address = address
+    self.topics = [
+      web3.eth.abi.encodeEventSignature(self.event)
+    ]
+    self.topics.append(contentsOf: indexedTopics)
   }
   
-  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
-    // print("Called getRecentTrades");
+  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
+    
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
-        fromBlock:.block(fromBlock),
-        toBlock: toBlock,
-        address:try! EthereumAddress(hex: contractAddressHex, eip55: false),
-        topics: [
-          web3.eth.abi.encodeEventSignature(self.PunkBought)
-        ]
+        fromBlock:.block(self.fromBlock),
+        toBlock: self.toBlock,
+        address:try! EthereumAddress(hex: self.address, eip55: false),
+        topics: self.topics
       )
     ) { result in
       if case let logs? = result.result {
@@ -81,54 +77,135 @@ class CryptoPunksContract : ContractInterface {
         self.fromBlock = self.fromBlock - self.blockDecrements
         logs.indices.forEach { index in
           let log = logs[index];
-          let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
-          response(NFT(
-            address:self.contractAddressHex,
-            tokenId:UInt(res["punkIndex"] as! BigUInt),
-            name:self.name,
-            url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!,
-            indicativePriceWei:res["value"] as? BigUInt
-          ),index == logs.count - 1)
+          response(log)
         }
       }
+      onDone()
+    }
+  }
+}
+
+class CryptoPunksContract : ContractInterface {
+  
+  private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
+    SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+    SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
+    SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true),
+    SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
+  ])
+  
+  private let PunkOffered: SolidityEvent = SolidityEvent(name: "PunkOffered", anonymous: false, inputs: [
+    SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+    SolidityEvent.Parameter(name: "minValue", type: .uint256, indexed: false),
+    SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
+  ])
+  
+  private var name = "CryptoPunks"
+  
+  let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+  private var punksBoughtLogs : LogsFetcher
+  private var initFromBlock = BigUInt(12290614)
+  
+  init () {
+    punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+  }
+  
+  private func imageUrl(_ tokenId:UInt) -> URL? {
+    return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
+  }
+  
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void) {
+    // print("Called getRecentTrades");
+    return punksBoughtLogs.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+      response(NFT(
+        address:self.contractAddressHex,
+        tokenId:UInt(res["punkIndex"] as! BigUInt),
+        name:self.name,
+        url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!,
+        indicativePriceWei:res["value"] as? BigUInt
+      ))
+    }
+  }
+  
+  private func getTokenHistory(_ tokenId: UInt) -> Promise<[TradeEvent]> {
+    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+    return firstly { () -> Promise<[TradeEvent]> in
+      var events : [TradeEvent] = []
+      let punkBoughtFetcher = LogsFetcher(
+        event:PunkBought,
+        fromBlock:initFromBlock,
+        address:contractAddressHex,
+        indexedTopics: [tokenIdTopic])
+      return Promise { seal in
+        punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
+          let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+          log.blockNumber.map { blockNumber in
+            events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
+          }
+        }
+      }
+    }.then { boughtEvents -> Promise<[TradeEvent]> in
+      var events = boughtEvents
+      let punkOfferedFetcher = LogsFetcher(
+        event:self.PunkOffered,
+        fromBlock:self.initFromBlock,
+        address:self.contractAddressHex,
+        indexedTopics: [tokenIdTopic])
+      return Promise { seal in
+        punkOfferedFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
+          //print(log);
+          let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
+          log.blockNumber.map { blockNumber in
+            events.append(TradeEvent(type: .offer, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+          }
+        }
+      }
+    }.compactMap { events in
+      events
+        .sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+        .filter({ $0.value != BigUInt(0)})
     }
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFT> {
-    return Promise { seal in
-      seal.fulfill(NFT(
+    return firstly { () -> Promise<[TradeEvent]> in
+      getTokenHistory(tokenId)
+    }.compactMap { events in
+      NFT(
         address:self.contractAddressHex,
         tokenId:tokenId,
         name:self.name,
         url:self.imageUrl(tokenId)!,
-        indicativePriceWei:nil
-      )) }
+        indicativePriceWei:events.first.map { $0.value }
+      )
+    }
   }
   
 }
 
 class CryptoKittiesAuction : ContractInterface {
   
-  private var AuctionSuccessful: SolidityEvent {
-    // event AuctionSuccessful(uint256 tokenId, uint256 totalPrice, address winner);
-    let inputs: [SolidityEvent.Parameter] = [
-      SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
-      SolidityEvent.Parameter(name: "totalPrice", type: .uint256, indexed: false),
-      SolidityEvent.Parameter(name: "winner", type: .address, indexed: true)
-    ]
-    return SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: inputs)
-  }
+  private let AuctionSuccessful: SolidityEvent = SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: [
+    SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
+    SolidityEvent.Parameter(name: "totalPrice", type: .uint256, indexed: false),
+    SolidityEvent.Parameter(name: "winner", type: .address, indexed: true)
+  ])
   
   struct Kitty: Codable {
     var image_url: String
   }
   
   private var name = "CryptoKitties"
-  var contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
+  let contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
   private var saleAuctionContractAddress = try! EthereumAddress(hex: "0xb1690C08E213a35Ed9bAb7B318DE14420FB57d8C", eip55: false)
-  private var fromBlock : BigUInt = 12290614
-  private var blockDecrements : BigUInt = 10000
-  private var toBlock = EthereumQuantityTag.latest
+
+  private var auctionSuccessfulFetcher : LogsFetcher
+  private let initFromBlock = BigUInt(12290614)
+  
+  init () {
+    auctionSuccessfulFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+  }
   
   private func getKitty(tokenId:BigUInt) -> Promise<Kitty> {
     return Promise { seal in
@@ -149,38 +226,21 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
-    // print("Called getRecentTrades");
-    return web3.eth.getLogs(
-      params:EthereumGetLogParams(
-        fromBlock:.block(fromBlock),
-        toBlock:toBlock,
-        address:saleAuctionContractAddress,
-        topics: [
-          web3.eth.abi.encodeEventSignature(self.AuctionSuccessful)
-        ]
-      )
-    ) { result in
-      if case let logs? = result.result {
-        self.toBlock = EthereumQuantityTag.block(self.fromBlock)
-        self.fromBlock = self.fromBlock - self.blockDecrements
-        logs.indices.forEach { index in
-          let log = logs[index];
-          let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
-          let tokenId = res["tokenId"] as! BigUInt;
-          firstly {
-            self.getKitty(tokenId:tokenId)
-          }.done { kitty  in
-            if (!kitty.image_url.hasSuffix(".svg")) {
-              response(NFT(
-                address:self.contractAddressHex,
-                tokenId:UInt(tokenId),
-                name:self.name,
-                url:URL(string:kitty.image_url)!,
-                indicativePriceWei:res["totalPrice"] as? BigUInt
-              ),index == logs.count - 1)
-            }
-          }
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void) {
+    return auctionSuccessfulFetcher.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+      let tokenId = res["tokenId"] as! BigUInt;
+      firstly {
+        self.getKitty(tokenId:tokenId)
+      }.done { kitty  in
+        if (!kitty.image_url.hasSuffix(".svg")) {
+          response(NFT(
+            address:self.contractAddressHex,
+            tokenId:UInt(tokenId),
+            name:self.name,
+            url:URL(string:kitty.image_url)!,
+            indicativePriceWei:res["totalPrice"] as? BigUInt
+          ))
         }
       }
     }
