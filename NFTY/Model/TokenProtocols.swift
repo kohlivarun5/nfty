@@ -18,7 +18,6 @@ protocol HasContractInterface {
 }
 
 class NftRecentTradesObject : ObservableObject {
-  init () {}
   @Published var recentTrades: [NFT] = []
   var recentTradesPublished: Published<[NFT]> { _recentTrades }
   var recentTradesPublisher: Published<[NFT]>.Publisher { $recentTrades }
