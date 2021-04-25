@@ -55,7 +55,7 @@ struct FavoritesView: View {
                 ()
             }
             self.favorites[address]!.updateValue(nft,forKey:tokenId)
-          }
+          }.catch { print($0) }
         } else {
           switch (self.favorites[address]) {
             case .none:
