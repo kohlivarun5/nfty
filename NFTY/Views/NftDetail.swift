@@ -43,8 +43,10 @@ struct NftDetail: View {
             .font(.subheadline)
         }
         Spacer()
-        UsdText(eth:nft.eth)
-          .font(.title)
+        nft.indicativePriceWei.map { wei in
+          UsdText(wei:wei)
+            .font(.title)
+        }
       }
       .padding()
       

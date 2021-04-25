@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import BigInt
 
 func formatter() -> Formatter {
     let currencyFormatter = NumberFormatter()
@@ -19,14 +20,14 @@ var currencyFormatter = formatter()
 var USD_PER_ETH=2300.0;
 
 struct UsdText: View {
-    var eth:Double
+    var wei:BigUInt
     var body: some View {
-        Text(currencyFormatter.string(for:(eth * USD_PER_ETH))!)
+        Text(currencyFormatter.string(for:(Double(wei / BigUInt(1e18)) * USD_PER_ETH))!)
     }
 }
 
 struct UsdText_Previews: PreviewProvider {
     static var previews: some View {
-        UsdText(eth:2.2)
+        UsdText(wei:BigUInt(2.2))
     }
 }

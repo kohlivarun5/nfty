@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import BigInt
 
 struct VisualEffectView: UIViewRepresentable {
   var effect: UIVisualEffect?
@@ -22,7 +23,7 @@ struct CollectionView: View {
   @ObservedObject var recentTrades : NftRecentTradesObject
   
   @State private var showSorted = false
-  @State private var filterZeros = false
+  @State private var filterZeros = true
   @State private var selectedNumber = 0
   
   @State private var action: String? = ""
@@ -34,10 +35,10 @@ struct CollectionView: View {
   
   
   func sorted(l:[NFT]) -> [NFT] {
-    showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
+    showSorted ? l.sorted(by:{$0.indicativePriceWei! < $1.indicativePriceWei!}) : l
   }
   func filtered(l:[NFT]) -> [NFT] {
-    filterZeros ? l.filter({$0.eth != 0}) : l
+    filterZeros ? l.filter({$0.indicativePriceWei != BigUInt(0)}) : l
   }
   
   struct FillAll: View {
@@ -99,7 +100,7 @@ struct CollectionView: View {
             }
           }
         }.textCase(nil)
-      }
+      }.animation(.default)
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
