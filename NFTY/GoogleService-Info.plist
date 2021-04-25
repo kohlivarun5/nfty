@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>837978580143-ji9egfkacdb40s6g0q6ok823cs63h2g5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.837978580143-ji9egfkacdb40s6g0q6ok823cs63h2g5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCiYQD69DtxHDlXWY6yWwYPFhTSdFtKFT8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>837978580143</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.nftygo.NFTY</string>
+	<key>PROJECT_ID</key>
+	<string>nfty-1bfd4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nfty-1bfd4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:837978580143:ios:9cccf754a22ad1d46e205a</string>
+	<key>DATABASE_URL</key>
+	<string>https://nfty-1bfd4-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

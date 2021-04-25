@@ -15,6 +15,8 @@ struct VisualEffectView: UIViewRepresentable {
 
 struct CollectionView: View {
   
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  
   private var info : CollectionInfo
   
   @ObservedObject var recentTrades : NftRecentTradesObject
@@ -29,7 +31,7 @@ struct CollectionView: View {
     self.info = collection.info;
     self.recentTrades = collection.data.recentTrades;
   }
-
+  
   
   func sorted(l:[NFT]) -> [NFT] {
     showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
@@ -49,25 +51,25 @@ struct CollectionView: View {
   }
   
   var body: some View {
-   
+    
     ScrollView {
-      LazyVStack(pinnedViews:[.sectionHeaders]){
-        Section(header:
-                  ZStack {
-                    
-                    VisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
-                      .edgesIgnoringSafeArea(.all)
-                    
-                    VStack {
-                      Picker(selection: $selectedNumber, label: EmptyView()) {
-                        Text("Recent").tag(0)
-                        Text("Top").tag(1)
-                      }
-                      .pickerStyle(SegmentedPickerStyle())
-                      .padding()
-                    }
-                    
-                  }
+      LazyVStack(pinnedViews:[.sectionHeaders]) {
+        Section(/* header:
+           ZStack {
+           
+           VisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
+           .edgesIgnoringSafeArea(.all)
+           
+           VStack {
+           Picker(selection: $selectedNumber, label: EmptyView()) {
+           Text("Recent").tag(0)
+           Text("Top").tag(1)
+           }
+           .pickerStyle(SegmentedPickerStyle())
+           .padding()
+           }
+           
+           } */
         ) {
           VStack {
             Toggle(isOn: $showSorted) {
@@ -87,10 +89,10 @@ struct CollectionView: View {
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
-                  self.action = nft.tokenId
+                  self.action = String(nft.tokenId)
                 }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:nft.tokenId,selection:$action) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:String(nft.tokenId),selection:$action) {}
                 .hidden()
             }.onAppear {
               self.recentTrades.getRecentTrades(currentIndex:index);
@@ -100,10 +102,12 @@ struct CollectionView: View {
       }
     }
     .navigationBarTitle(info.name)
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil);
     }
- 
+    
   }
 }
 

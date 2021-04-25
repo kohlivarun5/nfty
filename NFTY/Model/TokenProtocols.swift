@@ -12,8 +12,12 @@ import Web3PromiseKit
 import Web3ContractABI
 
 // https://www.donnywals.com/implementing-an-infinite-scrolling-list-with-swiftui-and-combine/
+
+protocol HasContractInterface {
+  var contract : ContractInterface { get }
+}
+
 class NftRecentTradesObject : ObservableObject {
-  
   @Published var recentTrades: [NFT] = []
   var recentTradesPublished: Published<[NFT]> { _recentTrades }
   var recentTradesPublisher: Published<[NFT]>.Publisher { $recentTrades }
@@ -23,7 +27,7 @@ class NftRecentTradesObject : ObservableObject {
 
 class CryptoPunksTrades : NftRecentTradesObject {
     
-  private var contract = CryptoPunksContract()
+  var contract : ContractInterface = CryptoPunksContract()
   private var isLoading = false
   
   private func loadMore() {
@@ -31,15 +35,15 @@ class CryptoPunksTrades : NftRecentTradesObject {
       return
     }
     contract.getRecentTrades() { (nft,isFinal) in
-      self.isLoading = !isFinal
       DispatchQueue.main.async {
+        if (isFinal) { self.isLoading = false }
         self.recentTrades.append(nft)
       }
     }
   }
   
   override func getRecentTrades(currentIndex:Int?) {
-    print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
+    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore()
       return
@@ -52,9 +56,9 @@ class CryptoPunksTrades : NftRecentTradesObject {
   }
 }
 
-class CryptoKittiesTrades : NftRecentTradesObject {
+class CryptoKittiesTrades : NftRecentTradesObject,HasContractInterface {
   
-  private var contract = CryptoKittiesAuction()
+  var contract : ContractInterface = CryptoKittiesAuction()
   
   private var isLoading = false
   
@@ -63,15 +67,15 @@ class CryptoKittiesTrades : NftRecentTradesObject {
       return
     }
     contract.getRecentTrades() { (nft,isFinal) in
-      self.isLoading = !isFinal
       DispatchQueue.main.async {
+        if (isFinal) { self.isLoading = false }
         self.recentTrades.append(nft)
       }
     }
   }
   
   override func getRecentTrades(currentIndex:Int?) {
-    print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
+    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore()
       return

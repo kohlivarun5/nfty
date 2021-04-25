@@ -21,51 +21,46 @@ struct CollectionsView: View {
       .aspectRatio(contentMode: .fit)
       .padding(collection.info.samplePadding)
   }
-   
+  
   var body: some View {
-    NavigationView {
-      List {
-        ForEach(collections,id:\.info.name) { collection in
-          ZStack {
-            
-            VStack{
-              VStack {
-                HStack {
-                  sampleImage(url:collection.info.url1,collection:collection)
-                  sampleImage(url:collection.info.url2,collection:collection)
-                }
-                HStack {
-                  sampleImage(url:collection.info.url3,collection:collection)
-                  sampleImage(url:collection.info.url4,collection:collection)
-                }
-              }
-              .background(collection.info.themeColor)
-                           
-              
+    List {
+      ForEach(collections,id:\.info.name) { collection in
+        ZStack {
+          
+          VStack{
+            VStack {
               HStack {
-                Text(collection.info.name)
+                sampleImage(url:collection.info.url1,collection:collection)
+                sampleImage(url:collection.info.url2,collection:collection)
               }
-              .font(.headline)
-              .padding()
-              
+              HStack {
+                sampleImage(url:collection.info.url3,collection:collection)
+                sampleImage(url:collection.info.url4,collection:collection)
+              }
             }
-            .border(Color.secondary)
-            .frame(width: 250.0)
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .overlay(
-              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
-            .shadow(radius: 3)
+            .background(collection.info.themeColor)
+            
+            
+            HStack {
+              Text(collection.info.name)
+            }
+            .font(.headline)
             .padding()
             
-            NavigationLink(destination: CollectionView(collection:collection)) {}
-              .hidden()
           }
+          .border(Color.secondary)
+          .frame(width: 250.0)
+          .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+          .overlay(
+            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
+          .shadow(radius: 3)
+          .padding()
+          
+          NavigationLink(destination: CollectionView(collection:collection)) {}
+            .hidden()
         }
       }
-      .navigationBarTitle("Collections")
-      .ignoresSafeArea(edges: .top)
     }
-    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

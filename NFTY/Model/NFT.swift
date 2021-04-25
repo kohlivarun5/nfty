@@ -10,15 +10,14 @@ import SwiftUI
 
 struct NFT: Hashable, Codable {
    var address: String
-   var tokenId: String
+   var tokenId: UInt
    var name: String
    var url: URL
    var eth: Double
 }
 
-
-
 struct CollectionInfo {
+  var address: String
   var url1: String
   var url2: String
   var url3: String
@@ -30,11 +29,9 @@ struct CollectionInfo {
   var samplePadding:CGFloat
 }
 
-class CollectionData {
+struct CollectionData : HasContractInterface {
   var recentTrades: NftRecentTradesObject
-  init(recentTrades:NftRecentTradesObject) {
-    self.recentTrades = recentTrades
-  }
+  var contract: ContractInterface
 }
 
 class Collection {
@@ -64,10 +61,52 @@ var CryptoPunksNfts : [NFT] = load("punks.json")
 
 var CryptoKittiesNfts : [NFT] = load("kitties.json")
 
-var CryptoPunksCollection = Collection(info:CollectionInfo(url1:SAMPLE_PUNKS[0],url2:SAMPLE_PUNKS[1],url3:SAMPLE_PUNKS[2],url4:SAMPLE_PUNKS[3],name:"CryptoPunks",totalSupply:10000,themeColor:Color.yellow,blur:0,samplePadding:10),data:CollectionData(recentTrades:CryptoPunksTrades()))
-var CryptoKittiesCollection = Collection(info:CollectionInfo(url1:SAMPLE_KITTIES[0],url2:SAMPLE_KITTIES[1],url3:SAMPLE_KITTIES[2],url4:SAMPLE_KITTIES[3],name:"CryptoKitties",totalSupply:1997622,themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),blur:0,samplePadding:0),data:CollectionData(recentTrades: CryptoKittiesTrades()))
+var cryptoPunksTrades = CryptoPunksTrades()
+var cryptoKittiesTrades = CryptoKittiesTrades()
+
+var CryptoPunksCollection = Collection(
+                                info:CollectionInfo(
+                                  address:cryptoPunksTrades.contract.contractAddressHex,
+                                  url1:SAMPLE_PUNKS[0],
+                                  url2:SAMPLE_PUNKS[1],
+                                  url3:SAMPLE_PUNKS[2],
+                                  url4:SAMPLE_PUNKS[3],
+                                  name:"CryptoPunks",
+                                  totalSupply:10000,
+                                  themeColor:Color.yellow,
+                                  blur:0,
+                                  samplePadding:10),
+                                data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
+var CryptoKittiesCollection = Collection(
+                                info:CollectionInfo(
+                                  address:cryptoKittiesTrades.contract.contractAddressHex,
+                                  url1:SAMPLE_KITTIES[0],
+                                  url2:SAMPLE_KITTIES[1],
+                                  url3:SAMPLE_KITTIES[2],
+                                  url4:SAMPLE_KITTIES[3],
+                                  name:"CryptoKitties",
+                                  totalSupply:1997622,
+                                  themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+                                  blur:0,samplePadding:0),
+                                data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
 var COLLECTIONS: [Collection]=[
   CryptoPunksCollection,
   CryptoKittiesCollection
 ]
+
+struct CollectionsFactory {
+  
+  private var collections : [String : Collection] = [
+    CryptoPunksCollection.info.address:CryptoPunksCollection,
+    CryptoKittiesCollection.info.address:CryptoKittiesCollection
+  ]
+  
+  func getByAddress(_ address:String) -> Collection? {
+    return collections[address]
+    //return nil
+  }
+  
+}
+
+var collectionsFactory = CollectionsFactory()
