@@ -40,6 +40,7 @@ struct FavoritesView: View {
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
+    // print(dict);
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
         if (isFav) {
