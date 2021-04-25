@@ -38,7 +38,9 @@ struct RoundedImage: View {
           Text("#\(nft.tokenId)")
         }
         Spacer()
-        UsdText(eth:nft.eth)
+        nft.indicativePriceWei.map { wei in
+          UsdText(wei:wei)
+        }
       }
       .font(.subheadline)
       .padding()

@@ -7,13 +7,14 @@
 
 import Foundation
 import SwiftUI
+import BigInt
 
 struct NFT: Hashable, Codable {
    var address: String
    var tokenId: UInt
    var name: String
    var url: URL
-   var eth: Double
+   var indicativePriceWei: BigUInt?
 }
 
 struct CollectionInfo {

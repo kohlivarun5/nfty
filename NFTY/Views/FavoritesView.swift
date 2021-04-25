@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PromiseKit
+import BigInt
 
 struct FavoritesView: View {
   
@@ -33,10 +34,10 @@ struct FavoritesView: View {
   
   
   func sorted(_ l:[NFT]) -> [NFT] {
-    showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
+    showSorted ? l.sorted(by:{$0.indicativePriceWei! < $1.indicativePriceWei! }) : l
   }
   func filtered(_ l:[NFT]) -> [NFT] {
-    filterZeros ? l.filter({$0.eth != 0}) : l
+    filterZeros ? l.filter({$0.indicativePriceWei != BigUInt(0)}) : l
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {

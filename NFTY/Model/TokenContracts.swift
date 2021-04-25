@@ -87,7 +87,7 @@ class CryptoPunksContract : ContractInterface {
             tokenId:UInt(res["punkIndex"] as! BigUInt),
             name:self.name,
             url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!,
-            eth:Double(res["value"] as! BigUInt) / 1e18
+            indicativePriceWei:res["value"] as? BigUInt
           ),index == logs.count - 1)
         }
       }
@@ -101,7 +101,7 @@ class CryptoPunksContract : ContractInterface {
         tokenId:tokenId,
         name:self.name,
         url:self.imageUrl(tokenId)!,
-        eth:0
+        indicativePriceWei:nil
       )) }
   }
   
@@ -177,7 +177,7 @@ class CryptoKittiesAuction : ContractInterface {
                 tokenId:UInt(tokenId),
                 name:self.name,
                 url:URL(string:kitty.image_url)!,
-                eth:Double(res["totalPrice"] as! BigUInt) / 1e18
+                indicativePriceWei:res["totalPrice"] as? BigUInt
               ),index == logs.count - 1)
             }
           }
@@ -196,7 +196,7 @@ class CryptoKittiesAuction : ContractInterface {
         tokenId:UInt(tokenId),
         name:self.name,
         url:URL(string:kitty.image_url)!,
-        eth:0)
+        indicativePriceWei:nil)
     }
   }
 }
