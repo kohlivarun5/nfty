@@ -23,7 +23,7 @@ struct CollectionView: View {
   @ObservedObject var recentTrades : NftRecentTradesObject
   
   @State private var showSorted = false
-  @State private var filterZeros = false
+  @State private var filterZeros = true
   @State private var selectedNumber = 0
   
   @State private var action: String? = ""

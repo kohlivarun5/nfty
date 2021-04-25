@@ -151,9 +151,7 @@ class CryptoPunksContract : ContractInterface {
         }
       }
     }.compactMap { events in
-      events
-        .sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-        .filter({ $0.value != BigUInt(0)})
+      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then { events -> Promise<[TradeEvent]> in
       if (events.count == 0 && retries > 0) {
         return self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:retries-1)
@@ -292,9 +290,7 @@ class CryptoKittiesAuction : ContractInterface {
         }
       }
     }.compactMap { events in
-      events
-        .sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-        .filter({ $0.value != BigUInt(0)})
+      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then { events -> Promise<[TradeEvent]> in
       if (events.count == 0 && retries > 0) {
         return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
