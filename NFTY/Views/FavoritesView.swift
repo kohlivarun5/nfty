@@ -42,16 +42,26 @@ struct FavoritesView: View {
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
-        firstly {
-          collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
-        }.done { nft in
+        if (isFav) {
+          firstly {
+            collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
+          }.done { nft in
+            switch (self.favorites[address]) {
+              case .none:
+                self.favorites.updateValue([:], forKey:address)
+              default:
+                ()
+            }
+            self.favorites[address]!.updateValue(nft,forKey:tokenId)
+          }
+        } else {
           switch (self.favorites[address]) {
             case .none:
               self.favorites.updateValue([:], forKey:address)
             default:
               ()
           }
-          self.favorites[address]!.updateValue(nft,forKey:tokenId)
+          self.favorites[address]!.updateValue(nil,forKey:tokenId)
         }
         //self.favorites.append(NFT(address:address,tokenId: UInt(tokenId)!,name:"CryptoPunks",url:URL(string:"URL")!,eth:0))
       }

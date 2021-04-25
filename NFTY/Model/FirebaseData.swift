@@ -24,9 +24,15 @@ struct FirebaseDb {
     }
   }
   
-  func addFavorite(address:String,tokenId:UInt) {
+  func addFavorite(address:String,tokenId:UInt,isFavorite:Bool) {
     if let uuid = UIDevice.current.identifierForVendor?.uuidString {
-      getFavoritesNode(uuid).child(address).child(String(tokenId)).setValue(true)
+      getFavoritesNode(uuid).child(address).child(String(tokenId)).setValue(isFavorite)
+    }
+  }
+  
+  func observeFavorite(address:String,tokenId:UInt,onData: @escaping (DataSnapshot) -> Void) {
+    if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+      getFavoritesNode(uuid).child(address).child(String(tokenId)).observe(.value,with:onData);
     }
   }
   

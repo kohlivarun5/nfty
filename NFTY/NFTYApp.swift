@@ -21,7 +21,7 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .tabItem {
-          Label("Collections", systemImage: "list.dash")
+          Label("Collections", systemImage: "list.bullet.rectangle")
         }
         
         NavigationView {
@@ -29,7 +29,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Favorites")
         }
         .tabItem {
-          Label("Favorites", systemImage: "heart.fill")
+          Label("Favorites", systemImage: "heart.text.square")
         }
       }
     }
