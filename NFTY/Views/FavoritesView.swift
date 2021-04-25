@@ -14,12 +14,23 @@ struct FavoritesView: View {
   
   private var firebase = FirebaseDb()
    
-  typealias FavoritesDict = [String : [String : Bool]]
-  @State private var favorites : [NFT] = []
+  typealias FavoritesDict = [String : [String : NFT?]]
+  @State private var favorites : FavoritesDict = [:]
   
   @State private var showSorted = false
   @State private var filterZeros = false
   @State private var selectedTokenId: UInt? = nil
+  
+  func dictToNfts(_ dict : FavoritesDict) -> [NFT] {
+    var res : [NFT] = [];
+    self.favorites.forEach { address,tokens in
+      tokens.values.forEach {
+        $0.map { res.append($0) }
+      }
+    }
+    return res;
+  }
+  
   
   func sorted(_ l:[NFT]) -> [NFT] {
     showSorted ? l.sorted(by:{$0.eth < $1.eth}) : l
@@ -27,13 +38,20 @@ struct FavoritesView: View {
   func filtered(_ l:[NFT]) -> [NFT] {
     filterZeros ? l.filter({$0.eth != 0}) : l
   }
-  func dictToNfts(_ dict:FavoritesDict) -> Void {
+  
+  func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
         firstly {
           collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
         }.done { nft in
-          self.favorites.append(nft)
+          switch (self.favorites[address]) {
+            case .none:
+              self.favorites.updateValue([:], forKey:address)
+            default:
+              ()
+          }
+          self.favorites[address]!.updateValue(nft,forKey:tokenId)
         }
         //self.favorites.append(NFT(address:address,tokenId: UInt(tokenId)!,name:"CryptoPunks",url:URL(string:"URL")!,eth:0))
       }
@@ -71,7 +89,7 @@ struct FavoritesView: View {
                   } */
         ) {
           
-          let data = sorted(filtered(self.favorites));
+          let data = sorted(filtered(dictToNfts(self.favorites)));
           ForEach(data.indices,id: \.self) { index in
             let nft = data[index];
             let info = collectionsFactory.getByAddress(nft.address)!.info;
@@ -92,7 +110,7 @@ struct FavoritesView: View {
     }
     .onAppear {
       firebase.observeUserFavorites {
-        dictToNfts($0.value as? [String : [String : Bool]] ?? [:])
+        updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
       }
     }
   }
