@@ -55,7 +55,7 @@ class CryptoPunksContract {
   private var toBlock = EthereumQuantityTag.latest
   
   func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
-    print("Called getRecentTrades");
+    // print("Called getRecentTrades");
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(fromBlock),
@@ -128,7 +128,7 @@ class CryptoKittiesAuction {
   }
   
   func getRecentTrades(response: @escaping (NFT,Bool) -> Void) {
-    print("Called getRecentTrades");
+    // print("Called getRecentTrades");
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(fromBlock),

@@ -10,11 +10,28 @@ import Firebase
 
 @main
 struct NFTYApp: App {
-    init() { FirebaseApp.configure() }
+  init() { FirebaseApp.configure() }
   
-    var body: some Scene {
-        WindowGroup {
+  var body: some Scene {
+    WindowGroup {
+      TabView {
+        NavigationView {
           CollectionsView(collections:COLLECTIONS)
+            .navigationBarTitle("Collections")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .tabItem {
+          Label("Collections", systemImage: "list.dash")
+        }
+        
+        NavigationView {
+          FavoritesView()
+            .navigationBarTitle("Favorites")
+        }
+        .tabItem {
+          Label("Favorites", systemImage: "heart.fill")
+        }
+      }
     }
+  }
 }

@@ -86,7 +86,6 @@ struct FavoritesView: View {
         }.textCase(nil)
       }
     }
-    .navigationBarTitle("Favorites")
     .onAppear {
       firebase.observeUserFavorites {
         self.favorites = $0.value as? [String : [String : Bool]] ?? [:];

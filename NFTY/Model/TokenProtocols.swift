@@ -39,7 +39,7 @@ class CryptoPunksTrades : NftRecentTradesObject {
   }
   
   override func getRecentTrades(currentIndex:Int?) {
-    print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
+    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore()
       return
@@ -71,7 +71,7 @@ class CryptoKittiesTrades : NftRecentTradesObject {
   }
   
   override func getRecentTrades(currentIndex:Int?) {
-    print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
+    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore()
       return

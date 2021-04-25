@@ -52,7 +52,7 @@ struct CollectionView: View {
    
     ScrollView {
       LazyVStack(pinnedViews:[.sectionHeaders]){
-        Section(header:
+        Section(/* header:
                   ZStack {
                     
                     VisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
@@ -67,7 +67,7 @@ struct CollectionView: View {
                       .padding()
                     }
                     
-                  }
+                  } */
         ) {
           VStack {
             Toggle(isOn: $showSorted) {
