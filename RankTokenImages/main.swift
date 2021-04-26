@@ -24,7 +24,7 @@ private func makeImageUrl(_ tokenId:UInt) -> URL? {
 
 var collectionName = "CryptoPunks"
 let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 200 //CryptoPunksCollection.info.totalSupply
+let totalSize = 9999 //CryptoPunksCollection.info.totalSupply
 
 for tokenId in 0...totalSize {
   
