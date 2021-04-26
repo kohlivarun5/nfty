@@ -28,6 +28,11 @@ struct NFT: Hashable, Codable {
    var indicativePriceWei: BigUInt?
 }
 
+struct TokenDistance: Codable {
+  var tokenId: Int
+  var distance: Float
+}
+
 struct CollectionInfo {
   var address: String
   var url1: String
@@ -39,6 +44,7 @@ struct CollectionInfo {
   var themeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
+  var similarTokens : (Int) -> [TokenDistance]?
 }
 
 struct CollectionData : HasContractInterface {
@@ -71,6 +77,8 @@ var SAMPLE_KITTIES : [String] = [
 
 var CryptoPunksNfts : [NFT] = load("punks.json")
 
+var CryptoPunksDistances : [[TokenDistance]] = load("punksDistances.json")
+
 var CryptoKittiesNfts : [NFT] = load("kitties.json")
 
 var cryptoPunksTrades = CryptoPunksTrades()
@@ -87,7 +95,8 @@ var CryptoPunksCollection = Collection(
                                   totalSupply:10000,
                                   themeColor:Color.yellow,
                                   blur:0,
-                                  samplePadding:10),
+                                  samplePadding:10,
+                                  similarTokens:[]),
                                 data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
 var CryptoKittiesCollection = Collection(
                                 info:CollectionInfo(
@@ -99,7 +108,8 @@ var CryptoKittiesCollection = Collection(
                                   name:"CryptoKitties",
                                   totalSupply:1997622,
                                   themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-                                  blur:0,samplePadding:0),
+                                  blur:0,samplePadding:0,
+                                  similarTokens:[]),
                                 data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
 var COLLECTIONS: [Collection]=[
@@ -122,3 +132,9 @@ struct CollectionsFactory {
 }
 
 var collectionsFactory = CollectionsFactory()
+
+extension Array {
+  subscript (safe index: Int) -> Element? {
+    return indices ~= index ? self[index] : nil
+  }
+}

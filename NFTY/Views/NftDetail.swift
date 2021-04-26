@@ -15,6 +15,7 @@ struct NftDetail: View {
   var nft:NFT
   var samples:[String]
   var themeColor : Color
+  var similarTokens : [TokenDistance]?
   
   var body: some View {
     
@@ -33,8 +34,10 @@ struct NftDetail: View {
           UsdText(wei:wei)
             .font(.title)
         }
+      }.padding()
+      similarTokens.map { tokens in
+        SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
       }
-      .padding()
       
       Spacer()
     }
@@ -46,6 +49,6 @@ struct NftDetail: View {
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor)
+    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,similarTokens:[])
   }
 }

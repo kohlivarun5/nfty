@@ -54,7 +54,7 @@ func save<T: Encodable>(_ obj : T) -> Void? {
     .appendingPathComponent("RankImages")
     .appendingPathComponent("Results")
     .appendingPathComponent(collectionName)
-    .appendingPathComponent("distances.json")
+    .appendingPathComponent("cryptoPunksDistances.json")
   return data.flatMap { try! $0.write(to: filename) }
 }
 

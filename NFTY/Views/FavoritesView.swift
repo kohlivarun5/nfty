@@ -11,8 +11,6 @@ import BigInt
 
 struct FavoritesView: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
   private var firebase = FirebaseDb()
    
   typealias FavoritesDict = [String : [String : NFT?]]
@@ -112,7 +110,7 @@ struct FavoritesView: View {
                   //perform some tasks if needed before opening Destination view
                   self.selectedTokenId = nft.tokenId
                 }
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:nft.tokenId,selection:$selectedTokenId) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens[safe:(Int(nft.tokenId))]),tag:nft.tokenId,selection:$selectedTokenId) {}
                 .hidden()
             }
           }
