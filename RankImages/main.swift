@@ -8,7 +8,7 @@
 import Foundation
 import Vision
 
-let totalSupply = 10
+let totalSupply = 10000
 let collectionName = "CryptoPunks"
 
 func getDocumentsDirectory() -> URL {
@@ -51,8 +51,10 @@ func save<T: Encodable>(_ obj : T) -> Void? {
     .appendingPathComponent("../")
     .appendingPathComponent("Github")
     .appendingPathComponent("NFTY")
+    .appendingPathComponent("NFTY")
     .appendingPathComponent("Resources")
-    .appendingPathComponent("\(collectionName\)Distances.json")
+    .appendingPathComponent("\(collectionName)Distances.json")
+  print("Saving file=\(filename)")
   return data.flatMap { try! $0.write(to: filename) }
 }
 
@@ -95,3 +97,4 @@ for tokenId in 0...(totalSupply - 1) {
 }
 
 save(distances)
+print("Done")

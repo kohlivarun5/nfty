@@ -12,7 +12,6 @@
 		4F58A01F263675E700E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A01E263675E700E258C1 /* main.swift */; };
 		4F58A02F2636785400E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A02E2636785400E258C1 /* main.swift */; };
 		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
-		4F58A0822636958700E258C1 /* CryptoPunksDistances.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F58A0812636958700E258C1 /* CryptoPunksDistances.json */; };
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
@@ -90,7 +89,7 @@
 		4F58A02C2636785400E258C1 /* RankImages */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RankImages; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F58A02E2636785400E258C1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
-		4F58A0812636958700E258C1 /* CryptoPunksDistances.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = CryptoPunksDistances.json; path = ../../CryptoPunksDistances.json; sourceTree = "<group>"; };
+		4F58A09726369BED00E258C1 /* CryptoPunksDistances.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = CryptoPunksDistances.json; path = /Users/vkohli/Github/NFTY/NFTY/Resources/CryptoPunksDistances.json; sourceTree = "<absolute>"; };
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
@@ -290,7 +289,7 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4F58A0812636958700E258C1 /* CryptoPunksDistances.json */,
+				4F58A09726369BED00E258C1 /* CryptoPunksDistances.json */,
 				4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
@@ -460,7 +459,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
-				4F58A0822636958700E258C1 /* CryptoPunksDistances.json in Resources */,
 				4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
