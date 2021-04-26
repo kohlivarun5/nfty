@@ -11,17 +11,26 @@ import Vision
 let totalSupply = 10000
 let collectionName = "CryptoPunks"
 
-private func makeImageUrl(_ tokenId:UInt) -> URL? {
-  return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
-}
-
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]
 }
 
-func featureprintObservationForImage(atURL url: URL) -> VNFeaturePrintObservation? {
-  let requestHandler = VNImageRequestHandler(url: url, options: [:])
+func loadImageData(tokenId:Int) -> Data {
+  let filename = getDocumentsDirectory()
+    .appendingPathComponent("../")
+    .appendingPathComponent("Github")
+    .appendingPathComponent("NFTY")
+    .appendingPathComponent("DownloadCryptoPunks")
+    .appendingPathComponent("Images")
+    .appendingPathComponent(collectionName)
+    .appendingPathComponent("png")
+    .appendingPathComponent("punk\(String(format: "%04d", Int(tokenId))).png")
+  return try! Data(contentsOf: filename)
+}
+
+func featureprintObservationForImage(tokenId:Int) -> VNFeaturePrintObservation? {
+  let requestHandler = VNImageRequestHandler(data:loadImageData(tokenId:tokenId), options: [:])
   let request = VNGenerateImageFeaturePrintRequest()
   do {
     try requestHandler.perform([request])
@@ -66,7 +75,7 @@ var tokenImages : [VNFeaturePrintObservation?] = Array(repeating:nil, count: tot
 func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
   switch(tokenImages[tokenId]) {
   case .none:
-    let image = featureprintObservationForImage(atURL: makeImageUrl(UInt(tokenId))!)
+    let image = featureprintObservationForImage(tokenId: tokenId)
     tokenImages[tokenId] = image
     return image
   case .some(let image):
