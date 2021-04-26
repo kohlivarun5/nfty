@@ -8,7 +8,7 @@
 import Foundation
 import Vision
 
-let totalSupply = 10000
+let totalSupply = 10
 let collectionName = "CryptoPunks"
 
 func getDocumentsDirectory() -> URL {
