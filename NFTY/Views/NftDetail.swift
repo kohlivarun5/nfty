@@ -37,7 +37,10 @@ struct NftDetail: View {
         }
       }.padding()
       similarTokens.map { tokens in
-        SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
+        VStack {
+          Divider()
+          SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
+        }
       }      
     }
     .navigationBarBackButtonHidden(true)
