@@ -17,20 +17,7 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack {
-      VStack {
-        ZStack {
-          NftImage(url:nft.url,samples:samples,themeColor:themeColor)
-          //.padding()
-          HStack {
-            Spacer()
-            VStack {
-              FavButton(nft:nft,size:.medium)
-              Spacer()
-            }
-          }
-        }
-      }
-      .background(themeColor)
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:.top)
       
       HStack {
         VStack(alignment:.leading) {

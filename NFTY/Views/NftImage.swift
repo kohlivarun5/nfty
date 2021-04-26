@@ -8,7 +8,7 @@
 import SwiftUI
 import URLImage
 
-struct NftImage: View {
+struct NftImageImpl: View {
   var url : URL
   var samples : [String]
   var themeColor : Color
@@ -61,8 +61,43 @@ struct NftImage: View {
     }
 }
 
+struct NftImage: View {
+  var nft:NFT
+  var samples:[String]
+  var themeColor : Color
+  
+  enum FavButtonLocation {
+    case top
+    case bottom
+  }
+  
+  var favButtonLocation : FavButtonLocation
+  
+  var body: some View {
+    ZStack {
+      NftImageImpl(url:nft.url,samples:samples,themeColor:themeColor)
+      //.padding()
+      HStack {
+        Spacer()
+        switch(favButtonLocation) {
+        case .top:
+          VStack {
+            FavButton(nft:nft,size:.medium)
+            Spacer()
+          }
+        case .bottom:
+          VStack {
+            Spacer()
+            FavButton(nft:nft,size:.medium)
+          }
+        }
+      }
+    }.background(themeColor)
+  }
+}
+
 struct NftImage_Previews: PreviewProvider {
     static var previews: some View {
-      NftImage(url:URL(string:"SamplePunk1")!,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor)
+      NftImage(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,favButtonLocation:.top)
     }
 }

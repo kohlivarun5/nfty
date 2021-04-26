@@ -19,21 +19,7 @@ struct NftDetail: View {
   var body: some View {
     
     VStack {
-      
-      VStack {
-        ZStack {
-          NftImage(url:nft.url,samples:samples,themeColor:themeColor)
-          //.padding()
-          HStack(alignment:.bottom) {
-            Spacer()
-            VStack {
-              Spacer()
-              FavButton(nft:nft,size:.large)
-            }
-          }
-        }
-      }
-      .background(themeColor)
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:.bottom)
       
       HStack() {
         VStack(alignment:.leading) {

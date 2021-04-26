@@ -35,7 +35,7 @@ struct FavButton: View {
   
   var body: some View {
     Image(systemName: self.isFavorite ? "heart.fill" : "heart")
-      .foregroundColor(self.isFavorite ? .red : .secondary)
+      .foregroundColor(self.isFavorite ? .red : .black)
       .font(fontOfSize(self.size))
       .frame(width: 44, height: 44)
       .onTapGesture(count:self.isFavorite ? 2 : 1) {
