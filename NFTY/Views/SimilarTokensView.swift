@@ -23,6 +23,8 @@ struct SimilarTokensView: View {
       //Text("Similar Tokens").padding()
       HStack {
         Spacer()
+          .frame(maxWidth:20)
+        
         ScrollView(.horizontal) {
           LazyHStack {
             ForEach(nfts.indices,id: \.self) { index in
@@ -43,6 +45,7 @@ struct SimilarTokensView: View {
           }
         }
         Spacer()
+          .frame(maxWidth:20)
       }
     }.onAppear {
       tokens.forEach { tokenId in
