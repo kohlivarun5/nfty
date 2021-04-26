@@ -8,7 +8,9 @@
 import Foundation
 import Vision
 
-let totalSupply = 10000
+let isFull = false
+
+let totalSupply = isFull ? 10000 : 10
 let collectionName = "CryptoPunks"
 
 func getDocumentsDirectory() -> URL {
@@ -44,7 +46,6 @@ func featureprintObservationForImage(tokenId:Int) -> VNFeaturePrintObservation? 
 func save<T: Encodable>(_ obj : T) -> Void? {
   
   let encoder = JSONEncoder()
-  encoder.outputFormatting = .prettyPrinted
   let data = try? encoder.encode(obj)
 
   let filename = getDocumentsDirectory()
@@ -53,7 +54,7 @@ func save<T: Encodable>(_ obj : T) -> Void? {
     .appendingPathComponent("NFTY")
     .appendingPathComponent("NFTY")
     .appendingPathComponent("Resources")
-    .appendingPathComponent("\(collectionName)Distances.json")
+    .appendingPathComponent("\(collectionName)Distances\(isFull ? "" : "_small").json")
   print("Saving file=\(filename)")
   return data.flatMap { try! $0.write(to: filename) }
 }
