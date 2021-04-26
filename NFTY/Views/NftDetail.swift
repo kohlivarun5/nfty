@@ -21,6 +21,7 @@ struct NftDetail: View {
     
     VStack {
       NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:.bottom)
+        .frame(minHeight: 450)
       
       HStack() {
         VStack(alignment:.leading) {
@@ -37,9 +38,7 @@ struct NftDetail: View {
       }.padding()
       similarTokens.map { tokens in
         SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
-      }
-      
-      Spacer()
+      }      
     }
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))

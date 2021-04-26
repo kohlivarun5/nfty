@@ -69,6 +69,7 @@ struct NftImage: View {
   enum FavButtonLocation {
     case top
     case bottom
+    case none
   }
   
   var favButtonLocation : FavButtonLocation
@@ -89,6 +90,9 @@ struct NftImage: View {
           VStack {
             Spacer()
             FavButton(nft:nft,size:.medium)
+          }
+        case .none:
+          VStack {
           }
         }
       }

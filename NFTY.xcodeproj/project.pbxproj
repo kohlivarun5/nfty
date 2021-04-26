@@ -12,11 +12,12 @@
 		4F58A01F263675E700E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A01E263675E700E258C1 /* main.swift */; };
 		4F58A02F2636785400E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A02E2636785400E258C1 /* main.swift */; };
 		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
+		4F58A0822636958700E258C1 /* CryptoPunksDistances.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F58A0812636958700E258C1 /* CryptoPunksDistances.json */; };
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
-		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; };
+		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; settings = {ASSET_TAGS = (TokenRanking, ); }; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */; };
@@ -89,7 +90,7 @@
 		4F58A02C2636785400E258C1 /* RankImages */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RankImages; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F58A02E2636785400E258C1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
-		4F58A05C263692C300E258C1 /* cryptoPunksDistances.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cryptoPunksDistances.json; sourceTree = "<group>"; };
+		4F58A0812636958700E258C1 /* CryptoPunksDistances.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = CryptoPunksDistances.json; path = ../../CryptoPunksDistances.json; sourceTree = "<group>"; };
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
@@ -177,27 +178,16 @@
 		4F58A02D2636785400E258C1 /* RankImages */ = {
 			isa = PBXGroup;
 			children = (
-				4F58A05A263692C300E258C1 /* Results */,
 				4F58A02E2636785400E258C1 /* main.swift */,
 			);
 			path = RankImages;
 			sourceTree = "<group>";
 		};
-		4F58A05A263692C300E258C1 /* Results */ = {
+		4F58A06C2636942200E258C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4F58A05B263692C300E258C1 /* CryptoPunks */,
 			);
-			name = Results;
-			path = RankImages/Results;
-			sourceTree = SOURCE_ROOT;
-		};
-		4F58A05B263692C300E258C1 /* CryptoPunks */ = {
-			isa = PBXGroup;
-			children = (
-				4F58A05C263692C300E258C1 /* cryptoPunksDistances.json */,
-			);
-			path = CryptoPunks;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		4FB9A7A4262B28A300C58AF9 = {
@@ -209,6 +199,7 @@
 				4F58A01D263675E700E258C1 /* DownloadCryptoPunks */,
 				4F58A02D2636785400E258C1 /* RankImages */,
 				4FB9A7AE262B28A300C58AF9 /* Products */,
+				4F58A06C2636942200E258C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -299,6 +290,7 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F58A0812636958700E258C1 /* CryptoPunksDistances.json */,
 				4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
@@ -410,6 +402,9 @@
 		4FB9A7A5262B28A300C58AF9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					TokenRanking,
+				);
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
@@ -465,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
+				4F58A0822636958700E258C1 /* CryptoPunksDistances.json in Resources */,
 				4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
@@ -740,7 +736,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTY/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;
@@ -765,7 +761,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTY/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;

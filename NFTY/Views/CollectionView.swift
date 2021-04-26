@@ -86,14 +86,14 @@ struct CollectionView: View {
             let nft = data[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
+              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor,width: .normal)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
                   self.action = String(nft.tokenId)
                 }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens[safe:Int(nft.tokenId)]),tag:String(nft.tokenId),selection:$action) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens(nft.tokenId)),tag:String(nft.tokenId),selection:$action) {}
                 .hidden()
             }.onAppear {
               self.recentTrades.getRecentTrades(currentIndex:index);

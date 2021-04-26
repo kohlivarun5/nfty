@@ -104,13 +104,13 @@ struct FavoritesView: View {
             let info = collectionsFactory.getByAddress(nft.address)!.info;
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
+              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor,width: .normal)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
                   self.selectedTokenId = nft.tokenId
                 }
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens[safe:(Int(nft.tokenId))]),tag:nft.tokenId,selection:$selectedTokenId) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens(nft.tokenId)),tag:nft.tokenId,selection:$selectedTokenId) {}
                 .hidden()
             }
           }

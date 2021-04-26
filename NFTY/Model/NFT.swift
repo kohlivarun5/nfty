@@ -21,11 +21,11 @@ struct TradeEvent {
 }
 
 struct NFT: Hashable, Codable {
-   var address: String
-   var tokenId: UInt
-   var name: String
-   var url: URL
-   var indicativePriceWei: BigUInt?
+  var address: String
+  var tokenId: UInt
+  var name: String
+  var url: URL
+  var indicativePriceWei: BigUInt?
 }
 
 struct TokenDistance: Codable {
@@ -44,7 +44,7 @@ struct CollectionInfo {
   var themeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
-  var similarTokens : (Int) -> [TokenDistance]?
+  var similarTokens : (UInt) -> [TokenDistance]?
 }
 
 struct CollectionData : HasContractInterface {
@@ -77,7 +77,7 @@ var SAMPLE_KITTIES : [String] = [
 
 var CryptoPunksNfts : [NFT] = load("punks.json")
 
-var CryptoPunksDistances : [[TokenDistance]] = load("punksDistances.json")
+var CryptoPunksDistances : [[TokenDistance]] = load("CryptoPunksDistances.json")
 
 var CryptoKittiesNfts : [NFT] = load("kitties.json")
 
@@ -85,32 +85,32 @@ var cryptoPunksTrades = CryptoPunksTrades()
 var cryptoKittiesTrades = CryptoKittiesTrades()
 
 var CryptoPunksCollection = Collection(
-                                info:CollectionInfo(
-                                  address:cryptoPunksTrades.contract.contractAddressHex,
-                                  url1:SAMPLE_PUNKS[0],
-                                  url2:SAMPLE_PUNKS[1],
-                                  url3:SAMPLE_PUNKS[2],
-                                  url4:SAMPLE_PUNKS[3],
-                                  name:"CryptoPunks",
-                                  totalSupply:10000,
-                                  themeColor:Color.yellow,
-                                  blur:0,
-                                  samplePadding:10,
-                                  similarTokens:[]),
-                                data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
+  info:CollectionInfo(
+    address:cryptoPunksTrades.contract.contractAddressHex,
+    url1:SAMPLE_PUNKS[0],
+    url2:SAMPLE_PUNKS[1],
+    url3:SAMPLE_PUNKS[2],
+    url4:SAMPLE_PUNKS[3],
+    name:"CryptoPunks",
+    totalSupply:10000,
+    themeColor:Color.yellow,
+    blur:0,
+    samplePadding:10,
+    similarTokens : { tokenId in CryptoPunksDistances[safe:Int(0)] }),
+  data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
 var CryptoKittiesCollection = Collection(
-                                info:CollectionInfo(
-                                  address:cryptoKittiesTrades.contract.contractAddressHex,
-                                  url1:SAMPLE_KITTIES[0],
-                                  url2:SAMPLE_KITTIES[1],
-                                  url3:SAMPLE_KITTIES[2],
-                                  url4:SAMPLE_KITTIES[3],
-                                  name:"CryptoKitties",
-                                  totalSupply:1997622,
-                                  themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-                                  blur:0,samplePadding:0,
-                                  similarTokens:[]),
-                                data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
+  info:CollectionInfo(
+    address:cryptoKittiesTrades.contract.contractAddressHex,
+    url1:SAMPLE_KITTIES[0],
+    url2:SAMPLE_KITTIES[1],
+    url3:SAMPLE_KITTIES[2],
+    url4:SAMPLE_KITTIES[3],
+    name:"CryptoKitties",
+    totalSupply:1997622,
+    themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+    blur:0,samplePadding:0,
+    similarTokens: { tokenId in nil }),
+  data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
 var COLLECTIONS: [Collection]=[
   CryptoPunksCollection,

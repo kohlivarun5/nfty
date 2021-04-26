@@ -20,16 +20,15 @@ struct SimilarTokensView: View {
   var body: some View {
     VStack {
       Divider()
-      Text("Similar Tokens")
-        .padding()
+      //Text("Similar Tokens").padding()
       ScrollView(.horizontal) {
         LazyHStack {
           ForEach(nfts.indices,id: \.self) { index in
             let nft = nfts[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
-                .scaleEffect(0.8)
+              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor,width: .narrow)
+                .scaleEffect(0.9)
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
                   self.action = String(nft.tokenId)
