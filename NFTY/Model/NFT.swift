@@ -44,7 +44,7 @@ struct CollectionInfo {
   var themeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
-  var similarTokens : (UInt) -> [TokenDistance]?
+  var similarTokens : (UInt) -> [UInt]?
 }
 
 struct CollectionData : HasContractInterface {
@@ -61,30 +61,29 @@ class Collection {
   }
 }
 
-var SAMPLE_PUNKS : [String] = [
+let SAMPLE_PUNKS : [String] = [
   "SamplePunk1",
   "SamplePunk2",
   "SamplePunk3",
   "SamplePunk4"
 ]
 
-var SAMPLE_KITTIES : [String] = [
+let SAMPLE_KITTIES : [String] = [
   "SampleKitty1",
   "SampleKitty2",
   "SampleKitty3",
   "SampleKitty4"
 ]
 
-var CryptoPunksNfts : [NFT] = load("punks.json")
+let CryptoPunksNfts : [NFT] = load("punks.json")
+let CryptoPunksNearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 
-var CryptoPunksDistances : [[TokenDistance]] = load("CryptoPunksDistances.json")
+let CryptoKittiesNfts : [NFT] = load("kitties.json")
 
-var CryptoKittiesNfts : [NFT] = load("kitties.json")
+let cryptoPunksTrades = CryptoPunksTrades()
+let cryptoKittiesTrades = CryptoKittiesTrades()
 
-var cryptoPunksTrades = CryptoPunksTrades()
-var cryptoKittiesTrades = CryptoKittiesTrades()
-
-var CryptoPunksCollection = Collection(
+let CryptoPunksCollection = Collection(
   info:CollectionInfo(
     address:cryptoPunksTrades.contract.contractAddressHex,
     url1:SAMPLE_PUNKS[0],
@@ -96,9 +95,10 @@ var CryptoPunksCollection = Collection(
     themeColor:Color.yellow,
     blur:0,
     samplePadding:10,
-    similarTokens : { tokenId in CryptoPunksDistances[safe:Int(0)] }),
+    similarTokens : { tokenId in CryptoPunksNearestTokens[safe:Int(tokenId)] }),
   data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
-var CryptoKittiesCollection = Collection(
+
+let CryptoKittiesCollection = Collection(
   info:CollectionInfo(
     address:cryptoKittiesTrades.contract.contractAddressHex,
     url1:SAMPLE_KITTIES[0],
@@ -112,7 +112,7 @@ var CryptoKittiesCollection = Collection(
     similarTokens: { tokenId in nil }),
   data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
-var COLLECTIONS: [Collection]=[
+let COLLECTIONS: [Collection]=[
   CryptoPunksCollection,
   CryptoKittiesCollection
 ]
@@ -131,7 +131,7 @@ struct CollectionsFactory {
   
 }
 
-var collectionsFactory = CollectionsFactory()
+let collectionsFactory = CollectionsFactory()
 
 extension Array {
   subscript (safe index: Int) -> Element? {

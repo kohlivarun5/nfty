@@ -14,7 +14,7 @@ struct SimilarTokensView: View {
   @State private var action: String? = ""
   
   var info : CollectionInfo
-  var tokens : [TokenDistance]
+  var tokens : [UInt]
   
   
   var body: some View {
@@ -41,17 +41,12 @@ struct SimilarTokensView: View {
         }
       }
     }.onAppear {
-      nfts.append(CryptoPunksNfts[0])
-      nfts.append(CryptoPunksNfts[1])
-      nfts.append(CryptoPunksNfts[2])
-      nfts.append(CryptoPunksNfts[3])
-      tokens.forEach { token in
-      
-        /* firstly {
-          collectionsFactory.getByAddress(info.address)!.data.contract.getToken(UInt(tokenId)!)
+      tokens.forEach { tokenId in
+        firstly {
+          collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)
         }.done { nft in
           nfts.append(nft)
-        } */
+        }
       }
     }
   }

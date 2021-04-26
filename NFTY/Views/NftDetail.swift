@@ -15,7 +15,7 @@ struct NftDetail: View {
   var nft:NFT
   var samples:[String]
   var themeColor : Color
-  var similarTokens : [TokenDistance]?
+  var similarTokens : [UInt]?
   
   var body: some View {
     
