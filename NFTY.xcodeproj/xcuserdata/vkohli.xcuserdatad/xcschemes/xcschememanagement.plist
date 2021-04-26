@@ -72,6 +72,11 @@
 			<key>orderHint</key>
 			<integer>24</integer>
 		</dict>
+		<key>RankImages.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>34</integer>
+		</dict>
 		<key>RankTokenImages.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
