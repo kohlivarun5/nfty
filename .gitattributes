@@ -1,2 +1,4 @@
 *.pbxproj binary
 RankTokenImages/Images/CryptoPunks filter=lfs diff=lfs merge=lfs -text
+RankImages/Results/CryptoPunks/distances.json filter=lfs diff=lfs merge=lfs -text
+RankImages/Results/CryptoPunks/distances.json binary
