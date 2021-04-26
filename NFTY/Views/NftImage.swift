@@ -89,7 +89,7 @@ struct NftImage: View {
         case .bottom:
           VStack {
             Spacer()
-            FavButton(nft:nft,size:.medium)
+            FavButton(nft:nft,size:.large)
           }
         case .none:
           VStack {
