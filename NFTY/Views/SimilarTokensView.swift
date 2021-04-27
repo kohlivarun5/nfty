@@ -28,7 +28,7 @@ struct SimilarTokensView: View {
             let nft = nfts[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor,width: .narrow)
+              RoundedImage(nft:nft,samples:samples,themeColor:info.subThemeColor,width: .narrow)
                 .scaleEffect(0.9)
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view

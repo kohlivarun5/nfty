@@ -43,6 +43,7 @@ struct CollectionInfo {
   var name: String
   var totalSupply: Int
   var themeColor:Color
+  var subThemeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
   var similarTokens : SimilarTokensGetter
@@ -94,6 +95,7 @@ let CryptoPunksCollection = Collection(
     name:"CryptoPunks",
     totalSupply:10000,
     themeColor:Color.yellow,
+    subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
     blur:0,
     samplePadding:10,
     similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
@@ -109,6 +111,7 @@ let CryptoKittiesCollection = Collection(
     name:"CryptoKitties",
     totalSupply:1997622,
     themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+    subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
     blur:0,samplePadding:0,
     similarTokens: { tokenId in nil }),
   data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
