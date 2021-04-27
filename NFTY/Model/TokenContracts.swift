@@ -41,6 +41,7 @@ protocol ContractInterface {
   var contractAddressHex: String { get }
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFT>
+  func getTokenWithoutPrice(_ tokenId:UInt) -> Promise<NFT>
 }
 
 class LogsFetcher {
@@ -190,6 +191,16 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
+  func getTokenWithoutPrice(_ tokenId: UInt) -> Promise<NFT> {
+    Promise.value(NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      url:self.imageUrl(tokenId)!,
+      indicativePriceWei:nil
+    ))
+  }
+  
 }
 
 class CryptoKittiesAuction : ContractInterface {
@@ -313,6 +324,20 @@ class CryptoKittiesAuction : ContractInterface {
         name:self.name,
         url:URL(string:kitty.image_url)!,
         indicativePriceWei:events.first.map { $0.value }
+      )
+    }
+  }
+  
+  func getTokenWithoutPrice(_ tokenId: UInt) -> Promise<NFT> {
+    return firstly {
+      self.getKitty(tokenId:BigUInt(tokenId))
+    }.compactMap { kitty in
+      return NFT(
+        address:self.contractAddressHex,
+        tokenId:UInt(tokenId),
+        name:self.name,
+        url:URL(string:kitty.image_url)!,
+        indicativePriceWei:nil
       )
     }
   }

@@ -46,7 +46,7 @@ struct SimilarTokensView: View {
     }.onAppear {
       tokens.forEach { tokenId in
         firstly {
-          collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)
+          collectionsFactory.getByAddress(info.address)!.data.contract.getTokenWithoutPrice(tokenId)
         }.done { nft in
           nfts.append(nft)
         }.catch { print($0) }
