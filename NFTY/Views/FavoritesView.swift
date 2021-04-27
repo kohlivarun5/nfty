@@ -19,7 +19,7 @@ struct FavoritesView: View {
   @State private var showSorted = false
   @State private var filterZeros = false
   @State private var selectedTokenId: UInt? = nil
-  
+   
   func dictToNfts(_ dict : FavoritesDict) -> [NFT] {
     var res : [NFT] = [];
     self.favorites.forEach { address,tokens in
@@ -27,7 +27,7 @@ struct FavoritesView: View {
         $0.map { res.append($0) }
       }
     }
-    return res;
+    return res.sorted(by: { $0.id < $1.id });
   }
   
   
@@ -99,8 +99,7 @@ struct FavoritesView: View {
         ) {
           
           let data = sorted(filtered(dictToNfts(self.favorites)));
-          ForEach(data.indices,id: \.self) { index in
-            let nft = data[index];
+          ForEach(data) { nft in
             let info = collectionsFactory.getByAddress(nft.address)!.info;
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {

@@ -20,12 +20,26 @@ struct TradeEvent {
   var blockNumber : EthereumQuantity
 }
 
-struct NFT: Hashable, Codable {
+struct NFT: Identifiable,Hashable, Codable {
+  
   var address: String
   var tokenId: UInt
   var name: String
   var url: URL
   var indicativePriceWei: BigUInt?
+  
+  struct NftID : Hashable {
+    var address: String
+    var tokenId: UInt
+    
+    static func < (lhs: NftID, rhs: NftID) -> Bool {
+      return lhs.address < rhs.address && lhs.tokenId < rhs.tokenId
+    }
+  }
+  
+  var id : NftID {
+    return NftID(address:address,tokenId:tokenId)
+  }
 }
 
 struct TokenDistance: Codable {
