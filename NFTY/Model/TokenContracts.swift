@@ -79,6 +79,8 @@ class LogsFetcher {
           let log = logs[index];
           response(log)
         }
+      } else {
+        print(result)
       }
       onDone()
     }
