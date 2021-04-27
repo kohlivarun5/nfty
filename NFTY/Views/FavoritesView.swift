@@ -39,28 +39,31 @@ struct FavoritesView: View {
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
-    // print(dict);
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
+        
+        // Check if already handled
+        switch(self.favorites[address]) {
+        case .some(let tokens):
+          switch (tokens[tokenId]) {
+          case .some(let wasFav):
+            if (isFav == (wasFav != nil)) {
+              ()
+            }
+          case .none:
+            self.favorites[address]!.updateValue(nil,forKey:tokenId)
+          }
+        case .none:
+          self.favorites.updateValue([:], forKey:address)
+        }
+        
         if (isFav) {
           firstly {
             collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
-          }.done { nft in
-            switch (self.favorites[address]) {
-              case .none:
-                self.favorites.updateValue([:], forKey:address)
-              default:
-                ()
-            }
+          }.done(on:.main) { nft in
             self.favorites[address]!.updateValue(nft,forKey:tokenId)
           }.catch { print($0) }
         } else {
-          switch (self.favorites[address]) {
-            case .none:
-              self.favorites.updateValue([:], forKey:address)
-            default:
-              ()
-          }
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
         }
       }
