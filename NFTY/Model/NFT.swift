@@ -33,7 +33,7 @@ struct NFT: Identifiable,Hashable, Codable {
     var tokenId: UInt
     
     static func < (lhs: NftID, rhs: NftID) -> Bool {
-      return lhs.address < rhs.address && lhs.tokenId < rhs.tokenId
+      return lhs.address > rhs.address && lhs.tokenId < rhs.tokenId
     }
   }
   
