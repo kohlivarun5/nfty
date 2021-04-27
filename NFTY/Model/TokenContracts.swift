@@ -271,7 +271,7 @@ class CryptoKittiesAuction : ContractInterface {
             indicativePriceWei:res["totalPrice"] as? BigUInt
           ))
         }
-      }
+      }.catch { print($0) }
     }
   }
   

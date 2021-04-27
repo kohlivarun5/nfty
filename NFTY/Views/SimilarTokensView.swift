@@ -49,7 +49,7 @@ struct SimilarTokensView: View {
           collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)
         }.done { nft in
           nfts.append(nft)
-        }
+        }.catch { print($0) }
       }
     }
   }
