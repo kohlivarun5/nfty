@@ -33,6 +33,7 @@ struct TokenDistance: Codable {
   var distance: Float
 }
 
+typealias SimilarTokensGetter = (UInt) -> [UInt]?
 struct CollectionInfo {
   var address: String
   var url1: String
@@ -44,7 +45,7 @@ struct CollectionInfo {
   var themeColor:Color
   var blur:CGFloat
   var samplePadding:CGFloat
-  var similarTokens : (UInt) -> [UInt]?
+  var similarTokens : SimilarTokensGetter
 }
 
 struct CollectionData : HasContractInterface {
@@ -76,7 +77,7 @@ let SAMPLE_KITTIES : [String] = [
 ]
 
 let CryptoPunksNfts : [NFT] = load("punks.json")
-let CryptoPunksNearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
+let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 
 let CryptoKittiesNfts : [NFT] = load("kitties.json")
 
@@ -95,7 +96,7 @@ let CryptoPunksCollection = Collection(
     themeColor:Color.yellow,
     blur:0,
     samplePadding:10,
-    similarTokens : { tokenId in CryptoPunksNearestTokens[safe:Int(tokenId)] }),
+    similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
   data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
 
 let CryptoKittiesCollection = Collection(

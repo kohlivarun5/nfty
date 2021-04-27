@@ -110,7 +110,7 @@ struct FavoritesView: View {
                   //perform some tasks if needed before opening Destination view
                   self.selectedTokenId = nft.tokenId
                 }
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens(nft.tokenId)),tag:nft.tokenId,selection:$selectedTokenId) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens),tag:nft.tokenId,selection:$selectedTokenId) {}
                 .hidden()
             }
           }

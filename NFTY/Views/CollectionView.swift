@@ -93,7 +93,7 @@ struct CollectionView: View {
                   self.action = String(nft.tokenId)
                 }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens(nft.tokenId)),tag:String(nft.tokenId),selection:$action) {}
+              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens),tag:String(nft.tokenId),selection:$action) {}
                 .hidden()
             }.onAppear {
               self.recentTrades.getRecentTrades(currentIndex:index);

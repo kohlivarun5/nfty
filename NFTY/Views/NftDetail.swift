@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PromiseKit
 import URLImage
 
 struct NftDetail: View {
@@ -15,7 +16,9 @@ struct NftDetail: View {
   var nft:NFT
   var samples:[String]
   var themeColor : Color
-  var similarTokens : [UInt]?
+  var similarTokens : SimilarTokensGetter
+  
+  @State var tokens : [UInt]? = nil
   
   var body: some View {
     
@@ -36,21 +39,29 @@ struct NftDetail: View {
             .font(.title)
         }
       }.padding()
-      similarTokens.map { tokens in
+      tokens.map { tokens in
         VStack {
           Divider()
           SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
         }
       }      
     }
+    .animation(.default)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
+    .onAppear {
+      firstly {
+        Promise.value(similarTokens(nft.tokenId))
+      }.done(on:.main) { tokens in
+        self.tokens = tokens
+      }.catch { print($0) }
+    }
   }
 }
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,similarTokens:[])
+    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,similarTokens:CryptoPunksCollection.info.similarTokens)
   }
 }
