@@ -34,10 +34,10 @@ struct CollectionView: View {
   }
   
   
-  func sorted(l:[NFT]) -> [NFT] {
+  func sorted(l:[NFTWithPrice]) -> [NFTWithPrice] {
     showSorted ? l.sorted(by:{$0.indicativePriceWei! < $1.indicativePriceWei!}) : l
   }
-  func filtered(l:[NFT]) -> [NFT] {
+  func filtered(l:[NFTWithPrice]) -> [NFTWithPrice] {
     filterZeros ? l.filter({$0.indicativePriceWei != BigUInt(0)}) : l
   }
   
@@ -86,15 +86,27 @@ struct CollectionView: View {
             let nft = data[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.themeColor)
-                .padding()
-                .onTapGesture {
-                  //perform some tasks if needed before opening Destination view
-                  self.action = String(nft.tokenId)
-                }
+              RoundedImage(
+                nft:nft.nft,
+                price:.eager(nft.indicativePriceWei),
+                samples:samples,
+                themeColor:info.themeColor,
+                width: .normal
+              )
+              .padding()
+              .onTapGesture {
+                //perform some tasks if needed before opening Destination view
+                self.action = String(nft.nft.tokenId)
+              }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor),tag:String(nft.tokenId),selection:$action) {}
-                .hidden()
+              NavigationLink(destination: NftDetail(
+                nft:nft.nft,
+                price:.eager(nft.indicativePriceWei),
+                samples:samples,
+                themeColor:info.themeColor,
+                similarTokens:info.similarTokens
+              ),tag:String(nft.nft.tokenId),selection:$action) {}
+              .hidden()
             }.onAppear {
               self.recentTrades.getRecentTrades(currentIndex:index);
             }

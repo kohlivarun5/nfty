@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
+		4F446F2326376C3600BE739E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F446F2226376C3600BE739E /* main.swift */; };
+		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
 		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
+		4F58A01F263675E700E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A01E263675E700E258C1 /* main.swift */; };
+		4F58A02F2636785400E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A02E2636785400E258C1 /* main.swift */; };
+		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
-		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; };
+		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; settings = {ASSET_TAGS = (TokenRanking, ); }; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */; };
@@ -57,9 +63,48 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4F446F1E26376C3600BE739E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		4F58A01A263675E700E258C1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		4F58A02A2636785400E258C1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
+		4F446F2026376C3600BE739E /* ParseTokenDistances */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParseTokenDistances; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
 		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		4F58A01C263675E700E258C1 /* DownloadCryptoPunks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCryptoPunks; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F58A01E263675E700E258C1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4F58A02C2636785400E258C1 /* RankImages */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RankImages; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F58A02E2636785400E258C1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
@@ -93,6 +138,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4F446F1D26376C3600BE739E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F58A019263675E700E258C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F58A0292636785400E258C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FB9A7AA262B28A300C58AF9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -122,13 +188,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F446F2126376C3600BE739E /* ParseTokenDistances */ = {
+			isa = PBXGroup;
+			children = (
+				4F446F2226376C3600BE739E /* main.swift */,
+			);
+			path = ParseTokenDistances;
+			sourceTree = "<group>";
+		};
+		4F58A01D263675E700E258C1 /* DownloadCryptoPunks */ = {
+			isa = PBXGroup;
+			children = (
+				4F58A01E263675E700E258C1 /* main.swift */,
+			);
+			path = DownloadCryptoPunks;
+			sourceTree = "<group>";
+		};
+		4F58A02D2636785400E258C1 /* RankImages */ = {
+			isa = PBXGroup;
+			children = (
+				4F58A02E2636785400E258C1 /* main.swift */,
+			);
+			path = RankImages;
+			sourceTree = "<group>";
+		};
+		4F58A06C2636942200E258C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4FB9A7A4262B28A300C58AF9 = {
 			isa = PBXGroup;
 			children = (
 				4FB9A7AF262B28A300C58AF9 /* NFTY */,
 				4FB9A7C1262B28A400C58AF9 /* NFTYTests */,
 				4FB9A7CC262B28A400C58AF9 /* NFTYUITests */,
+				4F58A01D263675E700E258C1 /* DownloadCryptoPunks */,
+				4F58A02D2636785400E258C1 /* RankImages */,
+				4F446F2126376C3600BE739E /* ParseTokenDistances */,
 				4FB9A7AE262B28A300C58AF9 /* Products */,
+				4F58A06C2636942200E258C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +239,9 @@
 				4FB9A7AD262B28A300C58AF9 /* NFTY.app */,
 				4FB9A7BE262B28A400C58AF9 /* NFTYTests.xctest */,
 				4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */,
+				4F58A01C263675E700E258C1 /* DownloadCryptoPunks */,
+				4F58A02C2636785400E258C1 /* RankImages */,
+				4F446F2026376C3600BE739E /* ParseTokenDistances */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -187,9 +291,10 @@
 			isa = PBXGroup;
 			children = (
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
-				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
+				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
+				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F4CA8002635D806001534A6 /* FavButton.swift */,
 				4F4CA8052635D813001534A6 /* BackButton.swift */,
 				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
@@ -197,6 +302,7 @@
 				4F6D3974262BE4F3007E79BB /* NftImage.swift */,
 				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
+				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -217,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */,
+				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
 				4FB9A7ED262B3A1B00C58AF9 /* landmarkData.json */,
@@ -227,6 +334,57 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F446F1F26376C3600BE739E /* ParseTokenDistances */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F446F2626376C3600BE739E /* Build configuration list for PBXNativeTarget "ParseTokenDistances" */;
+			buildPhases = (
+				4F446F1C26376C3600BE739E /* Sources */,
+				4F446F1D26376C3600BE739E /* Frameworks */,
+				4F446F1E26376C3600BE739E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ParseTokenDistances;
+			productName = ParseTokenDistances;
+			productReference = 4F446F2026376C3600BE739E /* ParseTokenDistances */;
+			productType = "com.apple.product-type.tool";
+		};
+		4F58A01B263675E700E258C1 /* DownloadCryptoPunks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F58A022263675E700E258C1 /* Build configuration list for PBXNativeTarget "DownloadCryptoPunks" */;
+			buildPhases = (
+				4F58A018263675E700E258C1 /* Sources */,
+				4F58A019263675E700E258C1 /* Frameworks */,
+				4F58A01A263675E700E258C1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DownloadCryptoPunks;
+			productName = RankTokenImages;
+			productReference = 4F58A01C263675E700E258C1 /* DownloadCryptoPunks */;
+			productType = "com.apple.product-type.tool";
+		};
+		4F58A02B2636785400E258C1 /* RankImages */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F58A0302636785400E258C1 /* Build configuration list for PBXNativeTarget "RankImages" */;
+			buildPhases = (
+				4F58A0282636785400E258C1 /* Sources */,
+				4F58A0292636785400E258C1 /* Frameworks */,
+				4F58A02A2636785400E258C1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RankImages;
+			productName = RankImages;
+			productReference = 4F58A02C2636785400E258C1 /* RankImages */;
+			productType = "com.apple.product-type.tool";
+		};
 		4FB9A7AC262B28A300C58AF9 /* NFTY */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FB9A7D2262B28A400C58AF9 /* Build configuration list for PBXNativeTarget "NFTY" */;
@@ -293,9 +451,21 @@
 		4FB9A7A5262B28A300C58AF9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					TokenRanking,
+				);
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					4F446F1F26376C3600BE739E = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					4F58A01B263675E700E258C1 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					4F58A02B2636785400E258C1 = {
+						CreatedOnToolsVersion = 12.4;
+					};
 					4FB9A7AC262B28A300C58AF9 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -330,6 +500,9 @@
 				4FB9A7AC262B28A300C58AF9 /* NFTY */,
 				4FB9A7BD262B28A400C58AF9 /* NFTYTests */,
 				4FB9A7C8262B28A400C58AF9 /* NFTYUITests */,
+				4F58A01B263675E700E258C1 /* DownloadCryptoPunks */,
+				4F58A02B2636785400E258C1 /* RankImages */,
+				4F446F1F26376C3600BE739E /* ParseTokenDistances */,
 			);
 		};
 /* End PBXProject section */
@@ -344,6 +517,7 @@
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,
+				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 			);
@@ -366,17 +540,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F446F1C26376C3600BE739E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F446F2326376C3600BE739E /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F58A018263675E700E258C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F58A01F263675E700E258C1 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F58A0282636785400E258C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F58A02F2636785400E258C1 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FB9A7A9262B28A300C58AF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
+				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
+				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F856BEF2634A1D900BB5E07 /* FirebaseData.swift in Sources */,
@@ -422,6 +622,84 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4F446F2426376C3600BE739E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F446F2526376C3600BE739E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4F58A020263675E700E258C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F58A021263675E700E258C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4F58A0312636785400E258C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F58A0322636785400E258C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		4FB9A7D0262B28A400C58AF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -546,7 +824,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTY/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;
@@ -571,7 +849,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTY/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = T6H8PH94HE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = NFTY/Info.plist;
@@ -675,6 +953,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F446F2626376C3600BE739E /* Build configuration list for PBXNativeTarget "ParseTokenDistances" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F446F2426376C3600BE739E /* Debug */,
+				4F446F2526376C3600BE739E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F58A022263675E700E258C1 /* Build configuration list for PBXNativeTarget "DownloadCryptoPunks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F58A020263675E700E258C1 /* Debug */,
+				4F58A021263675E700E258C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F58A0302636785400E258C1 /* Build configuration list for PBXNativeTarget "RankImages" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F58A0312636785400E258C1 /* Debug */,
+				4F58A0322636785400E258C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FB9A7A8262B28A300C58AF9 /* Build configuration list for PBXProject "NFTY" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

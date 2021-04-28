@@ -6,34 +6,27 @@
 //
 
 import SwiftUI
+import PromiseKit
 import URLImage
+import BigInt
 
 struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-   
+  
   var nft:NFT
+  var price:TokenPriceType
   var samples:[String]
   var themeColor : Color
+  var similarTokens : SimilarTokensGetter
+  
+  @State var tokens : [UInt]? = nil
   
   var body: some View {
     
     VStack {
-      
-      VStack {
-        ZStack {
-          NftImage(url:nft.url,samples:samples,themeColor:themeColor)
-          //.padding()
-          HStack(alignment:.bottom) {
-            Spacer()
-            VStack {
-              Spacer()
-              FavButton(nft:nft,size:.large)
-            }
-          }
-        }
-      }
-      .background(themeColor)
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:.bottom)
+        .frame(minHeight: 450)
       
       HStack() {
         VStack(alignment:.leading) {
@@ -43,23 +36,37 @@ struct NftDetail: View {
             .font(.subheadline)
         }
         Spacer()
-        nft.indicativePriceWei.map { wei in
-          UsdText(wei:wei)
-            .font(.title)
+        TokenPrice(price:price)
+          .font(.title)
+      }.padding()
+      tokens.map { tokens in
+        VStack {
+          Divider()
+          SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
         }
       }
-      .padding()
-      
-      Spacer()
     }
+    .animation(.default)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
+    .onAppear {
+      firstly {
+        Promise.value(similarTokens(nft.tokenId))
+      }.done(on:.main) { tokens in
+        self.tokens = tokens
+      }.catch { print($0) }
+    }
   }
 }
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor)
+    NftDetail(
+      nft:CryptoPunksNfts[0],
+      price:.eager(0),
+      samples:SAMPLE_PUNKS,
+      themeColor:CryptoPunksCollection.info.themeColor,
+      similarTokens:CryptoPunksCollection.info.similarTokens)
   }
 }
