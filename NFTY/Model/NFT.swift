@@ -75,11 +75,6 @@ enum TokenPriceType {
   case lazy(Promise<BigUInt?>)
 }
 
-struct TokenDistance: Codable {
-  let tokenId: Int
-  let distance: Float
-}
-
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
 struct CollectionInfo {
   let address: String
