@@ -54,14 +54,19 @@ struct NFTWithPrice : Identifiable {
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
-  let getPrice : () -> Promise<BigUInt?>
+  private let getPrice : () -> Promise<BigUInt?>
+  
+  init(nft:NFT,getPrice : @escaping () -> Promise<BigUInt?>) {
+    self.nft = nft
+    self.getPrice = getPrice
+  }
   
   var id : NFT.NftID {
     return nft.id
   }
   
   var indicativePriceWei : Promise<BigUInt?> {
-    getPrice()
+    self.getPrice()
   }
 }
 

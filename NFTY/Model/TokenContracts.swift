@@ -89,6 +89,8 @@ class LogsFetcher {
 
 class CryptoPunksContract : ContractInterface {
   
+  private var pricesCache : [UInt : Promise<BigUInt?>] = [:]
+  
   private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
     SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
@@ -165,6 +167,7 @@ class CryptoPunksContract : ContractInterface {
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+    
     Promise.value(
       NFTWithLazyPrice(
         nft:NFT(
@@ -173,23 +176,32 @@ class CryptoPunksContract : ContractInterface {
           name:self.name,
           url:self.imageUrl(tokenId)!),
         getPrice: {
-          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-          let punkBoughtFetcher = LogsFetcher(
-            event:self.PunkBought,
-            fromBlock:self.initFromBlock,
-            address:self.contractAddressHex,
-            indexedTopics: [tokenIdTopic])
           
-          let punkOfferedFetcher = LogsFetcher(
-            event:self.PunkOffered,
-            fromBlock:self.initFromBlock,
-            address:self.contractAddressHex,
-            indexedTopics: [tokenIdTopic])
-          
-          return firstly { () -> Promise<[TradeEvent]> in
-            self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
-          }.map { events in
-            return events.first.map { $0.value }
+          switch(self.pricesCache[tokenId]) {
+          case .some(let p):
+            return p
+          case .none:
+            print("New promise for \(tokenId)")
+            let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+            let punkBoughtFetcher = LogsFetcher(
+              event:self.PunkBought,
+              fromBlock:self.initFromBlock,
+              address:self.contractAddressHex,
+              indexedTopics: [tokenIdTopic])
+            
+            let punkOfferedFetcher = LogsFetcher(
+              event:self.PunkOffered,
+              fromBlock:self.initFromBlock,
+              address:self.contractAddressHex,
+              indexedTopics: [tokenIdTopic])
+            
+            let p = firstly { () -> Promise<[TradeEvent]> in
+              self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
+            }.map { events in
+              return events.first.map { $0.value }
+            }
+            self.pricesCache[tokenId] = p
+            return p
           }
         }
       )
@@ -199,6 +211,8 @@ class CryptoPunksContract : ContractInterface {
 }
 
 class CryptoKittiesAuction : ContractInterface {
+  
+  private var pricesCache : [UInt : Promise<BigUInt?>] = [:]
   
   private let AuctionSuccessful: SolidityEvent = SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
@@ -321,15 +335,22 @@ class CryptoKittiesAuction : ContractInterface {
           name:self.name,
           url:URL(string:kitty.image_url)!),
         getPrice: {
-          let auctionDoneFetcher = LogsFetcher(
-            event:self.AuctionSuccessful,
-            fromBlock:self.initFromBlock,
-            address:self.saleAuctionContract.addressHex,
-            indexedTopics: [])
-          return firstly {
-            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
-          }.compactMap { events in
-            return events.first.map { $0.value }
+          switch(self.pricesCache[tokenId]) {
+          case .some(let p):
+            return p
+          case .none:
+            let auctionDoneFetcher = LogsFetcher(
+              event:self.AuctionSuccessful,
+              fromBlock:self.initFromBlock,
+              address:self.saleAuctionContract.addressHex,
+              indexedTopics: [])
+            let p = firstly {
+              self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
+            }.map { events in
+              events.first.map { $0.value }
+            }
+            self.pricesCache[tokenId] = p
+            return p
           }
         }
       )
