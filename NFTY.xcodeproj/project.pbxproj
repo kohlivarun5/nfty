@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F446F2326376C3600BE739E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F446F2226376C3600BE739E /* main.swift */; };
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F446F2026376C3600BE739E /* ParseTokenDistances */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParseTokenDistances; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
@@ -289,8 +291,8 @@
 			isa = PBXGroup;
 			children = (
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
-				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
+				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F4CA8002635D806001534A6 /* FavButton.swift */,
@@ -300,6 +302,7 @@
 				4F6D3974262BE4F3007E79BB /* NftImage.swift */,
 				4FB9A7E3262B31D300C58AF9 /* MapView.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
+				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
+				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F856BEF2634A1D900BB5E07 /* FirebaseData.swift in Sources */,

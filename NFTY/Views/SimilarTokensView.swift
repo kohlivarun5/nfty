@@ -10,7 +10,7 @@ import PromiseKit
 
 struct SimilarTokensView: View {
   
-  @State private var nfts : [NFT] = []
+  @State private var nfts : [NFTWithLazyPrice] = []
   @State private var action: String? = ""
   
   var info : CollectionInfo
@@ -28,15 +28,27 @@ struct SimilarTokensView: View {
             let nft = nfts[index];
             let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
-              RoundedImage(nft:nft,samples:samples,themeColor:info.subThemeColor,width: .narrow)
-                .scaleEffect(0.9)
-                .onTapGesture {
-                  //perform some tasks if needed before opening Destination view
-                  self.action = String(nft.tokenId)
-                }
+              RoundedImage(
+                nft:nft.nft,
+                price:.lazy(nft.indicativePriceWei),
+                samples:samples,
+                themeColor:info.subThemeColor,
+                width: .narrow
+              )
+              //.scaleEffect(0.9)
+              .onTapGesture {
+                //perform some tasks if needed before opening Destination view
+                self.action = String(nft.nft.tokenId)
+              }
               
-              NavigationLink(destination: NftDetail(nft:nft,samples:samples,themeColor:info.themeColor,similarTokens:info.similarTokens),tag:String(nft.tokenId),selection:$action) {}
-                .hidden()
+              NavigationLink(destination: NftDetail(
+                nft:nft.nft,
+                price:.lazy(nft.indicativePriceWei),
+                samples:samples,
+                themeColor:info.themeColor,
+                similarTokens:info.similarTokens
+              ),tag:String(nft.nft.tokenId),selection:$action) {}
+              .hidden()
             }
           }
         }
@@ -46,7 +58,7 @@ struct SimilarTokensView: View {
     }.onAppear {
       tokens.forEach { tokenId in
         firstly {
-          collectionsFactory.getByAddress(info.address)!.data.contract.getTokenWithoutPrice(tokenId)
+          collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)
         }.done { nft in
           nfts.append(nft)
         }.catch { print($0) }

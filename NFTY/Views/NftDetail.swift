@@ -8,12 +8,14 @@
 import SwiftUI
 import PromiseKit
 import URLImage
+import BigInt
 
 struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-   
+  
   var nft:NFT
+  var price:TokenPriceType
   var samples:[String]
   var themeColor : Color
   var similarTokens : SimilarTokensGetter
@@ -34,17 +36,15 @@ struct NftDetail: View {
             .font(.subheadline)
         }
         Spacer()
-        nft.indicativePriceWei.map { wei in
-          UsdText(wei:wei)
-            .font(.title)
-        }
+        TokenPrice(price:price)
+          .font(.title)
       }.padding()
       tokens.map { tokens in
         VStack {
           Divider()
           SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
         }
-      }      
+      }
     }
     .animation(.default)
     .navigationBarBackButtonHidden(true)
@@ -62,6 +62,11 @@ struct NftDetail: View {
 
 struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
-    NftDetail(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,similarTokens:CryptoPunksCollection.info.similarTokens)
+    NftDetail(
+      nft:CryptoPunksNfts[0],
+      price:.eager(0),
+      samples:SAMPLE_PUNKS,
+      themeColor:CryptoPunksCollection.info.themeColor,
+      similarTokens:CryptoPunksCollection.info.similarTokens)
   }
 }

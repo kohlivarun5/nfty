@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Web3
+import PromiseKit
 
 enum TradeEventType {
   case offer
@@ -22,15 +23,14 @@ struct TradeEvent {
 
 struct NFT: Identifiable,Hashable, Codable {
   
-  var address: String
-  var tokenId: UInt
-  var name: String
-  var url: URL
-  var indicativePriceWei: BigUInt?
+  let address: String
+  let tokenId: UInt
+  let name: String
+  let url: URL
   
   struct NftID : Hashable {
-    var address: String
-    var tokenId: UInt
+    let address: String
+    let tokenId: UInt
     
     static func < (lhs: NftID, rhs: NftID) -> Bool {
       return lhs.address > rhs.address && lhs.tokenId < rhs.tokenId
@@ -42,35 +42,63 @@ struct NFT: Identifiable,Hashable, Codable {
   }
 }
 
+struct NFTWithPrice : Identifiable {
+  let nft : NFT
+  let indicativePriceWei : BigUInt?
+  
+  var id : NFT.NftID {
+    return nft.id
+  }
+  
+}
+
+struct NFTWithLazyPrice : Identifiable {
+  let nft : NFT
+  let getPrice : () -> Promise<BigUInt?>
+  
+  var id : NFT.NftID {
+    return nft.id
+  }
+  
+  var indicativePriceWei : Promise<BigUInt?> {
+    getPrice()
+  }
+}
+
+enum TokenPriceType {
+  case eager(BigUInt?)
+  case lazy(Promise<BigUInt?>)
+}
+
 struct TokenDistance: Codable {
-  var tokenId: Int
-  var distance: Float
+  let tokenId: Int
+  let distance: Float
 }
 
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
 struct CollectionInfo {
-  var address: String
-  var url1: String
-  var url2: String
-  var url3: String
-  var url4: String
-  var name: String
-  var totalSupply: Int
-  var themeColor:Color
-  var subThemeColor:Color
-  var blur:CGFloat
-  var samplePadding:CGFloat
-  var similarTokens : SimilarTokensGetter
+  let address: String
+  let url1: String
+  let url2: String
+  let url3: String
+  let url4: String
+  let name: String
+  let totalSupply: Int
+  let themeColor:Color
+  let subThemeColor:Color
+  let blur:CGFloat
+  let samplePadding:CGFloat
+  let similarTokens : SimilarTokensGetter
 }
 
 struct CollectionData : HasContractInterface {
-  var recentTrades: NftRecentTradesObject
-  var contract: ContractInterface
+  let recentTrades: NftRecentTradesObject
+  let contract: ContractInterface
 }
 
 class Collection {
-  var info : CollectionInfo
-  var data : CollectionData
+  let info : CollectionInfo
+  let data : CollectionData
   init(info:CollectionInfo,data:CollectionData) {
     self.info = info;
     self.data = data;
@@ -137,7 +165,7 @@ let COLLECTIONS: [Collection]=[
 
 struct CollectionsFactory {
   
-  private var collections : [String : Collection] = [
+  private let collections : [String : Collection] = [
     CryptoPunksCollection.info.address:CryptoPunksCollection,
     CryptoKittiesCollection.info.address:CryptoKittiesCollection
   ]

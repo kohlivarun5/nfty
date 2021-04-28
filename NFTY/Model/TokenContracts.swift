@@ -39,9 +39,8 @@ var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e14
 protocol ContractInterface {
   
   var contractAddressHex: String { get }
-  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void)
-  func getToken(_ tokenId:UInt) -> Promise<NFT>
-  func getTokenWithoutPrice(_ tokenId:UInt) -> Promise<NFT>
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
+  func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
 }
 
 class LogsFetcher {
@@ -117,15 +116,16 @@ class CryptoPunksContract : ContractInterface {
     return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
   }
   
-  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void) {
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     // print("Called getRecentTrades");
     return punksBoughtLogs.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
-      response(NFT(
-        address:self.contractAddressHex,
-        tokenId:UInt(res["punkIndex"] as! BigUInt),
-        name:self.name,
-        url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!,
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(res["punkIndex"] as! BigUInt),
+          name:self.name,
+          url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!),
         indicativePriceWei:res["value"] as? BigUInt
       ))
     }
@@ -164,41 +164,36 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFT> {
-    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-    let punkBoughtFetcher = LogsFetcher(
-      event:PunkBought,
-      fromBlock:initFromBlock,
-      address:contractAddressHex,
-      indexedTopics: [tokenIdTopic])
-    
-    let punkOfferedFetcher = LogsFetcher(
-      event:self.PunkOffered,
-      fromBlock:self.initFromBlock,
-      address:self.contractAddressHex,
-      indexedTopics: [tokenIdTopic])
-    
-    return firstly { () -> Promise<[TradeEvent]> in
-      self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
-    }.compactMap { events in
-      NFT(
-        address:self.contractAddressHex,
-        tokenId:tokenId,
-        name:self.name,
-        url:self.imageUrl(tokenId)!,
-        indicativePriceWei:events.first.map { $0.value }
+  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+    Promise.value(
+      NFTWithLazyPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          url:self.imageUrl(tokenId)!),
+        getPrice: {
+          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+          let punkBoughtFetcher = LogsFetcher(
+            event:self.PunkBought,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic])
+          
+          let punkOfferedFetcher = LogsFetcher(
+            event:self.PunkOffered,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic])
+          
+          return firstly { () -> Promise<[TradeEvent]> in
+            self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
+          }.map { events in
+            return events.first.map { $0.value }
+          }
+        }
       )
-    }
-  }
-  
-  func getTokenWithoutPrice(_ tokenId: UInt) -> Promise<NFT> {
-    Promise.value(NFT(
-      address:self.contractAddressHex,
-      tokenId:tokenId,
-      name:self.name,
-      url:self.imageUrl(tokenId)!,
-      indicativePriceWei:nil
-    ))
+    );
   }
   
 }
@@ -225,23 +220,23 @@ class CryptoKittiesAuction : ContractInterface {
     }
     
     /* func getCurrentPrice(tokenId: BigUInt) -> Promise<BigUInt?> {
-      let inputs = [SolidityFunctionParameter(name: "_tokenId", type: .uint256)]
-      let outputs = [SolidityFunctionParameter(name: "price", type: .uint256)]
-      let method = SolidityConstantFunction(name: "getCurrentPrice", inputs: inputs, outputs: outputs, handler: self)
-      print(method);
-      return firstly {
-        method.invoke(tokenId).call()
-      }.map { outputs in
-        print(outputs);
-        return outputs["price"] as? BigUInt
-      }
-    } */
+     let inputs = [SolidityFunctionParameter(name: "_tokenId", type: .uint256)]
+     let outputs = [SolidityFunctionParameter(name: "price", type: .uint256)]
+     let method = SolidityConstantFunction(name: "getCurrentPrice", inputs: inputs, outputs: outputs, handler: self)
+     print(method);
+     return firstly {
+     method.invoke(tokenId).call()
+     }.map { outputs in
+     print(outputs);
+     return outputs["price"] as? BigUInt
+     }
+     } */
   }
   
   private var name = "CryptoKitties"
   let contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
   private let saleAuctionContract = SaleAuctionContract()
-
+  
   private var auctionSuccessfulFetcher : LogsFetcher
   private let initFromBlock = BigUInt(12290614)
   
@@ -268,7 +263,7 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFT) -> Void) {
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return auctionSuccessfulFetcher.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
@@ -276,11 +271,12 @@ class CryptoKittiesAuction : ContractInterface {
         self.getKitty(tokenId:tokenId)
       }.done { kitty  in
         if (!kitty.image_url.hasSuffix(".svg")) {
-          response(NFT(
-            address:self.contractAddressHex,
-            tokenId:UInt(tokenId),
-            name:self.name,
-            url:URL(string:kitty.image_url)!,
+          response(NFTWithPrice(
+            nft:NFT(
+              address:self.contractAddressHex,
+              tokenId:UInt(tokenId),
+              name:self.name,
+              url:URL(string:kitty.image_url)!),
             indicativePriceWei:res["totalPrice"] as? BigUInt
           ))
         }
@@ -312,32 +308,30 @@ class CryptoKittiesAuction : ContractInterface {
       }
     }
   }
-   
-  func getToken(_ tokenId: UInt) -> Promise<NFT> {
-    let auctionDoneFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:saleAuctionContract.addressHex,indexedTopics: [])
-    return firstly {
-      when(fulfilled:self.getKitty(tokenId:BigUInt(tokenId)),self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10))
-    }.compactMap { kitty,events in
-      return NFT(
-        address:self.contractAddressHex,
-        tokenId:UInt(tokenId),
-        name:self.name,
-        url:URL(string:kitty.image_url)!,
-        indicativePriceWei:events.first.map { $0.value }
-      )
-    }
-  }
   
-  func getTokenWithoutPrice(_ tokenId: UInt) -> Promise<NFT> {
-    return firstly {
+  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+    
+    firstly {
       self.getKitty(tokenId:BigUInt(tokenId))
     }.compactMap { kitty in
-      return NFT(
-        address:self.contractAddressHex,
-        tokenId:UInt(tokenId),
-        name:self.name,
-        url:URL(string:kitty.image_url)!,
-        indicativePriceWei:nil
+      return NFTWithLazyPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(tokenId),
+          name:self.name,
+          url:URL(string:kitty.image_url)!),
+        getPrice: {
+          let auctionDoneFetcher = LogsFetcher(
+            event:self.AuctionSuccessful,
+            fromBlock:self.initFromBlock,
+            address:self.saleAuctionContract.addressHex,
+            indexedTopics: [])
+          return firstly {
+            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
+          }.compactMap { events in
+            return events.first.map { $0.value }
+          }
+        }
       )
     }
   }

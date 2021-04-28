@@ -7,10 +7,13 @@
 
 import SwiftUI
 import URLImage
+import BigInt
+import PromiseKit
 
 struct RoundedImage: View {
-
+  
   var nft:NFT
+  var price:TokenPriceType
   var samples : [String]
   var themeColor : Color
   
@@ -63,9 +66,7 @@ struct RoundedImage: View {
             Text("#\(nft.tokenId)")
           }
           Spacer()
-          nft.indicativePriceWei.map { wei in
-            UsdText(wei:wei)
-          }
+          TokenPrice(price:price)
         }
         .font(.subheadline)
         .padding()
@@ -85,7 +86,12 @@ struct RoundedImage: View {
 struct RoundedImage_Previews: PreviewProvider {
   static var previews: some View {
     Group {
-      RoundedImage(nft:CryptoPunksNfts[10],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,width: .normal)
+      RoundedImage(
+        nft:CryptoPunksNfts[10],
+        price:.eager(0),
+        samples:SAMPLE_PUNKS,
+        themeColor:CryptoPunksCollection.info.themeColor,
+        width: .normal)
     }
   }
 }
