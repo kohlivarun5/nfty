@@ -28,10 +28,10 @@ struct NFTYApp: App {
       TabView {
         NavigationView {
           CollectionsView(collections:COLLECTIONS)
-            .navigationBarTitle("Collections")
+            .navigationBarTitle("Gallery")
         }
         .tabItem {
-          Label("Collections", systemImage: "list.bullet.rectangle")
+          Label("Gallery", systemImage: "square.grid.3x1.fill.below.line.grid.1x2")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
@@ -41,7 +41,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Favorites")
         }
         .tabItem {
-          Label("Favorites", systemImage: "heart.text.square")
+          Label("Favorites", systemImage: "heart.circle.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)

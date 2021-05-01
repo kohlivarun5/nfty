@@ -71,39 +71,48 @@ struct FavoritesView: View {
       }
     }
   }
-  
   var body: some View {
-    
-    ScrollView {
-      LazyVStack(pinnedViews:[.sectionHeaders]){
-        ForEach(dictToNfts(self.favorites),id:\.id) { nft in
-          let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-          let samples = [info.url1,info.url2,info.url3,info.url4];
-          ZStack {
-            RoundedImage(
-              nft:nft.nft,
-              price:.lazy(nft.indicativePriceWei),
-              samples:samples,
-              themeColor:info.themeColor,
-              width: .normal
-            )
-            .padding()
-            .onTapGesture {
-              //perform some tasks if needed before opening Destination view
-              self.selectedTokenId = nft.nft.tokenId
+     
+    VStack {
+      let nfts = dictToNfts(self.favorites);
+      switch(nfts.count) {
+      case 0:
+        Text("No Favorites Added")
+          .font(.title)
+          .foregroundColor(.secondary)
+      case _:
+        ScrollView {
+          LazyVStack(pinnedViews:[.sectionHeaders]){
+            ForEach(nfts,id:\.id) { nft in
+              let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
+              let samples = [info.url1,info.url2,info.url3,info.url4];
+              ZStack {
+                RoundedImage(
+                  nft:nft.nft,
+                  price:.lazy(nft.indicativePriceWei),
+                  samples:samples,
+                  themeColor:info.themeColor,
+                  width: .normal
+                )
+                .padding()
+                .onTapGesture {
+                  //perform some tasks if needed before opening Destination view
+                  self.selectedTokenId = nft.nft.tokenId
+                }
+                NavigationLink(destination: NftDetail(
+                  nft:nft.nft,
+                  price:.lazy(nft.indicativePriceWei),
+                  samples:samples,
+                  themeColor:info.themeColor,
+                  similarTokens:info.similarTokens
+                ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                .hidden()
+              }
             }
-            NavigationLink(destination: NftDetail(
-              nft:nft.nft,
-              price:.lazy(nft.indicativePriceWei),
-              samples:samples,
-              themeColor:info.themeColor,
-              similarTokens:info.similarTokens
-            ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-            .hidden()
-          }
+          }.textCase(nil).animation(.default)
         }
-      }.textCase(nil)
-    }.animation(.default)
+      }
+    }
     .onAppear {
       firebase.observeUserFavorites {
         updateFavorites($0.value as? [String : [String : Bool]] ?? [:])

@@ -14,6 +14,8 @@ struct CollectionsView: View {
   @State private var showSorted = false
   @State private var filterZeros = false
   
+  @State private var action: String? = nil
+  
   private func sampleImage(url:String,collection:Collection) -> some View {
     Image(url)
       .interpolation(.none)
@@ -23,44 +25,50 @@ struct CollectionsView: View {
   }
   
   var body: some View {
-    List {
-      ForEach(collections,id:\.info.name) { collection in
-        ZStack {
-          
-          VStack{
-            VStack {
-              HStack {
-                sampleImage(url:collection.info.url1,collection:collection)
-                sampleImage(url:collection.info.url2,collection:collection)
-              }
-              HStack {
-                sampleImage(url:collection.info.url3,collection:collection)
-                sampleImage(url:collection.info.url4,collection:collection)
-              }
-            }
-            .background(collection.info.themeColor)
+    ScrollView {
+      LazyVStack {
+        ForEach(collections,id:\.info.name) { collection in
+          ZStack {
             
-            
-            HStack {
-              Text(collection.info.name)
+            VStack{
+              VStack {
+                HStack {
+                  sampleImage(url:collection.info.url1,collection:collection)
+                  sampleImage(url:collection.info.url2,collection:collection)
+                }
+                HStack {
+                  sampleImage(url:collection.info.url3,collection:collection)
+                  sampleImage(url:collection.info.url4,collection:collection)
+                }
+              }
+              .background(collection.info.themeColor)
+              
+              
+              HStack {
+                Text(collection.info.name)
+              }
+              .font(.headline)
+              .padding()
+              
             }
-            .font(.headline)
+            .border(Color.secondary)
+            .frame(width: 250.0)
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .overlay(
+              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
+            .shadow(radius: 3)
             .padding()
             
+            NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}
+              .hidden()
           }
-          .border(Color.secondary)
-          .frame(width: 250.0)
-          .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-          .overlay(
-            RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
-          .shadow(radius: 3)
-          .padding()
-          
-          NavigationLink(destination: CollectionView(collection:collection)) {}
-            .hidden()
+          .onTapGesture {
+            //perform some tasks if needed before opening Destination view
+            self.action = collection.info.address
+          }
         }
-      }
-    }.animation(.default)
+      }.animation(.default)
+    }
   }
 }
 

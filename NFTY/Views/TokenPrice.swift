@@ -31,7 +31,6 @@ struct TokenPrice: View {
           .padding(.trailing)
       }
     }.onAppear {
-      print(price);
       switch(price) {
       case .eager(let wei):
         switch(wei) {
