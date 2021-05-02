@@ -22,7 +22,7 @@ struct AsciiPunkView: View {
       switch(ascii) {
       case .none:
         ZStack {
-          Text(String(repeating: "\n", count: 13))
+          Text(String(repeating: "\n", count: 12))
             .font(.system(size:fontSize, design: .monospaced))
             .foregroundColor(Color.systemBackground)
             .padding()
