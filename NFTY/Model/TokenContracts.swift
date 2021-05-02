@@ -231,19 +231,6 @@ class CryptoKittiesAuction : ContractInterface {
     init() {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
     }
-    
-    /* func getCurrentPrice(tokenId: BigUInt) -> Promise<BigUInt?> {
-     let inputs = [SolidityFunctionParameter(name: "_tokenId", type: .uint256)]
-     let outputs = [SolidityFunctionParameter(name: "price", type: .uint256)]
-     let method = SolidityConstantFunction(name: "getCurrentPrice", inputs: inputs, outputs: outputs, handler: self)
-     print(method);
-     return firstly {
-     method.invoke(tokenId).call()
-     }.map { outputs in
-     print(outputs);
-     return outputs["price"] as? BigUInt
-     }
-     } */
   }
   
   private var name = "CryptoKitties"
