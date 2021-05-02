@@ -204,6 +204,8 @@ public extension Color {
   // There are more..
 }
 
+
+let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
 let asciiPunksTrades = AsciiPunksTrades()
 let SAMPLE_ASCII_PUNKS : [String] = [
   "AsciiPunk2",
@@ -221,11 +223,11 @@ let AsciiPunksCollection = Collection(
     name:"AsciiPunks",
     totalSupply:2048,
     themeColor:Color.label,
-    subThemeColor:Color.black, // TODO
+    subThemeColor:Color.label,
     collectionColor:Color.black,
     blur:0,
     samplePadding:10,
-    similarTokens : { tokenId in nil }), // TODO
+    similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
   data:CollectionData(recentTrades:asciiPunksTrades,contract:asciiPunksTrades.contract))
 
 let COLLECTIONS: [Collection]=[

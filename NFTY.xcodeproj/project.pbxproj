@@ -26,6 +26,7 @@
 		4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F856BEF2634A1D900BB5E07 /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BEE2634A1D900BB5E07 /* FirebaseData.swift */; };
+		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -116,6 +117,7 @@
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F856BEE2634A1D900BB5E07 /* FirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
+		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			isa = PBXGroup;
 			children = (
 				4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */,
+				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
 				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
@@ -521,6 +524,7 @@
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4FB9A7EE262B3A1B00C58AF9 /* landmarkData.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
+				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 			);

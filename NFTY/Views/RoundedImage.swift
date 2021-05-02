@@ -32,12 +32,12 @@ struct RoundedImage: View {
     }
   }
   
-  private func favButtonLocation(_ width:Width) -> NftImage.FavButtonLocation {
+  private func mediaSize(_ width:Width) -> NftImage.Size {
     switch(width) {
     case .normal:
-      return .top
+      return .normal
     case .narrow:
-      return .none
+      return .small
     }
   }
   
@@ -53,7 +53,7 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:favButtonLocation(width))
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,size:mediaSize(width))
       
       switch(width) {
       case .narrow:

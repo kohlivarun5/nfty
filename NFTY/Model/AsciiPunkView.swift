@@ -16,13 +16,14 @@ struct AsciiPunkView: View {
   var asciiPunk : Media.AsciiPunkLazy
   var samples : [String] // TODO Use
   var themeColor : Color
+  var fontSize : CGFloat
   var body: some View {
     VStack {
       switch(ascii) {
       case .none:
         ZStack {
           Text(String(repeating: "\n", count: 13))
-            .font(.system(size:20, design: .monospaced))
+            .font(.system(size:fontSize, design: .monospaced))
             .foregroundColor(Color.systemBackground)
             .padding()
           ProgressView()
@@ -32,7 +33,7 @@ struct AsciiPunkView: View {
         }
       case .some(let ascii):
         Text(ascii.unicode)
-          .font(.system(size:20, design: .monospaced))
+          .font(.system(size:fontSize, design: .monospaced))
           .foregroundColor(Color.systemBackground)
           .padding()
       }
@@ -55,6 +56,7 @@ struct AsciiPunkView_Previews: PreviewProvider {
                       Promise.value(Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │"))
                     }),
                   samples:SAMPLE_PUNKS,
-                  themeColor:Color.secondary)
+                  themeColor:Color.secondary,
+                  fontSize:20)
     }
 }
