@@ -41,7 +41,7 @@ struct CollectionsView: View {
                   sampleImage(url:collection.info.url4,collection:collection)
                 }
               }
-              .background(collection.info.themeColor)
+              .background(collection.info.collectionColor)
               
               
               HStack {
@@ -51,11 +51,11 @@ struct CollectionsView: View {
               .padding()
               
             }
-            .border(Color.secondary)
+            .border(Color.label)
             .frame(width: 250.0)
             .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             .overlay(
-              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
+              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.label, lineWidth: 4))
             .shadow(radius: 3)
             .padding()
             

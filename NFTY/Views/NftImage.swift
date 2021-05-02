@@ -79,6 +79,8 @@ struct NftImage: View {
       switch(nft.media){
       case .image(let url):
         NftImageImpl(url:url,samples:samples,themeColor:themeColor)
+      case .asciiPunk(let asciiPunk):
+        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor)
       }
       //.padding()
       HStack {

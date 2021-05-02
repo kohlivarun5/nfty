@@ -356,3 +356,90 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
 }
+
+class AsciiPunksContract : ContractInterface {
+  
+  private var drawingCache : [BigUInt : Promise<Media.AsciiPunk?>] = [:]
+  
+  private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
+    SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
+    SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
+    SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
+  ])
+  
+  private var name = "AsciiPunks"
+  
+  let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
+  private var transfer : LogsFetcher
+  private var initFromBlock = BigUInt(12290614)
+  
+  class EthContract : EthereumContract {
+    let eth = web3.eth
+    let events : [SolidityEvent] = []
+    let addressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
+    var address : EthereumAddress?
+    init() {
+      address = try? EthereumAddress(hex:addressHex, eip55: false)
+    }
+    
+    func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
+      let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
+      print(method);
+      return firstly {
+        method.invoke(tokenId).call()
+      }.map { outputs in
+        print(outputs);
+        return Media.AsciiPunk(unicode:outputs["uri"] as! String)
+      }
+    }
+  }
+  private var ethContract = EthContract()
+  
+  init () {
+    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+  }
+  
+  private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
+    switch(self.drawingCache[tokenId]) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = ethContract.draw(tokenId);
+      self.drawingCache[tokenId] = p
+      return p
+    }
+  }
+  
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    return transfer.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(res["tokenId"] as! BigUInt),
+          name:self.name,
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:res["tokenId"] as! BigUInt, draw: self.draw))),
+        indicativePriceWei:nil
+      ))
+    }
+  }
+  
+  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+    
+    Promise.value(
+      NFTWithLazyPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        getPrice: {
+          return Promise.value(nil)
+        }
+      )
+    );
+  }
+  
+}

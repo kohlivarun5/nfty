@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
+		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
 		4F446F2326376C3600BE739E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F446F2226376C3600BE739E /* main.swift */; };
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
@@ -95,6 +96,7 @@
 
 /* Begin PBXFileReference section */
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
+		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
 		4F446F2026376C3600BE739E /* ParseTokenDistances */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParseTokenDistances; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
 				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
@@ -572,6 +575,7 @@
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
+				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
