@@ -76,7 +76,10 @@ struct NftImage: View {
   
   var body: some View {
     ZStack {
-      NftImageImpl(url:nft.url,samples:samples,themeColor:themeColor)
+      switch(nft.media){
+      case .image(let url):
+        NftImageImpl(url:url,samples:samples,themeColor:themeColor)
+      }
       //.padding()
       HStack {
         Spacer()
@@ -102,6 +105,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
     static var previews: some View {
-      NftImage(nft:CryptoPunksNfts[0],samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,favButtonLocation:.top)
+      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,favButtonLocation:.top)
     }
 }

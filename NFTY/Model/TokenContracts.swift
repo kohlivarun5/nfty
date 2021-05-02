@@ -127,7 +127,7 @@ class CryptoPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(res["punkIndex"] as! BigUInt),
           name:self.name,
-          url:self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!),
+          media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
         indicativePriceWei:res["value"] as? BigUInt
       ))
     }
@@ -174,7 +174,7 @@ class CryptoPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          url:self.imageUrl(tokenId)!),
+          media:.image(self.imageUrl(tokenId)!)),
         getPrice: {
           
           switch(self.pricesCache[tokenId]) {
@@ -289,7 +289,7 @@ class CryptoKittiesAuction : ContractInterface {
               address:self.contractAddressHex,
               tokenId:UInt(tokenId),
               name:self.name,
-              url:URL(string:kitty.image_url)!),
+              media:.image(URL(string:kitty.image_url)!)),
             indicativePriceWei:res["totalPrice"] as? BigUInt
           ))
         }
@@ -332,7 +332,7 @@ class CryptoKittiesAuction : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(tokenId),
           name:self.name,
-          url:URL(string:kitty.image_url)!),
+          media:.image(URL(string:kitty.image_url)!)),
         getPrice: {
           switch(self.pricesCache[tokenId]) {
           case .some(let p):

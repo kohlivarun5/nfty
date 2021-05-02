@@ -21,12 +21,64 @@ struct TradeEvent {
   var blockNumber : EthereumQuantity
 }
 
+enum Media {
+  case image(URL)
+}
+
+extension Media: Codable {
+  
+  enum Key: CodingKey {
+    case rawValue
+    case associatedValue
+  }
+  
+  enum CodingError: Error {
+    case unknownValue
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: Key.self)
+    let rawValue = try container.decode(Int.self, forKey: .rawValue)
+    switch rawValue {
+    case 0:
+      self = .image(try container.decode(URL.self, forKey: .associatedValue))
+    default:
+      throw CodingError.unknownValue
+    }
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: Key.self)
+    switch self {
+    case .image(let url):
+      try container.encode(0, forKey: .rawValue)
+      try container.encode(url, forKey: .associatedValue)
+    }
+  }
+}
+
+extension Media: Hashable,Equatable {
+  static func ==(lhs: Media, rhs: Media) -> Bool {
+    switch (lhs, rhs) {
+    case (let .image(url1), let .image(url2)):
+      return url1 == url2
+    }
+  }
+  
+  var hashValue: Int {
+    switch self {
+    case .image(let url):
+      return url.hashValue
+    }
+  }
+}
+
 struct NFT: Identifiable,Hashable, Codable {
   
   let address: String
   let tokenId: UInt
   let name: String
-  let url: URL
+  let media: Media
   
   struct NftID : Hashable {
     let address: String
@@ -119,10 +171,12 @@ let SAMPLE_KITTIES : [String] = [
   "SampleKitty4"
 ]
 
-let CryptoPunksNfts : [NFT] = load("punks.json")
-let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
+let SampleToken = NFT(
+  address: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
+  tokenId: 340, name: "CryptoPunks",
+  media: .image(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!))
 
-let CryptoKittiesNfts : [NFT] = load("kitties.json")
+let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 
 let cryptoPunksTrades = CryptoPunksTrades()
 let cryptoKittiesTrades = CryptoKittiesTrades()

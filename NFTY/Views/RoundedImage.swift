@@ -87,7 +87,7 @@ struct RoundedImage_Previews: PreviewProvider {
   static var previews: some View {
     Group {
       RoundedImage(
-        nft:CryptoPunksNfts[10],
+        nft:SampleToken,
         price:.eager(0),
         samples:SAMPLE_PUNKS,
         themeColor:CryptoPunksCollection.info.themeColor,

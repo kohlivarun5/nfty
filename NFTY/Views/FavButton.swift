@@ -52,6 +52,6 @@ struct FavButton: View {
 
 struct FavButton_Previews: PreviewProvider {
   static var previews: some View {
-    FavButton(nft: CryptoPunksNfts[0],size:.large)
+    FavButton(nft: SampleToken,size:.large)
   }
 }
