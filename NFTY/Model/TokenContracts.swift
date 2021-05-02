@@ -359,10 +359,6 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-  // TODO
-  
-  private var pricesCache : [UInt : Promise<BigUInt?>] = [:]
-  
   private var drawingCache : [BigUInt : Promise<Media.AsciiPunk?>] = [:]
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
@@ -371,14 +367,7 @@ class AsciiPunksContract : ContractInterface {
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
-  private let PunkOffered: SolidityEvent = SolidityEvent(name: "PunkOffered", anonymous: false, inputs: [
-    SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
-    SolidityEvent.Parameter(name: "minValue", type: .uint256, indexed: false),
-    SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
-  ])
-  
   private var name = "AsciiPunks"
-  
   
   let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
   private var transfer : LogsFetcher
@@ -424,7 +413,6 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    // print("Called getRecentTrades");
     return transfer.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       response(NFTWithPrice(
