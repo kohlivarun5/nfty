@@ -51,11 +51,11 @@ struct CollectionsView: View {
               .padding()
               
             }
-            .border(Color.secondary)
+            .border(Color.label)
             .frame(width: 250.0)
             .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             .overlay(
-              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.gray, lineWidth: 4))
+              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.label, lineWidth: 4))
             .shadow(radius: 3)
             .padding()
             
