@@ -22,7 +22,7 @@ var USD_PER_ETH=2300.0;
 struct UsdText: View {
     var wei:BigUInt
     var body: some View {
-        Text(currencyFormatter.string(for:(Double(wei / BigUInt(1e18)) * USD_PER_ETH))!)
+        Text(currencyFormatter.string(for:((Double(wei) / 1e18) * USD_PER_ETH))!)
     }
 }
 

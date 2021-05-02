@@ -413,14 +413,39 @@ class AsciiPunksContract : ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-      response(NFTWithPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:UInt(res["tokenId"] as! BigUInt),
-          name:self.name,
-          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:res["tokenId"] as! BigUInt, draw: self.draw))),
-        indicativePriceWei:nil
-      ))
+      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      
+      let onPrice = { (indicativePriceWei:BigUInt?) in
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          indicativePriceWei:indicativePriceWei
+        ))
+      };
+      
+      let txHash = log.transactionHash;
+      
+      firstly { () -> Promise<EthereumTransactionObject?> in
+        switch(txHash) {
+        case .none:
+          return Promise<EthereumTransactionObject?>.value(nil)
+        case .some(let txHash):
+          return web3.eth.getTransactionByHash(blockHash: txHash)
+        }
+      }.done { (txData:EthereumTransactionObject?) in
+        switch(txData) {
+        case .none:
+          onPrice(nil)
+        case .some(let tx):
+          onPrice(tx.value.quantity != 0 ? tx.value.quantity : nil)
+        }
+      }.catch { error in
+        print(error);
+        onPrice(nil)
+      }
     }
   }
   
