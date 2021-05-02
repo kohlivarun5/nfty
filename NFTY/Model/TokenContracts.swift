@@ -181,7 +181,6 @@ class CryptoPunksContract : ContractInterface {
           case .some(let p):
             return p
           case .none:
-            print("New promise for \(tokenId)")
             let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
             let punkBoughtFetcher = LogsFetcher(
               event:self.PunkBought,
