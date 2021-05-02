@@ -22,13 +22,11 @@ class NftRecentTradesObject : ObservableObject {
   var recentTradesPublished: Published<[NFTWithPrice]> { _recentTrades }
   var recentTradesPublisher: Published<[NFTWithPrice]>.Publisher { $recentTrades }
   
-  func getRecentTrades(currentIndex:Int?) {}
-}
-
-class CryptoPunksTrades : NftRecentTradesObject {
-    
-  var contract : ContractInterface = CryptoPunksContract()
   private var isLoading = false
+  var contract : ContractInterface
+  init(contract:ContractInterface) {
+    self.contract = contract
+  }
   
   private func loadMore() {
     guard !isLoading else {
@@ -41,68 +39,7 @@ class CryptoPunksTrades : NftRecentTradesObject {
     }
   }
   
-  override func getRecentTrades(currentIndex:Int?) {
-    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
-    guard let index = currentIndex else {
-      loadMore()
-      return
-    }
-    
-    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
-    if index >= thresholdIndex {
-      loadMore()
-    }
-  }
-}
-
-class CryptoKittiesTrades : NftRecentTradesObject,HasContractInterface {
-  
-  var contract : ContractInterface = CryptoKittiesAuction()
-  
-  private var isLoading = false
-  
-  private func loadMore() {
-    guard !isLoading else {
-      return
-    }
-    contract.getRecentTrades(onDone:{self.isLoading = false}) { nft in
-      DispatchQueue.main.async {
-        self.recentTrades.append(nft)
-      }
-    }
-  }
-  
-  override func getRecentTrades(currentIndex:Int?) {
-    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
-    guard let index = currentIndex else {
-      loadMore()
-      return
-    }
-    
-    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
-    if index >= thresholdIndex {
-      loadMore()
-    }
-  }
-}
-
-class AsciiPunksTrades : NftRecentTradesObject {
-  
-  var contract : ContractInterface = AsciiPunksContract()
-  private var isLoading = false
-  
-  private func loadMore() {
-    guard !isLoading else {
-      return
-    }
-    contract.getRecentTrades(onDone:{self.isLoading = false}) { nft in
-      DispatchQueue.main.async {
-        self.recentTrades.append(nft)
-      }
-    }
-  }
-  
-  override func getRecentTrades(currentIndex:Int?) {
+  func getRecentTrades(currentIndex:Int?) {
     // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore()

@@ -151,8 +151,9 @@ let SampleToken = NFT(
 
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 
-let cryptoPunksTrades = CryptoPunksTrades()
-let cryptoKittiesTrades = CryptoKittiesTrades()
+let cryptoPunksTrades = NftRecentTradesObject(contract:CryptoPunksContract())
+let cryptoKittiesTrades = NftRecentTradesObject(contract:CryptoKittiesAuction())
+let asciiPunksTrades = NftRecentTradesObject(contract:AsciiPunksContract())
 
 let CryptoPunksCollection = Collection(
   info:CollectionInfo(
@@ -206,7 +207,6 @@ public extension Color {
 
 
 let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
-let asciiPunksTrades = AsciiPunksTrades()
 let SAMPLE_ASCII_PUNKS : [String] = [
   "AsciiPunk2",
   "AsciiPunk1000",
