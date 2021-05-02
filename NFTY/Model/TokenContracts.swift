@@ -386,11 +386,9 @@ class AsciiPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
-      print(method);
       return firstly {
         method.invoke(tokenId).call()
       }.map { outputs in
-        print(outputs);
         return Media.AsciiPunk(unicode:outputs["uri"] as! String)
       }
     }

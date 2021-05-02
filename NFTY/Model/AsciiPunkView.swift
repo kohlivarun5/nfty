@@ -20,10 +20,16 @@ struct AsciiPunkView: View {
     VStack {
       switch(ascii) {
       case .none:
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(anchor: .center)
-          .padding(.trailing)
+        ZStack {
+          Text(String(repeating: "\n", count: 13))
+            .font(.system(size:20, design: .monospaced))
+            .foregroundColor(Color.systemBackground)
+            .padding()
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: Color.systemBackground))
+            .scaleEffect(2,anchor: .center)
+            .padding(.trailing)
+        }
       case .some(let ascii):
         Text(ascii.unicode)
           .font(.system(size:20, design: .monospaced))
@@ -36,9 +42,8 @@ struct AsciiPunkView: View {
       firstly {
         asciiPunk.ascii
       }.done(on:.main) { ascii in
-        print(ascii?.unicode);
         self.ascii = ascii
-      }
+      }.catch { print($0) }
     }
   }
 }
