@@ -4,4 +4,5 @@ RankTokenImages/Images/CryptoPunks filter=lfs diff=lfs merge=lfs -text
 NFTY/Resources/CryptoPunksDistances.json filter=lfs diff=lfs merge=lfs -text
 NFTY/Resources/CryptoPunksDistances.json binary
 NFTY/Resources/CryptoPunks_nearestTokens.json filter=lfs diff=lfs merge=lfs -text
-RankTokenImages/Images/AsciiPunks/png/ filter=lfs diff=lfs merge=lfs -text
+DownloadCryptoPunks/Images/ filter=lfs diff=lfs merge=lfs -text
+NFTY/Resources/AsciiPunks_nearestTokens.json filter=lfs diff=lfs merge=lfs -text

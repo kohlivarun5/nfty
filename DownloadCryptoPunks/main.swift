@@ -37,7 +37,7 @@ for tokenId in 1...totalSize {
       .appendingPathComponent("../")
       .appendingPathComponent("Github")
       .appendingPathComponent("NFTY")
-      .appendingPathComponent("RankTokenImages")
+      .appendingPathComponent("DownloadCryptoPunks")
       .appendingPathComponent("Images")
       .appendingPathComponent(collectionName)
       .appendingPathComponent("png")

@@ -8,7 +8,7 @@
 import Foundation
 import Vision
 
-let isFull = false
+let isFull = true
 
 let totalSupply = isFull ? 1704 : 10
 let collectionName = "AsciiPunks"
@@ -67,11 +67,11 @@ struct TokenDistance: Codable {
 print("Creating Data")
 var distances : [[TokenDistance]] = Array(repeating: [], count: totalSupply+1)
 for tokenId in 1...totalSupply {
-  distances[tokenId] = Array(repeating:TokenDistance(tokenId:-1,distance:-1),count:totalSupply)
+  distances[tokenId] = Array(repeating:TokenDistance(tokenId:-1,distance:-1),count:totalSupply+1)
 }
 
 print("Creating images")
-var tokenImages : [VNFeaturePrintObservation?] = Array(repeating:nil, count: totalSupply)
+var tokenImages : [VNFeaturePrintObservation?] = Array(repeating:nil, count: totalSupply+1)
 
 func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
   switch(tokenImages[tokenId]) {
