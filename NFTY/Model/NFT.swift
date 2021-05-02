@@ -110,6 +110,7 @@ struct CollectionInfo {
   let totalSupply: Int
   let themeColor:Color
   let subThemeColor:Color
+  let collectionColor:Color
   let blur:CGFloat
   let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter
@@ -164,6 +165,7 @@ let CryptoPunksCollection = Collection(
     totalSupply:10000,
     themeColor:Color.yellow,
     subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
+    collectionColor:Color.yellow,
     blur:0,
     samplePadding:10,
     similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
@@ -180,6 +182,7 @@ let CryptoKittiesCollection = Collection(
     totalSupply:1997622,
     themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
     subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+    collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
     blur:0,samplePadding:0,
     similarTokens: { tokenId in nil }),
   data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
@@ -202,7 +205,12 @@ public extension Color {
 }
 
 let asciiPunksTrades = AsciiPunksTrades()
-let SAMPLE_ASCII_PUNKS = SAMPLE_PUNKS // TODO
+let SAMPLE_ASCII_PUNKS : [String] = [
+  "AsciiPunk2",
+  "AsciiPunk1000",
+  "AsciiPunk1321",
+  "AsciiPunk1307"
+]
 let AsciiPunksCollection = Collection(
   info:CollectionInfo(
     address:asciiPunksTrades.contract.contractAddressHex,
@@ -213,7 +221,8 @@ let AsciiPunksCollection = Collection(
     name:"AsciiPunks",
     totalSupply:2048,
     themeColor:Color.label,
-    subThemeColor:Color.label,// TODO
+    subThemeColor:Color.black, // TODO
+    collectionColor:Color.black,
     blur:0,
     samplePadding:10,
     similarTokens : { tokenId in nil }), // TODO

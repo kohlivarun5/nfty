@@ -41,7 +41,7 @@ struct CollectionsView: View {
                   sampleImage(url:collection.info.url4,collection:collection)
                 }
               }
-              .background(collection.info.themeColor)
+              .background(collection.info.collectionColor)
               
               
               HStack {

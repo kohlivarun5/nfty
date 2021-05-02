@@ -363,6 +363,8 @@ class AsciiPunksContract : ContractInterface {
   
   private var pricesCache : [UInt : Promise<BigUInt?>] = [:]
   
+  private var drawingCache : [BigUInt : Promise<Media.AsciiPunk?>] = [:]
+  
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
@@ -411,7 +413,14 @@ class AsciiPunksContract : ContractInterface {
   }
   
   private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
-    return ethContract.draw(tokenId)
+    switch(self.drawingCache[tokenId]) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = ethContract.draw(tokenId);
+      self.drawingCache[tokenId] = p
+      return p
+    }
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
