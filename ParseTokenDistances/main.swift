@@ -16,7 +16,7 @@ func getDocumentsDirectory() -> URL {
   return paths[0]
 }
 
-let collectionName = "CryptoPunks"
+let collectionName = "AsciiPunks"
 //let totalSupply = 10000
 
 struct TokenDistance: Codable {
@@ -67,7 +67,7 @@ var closestNeighborsNum = 100
 let nearestNeighbors = distances.map { tokenDistances in
   tokenDistances
     .prefix(closestNeighborsNum)
-    .filter { $0.distance != 0 }
+    .filter { $0.distance > 0 }
 }
 
 let nearestTokens = nearestNeighbors.map { tokenDistances in

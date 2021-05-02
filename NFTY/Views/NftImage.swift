@@ -66,13 +66,24 @@ struct NftImage: View {
   var samples:[String]
   var themeColor : Color
   
-  enum FavButtonLocation {
-    case top
-    case bottom
-    case none
+  enum Size {
+    case small
+    case normal
+    case large
   }
   
-  var favButtonLocation : FavButtonLocation
+  var size : Size
+  
+  private func fontSize(_ size:Size) -> CGFloat {
+    switch (size) {
+    case .small:
+      return 8
+    case .normal:
+      return 18
+    case .large:
+      return 23
+    }
+  }
   
   var body: some View {
     ZStack {
@@ -80,23 +91,23 @@ struct NftImage: View {
       case .image(let url):
         NftImageImpl(url:url,samples:samples,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor)
+        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
       }
       //.padding()
       HStack {
         Spacer()
-        switch(favButtonLocation) {
-        case .top:
+        switch(size) {
+        case .normal:
           VStack {
             FavButton(nft:nft,size:.medium)
             Spacer()
           }
-        case .bottom:
+        case .large:
           VStack {
             Spacer()
             FavButton(nft:nft,size:.large)
           }
-        case .none:
+        case .small:
           VStack {
           }
         }
@@ -107,6 +118,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
     static var previews: some View {
-      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,favButtonLocation:.top)
+      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,size:.normal)
     }
 }

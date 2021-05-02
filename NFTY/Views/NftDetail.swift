@@ -25,7 +25,7 @@ struct NftDetail: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,favButtonLocation:.bottom)
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,size:.large)
         .frame(minHeight: 450)
       
       HStack() {
@@ -42,7 +42,7 @@ struct NftDetail: View {
       tokens.map { tokens in
         VStack {
           Divider()
-          SimilarTokensView(info:CryptoPunksCollection.info,tokens:tokens)
+          SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
         }
       }
     }
