@@ -27,7 +27,7 @@ struct AsciiPunkView: View {
             .foregroundColor(Color.systemBackground)
             .padding()
           ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: Color.systemBackground))
+            .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
             .scaleEffect(2,anchor: .center)
             .padding(.trailing)
         }
