@@ -10,8 +10,8 @@ import Vision
 
 let isFull = false
 
-let totalSupply = isFull ? 10000 : 10
-let collectionName = "CryptoPunks"
+let totalSupply = isFull ? 1704 : 10
+let collectionName = "AsciiPunks"
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -27,7 +27,7 @@ func loadImageData(tokenId:Int) -> Data {
     .appendingPathComponent("Images")
     .appendingPathComponent(collectionName)
     .appendingPathComponent("png")
-    .appendingPathComponent("punk\(String(format: "%04d", Int(tokenId))).png")
+    .appendingPathComponent("\(tokenId).png")
   return try! Data(contentsOf: filename)
 }
 
@@ -65,8 +65,8 @@ struct TokenDistance: Codable {
 }
 
 print("Creating Data")
-var distances : [[TokenDistance]] = Array(repeating: [], count: totalSupply)
-for tokenId in 0...(totalSupply - 1) {
+var distances : [[TokenDistance]] = Array(repeating: [], count: totalSupply+1)
+for tokenId in 1...totalSupply {
   distances[tokenId] = Array(repeating:TokenDistance(tokenId:-1,distance:-1),count:totalSupply)
 }
 
@@ -84,10 +84,10 @@ func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
   }
 }
 
-for tokenId in 0...(totalSupply - 1) {
+for tokenId in 1...totalSupply {
   print("Starting tokenId=\(tokenId)")
   let image1 = getTokenImageObservation(tokenId)
-  for tokenId2 in 0...(totalSupply - 1) {
+  for tokenId2 in 1...totalSupply {
     let image2 = getTokenImageObservation(tokenId2)
     try image1!.computeDistance(&distances[tokenId][tokenId2].distance, to: image2!)
     distances[tokenId][tokenId2].tokenId = tokenId2

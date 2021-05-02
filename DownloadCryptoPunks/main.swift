@@ -19,14 +19,14 @@ func downloadImageUrl(url:URL) -> Data? {
 }
 
 private func makeImageUrl(_ tokenId:UInt) -> URL? {
-  return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
+  return URL(string:"https://api.asciipunks.com/punks/\(tokenId)/rendered.png")
 }
 
-var collectionName = "CryptoPunks"
-let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 9999 //CryptoPunksCollection.info.totalSupply
+var collectionName = "AsciiPunks"
+// let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+let totalSize = 1704 //CryptoPunksCollection.info.totalSupply
 
-for tokenId in 0...totalSize {
+for tokenId in 1...totalSize {
   
   let imageUrl = makeImageUrl(UInt(tokenId))
   print(imageUrl);
@@ -41,7 +41,7 @@ for tokenId in 0...totalSize {
       .appendingPathComponent("Images")
       .appendingPathComponent(collectionName)
       .appendingPathComponent("png")
-      .appendingPathComponent("punk\(String(format: "%04d", Int(tokenId))).png")
+      .appendingPathComponent("\(tokenId).png")
     data.flatMap { try! $0.write(to: filename) }
   case .none:
     print("Bad URL:\(imageUrl)")
