@@ -184,6 +184,23 @@ let CryptoKittiesCollection = Collection(
     similarTokens: { tokenId in nil }),
   data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
+
+public extension Color {
+  static let lightText = Color(UIColor.lightText)
+  static let darkText = Color(UIColor.darkText)
+  
+  static let label = Color(UIColor.label)
+  static let secondaryLabel = Color(UIColor.secondaryLabel)
+  static let tertiaryLabel = Color(UIColor.tertiaryLabel)
+  static let quaternaryLabel = Color(UIColor.quaternaryLabel)
+  
+  static let systemBackground = Color(UIColor.systemBackground)
+  static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
+  static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
+  
+  // There are more..
+}
+
 let asciiPunksTrades = AsciiPunksTrades()
 let SAMPLE_ASCII_PUNKS = SAMPLE_PUNKS // TODO
 let AsciiPunksCollection = Collection(
@@ -195,8 +212,8 @@ let AsciiPunksCollection = Collection(
     url4:SAMPLE_ASCII_PUNKS[3],
     name:"AsciiPunks",
     totalSupply:2048,
-    themeColor:Color.black,
-    subThemeColor:Color.black,// TODO
+    themeColor:Color.label,
+    subThemeColor:Color.label,// TODO
     blur:0,
     samplePadding:10,
     similarTokens : { tokenId in nil }), // TODO
@@ -213,12 +230,11 @@ struct CollectionsFactory {
   private let collections : [String : Collection] = [
     CryptoPunksCollection.info.address:CryptoPunksCollection,
     CryptoKittiesCollection.info.address:CryptoKittiesCollection,
-    // AsciiPunksCollection.info.address:AsciiPunksCollection
+    AsciiPunksCollection.info.address:AsciiPunksCollection,
   ]
   
   func getByAddress(_ address:String) -> Collection? {
     return collections[address]
-    //return nil
   }
   
 }
@@ -230,3 +246,4 @@ extension Array {
     return indices ~= index ? self[index] : nil
   }
 }
+

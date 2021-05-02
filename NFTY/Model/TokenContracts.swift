@@ -377,15 +377,12 @@ class AsciiPunksContract : ContractInterface {
   
   private var name = "AsciiPunks"
   
+  
   let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
   private var transfer : LogsFetcher
   private var initFromBlock = BigUInt(12290614)
   
-  init () {
-    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
-  }
-  
-  class SaleAuctionContract : EthereumContract {
+  class EthContract : EthereumContract {
     let eth = web3.eth
     let events : [SolidityEvent] = []
     let addressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
@@ -394,44 +391,28 @@ class AsciiPunksContract : ContractInterface {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
     }
     
-    private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
+    func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
-    print(method);
-    return firstly {
-    method.invoke(tokenId).call()
-    }.map { outputs in
-    print(outputs);
-    return Media.AsciiPunk(unicode:outputs["uri"] as! String)
-    }
-    
-    
-  
-  private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
-    
-    /*
-    function draw(uint256 tokenId) external view validNFToken(tokenId) returns (string memory)
-    {
-      string memory uri = AsciiPunkFactory.draw(idToSeed[tokenId]);
-      return uri;
-    }
-     */
-    
-    let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
-    let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
-    let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
-    print(method);
-    return firstly {
-      method.invoke(tokenId).call()
-    }.map { outputs in
-      print(outputs);
-      return Media.AsciiPunk(unicode:outputs["uri"] as! String)
+      print(method);
+      return firstly {
+        method.invoke(tokenId).call()
+      }.map { outputs in
+        print(outputs);
+        return Media.AsciiPunk(unicode:outputs["uri"] as! String)
+      }
     }
   }
+  private var ethContract = EthContract()
   
-  //   return Promise.value(Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │"))
-  // }
+  init () {
+    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+  }
+  
+  private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
+    return ethContract.draw(tokenId)
+  }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     // print("Called getRecentTrades");
