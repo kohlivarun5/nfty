@@ -22,58 +22,30 @@ struct TradeEvent {
 }
 
 enum Media {
+  
+  struct AsciiPunk {
+    let unicode : String
+  }
+  
+  struct AsciiPunkLazy {
+    private var tokenId : BigUInt
+    private let draw : (BigUInt) -> Promise<AsciiPunk?>
+    
+    init(tokenId:BigUInt,draw : @escaping (BigUInt) -> Promise<AsciiPunk?>) {
+      self.tokenId = tokenId
+      self.draw = draw
+    }
+    
+    var ascii : Promise<AsciiPunk?> {
+      self.draw(self.tokenId)
+    }
+  }
+  
   case image(URL)
+  case asciiPunk(AsciiPunkLazy)
 }
 
-extension Media: Codable {
-  
-  enum Key: CodingKey {
-    case rawValue
-    case associatedValue
-  }
-  
-  enum CodingError: Error {
-    case unknownValue
-  }
-  
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: Key.self)
-    let rawValue = try container.decode(Int.self, forKey: .rawValue)
-    switch rawValue {
-    case 0:
-      self = .image(try container.decode(URL.self, forKey: .associatedValue))
-    default:
-      throw CodingError.unknownValue
-    }
-  }
-  
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: Key.self)
-    switch self {
-    case .image(let url):
-      try container.encode(0, forKey: .rawValue)
-      try container.encode(url, forKey: .associatedValue)
-    }
-  }
-}
-
-extension Media: Hashable,Equatable {
-  static func ==(lhs: Media, rhs: Media) -> Bool {
-    switch (lhs, rhs) {
-    case (let .image(url1), let .image(url2)):
-      return url1 == url2
-    }
-  }
-  
-  var hashValue: Int {
-    switch self {
-    case .image(let url):
-      return url.hashValue
-    }
-  }
-}
-
-struct NFT: Identifiable,Hashable, Codable {
+struct NFT: Identifiable {
   
   let address: String
   let tokenId: UInt
@@ -212,16 +184,36 @@ let CryptoKittiesCollection = Collection(
     similarTokens: { tokenId in nil }),
   data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
 
+let asciiPunksTrades = AsciiPunksTrades()
+let SAMPLE_ASCII_PUNKS = SAMPLE_PUNKS // TODO
+let AsciiPunksCollection = Collection(
+  info:CollectionInfo(
+    address:asciiPunksTrades.contract.contractAddressHex,
+    url1:SAMPLE_ASCII_PUNKS[0],
+    url2:SAMPLE_ASCII_PUNKS[1],
+    url3:SAMPLE_ASCII_PUNKS[2],
+    url4:SAMPLE_ASCII_PUNKS[3],
+    name:"AsciiPunks",
+    totalSupply:2048,
+    themeColor:Color.black,
+    subThemeColor:Color.black,// TODO
+    blur:0,
+    samplePadding:10,
+    similarTokens : { tokenId in nil }), // TODO
+  data:CollectionData(recentTrades:asciiPunksTrades,contract:asciiPunksTrades.contract))
+
 let COLLECTIONS: [Collection]=[
   CryptoPunksCollection,
-  CryptoKittiesCollection
+  CryptoKittiesCollection,
+  AsciiPunksCollection
 ]
 
 struct CollectionsFactory {
   
   private let collections : [String : Collection] = [
     CryptoPunksCollection.info.address:CryptoPunksCollection,
-    CryptoKittiesCollection.info.address:CryptoKittiesCollection
+    CryptoKittiesCollection.info.address:CryptoKittiesCollection,
+    // AsciiPunksCollection.info.address:AsciiPunksCollection
   ]
   
   func getByAddress(_ address:String) -> Collection? {

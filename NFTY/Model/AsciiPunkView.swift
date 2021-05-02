@@ -1,20 +1,33 @@
 //
-//  NftImage.swift
+//  AsciiPunkView.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 4/17/21.
+//  Created by Varun Kohli on 5/1/21.
 //
 
 import SwiftUI
 import URLImage
+import PromiseKit
 
-struct NftImageImpl: View {
-  var url : URL
+struct AsciiPunkView: View {
+  @State private var ascii : Media.AsciiPunk? = nil
+  
+  var asciiPunk : Media.AsciiPunkLazy
   var samples : [String]
   var themeColor : Color
-    var body: some View {
+  var body: some View {
+    VStack {
+      switch(ascii) {
+      case .none:
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle())
+          .scaleEffect(anchor: .center)
+          .padding(.trailing)
+      case .some(let ascii):
+        Text(ascii.unicode)
+      }
       URLImage(
-        url:url,
+        url:URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!,
         options: URLImageOptions(
           expireAfter: 60 * 60 * 24 * 10
         ),
@@ -25,7 +38,7 @@ struct NftImageImpl: View {
         inProgress: { progress in
           
           ZStack {
-              
+            
             Image(
               samples[
                 Int.random(in: 0..<samples.count)
@@ -39,7 +52,7 @@ struct NftImageImpl: View {
             ProgressView(value:progress)
               .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
               .scaleEffect(2.0, anchor: .center)
-
+            
           }
         },
         failure: { error, retry in         // Display error and retry button
@@ -58,55 +71,24 @@ struct NftImageImpl: View {
           //.resizable()
           
         })
+    }.onAppear {
+      firstly {
+        asciiPunk.ascii
+      }.done(on:.main) { ascii in
+        print(ascii?.unicode);
+        self.ascii = ascii
+      }
     }
-}
-
-struct NftImage: View {
-  var nft:NFT
-  var samples:[String]
-  var themeColor : Color
-  
-  enum FavButtonLocation {
-    case top
-    case bottom
-    case none
-  }
-  
-  var favButtonLocation : FavButtonLocation
-  
-  var body: some View {
-    ZStack {
-      switch(nft.media){
-      case .image(let url):
-        NftImageImpl(url:url,samples:samples,themeColor:themeColor)
-      case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor)
-      }
-      //.padding()
-      HStack {
-        Spacer()
-        switch(favButtonLocation) {
-        case .top:
-          VStack {
-            FavButton(nft:nft,size:.medium)
-            Spacer()
-          }
-        case .bottom:
-          VStack {
-            Spacer()
-            FavButton(nft:nft,size:.large)
-          }
-        case .none:
-          VStack {
-          }
-        }
-      }
-    }.background(themeColor)
   }
 }
-
-struct NftImage_Previews: PreviewProvider {
-    static var previews: some View {
-      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,favButtonLocation:.top)
+struct AsciiPunkView_Previews: PreviewProvider {
+  static var previews: some View {
+    AsciiPunkView(asciiPunk:Media.AsciiPunkLazy(
+                    tokenId:0,
+                    draw : { tokenId in
+                      Promise.value(Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │"))
+                    }),
+                  samples:SAMPLE_PUNKS,
+                  themeColor:CryptoPunksCollection.info.themeColor)
     }
 }
