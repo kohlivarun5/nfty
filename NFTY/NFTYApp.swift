@@ -26,6 +26,18 @@ struct NFTYApp: App {
   var body: some Scene {
     WindowGroup {
       TabView {
+        
+        NavigationView {
+          FeedView(trades:CompositeCollection)
+            .navigationBarHidden(true)
+            .statusBar(hidden: true)
+        }
+        .tabItem {
+          Label("Feed", systemImage: "sparkles.rectangle.stack.fill")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
+        
         NavigationView {
           CollectionsView(collections:COLLECTIONS)
             .navigationBarTitle("Gallery")

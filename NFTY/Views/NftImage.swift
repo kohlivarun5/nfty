@@ -118,6 +118,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
     static var previews: some View {
-      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:CryptoPunksCollection.info.themeColor,size:.normal)
+      NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:SampleCollection.info.themeColor,size:.normal)
     }
 }

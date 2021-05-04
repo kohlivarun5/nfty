@@ -130,6 +130,16 @@ class Collection {
   }
 }
 
+struct NFTWithPriceAndInfo : Identifiable {
+  let nftWithPrice : NFTWithPrice
+  let info : CollectionInfo
+  
+  var id : NFT.NftID {
+    return nftWithPrice.nft.id
+  }
+  
+}
+
 let SAMPLE_PUNKS : [String] = [
   "SamplePunk1",
   "SamplePunk2",
@@ -144,49 +154,76 @@ let SAMPLE_KITTIES : [String] = [
   "SampleKitty4"
 ]
 
+let SAMPLE_ASCII_PUNKS : [String] = [
+  "AsciiPunk2",
+  "AsciiPunk1000",
+  "AsciiPunk1321",
+  "AsciiPunk1307"
+]
+
+let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
+let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
+
+let cryptoPunksContract =  CryptoPunksContract();
+let cryptoKittiesContract = CryptoKittiesAuction();
+let asciiPunksContract = AsciiPunksContract();
+
+let CompositeCollection = CompositeRecentTradesObject(
+  punks:CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:cryptoPunksContract.contractAddressHex,
+      url1:SAMPLE_PUNKS[0],
+      url2:SAMPLE_PUNKS[1],
+      url3:SAMPLE_PUNKS[2],
+      url4:SAMPLE_PUNKS[3],
+      name:"CryptoPunks",
+      totalSupply:10000,
+      themeColor:Color.yellow,
+      subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
+      collectionColor:Color.yellow,
+      blur:0,
+      samplePadding:10,
+      similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
+    contract:cryptoPunksContract),
+  kitties:CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:cryptoKittiesContract.contractAddressHex,
+      url1:SAMPLE_KITTIES[0],
+      url2:SAMPLE_KITTIES[1],
+      url3:SAMPLE_KITTIES[2],
+      url4:SAMPLE_KITTIES[3],
+      name:"CryptoKitties",
+      totalSupply:1997622,
+      themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      blur:0,samplePadding:0,
+      similarTokens: { tokenId in nil }),
+    contract:cryptoKittiesContract),
+  ascii:CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:asciiPunksContract.contractAddressHex,
+      url1:SAMPLE_ASCII_PUNKS[0],
+      url2:SAMPLE_ASCII_PUNKS[1],
+      url3:SAMPLE_ASCII_PUNKS[2],
+      url4:SAMPLE_ASCII_PUNKS[3],
+      name:"AsciiPunks",
+      totalSupply:2048,
+      themeColor:Color.label,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      blur:0,
+      samplePadding:10,
+      similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
+    contract:asciiPunksContract)
+)
+
 let SampleToken = NFT(
   address: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
   tokenId: 340, name: "CryptoPunks",
   media: .image(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!))
 
-let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
-
-let cryptoPunksTrades = NftRecentTradesObject(contract:CryptoPunksContract())
-let cryptoKittiesTrades = NftRecentTradesObject(contract:CryptoKittiesAuction())
-let asciiPunksTrades = NftRecentTradesObject(contract:AsciiPunksContract())
-
-let CryptoPunksCollection = Collection(
-  info:CollectionInfo(
-    address:cryptoPunksTrades.contract.contractAddressHex,
-    url1:SAMPLE_PUNKS[0],
-    url2:SAMPLE_PUNKS[1],
-    url3:SAMPLE_PUNKS[2],
-    url4:SAMPLE_PUNKS[3],
-    name:"CryptoPunks",
-    totalSupply:10000,
-    themeColor:Color.yellow,
-    subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
-    collectionColor:Color.yellow,
-    blur:0,
-    samplePadding:10,
-    similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
-  data:CollectionData(recentTrades:cryptoPunksTrades,contract:cryptoPunksTrades.contract))
-
-let CryptoKittiesCollection = Collection(
-  info:CollectionInfo(
-    address:cryptoKittiesTrades.contract.contractAddressHex,
-    url1:SAMPLE_KITTIES[0],
-    url2:SAMPLE_KITTIES[1],
-    url3:SAMPLE_KITTIES[2],
-    url4:SAMPLE_KITTIES[3],
-    name:"CryptoKitties",
-    totalSupply:1997622,
-    themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-    subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-    collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-    blur:0,samplePadding:0,
-    similarTokens: { tokenId in nil }),
-  data:CollectionData(recentTrades:cryptoKittiesTrades,contract:cryptoKittiesTrades.contract))
+let SampleCollection = CompositeCollection.punks
 
 
 public extension Color {
@@ -205,43 +242,18 @@ public extension Color {
   // There are more..
 }
 
-
-let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
-let SAMPLE_ASCII_PUNKS : [String] = [
-  "AsciiPunk2",
-  "AsciiPunk1000",
-  "AsciiPunk1321",
-  "AsciiPunk1307"
-]
-let AsciiPunksCollection = Collection(
-  info:CollectionInfo(
-    address:asciiPunksTrades.contract.contractAddressHex,
-    url1:SAMPLE_ASCII_PUNKS[0],
-    url2:SAMPLE_ASCII_PUNKS[1],
-    url3:SAMPLE_ASCII_PUNKS[2],
-    url4:SAMPLE_ASCII_PUNKS[3],
-    name:"AsciiPunks",
-    totalSupply:2048,
-    themeColor:Color.label,
-    subThemeColor:Color.label,
-    collectionColor:Color.black,
-    blur:0,
-    samplePadding:10,
-    similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
-  data:CollectionData(recentTrades:asciiPunksTrades,contract:asciiPunksTrades.contract))
-
 let COLLECTIONS: [Collection]=[
-  CryptoPunksCollection,
-  CryptoKittiesCollection,
-  AsciiPunksCollection
+  CompositeCollection.punks,
+  CompositeCollection.kitties,
+  CompositeCollection.ascii
 ]
 
 struct CollectionsFactory {
   
   private let collections : [String : Collection] = [
-    CryptoPunksCollection.info.address:CryptoPunksCollection,
-    CryptoKittiesCollection.info.address:CryptoKittiesCollection,
-    AsciiPunksCollection.info.address:AsciiPunksCollection,
+    CompositeCollection.punks.info.address:CompositeCollection.punks,
+    CompositeCollection.kitties.info.address:CompositeCollection.kitties,
+    CompositeCollection.ascii.info.address:CompositeCollection.ascii,
   ]
   
   func getByAddress(_ address:String) -> Collection? {
