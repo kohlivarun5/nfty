@@ -128,6 +128,7 @@ class CryptoPunksContract : ContractInterface {
           tokenId:UInt(res["punkIndex"] as! BigUInt),
           name:self.name,
           media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:res["value"] as? BigUInt
       ))
     }
@@ -277,6 +278,7 @@ class CryptoKittiesAuction : ContractInterface {
               tokenId:UInt(tokenId),
               name:self.name,
               media:.image(URL(string:kitty.image_url)!)),
+            blockNumber: log.blockNumber?.quantity,
             indicativePriceWei:res["totalPrice"] as? BigUInt
           ))
         }
@@ -409,6 +411,7 @@ class AsciiPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          blockNumber: log.blockNumber?.quantity,
           indicativePriceWei:indicativePriceWei
         ))
       };

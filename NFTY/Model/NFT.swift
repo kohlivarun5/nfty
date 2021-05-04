@@ -68,6 +68,7 @@ struct NFT: Identifiable {
 
 struct NFTWithPrice : Identifiable {
   let nft : NFT
+  let blockNumber : BigUInt?
   let indicativePriceWei : BigUInt?
   
   var id : NFT.NftID {
