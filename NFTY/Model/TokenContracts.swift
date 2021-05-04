@@ -129,7 +129,7 @@ class CryptoPunksContract : ContractInterface {
           name:self.name,
           media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:res["value"] as? BigUInt
+        indicativePriceWei:(res["value"] as? BigUInt).flatMap { if ($0 != 0) { return $0 } else { return nil }}
       ))
     }
   }
@@ -279,7 +279,7 @@ class CryptoKittiesAuction : ContractInterface {
               name:self.name,
               media:.image(URL(string:kitty.image_url)!)),
             blockNumber: log.blockNumber?.quantity,
-            indicativePriceWei:res["totalPrice"] as? BigUInt
+            indicativePriceWei:(res["totalPrice"] as? BigUInt).flatMap { if ($0 != 0) { return $0 } else { return nil }}
           ))
         }
       }.catch { print($0) }
