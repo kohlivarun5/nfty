@@ -66,7 +66,7 @@ struct NftDetail_Previews: PreviewProvider {
       nft:SampleToken,
       price:.eager(0),
       samples:SAMPLE_PUNKS,
-      themeColor:CryptoPunksCollection.info.themeColor,
-      similarTokens:CryptoPunksCollection.info.similarTokens)
+      themeColor:SampleCollection.info.themeColor,
+      similarTokens:SampleCollection.info.similarTokens)
   }
 }

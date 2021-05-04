@@ -69,6 +69,6 @@ struct SimilarTokensView: View {
 
 struct SimilarTokensView_Previews: PreviewProvider {
   static var previews: some View {
-    SimilarTokensView(info:CryptoPunksCollection.info,tokens:[])
+    SimilarTokensView(info:SampleCollection.info,tokens:[])
   }
 }
