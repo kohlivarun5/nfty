@@ -61,7 +61,6 @@ struct FeedView: View {
         }.textCase(nil)
       }.animation(.default)
     }
-    .navigationBarTitle("Feed")
     .onAppear {
       self.trades.getRecentTrades(currentIndex: nil);
     }

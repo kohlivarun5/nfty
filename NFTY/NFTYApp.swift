@@ -29,8 +29,7 @@ struct NFTYApp: App {
         
         NavigationView {
           FeedView(trades:CompositeCollection)
-            .navigationBarHidden(true)
-            .statusBar(hidden: true)
+            .navigationBarTitle("Recent", displayMode: .inline)
         }
         .tabItem {
           Label("Feed", systemImage: "sparkles.rectangle.stack.fill")
