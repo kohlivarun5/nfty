@@ -30,12 +30,12 @@ struct BlockTimeLabel: View {
     Text(blockTimeStampString)
     .onAppear {
       DispatchQueue.global(qos:.utility).async {
-        switch (blockNumber) {
+        switch (self.blockNumber) {
         case .none:
           return
-        case .some(let blockNumber):
+        case .some(let blockNum):
           firstly {
-            BlocksFetcher.getBlock(blockNumber: .block(blockNumber))
+            BlocksFetcher.getBlock(blockNumber:.block(blockNum))
           }.done(on:.main) { block in
             switch(block?.timestamp) {
             case (.none):
