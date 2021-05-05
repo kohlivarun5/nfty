@@ -590,3 +590,23 @@ class AsciiPunksContract : ContractInterface {
   }
   
 }
+
+class BlockFetcherImpl {
+  private var blocksCache : [EthereumQuantityTag:Promise<EthereumBlockObject?>] = [:]
+  
+  func getBlock(blockNumber:EthereumQuantityTag) -> Promise<EthereumBlockObject?> {
+    switch(self.blocksCache[blockNumber]) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = firstly {
+        web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
+      }
+      self.blocksCache[blockNumber] = p
+      return p
+    }
+  }
+  
+}
+
+var BlocksFetcher = BlockFetcherImpl()
