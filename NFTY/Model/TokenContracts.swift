@@ -265,7 +265,7 @@ class CryptoPunksContract : ContractInterface {
             }.map { (event:TradeEvent?) -> NFTPriceInfo in
               NFTPriceInfo(price:event?.value,blockNumber:event?.blockNumber.quantity)
             }
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
             }
             return p
@@ -430,7 +430,7 @@ class CryptoKittiesAuction : ContractInterface {
             }.map { (event:TradeEvent?) -> NFTPriceInfo in
               NFTPriceInfo(price:event?.value,blockNumber:event?.blockNumber.quantity)
             }
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
             }
             return p
@@ -489,7 +489,7 @@ class AsciiPunksContract : ContractInterface {
       return p
     case .none:
       let p = ethContract.draw(tokenId);
-      DispatchQueue.global().async {
+      DispatchQueue.main.async {
         self.drawingCache[tokenId] = p
       }
       return p
@@ -607,7 +607,7 @@ class BlockFetcherImpl {
       let p = firstly {
         web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
       }
-      DispatchQueue.global().async {
+      DispatchQueue.main.async {
         self.blocksCache[blockNumber] = p
       }
       return p
