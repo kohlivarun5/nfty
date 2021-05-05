@@ -64,11 +64,11 @@ struct FeedView: View {
   }
   
   private func sorted(_ l:[NFTWithPriceAndInfo]) -> [NFTWithPriceAndInfo] {
-    
+    print(l);
     let res = l.sorted(by:{ left,right in
-      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
+      switch(left.nftWithPrice.indicativePriceWei.blockNumber,right.nftWithPrice.indicativePriceWei.blockNumber) {
       case (.none,.none):
-        return left.nftWithPrice.indicativePriceWei! > right.nftWithPrice.indicativePriceWei!;
+        return left.nftWithPrice.indicativePriceWei.price! > right.nftWithPrice.indicativePriceWei.price!
       case (.some(let l),.some(let r)):
         return l > r;
       case (.none,.some):

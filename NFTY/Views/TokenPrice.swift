@@ -11,7 +11,7 @@ import PromiseKit
 
 struct TokenPrice: View {
   enum PriceState {
-    case loaded(BigUInt)
+    case loaded(NFTPriceInfo)
     case loading
     case none
   }
@@ -21,7 +21,17 @@ struct TokenPrice: View {
     HStack {
       switch(wei) {
       case .loaded(let wei):
-        UsdText(wei:wei)
+        VStack(alignment: .trailing) {
+          switch(wei.price) {
+          case .some(let wei):
+            UsdText(wei:wei)
+          case .none:
+            VStack {}
+          }
+          BlockTimeLabel(blockNumber:wei.blockNumber)
+            .font(.footnote)
+            .foregroundColor(.secondaryLabel)
+        }
       case .none:
         EmptyView()
       case .loading:
@@ -33,22 +43,12 @@ struct TokenPrice: View {
     }.onAppear {
       switch(price) {
       case .eager(let wei):
-        switch(wei) {
-        case .some(let wei):
-          self.wei = .loaded(wei)
-        case .none:
-          self.wei = .none
-        }
+        self.wei = .loaded(wei)
       case .lazy(let price):
         firstly {
           price
         }.done(on:.main) { wei in
-          switch(wei) {
-          case .some(let wei):
-            self.wei = .loaded(wei)
-          case .none:
-            self.wei = .none
-          }
+          self.wei = .loaded(wei)
         }.catch { print($0) }
       }
     }
@@ -57,6 +57,6 @@ struct TokenPrice: View {
 
 struct TokenPrice_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPrice(price:.eager(0))
+    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil)))
   }
 }

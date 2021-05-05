@@ -35,10 +35,10 @@ struct CollectionView: View {
   
   
   func sorted(l:[NFTWithPrice]) -> [NFTWithPrice] {
-    showSorted ? l.sorted(by:{$0.indicativePriceWei! < $1.indicativePriceWei!}) : l
+    showSorted ? l.sorted(by:{$0.indicativePriceWei.price! < $1.indicativePriceWei.price! }) : l
   }
   func filtered(l:[NFTWithPrice]) -> [NFTWithPrice] {
-    filterZeros ? l.filter({$0.indicativePriceWei != BigUInt(0)}) : l
+    filterZeros ? l.filter({$0.indicativePriceWei.price! != BigUInt(0)}) : l
   }
   
   struct FillAll: View {
