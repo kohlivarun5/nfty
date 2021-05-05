@@ -51,13 +51,11 @@ struct NftDetail: View {
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
     .onAppear {
-      DispatchQueue.global(qos:.utility).async {
-        firstly {
-          Promise.value(similarTokens(nft.tokenId))
-        }.done(on:.main) { tokens in
-          self.tokens = tokens
-        }.catch { print($0) }
-      }
+      firstly {
+        Promise.value(similarTokens(nft.tokenId))
+      }.done(on:.main) { tokens in
+        self.tokens = tokens
+      }.catch { print($0) }
     }
   }
 }

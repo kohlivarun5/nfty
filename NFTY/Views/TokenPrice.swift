@@ -26,7 +26,7 @@ struct TokenPrice: View {
           case .some(let wei):
             UsdText(wei:wei)
           case .none:
-            VStack {}
+            EmptyView()
           }
           BlockTimeLabel(blockNumber:wei.blockNumber)
             .font(.footnote)
@@ -41,7 +41,7 @@ struct TokenPrice: View {
           .padding(.trailing)
       }
     }.onAppear {
-      DispatchQueue.global(qos:.utility).async {
+      DispatchQueue.global(qos:.userInteractive).async {
         switch(price) {
         case .eager(let wei):
           self.wei = .loaded(wei)

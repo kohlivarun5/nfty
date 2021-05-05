@@ -40,7 +40,7 @@ struct AsciiPunkView: View {
     }
     .background(themeColor)
     .onAppear {
-      DispatchQueue.global(qos:.utility).async {
+      DispatchQueue.global(qos:.userInteractive).async {
         firstly {
           asciiPunk.ascii
         }.done(on:.main) { ascii in

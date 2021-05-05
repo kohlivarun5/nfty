@@ -486,7 +486,9 @@ class AsciiPunksContract : ContractInterface {
       return p
     case .none:
       let p = ethContract.draw(tokenId);
-      self.drawingCache[tokenId] = p
+      DispatchQueue.main.async {
+        self.drawingCache[tokenId] = p
+      }
       return p
     }
   }

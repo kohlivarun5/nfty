@@ -81,9 +81,7 @@ struct CollectionView: View {
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
-      DispatchQueue.global(qos:.utility).async {
-        self.recentTrades.getRecentTrades(currentIndex: nil)
-      }
+      self.recentTrades.getRecentTrades(currentIndex: nil)
     }
     
   }

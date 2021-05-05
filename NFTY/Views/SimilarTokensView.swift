@@ -56,7 +56,7 @@ struct SimilarTokensView: View {
       Spacer()
         .frame(maxWidth:20)
     }.onAppear {
-      DispatchQueue.global(qos:.utility).async {
+      DispatchQueue.global(qos:.userInteractive).async {
         tokens.forEach { tokenId in
           firstly {
             collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)

@@ -38,7 +38,7 @@ struct PullToRefresh: View {
         if needRefresh {
           ProgressView()
         } else {
-          VStack {}
+          EmptyView()
         }
         Spacer()
       }
@@ -134,11 +134,9 @@ struct FeedView: View {
       }
     }
     .onAppear {
-      DispatchQueue.global(qos:.utility).async {
-        self.trades.loadMore() {
-          DispatchQueue.main.async {
-            self.isLoading = false
-          }
+      self.trades.loadMore() {
+        DispatchQueue.main.async {
+          self.isLoading = false
         }
       }
     }
