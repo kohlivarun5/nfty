@@ -40,11 +40,13 @@ struct AsciiPunkView: View {
     }
     .background(themeColor)
     .onAppear {
-      firstly {
-        asciiPunk.ascii
-      }.done(on:.main) { ascii in
-        self.ascii = ascii
-      }.catch { print($0) }
+      DispatchQueue.global(qos:.utility).async {
+        firstly {
+          asciiPunk.ascii
+        }.done(on:.main) { ascii in
+          self.ascii = ascii
+        }.catch { print($0) }
+      }
     }
   }
 }

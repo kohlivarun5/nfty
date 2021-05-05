@@ -125,8 +125,10 @@ struct FavoritesView: View {
       }
     }
     .onAppear {
-      firebase.observeUserFavorites {
-        updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
+      DispatchQueue.global(qos:.utility).async {
+        firebase.observeUserFavorites {
+          updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
+        }
       }
     }
   }

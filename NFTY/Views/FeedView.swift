@@ -68,7 +68,7 @@ struct FeedView: View {
     let res = l.sorted(by:{ left,right in
       switch(left.nftWithPrice.indicativePriceWei.blockNumber,right.nftWithPrice.indicativePriceWei.blockNumber) {
       case (.none,.none):
-        return left.nftWithPrice.indicativePriceWei.price! > right.nftWithPrice.indicativePriceWei.price!
+        return true
       case (.some(let l),.some(let r)):
         return l > r;
       case (.none,.some):
@@ -134,9 +134,11 @@ struct FeedView: View {
       }
     }
     .onAppear {
-      self.trades.loadMore() {
-        DispatchQueue.main.async {
-          self.isLoading = false
+      DispatchQueue.global(qos:.utility).async {
+        self.trades.loadMore() {
+          DispatchQueue.main.async {
+            self.isLoading = false
+          }
         }
       }
     }

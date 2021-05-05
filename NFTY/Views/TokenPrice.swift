@@ -41,15 +41,17 @@ struct TokenPrice: View {
           .padding(.trailing)
       }
     }.onAppear {
-      switch(price) {
-      case .eager(let wei):
-        self.wei = .loaded(wei)
-      case .lazy(let price):
-        firstly {
-          price
-        }.done(on:.main) { wei in
+      DispatchQueue.global(qos:.utility).async {
+        switch(price) {
+        case .eager(let wei):
           self.wei = .loaded(wei)
-        }.catch { print($0) }
+        case .lazy(let price):
+          firstly {
+            price
+          }.done(on:.main) { wei in
+            self.wei = .loaded(wei)
+          }.catch { print($0) }
+        }
       }
     }
   }

@@ -43,8 +43,10 @@ struct FavButton: View {
       }
       .padding()
       .onAppear {
-        firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
-          self.isFavorite = data.value as? Bool ?? false
+        DispatchQueue.global(qos:.utility).async {
+          firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
+            self.isFavorite = data.value as? Bool ?? false
+          }
         }
       }
   }

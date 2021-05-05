@@ -10,39 +10,41 @@ import BigInt
 import Web3
 import PromiseKit
 
+let CachedNow = Date()
+
 extension Date {
   func timeAgoDisplay() -> String {
     let formatter = RelativeDateTimeFormatter()
     formatter.unitsStyle = .full
-    return formatter.localizedString(for: self, relativeTo: Date())
+    return formatter.localizedString(for: self, relativeTo: CachedNow)
   }
 }
 
 struct BlockTimeLabel: View {
   let blockNumber : BigUInt?
-  @State private var blockTimeStamp : EthereumQuantity?
+  @State private var blockTimeStampString : String = ""
+  
+  init(blockNumber:BigUInt?) {
+    self.blockNumber = blockNumber
+  }
   
   var body: some View {
-    VStack {
-      switch(blockTimeStamp?.quantity) {
-      case .none:
-        VStack {}
-      case .some(let timestamp):
-        Text(Date(timeIntervalSince1970:Double(timestamp)).timeAgoDisplay())
-      }
-    }.onAppear {
-      switch (blockNumber) {
-      case .none:
-        return
-      case .some(let blockNumber):
-        firstly {
-          BlocksFetcher.getBlock(blockNumber: .block(blockNumber))
-        }.done(on:.main) { block in
-          switch(block?.timestamp) {
-          case (.none):
-            return
-          case .some(let timestamp):
-            self.blockTimeStamp = timestamp
+    Text(blockTimeStampString)
+    .onAppear {
+      DispatchQueue.global(qos:.utility).async {
+        switch (blockNumber) {
+        case .none:
+          return
+        case .some(let blockNumber):
+          firstly {
+            BlocksFetcher.getBlock(blockNumber: .block(blockNumber))
+          }.done(on:.main) { block in
+            switch(block?.timestamp) {
+            case (.none):
+              return
+            case .some(let timestamp):
+              self.blockTimeStampString = Date(timeIntervalSince1970:Double(timestamp.quantity)).timeAgoDisplay()
+            }
           }
         }
       }
