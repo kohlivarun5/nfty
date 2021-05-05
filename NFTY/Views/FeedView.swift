@@ -52,10 +52,6 @@ struct FeedView: View {
   
   @ObservedObject var trades : CompositeRecentTradesObject
   
-  @State private var showSorted = false
-  @State private var filterZeros = true
-  @State private var selectedNumber = 0
-  
   @State private var action: String? = ""
   @State private var isLoading = true
   
