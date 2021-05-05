@@ -119,7 +119,8 @@ struct FavoritesView: View {
                   .hidden()
                 }
               }
-            }.textCase(nil).animation(.default)
+            }
+            .animation(.default)
           }
         }
       }

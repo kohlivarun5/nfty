@@ -40,7 +40,9 @@ struct TokenPrice: View {
           .scaleEffect(anchor: .center)
           .padding(.trailing)
       }
-    }.onAppear {
+    }
+    .animation(.none)
+    .onAppear {
       DispatchQueue.global(qos:.userInteractive).async {
         switch(price) {
         case .eager(let wei):

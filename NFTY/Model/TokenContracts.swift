@@ -69,9 +69,9 @@ class LogsFetcher {
     case .some(let blockNum):
       switch (self.mostRecentBlock.tagType) {
       case .block(let seen):
-        self.mostRecentBlock = .block(max(seen,blockNum.quantity))
+        self.mostRecentBlock = .block(max(seen,blockNum.quantity + 1)) // +1 as fromBlock is inclusive otherwise
       default:
-        self.mostRecentBlock = .block(blockNum.quantity)
+        self.mostRecentBlock = .block(blockNum.quantity + 1)
       }
     case .none:
       break

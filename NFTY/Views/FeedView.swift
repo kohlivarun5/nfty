@@ -83,7 +83,7 @@ struct FeedView: View {
       case true:
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(3,anchor: .center)
+          .scaleEffect(2,anchor: .center)
           .padding()
       case false:
         ScrollView {
