@@ -9,43 +9,39 @@ import SwiftUI
 import BigInt
 
 // https://prafullkumar77.medium.com/how-to-making-pure-swiftui-pull-to-refresh-b497d3639ee5
-struct RefreshControl: View {
-  var coordinateSpace: CoordinateSpace
+// https://stackoverflow.com/a/65100922
+struct PullToRefresh: View {
+  
+  var coordinateSpaceName: String
   var onRefresh: ()->Void
-  @State var refresh: Bool = false
+  
+  @State var needRefresh: Bool = false
+  
   var body: some View {
     GeometryReader { geo in
-      if (geo.frame(in: coordinateSpace).midY > 50) {
+      if (geo.frame(in: .named(coordinateSpaceName)).midY > 50) {
         Spacer()
           .onAppear {
-            if refresh == false {
-              onRefresh() ///call refresh once if pulled more than 50px
-            }
-            refresh = true
+            needRefresh = true
           }
-      } else if (geo.frame(in: coordinateSpace).maxY < 1) {
+      } else if (geo.frame(in: .named(coordinateSpaceName)).maxY < 10) {
         Spacer()
           .onAppear {
-            refresh = false
-            ///reset  refresh if view shrink back
+            if needRefresh {
+              needRefresh = false
+              onRefresh()
+            }
           }
       }
-      ZStack(alignment: .center) {
-        if refresh { ///show loading if refresh called
+      HStack {
+        Spacer()
+        if needRefresh {
           ProgressView()
-        } else { ///mimic static progress bar with filled bar to the drag percentage
-          ForEach(0..<8) { tick in
-            VStack {
-              Rectangle()
-                .fill(Color(UIColor.tertiaryLabel))
-                .opacity((Int((geo.frame(in: coordinateSpace).midY)/7) < tick) ? 0 : 1)
-                .frame(width: 3, height: 7)
-                .cornerRadius(3)
-              Spacer()
-            }.rotationEffect(Angle.degrees(Double(tick)/(8) * 360))
-          }.frame(width: 20, height: 20, alignment: .center)
+        } else {
+          VStack {}
         }
-      }.frame(width: geo.size.width)
+        Spacer()
+      }
     }.padding(.top, -50)
   }
 }
@@ -96,7 +92,7 @@ struct FeedView: View {
           .padding()
       case false:
         ScrollView {
-          RefreshControl(coordinateSpace: .named("RefreshControl")) {
+          PullToRefresh(coordinateSpaceName: "RefreshControl") {
             self.trades.loadLatest() {
               print("Done refresh")
             }
