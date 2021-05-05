@@ -40,12 +40,14 @@ protocol ContractInterface {
   
   var contractAddressHex: String { get }
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
+  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
 }
 
 class LogsFetcher {
   private var blockDecrements : BigUInt = 10000
   private var toBlock = EthereumQuantityTag.latest
+  private var mostRecentBlock = EthereumQuantityTag.latest
   
   let event : SolidityEvent
   var fromBlock : BigUInt
@@ -60,6 +62,48 @@ class LogsFetcher {
       web3.eth.abi.encodeEventSignature(self.event)
     ]
     self.topics.append(contentsOf: indexedTopics)
+  }
+  
+  private func updateMostRecent(_ blockNumber:EthereumQuantity) {
+    switch (self.mostRecentBlock.tagType) {
+    case .block(let seen):
+      self.mostRecentBlock = .block(max(seen,blockNumber.quantity))
+    default:
+      self.mostRecentBlock = .block(blockNumber.quantity)
+    }
+    
+  }
+  
+  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
+    if (self.mostRecentBlock == .latest) {
+      return onDone()
+    }
+    
+    return web3.eth.getLogs(
+      params:EthereumGetLogParams(
+        fromBlock:self.mostRecentBlock,
+        toBlock: EthereumQuantityTag.latest,
+        address:try! EthereumAddress(hex: self.address, eip55: false),
+        topics: self.topics
+      )
+    ) { result in
+      if case let logs? = result.result {
+        logs.indices.forEach { index in
+          let log = logs[index];
+          switch (log.blockNumber) {
+          case .some(let blockNum):
+            self.updateMostRecent(blockNum)
+          case .none:
+            break
+          }
+          
+          response(log)
+        }
+      } else {
+        print(result)
+      }
+      onDone()
+    }
   }
   
   func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
@@ -121,6 +165,22 @@ class CryptoPunksContract : ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     // print("Called getRecentTrades");
     return punksBoughtLogs.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(res["punkIndex"] as! BigUInt),
+          name:self.name,
+          media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
+        blockNumber: log.blockNumber?.quantity,
+        indicativePriceWei:(res["value"] as? BigUInt).flatMap { if ($0 != 0) { return $0 } else { return nil }}
+      ))
+    }
+  }
+  
+  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    // print("Called getRecentTrades");
+    return punksBoughtLogs.updateLatest(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
       response(NFTWithPrice(
         nft:NFT(
@@ -286,6 +346,28 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
+  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    return auctionSuccessfulFetcher.updateLatest(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+      let tokenId = res["tokenId"] as! BigUInt;
+      firstly {
+        self.getKitty(tokenId:tokenId)
+      }.done { kitty  in
+        if (!kitty.image_url.hasSuffix(".svg")) {
+          response(NFTWithPrice(
+            nft:NFT(
+              address:self.contractAddressHex,
+              tokenId:UInt(tokenId),
+              name:self.name,
+              media:.image(URL(string:kitty.image_url)!)),
+            blockNumber: log.blockNumber?.quantity,
+            indicativePriceWei:(res["totalPrice"] as? BigUInt).flatMap { if ($0 != 0) { return $0 } else { return nil }}
+          ))
+        }
+      }.catch { print($0) }
+    }
+  }
+  
   private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [TradeEvent] = []
@@ -401,6 +483,46 @@ class AsciiPunksContract : ContractInterface {
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      
+      let onPrice = { (indicativePriceWei:BigUInt?) in
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          blockNumber: log.blockNumber?.quantity,
+          indicativePriceWei:indicativePriceWei
+        ))
+      };
+      
+      let txHash = log.transactionHash;
+      
+      firstly { () -> Promise<EthereumTransactionObject?> in
+        switch(txHash) {
+        case .none:
+          return Promise<EthereumTransactionObject?>.value(nil)
+        case .some(let txHash):
+          return web3.eth.getTransactionByHash(blockHash: txHash)
+        }
+      }.done { (txData:EthereumTransactionObject?) in
+        switch(txData) {
+        case .none:
+          onPrice(nil)
+        case .some(let tx):
+          onPrice(tx.value.quantity != 0 ? tx.value.quantity : nil)
+        }
+      }.catch { error in
+        print(error);
+        onPrice(nil)
+      }
+    }
+  }
+  
+  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    return transfer.updateLatest(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       

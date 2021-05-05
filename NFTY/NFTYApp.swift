@@ -29,10 +29,10 @@ struct NFTYApp: App {
         
         NavigationView {
           FeedView(trades:CompositeCollection)
-            .navigationBarTitle("Recent", displayMode: .inline)
+            .navigationBarTitle("Recent")
         }
         .tabItem {
-          Label("Feed", systemImage: "sparkles.rectangle.stack.fill")
+          Image(systemName:"sparkles.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
@@ -42,7 +42,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Gallery")
         }
         .tabItem {
-          Label("Gallery", systemImage: "square.grid.3x1.fill.below.line.grid.1x2")
+          Image(systemName:"square.grid.3x1.fill.below.line.grid.1x2")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
@@ -52,7 +52,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Favorites")
         }
         .tabItem {
-          Label("Favorites", systemImage: "heart.circle.fill")
+          Image(systemName:"heart.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)

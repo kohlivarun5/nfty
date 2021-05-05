@@ -19,6 +19,7 @@ struct FavoritesView: View {
   @State private var showSorted = false
   @State private var filterZeros = false
   @State private var selectedTokenId: UInt? = nil
+  @State private var isLoading = true
   
   func dictToNfts(_ dict : FavoritesDict) -> [NFTWithLazyPrice] {
     var res : [NFTWithLazyPrice] = [];
@@ -54,9 +55,11 @@ struct FavoritesView: View {
             collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
           }.done(on:.main) { nft in
             self.favorites[address]!.updateValue(nft,forKey:tokenId)
+            self.isLoading = false // **** Update isLoading when we add to the list
           }.catch { print($0) }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
+          self.isLoading = false // **** Update isLoading when we add to the list
         }
       }
     }
@@ -72,44 +75,52 @@ struct FavoritesView: View {
     }
   }
   var body: some View {
-     
+    
     VStack {
-      let nfts = dictToNfts(self.favorites);
-      switch(nfts.count) {
-      case 0:
-        Text("No Favorites Added")
-          .font(.title)
-          .foregroundColor(.secondary)
-      case _:
-        ScrollView {
-          LazyVStack(pinnedViews:[.sectionHeaders]){
-            ForEach(nfts,id:\.id) { nft in
-              let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-              let samples = [info.url1,info.url2,info.url3,info.url4];
-              ZStack {
-                RoundedImage(
-                  nft:nft.nft,
-                  price:.lazy(nft.indicativePriceWei),
-                  samples:samples,
-                  themeColor:info.themeColor,
-                  width: .normal
-                )
-                .padding()
-                .onTapGesture {
-                  //perform some tasks if needed before opening Destination view
-                  self.selectedTokenId = nft.nft.tokenId
+      switch (isLoading) {
+      case true:
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle())
+          .scaleEffect(3,anchor: .center)
+          .padding()
+      case false:
+        let nfts = dictToNfts(self.favorites);
+        switch(nfts.count) {
+        case 0:
+          Text("No Favorites Added")
+            .font(.title)
+            .foregroundColor(.secondary)
+        case _:
+          ScrollView {
+            LazyVStack(pinnedViews:[.sectionHeaders]){
+              ForEach(nfts,id:\.id) { nft in
+                let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
+                let samples = [info.url1,info.url2,info.url3,info.url4];
+                ZStack {
+                  RoundedImage(
+                    nft:nft.nft,
+                    price:.lazy(nft.indicativePriceWei),
+                    samples:samples,
+                    themeColor:info.themeColor,
+                    width: .normal
+                  )
+                  .padding()
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.selectedTokenId = nft.nft.tokenId
+                  }
+                  NavigationLink(destination: NftDetail(
+                    nft:nft.nft,
+                    price:.lazy(nft.indicativePriceWei),
+                    samples:samples,
+                    themeColor:info.themeColor,
+                    similarTokens:info.similarTokens
+                  ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                  .hidden()
                 }
-                NavigationLink(destination: NftDetail(
-                  nft:nft.nft,
-                  price:.lazy(nft.indicativePriceWei),
-                  samples:samples,
-                  themeColor:info.themeColor,
-                  similarTokens:info.similarTokens
-                ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                .hidden()
               }
-            }
-          }.textCase(nil).animation(.default)
+            }.textCase(nil).animation(.default)
+          }
         }
       }
     }
