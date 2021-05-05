@@ -115,7 +115,7 @@ class CompositeRecentTradesObject : ObservableObject {
     selfWorkaround = self
   }
   
-  private func loadMore() {
+  func loadMore(_ onDone : @escaping () -> Void) {
     if (pendingCounter > 0) {
       return
     }
@@ -123,19 +123,22 @@ class CompositeRecentTradesObject : ObservableObject {
     pendingCounter = 3
     self.punks.data.recentTrades.loadMore() {
       DispatchQueue.main.async {
-        self.pendingCounter+=1
+        self.pendingCounter-=1
+        if (self.pendingCounter == 0) { onDone() }
       }
     }
     
     self.kitties.data.recentTrades.loadMore() {
       DispatchQueue.main.async {
-        self.pendingCounter+=1
+        self.pendingCounter-=1
+        if (self.pendingCounter == 0) { onDone() }
       }
     }
     
     self.ascii.data.recentTrades.loadMore() {
       DispatchQueue.main.async {
-        self.pendingCounter+=1
+        self.pendingCounter-=1
+        if (self.pendingCounter == 0) { onDone() }
       }
     }
   }
@@ -143,13 +146,13 @@ class CompositeRecentTradesObject : ObservableObject {
   func getRecentTrades(currentIndex:Int?) {
     // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
-      loadMore()
+      loadMore() {}
       return
     }
     
     let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
     if index >= thresholdIndex {
-      loadMore()
+      loadMore() {}
     }
   }
 }

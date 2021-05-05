@@ -19,6 +19,7 @@ struct FeedView: View {
   @State private var selectedNumber = 0
   
   @State private var action: String? = ""
+  @State private var isLoading = true
   
   init(trades:CompositeRecentTradesObject) {
     self.trades = trades;
@@ -44,43 +45,57 @@ struct FeedView: View {
   
   var body: some View {
     
-    ScrollView {
-      LazyVStack {
-        let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
-        ForEach(sorted.indices,id:\.self) { index in
-          let info = sorted[index].info
-          let nft = sorted[index].nftWithPrice
-          let samples = [info.url1,info.url2,info.url3,info.url4];
-          ZStack {
-            RoundedImage(
-              nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
-              samples:samples,
-              themeColor:info.themeColor,
-              width: .normal
-            )
-            .padding()
-            .onTapGesture {
-              //perform some tasks if needed before opening Destination view
-              self.action = String(nft.nft.tokenId)
-            }
-            
-            NavigationLink(destination: NftDetail(
-              nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
-              samples:samples,
-              themeColor:info.themeColor,
-              similarTokens:info.similarTokens
-            ),tag:String(nft.nft.tokenId),selection:$action) {}
-            .hidden()
-          }.onAppear {
-            self.trades.getRecentTrades(currentIndex:index)
-          }
-        }.textCase(nil)
-      }.animation(.default)
+    VStack {
+      switch(isLoading) {
+      case true:
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle())
+          .scaleEffect(3,anchor: .center)
+          .padding()
+      case false:
+        ScrollView {
+          LazyVStack {
+            let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
+            ForEach(sorted.indices,id:\.self) { index in
+              let info = sorted[index].info
+              let nft = sorted[index].nftWithPrice
+              let samples = [info.url1,info.url2,info.url3,info.url4];
+              ZStack {
+                RoundedImage(
+                  nft:nft.nft,
+                  price:.eager(nft.indicativePriceWei),
+                  samples:samples,
+                  themeColor:info.themeColor,
+                  width: .normal
+                )
+                .padding()
+                .onTapGesture {
+                  //perform some tasks if needed before opening Destination view
+                  self.action = String(nft.nft.tokenId)
+                }
+                
+                NavigationLink(destination: NftDetail(
+                  nft:nft.nft,
+                  price:.eager(nft.indicativePriceWei),
+                  samples:samples,
+                  themeColor:info.themeColor,
+                  similarTokens:info.similarTokens
+                ),tag:String(nft.nft.tokenId),selection:$action) {}
+                .hidden()
+              }.onAppear {
+                self.trades.getRecentTrades(currentIndex:index)
+              }
+            }.textCase(nil)
+          }.animation(.default)
+        }
+      }
     }
     .onAppear {
-      self.trades.getRecentTrades(currentIndex: nil);
+      self.trades.loadMore() {
+        DispatchQueue.main.async {
+          self.isLoading = false
+        }
+      }
     }
     
   }
