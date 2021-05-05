@@ -10,13 +10,11 @@ import BigInt
 import Web3
 import PromiseKit
 
-let CachedNow = Date()
-
 extension Date {
   func timeAgoDisplay() -> String {
     let formatter = RelativeDateTimeFormatter()
     formatter.unitsStyle = .full
-    return formatter.localizedString(for: self, relativeTo: CachedNow)
+    return formatter.localizedString(for: self, relativeTo: Date())
   }
 }
 
