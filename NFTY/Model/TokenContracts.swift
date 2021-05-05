@@ -90,14 +90,13 @@ class LogsFetcher {
       if case let logs? = result.result {
         logs.indices.forEach { index in
           let log = logs[index];
+          response(log)
           switch (log.blockNumber) {
           case .some(let blockNum):
             self.updateMostRecent(blockNum)
           case .none:
             break
           }
-          
-          response(log)
         }
       } else {
         print(result)

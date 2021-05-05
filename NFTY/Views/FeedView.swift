@@ -52,7 +52,6 @@ struct FeedView: View {
   
   @ObservedObject var trades : CompositeRecentTradesObject
   
-  
   @State private var action: String? = ""
   @State private var isLoading = true
   
