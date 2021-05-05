@@ -64,21 +64,25 @@ class LogsFetcher {
     self.topics.append(contentsOf: indexedTopics)
   }
   
-  private func updateMostRecent(_ blockNumber:EthereumQuantity) {
-    switch (self.mostRecentBlock.tagType) {
-    case .block(let seen):
-      self.mostRecentBlock = .block(max(seen,blockNumber.quantity))
-    default:
-      self.mostRecentBlock = .block(blockNumber.quantity)
+  private func updateMostRecent(_ blockNumber:EthereumQuantity?) {
+    switch (blockNumber) {
+    case .some(let blockNum):
+      switch (self.mostRecentBlock.tagType) {
+      case .block(let seen):
+        self.mostRecentBlock = .block(max(seen,blockNum.quantity))
+      default:
+        self.mostRecentBlock = .block(blockNum.quantity)
+      }
+    case .none:
+      break
     }
-    
   }
   
   func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
-    
+        
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
@@ -91,12 +95,7 @@ class LogsFetcher {
         logs.indices.forEach { index in
           let log = logs[index];
           response(log)
-          switch (log.blockNumber) {
-          case .some(let blockNum):
-            self.updateMostRecent(blockNum)
-          case .none:
-            break
-          }
+          self.updateMostRecent(log.blockNumber)
         }
       } else {
         print(result)
@@ -121,6 +120,7 @@ class LogsFetcher {
         logs.indices.forEach { index in
           let log = logs[index];
           response(log)
+          self.updateMostRecent(log.blockNumber)
         }
       } else {
         print(result)
@@ -162,7 +162,6 @@ class CryptoPunksContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    // print("Called getRecentTrades");
     return punksBoughtLogs.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
       response(NFTWithPrice(
@@ -180,7 +179,6 @@ class CryptoPunksContract : ContractInterface {
   }
     
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    // print("Called getRecentTrades");
     return punksBoughtLogs.updateLatest(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
       response(NFTWithPrice(

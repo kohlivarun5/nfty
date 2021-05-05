@@ -88,9 +88,7 @@ struct FeedView: View {
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.trades.loadLatest() {
-              print("Done refresh")
-            }
+            self.trades.loadLatest() { }
           }
           LazyVStack {
             let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
