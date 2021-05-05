@@ -52,9 +52,6 @@ struct FeedView: View {
   
   @ObservedObject var trades : CompositeRecentTradesObject
   
-  @State private var showSorted = false
-  @State private var filterZeros = true
-  @State private var selectedNumber = 0
   
   @State private var action: String? = ""
   @State private var isLoading = true
@@ -64,7 +61,6 @@ struct FeedView: View {
   }
   
   private func sorted(_ l:[NFTWithPriceAndInfo]) -> [NFTWithPriceAndInfo] {
-    print(l);
     let res = l.sorted(by:{ left,right in
       switch(left.nftWithPrice.indicativePriceWei.blockNumber,right.nftWithPrice.indicativePriceWei.blockNumber) {
       case (.none,.none):
