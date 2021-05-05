@@ -23,18 +23,22 @@ class NftRecentTradesObject : ObservableObject {
   var recentTradesPublisher: Published<[NFTWithPrice]>.Publisher { $recentTrades }
   
   private var isLoading = false
+  private var isLoadingLatest = false
   var contract : ContractInterface
   private var parentOnTrade : (NFTWithPrice) -> Void
+  private var parentOnLatest : (NFTWithPrice) -> Void
   
-  init(contract:ContractInterface,parentOnTrade : @escaping (NFTWithPrice) -> Void) {
+  init(contract:ContractInterface,parentOnTrade : @escaping (NFTWithPrice) -> Void,parentOnLatest : @escaping (NFTWithPrice) -> Void) {
     self.contract = contract
     self.parentOnTrade = parentOnTrade
+    self.parentOnLatest = parentOnLatest
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
     guard !isLoading else {
       return
     }
+    self.isLoading = true
     contract.getRecentTrades(
       onDone:{
         self.isLoading = false;
@@ -58,6 +62,23 @@ class NftRecentTradesObject : ObservableObject {
     }
   }
   
+  func loadLatest(_ callback : @escaping () -> Void) {
+    guard !isLoadingLatest else {
+      return
+    }
+    self.isLoadingLatest = true;
+    contract.refreshLatestTrades(
+      onDone:{
+        self.isLoadingLatest = false;
+        callback();
+      }) { nft in
+      DispatchQueue.main.async {
+        self.recentTrades.insert(nft,at:0)
+        self.parentOnLatest(nft)
+      }
+    }
+  }
+  
 }
 
 class CompositeRecentTradesObject : ObservableObject {
@@ -75,10 +96,7 @@ class CompositeRecentTradesObject : ObservableObject {
   var ascii : Collection
   
   private var pendingCounter = 0
-  
-  private func onTrade(_ nft:NFTWithPrice) -> Void {
-    return recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:punks.info))
-  }
+  private var pendingCounterLatest = 0
   
   init(punks:CollectionInitializer,kitties:CollectionInitializer,ascii:CollectionInitializer) {
     weak var selfWorkaround: CompositeRecentTradesObject?
@@ -86,31 +104,43 @@ class CompositeRecentTradesObject : ObservableObject {
     self.punks = Collection(
       info:punks.info,
       data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:punks.contract) { nft in
+        recentTrades:NftRecentTradesObject(contract:punks.contract,parentOnTrade: { nft in
           DispatchQueue.main.async {
             selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.punks.info))
           }
-        },
+        },parentOnLatest: { nft in
+          DispatchQueue.main.async {
+            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.punks.info),at:0)
+          }
+        }),
         contract:punks.contract))
     
     self.kitties = Collection(
       info:kitties.info,
       data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:kitties.contract) { nft in
+        recentTrades:NftRecentTradesObject(contract:kitties.contract,parentOnTrade: { nft in
           DispatchQueue.main.async {
             selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.kitties.info))
           }
-        },
+        },parentOnLatest: { nft in
+          DispatchQueue.main.async {
+            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.kitties.info),at:0)
+          }
+        }),
         contract:kitties.contract))
     
     self.ascii = Collection(
       info:ascii.info,
       data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:ascii.contract) { nft in
+        recentTrades:NftRecentTradesObject(contract:ascii.contract,parentOnTrade: { nft in
           DispatchQueue.main.async {
             selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.ascii.info))
           }
-        },
+        },parentOnLatest: { nft in
+          DispatchQueue.main.async {
+            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.ascii.info),at:0)
+          }
+        }),
         contract:ascii.contract))
     selfWorkaround = self
   }
@@ -155,4 +185,33 @@ class CompositeRecentTradesObject : ObservableObject {
       loadMore() {}
     }
   }
+  
+  func loadLatest(_ onDone : @escaping () -> Void) {
+    if (pendingCounterLatest > 0) {
+      return
+    }
+    
+    pendingCounterLatest = 3
+    self.punks.data.recentTrades.loadLatest() {
+      DispatchQueue.main.async {
+        self.pendingCounterLatest-=1
+        if (self.pendingCounterLatest == 0) { onDone() }
+      }
+    }
+    
+    self.kitties.data.recentTrades.loadLatest() {
+      DispatchQueue.main.async {
+        self.pendingCounterLatest-=1
+        if (self.pendingCounterLatest == 0) { onDone() }
+      }
+    }
+    
+    self.ascii.data.recentTrades.loadLatest() {
+      DispatchQueue.main.async {
+        self.pendingCounterLatest-=1
+        if (self.pendingCounterLatest == 0) { onDone() }
+      }
+    }
+  }
+  
 }
