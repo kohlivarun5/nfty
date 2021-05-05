@@ -28,6 +28,7 @@
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F856BEF2634A1D900BB5E07 /* FirebaseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BEE2634A1D900BB5E07 /* FirebaseData.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4F8E54E126422C8C006EA077 /* BlockTimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E54E026422C8C006EA077 /* BlockTimeLabel.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -120,6 +121,7 @@
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F856BEE2634A1D900BB5E07 /* FirebaseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseData.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F8E54E026422C8C006EA077 /* BlockTimeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlockTimeLabel.swift; path = NFTY/BlockTimeLabel.swift; sourceTree = SOURCE_ROOT; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4F8E54E026422C8C006EA077 /* BlockTimeLabel.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
@@ -581,6 +584,7 @@
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
+				4F8E54E126422C8C006EA077 /* BlockTimeLabel.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,

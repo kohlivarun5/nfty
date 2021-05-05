@@ -174,7 +174,6 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   func getRecentTrades(currentIndex:Int?) {
-    // print("getRecentTrades currentIndex=\(currentIndex) total=\(self.recentTrades.count) isLoading=\(self.isLoading)");
     guard let index = currentIndex else {
       loadMore() {}
       return

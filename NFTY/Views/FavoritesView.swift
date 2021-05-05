@@ -119,14 +119,17 @@ struct FavoritesView: View {
                   .hidden()
                 }
               }
-            }.textCase(nil).animation(.default)
+            }
+            .animation(.default)
           }
         }
       }
     }
     .onAppear {
-      firebase.observeUserFavorites {
-        updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
+      DispatchQueue.global(qos:.userInteractive).async {
+        firebase.observeUserFavorites {
+          updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
+        }
       }
     }
   }

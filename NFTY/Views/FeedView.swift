@@ -38,7 +38,7 @@ struct PullToRefresh: View {
         if needRefresh {
           ProgressView()
         } else {
-          VStack {}
+          EmptyView()
         }
         Spacer()
       }
@@ -60,11 +60,10 @@ struct FeedView: View {
   }
   
   private func sorted(_ l:[NFTWithPriceAndInfo]) -> [NFTWithPriceAndInfo] {
-    
     let res = l.sorted(by:{ left,right in
-      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
+      switch(left.nftWithPrice.indicativePriceWei.blockNumber,right.nftWithPrice.indicativePriceWei.blockNumber) {
       case (.none,.none):
-        return left.nftWithPrice.indicativePriceWei! > right.nftWithPrice.indicativePriceWei!;
+        return true
       case (.some(let l),.some(let r)):
         return l > r;
       case (.none,.some):
@@ -84,14 +83,12 @@ struct FeedView: View {
       case true:
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(3,anchor: .center)
+          .scaleEffect(2,anchor: .center)
           .padding()
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.trades.loadLatest() {
-              print("Done refresh")
-            }
+            self.trades.loadLatest() { }
           }
           LazyVStack {
             let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);

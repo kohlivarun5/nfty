@@ -22,8 +22,6 @@ struct CollectionView: View {
   
   @ObservedObject var recentTrades : NftRecentTradesObject
   
-  @State private var showSorted = false
-  @State private var filterZeros = true
   @State private var selectedNumber = 0
   
   @State private var action: String? = ""
@@ -31,14 +29,6 @@ struct CollectionView: View {
   init(collection:Collection) {
     self.info = collection.info;
     self.recentTrades = collection.data.recentTrades;
-  }
-  
-  
-  func sorted(l:[NFTWithPrice]) -> [NFTWithPrice] {
-    showSorted ? l.sorted(by:{$0.indicativePriceWei! < $1.indicativePriceWei!}) : l
-  }
-  func filtered(l:[NFTWithPrice]) -> [NFTWithPrice] {
-    filterZeros ? l.filter({$0.indicativePriceWei != BigUInt(0)}) : l
   }
   
   struct FillAll: View {
@@ -51,74 +41,64 @@ struct CollectionView: View {
     }
   }
   
+  private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
+    let res = l.sorted(by:{ left,right in
+      switch(left.indicativePriceWei.blockNumber,right.indicativePriceWei.blockNumber) {
+      case (.none,.none):
+        return true
+      case (.some(let l),.some(let r)):
+        return l > r;
+      case (.none,.some):
+        return true;
+      case (.some,.none):
+        return false;
+      }
+    })
+    // print(res[safe:0]);
+    return res;
+  }
+  
   var body: some View {
     
     ScrollView {
-      LazyVStack(pinnedViews:[.sectionHeaders]) {
-        Section(/* header:
-           ZStack {
-           
-           VisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
-           .edgesIgnoringSafeArea(.all)
-           
-           VStack {
-           Picker(selection: $selectedNumber, label: EmptyView()) {
-           Text("Recent").tag(0)
-           Text("Top").tag(1)
-           }
-           .pickerStyle(SegmentedPickerStyle())
-           .padding()
-           }
-           
-           } */
-        ) {
-          VStack {
-            Toggle(isOn: $showSorted) {
-              Text("Sort Low to High")
+      LazyVStack {
+        let data = sorted(recentTrades.recentTrades);
+        ForEach(data.indices,id: \.self) { index in
+          let nft = data[index];
+          let samples = [info.url1,info.url2,info.url3,info.url4];
+          ZStack {
+            RoundedImage(
+              nft:nft.nft,
+              price:.eager(nft.indicativePriceWei),
+              samples:samples,
+              themeColor:info.themeColor,
+              width: .normal
+            )
+            .padding()
+            .onTapGesture {
+              //perform some tasks if needed before opening Destination view
+              self.action = String(nft.nft.tokenId)
             }
-            Toggle(isOn: $filterZeros) {
-              Text("Filter Zero")
-            }
-          }.padding()
-          
-          let data = sorted(l:filtered(l:recentTrades.recentTrades));
-          ForEach(data.indices,id: \.self) { index in
-            let nft = data[index];
-            let samples = [info.url1,info.url2,info.url3,info.url4];
-            ZStack {
-              RoundedImage(
-                nft:nft.nft,
-                price:.eager(nft.indicativePriceWei),
-                samples:samples,
-                themeColor:info.themeColor,
-                width: .normal
-              )
-              .padding()
-              .onTapGesture {
-                //perform some tasks if needed before opening Destination view
-                self.action = String(nft.nft.tokenId)
-              }
-              
-              NavigationLink(destination: NftDetail(
-                nft:nft.nft,
-                price:.eager(nft.indicativePriceWei),
-                samples:samples,
-                themeColor:info.themeColor,
-                similarTokens:info.similarTokens
-              ),tag:String(nft.nft.tokenId),selection:$action) {}
-              .hidden()
-            }.onAppear {
-              self.recentTrades.getRecentTrades(currentIndex:index);
-            }
+            
+            NavigationLink(destination: NftDetail(
+              nft:nft.nft,
+              price:.eager(nft.indicativePriceWei),
+              samples:samples,
+              themeColor:info.themeColor,
+              similarTokens:info.similarTokens
+            ),tag:String(nft.nft.tokenId),selection:$action) {}
+            .hidden()
+          }.onAppear {
+            self.recentTrades.getRecentTrades(currentIndex:index);
           }
-        }.textCase(nil)
+        }
       }.animation(.default)
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
-      self.recentTrades.getRecentTrades(currentIndex: nil);
+      self.recentTrades.getRecentTrades(currentIndex: nil)
     }
     
   }

@@ -66,10 +66,14 @@ struct NFT: Identifiable {
   }
 }
 
+struct NFTPriceInfo {
+  let price : BigUInt?
+  let blockNumber : BigUInt?
+}
+
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let blockNumber : BigUInt?
-  let indicativePriceWei : BigUInt?
+  let indicativePriceWei : NFTPriceInfo
   
   var id : NFT.NftID {
     return nft.id
@@ -79,9 +83,9 @@ struct NFTWithPrice : Identifiable {
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
-  private let getPrice : () -> Promise<BigUInt?>
+  private let getPrice : () -> Promise<NFTPriceInfo>
   
-  init(nft:NFT,getPrice : @escaping () -> Promise<BigUInt?>) {
+  init(nft:NFT,getPrice : @escaping () -> Promise<NFTPriceInfo>) {
     self.nft = nft
     self.getPrice = getPrice
   }
@@ -90,14 +94,14 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  var indicativePriceWei : Promise<BigUInt?> {
+  var indicativePriceWei : Promise<NFTPriceInfo> {
     self.getPrice()
   }
 }
 
 enum TokenPriceType {
-  case eager(BigUInt?)
-  case lazy(Promise<BigUInt?>)
+  case eager(NFTPriceInfo)
+  case lazy(Promise<NFTPriceInfo>)
 }
 
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
