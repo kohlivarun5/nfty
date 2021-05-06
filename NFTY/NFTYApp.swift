@@ -21,7 +21,11 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
 @main
 struct NFTYApp: App {
-  init() { FirebaseApp.configure() }
+  init() {
+    FirebaseApp.configure()
+    UINavigationBar.appearance().isTranslucent = false
+    //UITabBar.appearance().isTranslucent = false
+  }
   
   var body: some Scene {
     WindowGroup {
