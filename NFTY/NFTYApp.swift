@@ -34,7 +34,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Recent")
         }
         .tabItem {
-          Image(systemName:"sparkles.rectangle.stack.fill")
+          Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
@@ -44,7 +44,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Gallery")
         }
         .tabItem {
-          Image(systemName:"square.grid.3x1.fill.below.line.grid.1x2")
+          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
@@ -54,7 +54,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Favorites")
         }
         .tabItem {
-          Image(systemName:"heart.fill")
+          Label("Favorites",systemImage:"heart.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)

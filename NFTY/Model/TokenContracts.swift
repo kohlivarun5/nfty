@@ -327,7 +327,7 @@ class CryptoKittiesAuction : ContractInterface {
           let kittyInfo = try jsonDecoder.decode(Kitty.self, from: data!)
           seal.fulfill(kittyInfo)
         } catch {
-          print("JSON Serialization error")
+          print("JSON Serialization error:\(error)")
         }
       }).resume()
     }

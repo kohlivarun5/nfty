@@ -13,6 +13,8 @@ struct FavoritesView: View {
   
   private var firebase = FirebaseDb()
   
+  @State private var showAddFavSheet = false
+  
   typealias FavoritesDict = [String : [String : NFTWithLazyPrice?]]
   @State private var favorites : FavoritesDict = [:]
   
@@ -124,6 +126,16 @@ struct FavoritesView: View {
           }
         }
       }
+    }
+    .toolbar {
+      Button(action: {
+        self.showAddFavSheet = true
+      }) {
+        Image(systemName:"plus.circle.fill")
+      }
+    }
+    .sheet(isPresented: $showAddFavSheet) {
+      AddFavSheet()
     }
     .onAppear {
       DispatchQueue.global(qos:.userInteractive).async {
