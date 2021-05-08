@@ -84,7 +84,7 @@ struct AddFavSheet: View {
         case .loaded(let info,let nftWithPrice):
           let samples = [info.url1,info.url2,info.url3,info.url4];
           
-          VStack {
+          ZStack {
             NftImage(nft:nftWithPrice.nft,
                      samples:samples,
                      themeColor:info.themeColor,
@@ -92,6 +92,11 @@ struct AddFavSheet: View {
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:info.themeColor,radius: 2)
+            VStack(alignment: .trailing) {
+              TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei))
+                .padding()
+              Spacer()
+            }
           }
           .padding()
           
