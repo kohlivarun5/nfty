@@ -269,7 +269,7 @@ let COLLECTIONS: [Collection]=[
 
 struct CollectionsFactory {
   
-  private let collections : [String : Collection] = [
+  let collections : [String : Collection] = [
     CompositeCollection.punks.info.address:CompositeCollection.punks,
     CompositeCollection.kitties.info.address:CompositeCollection.kitties,
     CompositeCollection.ascii.info.address:CompositeCollection.ascii,

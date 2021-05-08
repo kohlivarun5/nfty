@@ -12,6 +12,8 @@
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
 		4F446F2326376C3600BE739E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F446F2226376C3600BE739E /* main.swift */; };
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
+		4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F468F682645FECB00CA6525 /* AddFavSheet.swift */; };
+		4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 4F468F6B2646D63E00CA6525 /* Introspect */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
 		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
 		4F58A01F263675E700E258C1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A01E263675E700E258C1 /* main.swift */; };
@@ -104,6 +106,7 @@
 		4F446F2026376C3600BE739E /* ParseTokenDistances */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParseTokenDistances; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
 		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		4F58A01C263675E700E258C1 /* DownloadCryptoPunks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCryptoPunks; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */,
+				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
@@ -304,6 +308,7 @@
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
 				4F3601392640CD99005D7587 /* FeedView.swift */,
 				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
+				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
 				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F4CA8002635D806001534A6 /* FavButton.swift */,
@@ -416,6 +421,7 @@
 				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
 				4FC744762630FD7D0060FC6D /* Web3 */,
 				4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */,
+				4F468F6B2646D63E00CA6525 /* Introspect */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -504,6 +510,7 @@
 				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
 				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
 				4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -596,6 +603,7 @@
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F856BEF2634A1D900BB5E07 /* FirebaseData.swift in Sources */,
+				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
@@ -1035,6 +1043,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
 		4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1062,6 +1078,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F468F6B2646D63E00CA6525 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
 		4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
