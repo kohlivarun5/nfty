@@ -42,9 +42,12 @@ struct TokenPrice: View {
           .scaleEffect(anchor: .center)
           .padding(.trailing)
       case .notSeenSince(let since):
-        BlockTimeLabel(blockNumber:since.blockNumber)
-            .font(.footnote)
-            .foregroundColor(.secondaryLabel)
+        VStack(alignment: .trailing) {
+          Text("Not seen since")
+          BlockTimeLabel(blockNumber:since.blockNumber)
+        }
+        .font(.footnote)
+        .foregroundColor(.secondaryLabel)
       case .burnt:
         Text("Burnt")
           .font(.footnote)
