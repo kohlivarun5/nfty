@@ -11,6 +11,8 @@ import PromiseKit
 
 struct TokenPrice: View {
   enum PriceState {
+    case burnt
+    case notSeenSince(NFTNotSeenSince)
     case loaded(NFTPriceInfo)
     case loading
     case none
@@ -39,6 +41,14 @@ struct TokenPrice: View {
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(anchor: .center)
           .padding(.trailing)
+      case .notSeenSince(let since):
+        BlockTimeLabel(blockNumber:since.blockNumber)
+            .font(.footnote)
+            .foregroundColor(.secondaryLabel)
+      case .burnt:
+        Text("Burnt")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
       }
     }
     .animation(.none)
@@ -51,7 +61,15 @@ struct TokenPrice: View {
           firstly {
             price
           }.done(on:.main) { wei in
-            self.wei = .loaded(wei)
+            switch(wei) {
+            case .known(let w):
+              self.wei = .loaded(w)
+            case .notSeenSince(let b):
+              self.wei = .notSeenSince(b)
+            case .burnt:
+              self.wei = .burnt
+            }
+            
           }.catch { print($0) }
         }
       }
