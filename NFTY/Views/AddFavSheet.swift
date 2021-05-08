@@ -84,17 +84,12 @@ struct AddFavSheet: View {
             NftImage(nft:nftWithPrice.nft,
                      samples:samples,
                      themeColor:info.themeColor,
-                     size:.normal)
-              .padding()
-              
-           
-          }.frame(minHeight: 250)
-          
-          .border(Color.secondary)
-          .clipShape(RoundedRectangle(cornerRadius:10, style: .continuous))
-          .overlay(
-            RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 3))
-          .shadow(color:Color.primary,radius: 2)
+                     size:.medium)
+              .frame(minHeight: 250)
+              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              .shadow(color:info.themeColor,radius: 2)
+          }
+          .padding()
           
         case .loading(let info):
           let samples = [info.url1,info.url2,info.url3,info.url4];

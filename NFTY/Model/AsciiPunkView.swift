@@ -26,10 +26,14 @@ struct AsciiPunkView: View {
             .font(.system(size:fontSize, design: .monospaced))
             .foregroundColor(Color.systemBackground)
             .padding()
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
-            .scaleEffect(2,anchor: .center)
-            .padding(.trailing)
+          HStack {
+            Spacer()
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
+              .scaleEffect(2,anchor: .center)
+              .padding(.trailing)
+            Spacer()
+          }
         }
       case .some(let ascii):
         Text(ascii.unicode)

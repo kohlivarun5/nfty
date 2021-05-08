@@ -19,8 +19,16 @@ struct NftImageImpl: View {
           expireAfter: 60 * 60 * 24 * 10
         ),
         empty: {
-          Text("")
-          // This view is displayed before download starts
+          Image(
+            samples[
+              Int.random(in: 0..<samples.count)
+            ])
+            .interpolation(.none)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+            .background(themeColor)
+            .blur(radius:20)
         },
         inProgress: { progress in
           
@@ -68,6 +76,7 @@ struct NftImage: View {
   
   enum Size {
     case small
+    case medium
     case normal
     case large
   }
@@ -78,6 +87,8 @@ struct NftImage: View {
     switch (size) {
     case .small:
       return 8
+    case .medium:
+      return 16
     case .normal:
       return 18
     case .large:
@@ -102,7 +113,7 @@ struct NftImage: View {
             FavButton(nft:nft,size:.medium)
             Spacer()
           }
-        case .large:
+        case .large,.medium:
           VStack {
             Spacer()
             FavButton(nft:nft,size:.large)
