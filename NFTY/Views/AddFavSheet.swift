@@ -11,21 +11,40 @@ import PromiseKit
 struct AddFavSheet: View {
   
   class NftWithCollection : ObservableObject {
-    @Published var nft : (CollectionInfo,NFTWithLazyPrice)? = nil
     
-    func update(address:String,tokenId:UInt) {
-      let collection = collectionsFactory.getByAddress(address)!;
-      firstly {
-        collection.data.contract.getToken(tokenId)
-      }.done(on:.main) { nftWithPrice in
-        self.nft = (collection.info,nftWithPrice)
-      }.catch { print($0) }
+    enum State {
+      case empty
+      case loading
+      case notFound
+      case loaded(CollectionInfo,NFTWithLazyPrice)
+    }
+    
+    @Published var state : State = .empty
+    
+    func update(address:String,tokenId:UInt?) {
+      let collection = collectionsFactory.getByAddress(address)
+      switch (tokenId,collection) {
+      case (.none,_):
+        self.state = .empty
+      case (_,.none):
+        self.state = .empty
+      case (.some(let token),.some(let collection)):
+        self.state = .loading
+        firstly {
+          collection.data.contract.getToken(token)
+        }.done(on:.main) { nftWithPrice in
+          self.state = .loaded(collection.info,nftWithPrice)
+        }.catch { error in
+          print(error)
+          self.state = .notFound
+        }
+      }
     }
   }
   
   private var collectionsDict = collectionsFactory.collections
   @State private var collectionAddress : String = ""
-  @State private var tokenId : Int? = nil
+  @State private var tokenId : String = ""
   
   @ObservedObject private var nft : NftWithCollection = NftWithCollection()
   
@@ -44,50 +63,55 @@ struct AddFavSheet: View {
                 })
                })
           .pickerStyle(SegmentedPickerStyle())
-          /* .onChange(of: collectionAddress) { tag in
-            print(tag)
-            // nft.update(address:collectionAddress,tokenId:UInt(tokenId))
-          } */
+          .onChange(of: collectionAddress) { tag in
+            nft.update(address:collectionAddress,tokenId:UInt(tokenId))
+          }
         
-        TextField(
-          "Token",
-          value:$tokenId,
-          formatter: NumberFormatter())
-          .keyboardType(UIKeyboardType.decimalPad)
+        TextField("Token",text:$tokenId)
+          .textContentType(.oneTimeCode)
+          .keyboardType(.numberPad)
           .multilineTextAlignment(.center)
           .textFieldStyle(RoundedBorderTextFieldStyle())
-          /* .onChange(of: tokenId) { val in
-            print(val)
-            // nft.update(address:collectionAddress,tokenId:UInt(tokenId))
-          } */
+          .onChange(of: tokenId) { val in
+            nft.update(address:collectionAddress,tokenId:UInt(tokenId))
+          }
         
-        switch(nft) {
-        case .some(let (info,nftWithPrice)):
+        switch(nft.state) {
+        case .loaded(let info,let nftWithPrice):
           let samples = [info.url1,info.url2,info.url3,info.url4];
+          
           VStack {
             NftImage(nft:nftWithPrice.nft,
                      samples:samples,
                      themeColor:info.themeColor,
-                     size:.large)
-              .frame(minHeight: 450)
-            
-            HStack() {
-              VStack(alignment:.leading) {
-                Text(nftWithPrice.nft.name)
-                  .font(.headline)
-                Text("#\(nftWithPrice.nft.tokenId)")
-                  .font(.subheadline)
-              }
-              Spacer()
-              TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei))
-                .font(.title)
-            }.padding()
+                     size:.normal)
+              .padding()
+              
+           
+          }.frame(minHeight: 250)
+          
+          .border(Color.secondary)
+          .clipShape(RoundedRectangle(cornerRadius:10, style: .continuous))
+          .overlay(
+            RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 3))
+          .shadow(color:Color.primary,radius: 2)
+          
+        case .loading:
+          VStack {
+            Spacer()
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+              .scaleEffect(2,anchor: .center)
+              .padding()
+            Spacer()
           }
         default:
           Spacer()
         }
+        
       }
       .padding()
+      .animation(.easeIn)
     }
   }
 }
@@ -97,3 +121,32 @@ struct AddFavSheet_Previews: PreviewProvider {
     AddFavSheet()
   }
 }
+
+
+/*
+ switch(nft) {
+ case .some(let (info,nftWithPrice)):
+ let samples = [info.url1,info.url2,info.url3,info.url4];
+ VStack {
+ NftImage(nft:nftWithPrice.nft,
+ samples:samples,
+ themeColor:info.themeColor,
+ size:.large)
+ .frame(minHeight: 450)
+ 
+ HStack() {
+ VStack(alignment:.leading) {
+ Text(nftWithPrice.nft.name)
+ .font(.headline)
+ Text("#\(nftWithPrice.nft.tokenId)")
+ .font(.subheadline)
+ }
+ Spacer()
+ TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei))
+ .font(.title)
+ }.padding()
+ }
+ default:
+ Spacer()
+ }
+ */
