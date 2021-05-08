@@ -14,8 +14,8 @@ struct AddFavSheet: View {
     
     enum State {
       case empty
-      case loading
       case notFound
+      case loading(CollectionInfo)
       case loaded(CollectionInfo,NFTWithLazyPrice)
     }
     
@@ -29,7 +29,7 @@ struct AddFavSheet: View {
       case (_,.none):
         self.state = .empty
       case (.some(let token),.some(let collection)):
-        self.state = .loading
+        self.state = .loading(collection.info)
         firstly {
           collection.data.contract.getToken(token)
         }.done(on:.main) { nftWithPrice in
@@ -96,13 +96,27 @@ struct AddFavSheet: View {
             RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 3))
           .shadow(color:Color.primary,radius: 2)
           
-        case .loading:
+        case .loading(let info):
+          let samples = [info.url1,info.url2,info.url3,info.url4];
           VStack {
             Spacer()
-            ProgressView()
-              .progressViewStyle(CircularProgressViewStyle())
-              .scaleEffect(2,anchor: .center)
-              .padding()
+            ZStack {
+              
+              Image(
+                samples[
+                  Int.random(in: 0..<samples.count)
+                ])
+                .interpolation(.none)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding()
+                .background(info.themeColor)
+                .blur(radius:20)
+              ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: info.themeColor))
+                .scaleEffect(2.0, anchor: .center)
+              
+            }
             Spacer()
           }
         default:
