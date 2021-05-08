@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PromiseKit
+import Introspect
 
 struct AddFavSheet: View {
   
@@ -72,6 +73,9 @@ struct AddFavSheet: View {
           .keyboardType(.numberPad)
           .multilineTextAlignment(.center)
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .introspectTextField { textField in
+            textField.becomeFirstResponder()
+          }
           .onChange(of: tokenId) { val in
             nft.update(address:collectionAddress,tokenId:UInt(tokenId))
           }
