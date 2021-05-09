@@ -93,8 +93,11 @@ struct AddFavSheet: View {
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:info.themeColor,radius: 2)
             VStack(alignment: .trailing) {
-              TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
-                .padding()
+              HStack {
+                Spacer()
+                TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
+                  .padding()
+              }
               Spacer()
             }
           }
