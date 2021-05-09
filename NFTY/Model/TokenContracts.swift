@@ -615,7 +615,7 @@ class AsciiPunksContract : ContractInterface {
             when(fulfilled:events)
           }.done { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
-          }
+          }.catch { print ($0) }
         }) { log in
           events.append(
             firstly {
