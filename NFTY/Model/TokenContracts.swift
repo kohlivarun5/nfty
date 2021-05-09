@@ -305,7 +305,7 @@ class CryptoKittiesAuction : ContractInterface {
   ])
   
   struct Kitty: Codable {
-    var image_url: String
+    var image_url_png: String
   }
   
   class SaleAuctionContract : EthereumContract {
@@ -355,18 +355,16 @@ class CryptoKittiesAuction : ContractInterface {
       firstly {
         self.getKitty(tokenId:tokenId)
       }.done { kitty  in
-        if (!kitty.image_url.hasSuffix(".svg")) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:UInt(tokenId),
-              name:self.name,
-              media:.image(URL(string:kitty.image_url)!)),
-            indicativePriceWei:NFTPriceInfo(
-              price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-              blockNumber: log.blockNumber?.quantity)
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:UInt(tokenId),
+            name:self.name,
+            media:.image(URL(string:kitty.image_url_png)!)),
+          indicativePriceWei:NFTPriceInfo(
+            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+            blockNumber: log.blockNumber?.quantity)
           ))
-        }
       }.catch { print($0) }
     }
   }
@@ -378,18 +376,16 @@ class CryptoKittiesAuction : ContractInterface {
       firstly {
         self.getKitty(tokenId:tokenId)
       }.done { kitty  in
-        if (!kitty.image_url.hasSuffix(".svg")) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:UInt(tokenId),
-              name:self.name,
-              media:.image(URL(string:kitty.image_url)!)),
-            indicativePriceWei:NFTPriceInfo(
-              price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-              blockNumber: log.blockNumber?.quantity)
-          ))
-        }
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:UInt(tokenId),
+            name:self.name,
+            media:.image(URL(string:kitty.image_url_png)!)),
+          indicativePriceWei:NFTPriceInfo(
+            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+            blockNumber: log.blockNumber?.quantity)
+        ))
       }.catch { print($0) }
     }
   }
@@ -438,7 +434,7 @@ class CryptoKittiesAuction : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(tokenId),
           name:self.name,
-          media:.image(URL(string:kitty.image_url)!)),
+          media:.image(URL(string:kitty.image_url_png)!)),
         getPrice: {
           switch(self.pricesCache[tokenId]) {
           case .some(let p):
