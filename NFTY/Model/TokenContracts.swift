@@ -394,7 +394,7 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
+  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [TradeEvent] = []
       return Promise { seal in
@@ -410,11 +410,20 @@ class CryptoKittiesAuction : ContractInterface {
       }
     }.compactMap { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<[TradeEvent]> in
-      if (events.count == 0 && retries > 0) {
+    }.then { events -> Promise<TradeEventStatus> in
+      switch(events.count,retries) {
+      case (0,0):
+        return Promise.value(
+          TradeEventStatus.notSeenSince(
+            NFTNotSeenSince(
+              blockNumber:fetcher.fromBlock
+            )
+          )
+        )
+      case (0,_):
         return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
-      } else {
-        return Promise.value(events)
+      default:
+        return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
   }
@@ -442,10 +451,13 @@ class CryptoKittiesAuction : ContractInterface {
               indexedTopics: [])
             let p = firstly {
               self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
-            }.map { events in
-              return events.first.map { $0 }
-            }.map { (event:TradeEvent?) -> NFTPriceStatus in
-              NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event?.value),blockNumber:event?.blockNumber.quantity))
+            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
             DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
@@ -594,7 +606,7 @@ class AsciiPunksContract : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
+  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [Promise<TradeEvent?>] = []
       return Promise { seal in
@@ -613,11 +625,20 @@ class AsciiPunksContract : ContractInterface {
       }
     }.compactMap { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<[TradeEvent]> in
-      if (events.count == 0 && retries > 0) {
+    }.then { events -> Promise<TradeEventStatus> in
+      switch(events.count,retries) {
+      case (0,0):
+        return Promise.value(
+          TradeEventStatus.notSeenSince(
+            NFTNotSeenSince(
+              blockNumber:fetcher.fromBlock
+            )
+          )
+        )
+      case (0,_):
         return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
-      } else {
-        return Promise.value(events)
+      default:
+        return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
   }
@@ -643,12 +664,15 @@ class AsciiPunksContract : ContractInterface {
               address:self.contractAddressHex,
               indexedTopics: [nil,nil,tokenIdTopic])
                      
-            let p = firstly { () -> Promise<[TradeEvent]> in
+            let p = firstly { () -> Promise<TradeEventStatus> in
               self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:10)
-            }.map { events in
-              return events.first
-            }.map { (event:TradeEvent?) -> NFTPriceStatus in
-              return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event?.value),blockNumber:event?.blockNumber.quantity))
+            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
             DispatchQueue.main.async { self.pricesCache[tokenId] = p }
             return p
