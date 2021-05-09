@@ -136,7 +136,7 @@ class LogsFetcher {
 
 class CryptoPunksContract : ContractInterface {
   
-  private var pricesCache : [UInt : Promise<NFTPriceInfo>] = [:]
+  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
   
   private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
@@ -199,7 +199,7 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,punkBoughtFetcher:LogsFetcher,punkOfferedFetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
+  private func getTokenHistory(_ tokenId: UInt,punkBoughtFetcher:LogsFetcher,punkOfferedFetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [TradeEvent] = []
       return Promise { seal in
@@ -223,11 +223,23 @@ class CryptoPunksContract : ContractInterface {
       }
     }.compactMap { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<[TradeEvent]> in
-      if (events.count == 0 && retries > 0) {
+    }.then { events -> Promise<TradeEventStatus> in
+      switch(events.count,retries) {
+      case (0,0):
+        return Promise.value(
+          TradeEventStatus.notSeenSince(
+            NFTNotSeenSince(
+              blockNumber: min(
+                punkBoughtFetcher.fromBlock,
+                punkOfferedFetcher.fromBlock
+              )
+            )
+          )
+        )
+      case (0,_):
         return self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:retries-1)
-      } else {
-        return Promise.value(events)
+      default:
+        return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
   }
@@ -260,12 +272,15 @@ class CryptoPunksContract : ContractInterface {
               address:self.contractAddressHex,
               indexedTopics: [tokenIdTopic])
             
-            let p = firstly { () -> Promise<[TradeEvent]> in
+            let p = firstly { () -> Promise<TradeEventStatus> in
               self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
-            }.map { events in
-              return events.first.map { $0 }
-            }.map { (event:TradeEvent?) -> NFTPriceInfo in
-              NFTPriceInfo(price:priceIfNotZero(event?.value),blockNumber:event?.blockNumber.quantity)
+            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
             DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
@@ -281,7 +296,7 @@ class CryptoPunksContract : ContractInterface {
 
 class CryptoKittiesAuction : ContractInterface {
   
-  private var pricesCache : [UInt : Promise<NFTPriceInfo>] = [:]
+  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
   
   private let AuctionSuccessful: SolidityEvent = SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
@@ -327,7 +342,7 @@ class CryptoKittiesAuction : ContractInterface {
           let kittyInfo = try jsonDecoder.decode(Kitty.self, from: data!)
           seal.fulfill(kittyInfo)
         } catch {
-          print("JSON Serialization error")
+          print("JSON Serialization error:\(error)")
         }
       }).resume()
     }
@@ -379,7 +394,7 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
+  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [TradeEvent] = []
       return Promise { seal in
@@ -395,11 +410,20 @@ class CryptoKittiesAuction : ContractInterface {
       }
     }.compactMap { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<[TradeEvent]> in
-      if (events.count == 0 && retries > 0) {
+    }.then { events -> Promise<TradeEventStatus> in
+      switch(events.count,retries) {
+      case (0,0):
+        return Promise.value(
+          TradeEventStatus.notSeenSince(
+            NFTNotSeenSince(
+              blockNumber:fetcher.fromBlock
+            )
+          )
+        )
+      case (0,_):
         return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
-      } else {
-        return Promise.value(events)
+      default:
+        return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
   }
@@ -427,10 +451,13 @@ class CryptoKittiesAuction : ContractInterface {
               indexedTopics: [])
             let p = firstly {
               self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
-            }.map { events in
-              return events.first.map { $0 }
-            }.map { (event:TradeEvent?) -> NFTPriceInfo in
-              NFTPriceInfo(price:priceIfNotZero(event?.value),blockNumber:event?.blockNumber.quantity)
+            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
             DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
@@ -446,7 +473,7 @@ class CryptoKittiesAuction : ContractInterface {
 class AsciiPunksContract : ContractInterface {
   
   private var drawingCache : [BigUInt : Promise<Media.AsciiPunk?>] = [:]
-  private var pricesCache : [UInt : Promise<NFTPriceInfo>] = [:]
+  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
@@ -579,7 +606,7 @@ class AsciiPunksContract : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<[TradeEvent]> {
+  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     return firstly { () -> Promise<[TradeEvent]> in
       var events : [Promise<TradeEvent?>] = []
       return Promise { seal in
@@ -598,11 +625,20 @@ class AsciiPunksContract : ContractInterface {
       }
     }.compactMap { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<[TradeEvent]> in
-      if (events.count == 0 && retries > 0) {
+    }.then { events -> Promise<TradeEventStatus> in
+      switch(events.count,retries) {
+      case (0,0):
+        return Promise.value(
+          TradeEventStatus.notSeenSince(
+            NFTNotSeenSince(
+              blockNumber:fetcher.fromBlock
+            )
+          )
+        )
+      case (0,_):
         return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
-      } else {
-        return Promise.value(events)
+      default:
+        return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
   }
@@ -628,12 +664,15 @@ class AsciiPunksContract : ContractInterface {
               address:self.contractAddressHex,
               indexedTopics: [nil,nil,tokenIdTopic])
                      
-            let p = firstly { () -> Promise<[TradeEvent]> in
+            let p = firstly { () -> Promise<TradeEventStatus> in
               self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:10)
-            }.map { events in
-              return events.first
-            }.map { (event:TradeEvent?) -> NFTPriceInfo in
-              return NFTPriceInfo(price:priceIfNotZero(event?.value),blockNumber:event?.blockNumber.quantity)
+            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
             DispatchQueue.main.async { self.pricesCache[tokenId] = p }
             return p

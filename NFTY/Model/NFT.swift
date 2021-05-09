@@ -21,6 +21,15 @@ struct TradeEvent {
   var blockNumber : EthereumQuantity
 }
 
+struct NFTNotSeenSince {
+  var blockNumber : BigUInt
+}
+
+enum TradeEventStatus {
+  case trade(TradeEvent)
+  case notSeenSince(NFTNotSeenSince)
+}
+
 enum Media {
   
   struct AsciiPunk {
@@ -78,14 +87,19 @@ struct NFTWithPrice : Identifiable {
   var id : NFT.NftID {
     return nft.id
   }
-  
+}
+
+enum NFTPriceStatus {
+  case known(NFTPriceInfo)
+  case notSeenSince(NFTNotSeenSince)
+  case burnt
 }
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
-  private let getPrice : () -> Promise<NFTPriceInfo>
+  private let getPrice : () -> Promise<NFTPriceStatus>
   
-  init(nft:NFT,getPrice : @escaping () -> Promise<NFTPriceInfo>) {
+  init(nft:NFT,getPrice : @escaping () -> Promise<NFTPriceStatus>) {
     self.nft = nft
     self.getPrice = getPrice
   }
@@ -94,14 +108,14 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  var indicativePriceWei : Promise<NFTPriceInfo> {
+  var indicativePriceWei : Promise<NFTPriceStatus> {
     self.getPrice()
   }
 }
 
 enum TokenPriceType {
   case eager(NFTPriceInfo)
-  case lazy(Promise<NFTPriceInfo>)
+  case lazy(Promise<NFTPriceStatus>)
 }
 
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
@@ -255,7 +269,7 @@ let COLLECTIONS: [Collection]=[
 
 struct CollectionsFactory {
   
-  private let collections : [String : Collection] = [
+  let collections : [String : Collection] = [
     CompositeCollection.punks.info.address:CompositeCollection.punks,
     CompositeCollection.kitties.info.address:CompositeCollection.kitties,
     CompositeCollection.ascii.info.address:CompositeCollection.ascii,

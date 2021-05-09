@@ -29,7 +29,7 @@ struct BlockTimeLabel: View {
   var body: some View {
     Text(blockTimeStampString)
     .onAppear {
-      DispatchQueue.global(qos:.utility).async {
+      DispatchQueue.global(qos:.userInteractive).async {
         switch (self.blockNumber) {
         case .none:
           return

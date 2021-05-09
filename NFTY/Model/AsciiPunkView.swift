@@ -29,7 +29,6 @@ struct AsciiPunkView: View {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
             .scaleEffect(2,anchor: .center)
-            .padding(.trailing)
         }
       case .some(let ascii):
         Text(ascii.unicode)
