@@ -51,7 +51,7 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 class LogsFetcher {
   private var blockDecrements : BigUInt = 10000
   private var toBlock = EthereumQuantityTag.latest
-  var mostRecentBlock = EthereumQuantityTag.latest
+  private var mostRecentBlock = EthereumQuantityTag.latest
   
   let event : SolidityEvent
   var fromBlock : BigUInt
