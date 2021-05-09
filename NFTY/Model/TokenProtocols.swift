@@ -194,21 +194,21 @@ class CompositeRecentTradesObject : ObservableObject {
     self.punks.data.recentTrades.loadLatest() {
       DispatchQueue.main.async {
         self.pendingCounterLatest-=1
-        if (self.pendingCounterLatest == 0) { onDone() }
+        if (self.pendingCounterLatest == 1) { onDone() }
       }
     }
     
     self.kitties.data.recentTrades.loadLatest() {
       DispatchQueue.main.async {
         self.pendingCounterLatest-=1
-        if (self.pendingCounterLatest == 0) { onDone() }
+        if (self.pendingCounterLatest == 1) { onDone() }
       }
     }
     
     self.ascii.data.recentTrades.loadLatest() {
       DispatchQueue.main.async {
         self.pendingCounterLatest-=1
-        if (self.pendingCounterLatest == 0) { onDone() }
+        if (self.pendingCounterLatest == 1) { onDone() }
       }
     }
   }

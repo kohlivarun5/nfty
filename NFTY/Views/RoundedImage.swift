@@ -66,7 +66,7 @@ struct RoundedImage: View {
             Text("#\(nft.tokenId)")
           }
           Spacer()
-          TokenPrice(price:price)
+          TokenPrice(price:price,color:.label)
         }
         .font(.subheadline)
         .padding()

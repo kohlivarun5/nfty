@@ -36,7 +36,7 @@ struct NftDetail: View {
             .font(.subheadline)
         }
         Spacer()
-        TokenPrice(price:price)
+        TokenPrice(price:price,color:.label)
           .font(.title)
       }.padding()
       tokens.map { tokens in

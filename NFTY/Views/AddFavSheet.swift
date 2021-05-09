@@ -93,7 +93,7 @@ struct AddFavSheet: View {
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:info.themeColor,radius: 2)
             VStack(alignment: .trailing) {
-              TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei))
+              TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
                 .padding()
               Spacer()
             }
@@ -139,32 +139,3 @@ struct AddFavSheet_Previews: PreviewProvider {
     AddFavSheet()
   }
 }
-
-
-/*
- switch(nft) {
- case .some(let (info,nftWithPrice)):
- let samples = [info.url1,info.url2,info.url3,info.url4];
- VStack {
- NftImage(nft:nftWithPrice.nft,
- samples:samples,
- themeColor:info.themeColor,
- size:.large)
- .frame(minHeight: 450)
- 
- HStack() {
- VStack(alignment:.leading) {
- Text(nftWithPrice.nft.name)
- .font(.headline)
- Text("#\(nftWithPrice.nft.tokenId)")
- .font(.subheadline)
- }
- Spacer()
- TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei))
- .font(.title)
- }.padding()
- }
- default:
- Spacer()
- }
- */
