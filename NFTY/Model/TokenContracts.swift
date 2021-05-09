@@ -705,3 +705,59 @@ class BlockFetcherImpl {
 }
 
 var BlocksFetcher = BlockFetcherImpl()
+
+
+class UserEthRate {
+  private var cache : Promise<Double?>? = nil
+  
+  struct SpotResponse : Decodable {
+    struct SpotData : Decodable {
+      let base : String
+      let currency : String
+      let amount : String
+    }
+    let data : SpotData
+  }
+  
+  private func getRate() -> Promise<Double?> {
+    switch(NSLocale.current.currencyCode) {
+    case .none:
+      return Promise.value(nil)
+    case .some(let localCurrencyCode):
+      return Promise { seal in
+        var request = URLRequest(url: URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot")!)
+        request.httpMethod = "GET"
+        // request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          do {
+            let jsonDecoder = JSONDecoder()
+            let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
+            seal.fulfill(Double(response.data.amount))
+          } catch {
+            print("JSON Serialization error:\(error)")
+            seal.fulfill(nil)
+          }
+        }).resume()
+      }
+    }
+  }
+  
+  func get() -> Promise<Double?> {
+    switch(self.cache) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = firstly {
+        getRate()
+      }
+      DispatchQueue.main.async {
+        self.cache = p
+      }
+      return p
+    }
+  }
+  
+}
+
+var EthSpot = UserEthRate()
