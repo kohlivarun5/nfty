@@ -81,10 +81,56 @@ struct FeedView: View {
     VStack {
       switch(isLoading) {
       case true:
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(2,anchor: .center)
-          .padding()
+        ScrollView {
+          LazyVStack {
+            let sampleInfos = [
+              CompositeCollection.punks.info,
+              CompositeCollection.punks.info,
+              CompositeCollection.punks.info,
+              CompositeCollection.punks.info
+            ]
+            
+            ForEach(sampleInfos.indices,id:\.self) { index in
+              let info = sampleInfos[index]
+              let samples = [info.url1,info.url2,info.url3,info.url4];
+              ZStack {
+                
+                VStack {
+                  ZStack {
+                    
+                    Image(samples[index % samples.count])
+                      .interpolation(.none)
+                      .resizable()
+                      .aspectRatio(contentMode: .fit)
+                      .padding()
+                      .background(info.themeColor)
+                      .blur(radius:20)
+                    ProgressView()
+                      .progressViewStyle(CircularProgressViewStyle(tint: info.themeColor))
+                      .scaleEffect(2.0, anchor: .center)
+                    
+                  }
+                  
+                  HStack {
+                    Spacer()
+                  }
+                  .font(.subheadline)
+                  .padding()
+                }
+                
+                .border(Color.secondary)
+                .frame(width:250)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .overlay(
+                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 1))
+                .shadow(color:Color.primary,radius: 2)
+                
+              }
+              .padding()
+              .animation(.default)
+            }
+          }
+        }
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {

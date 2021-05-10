@@ -63,7 +63,6 @@ struct NftImageImpl: View {
             .aspectRatio(contentMode: .fit)
             .padding()
             .background(themeColor)
-          //.resizable()
           
         })
     }

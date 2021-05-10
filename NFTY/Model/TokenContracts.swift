@@ -305,7 +305,7 @@ class CryptoKittiesAuction : ContractInterface {
   ])
   
   struct Kitty: Codable {
-    var image_url: String
+    var image_url_png: String
   }
   
   class SaleAuctionContract : EthereumContract {
@@ -355,18 +355,16 @@ class CryptoKittiesAuction : ContractInterface {
       firstly {
         self.getKitty(tokenId:tokenId)
       }.done { kitty  in
-        if (!kitty.image_url.hasSuffix(".svg")) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:UInt(tokenId),
-              name:self.name,
-              media:.image(URL(string:kitty.image_url)!)),
-            indicativePriceWei:NFTPriceInfo(
-              price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-              blockNumber: log.blockNumber?.quantity)
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:UInt(tokenId),
+            name:self.name,
+            media:.image(URL(string:kitty.image_url_png)!)),
+          indicativePriceWei:NFTPriceInfo(
+            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+            blockNumber: log.blockNumber?.quantity)
           ))
-        }
       }.catch { print($0) }
     }
   }
@@ -378,18 +376,16 @@ class CryptoKittiesAuction : ContractInterface {
       firstly {
         self.getKitty(tokenId:tokenId)
       }.done { kitty  in
-        if (!kitty.image_url.hasSuffix(".svg")) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:UInt(tokenId),
-              name:self.name,
-              media:.image(URL(string:kitty.image_url)!)),
-            indicativePriceWei:NFTPriceInfo(
-              price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-              blockNumber: log.blockNumber?.quantity)
-          ))
-        }
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:UInt(tokenId),
+            name:self.name,
+            media:.image(URL(string:kitty.image_url_png)!)),
+          indicativePriceWei:NFTPriceInfo(
+            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+            blockNumber: log.blockNumber?.quantity)
+        ))
       }.catch { print($0) }
     }
   }
@@ -438,7 +434,7 @@ class CryptoKittiesAuction : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(tokenId),
           name:self.name,
-          media:.image(URL(string:kitty.image_url)!)),
+          media:.image(URL(string:kitty.image_url_png)!)),
         getPrice: {
           switch(self.pricesCache[tokenId]) {
           case .some(let p):
@@ -615,7 +611,7 @@ class AsciiPunksContract : ContractInterface {
             when(fulfilled:events)
           }.done { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
-          }
+          }.catch { print ($0) }
         }) { log in
           events.append(
             firstly {
@@ -705,3 +701,58 @@ class BlockFetcherImpl {
 }
 
 var BlocksFetcher = BlockFetcherImpl()
+
+
+class UserEthRate {
+  private var cache : Promise<Double?>? = nil
+  
+  struct SpotResponse : Decodable {
+    struct SpotData : Decodable {
+      let base : String
+      let currency : String
+      let amount : String
+    }
+    let data : SpotData
+  }
+  
+  private func getRate() -> Promise<Double?> {
+    switch(NSLocale.current.currencyCode) {
+    case .none:
+      return Promise.value(nil)
+    case .some(let localCurrencyCode):
+      return Promise { seal in
+        var request = URLRequest(url: URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot")!)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          do {
+            let jsonDecoder = JSONDecoder()
+            let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
+            seal.fulfill(Double(response.data.amount))
+          } catch {
+            print("JSON Serialization error:\(error)")
+            seal.fulfill(nil)
+          }
+        }).resume()
+      }
+    }
+  }
+  
+  func get() -> Promise<Double?> {
+    switch(self.cache) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = firstly {
+        getRate()
+      }
+      DispatchQueue.main.async {
+        self.cache = p
+      }
+      return p
+    }
+  }
+  
+}
+
+var EthSpot = UserEthRate()

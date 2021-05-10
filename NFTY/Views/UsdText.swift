@@ -7,27 +7,67 @@
 
 import SwiftUI
 import BigInt
+import PromiseKit
 
-func formatter() -> Formatter {
-    let currencyFormatter = NumberFormatter()
-    currencyFormatter.usesGroupingSeparator = true
-    currencyFormatter.numberStyle = .currency
-    // localize to your grouping and decimal separator
-    currencyFormatter.locale = Locale.current
-    return currencyFormatter
+func formatter(symbol:String?) -> Formatter {
+  let currencyFormatter = NumberFormatter()
+  currencyFormatter.usesGroupingSeparator = true
+  currencyFormatter.numberStyle = .currency
+  // localize to your grouping and decimal separator
+  currencyFormatter.locale = Locale.current
+  switch(symbol) {
+  case .some(let sym):
+    currencyFormatter.currencySymbol = sym
+  case .none:
+    break
+  }
+  return currencyFormatter
 }
-var currencyFormatter = formatter()
-var USD_PER_ETH=2300.0;
+var currencyFormatter = formatter(symbol:nil)
+var ethFormatter = formatter(symbol:"Ξ")
 
 struct UsdText: View {
-    var wei:BigUInt
-    var body: some View {
-        Text(currencyFormatter.string(for:((Double(wei) / 1e18) * USD_PER_ETH))!)
+  
+  enum SpotState {
+    case loading
+    case localCurrency(Double)
+    case unknown
+  }
+  
+  @State private var spot : SpotState = .loading
+  
+  var wei:BigUInt
+  var body: some View {
+    switch(spot) {
+    case .loading:
+      ProgressView()
+        .onAppear {
+          switch(self.spot) {
+          case .loading:
+            firstly {
+              EthSpot.get()
+            }.done(on:.main) { spot in
+              switch(spot) {
+              case .none:
+                self.spot = .unknown
+              case .some(let rate):
+                self.spot = .localCurrency(rate)
+              }
+            }.catch { print ($0) }
+          case .localCurrency,.unknown:
+            break
+          }
+        }
+    case .localCurrency(let rate):
+      Text(currencyFormatter.string(for:((Double(wei) / 1e18) * rate))!)
+    case .unknown:
+      Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
     }
+  }
 }
 
 struct UsdText_Previews: PreviewProvider {
-    static var previews: some View {
-        UsdText(wei:BigUInt(2.2))
-    }
+  static var previews: some View {
+    UsdText(wei:BigUInt(2.2))
+  }
 }

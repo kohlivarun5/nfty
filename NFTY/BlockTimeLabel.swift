@@ -43,7 +43,7 @@ struct BlockTimeLabel: View {
             case .some(let timestamp):
               self.blockTimeStampString = Date(timeIntervalSince1970:Double(timestamp.quantity)).timeAgoDisplay()
             }
-          }
+          }.catch { print ($0) }
         }
       }
     }
