@@ -42,6 +42,7 @@ protocol ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
+  func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
 }
 
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
@@ -135,6 +136,7 @@ class LogsFetcher {
 }
 
 class CryptoPunksContract : ContractInterface {
+   
   
   private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
   
@@ -292,6 +294,12 @@ class CryptoPunksContract : ContractInterface {
     );
   }
   
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    onDone()
+    // Difficult because CryptoPunks don't support full ERC721
+    // Will be mixture of balanceOf and  'event PunkTransfer(address indexed from, address indexed to, uint256 punkIndex);'
+  }
+  
 }
 
 class CryptoKittiesAuction : ContractInterface {
@@ -317,6 +325,28 @@ class CryptoKittiesAuction : ContractInterface {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
     }
   }
+  
+  class EthContract : EthereumContract {
+    let eth = web3.eth
+    let events : [SolidityEvent] = []
+    let addressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
+    var address : EthereumAddress?
+    init() {
+      address = try? EthereumAddress(hex:addressHex, eip55: false)
+    }
+    
+    func tokensOfOwner(address:EthereumAddress) -> Promise<[BigUInt]> {
+      let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
+      let outputs = [SolidityFunctionParameter(name: "tokens", type: .array(type: .uint256, length: nil))]
+      let method = SolidityConstantFunction(name: "tokensOfOwner", inputs: inputs, outputs: outputs, handler: self)
+      return firstly {
+        method.invoke(address).call()
+      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+        return outputs["tokens"] as! [BigUInt]
+      }
+    }
+  }
+  private var ethContract = EthContract()
   
   private var name = "CryptoKitties"
   let contractAddressHex = "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d"
@@ -469,6 +499,30 @@ class CryptoKittiesAuction : ContractInterface {
       }
     ))
   }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    firstly {
+      ethContract.tokensOfOwner(address:address)
+    }.then(on:DispatchQueue.global(qos: .userInteractive)) { tokens -> Promise<Void> in
+      if (tokens.count == 0) {
+        onDone()
+        return Promise.value(())
+      } else {
+        return when(
+          fulfilled:
+            tokens.map { token in
+              return firstly {
+                self.getToken(UInt(token))
+              }.done {
+                response($0)
+              }
+            }
+        )
+      }
+    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+      onDone()
+    }.catch { print ($0) }
+  }
 }
 
 class AsciiPunksContract : ContractInterface {
@@ -503,10 +557,35 @@ class AsciiPunksContract : ContractInterface {
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
       return firstly {
         method.invoke(tokenId).call()
-      }.map { outputs in
+      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
         return Media.AsciiPunk(unicode:outputs["uri"] as! String)
       }
     }
+    
+    func balanceOf(address:EthereumAddress) -> Promise<BigUInt> {
+      let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
+      let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
+      let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
+      return firstly {
+        method.invoke(address).call()
+      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+        return outputs["tokens"] as! BigUInt
+      }
+    }
+    
+    func tokenOfOwnerByIndex(address:EthereumAddress,index:BigUInt) -> Promise<BigUInt> {
+      let inputs = [
+        SolidityFunctionParameter(name: "owner", type: .address),
+        SolidityFunctionParameter(name: "index", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
+      return firstly {
+        method.invoke(address,index).call()
+      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+        return outputs["tokenId"] as! BigUInt
+      }
+    }
+    
   }
   private var ethContract = EthContract()
   
@@ -614,7 +693,7 @@ class AsciiPunksContract : ContractInterface {
         fetcher.fetch(onDone:{
           firstly {
             when(fulfilled:events)
-          }.done { events in
+          }.done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
           }.catch { print ($0) }
         }) { log in
@@ -667,7 +746,7 @@ class AsciiPunksContract : ContractInterface {
                      
             let p = firstly { () -> Promise<TradeEventStatus> in
               self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:10)
-            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+            }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
                 return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
@@ -681,6 +760,31 @@ class AsciiPunksContract : ContractInterface {
         }
       )
     );
+  }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    firstly {
+      ethContract.balanceOf(address:address)
+    }.then(on:DispatchQueue.global(qos: .userInteractive)) { tokensNum -> Promise<Void> in
+      if (tokensNum <= 0) {
+        return Promise.value(())
+      } else {
+        return when(
+          fulfilled:
+            Array(0...tokensNum-1).map { index -> Promise<Void> in
+              return firstly {
+                self.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+              }.then { tokenId in
+                return self.getToken(UInt(tokenId))
+              }.done {
+                response($0)
+              }
+            }
+        )
+      }
+    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+      onDone()
+    }.catch { print ($0) }
   }
   
 }
