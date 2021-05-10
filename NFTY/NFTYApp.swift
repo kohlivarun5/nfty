@@ -30,9 +30,8 @@ struct NFTYApp: App {
       TabView {
         
         NavigationView {
-          WalletView(
-            tokens:NftOwnerTokens(ownerAddress:SAMPLE_WALLET_ADDRESS))
-          .navigationBarTitle("Wallet")
+          WalletView()
+            .navigationBarTitle("Wallet")
         }
         .tabItem {
           Label("Wallet",systemImage:"lock.rectangle.stack.fill")
