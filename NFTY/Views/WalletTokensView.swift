@@ -18,7 +18,7 @@ struct WalletOverview: View {
   
   var body: some View {
     
-    VStack(spacing:0) {
+    VStack {
       
       HStack() {
         VStack(alignment:.leading) {
@@ -26,10 +26,11 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        Text(address.hex(eip55:false))
+        Text(address.hex(eip55:true).trunc(length:30))
           .font(.subheadline)
           .foregroundColor(.secondary)
-      }.padding()
+      }
+      Divider()
       
       switch(balance) {
       case .none:
@@ -53,11 +54,11 @@ struct WalletOverview: View {
             UsdText(wei:wei.quantity)
               .font(.title3)
               .foregroundColor(.secondary)
-          }.padding()
+          }
           Divider()
         }
       }
-    }
+    }.padding()
   }
 }
 
