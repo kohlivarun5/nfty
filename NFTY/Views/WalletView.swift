@@ -12,7 +12,7 @@ import BigInt
 import Web3
 
 struct WalletView: View {
-
+  
   @State private var showAddressSheet = false
   @State private var address : EthereumAddress? = nil
   
@@ -48,7 +48,7 @@ struct WalletView: View {
 
 
 struct WalletView_Previews: PreviewProvider {
-    static var previews: some View {
-      WalletView()
-    }
+  static var previews: some View {
+    WalletView()
+  }
 }

@@ -219,8 +219,15 @@ class CompositeRecentTradesObject : ObservableObject {
 class NftOwnerTokens : ObservableObject {
   @Published var tokens: [NFTWithLazyPrice] = []
   
+  enum LoadingState {
+    case notLoaded
+    case loading
+    case loaded
+  }
+  @Published var state : LoadingState = .notLoaded
+  
   let ownerAddress : EthereumAddress
-  let contracts : [ContractInterface]
+  private let contracts : [ContractInterface]
   
   private var pendingCount = 0
   
@@ -229,18 +236,17 @@ class NftOwnerTokens : ObservableObject {
     self.contracts = [cryptoPunksContract,cryptoKittiesContract,asciiPunksContract]
   }
   
-  func load(_ callback : @escaping () -> Void) {
-    if (pendingCount > 0) { return callback() }
+  func load() {
+    if (state != .notLoaded) { return }
 
-    self.pendingCount = contracts.count
+    state = .loading
     contracts.map { contract in
       contract.getOwnerTokens(
         address:ownerAddress,
                               
         onDone: {
           DispatchQueue.main.async {
-            self.pendingCount -= 1
-            callback()
+            self.state = .loaded
           }
         }
       ) { token in
