@@ -214,3 +214,40 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
 }
+
+
+class NftOwnerTokens : ObservableObject {
+  @Published var tokens: [NFTWithLazyPrice] = []
+  
+  let ownerAddress : EthereumAddress
+  let contracts : [ContractInterface]
+  
+  private var pendingCount = 0
+  
+  init(ownerAddress:EthereumAddress) {
+    self.ownerAddress = ownerAddress
+    self.contracts = [cryptoPunksContract,cryptoKittiesContract,asciiPunksContract]
+  }
+  
+  func load(_ callback : @escaping () -> Void) {
+    if (pendingCount >= 0) { return callback() }
+        
+    contracts.map { contract in
+      contract.getOwnerTokens(
+        address:ownerAddress,
+                              
+        onDone: {
+          DispatchQueue.main.async {
+            self.pendingCount -= 1
+            if (self.pendingCount == 0) { callback() }
+          }
+        }
+      ) { token in
+        DispatchQueue.main.async {
+          self.tokens.append(token)
+        }
+      }
+    }
+  }
+  
+}

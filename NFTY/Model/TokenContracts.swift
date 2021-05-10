@@ -42,6 +42,7 @@ protocol ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
+  func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
 }
 
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
@@ -135,6 +136,7 @@ class LogsFetcher {
 }
 
 class CryptoPunksContract : ContractInterface {
+   
   
   private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
   
@@ -290,6 +292,10 @@ class CryptoPunksContract : ContractInterface {
         }
       )
     );
+  }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    onDone()
   }
   
 }
@@ -468,6 +474,10 @@ class CryptoKittiesAuction : ContractInterface {
         }
       }
     ))
+  }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    onDone()
   }
 }
 
@@ -681,6 +691,10 @@ class AsciiPunksContract : ContractInterface {
         }
       )
     );
+  }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    onDone()
   }
   
 }
