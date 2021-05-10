@@ -82,25 +82,23 @@ struct TokenPrice: View {
     }
     .animation(.none)
     .onAppear {
-      DispatchQueue.global(qos:.userInteractive).async {
-        switch(price) {
-        case .eager(let wei):
-          self.wei = .loaded(wei)
-        case .lazy(let price):
-          firstly {
-            price
-          }.done(on:.main) { wei in
-            switch(wei) {
-            case .known(let w):
-              self.wei = .loaded(w)
-            case .notSeenSince(let b):
-              self.wei = .notSeenSince(b)
-            case .burnt:
-              self.wei = .burnt
-            }
-            
-          }.catch { print($0) }
-        }
+      switch(price) {
+      case .eager(let wei):
+        self.wei = .loaded(wei)
+      case .lazy(let price):
+        firstly {
+          price
+        }.done(on:.main) { wei in
+          switch(wei) {
+          case .known(let w):
+            self.wei = .loaded(w)
+          case .notSeenSince(let b):
+            self.wei = .notSeenSince(b)
+          case .burnt:
+            self.wei = .burnt
+          }
+          
+        }.catch { print($0) }
       }
     }
   }
