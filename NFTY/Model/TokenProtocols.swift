@@ -230,8 +230,9 @@ class NftOwnerTokens : ObservableObject {
   }
   
   func load(_ callback : @escaping () -> Void) {
-    if (pendingCount >= 0) { return callback() }
-        
+    if (pendingCount > 0) { return callback() }
+
+    self.pendingCount = contracts.count
     contracts.map { contract in
       contract.getOwnerTokens(
         address:ownerAddress,
@@ -239,7 +240,7 @@ class NftOwnerTokens : ObservableObject {
         onDone: {
           DispatchQueue.main.async {
             self.pendingCount -= 1
-            if (self.pendingCount == 0) { callback() }
+            callback()
           }
         }
       ) { token in

@@ -9,7 +9,6 @@ import SwiftUI
 
 import PromiseKit
 import BigInt
-import Web3
 
 struct WalletView: View {
   
@@ -99,9 +98,7 @@ struct WalletView_Previews: PreviewProvider {
     static var previews: some View {
       WalletView(
         tokens:NftOwnerTokens(
-          ownerAddress:try! EthereumAddress(
-            hex: "0xf4b4a58974524e183c275f3c6ea895bc2368e738",
-            eip55:false))
+          ownerAddress:SAMPLE_WALLET_ADDRESS)
       )
     }
 }
