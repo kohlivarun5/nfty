@@ -723,7 +723,6 @@ class UserEthRate {
       return Promise { seal in
         var request = URLRequest(url: URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot")!)
         request.httpMethod = "GET"
-        // request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
         
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
           do {
