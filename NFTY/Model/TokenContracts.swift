@@ -173,7 +173,7 @@ class CryptoPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(res["punkIndex"] as! BigUInt),
           name:self.name,
-          media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
+          media:.image(MediaImageEager(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!))),
         indicativePriceWei:NFTPriceInfo(
           price:priceIfNotZero(res["value"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity)
@@ -190,7 +190,7 @@ class CryptoPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(res["punkIndex"] as! BigUInt),
           name:self.name,
-          media:.image(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!)),
+          media:.image(MediaImageEager(self.imageUrl(UInt(res["punkIndex"] as! BigUInt))!))),
         indicativePriceWei:NFTPriceInfo(
           price:priceIfNotZero(res["value"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity)
@@ -210,7 +210,7 @@ class CryptoPunksContract : ContractInterface {
           }
         }
       }
-    }.then { boughtEvents -> Promise<[TradeEvent]> in
+    }.then(on:DispatchQueue.global(qos:.userInteractive)) { boughtEvents -> Promise<[TradeEvent]> in
       var events = boughtEvents
       return Promise { seal in
         punkOfferedFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
@@ -221,9 +221,9 @@ class CryptoPunksContract : ContractInterface {
           }
         }
       }
-    }.compactMap { events in
+    }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<TradeEventStatus> in
+    }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(
@@ -252,7 +252,7 @@ class CryptoPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.image(self.imageUrl(tokenId)!)),
+          media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
         getPrice: {
           
           switch(self.pricesCache[tokenId]) {
@@ -274,7 +274,7 @@ class CryptoPunksContract : ContractInterface {
             
             let p = firstly { () -> Promise<TradeEventStatus> in
               self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
-            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+            }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
                 return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
@@ -352,20 +352,22 @@ class CryptoKittiesAuction : ContractInterface {
     return auctionSuccessfulFetcher.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
-      firstly {
-        self.getKitty(tokenId:tokenId)
-      }.done { kitty  in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:UInt(tokenId),
-            name:self.name,
-            media:.image(URL(string:kitty.image_url_png)!)),
-          indicativePriceWei:NFTPriceInfo(
-            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-            blockNumber: log.blockNumber?.quantity)
-          ))
-      }.catch { print($0) }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(tokenId),
+          name:self.name,
+          media:.image(MediaImageLazy(get: {
+            return firstly {
+              self.getKitty(tokenId:tokenId)
+            }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
+              return URL(string:kitty.image_url_png)!
+            }
+          }))),
+        indicativePriceWei:NFTPriceInfo(
+          price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+          blockNumber: log.blockNumber?.quantity)
+      ))
     }
   }
   
@@ -373,20 +375,22 @@ class CryptoKittiesAuction : ContractInterface {
     return auctionSuccessfulFetcher.updateLatest(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
-      firstly {
-        self.getKitty(tokenId:tokenId)
-      }.done { kitty  in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:UInt(tokenId),
-            name:self.name,
-            media:.image(URL(string:kitty.image_url_png)!)),
-          indicativePriceWei:NFTPriceInfo(
-            price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-            blockNumber: log.blockNumber?.quantity)
-        ))
-      }.catch { print($0) }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:UInt(tokenId),
+          name:self.name,
+          media:.image(MediaImageLazy(get: {
+            return firstly {
+              self.getKitty(tokenId:tokenId)
+            }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
+              return URL(string:kitty.image_url_png)!
+            }
+          }))),
+        indicativePriceWei:NFTPriceInfo(
+          price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+          blockNumber: log.blockNumber?.quantity)
+      ))
     }
   }
   
@@ -404,9 +408,9 @@ class CryptoKittiesAuction : ContractInterface {
           }
         }
       }
-    }.compactMap { events in
+    }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<TradeEventStatus> in
+    }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(
@@ -425,44 +429,45 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    
-    firstly {
-      self.getKitty(tokenId:BigUInt(tokenId))
-    }.compactMap { kitty in
-      return NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:UInt(tokenId),
-          name:self.name,
-          media:.image(URL(string:kitty.image_url_png)!)),
-        getPrice: {
-          switch(self.pricesCache[tokenId]) {
-          case .some(let p):
-            return p
-          case .none:
-            let auctionDoneFetcher = LogsFetcher(
-              event:self.AuctionSuccessful,
-              fromBlock:self.initFromBlock,
-              address:self.saleAuctionContract.addressHex,
-              indexedTopics: [])
-            let p = firstly {
-              self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
-            }.map { (event:TradeEventStatus) -> NFTPriceStatus in
-              switch(event) {
-              case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
-              case .notSeenSince(let since):
-                return NFTPriceStatus.notSeenSince(since)
-              }
-            }
-            DispatchQueue.main.async {
-              self.pricesCache[tokenId] = p
-            }
-            return p
+    return Promise.value(NFTWithLazyPrice(
+      nft:NFT(
+        address:self.contractAddressHex,
+        tokenId:UInt(tokenId),
+        name:self.name,
+        media:.image(MediaImageLazy(get : {
+          return firstly {
+            self.getKitty(tokenId:BigUInt(tokenId))
+          }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty in
+            return URL(string:kitty.image_url_png)!
           }
+        }))),
+      getPrice: {
+        switch(self.pricesCache[tokenId]) {
+        case .some(let p):
+          return p
+        case .none:
+          let auctionDoneFetcher = LogsFetcher(
+            event:self.AuctionSuccessful,
+            fromBlock:self.initFromBlock,
+            address:self.saleAuctionContract.addressHex,
+            indexedTopics: [])
+          let p = firstly {
+            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
+          }.map { (event:TradeEventStatus) -> NFTPriceStatus in
+            switch(event) {
+            case .trade(let event):
+              return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+            case .notSeenSince(let since):
+              return NFTPriceStatus.notSeenSince(since)
+            }
+          }
+          DispatchQueue.main.async {
+            self.pricesCache[tokenId] = p
+          }
+          return p
         }
-      )
-    }
+      }
+    ))
   }
 }
 
@@ -531,7 +536,7 @@ class AsciiPunksContract : ContractInterface {
       case .some(let blockHash):
         return web3.eth.getTransactionByHash(blockHash:blockHash)
       }
-    }.map { (txData:EthereumTransactionObject?) in
+    }.map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:EthereumTransactionObject?) in
       switch(txData) {
       case .none: return nil
       case .some(let tx):
@@ -564,7 +569,7 @@ class AsciiPunksContract : ContractInterface {
       
       firstly {
         self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
-      }.done(on:.main) {
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) {
         onPrice($0?.value)
       }.catch { error in
         print(error);
@@ -593,7 +598,7 @@ class AsciiPunksContract : ContractInterface {
 
       firstly {
         self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
-      }.done(on:.main) {
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) {
         onPrice($0?.value)
       }.catch { error in
         print(error);
@@ -619,9 +624,9 @@ class AsciiPunksContract : ContractInterface {
             })
         }
       }
-    }.compactMap { events in
+    }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
-    }.then { events -> Promise<TradeEventStatus> in
+    }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(

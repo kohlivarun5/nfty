@@ -30,6 +30,25 @@ enum TradeEventStatus {
   case notSeenSince(NFTNotSeenSince)
 }
 
+protocol MediaImage {
+  var url : Promise<URL> { get }
+}
+
+struct MediaImageLazy : MediaImage {
+  let get : () -> Promise<URL>
+  
+  var url : Promise<URL> {
+    self.get()
+  }
+}
+
+struct MediaImageEager : MediaImage {
+  let url : Promise<URL>
+  init(_ url:URL) {
+    self.url = Promise.value(url)
+  }
+}
+
 enum Media {
   
   struct AsciiPunk {
@@ -50,7 +69,7 @@ enum Media {
     }
   }
   
-  case image(URL)
+  case image(MediaImage)
   case asciiPunk(AsciiPunkLazy)
 }
 
@@ -240,7 +259,7 @@ let CompositeCollection = CompositeRecentTradesObject(
 let SampleToken = NFT(
   address: "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb",
   tokenId: 340, name: "CryptoPunks",
-  media: .image(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!))
+  media: .image(MediaImageEager(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!)))
 
 let SampleCollection = CompositeCollection.punks
 

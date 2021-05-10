@@ -29,6 +29,12 @@ struct AsciiPunkView: View {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
             .scaleEffect(2,anchor: .center)
+        }.onAppear {
+          firstly {
+            asciiPunk.ascii
+          }.done(on:.main) { ascii in
+            self.ascii = ascii
+          }.catch { print($0) }
         }
       case .some(let ascii):
         Text(ascii.unicode)
@@ -38,13 +44,6 @@ struct AsciiPunkView: View {
       }
     }
     .background(themeColor)
-    .onAppear {
-      firstly {
-        asciiPunk.ascii
-      }.done(on:.main) { ascii in
-        self.ascii = ascii
-      }.catch { print($0) }
-    }
   }
 }
 struct AsciiPunkView_Previews: PreviewProvider {
