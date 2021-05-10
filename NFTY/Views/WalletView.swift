@@ -12,11 +12,9 @@ import BigInt
 import Web3
 
 struct WalletView: View {
-  
 
   @State private var showAddressSheet = false
   @State private var address : EthereumAddress? = nil
-  
   
   var body: some View {
     
@@ -26,6 +24,11 @@ struct WalletView: View {
         Text("Wallet not connected")
           .font(.title)
           .foregroundColor(.secondary)
+          .onAppear {
+            if let addr = UserDefaults.standard.string(forKey: UserDefaultsKeys.walletAddress.rawValue) {
+              self.address = try? EthereumAddress(hex:addr,eip55: false)
+            }
+          }
       case .some(let address):
         WalletTokensView(tokens: NftOwnerTokens(ownerAddress: address))
       }

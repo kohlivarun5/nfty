@@ -36,6 +36,7 @@ struct ConnectWalletSheet: View {
               self.badAddressError = "Invalid Address Pasted"
             } else {
               self.badAddressError = ""
+              UserDefaults.standard.set(string, forKey:UserDefaultsKeys.walletAddress.rawValue)
               presentationMode.wrappedValue.dismiss()
             }
           }
