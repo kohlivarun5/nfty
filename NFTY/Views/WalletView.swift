@@ -34,7 +34,7 @@ struct WalletView: View {
       Button(action: {
         self.showAddressSheet = true
       }) {
-        Image(systemName:"signature")
+        Image(systemName:"link.badge.plus")
       }
     }
     .sheet(isPresented: $showAddressSheet) {
