@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import PromiseKit
 import BigInt
 import Web3
 

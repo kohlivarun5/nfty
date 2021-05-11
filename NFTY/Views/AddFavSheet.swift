@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PromiseKit
 import Introspect
 
 struct AddFavSheet: View {

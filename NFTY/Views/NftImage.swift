@@ -7,60 +7,32 @@
 
 import SwiftUI
 import URLImage
-import PromiseKit
-
-class NftImageObj : ObservableObject {
-  enum UrlState {
-    case loading
-    case url(URL)
-  }
-  @Published var state : UrlState = .loading
-  let image : MediaImage
-  
-  init(image:MediaImage) {
-    self.image = image
-  }
-  
-  func load() {
-    switch(state) {
-    case .url:
-      break
-    case .loading:
-      image.url
-        .done { url in
-          self.state = .url(url)
-        }.catch { print($0) }
-    }
-  }
-  
-}
 
 struct NftImageImpl: View {
   
-  @ObservedObject var url : NftImageObj
+  @ObservedObject var url : ObservablePromise<URL>
   var samples : [String]
   var themeColor : Color
   var body: some View {
     
-    switch(url.state) {
-    case .loading:
-      ZStack {
-        Image(
-          samples[
-            Int.random(in: 0..<samples.count)
-          ])
-          .interpolation(.none)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .padding()
-          .background(themeColor)
-          .blur(radius:20)
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
-          .scaleEffect(2.0, anchor: .center)
-      }.onAppear { self.url.load() }
-      
-    case .url(let url):
+    ObservedPromiseView(
+      data:url,
+      progress:
+        ZStack {
+          Image(
+            samples[
+              Int.random(in: 0..<samples.count)
+            ])
+            .interpolation(.none)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+            .background(themeColor)
+            .blur(radius:20)
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
+            .scaleEffect(2.0, anchor: .center)
+        }) { url in
       URLImage(
         url:url,
         options: URLImageOptions(
@@ -144,9 +116,9 @@ struct NftImage: View {
     ZStack {
       switch(nft.media){
       case .image(let image):
-        NftImageImpl(url:NftImageObj(image:image),samples:samples,themeColor:themeColor)
+        NftImageImpl(url:image.url,samples:samples,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
+        AsciiPunkView(asciiPunk:asciiPunk.ascii,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
       }
       //.padding()
       HStack {

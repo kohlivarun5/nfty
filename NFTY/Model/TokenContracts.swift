@@ -139,7 +139,7 @@ class LogsFetcher {
 class CryptoPunksContract : ContractInterface {
    
   
-  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
+  private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
@@ -283,10 +283,11 @@ class CryptoPunksContract : ContractInterface {
                   return NFTPriceStatus.notSeenSince(since)
                 }
               }
+            let observable = ObservablePromise(promise:p)
             DispatchQueue.main.async {
-              self.pricesCache[tokenId] = p
+              self.pricesCache[tokenId] = observable
             }
-            return p
+            return observable
           }
         }
       )
@@ -303,7 +304,7 @@ class CryptoPunksContract : ContractInterface {
 
 class CryptoKittiesAuction : ContractInterface {
   
-  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
+  private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private let AuctionSuccessful: SolidityEvent = SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
@@ -387,11 +388,11 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageLazy(get: {
-            return
+            return ObservablePromise(promise:
               self.getKitty(tokenId:tokenId)
               .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
                 return URL(string:kitty.image_url_png)!
-              }
+              })
           }))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
@@ -410,11 +411,11 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageLazy(get: {
-            return
+            return ObservablePromise(promise:
               self.getKitty(tokenId:tokenId)
               .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
                 return URL(string:kitty.image_url_png)!
-              }
+              })
           }))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
@@ -463,11 +464,11 @@ class CryptoKittiesAuction : ContractInterface {
         tokenId:UInt(tokenId),
         name:self.name,
         media:.image(MediaImageLazy(get : {
-          return
+          return ObservablePromise(promise:
             self.getKitty(tokenId:BigUInt(tokenId))
             .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty in
               return URL(string:kitty.image_url_png)!
-            }
+            })
         }))),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
@@ -489,10 +490,11 @@ class CryptoKittiesAuction : ContractInterface {
                 return NFTPriceStatus.notSeenSince(since)
               }
             }
+          let observable = ObservablePromise(promise: p)
           DispatchQueue.main.async {
-            self.pricesCache[tokenId] = p
+            self.pricesCache[tokenId] = observable
           }
-          return p
+          return observable
         }
       }
     ))
@@ -522,8 +524,8 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-  private var drawingCache : [BigUInt : Promise<Media.AsciiPunk?>] = [:]
-  private var pricesCache : [UInt : Promise<NFTPriceStatus>] = [:]
+  private var drawingCache : [BigUInt : ObservablePromise<Media.AsciiPunk?>] = [:]
+  private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
@@ -588,16 +590,17 @@ class AsciiPunksContract : ContractInterface {
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
   }
   
-  private func draw(_ tokenId:BigUInt) -> Promise<Media.AsciiPunk?> {
+  private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.AsciiPunk?> {
     switch(self.drawingCache[tokenId]) {
     case .some(let p):
       return p
     case .none:
       let p = ethContract.draw(tokenId);
+      let observable = ObservablePromise(promise: p)
       DispatchQueue.main.async {
-        self.drawingCache[tokenId] = p
+        self.drawingCache[tokenId] = observable
       }
-      return p
+      return observable
     }
   }
   
@@ -742,10 +745,11 @@ class AsciiPunksContract : ContractInterface {
                   return NFTPriceStatus.notSeenSince(since)
                 }
               }
+            let observable = ObservablePromise(promise: p)
             DispatchQueue.main.async {
-              self.pricesCache[tokenId] = p
+              self.pricesCache[tokenId] = observable
             }
-            return p
+            return observable
           }
         }
       )

@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import PromiseKit
 import URLImage
 import BigInt
+import PromiseKit
 
 struct NftDetail: View {
   

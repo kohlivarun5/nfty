@@ -7,7 +7,6 @@
 
 import SwiftUI
 import BigInt
-import PromiseKit
 
 func formatter(symbol:String?) -> Formatter {
   let currencyFormatter = NumberFormatter()
