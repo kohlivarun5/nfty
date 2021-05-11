@@ -31,32 +31,27 @@ struct WalletOverview: View {
           .foregroundColor(.secondary)
       }
       Divider()
-      
-      switch(balance) {
-      case .none:
-        Text("")
-          .onAppear {
-            firstly {
-              web3.eth.getBalance(address: address, block:.latest)
-            }.done(on:.main) { balance in
-              self.balance = balance
-            }.catch { print($0) }
-          }
-      case .some(let wei):
-        
-        VStack {
-          HStack() {
-            VStack(alignment:.leading) {
-              Text("Balance")
-                .font(.title3)
-            }
-            Spacer()
+      VStack {
+        HStack() {
+          Text("Balance")
+            .font(.title3)
+          switch(balance) {
+          case .none:
+            Text("")
+              .onAppear {
+                firstly {
+                  web3.eth.getBalance(address: address, block:.latest)
+                }.done(on:.main) { balance in
+                  self.balance = balance
+                }.catch { print($0) }
+              }
+          case .some(let wei):
             UsdText(wei:wei.quantity)
               .font(.title3)
               .foregroundColor(.secondary)
           }
-          Divider()
         }
+        Divider()
       }
     }.padding()
   }
