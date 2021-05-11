@@ -34,16 +34,15 @@ struct BlockTimeLabel: View {
         case .none:
           return
         case .some(let blockNum):
-          firstly {
-            BlocksFetcher.getBlock(blockNumber:.block(blockNum))
-          }.done(on:.main) { block in
-            switch(block?.timestamp) {
-            case (.none):
-              return
-            case .some(let timestamp):
-              self.blockTimeStampString = Date(timeIntervalSince1970:Double(timestamp.quantity)).timeAgoDisplay()
-            }
-          }.catch { print ($0) }
+          BlocksFetcher.getBlock(blockNumber:.block(blockNum))
+            .done(on:.main) { block in
+              switch(block?.timestamp) {
+              case (.none):
+                return
+              case .some(let timestamp):
+                self.blockTimeStampString = Date(timeIntervalSince1970:Double(timestamp.quantity)).timeAgoDisplay()
+              }
+            }.catch { print ($0) }
         }
       }
     }

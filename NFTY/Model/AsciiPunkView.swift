@@ -30,11 +30,10 @@ struct AsciiPunkView: View {
             .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
             .scaleEffect(2,anchor: .center)
         }.onAppear {
-          firstly {
-            asciiPunk.ascii
-          }.done(on:.main) { ascii in
-            self.ascii = ascii
-          }.catch { print($0) }
+          asciiPunk.ascii
+            .done(on:.main) { ascii in
+              self.ascii = ascii
+            }.catch { print($0) }
         }
       case .some(let ascii):
         Text(ascii.unicode)

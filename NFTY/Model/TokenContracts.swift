@@ -203,14 +203,12 @@ class CryptoPunksContract : ContractInterface {
   }
   
   private func getTokenHistory(_ tokenId: UInt,punkBoughtFetcher:LogsFetcher,punkOfferedFetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
-    return firstly { () -> Promise<[TradeEvent]> in
-      var events : [TradeEvent] = []
-      return Promise { seal in
-        punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
-          let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
-          log.blockNumber.map { blockNumber in
-            events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
-          }
+    var events : [TradeEvent] = []
+    return Promise { seal in
+      punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+        log.blockNumber.map { blockNumber in
+          events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
         }
       }
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { boughtEvents -> Promise<[TradeEvent]> in
@@ -275,16 +273,16 @@ class CryptoPunksContract : ContractInterface {
               address:self.contractAddressHex,
               indexedTopics: [tokenIdTopic])
             
-            let p = firstly { () -> Promise<TradeEventStatus> in
+            let p =
               self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
-            }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
-              switch(event) {
-              case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
-              case .notSeenSince(let since):
-                return NFTPriceStatus.notSeenSince(since)
+              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+                switch(event) {
+                case .trade(let event):
+                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+                case .notSeenSince(let since):
+                  return NFTPriceStatus.notSeenSince(since)
+                }
               }
-            }
             DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
             }
@@ -340,11 +338,11 @@ class CryptoKittiesAuction : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .array(type: .uint256, length: nil))]
       let method = SolidityConstantFunction(name: "tokensOfOwner", inputs: inputs, outputs: outputs, handler: self)
-      return firstly {
+      return
         method.invoke(address).call()
-      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        return outputs["tokens"] as! [BigUInt]
-      }
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["tokens"] as! [BigUInt]
+        }
     }
   }
   private var ethContract = EthContract()
@@ -389,11 +387,11 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageLazy(get: {
-            return firstly {
+            return
               self.getKitty(tokenId:tokenId)
-            }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
-              return URL(string:kitty.image_url_png)!
-            }
+              .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
+                return URL(string:kitty.image_url_png)!
+              }
           }))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
@@ -412,11 +410,11 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageLazy(get: {
-            return firstly {
+            return
               self.getKitty(tokenId:tokenId)
-            }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
-              return URL(string:kitty.image_url_png)!
-            }
+              .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
+                return URL(string:kitty.image_url_png)!
+              }
           }))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
@@ -426,20 +424,19 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
-    return firstly { () -> Promise<[TradeEvent]> in
-      var events : [TradeEvent] = []
-      return Promise { seal in
-        fetcher.fetch(onDone:{seal.fulfill(events)}) { log in
-          let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
-          log.blockNumber.map { blockNumber in
-            // CryptoKitties does not index logs, so we filter here
-            if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
-              events.append(TradeEvent(type: .bought, value: res["totalPrice"] as! BigUInt, blockNumber:blockNumber))
-            }
+    var events : [TradeEvent] = []
+    return Promise { seal in
+      fetcher.fetch(onDone:{seal.fulfill(events)}) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+        log.blockNumber.map { blockNumber in
+          // CryptoKitties does not index logs, so we filter here
+          if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
+            events.append(TradeEvent(type: .bought, value: res["totalPrice"] as! BigUInt, blockNumber:blockNumber))
           }
         }
       }
-    }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
+    }
+    .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
@@ -466,11 +463,11 @@ class CryptoKittiesAuction : ContractInterface {
         tokenId:UInt(tokenId),
         name:self.name,
         media:.image(MediaImageLazy(get : {
-          return firstly {
+          return
             self.getKitty(tokenId:BigUInt(tokenId))
-          }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty in
-            return URL(string:kitty.image_url_png)!
-          }
+            .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty in
+              return URL(string:kitty.image_url_png)!
+            }
         }))),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
@@ -482,16 +479,16 @@ class CryptoKittiesAuction : ContractInterface {
             fromBlock:self.initFromBlock,
             address:self.saleAuctionContract.addressHex,
             indexedTopics: [])
-          let p = firstly {
+          let p =
             self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:30)
-          }.map { (event:TradeEventStatus) -> NFTPriceStatus in
-            switch(event) {
-            case .trade(let event):
-              return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
-            case .notSeenSince(let since):
-              return NFTPriceStatus.notSeenSince(since)
+            .map { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
+              }
             }
-          }
           DispatchQueue.main.async {
             self.pricesCache[tokenId] = p
           }
@@ -502,27 +499,24 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
-    firstly {
-      ethContract.tokensOfOwner(address:address)
-    }.then(on:DispatchQueue.global(qos: .userInteractive)) { tokens -> Promise<Void> in
-      if (tokens.count == 0) {
-        onDone()
-        return Promise.value(())
-      } else {
-        return when(
-          fulfilled:
-            tokens.map { token in
-              return firstly {
-                self.getToken(UInt(token))
-              }.done {
-                response($0)
+    ethContract.tokensOfOwner(address:address)
+      .then(on:DispatchQueue.global(qos: .userInteractive)) { tokens -> Promise<Void> in
+        if (tokens.count == 0) {
+          onDone()
+          return Promise.value(())
+        } else {
+          return when(
+            fulfilled:
+              tokens.map { token in
+                self.getToken(UInt(token)).done {
+                  response($0)
+                }
               }
-            }
-        )
-      }
-    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
-      onDone()
-    }.catch { print ($0) }
+          )
+        }
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+        onDone()
+      }.catch { print ($0) }
   }
 }
 
@@ -556,22 +550,22 @@ class AsciiPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
-      return firstly {
+      return
         method.invoke(tokenId).call()
-      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        return Media.AsciiPunk(unicode:outputs["uri"] as! String)
-      }
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return Media.AsciiPunk(unicode:outputs["uri"] as! String)
+        }
     }
     
     func balanceOf(address:EthereumAddress) -> Promise<BigUInt> {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
       let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
-      return firstly {
+      return
         method.invoke(address).call()
-      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        return outputs["tokens"] as! BigUInt
-      }
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["tokens"] as! BigUInt
+        }
     }
     
     func tokenOfOwnerByIndex(address:EthereumAddress,index:BigUInt) -> Promise<BigUInt> {
@@ -580,11 +574,11 @@ class AsciiPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "index", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
-      return firstly {
+      return
         method.invoke(address,index).call()
-      }.map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        return outputs["tokenId"] as! BigUInt
-      }
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["tokenId"] as! BigUInt
+        }
     }
     
   }
@@ -647,14 +641,13 @@ class AsciiPunksContract : ContractInterface {
         ))
       };
       
-      firstly {
-        self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) {
-        onPrice($0?.value)
-      }.catch { error in
-        print(error);
-        onPrice(nil)
-      }
+      self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
+        .done(on:DispatchQueue.global(qos:.userInteractive)) {
+          onPrice($0?.value)
+        }.catch { error in
+          print(error);
+          onPrice(nil)
+        }
     }
   }
    
@@ -676,35 +669,29 @@ class AsciiPunksContract : ContractInterface {
         ))
       };
 
-      firstly {
-        self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) {
-        onPrice($0?.value)
-      }.catch { error in
-        print(error);
-        onPrice(nil)
-      }
+      self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
+        .done(on:DispatchQueue.global(qos:.userInteractive)) {
+          onPrice($0?.value)
+        }.catch { error in
+          print(error);
+          onPrice(nil)
+        }
     }
   }
   
   private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
-    return firstly { () -> Promise<[TradeEvent]> in
-      var events : [Promise<TradeEvent?>] = []
-      return Promise { seal in
-        fetcher.fetch(onDone:{
-          firstly {
-            when(fulfilled:events)
-          }.done(on:DispatchQueue.global(qos:.userInteractive)) { events in
+    var events : [Promise<TradeEvent?>] = []
+    return Promise { seal in
+      fetcher.fetch(onDone:{
+        when(fulfilled:events)
+          .done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
           }.catch { print ($0) }
-        }) { log in
-          events.append(
-            firstly {
-              self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought)
-            })
-        }
+      }) { log in
+        events.append(self.valueOfTx(tokenId:tokenId,transactionHash:log.transactionHash,eventType:.bought))
       }
-    }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
+    }
+    .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
@@ -745,16 +732,16 @@ class AsciiPunksContract : ContractInterface {
               address:self.contractAddressHex,
               indexedTopics: [nil,nil,tokenIdTopic])
                      
-            let p = firstly { () -> Promise<TradeEventStatus> in
+            let p =
               self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
-            }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
-              switch(event) {
-              case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
-              case .notSeenSince(let since):
-                return NFTPriceStatus.notSeenSince(since)
+              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+                switch(event) {
+                case .trade(let event):
+                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+                case .notSeenSince(let since):
+                  return NFTPriceStatus.notSeenSince(since)
+                }
               }
-            }
             DispatchQueue.main.async {
               self.pricesCache[tokenId] = p
             }
@@ -766,28 +753,27 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
-    firstly {
-      ethContract.balanceOf(address:address)
-    }.then(on:DispatchQueue.global(qos: .userInteractive)) { tokensNum -> Promise<Void> in
-      if (tokensNum <= 0) {
-        return Promise.value(())
-      } else {
-        return when(
-          fulfilled:
-            Array(0...tokensNum-1).map { index -> Promise<Void> in
-              return firstly {
-                self.ethContract.tokenOfOwnerByIndex(address: address,index:index)
-              }.then { tokenId in
-                return self.getToken(UInt(tokenId))
-              }.done {
-                response($0)
+    ethContract.balanceOf(address:address)
+      .then(on:DispatchQueue.global(qos: .userInteractive)) { tokensNum -> Promise<Void> in
+        if (tokensNum <= 0) {
+          return Promise.value(())
+        } else {
+          return when(
+            fulfilled:
+              Array(0...tokensNum-1).map { index -> Promise<Void> in
+                return
+                  self.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                  .then { tokenId in
+                    return self.getToken(UInt(tokenId))
+                  }.done {
+                    response($0)
+                  }
               }
-            }
-        )
-      }
-    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
-      onDone()
-    }.catch { print ($0) }
+          )
+        }
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+        onDone()
+      }.catch { print ($0) }
   }
   
 }
@@ -800,9 +786,7 @@ class BlockFetcherImpl {
     case .some(let p):
       return p
     case .none:
-      let p = firstly {
-        web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
-      }
+      let p = web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
       DispatchQueue.main.async {
         self.blocksCache[blockNumber] = p
       }
@@ -855,9 +839,7 @@ class UserEthRate {
     case .some(let p):
       return p
     case .none:
-      let p = firstly {
-        getRate()
-      }
+      let p = getRate()
       DispatchQueue.main.async {
         self.cache = p
       }

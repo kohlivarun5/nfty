@@ -39,11 +39,10 @@ struct WalletOverview: View {
           case .none:
             Text("")
               .onAppear {
-                firstly {
-                  web3.eth.getBalance(address: address, block:.latest)
-                }.done(on:.main) { balance in
-                  self.balance = balance
-                }.catch { print($0) }
+                web3.eth.getBalance(address: address, block:.latest)
+                  .done(on:.main) { balance in
+                    self.balance = balance
+                  }.catch { print($0) }
               }
           case .some(let wei):
             UsdText(wei:wei.quantity)

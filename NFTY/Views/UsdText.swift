@@ -44,16 +44,15 @@ struct UsdText: View {
         .onAppear {
           switch(self.spot) {
           case .loading:
-            firstly {
-              EthSpot.get()
-            }.done(on:.main) { spot in
-              switch(spot) {
-              case .none:
-                self.spot = .unknown
-              case .some(let rate):
-                self.spot = .localCurrency(rate)
-              }
-            }.catch { print ($0) }
+            EthSpot.get()
+              .done(on:.main) { spot in
+                switch(spot) {
+                case .none:
+                  self.spot = .unknown
+                case .some(let rate):
+                  self.spot = .localCurrency(rate)
+                }
+              }.catch { print ($0) }
           case .localCurrency,.unknown:
             break
           }

@@ -26,11 +26,10 @@ class NftImageObj : ObservableObject {
     case .url:
       break
     case .loading:
-      firstly {
-        image.url
-      }.done { url in
-        self.state = .url(url)
-      }.catch { print($0) }
+      image.url
+        .done { url in
+          self.state = .url(url)
+        }.catch { print($0) }
     }
   }
   
