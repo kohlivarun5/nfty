@@ -35,6 +35,7 @@ extension Web3.Eth {
 }
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+var INIT_BLOCK = BigUInt(12400014)
 
 protocol ContractInterface {
   
@@ -157,7 +158,7 @@ class CryptoPunksContract : ContractInterface {
   
   let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
   private var punksBoughtLogs : LogsFetcher
-  private var initFromBlock = BigUInt(12290614)
+  private let initFromBlock = INIT_BLOCK
   
   init () {
     punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
@@ -275,7 +276,7 @@ class CryptoPunksContract : ContractInterface {
               indexedTopics: [tokenIdTopic])
             
             let p = firstly { () -> Promise<TradeEventStatus> in
-              self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:10)
+              self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
             }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -284,9 +285,7 @@ class CryptoPunksContract : ContractInterface {
                 return NFTPriceStatus.notSeenSince(since)
               }
             }
-            DispatchQueue.main.async {
-              self.pricesCache[tokenId] = p
-            }
+            self.pricesCache[tokenId] = p
             return p
           }
         }
@@ -353,7 +352,7 @@ class CryptoKittiesAuction : ContractInterface {
   private let saleAuctionContract = SaleAuctionContract()
   
   private var auctionSuccessfulFetcher : LogsFetcher
-  private let initFromBlock = BigUInt(12290614)
+  private let initFromBlock = INIT_BLOCK
   
   init () {
     auctionSuccessfulFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:saleAuctionContract.addressHex,indexedTopics: [])
@@ -482,7 +481,7 @@ class CryptoKittiesAuction : ContractInterface {
             address:self.saleAuctionContract.addressHex,
             indexedTopics: [])
           let p = firstly {
-            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
+            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:30)
           }.map { (event:TradeEventStatus) -> NFTPriceStatus in
             switch(event) {
             case .trade(let event):
@@ -491,9 +490,7 @@ class CryptoKittiesAuction : ContractInterface {
               return NFTPriceStatus.notSeenSince(since)
             }
           }
-          DispatchQueue.main.async {
-            self.pricesCache[tokenId] = p
-          }
+          self.pricesCache[tokenId] = p
           return p
         }
       }
@@ -540,7 +537,7 @@ class AsciiPunksContract : ContractInterface {
   
   let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
   private var transfer : LogsFetcher
-  private var initFromBlock = BigUInt(12290614)
+  private let initFromBlock = INIT_BLOCK
   
   class EthContract : EthereumContract {
     let eth = web3.eth
@@ -745,7 +742,7 @@ class AsciiPunksContract : ContractInterface {
               indexedTopics: [nil,nil,tokenIdTopic])
                      
             let p = firstly { () -> Promise<TradeEventStatus> in
-              self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:10)
+              self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
             }.map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -754,7 +751,7 @@ class AsciiPunksContract : ContractInterface {
                 return NFTPriceStatus.notSeenSince(since)
               }
             }
-            DispatchQueue.main.async { self.pricesCache[tokenId] = p }
+            self.pricesCache[tokenId] = p
             return p
           }
         }
@@ -800,9 +797,7 @@ class BlockFetcherImpl {
       let p = firstly {
         web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
       }
-      DispatchQueue.main.async {
-        self.blocksCache[blockNumber] = p
-      }
+      self.blocksCache[blockNumber] = p
       return p
     }
   }
