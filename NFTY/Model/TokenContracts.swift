@@ -480,7 +480,7 @@ class CryptoKittiesAuction : ContractInterface {
             address:self.saleAuctionContract.addressHex,
             indexedTopics: [])
           let p =
-            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:30)
+            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):

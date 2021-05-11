@@ -44,17 +44,21 @@ struct NftImageImpl: View {
     
     switch(url.state) {
     case .loading:
-      Image(
-        samples[
-          Int.random(in: 0..<samples.count)
-        ])
-        .interpolation(.none)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .padding()
-        .background(themeColor)
-        .blur(radius:20)
-        .onAppear { self.url.load() }
+      ZStack {
+        Image(
+          samples[
+            Int.random(in: 0..<samples.count)
+          ])
+          .interpolation(.none)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding()
+          .background(themeColor)
+          .blur(radius:20)
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
+          .scaleEffect(2.0, anchor: .center)
+      }.onAppear { self.url.load() }
       
     case .url(let url):
       URLImage(
@@ -75,16 +79,21 @@ struct NftImageImpl: View {
             .blur(radius:20)
         },
         inProgress: { progress in
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .background(themeColor)
-            .blur(radius:20)
+          ZStack {
+            Image(
+              samples[
+                Int.random(in: 0..<samples.count)
+              ])
+              .interpolation(.none)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding()
+              .background(themeColor)
+              .blur(radius:20)
+            ProgressView(value:progress)
+              .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
+              .scaleEffect(2.0, anchor: .center)
+          }
         },
         failure: { error, retry in         // Display error and retry button
           VStack {

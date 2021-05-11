@@ -20,14 +20,14 @@ extension Date {
 
 struct BlockTimeLabel: View {
   let blockNumber : BigUInt?
-  @State private var blockTimeStampString : String = ""
+  @State private var blockTimeStampString : String? = nil
   
   init(blockNumber:BigUInt?) {
     self.blockNumber = blockNumber
   }
   
   var body: some View {
-    Text(blockTimeStampString)
+    Text(blockTimeStampString ?? "...    ")
     .onAppear {
       DispatchQueue.global(qos:.userInteractive).async {
         switch (self.blockNumber) {

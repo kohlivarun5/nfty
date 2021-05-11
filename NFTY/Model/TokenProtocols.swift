@@ -240,7 +240,7 @@ class NftOwnerTokens : ObservableObject {
     if (state != .notLoaded) { return }
 
     state = .loading
-    contracts.map { contract in
+    contracts.forEach { contract in
       contract.getOwnerTokens(
         address:ownerAddress,
                               
