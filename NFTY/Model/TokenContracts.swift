@@ -305,6 +305,7 @@ class CryptoPunksContract : ContractInterface {
 class CryptoKittiesAuction : ContractInterface {
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
+  private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
   
   private let AuctionSuccessful: SolidityEvent = SolidityEvent(name: "AuctionSuccessful", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: false),
@@ -378,6 +379,25 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
+  private func getMediaImage(_ tokenId:BigUInt) -> MediaImageLazy {
+    return MediaImageLazy(get: {
+      switch (self.imagesCache[tokenId]) {
+      case .some(let p):
+        return p
+      case .none:
+        let p = self.getKitty(tokenId:tokenId)
+          .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
+            return URL(string:kitty.image_url_png)!
+          }
+        let observable = ObservablePromise(promise: p)
+        DispatchQueue.main.async {
+          self.imagesCache[tokenId] = observable
+        }
+        return observable
+      }
+    })
+  }
+  
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return auctionSuccessfulFetcher.fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
@@ -387,13 +407,7 @@ class CryptoKittiesAuction : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(tokenId),
           name:self.name,
-          media:.image(MediaImageLazy(get: {
-            return ObservablePromise(promise:
-              self.getKitty(tokenId:tokenId)
-              .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
-                return URL(string:kitty.image_url_png)!
-              })
-          }))),
+          media:.image(self.getMediaImage(tokenId))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity)
@@ -410,13 +424,7 @@ class CryptoKittiesAuction : ContractInterface {
           address:self.contractAddressHex,
           tokenId:UInt(tokenId),
           name:self.name,
-          media:.image(MediaImageLazy(get: {
-            return ObservablePromise(promise:
-              self.getKitty(tokenId:tokenId)
-              .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty -> URL in
-                return URL(string:kitty.image_url_png)!
-              })
-          }))),
+          media:.image(self.getMediaImage(tokenId))),
         indicativePriceWei:NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity)
@@ -463,13 +471,7 @@ class CryptoKittiesAuction : ContractInterface {
         address:self.contractAddressHex,
         tokenId:UInt(tokenId),
         name:self.name,
-        media:.image(MediaImageLazy(get : {
-          return ObservablePromise(promise:
-            self.getKitty(tokenId:BigUInt(tokenId))
-            .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { kitty in
-              return URL(string:kitty.image_url_png)!
-            })
-        }))),
+        media:.image(getMediaImage(BigUInt(tokenId)))),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
         case .some(let p):
