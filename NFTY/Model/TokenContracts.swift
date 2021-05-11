@@ -285,7 +285,9 @@ class CryptoPunksContract : ContractInterface {
                 return NFTPriceStatus.notSeenSince(since)
               }
             }
-            self.pricesCache[tokenId] = p
+            DispatchQueue.main.async {
+              self.pricesCache[tokenId] = p
+            }
             return p
           }
         }
@@ -490,7 +492,9 @@ class CryptoKittiesAuction : ContractInterface {
               return NFTPriceStatus.notSeenSince(since)
             }
           }
-          self.pricesCache[tokenId] = p
+          DispatchQueue.main.async {
+            self.pricesCache[tokenId] = p
+          }
           return p
         }
       }
@@ -751,7 +755,9 @@ class AsciiPunksContract : ContractInterface {
                 return NFTPriceStatus.notSeenSince(since)
               }
             }
-            self.pricesCache[tokenId] = p
+            DispatchQueue.main.async {
+              self.pricesCache[tokenId] = p
+            }
             return p
           }
         }
@@ -797,7 +803,9 @@ class BlockFetcherImpl {
       let p = firstly {
         web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
       }
-      self.blocksCache[blockNumber] = p
+      DispatchQueue.main.async {
+        self.blocksCache[blockNumber] = p
+      }
       return p
     }
   }

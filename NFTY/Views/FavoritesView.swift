@@ -10,9 +10,6 @@ import PromiseKit
 import BigInt
 
 struct FavoritesView: View {
-  
-  private var firebase = FirebaseDb()
-  
   @State private var showAddFavSheet = false
   
   typealias FavoritesDict = [String : [String : NFTWithLazyPrice?]]
@@ -34,6 +31,9 @@ struct FavoritesView: View {
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
+    if (dict.isEmpty) {
+      self.isLoading = false
+    }
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
         
@@ -134,15 +134,15 @@ struct FavoritesView: View {
         Image(systemName:"plus.circle.fill")
       }
     }
-    .sheet(isPresented: $showAddFavSheet) {
+    .sheet(isPresented: $showAddFavSheet,onDismiss: {
+      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      updateFavorites(favorites ?? [:])
+    }) {
       AddFavSheet()
     }
     .onAppear {
-      DispatchQueue.global(qos:.userInteractive).async {
-        firebase.observeUserFavorites {
-          updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
-        }
-      }
+      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      updateFavorites(favorites ?? [:])
     }
   }
 }
