@@ -25,6 +25,7 @@
 		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
 		4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
 		4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */; };
+		4F667F72264B7F4300E7A214 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F71264B7F4300E7A214 /* Erc721Contract.swift */; };
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
@@ -124,6 +125,7 @@
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
 		4F667F6D264B291000E7A214 /* ObservablePromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservablePromise.swift; sourceTree = "<group>"; };
 		4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedPromiseView.swift; sourceTree = "<group>"; };
+		4F667F71264B7F4300E7A214 /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
+				4F667F71264B7F4300E7A214 /* Erc721Contract.swift */,
 				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 			);
 			path = Model;
@@ -605,6 +608,7 @@
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
+				4F667F72264B7F4300E7A214 /* Erc721Contract.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4FB9A7E4262B31D300C58AF9 /* MapView.swift in Sources */,

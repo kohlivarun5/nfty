@@ -670,7 +670,7 @@ class AsciiPunksContract : ContractInterface {
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
-    SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
+    SolidityEvent.Parameter(name: "to", type: .address, indexed: true),
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
