@@ -30,29 +30,22 @@ struct BlockTimestampView : View {
 
 struct BlockTimeLabel: View {
   let blockNumber : BigUInt?
-  @State var view : BlockTimestampView? = nil
   
   init(blockNumber:BigUInt?) {
     self.blockNumber = blockNumber
   }
   
   var body: some View {
-    switch(view,blockNumber) {
-    case (.some(let view),_):
-      view
-    case (_,.none):
+    switch blockNumber {
+    case .none:
       Text("...    ")
-    case (_,.some(let blockNum)):
-      Text("...    ")
-        .onAppear {
-          self.view = BlockTimestampView(
-            timestamp:ObservablePromise(
-              promise:BlocksFetcher.getBlock(blockNumber:.block(blockNum)).compactMap { block in
-                return (block?.timestamp).map { Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay() }
-              }
-            )
-          )
-        }
+    case .some(let blockNum):
+      BlockTimestampView(
+        timestamp:ObservablePromise(
+          promise:BlocksFetcher.getBlock(blockNumber:.block(blockNum)).compactMap { block in
+            return (block?.timestamp).map { Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay() }
+          }
+        ))
     }
   }
 }
