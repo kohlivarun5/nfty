@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PromiseKit
 import Introspect
 
 struct AddFavSheet: View {
@@ -31,14 +30,10 @@ struct AddFavSheet: View {
         self.state = .empty
       case (.some(let token),.some(let collection)):
         self.state = .loading(collection.info)
-        firstly {
-          collection.data.contract.getToken(token)
-        }.done(on:.main) { nftWithPrice in
-          self.state = .loaded(collection.info,nftWithPrice)
-        }.catch { error in
-          print(error)
-          self.state = .notFound
-        }
+        collection.data.contract.getToken(token)
+          .done { nftWithPrice in
+            self.state = .loaded(collection.info,nftWithPrice)
+          }.catch { print ($0) }
       }
     }
   }

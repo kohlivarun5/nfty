@@ -6,10 +6,8 @@
 //
 
 import SwiftUI
-import Firebase
 
 struct FavButton: View {
-  private var firebase = FirebaseDb()
   @State private var isFavorite : Bool = false
   
   enum Size {
@@ -39,13 +37,27 @@ struct FavButton: View {
       .font(fontOfSize(self.size))
       .frame(width: 44, height: 44)
       .onTapGesture(count:self.isFavorite ? 2 : 1) {
-        firebase.addFavorite(address: nft.address, tokenId: nft.tokenId,isFavorite:!self.isFavorite);
+        self.isFavorite = !self.isFavorite
+        switch (UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]) {
+        case .none:
+          var favorites : [String : [String : Bool]] = [:]
+          favorites[nft.address] = [:]
+          favorites[nft.address]![String(nft.tokenId)] = self.isFavorite
+          UserDefaults.standard.set(favorites,forKey:UserDefaultsKeys.favoritesDict.rawValue)
+        case .some(var favorites):
+          switch (favorites[nft.address]) {
+          case .none:
+            favorites[nft.address] = [String(nft.tokenId):self.isFavorite]
+          case .some:
+            favorites[nft.address]![String(nft.tokenId)] = self.isFavorite
+          }
+          UserDefaults.standard.set(favorites,forKey:UserDefaultsKeys.favoritesDict.rawValue)
+        }
       }
       .padding()
       .onAppear {
-        firebase.observeFavorite(address:nft.address,tokenId:nft.tokenId) { [self] data in
-          self.isFavorite = data.value as? Bool ?? false
-        }
+        let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+        self.isFavorite = favorites?[nft.address]?[String(nft.tokenId)] ?? false
       }
   }
 }

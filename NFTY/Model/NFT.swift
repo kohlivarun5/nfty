@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Web3
-import PromiseKit
 
 enum TradeEventType {
   case offer
@@ -31,21 +30,21 @@ enum TradeEventStatus {
 }
 
 protocol MediaImage {
-  var url : Promise<URL> { get }
+  var url : ObservablePromise<URL> { get }
 }
 
 struct MediaImageLazy : MediaImage {
-  let get : () -> Promise<URL>
+  let get : () -> ObservablePromise<URL>
   
-  var url : Promise<URL> {
+  var url : ObservablePromise<URL> {
     self.get()
   }
 }
 
 struct MediaImageEager : MediaImage {
-  let url : Promise<URL>
+  let url : ObservablePromise<URL>
   init(_ url:URL) {
-    self.url = Promise.value(url)
+    self.url = ObservablePromise(resolved:url)
   }
 }
 
@@ -57,14 +56,14 @@ enum Media {
   
   struct AsciiPunkLazy {
     private var tokenId : BigUInt
-    private let draw : (BigUInt) -> Promise<AsciiPunk?>
+    private let draw : (BigUInt) -> ObservablePromise<AsciiPunk?>
     
-    init(tokenId:BigUInt,draw : @escaping (BigUInt) -> Promise<AsciiPunk?>) {
+    init(tokenId:BigUInt,draw : @escaping (BigUInt) -> ObservablePromise<AsciiPunk?>) {
       self.tokenId = tokenId
       self.draw = draw
     }
     
-    var ascii : Promise<AsciiPunk?> {
+    var ascii : ObservablePromise<AsciiPunk?> {
       self.draw(self.tokenId)
     }
   }
@@ -116,9 +115,9 @@ enum NFTPriceStatus {
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
-  private let getPrice : () -> Promise<NFTPriceStatus>
+  private let getPrice : () -> ObservablePromise<NFTPriceStatus>
   
-  init(nft:NFT,getPrice : @escaping () -> Promise<NFTPriceStatus>) {
+  init(nft:NFT,getPrice : @escaping () -> ObservablePromise<NFTPriceStatus>) {
     self.nft = nft
     self.getPrice = getPrice
   }
@@ -127,14 +126,14 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  var indicativePriceWei : Promise<NFTPriceStatus> {
+  var indicativePriceWei : ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
 }
 
 enum TokenPriceType {
   case eager(NFTPriceInfo)
-  case lazy(Promise<NFTPriceStatus>)
+  case lazy(ObservablePromise<NFTPriceStatus>)
 }
 
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
@@ -308,10 +307,24 @@ extension Array {
   }
 }
 
+extension String {
+  /*
+   Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
+   - Parameter length: Desired maximum lengths of a string
+   - Parameter trailing: A 'String' that will be appended after the truncation.
+   
+   - Returns: 'String' object.
+   */
+  func trunc(length: Int, trailing: String = "…") -> String {
+    return (self.count > length) ? self.prefix(length) + trailing : self
+  }
+}
+
 let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
     hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
     eip55:false)
 
 enum UserDefaultsKeys : String {
   case walletAddress = "walletAddress"
+  case favoritesDict = "favoritesDict"
 }

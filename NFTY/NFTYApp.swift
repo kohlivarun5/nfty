@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Firebase
 
 extension UINavigationController: UIGestureRecognizerDelegate {
   override open func viewDidLoad() {
@@ -21,9 +20,6 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
 @main
 struct NFTYApp: App {
-  init() {
-    FirebaseApp.configure()
-  }
   
   var body: some Scene {
     WindowGroup {

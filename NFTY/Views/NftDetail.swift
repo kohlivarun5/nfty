@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
-import PromiseKit
 import URLImage
 import BigInt
+import PromiseKit
 
 struct NftDetail: View {
   
@@ -51,11 +51,10 @@ struct NftDetail: View {
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
     .onAppear {
-      firstly {
-        Promise.value(similarTokens(nft.tokenId))
-      }.done(on:.main) { tokens in
-        self.tokens = tokens
-      }.catch { print($0) }
+      Promise.value(similarTokens(nft.tokenId))
+        .done(on:.main) { tokens in
+          self.tokens = tokens
+        }.catch { print($0) }
     }
   }
 }

@@ -7,45 +7,32 @@
 
 import SwiftUI
 import URLImage
-import PromiseKit
 
 struct NftImageImpl: View {
-  enum UrlState {
-    case loading
-    case url(URL)
-  }
-  @State private var urlState : UrlState = .loading
-  var image : MediaImage
+  
+  @ObservedObject var url : ObservablePromise<URL>
   var samples : [String]
   var themeColor : Color
   var body: some View {
     
-    switch(urlState) {
-    case .loading:
-      ZStack {
-        
-        Image(
-          samples[
-            Int.random(in: 0..<samples.count)
-          ])
-          .interpolation(.none)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .padding()
-          .background(themeColor)
-          .blur(radius:20)
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
-          .scaleEffect(2.0, anchor: .center)
-      }.onAppear {
-        firstly {
-          image.url
-        }.done(on:.main) { url in
-          self.urlState = .url(url)
-        }.catch { print($0) }
-      }
-      
-    case .url(let url):
+    ObservedPromiseView(
+      data:url,
+      progress:
+        ZStack {
+          Image(
+            samples[
+              Int.random(in: 0..<samples.count)
+            ])
+            .interpolation(.none)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+            .background(themeColor)
+            .blur(radius:20)
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
+            .scaleEffect(2.0, anchor: .center)
+        }) { url in
       URLImage(
         url:url,
         options: URLImageOptions(
@@ -64,9 +51,7 @@ struct NftImageImpl: View {
             .blur(radius:20)
         },
         inProgress: { progress in
-          
           ZStack {
-            
             Image(
               samples[
                 Int.random(in: 0..<samples.count)
@@ -80,7 +65,6 @@ struct NftImageImpl: View {
             ProgressView(value:progress)
               .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
               .scaleEffect(2.0, anchor: .center)
-            
           }
         },
         failure: { error, retry in         // Display error and retry button
@@ -132,9 +116,9 @@ struct NftImage: View {
     ZStack {
       switch(nft.media){
       case .image(let image):
-        NftImageImpl(image:image,samples:samples,themeColor:themeColor)
+        NftImageImpl(url:image.url,samples:samples,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
+        AsciiPunkView(asciiPunk:asciiPunk.ascii,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
       }
       //.padding()
       HStack {

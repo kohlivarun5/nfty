@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import PromiseKit
 import BigInt
 import Web3
 
@@ -18,7 +17,7 @@ struct WalletOverview: View {
   
   var body: some View {
     
-    VStack(spacing:0) {
+    VStack {
       
       HStack() {
         VStack(alignment:.leading) {
@@ -26,38 +25,33 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        Text(address.hex(eip55:false))
+        Text(address.hex(eip55:true).trunc(length:30))
           .font(.subheadline)
           .foregroundColor(.secondary)
-      }.padding()
-      
-      switch(balance) {
-      case .none:
-        Text("")
-          .onAppear {
-            firstly {
-              web3.eth.getBalance(address: address, block:.latest)
-            }.done(on:.main) { balance in
-              self.balance = balance
-            }.catch { print($0) }
-          }
-      case .some(let wei):
-        
-        VStack {
-          HStack() {
-            VStack(alignment:.leading) {
-              Text("Balance")
-                .font(.title3)
-            }
-            Spacer()
+      }
+      Divider()
+      VStack {
+        HStack() {
+          Text("Balance")
+            .font(.title3)
+          switch(balance) {
+          case .none:
+            Text("")
+              .onAppear {
+                web3.eth.getBalance(address: address, block:.latest)
+                  .done(on:.main) { balance in
+                    self.balance = balance
+                  }.catch { print($0) }
+              }
+          case .some(let wei):
             UsdText(wei:wei.quantity)
               .font(.title3)
               .foregroundColor(.secondary)
-          }.padding()
-          Divider()
+          }
         }
+        Divider()
       }
-    }
+    }.padding()
   }
 }
 

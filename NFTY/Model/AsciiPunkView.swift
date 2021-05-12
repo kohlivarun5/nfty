@@ -7,40 +7,49 @@
 
 import SwiftUI
 import URLImage
-import PromiseKit
+
+struct AsciiText : View {
+  let ascii : Media.AsciiPunk?
+  var fontSize : CGFloat
+  
+  var body: some View {
+    switch(ascii) {
+    case .none:
+      Text(String(repeating: "\n", count: 12))
+        .font(.system(size:fontSize, design: .monospaced))
+        .foregroundColor(Color.systemBackground)
+        .padding()
+    case .some(let text):
+      Text(text.unicode)
+        .font(.system(size:fontSize, design: .monospaced))
+        .foregroundColor(Color.systemBackground)
+        .padding()
+    }
+  }
+  
+}
 
 struct AsciiPunkView: View {
   
-  @State private var ascii : Media.AsciiPunk? = nil
-  
-  var asciiPunk : Media.AsciiPunkLazy
+  @ObservedObject var asciiPunk : ObservablePromise<Media.AsciiPunk?>
   var samples : [String] // TODO Use
   var themeColor : Color
   var fontSize : CGFloat
   var body: some View {
     VStack {
-      switch(ascii) {
-      case .none:
-        ZStack {
-          Text(String(repeating: "\n", count: 12))
-            .font(.system(size:fontSize, design: .monospaced))
-            .foregroundColor(Color.systemBackground)
-            .padding()
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
-            .scaleEffect(2,anchor: .center)
-        }.onAppear {
-          firstly {
-            asciiPunk.ascii
-          }.done(on:.main) { ascii in
-            self.ascii = ascii
-          }.catch { print($0) }
-        }
-      case .some(let ascii):
-        Text(ascii.unicode)
-          .font(.system(size:fontSize, design: .monospaced))
-          .foregroundColor(Color.systemBackground)
-          .padding()
+      ObservedPromiseView(
+        data:asciiPunk,
+        progress:
+          ZStack {
+            Text(String(repeating: "\n", count: 12))
+              .font(.system(size:fontSize, design: .monospaced))
+              .foregroundColor(Color.systemBackground)
+              .padding()
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
+              .scaleEffect(2,anchor: .center)
+          }) {
+        AsciiText(ascii:$0,fontSize: fontSize)
       }
     }
     .background(themeColor)
@@ -48,13 +57,11 @@ struct AsciiPunkView: View {
 }
 struct AsciiPunkView_Previews: PreviewProvider {
   static var previews: some View {
-    AsciiPunkView(asciiPunk:Media.AsciiPunkLazy(
-                    tokenId:0,
-                    draw : { tokenId in
-                      Promise.value(Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │"))
-                    }),
+    AsciiPunkView(asciiPunk:
+                    ObservablePromise(resolved:Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │")),
+                  
                   samples:SAMPLE_PUNKS,
                   themeColor:Color.secondary,
                   fontSize:20)
-    }
+  }
 }

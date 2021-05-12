@@ -6,13 +6,9 @@
 //
 
 import SwiftUI
-import PromiseKit
 import BigInt
 
 struct FavoritesView: View {
-  
-  private var firebase = FirebaseDb()
-  
   @State private var showAddFavSheet = false
   
   typealias FavoritesDict = [String : [String : NFTWithLazyPrice?]]
@@ -34,6 +30,9 @@ struct FavoritesView: View {
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
+    if (dict.isEmpty) {
+      self.isLoading = false
+    }
     dict.forEach { address,tokens in
       tokens.forEach { tokenId,isFav in
         
@@ -53,12 +52,11 @@ struct FavoritesView: View {
         }
         
         if (isFav) {
-          firstly {
-            collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
-          }.done(on:.main) { nft in
-            self.favorites[address]!.updateValue(nft,forKey:tokenId)
-            self.isLoading = false // **** Update isLoading when we add to the list
-          }.catch { print($0) }
+          collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
+            .done(on:.main) { nft in
+              self.favorites[address]!.updateValue(nft,forKey:tokenId)
+              self.isLoading = false // **** Update isLoading when we add to the list
+            }.catch { print($0) }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
           self.isLoading = false // **** Update isLoading when we add to the list
@@ -134,15 +132,15 @@ struct FavoritesView: View {
         Image(systemName:"plus.circle.fill")
       }
     }
-    .sheet(isPresented: $showAddFavSheet) {
+    .sheet(isPresented: $showAddFavSheet,onDismiss: {
+      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      updateFavorites(favorites ?? [:])
+    }) {
       AddFavSheet()
     }
     .onAppear {
-      DispatchQueue.global(qos:.userInteractive).async {
-        firebase.observeUserFavorites {
-          updateFavorites($0.value as? [String : [String : Bool]] ?? [:])
-        }
-      }
+      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      updateFavorites(favorites ?? [:])
     }
   }
 }
