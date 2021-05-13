@@ -89,6 +89,7 @@ struct NftImage: View {
   var nft:NFT
   var samples:[String]
   var themeColor : Color
+  var themeLabelColor : Color
   
   enum Size {
     case small
@@ -126,13 +127,13 @@ struct NftImage: View {
         switch(size) {
         case .normal:
           VStack {
-            FavButton(nft:nft,size:.medium)
+            FavButton(nft:nft,size:.medium,color:themeLabelColor)
             Spacer()
           }
         case .large,.medium:
           VStack {
             Spacer()
-            FavButton(nft:nft,size:.large)
+            FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
         case .small:
           VStack {
@@ -145,6 +146,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
   static var previews: some View {
-    NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:SampleCollection.info.themeColor,size:.normal)
+    NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal)
   }
 }

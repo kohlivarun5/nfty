@@ -32,6 +32,7 @@ struct SimilarTokensView: View {
                 price:.lazy(nft.indicativePriceWei),
                 samples:samples,
                 themeColor:info.subThemeColor,
+                themeLabelColor:info.themeLabelColor,
                 width: .narrow
               )
               //.scaleEffect(0.9)
@@ -45,6 +46,7 @@ struct SimilarTokensView: View {
                 price:.lazy(nft.indicativePriceWei),
                 samples:samples,
                 themeColor:info.themeColor,
+                themeLabelColor:info.themeLabelColor,
                 similarTokens:info.similarTokens
               ),tag:String(nft.nft.tokenId),selection:$action) {}
               .hidden()

@@ -144,8 +144,9 @@ struct CollectionInfo {
   let url3: String
   let url4: String
   let name: String
-  let totalSupply: Int
+  let webLink: URL
   let themeColor:Color
+  let themeLabelColor:Color
   let subThemeColor:Color
   let collectionColor:Color
   let blur:CGFloat
@@ -214,8 +215,9 @@ let CompositeCollection = CompositeRecentTradesObject(
       url3:SAMPLE_PUNKS[2],
       url4:SAMPLE_PUNKS[3],
       name:"CryptoPunks",
-      totalSupply:10000,
+      webLink: URL(string:"https://www.larvalabs.com/cryptopunks")!,
       themeColor:Color.yellow,
+      themeLabelColor:Color.systemBackground,
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
       blur:0,
@@ -230,8 +232,9 @@ let CompositeCollection = CompositeRecentTradesObject(
       url3:SAMPLE_KITTIES[2],
       url4:SAMPLE_KITTIES[3],
       name:"CryptoKitties",
-      totalSupply:1997622,
+      webLink: URL(string:"https://www.cryptokitties.co")!,
       themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      themeLabelColor:Color.systemBackground,
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       blur:0,samplePadding:0,
@@ -245,8 +248,9 @@ let CompositeCollection = CompositeRecentTradesObject(
       url3:SAMPLE_ASCII_PUNKS[2],
       url4:SAMPLE_ASCII_PUNKS[3],
       name:"AsciiPunks",
-      totalSupply:2048,
+      webLink: URL(string:"https://asciipunks.com")!,
       themeColor:Color.label,
+      themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
       collectionColor:Color.black,
       blur:0,

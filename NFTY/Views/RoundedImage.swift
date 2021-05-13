@@ -15,6 +15,7 @@ struct RoundedImage: View {
   var price:TokenPriceType
   var samples : [String]
   var themeColor : Color
+  var themeLabelColor : Color
   
   enum Width {
     case normal
@@ -52,7 +53,7 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,size:mediaSize(width))
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
       
       switch(width) {
       case .narrow:
@@ -90,6 +91,7 @@ struct RoundedImage_Previews: PreviewProvider {
         price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
         samples:SAMPLE_PUNKS,
         themeColor:SampleCollection.info.themeColor,
+        themeLabelColor:SampleCollection.info.themeLabelColor,
         width: .normal)
     }
   }

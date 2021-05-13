@@ -72,6 +72,7 @@ struct CollectionView: View {
               price:.eager(nft.indicativePriceWei),
               samples:samples,
               themeColor:info.themeColor,
+              themeLabelColor:info.themeLabelColor,
               width: .normal
             )
             .padding()
@@ -85,6 +86,7 @@ struct CollectionView: View {
               price:.eager(nft.indicativePriceWei),
               samples:samples,
               themeColor:info.themeColor,
+              themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
@@ -93,6 +95,11 @@ struct CollectionView: View {
           }
         }
       }.animation(.default)
+    }
+    .toolbar {
+        Link(destination: info.webLink) {
+          Image(systemName: "safari")
+        }
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)

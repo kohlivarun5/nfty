@@ -83,6 +83,7 @@ struct AddFavSheet: View {
             NftImage(nft:nftWithPrice.nft,
                      samples:samples,
                      themeColor:info.themeColor,
+                     themeLabelColor:info.themeLabelColor,
                      size:.medium)
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

@@ -34,6 +34,15 @@ extension Web3.Eth {
   }
 }
 
+func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
+  // print(address.hex(eip55: false))
+  if (address == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+    return nil
+  } else {
+    return .some(address)
+  }
+}
+
 class TxFetcher {
   
   struct TxInfo {
@@ -89,6 +98,7 @@ protocol ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
+  func ownerOf(_ tokenId:UInt) -> Promise<EthereumAddress?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
 }
 
@@ -205,6 +215,28 @@ class CryptoPunksContract : ContractInterface {
   let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
   private var punksBoughtLogs : LogsFetcher
   private let initFromBlock = INIT_BLOCK
+  
+  class EthContract : EthereumContract {
+    let eth = web3.eth
+    let events : [SolidityEvent] = []
+    let addressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+    var address : EthereumAddress?
+    init() {
+      address = try? EthereumAddress(hex:addressHex, eip55: false)
+    }
+    
+    func punkIndexToAddress(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
+      let method = SolidityConstantFunction(name: "punkIndexToAddress", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["address"] as! EthereumAddress
+        }
+    }
+  }
+  private var ethContract = EthContract()
   
   init () {
     punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
@@ -409,10 +441,49 @@ class CryptoPunksContract : ContractInterface {
     );
   }
   
+  struct Asset: Codable {
+    var token_id : String
+  }
+  
+  struct OwnerAssets: Codable {
+    var assets: [Asset]
+  }
+  
+  private func getOwnerTokensFromOpenSea(address:EthereumAddress) -> Promise<[UInt]> {
+    return Promise { seal in
+      var request = URLRequest(url: URL(string: "https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")!)
+      request.httpMethod = "GET"
+      
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          let jsonDecoder = JSONDecoder()
+          let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
+          seal.fulfill(assets.assets.map { UInt($0.token_id)! })
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.fulfill([])
+        }
+      }).resume()
+    }
+  }
+  
+  
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
-    onDone()
-    // Difficult because CryptoPunks don't support full ERC721
-    // Will be mixture of balanceOf and  'event PunkTransfer(address indexed from, address indexed to, uint256 punkIndex);'
+    getOwnerTokensFromOpenSea(address:address)
+    .then(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> Promise<Void> in
+      return when(
+        fulfilled:tokenIds.map { self.getToken($0).done { response($0) } }
+      )
+    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+      onDone()
+    }.catch {
+      print ($0)
+      onDone()
+    }
+  }
+  
+  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
 }
@@ -466,6 +537,18 @@ class CryptoKittiesAuction : ContractInterface {
           return outputs["tokens"] as! [BigUInt]
         }
     }
+    
+    func kittyIndexToOwner(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
+      let method = SolidityConstantFunction(name: "kittyIndexToOwner", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["address"] as! EthereumAddress
+        }
+    }
+    
   }
   private var ethContract = EthContract()
   
@@ -496,7 +579,8 @@ class CryptoKittiesAuction : ContractInterface {
           let kitties = try jsonDecoder.decode(KittiesByWallet.self, from: data!)
           seal.fulfill(kitties)
         } catch {
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.fulfill(KittiesByWallet(kitties: []))
         }
       }).resume()
     }
@@ -517,7 +601,8 @@ class CryptoKittiesAuction : ContractInterface {
           let kittyInfo = try jsonDecoder.decode(Kitty.self, from: data!)
           seal.fulfill(kittyInfo)
         } catch {
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "" )")
+          seal.reject(error)
         }
       }).resume()
     }
@@ -661,6 +746,10 @@ class CryptoKittiesAuction : ContractInterface {
         print ($0)
       }
   }
+  
+  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
+  }
 }
 
 class AsciiPunksContract : ContractInterface {
@@ -721,6 +810,17 @@ class AsciiPunksContract : ContractInterface {
         method.invoke(address,index).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["tokenId"] as! BigUInt
+        }
+    }
+    
+    func ownerOf(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
+      let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["address"] as! EthereumAddress
         }
     }
     
@@ -820,7 +920,10 @@ class AsciiPunksContract : ContractInterface {
         when(fulfilled:events)
           .done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
-          }.catch { print ($0) }
+          }.catch {
+            print ($0)
+            seal.fulfill([])
+          }
       }) { log in
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought))
       }
@@ -908,7 +1011,14 @@ class AsciiPunksContract : ContractInterface {
         }
       }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
         onDone()
-      }.catch { print ($0) }
+      }.catch {
+        print ($0)
+        onDone()
+      }
+  }
+  
+  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    return ethContract.ownerOf(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
 }
@@ -961,7 +1071,7 @@ class UserEthRate {
             let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
             seal.fulfill(Double(response.data.amount))
           } catch {
-            print("JSON Serialization error:\(error)")
+            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "" )")
             seal.fulfill(nil)
           }
         }).resume()
