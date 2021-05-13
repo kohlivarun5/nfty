@@ -21,7 +21,7 @@ struct UserProfileButton : View {
     case .some (let address):
       NavigationLink(
         destination:
-          WalletTokensView(tokens: NftOwnerTokens(ownerAddress:address))
+          WalletTokensView(tokens: getOwnerTokens(address))
           .navigationBarTitle("User Profile")
           .navigationBarBackButtonHidden(true)
           .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))

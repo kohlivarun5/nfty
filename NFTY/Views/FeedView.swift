@@ -37,6 +37,7 @@ struct PullToRefresh: View {
         Spacer()
         if needRefresh {
           ProgressView()
+            .scaleEffect(1.5, anchor: .center)
         } else {
           EmptyView()
         }
