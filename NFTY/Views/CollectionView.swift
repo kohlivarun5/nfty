@@ -94,6 +94,11 @@ struct CollectionView: View {
         }
       }.animation(.default)
     }
+    .toolbar {
+        Link(destination: info.webLink) {
+          Image(systemName: "safari")
+        }
+    }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
