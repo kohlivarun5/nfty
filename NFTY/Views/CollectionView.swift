@@ -95,7 +95,7 @@ struct CollectionView: View {
       }.animation(.default)
     }
     .toolbar {
-        Link(destination: info.webUrl) {
+        Link(destination: info.webLink) {
           Image(systemName: "safari")
         }
     }
