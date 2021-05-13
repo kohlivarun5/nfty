@@ -87,7 +87,7 @@ struct RoundedImage_Previews: PreviewProvider {
     Group {
       RoundedImage(
         nft:SampleToken,
-        price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
+        price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from: SAMPLE_WALLET_ADDRESS)))),
         samples:SAMPLE_PUNKS,
         themeColor:SampleCollection.info.themeColor,
         width: .normal)

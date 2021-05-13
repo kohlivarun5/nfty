@@ -9,9 +9,24 @@ import Foundation
 import SwiftUI
 import Web3
 
+struct TradeOfferInfo {
+  let from : EthereumAddress
+}
+
+struct TradeBoughtInfo {
+  let from : EthereumAddress?
+  let to : EthereumAddress
+}
+
+struct TradeTransferInfo {
+  let from : EthereumAddress
+  let to : EthereumAddress
+}
+
 enum TradeEventType {
-  case offer
-  case bought
+  case offer(TradeOfferInfo)
+  case bought(TradeBoughtInfo)
+  case transfer(TradeTransferInfo)
 }
 
 struct TradeEvent {
@@ -96,6 +111,7 @@ struct NFT: Identifiable {
 struct NFTPriceInfo {
   let price : BigUInt?
   let blockNumber : BigUInt?
+  var type : TradeEventType
 }
 
 struct NFTWithPrice : Identifiable {
@@ -146,6 +162,7 @@ struct CollectionInfo {
   let name: String
   let webLink: URL
   let themeColor:Color
+  let themeLabelColor:Color
   let subThemeColor:Color
   let collectionColor:Color
   let blur:CGFloat
@@ -216,6 +233,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"CryptoPunks",
       webLink: URL(string:"https://www.larvalabs.com/cryptopunks")!,
       themeColor:Color.yellow,
+      themeLabelColor:Color.black,
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
       blur:0,
@@ -232,6 +250,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"CryptoKitties",
       webLink: URL(string:"https://www.cryptokitties.co")!,
       themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      themeLabelColor:Color.black,
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       blur:0,samplePadding:0,
@@ -247,6 +266,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"AsciiPunks",
       webLink: URL(string:"https://asciipunks.com")!,
       themeColor:Color.label,
+      themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
       collectionColor:Color.black,
       blur:0,

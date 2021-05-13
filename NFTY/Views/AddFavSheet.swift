@@ -87,16 +87,27 @@ struct AddFavSheet: View {
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:info.themeColor,radius: 2)
-            VStack(alignment: .trailing) {
-              HStack {
+            
+            HStack {
+              VStack(alignment: .leading) {
                 Spacer()
-                TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
-                  .padding()
+                HStack {
+                  TokenPriceEventView(price:.lazy(nftWithPrice.indicativePriceWei),color:info.themeLabelColor)
+                    .padding()
+                  Spacer()
+                }
               }
-              Spacer()
+              
+              VStack(alignment: .trailing) {
+                HStack {
+                  Spacer()
+                  TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
+                    .padding()
+                }
+                Spacer()
+              }
             }
-          }
-          .padding()
+          }.padding()
           
         case .loading(let info):
           let samples = [info.url1,info.url2,info.url3,info.url4];

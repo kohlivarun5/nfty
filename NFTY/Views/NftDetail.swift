@@ -14,10 +14,11 @@ struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  var nft:NFT
+  let nft:NFT
   var price:TokenPriceType
-  var samples:[String]
-  var themeColor : Color
+  let samples:[String]
+  let themeColor : Color
+  let themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
   
   @State var tokens : [UInt]? = nil
@@ -25,8 +26,19 @@ struct NftDetail: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,size:.large)
-        .frame(minHeight: 450)
+      
+      ZStack {
+        NftImage(nft:nft,samples:samples,themeColor:themeColor,size:.large)
+          .frame(minHeight: 450)
+        VStack(alignment: .leading) {
+          Spacer()
+          HStack {
+            TokenPriceEventView(price:price,color:themeLabelColor)
+            Spacer()
+          }
+        }
+        .padding()
+      }
       
       HStack() {
         VStack(alignment:.leading) {
@@ -63,9 +75,10 @@ struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
     NftDetail(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
+      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from:SAMPLE_WALLET_ADDRESS)))),
       samples:SAMPLE_PUNKS,
       themeColor:SampleCollection.info.themeColor,
+      themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens)
   }
 }
