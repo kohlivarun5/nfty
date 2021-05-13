@@ -59,6 +59,7 @@ struct NftDetail: View {
       }
     }
     .animation(.default)
+    .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)

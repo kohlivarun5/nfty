@@ -22,7 +22,7 @@ struct UserProfileButton : View {
       NavigationLink(
         destination:
           WalletTokensView(tokens: getOwnerTokens(address))
-          .navigationBarTitle("User Profile")
+          .navigationBarTitle("Private Collection",displayMode: .inline)
           .navigationBarBackButtonHidden(true)
           .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
       ) {
