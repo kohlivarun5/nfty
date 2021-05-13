@@ -9,46 +9,49 @@ import SwiftUI
 import BigInt
 import Web3
 
-struct UserProfileView : View {
+struct UserProfileButton : View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  let address : EthereumAddress
-  
+  let address : EthereumAddress?
+    
   var body : some View {
-    WalletTokensView(tokens: NftOwnerTokens(ownerAddress:address))
-      .navigationBarTitle("User Profile")
-      .navigationBarBackButtonHidden(true)
-      .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+    switch (address.flatMap { addressIfNotZero($0) }) {
+    case .none:
+      Image(systemName: "flame.fill")
+    case .some (let address):
+      NavigationLink(
+        destination:
+          WalletTokensView(tokens: NftOwnerTokens(ownerAddress:address))
+          .navigationBarTitle("User Profile")
+          .navigationBarBackButtonHidden(true)
+          .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+      ) {
+        Image(systemName: "person.crop.circle")
+      }
+    }
   }
-  
 }
 
 struct TokenPriceEventKnown : View {
-  let info : NFTPriceInfo
-  let color : Color
+  var info : NFTPriceInfo
+  var color : Color
+  
+  init(info:NFTPriceInfo,color:Color) {
+    print(info)
+    self.info = info
+    self.color = color
+  }
   
   var body: some View {
     VStack(alignment: .leading) {
       switch(info.type) {
       case .offer(let info):
-        VStack {
-          NavigationLink(destination: UserProfileView(address: info.from)) {
-            Image(systemName: "person.crop.circle")
-          }
-        }
+        UserProfileButton(address: info.from)
       case .bought(let info):
-        VStack {
-          NavigationLink(destination: UserProfileView(address: info.to)) {
-            Image(systemName: "person.crop.circle")
-          }
-        }
+          UserProfileButton(address: info.to)
       case .transfer(let info):
-        VStack {
-          NavigationLink(destination: UserProfileView(address: info.to)) {
-            Image(systemName: "person.crop.circle")
-          }
-        }
+          UserProfileButton(address: info.to)
       }
     }
     .foregroundColor(color)
@@ -107,6 +110,6 @@ struct TokenPriceEventView: View {
 
 struct TokenPriceEvent_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPriceEventView(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from: SAMPLE_WALLET_ADDRESS)))),color:.label)
+    TokenPriceEventView(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from: SAMPLE_WALLET_ADDRESS,to:SAMPLE_WALLET_ADDRESS)))),color:.label)
   }
 }

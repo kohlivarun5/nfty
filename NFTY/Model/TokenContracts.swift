@@ -34,11 +34,21 @@ extension Web3.Eth {
   }
 }
 
+func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
+  print(address.hex(eip55: false))
+  if (address == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+    return nil
+  } else {
+    return .some(address)
+  }
+}
+
 class TxFetcher {
   
   struct TxInfo {
     var value : BigUInt
     var blockNumber : EthereumQuantity
+    var from : EthereumAddress?
   }
   
   private var txCache : [EthereumData:Promise<TxInfo?>] = [:]
@@ -52,7 +62,7 @@ class TxFetcher {
           switch(tx.value.quantity,tx.blockNumber) {
           case (_,.none): return nil
           case (let value,.some(let blockNumber)):
-            return TxInfo(value:value,blockNumber: blockNumber)
+            return TxInfo(value:value,blockNumber: blockNumber,from:tx.from)
           }
         }
       }
@@ -187,17 +197,19 @@ class CryptoPunksContract : ContractInterface {
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
+  // event PunkBought(uint indexed punkIndex, uint value, address indexed fromAddress, address indexed toAddress);
   private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
     SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
-    SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
-    SolidityEvent.Parameter(name: "to", type: .address, indexed: true)
+    SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true),
+    SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
   ])
   
+  // event PunkOffered(uint indexed punkIndex, uint minValue, address indexed toAddress);
   private let PunkOffered: SolidityEvent = SolidityEvent(name: "PunkOffered", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
     SolidityEvent.Parameter(name: "minValue", type: .uint256, indexed: false),
-    SolidityEvent.Parameter(name: "to", type: .address, indexed: true)
+    SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
   ])
   
   private var name = "CryptoPunks"
@@ -232,7 +244,7 @@ class CryptoPunksContract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log)
       let tokenId = UInt(res["punkIndex"] as! BigUInt)
       let logValue = priceIfNotZero(res["value"] as? BigUInt)
-      let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["from"] as? EthereumAddress, to: res["to"] as! EthereumAddress))
+      let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["fromAddress"] as? EthereumAddress, to: res["toAddress"] as! EthereumAddress))
       switch (logValue) {
       case .some (let value):
         response(NFTWithPrice(
@@ -280,7 +292,7 @@ class CryptoPunksContract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
       let tokenId = UInt(res["punkIndex"] as! BigUInt)
       let logValue = priceIfNotZero(res["value"] as? BigUInt)
-      let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["from"] as? EthereumAddress, to: res["to"] as! EthereumAddress))
+      let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["fromAddress"] as? EthereumAddress, to: res["toAddress"] as! EthereumAddress))
       switch (logValue) {
       case .some (let value):
         response(NFTWithPrice(
@@ -327,7 +339,11 @@ class CryptoPunksContract : ContractInterface {
     return Promise { seal in
       punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
-        let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["from"] as? EthereumAddress, to: res["to"] as! EthereumAddress))
+        if (tokenId == 2506) {
+          print(res)
+          print(log)
+        }
+        let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["fromAddress"] as? EthereumAddress, to: res["toAddress"] as! EthereumAddress))
         log.blockNumber.map { blockNumber in
           events.append(TradeEvent(type:eventType, value: res["value"] as! BigUInt, blockNumber:blockNumber))
         }
@@ -336,11 +352,22 @@ class CryptoPunksContract : ContractInterface {
       var events = boughtEvents
       return Promise { seal in
         punkOfferedFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
-          //print(log);
+          
           let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
-          let eventType : TradeEventType = .bought(TradeBoughtInfo(from: res["from"] as? EthereumAddress, to: res["to"] as! EthereumAddress))
+          
           log.blockNumber.map { blockNumber in
-            events.append(TradeEvent(type:eventType, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+            
+            let onEvent = { (from:EthereumAddress?) in
+              let eventType : TradeEventType = .offer(TradeOfferInfo(from: from, to: addressIfNotZero(res["toAddress"] as! EthereumAddress)))
+              events.append(TradeEvent(type:eventType, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+            }
+            
+            txFetcher.eventOfTx(transactionHash: log.transactionHash)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) { onEvent($0?.from) }
+              .catch { error in
+                print(error);
+                onEvent(nil)
+              }
           }
         }
       }

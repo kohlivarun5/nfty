@@ -10,7 +10,8 @@ import SwiftUI
 import Web3
 
 struct TradeOfferInfo {
-  let from : EthereumAddress
+  let from : EthereumAddress?
+  let to : EthereumAddress?
 }
 
 struct TradeBoughtInfo {

@@ -140,6 +140,6 @@ struct TokenPrice: View {
 
 struct TokenPrice_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from: SAMPLE_WALLET_ADDRESS)))),color:.label)
+    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from: SAMPLE_WALLET_ADDRESS,to:SAMPLE_WALLET_ADDRESS)))),color:.label)
   }
 }

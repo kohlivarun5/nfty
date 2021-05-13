@@ -75,7 +75,7 @@ struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
     NftDetail(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from:SAMPLE_WALLET_ADDRESS)))),
+      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.offer(TradeOfferInfo(from:SAMPLE_WALLET_ADDRESS,to:SAMPLE_WALLET_ADDRESS)))),
       samples:SAMPLE_PUNKS,
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
