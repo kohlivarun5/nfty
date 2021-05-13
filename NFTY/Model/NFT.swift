@@ -206,8 +206,8 @@ let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 
-let CompositeCollection = CompositeRecentTradesObject(
-  punks:CompositeRecentTradesObject.CollectionInitializer(
+let CompositeCollection = CompositeRecentTradesObject([
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoPunksContract.contractAddressHex,
       url1:SAMPLE_PUNKS[0],
@@ -224,7 +224,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       samplePadding:10,
       similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
     contract:cryptoPunksContract),
-  kitties:CompositeRecentTradesObject.CollectionInitializer(
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
       url1:SAMPLE_KITTIES[0],
@@ -240,7 +240,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       blur:0,samplePadding:0,
       similarTokens: { tokenId in nil }),
     contract:cryptoKittiesContract),
-  ascii:CompositeRecentTradesObject.CollectionInitializer(
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:asciiPunksContract.contractAddressHex,
       url1:SAMPLE_ASCII_PUNKS[0],
@@ -257,6 +257,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       samplePadding:10,
       similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
     contract:asciiPunksContract)
+]
 )
 
 let SampleToken = NFT(
@@ -264,7 +265,7 @@ let SampleToken = NFT(
   tokenId: 340, name: "CryptoPunks",
   media: .image(MediaImageEager(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!)))
 
-let SampleCollection = CompositeCollection.punks
+let SampleCollection = CompositeCollection.collections[0]
 
 
 public extension Color {
@@ -283,19 +284,11 @@ public extension Color {
   // There are more..
 }
 
-let COLLECTIONS: [Collection]=[
-  CompositeCollection.punks,
-  CompositeCollection.kitties,
-  CompositeCollection.ascii
-]
+let COLLECTIONS : [Collection] = CompositeCollection.collections
 
 struct CollectionsFactory {
   
-  let collections : [String : Collection] = [
-    CompositeCollection.punks.info.address:CompositeCollection.punks,
-    CompositeCollection.kitties.info.address:CompositeCollection.kitties,
-    CompositeCollection.ascii.info.address:CompositeCollection.ascii,
-  ]
+  let collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
   
   func getByAddress(_ address:String) -> Collection? {
     return collections[address]
@@ -325,8 +318,8 @@ extension String {
 }
 
 let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
-    hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
-    eip55:false)
+  hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
+  eip55:false)
 
 enum UserDefaultsKeys : String {
   case walletAddress = "walletAddress"
