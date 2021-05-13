@@ -29,7 +29,7 @@ struct WalletView: View {
             }
           }
       case .some(let address):
-        WalletTokensView(tokens: NftOwnerTokens(ownerAddress: address))
+        WalletTokensView(tokens: getOwnerTokens(address))
       }
     }
     .toolbar {

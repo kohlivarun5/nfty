@@ -9,17 +9,19 @@ import SwiftUI
 
 struct FavButton: View {
   @State private var isFavorite : Bool = false
-  
+   
   enum Size {
     case large
     case medium
   }
-  var nft : NFT
-  var size : Size
+  let nft : NFT
+  let size : Size
+  let color : Color
   
-  init(nft:NFT,size:Size) {
+  init(nft:NFT,size:Size,color:Color) {
     self.nft = nft
     self.size = size
+    self.color = color
   }
   
   private func fontOfSize(_ size:Size) -> Font {
@@ -33,7 +35,7 @@ struct FavButton: View {
   
   var body: some View {
     Image(systemName: self.isFavorite ? "heart.fill" : "heart")
-      .foregroundColor(self.isFavorite ? .red : .systemBackground)
+      .foregroundColor(self.isFavorite ? .red : self.color)
       .font(fontOfSize(self.size))
       .frame(width: 44, height: 44)
       .onTapGesture(count:self.isFavorite ? 2 : 1) {
@@ -64,6 +66,6 @@ struct FavButton: View {
 
 struct FavButton_Previews: PreviewProvider {
   static var previews: some View {
-    FavButton(nft: SampleToken,size:.large)
+    FavButton(nft: SampleToken,size:.large,color:.black)
   }
 }

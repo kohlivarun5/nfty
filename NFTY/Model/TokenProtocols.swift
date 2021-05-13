@@ -258,3 +258,14 @@ class NftOwnerTokens : ObservableObject {
   }
   
 }
+
+var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]
+func getOwnerTokens(_ address:EthereumAddress) -> NftOwnerTokens {
+  switch OwnerTokensCache[address] {
+  case .some(let tokens):
+    return tokens
+  case .none:
+    OwnerTokensCache[address] = NftOwnerTokens(ownerAddress: address)
+    return OwnerTokensCache[address]!
+  }
+}

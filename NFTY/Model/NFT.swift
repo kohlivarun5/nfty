@@ -146,6 +146,7 @@ struct CollectionInfo {
   let name: String
   let webLink: URL
   let themeColor:Color
+  let themeLabelColor:Color
   let subThemeColor:Color
   let collectionColor:Color
   let blur:CGFloat
@@ -216,6 +217,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"CryptoPunks",
       webLink: URL(string:"https://www.larvalabs.com/cryptopunks")!,
       themeColor:Color.yellow,
+      themeLabelColor:Color.systemBackground,
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
       blur:0,
@@ -232,6 +234,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"CryptoKitties",
       webLink: URL(string:"https://www.cryptokitties.co")!,
       themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      themeLabelColor:Color.systemBackground,
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       blur:0,samplePadding:0,
@@ -247,6 +250,7 @@ let CompositeCollection = CompositeRecentTradesObject(
       name:"AsciiPunks",
       webLink: URL(string:"https://asciipunks.com")!,
       themeColor:Color.label,
+      themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
       collectionColor:Color.black,
       blur:0,
