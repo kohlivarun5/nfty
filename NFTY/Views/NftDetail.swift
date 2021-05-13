@@ -26,8 +26,19 @@ struct NftDetail: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:.large)
-        .frame(minHeight: 450)
+      
+      ZStack {
+        NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:.large)
+          .frame(minHeight: 450)
+        VStack(alignment: .leading) {
+          Spacer()
+          HStack {
+            OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
+            Spacer()
+          }
+        }
+        .padding()
+      }
       
       HStack() {
         VStack(alignment:.leading) {

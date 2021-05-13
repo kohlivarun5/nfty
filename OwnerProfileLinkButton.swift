@@ -13,7 +13,6 @@ struct UserProfileButton : View {
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   let address : EthereumAddress?
-  let color : Color
   
   var body : some View {
     switch (address.flatMap { addressIfNotZero($0) }) {
@@ -28,7 +27,6 @@ struct UserProfileButton : View {
           .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
       ) {
         Image(systemName: "person.crop.circle")
-          .foregroundColor(color)
           .font(.largeTitle)
           .frame(width: 44, height: 44)
       }
@@ -46,8 +44,8 @@ struct OwnerProfileLinkButton: View {
       data: ObservablePromise(
         promise:collection.data.contract.ownerOf(nft.tokenId)),
       progress: ProgressView() ) { address in
-      UserProfileButton(address: address,color:color)
-    }
+      UserProfileButton(address: address)
+    }.foregroundColor(color)
   }
 }
 
