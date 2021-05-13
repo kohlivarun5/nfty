@@ -102,6 +102,7 @@ struct FavoritesView: View {
                     price:.lazy(nft.indicativePriceWei),
                     samples:samples,
                     themeColor:info.themeColor,
+                    themeLabelColor:info.themeLabelColor,
                     width: .normal
                   )
                   .padding()
@@ -114,6 +115,7 @@ struct FavoritesView: View {
                     price:.lazy(nft.indicativePriceWei),
                     samples:samples,
                     themeColor:info.themeColor,
+                    themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()

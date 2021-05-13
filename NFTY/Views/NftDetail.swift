@@ -18,6 +18,7 @@ struct NftDetail: View {
   var price:TokenPriceType
   var samples:[String]
   var themeColor : Color
+  var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
   
   @State var tokens : [UInt]? = nil
@@ -25,7 +26,7 @@ struct NftDetail: View {
   var body: some View {
     
     VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,size:.large)
+      NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:.large)
         .frame(minHeight: 450)
       
       HStack() {
@@ -66,6 +67,7 @@ struct NftDetail_Previews: PreviewProvider {
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
       samples:SAMPLE_PUNKS,
       themeColor:SampleCollection.info.themeColor,
+      themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens)
   }
 }
