@@ -221,7 +221,7 @@ class NftOwnerTokens : ObservableObject {
   
   enum LoadingState {
     case notLoaded
-    case loading
+    case loading(Int)
     case loaded
   }
   @Published var state : LoadingState = .notLoaded
@@ -237,21 +237,35 @@ class NftOwnerTokens : ObservableObject {
   }
   
   func load() {
-    if (state != .notLoaded) { return }
-
-    state = .loading
-    contracts.forEach { contract in
-      contract.getOwnerTokens(
-        address:ownerAddress,
-                              
-        onDone: {
-          DispatchQueue.main.async {
-            self.state = .loaded
+    switch state {
+    case .loading,.loaded:
+      return
+    case .notLoaded:
+    
+      state = .loading(contracts.count)
+      
+      contracts.forEach { contract in
+        contract.getOwnerTokens(
+          address:ownerAddress,
+                                
+          onDone: {
+            DispatchQueue.main.async {
+              print(self.state)
+              switch(self.state) {
+              case .loading(let pending):
+                self.state = .loading(pending - 1)
+                if (self.tokens.count > 0 || (0 == (pending - 1))) {
+                  self.state = .loaded
+                }
+              default:
+                break
+              }
+            }
           }
-        }
-      ) { token in
-        DispatchQueue.main.async {
-          self.tokens.append(token)
+        ) { token in
+          DispatchQueue.main.async {
+            self.tokens.append(token)
+          }
         }
       }
     }

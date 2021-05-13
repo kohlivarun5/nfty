@@ -670,8 +670,11 @@ class CryptoKittiesAuction : ContractInterface {
               }
             }
         )
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+        onDone()
       }.catch {
         print ($0)
+        onDone()
       }
   }
 }
@@ -944,7 +947,10 @@ class AsciiPunksContract : ContractInterface {
         }
       }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
         onDone()
-      }.catch { print ($0) }
+      }.catch {
+        print ($0)
+        onDone()
+      }
   }
   
 }
