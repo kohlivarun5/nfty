@@ -63,8 +63,8 @@ struct WalletTokensView: View {
   var body: some View {
     
     VStack {
-      switch (tokens.state) {
-      case .notLoaded,.loading:
+      switch (tokens.isLoading) {
+      case true:
         VStack {
           WalletOverview(address:tokens.ownerAddress)
           Spacer()
@@ -72,12 +72,9 @@ struct WalletTokensView: View {
             .progressViewStyle(CircularProgressViewStyle())
             .scaleEffect(2,anchor: .center)
             .padding()
-            .onAppear {
-              tokens.load()
-            }
           Spacer()
         }
-      case .loaded:
+      case false:
         if (tokens.tokens.isEmpty) {
           VStack {
             WalletOverview(address:tokens.ownerAddress)
@@ -123,6 +120,8 @@ struct WalletTokensView: View {
           }
         }
       }
+    }.onAppear {
+      tokens.load()
     }
   }
 }

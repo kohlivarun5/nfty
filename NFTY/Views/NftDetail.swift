@@ -33,7 +33,7 @@ struct NftDetail: View {
         VStack(alignment: .leading) {
           Spacer()
           HStack {
-            TokenPriceEventView(price:price,color:themeLabelColor)
+            OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
             Spacer()
           }
         }

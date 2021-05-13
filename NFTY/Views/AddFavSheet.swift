@@ -92,7 +92,7 @@ struct AddFavSheet: View {
               VStack(alignment: .leading) {
                 Spacer()
                 HStack {
-                  TokenPriceEventView(price:.lazy(nftWithPrice.indicativePriceWei),color:info.themeLabelColor)
+                  OwnerProfileLinkButton(nft:nftWithPrice.nft,color:info.themeLabelColor)
                     .padding()
                   Spacer()
                 }

@@ -9,30 +9,6 @@ import SwiftUI
 import BigInt
 import Web3
 
-struct UserProfileButton : View {
-  
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
-  let address : EthereumAddress?
-    
-  var body : some View {
-    switch (address.flatMap { addressIfNotZero($0) }) {
-    case .none:
-      Image(systemName: "flame.fill")
-    case .some (let address):
-      NavigationLink(
-        destination:
-          WalletTokensView(tokens: NftOwnerTokens(ownerAddress:address))
-          .navigationBarTitle("User Profile")
-          .navigationBarBackButtonHidden(true)
-          .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
-      ) {
-        Image(systemName: "person.crop.circle")
-      }
-    }
-  }
-}
-
 struct TokenPriceEventKnown : View {
   var info : NFTPriceInfo
   var color : Color
@@ -47,11 +23,11 @@ struct TokenPriceEventKnown : View {
     VStack(alignment: .leading) {
       switch(info.type) {
       case .offer(let info):
-        UserProfileButton(address: info.from)
+        UserProfileButton(address: info.from,color:.black)
       case .bought(let info):
-          UserProfileButton(address: info.to)
+        UserProfileButton(address: info.to,color:.black)
       case .transfer(let info):
-          UserProfileButton(address: info.to)
+        UserProfileButton(address: info.to,color:.black)
       }
     }
     .foregroundColor(color)

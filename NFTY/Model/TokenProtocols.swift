@@ -217,29 +217,26 @@ class CompositeRecentTradesObject : ObservableObject {
 
 
 class NftOwnerTokens : ObservableObject {
-  @Published var tokens: [NFTWithLazyPrice] = []
   
-  enum LoadingState {
-    case notLoaded
-    case loading
-    case loaded
-  }
-  @Published var state : LoadingState = .notLoaded
+  @Published var tokens: [NFTWithLazyPrice]
+  @Published var isLoading : Bool
+  private var pendingCount = 0
   
   let ownerAddress : EthereumAddress
   private let contracts : [ContractInterface]
   
-  private var pendingCount = 0
-  
   init(ownerAddress:EthereumAddress) {
+    tokens = []
+    isLoading = false
     self.ownerAddress = ownerAddress
     self.contracts = [cryptoPunksContract,cryptoKittiesContract,asciiPunksContract]
   }
   
   func load() {
-    print("Load state=\(state)")
-    if (state != .notLoaded) { return }
-    state = .loading
+    if (isLoading == true) { return }
+    isLoading = true
+    pendingCount = contracts.count
+    self.tokens = []
     
     contracts.forEach { contract in
       contract.getOwnerTokens(
@@ -247,13 +244,20 @@ class NftOwnerTokens : ObservableObject {
         
         onDone: {
           DispatchQueue.main.async {
-            print("Done state=\(self.state)")
-            self.state = .loaded
+            print(self.pendingCount)
+            print(self.isLoading)
+            self.pendingCount -= 1
+            //self.isLoading = false
+            if (self.pendingCount == 0) { self.isLoading = false }
+            print(self.pendingCount)
+            print(self.isLoading)
+            print(self.tokens.count)
           }
         }
       ) { token in
         DispatchQueue.main.async {
           self.tokens.append(token)
+          print(self.tokens)
         }
       }
     }
