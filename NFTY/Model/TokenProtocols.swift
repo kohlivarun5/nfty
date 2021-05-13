@@ -43,7 +43,7 @@ class NftRecentTradesObject : ObservableObject {
       onDone:{
         self.isLoading = false;
         callback();
-    }) { nft in
+      }) { nft in
       DispatchQueue.main.async {
         self.recentTrades.append(nft)
         self.parentOnTrade(nft)
@@ -221,7 +221,7 @@ class NftOwnerTokens : ObservableObject {
   
   enum LoadingState {
     case notLoaded
-    case loading(Int)
+    case loading
     case loaded
   }
   @Published var state : LoadingState = .notLoaded
@@ -237,38 +237,25 @@ class NftOwnerTokens : ObservableObject {
   }
   
   func load() {
-    switch state {
-    case .loading,.loaded:
-      return
-    case .notLoaded:
+    print("Load state=\(state)")
+    if (state != .notLoaded) { return }
+    state = .loading
     
-      state = .loading(contracts.count)
-      
-      contracts.forEach { contract in
-        contract.getOwnerTokens(
-          address:ownerAddress,
-                                
-          onDone: {
-            DispatchQueue.main.async {
-              print(self.state)
-              switch(self.state) {
-              case .loading(let pending):
-                self.state = .loading(pending - 1)
-                if (self.tokens.count > 0 || (0 == (pending - 1))) {
-                  self.state = .loaded
-                }
-              default:
-                break
-              }
-            }
-          }
-        ) { token in
+    contracts.forEach { contract in
+      contract.getOwnerTokens(
+        address:ownerAddress,
+        
+        onDone: {
           DispatchQueue.main.async {
-            self.tokens.append(token)
+            print("Done state=\(self.state)")
+            self.state = .loaded
           }
+        }
+      ) { token in
+        DispatchQueue.main.async {
+          self.tokens.append(token)
         }
       }
     }
   }
-  
 }

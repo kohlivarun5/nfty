@@ -7,6 +7,22 @@
 
 import SwiftUI
 import BigInt
+import Web3
+
+struct UserProfileView : View {
+  
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  
+  let address : EthereumAddress
+  
+  var body : some View {
+    WalletTokensView(tokens: NftOwnerTokens(ownerAddress:address))
+      .navigationBarTitle("User Profile")
+      .navigationBarBackButtonHidden(true)
+      .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+  }
+  
+}
 
 struct TokenPriceEventKnown : View {
   let info : NFTPriceInfo
@@ -17,20 +33,20 @@ struct TokenPriceEventKnown : View {
       switch(info.type) {
       case .offer(let info):
         VStack {
-          NavigationLink(destination: WalletTokensView(tokens: NftOwnerTokens(ownerAddress: info.from))) {
-            Image(systemName: "person.crop.square.fill.and.at.rectangle")
+          NavigationLink(destination: UserProfileView(address: info.from)) {
+            Image(systemName: "person.crop.circle")
           }
         }
       case .bought(let info):
         VStack {
-          NavigationLink(destination: WalletTokensView(tokens: NftOwnerTokens(ownerAddress: info.to))) {
-            Image(systemName: "person.crop.square.fill.and.at.rectangle")
+          NavigationLink(destination: UserProfileView(address: info.to)) {
+            Image(systemName: "person.crop.circle")
           }
         }
       case .transfer(let info):
         VStack {
-          NavigationLink(destination: WalletTokensView(tokens: NftOwnerTokens(ownerAddress: info.to))) {
-            Image(systemName: "person.crop.square.fill.and.at.rectangle")
+          NavigationLink(destination: UserProfileView(address: info.to)) {
+            Image(systemName: "person.crop.circle")
           }
         }
       }
