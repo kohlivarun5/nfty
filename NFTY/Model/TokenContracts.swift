@@ -419,20 +419,16 @@ class CryptoPunksContract : ContractInterface {
   
   private func getOwnerTokensFromOpenSea(address:EthereumAddress) -> Promise<[UInt]> {
     return Promise { seal in
-      print("https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")
       var request = URLRequest(url: URL(string: "https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")!)
       request.httpMethod = "GET"
       
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
-          print(String(decoding: data!, as: UTF8.self))
           let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
-          print(assets.assets.count)
           seal.fulfill(assets.assets.map { UInt($0.token_id)! })
         } catch {
-          data.map { print(String(decoding: $0, as: UTF8.self)) }
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) })")
           seal.fulfill([])
         }
       }).resume()
@@ -535,7 +531,7 @@ class CryptoKittiesAuction : ContractInterface {
           let kitties = try jsonDecoder.decode(KittiesByWallet.self, from: data!)
           seal.fulfill(kitties)
         } catch {
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) })")
           seal.fulfill(KittiesByWallet(kitties: []))
         }
       }).resume()
@@ -557,7 +553,8 @@ class CryptoKittiesAuction : ContractInterface {
           let kittyInfo = try jsonDecoder.decode(Kitty.self, from: data!)
           seal.fulfill(kittyInfo)
         } catch {
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) })")
+          seal.reject(error)
         }
       }).resume()
     }
@@ -860,7 +857,10 @@ class AsciiPunksContract : ContractInterface {
         when(fulfilled:events)
           .done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
-          }.catch { print ($0) }
+          }.catch {
+            print ($0)
+            seal.fulfill([])
+          }
       }) { log in
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought))
       }
@@ -948,7 +948,10 @@ class AsciiPunksContract : ContractInterface {
         }
       }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
         onDone()
-      }.catch { print ($0) }
+      }.catch {
+        print ($0)
+        onDone()
+      }
   }
   
 }
@@ -1001,7 +1004,7 @@ class UserEthRate {
             let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
             seal.fulfill(Double(response.data.amount))
           } catch {
-            print("JSON Serialization error:\(error)")
+            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) })")
             seal.fulfill(nil)
           }
         }).resume()
