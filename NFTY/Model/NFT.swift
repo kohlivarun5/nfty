@@ -205,7 +205,7 @@ let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
-let hashMasksContract = Erc721Contract(address: "0xC2C747E0F7004F9E8817Db2ca4997657a7746928")
+let autoGlyphsContract = Erc721Contract(address: "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -260,21 +260,21 @@ let CompositeCollection = CompositeRecentTradesObject([
     contract:asciiPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
-      address:hashMasksContract.contractAddressHex,
+      address:autoGlyphsContract.contractAddressHex,
       url1:SAMPLE_PUNKS[0],
       url2:SAMPLE_PUNKS[1],
       url3:SAMPLE_PUNKS[2],
       url4:SAMPLE_PUNKS[3],
-      name:"Hashmasks",
-      webLink: URL(string:"https://www.thehashmasks.com")!,
-      themeColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
-      themeLabelColor:Color.systemBackground,
-      subThemeColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
-      collectionColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
+      name:"Autoglyphs",
+      webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
+      themeColor:.white,
+      themeLabelColor:.black,
+      subThemeColor:.gray,
+      collectionColor:.white,
       blur:0,
       samplePadding:10,
       similarTokens: { tokenId in nil }),
-    contract:hashMasksContract),
+    contract:autoGlyphsContract),
 ]
 )
 
