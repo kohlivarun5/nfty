@@ -16,7 +16,7 @@ func getDocumentsDirectory() -> URL {
   return paths[0]
 }
 
-let collectionName = "CryptoPunks"
+let collectionName = "AsciiPunks"
 //let totalSupply = 10000
 
 struct TokenDistance: Codable {
@@ -29,9 +29,9 @@ func load<T:Decodable>(_ name:String) -> T {
   let filename = getDocumentsDirectory()
     .appendingPathComponent("../")
     .appendingPathComponent("Github")
-    //.appendingPathComponent("NFTY")
-    //.appendingPathComponent("NFTY")
-    //.appendingPathComponent("Resources")
+    .appendingPathComponent("NFTY")
+    .appendingPathComponent("NFTY")
+    .appendingPathComponent("Resources")
     .appendingPathComponent("\(collectionName)Distances\(isFull ? "" : "_small").json")
   
   let data = try! Data(contentsOf: filename)
