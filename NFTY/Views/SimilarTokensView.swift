@@ -33,6 +33,7 @@ struct SimilarTokensView: View {
                 samples:samples,
                 themeColor:info.subThemeColor,
                 themeLabelColor:info.themeLabelColor,
+                rarityRank: info.rarityRank,
                 width: .narrow
               )
               //.scaleEffect(0.9)

@@ -73,6 +73,7 @@ struct CollectionView: View {
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
+              rarityRank: info.rarityRank,
               width: .normal
             )
             .padding()

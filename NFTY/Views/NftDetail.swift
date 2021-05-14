@@ -21,7 +21,6 @@ struct NftDetail: View {
   var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
   var rarityRank : RarityRankGetter
-  
   @State var rank : UInt? = nil
   
   @State var tokens : [UInt]? = nil
