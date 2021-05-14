@@ -20,6 +20,9 @@ struct NftDetail: View {
   var themeColor : Color
   var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
+  var rarityRank : RarityRankGetter
+  
+  @State var rarityRank : UInt? = nil
   
   @State var tokens : [UInt]? = nil
   
@@ -46,6 +49,11 @@ struct NftDetail: View {
             .font(.headline)
           Text("#\(nft.tokenId)")
             .font(.subheadline)
+          rarityRank.map {
+            Text("RarityRank: \($0)")
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
+          }
         }
         Spacer()
         TokenPrice(price:price,color:.label)
@@ -64,6 +72,7 @@ struct NftDetail: View {
     .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .ignoresSafeArea(edges: .top)
     .onAppear {
+      self.rarityRank = rarityRank(nft.tokenId)
       Promise.value(similarTokens(nft.tokenId))
         .done(on:.main) { tokens in
           self.tokens = tokens
