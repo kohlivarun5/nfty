@@ -205,6 +205,7 @@ let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
+let hashMasksContract = Erc721Contract(address: "0xC2C747E0F7004F9E8817Db2ca4997657a7746928")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -256,7 +257,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
-    contract:asciiPunksContract)
+    contract:asciiPunksContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:hashMasksContract.contractAddressHex,
+      url1:SAMPLE_PUNKS[0],
+      url2:SAMPLE_PUNKS[1],
+      url3:SAMPLE_PUNKS[2],
+      url4:SAMPLE_PUNKS[3],
+      name:"Hashmasks",
+      webLink: URL(string:"https://www.thehashmasks.com")!,
+      themeColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
+      themeLabelColor:Color.systemBackground,
+      subThemeColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
+      collectionColor:Color.init(hue: 1, saturation: 1, brightness: 1, opacity:0),
+      blur:0,
+      samplePadding:10,
+      similarTokens: { tokenId in nil }),
+    contract:hashMasksContract),
 ]
 )
 

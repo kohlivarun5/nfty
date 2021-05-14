@@ -94,6 +94,7 @@ class Erc721Contract : ContractInterface {
   }
   
   private func getUriData(_ tokenURI:String) -> Promise<ERC721MetaData?> {
+    print(tokenURI)
     return Promise { seal in
       var request = URLRequest(url: URL(string:tokenURI)!)
       request.httpMethod = "GET"
@@ -101,16 +102,19 @@ class Erc721Contract : ContractInterface {
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
+          print("json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           let metadata = try jsonDecoder.decode(ERC721MetaData.self, from: data!)
           seal.fulfill(metadata)
         } catch {
-          print("JSON Serialization error:\(error)")
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.fulfill(nil)
         }
       }).resume()
     }
   }
   
   private func getMediaImage(_ tokenId:BigUInt) -> MediaImageLazy {
+    print(tokenId)
     return MediaImageLazy(get: {
       switch (self.imagesCache[tokenId]) {
       case .some(let p):
@@ -159,6 +163,7 @@ class Erc721Contract : ContractInterface {
         let tokenId = UInt(res["tokenId"] as! BigUInt);
         
         let onPrice = { (indicativePriceWei:BigUInt?) in
+          print(tokenId)
           response(NFTWithPrice(
             nft:NFT(
               address:self.contractAddressHex,
