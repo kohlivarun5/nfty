@@ -52,11 +52,13 @@ struct FavoritesView: View {
         }
         
         if (isFav) {
-          collectionsFactory.getByAddress(address)!.data.contract.getToken(UInt(tokenId)!)
-            .done(on:.main) { nft in
-              self.favorites[address]!.updateValue(nft,forKey:tokenId)
-              self.isLoading = false // **** Update isLoading when we add to the list
-            }.catch { print($0) }
+          collectionsFactory.getByAddress(address).map {
+            $0.data.contract.getToken(UInt(tokenId)!)
+              .done(on:.main) { nft in
+                self.favorites[address]!.updateValue(nft,forKey:tokenId)
+                self.isLoading = false // **** Update isLoading when we add to the list
+              }.catch { print($0) }
+          }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
           self.isLoading = false // **** Update isLoading when we add to the list
