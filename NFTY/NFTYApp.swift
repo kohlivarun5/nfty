@@ -26,6 +26,16 @@ struct NFTYApp: App {
       TabView {
         
         NavigationView {
+          WalletView()
+            .navigationBarTitle("Wallet",displayMode: .inline)
+        }
+        .tabItem {
+          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
+        
+        NavigationView {
           FeedView(trades:CompositeCollection)
             .navigationBarTitle("Recent")
         }
@@ -51,16 +61,6 @@ struct NFTYApp: App {
         }
         .tabItem {
           Label("Favorites",systemImage:"heart.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
-        NavigationView {
-          WalletView()
-            .navigationBarTitle("Wallet",displayMode: .inline)
-        }
-        .tabItem {
-          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)

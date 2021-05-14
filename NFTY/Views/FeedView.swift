@@ -85,10 +85,10 @@ struct FeedView: View {
         ScrollView {
           LazyVStack {
             let sampleInfos = [
-              CompositeCollection.punks.info,
-              CompositeCollection.punks.info,
-              CompositeCollection.punks.info,
-              CompositeCollection.punks.info
+              CompositeCollection.collections[0].info,
+              CompositeCollection.collections[1].info,
+              CompositeCollection.collections[2].info,
+              CompositeCollection.collections[0].info
             ]
             
             ForEach(sampleInfos.indices,id:\.self) { index in

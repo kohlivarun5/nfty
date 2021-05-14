@@ -92,8 +92,6 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   var collections : [Collection]
-  var kitties : Collection
-  var ascii : Collection
   
   private var pendingCounter = 0
   private var pendingCounterLatest = 0

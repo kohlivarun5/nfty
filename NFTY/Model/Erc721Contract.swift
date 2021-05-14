@@ -76,6 +76,17 @@ class Erc721Contract : ContractInterface {
           return outputs["tokenURI"] as! String
         }
     }
+    
+    func ownerOf(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
+      let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["address"] as! EthereumAddress
+        }
+    }
   }
   
   struct ERC721MetaData : Decodable {
@@ -315,6 +326,10 @@ class Erc721Contract : ContractInterface {
       print($0);
       onDone()
     }
+  }
+  
+  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    return ethContract.ownerOf(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
 }

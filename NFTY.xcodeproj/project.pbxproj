@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2A9887264DF571003C2613 /* OwnerProfileLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2A9886264DF571003C2613 /* OwnerProfileLinkButton.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
@@ -105,6 +106,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F2A9886264DF571003C2613 /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OwnerProfileLinkButton.swift; path = NFTY/Views/OwnerProfileLinkButton.swift; sourceTree = SOURCE_ROOT; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
@@ -327,6 +329,7 @@
 				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
 				4F6D3974262BE4F3007E79BB /* NftImage.swift */,
 				4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */,
+				4F2A9886264DF571003C2613 /* OwnerProfileLinkButton.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
@@ -630,6 +633,7 @@
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
+				4F2A9887264DF571003C2613 /* OwnerProfileLinkButton.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
