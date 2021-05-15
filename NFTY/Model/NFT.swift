@@ -306,7 +306,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       name:"Autoglyphs",
       webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
       themeColor:Color.label,
-      themeLabelColor:Color.systemBackground,
+      themeLabelColor:Color.gray,
       subThemeColor:Color.label,
       collectionColor:Color.white,
       disableRecentTrades:false,
