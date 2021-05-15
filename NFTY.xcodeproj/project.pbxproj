@@ -14,6 +14,7 @@
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F468F682645FECB00CA6525 /* AddFavSheet.swift */; };
 		4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 4F468F6B2646D63E00CA6525 /* Introspect */; };
+		4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C6981264F6483005B9A23 /* AutoglyphView.swift */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
 		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
 		4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E52648BB17007C8002 /* WalletView.swift */; };
@@ -54,6 +55,7 @@
 		4FBF8AF2264E004700569DCA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF1264E004700569DCA /* main.swift */; };
 		4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
 		4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
+		4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
 		4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
 		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
 		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
@@ -124,6 +126,7 @@
 		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
+		4F4C6981264F6483005B9A23 /* AutoglyphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoglyphView.swift; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
 		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		4F55A8E52648BB17007C8002 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		4FBF8AF1264E004700569DCA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
+		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -339,6 +343,7 @@
 			children = (
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
+				4F4C6981264F6483005B9A23 /* AutoglyphView.swift */,
 				4F4CA8052635D813001534A6 /* BackButton.swift */,
 				4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */,
 				4FB9A7DE262B307C00C58AF9 /* CircleImage.swift */,
@@ -371,6 +376,7 @@
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
 				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
+				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -676,10 +682,12 @@
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
+				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
+				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,

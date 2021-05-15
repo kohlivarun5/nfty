@@ -81,14 +81,14 @@ enum Media {
       self.draw = draw
     }
     
-    var ascii : ObservablePromise<Autoglyph?> {
+    var autoglyph : ObservablePromise<Autoglyph?> {
       self.draw(self.tokenId)
     }
   }
   
   case image(MediaImage)
   case asciiPunk(AsciiPunkLazy)
-  case asciiPunk(AutoglyphLazy)
+  case autoglyph(AutoglyphLazy)
 }
 
 struct NFT: Identifiable {
@@ -169,6 +169,7 @@ struct CollectionInfo {
   let themeLabelColor:Color
   let subThemeColor:Color
   let collectionColor:Color
+  let disableRecentTrades : Bool
   let blur:CGFloat
   let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter
@@ -229,9 +230,10 @@ let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
+let autoGlyphsContract = AutoglyphsContract()
 
-let CompositeCollection = CompositeRecentTradesObject(
-  punks:CompositeRecentTradesObject.CollectionInitializer(
+let CompositeCollection = CompositeRecentTradesObject([
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoPunksContract.contractAddressHex,
       url1:SAMPLE_PUNKS[0],
@@ -244,12 +246,13 @@ let CompositeCollection = CompositeRecentTradesObject(
       themeLabelColor:Color.systemBackground,
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
+      disableRecentTrades:false,
       blur:0,
       samplePadding:10,
       similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:cryptoPunksContract),
-  kitties:CompositeRecentTradesObject.CollectionInitializer(
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
       url1:SAMPLE_KITTIES[0],
@@ -262,11 +265,12 @@ let CompositeCollection = CompositeRecentTradesObject(
       themeLabelColor:Color.systemBackground,
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+      disableRecentTrades:true,
       blur:0,samplePadding:0,
       similarTokens: { tokenId in nil },
       rarityRank : { tokenId in nil }),
     contract:cryptoKittiesContract),
-  ascii:CompositeRecentTradesObject.CollectionInitializer(
+  CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:asciiPunksContract.contractAddressHex,
       url1:SAMPLE_ASCII_PUNKS[0],
@@ -279,11 +283,32 @@ let CompositeCollection = CompositeRecentTradesObject(
       themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
       collectionColor:Color.black,
+      disableRecentTrades:false,
       blur:0,
       samplePadding:10,
       similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
-    contract:asciiPunksContract)
+    contract:asciiPunksContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:autoGlyphsContract.contractAddressHex,
+      url1:SAMPLE_PUNKS[0],
+      url2:SAMPLE_PUNKS[1],
+      url3:SAMPLE_PUNKS[2],
+      url4:SAMPLE_PUNKS[3],
+      name:"Autoglyphs",
+      webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
+      themeColor:Color.label,
+      themeLabelColor:Color.systemBackground,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:10,
+      similarTokens: { tokenId in nil },
+      rarityRank : { tokenId in nil }),
+    contract:autoGlyphsContract),
+]
 )
 
 let SampleToken = NFT(
@@ -291,7 +316,7 @@ let SampleToken = NFT(
   tokenId: 340, name: "CryptoPunks",
   media: .image(MediaImageEager(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!)))
 
-let SampleCollection = CompositeCollection.punks
+let SampleCollection = CompositeCollection.collections[0]
 
 
 public extension Color {
@@ -310,19 +335,11 @@ public extension Color {
   // There are more..
 }
 
-let COLLECTIONS: [Collection]=[
-  CompositeCollection.punks,
-  CompositeCollection.kitties,
-  CompositeCollection.ascii
-]
+let COLLECTIONS : [Collection] = CompositeCollection.collections
 
 struct CollectionsFactory {
   
-  let collections : [String : Collection] = [
-    CompositeCollection.punks.info.address:CompositeCollection.punks,
-    CompositeCollection.kitties.info.address:CompositeCollection.kitties,
-    CompositeCollection.ascii.info.address:CompositeCollection.ascii,
-  ]
+  let collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
   
   func getByAddress(_ address:String) -> Collection? {
     return collections[address]
@@ -349,11 +366,16 @@ extension String {
   func trunc(length: Int, trailing: String = "…") -> String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }
+  
+  func deletingPrefix(_ prefix: String) -> String {
+    guard self.hasPrefix(prefix) else { return self }
+    return String(self.dropFirst(prefix.count))
+  }
 }
 
 let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
-    hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
-    eip55:false)
+  hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
+  eip55:false)
 
 enum UserDefaultsKeys : String {
   case walletAddress = "walletAddress"

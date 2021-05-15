@@ -113,6 +113,19 @@ struct NftImage: View {
     }
   }
   
+  private func autoglyphFont(_ size:Size) -> CGFloat {
+    switch (size) {
+    case .small:
+      return 3
+    case .medium:
+      return 3.5
+    case .normal:
+      return 4
+    case .large:
+      return 7
+    }
+  }
+  
   var body: some View {
     ZStack {
       switch(nft.media){
@@ -120,6 +133,8 @@ struct NftImage: View {
         NftImageImpl(url:image.url,samples:samples,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
         AsciiPunkView(asciiPunk:asciiPunk.ascii,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
+      case .autoglyph(let autoglyph):
+        AutoglyphView(autoglyph:autoglyph.autoglyph,samples:samples,themeColor:themeColor,fontSize:autoglyphFont(size))
       }
       //.padding()
       HStack {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import URLImage
 
 struct AsciiText : View {
   let ascii : Media.AsciiPunk?
@@ -55,6 +54,7 @@ struct AsciiPunkView: View {
     .background(themeColor)
   }
 }
+
 struct AsciiPunkView_Previews: PreviewProvider {
   static var previews: some View {
     AsciiPunkView(asciiPunk:
