@@ -101,6 +101,7 @@ struct WalletTokensView: View {
                     samples:samples,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
+                    rarityRank: info.rarityRank,
                     width: .normal
                   )
                   .padding()
@@ -114,7 +115,8 @@ struct WalletTokensView: View {
                     samples:samples,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
-                    similarTokens:info.similarTokens
+                    similarTokens:info.similarTokens,
+                    rarityRank:info.rarityRank
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()
                 }

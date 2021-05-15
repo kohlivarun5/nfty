@@ -137,6 +137,7 @@ enum TokenPriceType {
 }
 
 typealias SimilarTokensGetter = (UInt) -> [UInt]?
+typealias RarityRankGetter = (UInt) -> UInt?
 struct CollectionInfo {
   let address: String
   let url1: String
@@ -152,6 +153,7 @@ struct CollectionInfo {
   let blur:CGFloat
   let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter
+  let rarityRank : RarityRankGetter
 }
 
 struct CollectionData : HasContractInterface {
@@ -200,7 +202,10 @@ let SAMPLE_ASCII_PUNKS : [String] = [
 ]
 
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
+let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
+
 let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
+let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
@@ -222,7 +227,8 @@ let CompositeCollection = CompositeRecentTradesObject(
       collectionColor:Color.yellow,
       blur:0,
       samplePadding:10,
-      similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] }),
+      similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
+      rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:cryptoPunksContract),
   kitties:CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -238,7 +244,8 @@ let CompositeCollection = CompositeRecentTradesObject(
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       blur:0,samplePadding:0,
-      similarTokens: { tokenId in nil }),
+      similarTokens: { tokenId in nil },
+      rarityRank : { tokenId in nil }),
     contract:cryptoKittiesContract),
   ascii:CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -255,7 +262,8 @@ let CompositeCollection = CompositeRecentTradesObject(
       collectionColor:Color.black,
       blur:0,
       samplePadding:10,
-      similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] }),
+      similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
+      rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:asciiPunksContract)
 )
 

@@ -51,6 +51,7 @@ class TxFetcher {
   }
   
   private var txCache : [EthereumData:Promise<TxInfo?>] = [:]
+  private var accessLock = NSLock()
   
   private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
     web3.eth.getTransactionByHash(blockHash:transactionHash)
@@ -72,14 +73,15 @@ class TxFetcher {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
+      accessLock.lock()
       switch txCache[txHash] {
       case .some(let p):
+        accessLock.unlock()
         return p
       case .none:
         let p = eventOfTx(transactionHash: txHash)
-        DispatchQueue.main.async {
-          self.txCache[txHash] = p
-        }
+        self.txCache[txHash] = p
+        accessLock.unlock()
         return p
       }
     }
@@ -291,7 +293,7 @@ class CryptoPunksContract : ContractInterface {
                 blockNumber: log.blockNumber?.quantity)
           ))
         }
-        
+                 
         self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
           .done(on:DispatchQueue.global(qos:.userInteractive)) {
             onPrice($0?.value)
