@@ -33,7 +33,6 @@
 		4F856BB02631117300BB5E07 /* CryptoPunksAbi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BAF2631117300BB5E07 /* CryptoPunksAbi.json */; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
-		4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4FA02CCE265046D600B0B9C5 /* TestUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02CCD265046D600B0B9C5 /* TestUIApp.swift */; };
@@ -222,7 +221,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F856BDC2632B43B00BB5E07 /* FirebaseDatabase in Frameworks */,
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
@@ -534,7 +532,6 @@
 				4FC744722630FD7D0060FC6D /* Web3PromiseKit */,
 				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
 				4FC744762630FD7D0060FC6D /* Web3 */,
-				4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */,
 				4F468F6B2646D63E00CA6525 /* Introspect */,
 			);
 			productName = NFTY;
@@ -1075,6 +1072,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1100,6 +1098,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1344,11 +1343,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		4F856BDB2632B43B00BB5E07 /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
 		};
 		4FB9A808262B451F00C58AF9 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
