@@ -9,6 +9,113 @@ import SwiftUI
 
 let glyphPrefix = "data:text/plain;charset=utf-8,"
 
+struct AutoGlyph: View {
+  let utf8 : String
+  var body: some View {
+    GeometryReader { geometry in
+      Path { path in
+        var width: CGFloat = min(geometry.size.width, geometry.size.height)
+        let height = width
+        path.move(
+          to: CGPoint(
+            x: width * 0.95,
+            y: height * (0.20 + HexagonParameters.adjustment)
+          )
+        )
+        
+        HexagonParameters.segments.forEach { segment in
+          path.addLine(
+            to: CGPoint(
+              x: width * segment.line.x,
+              y: height * segment.line.y
+            )
+          )
+          
+          path.addQuadCurve(
+            to: CGPoint(
+              x: width * segment.curve.x,
+              y: height * segment.curve.y
+            ),
+            control: CGPoint(
+              x: width * segment.control.x,
+              y: height * segment.control.y
+            )
+          )
+        }
+      }
+      .fill(Color.black)
+    }
+  }
+}
+
+struct AutoGlyphGeaometry: View {
+  private let cells = 64.0
+  private let cellPixels = 10.0
+  
+  let utf8 : String
+  var body: some View {
+    GeometryReader { geometry in
+      Path { path in
+        let width: CGFloat = min(geometry.size.width, geometry.size.height)
+        let height = width
+        let pixel = Double(width.remainder(dividingBy: (CGFloat(cells * cellPixels))))
+        
+        let strings = utf8.split(separator: "\n")
+        strings.enumerated().forEach { (rowIndex,str) in
+          
+          let rowMinY = rowIndex * cellPixels * pixel
+          
+          str.enumerated().forEach { (charIndex,char) in
+            
+            let cellMinX = CGFloat(charIndex * cellPixels * pixel)
+            
+            switch char {
+            
+            /*
+            * The output of the 'tokenURI' function is a set of instructions to make a drawing.
+            * Each symbol in the output corresponds to a cell, and there are 64x64 cells arranged in a square grid.
+            * The drawing can be any size, and the pen's stroke width should be between 1/5th to 1/10th the size of a cell.
+            * The drawing instructions for the nine different symbols are as follows:
+            *
+            *   .  Draw nothing in the cell.
+            *   O  Draw a circle bounded by the cell.
+            *   +  Draw centered lines vertically and horizontally the length of the cell.
+            *   X  Draw diagonal lines connecting opposite corners of the cell.
+            *   |  Draw a centered vertical line the length of the cell.
+            *   -  Draw a centered horizontal line the length of the cell.
+            *   \  Draw a line connecting the top left corner of the cell to the bottom right corner.
+            *   /  Draw a line connecting the bottom left corner of teh cell to the top right corner.
+            *   #  Fill in the cell completely.
+            */
+            
+            case "O":
+              path.addArc(center: CGPoint(x: cellMinX + (pixel * cellPixels/2), y: rowMinY * (pixel * cellPixels/2), radius: (pixel * cellPixels/2), startAngle: 0, endAngle: 360)
+            case "+":
+              path.move(to: CGPoint(x: cellMinX + (pixel * cellPixels/2),y: cellMinY))
+              path.addLine(to: CGPoint(x: cellMinX + (pixel * cellPixels/2), y: cellMinY + (pixel * cellPixels))
+              
+              path.move(to: CGPoint(x: cellMinX,y: cellMinY + (pixel * cellPixels/2)))
+              path.addLine(to: CGPoint(x: cellMinX + (pixel * cellPixels), y: cellMinY + (pixel * cellPixels/2)))
+              
+            case "+":
+              path.move(to: CGPoint(x: cellMinX + (pixel * cellPixels/2),y: cellMinY))
+              path.addLine(to: CGPoint(x: cellMinX + (pixel * cellPixels/2), y: cellMinY + (pixel * cellPixels))
+                           
+                           path.move(to: CGPoint(x: cellMinX,y: cellMinY + (pixel * cellPixels/2)))
+                           path.addLine(to: CGPoint(x: cellMinX + (pixel * cellPixels), y: cellMinY + (pixel * cellPixels/2)))
+              
+            case ".":
+              break
+            default:
+              break
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 struct AutoglyphText : View {
   let autoglyph : Media.Autoglyph?
   var fontSize : CGFloat
@@ -21,14 +128,15 @@ struct AutoglyphText : View {
         .foregroundColor(Color.systemBackground)
         .padding()
     case .some(let text):
-      Text(text.utf8
-            .deletingPrefix(glyphPrefix)
-            .replacingOccurrences(of: "%0A", with: "\n")
-            .replacingOccurrences(of: ".", with: " "))
-            //.split(separator:"\n"))
-        .font(.system(size:fontSize, design: .monospaced))
-        .foregroundColor(Color.systemBackground)
-        .padding()
+      AutoGlyphGeaometry(
+      utf8:
+        text.utf8
+          .deletingPrefix(glyphPrefix)
+          .replacingOccurrences(of: "%0A", with: "\n")
+          .replacingOccurrences(of: ".", with: " ")
+          .split(separator:"\n"))
+      .foregroundColor(Color.systemBackground)
+      .padding()
     }
   }
 }
