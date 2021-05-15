@@ -116,13 +116,13 @@ struct NftImage: View {
   private func autoglyphFont(_ size:Size) -> CGFloat {
     switch (size) {
     case .small:
-      return 3
+      return 2
     case .medium:
-      return 3.5
+      return 2.5
     case .normal:
-      return 4
+      return 3
     case .large:
-      return 7
+      return 5
     }
   }
   

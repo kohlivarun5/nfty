@@ -105,11 +105,15 @@ class CompositeRecentTradesObject : ObservableObject {
         data:CollectionData(
           recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
             DispatchQueue.main.async {
-              selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+              if (!initializer.info.disableRecentTrades) {
+                selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+              }
             }
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
-              selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),at:0)
+              if (!initializer.info.disableRecentTrades) {
+                selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),at:0)
+              }
             }
           }),
           contract:initializer.contract))
@@ -122,14 +126,15 @@ class CompositeRecentTradesObject : ObservableObject {
       return
     }
     
-    pendingCounter = self.collections.count
-    
+    pendingCounter = 0
     self.collections.forEach { collection in
-      if (collection.info.disableRecentTrades) { return }
-      collection.data.recentTrades.loadMore() {
-        DispatchQueue.main.async {
-          self.pendingCounter-=1
-          if (self.pendingCounter == 0) { onDone() }
+      if (!collection.info.disableRecentTrades) {
+        pendingCounter += 1
+        collection.data.recentTrades.loadMore() {
+          DispatchQueue.main.async {
+            self.pendingCounter-=1
+            if (self.pendingCounter == 0) { onDone() }
+          }
         }
       }
     }
@@ -152,14 +157,15 @@ class CompositeRecentTradesObject : ObservableObject {
       return
     }
     
-    pendingCounterLatest = self.collections.count
-    
+    pendingCounter = 0
     self.collections.forEach { collection in
-      if (collection.info.disableRecentTrades) { return }
-      collection.data.recentTrades.loadLatest() {
-        DispatchQueue.main.async {
-          self.pendingCounterLatest-=1
-          onDone()
+      if (!collection.info.disableRecentTrades) {
+        pendingCounter += 1
+        collection.data.recentTrades.loadLatest() {
+          DispatchQueue.main.async {
+            self.pendingCounterLatest-=1
+            onDone()
+          }
         }
       }
     }
