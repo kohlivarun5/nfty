@@ -16,14 +16,31 @@ struct RoundedImage: View {
   var samples : [String]
   var themeColor : Color
   var themeLabelColor : Color
-  var rarityRank : RarityRankGetter
-  @State var rank : UInt? = nil
+  var rank : UInt?
   
   enum Width {
     case normal
     case narrow
   }
   var width : Width
+  
+  init(nft:NFT,
+       price:TokenPriceType,
+       samples : [String],
+       themeColor : Color,
+       themeLabelColor : Color,
+       rarityRank : RarityRankGetter,
+       width:Width)
+  {
+    
+    self.nft = nft
+    self.price = price
+    self.samples = samples
+    self.themeColor = themeColor
+    self.themeLabelColor = themeLabelColor
+    self.rank = rarityRank(nft.tokenId)
+    self.width = width
+  }
   
   private func frameWidth(_ width:Width) -> CGFloat {
     switch(width) {
@@ -86,10 +103,6 @@ struct RoundedImage: View {
     .overlay(
       RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.gray, lineWidth: 1))
     .shadow(color:Color.primary,radius: 2)
-    .onAppear {
-      self.rank = rarityRank(nft.tokenId)
-    }
-    
   }
 }
 
