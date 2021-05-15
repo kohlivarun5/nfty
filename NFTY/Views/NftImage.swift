@@ -113,16 +113,17 @@ struct NftImage: View {
     }
   }
   
-  private func autoglyphFont(_ size:Size) -> CGFloat {
+  private func autoglyphWidth(_ size:Size) -> CGFloat {
+    // Multiples related to 64
     switch (size) {
     case .small:
-      return 2
+      return 64
     case .medium:
-      return 2.5
+      return 192
     case .normal:
-      return 3
+      return 128
     case .large:
-      return 5
+      return 288
     }
   }
   
@@ -134,7 +135,7 @@ struct NftImage: View {
       case .asciiPunk(let asciiPunk):
         AsciiPunkView(asciiPunk:asciiPunk.ascii,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
       case .autoglyph(let autoglyph):
-        AutoglyphView(autoglyph:autoglyph.autoglyph,samples:samples,themeColor:themeColor,fontSize:autoglyphFont(size))
+        AutoglyphView(autoglyph:autoglyph.autoglyph,samples:samples,themeColor:themeColor,width:autoglyphWidth(size))
       }
       //.padding()
       HStack {
