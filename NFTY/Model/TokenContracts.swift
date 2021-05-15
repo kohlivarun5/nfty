@@ -92,7 +92,7 @@ var txFetcher = TxFetcher()
 
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-var INIT_BLOCK = BigUInt(12400014)
+var INIT_BLOCK = BigUInt(12405014)
 
 protocol ContractInterface {
   
@@ -1024,6 +1024,196 @@ class AsciiPunksContract : ContractInterface {
   }
   
 }
+
+
+class AutoglyphsContract : ContractInterface {
+  
+  private var drawingCache : [BigUInt : ObservablePromise<Media.Autoglyph?>] = [:]
+  private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
+  
+  private var name = "Autoglyph"
+  
+  let contractAddressHex = "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782"
+  
+  class DrawEthContract : EthereumContract {
+    let eth = web3.eth
+    let events : [SolidityEvent] = []
+    var address : EthereumAddress?
+    init(_ addressHex:String) {
+      address = try? EthereumAddress(hex:addressHex, eip55: false)
+    }
+    
+    func draw(_ tokenId:BigUInt) -> Promise<Media.Autoglyph?> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
+      let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return Media.Autoglyph(utf8:outputs["uri"] as! String)
+        }
+    }
+
+  }
+  
+  class GlyphContract : Erc721Contract {
+    
+    let drawContract : DrawEthContract
+    
+    init(contractAddress:String) {
+      self.drawContract = DrawEthContract(contractAddress)
+      super.init(address:contractAddress)
+    }
+  }
+  
+  private var ethContract = GlyphContract(contractAddress:"0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
+  
+  private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.Autoglyph?> {
+    switch(self.drawingCache[tokenId]) {
+    case .some(let p):
+      return p
+    case .none:
+      let p = ethContract.drawContract.draw(tokenId);
+      let observable = ObservablePromise(promise: p)
+      DispatchQueue.main.async {
+        self.drawingCache[tokenId] = observable
+      }
+      return observable
+    }
+  }
+  
+  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    return ethContract.transfer.fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      
+      let onPrice = { (indicativePriceWei:BigUInt?) in
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          indicativePriceWei:NFTPriceInfo(
+            price:priceIfNotZero(indicativePriceWei),
+            blockNumber:log.blockNumber?.quantity)
+        ))
+      };
+      
+      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+        .done(on:DispatchQueue.global(qos:.userInteractive)) {
+          onPrice($0?.value)
+        }.catch { error in
+          print(error);
+          onPrice(nil)
+        }
+    }
+  }
+  
+  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    return ethContract.transfer.updateLatest(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      
+      let onPrice = { (indicativePriceWei:BigUInt?) in
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          indicativePriceWei:NFTPriceInfo(
+            price:priceIfNotZero(indicativePriceWei),
+            blockNumber:log.blockNumber?.quantity)
+        ))
+      };
+      
+      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+        .done(on:DispatchQueue.global(qos:.userInteractive)) {
+          onPrice($0?.value)
+        }.catch { error in
+          print(error);
+          onPrice(nil)
+        }
+    }
+  }
+  
+  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+    
+    Promise.value(
+      NFTWithLazyPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        getPrice: {
+          switch(self.ethContract.pricesCache[tokenId]) {
+          case .some(let p):
+            return p
+          case .none:
+            let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+            let transerFetcher = LogsFetcher(
+              event:self.ethContract.Transfer,
+              fromBlock:self.ethContract.initFromBlock,
+              address:self.contractAddressHex,
+              indexedTopics: [nil,nil,tokenIdTopic])
+            
+            let p =
+              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+                switch(event) {
+                case .trade(let event):
+                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+                case .notSeenSince(let since):
+                  return NFTPriceStatus.notSeenSince(since)
+                }
+              }
+            let observable = ObservablePromise(promise: p)
+            DispatchQueue.main.async {
+              self.ethContract.pricesCache[tokenId] = observable
+            }
+            return observable
+          }
+        }
+      )
+    );
+  }
+  
+  func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    ethContract.ethContract.balanceOf(address:address)
+      .then(on:DispatchQueue.global(qos: .userInteractive)) { tokensNum -> Promise<Void> in
+        if (tokensNum <= 0) {
+          return Promise.value(())
+        } else {
+          return when(
+            fulfilled:
+              Array(0...tokensNum-1).map { index -> Promise<Void> in
+                return
+                  self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                  .then { tokenId in
+                    return self.getToken(UInt(tokenId))
+                  }.done {
+                    response($0)
+                  }
+              }
+          )
+        }
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+        onDone()
+      }.catch {
+        print ($0)
+        onDone()
+      }
+  }
+  
+  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    return ethContract.ownerOf(tokenId)
+  }
+  
+}
+
+
 
 class BlockFetcherImpl {
   private var blocksCache : [EthereumQuantityTag:Promise<EthereumBlockObject?>] = [:]

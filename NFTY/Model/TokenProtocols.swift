@@ -43,7 +43,7 @@ class NftRecentTradesObject : ObservableObject {
       onDone:{
         self.isLoading = false;
         callback();
-    }) { nft in
+      }) { nft in
       DispatchQueue.main.async {
         self.recentTrades.append(nft)
         self.parentOnTrade(nft)
@@ -91,57 +91,33 @@ class CompositeRecentTradesObject : ObservableObject {
     var contract : ContractInterface
   }
   
-  var punks : Collection
-  var kitties : Collection
-  var ascii : Collection
+  var collections : [Collection]
   
   private var pendingCounter = 0
   private var pendingCounterLatest = 0
   
-  init(punks:CollectionInitializer,kitties:CollectionInitializer,ascii:CollectionInitializer) {
+  init(_ collections:[CollectionInitializer]) {
     weak var selfWorkaround: CompositeRecentTradesObject?
     
-    self.punks = Collection(
-      info:punks.info,
-      data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:punks.contract,parentOnTrade: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.punks.info))
-          }
-        },parentOnLatest: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.punks.info),at:0)
-          }
-        }),
-        contract:punks.contract))
-    
-    self.kitties = Collection(
-      info:kitties.info,
-      data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:kitties.contract,parentOnTrade: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.kitties.info))
-          }
-        },parentOnLatest: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.kitties.info),at:0)
-          }
-        }),
-        contract:kitties.contract))
-    
-    self.ascii = Collection(
-      info:ascii.info,
-      data:CollectionData(
-        recentTrades:NftRecentTradesObject(contract:ascii.contract,parentOnTrade: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.ascii.info))
-          }
-        },parentOnLatest: { nft in
-          DispatchQueue.main.async {
-            selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:selfWorkaround!.ascii.info),at:0)
-          }
-        }),
-        contract:ascii.contract))
+    self.collections = collections.map { initializer in
+      return Collection(
+        info:initializer.info,
+        data:CollectionData(
+          recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
+            DispatchQueue.main.async {
+              if (!initializer.info.disableRecentTrades) {
+                selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+              }
+            }
+          },parentOnLatest: { nft in
+            DispatchQueue.main.async {
+              if (!initializer.info.disableRecentTrades) {
+                selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),at:0)
+              }
+            }
+          }),
+          contract:initializer.contract))
+    }
     selfWorkaround = self
   }
   
@@ -150,25 +126,16 @@ class CompositeRecentTradesObject : ObservableObject {
       return
     }
     
-    pendingCounter = 3
-    self.punks.data.recentTrades.loadMore() {
-      DispatchQueue.main.async {
-        self.pendingCounter-=1
-        if (self.pendingCounter == 0) { onDone() }
-      }
-    }
-    
-    self.kitties.data.recentTrades.loadMore() {
-      DispatchQueue.main.async {
-        self.pendingCounter-=1
-        if (self.pendingCounter == 0) { onDone() }
-      }
-    }
-    
-    self.ascii.data.recentTrades.loadMore() {
-      DispatchQueue.main.async {
-        self.pendingCounter-=1
-        if (self.pendingCounter == 0) { onDone() }
+    pendingCounter = 0
+    self.collections.forEach { collection in
+      if (!collection.info.disableRecentTrades) {
+        pendingCounter += 1
+        collection.data.recentTrades.loadMore() {
+          DispatchQueue.main.async {
+            self.pendingCounter-=1
+            if (self.pendingCounter == 0) { onDone() }
+          }
+        }
       }
     }
   }
@@ -190,25 +157,16 @@ class CompositeRecentTradesObject : ObservableObject {
       return
     }
     
-    pendingCounterLatest = 3
-    self.punks.data.recentTrades.loadLatest() {
-      DispatchQueue.main.async {
-        self.pendingCounterLatest-=1
-        onDone()
-      }
-    }
-    
-    self.kitties.data.recentTrades.loadLatest() {
-      DispatchQueue.main.async {
-        self.pendingCounterLatest-=1
-        onDone()
-      }
-    }
-    
-    self.ascii.data.recentTrades.loadLatest() {
-      DispatchQueue.main.async {
-        self.pendingCounterLatest-=1
-        onDone()
+    pendingCounter = 0
+    self.collections.forEach { collection in
+      if (!collection.info.disableRecentTrades) {
+        pendingCounter += 1
+        collection.data.recentTrades.loadLatest() {
+          DispatchQueue.main.async {
+            self.pendingCounterLatest-=1
+            onDone()
+          }
+        }
       }
     }
   }
@@ -233,17 +191,17 @@ class NftOwnerTokens : ObservableObject {
   
   init(ownerAddress:EthereumAddress) {
     self.ownerAddress = ownerAddress
-    self.contracts = [cryptoPunksContract,cryptoKittiesContract,asciiPunksContract]
+    self.contracts = COLLECTIONS.map { $0.data.contract }
   }
   
   func load() {
     if (state != .notLoaded) { return }
-
+    
     state = .loading
     contracts.forEach { contract in
       contract.getOwnerTokens(
         address:ownerAddress,
-                              
+        
         onDone: {
           DispatchQueue.main.async {
             self.state = .loaded

@@ -26,6 +26,9 @@ struct WalletOverview: View {
         }
         Spacer()
         Text(address.hex(eip55:true).trunc(length:30))
+          .onTapGesture(count: 2) {
+            UIPasteboard.general.string = address.hex(eip55:true)
+          }
           .font(.subheadline)
           .foregroundColor(.secondary)
       }
