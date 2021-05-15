@@ -68,8 +68,27 @@ enum Media {
     }
   }
   
+  struct Autoglyph {
+    let utf8 : String
+  }
+  
+  struct AutoglyphLazy {
+    private var tokenId : BigUInt
+    private let draw : (BigUInt) -> ObservablePromise<Autoglyph?>
+    
+    init(tokenId:BigUInt,draw : @escaping (BigUInt) -> ObservablePromise<Autoglyph?>) {
+      self.tokenId = tokenId
+      self.draw = draw
+    }
+    
+    var ascii : ObservablePromise<Autoglyph?> {
+      self.draw(self.tokenId)
+    }
+  }
+  
   case image(MediaImage)
   case asciiPunk(AsciiPunkLazy)
+  case asciiPunk(AutoglyphLazy)
 }
 
 struct NFT: Identifiable {
