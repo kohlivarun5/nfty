@@ -21,22 +21,14 @@ struct AutoglyphText : View {
         .foregroundColor(Color.systemBackground)
         .padding()
     case .some(let text):
-      VStack {
-        let strings = text.utf8
-          .deletingPrefix(glyphPrefix)
-          .replacingOccurrences(of: "%0A", with: "\n")
-          .replacingOccurrences(of: ".", with: " ")
-          .split(separator:"\n")
-        ForEach(strings.indices) { index in
-          let str = strings[index]
-          HStack {
-            let chars = Array(str)
-            ForEach(chars.indices) { Text(String(chars[$0])) } }
-        }
-      }
-      .font(.system(size:fontSize, design: .monospaced))
-      .foregroundColor(Color.systemBackground)
-      .padding()
+      Text(text.utf8
+            .deletingPrefix(glyphPrefix)
+            .replacingOccurrences(of: "%0A", with: "\n")
+            .replacingOccurrences(of: ".", with: " "))
+            //.split(separator:"\n"))
+        .font(.system(size:fontSize, design: .monospaced))
+        .foregroundColor(Color.systemBackground)
+        .padding()
     }
   }
 }
