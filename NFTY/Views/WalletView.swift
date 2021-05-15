@@ -20,9 +20,8 @@ struct WalletView: View {
     VStack {
       switch (address) {
       case .none:
-        Text("Wallet not connected")
-          .font(.title)
-          .foregroundColor(.secondary)
+        ConnectWalletSheet(address: $address)
+        
           .onAppear {
             if let addr = UserDefaults.standard.string(forKey: UserDefaultsKeys.walletAddress.rawValue) {
               self.address = try? EthereumAddress(hex:addr,eip55: false)
@@ -36,7 +35,7 @@ struct WalletView: View {
       Button(action: {
         self.showAddressSheet = true
       }) {
-        Image(systemName:"link.badge.plus")
+        Image(systemName:"at.badge.plus")
       }
     }
     .sheet(isPresented: $showAddressSheet) {
