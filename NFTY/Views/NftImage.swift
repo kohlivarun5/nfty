@@ -114,15 +114,16 @@ struct NftImage: View {
   }
   
   private func autoglyphWidth(_ size:Size) -> CGFloat {
+    // Multiples related to 64
     switch (size) {
     case .small:
-      return 80
+      return 64
     case .medium:
-      return 150
+      return 192
     case .normal:
-      return 150
+      return 128
     case .large:
-      return 300
+      return 288
     }
   }
   

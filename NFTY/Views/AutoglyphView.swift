@@ -125,7 +125,7 @@ struct AutoglyphText : View {
     case .none:
       AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64))
         .stroke(Color.systemBackground)
-        //.frame(width: width, height: width)
+        .frame(width: width, height: width)
         .padding()
     case .some(let text):
       AutoglyphDrawing(utf8:text.utf8)
