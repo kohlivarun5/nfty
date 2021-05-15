@@ -221,6 +221,13 @@ let SAMPLE_ASCII_PUNKS : [String] = [
   "AsciiPunk1307"
 ]
 
+let SAMPLE_AUTOGLYPHS : [String] = [
+  "glyph2",
+  "glyph7",
+  "glyph178",
+  "glyph374"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
@@ -292,16 +299,16 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:autoGlyphsContract.contractAddressHex,
-      url1:SAMPLE_PUNKS[0],
-      url2:SAMPLE_PUNKS[1],
-      url3:SAMPLE_PUNKS[2],
-      url4:SAMPLE_PUNKS[3],
+      url1:SAMPLE_AUTOGLYPHS[0],
+      url2:SAMPLE_AUTOGLYPHS[1],
+      url3:SAMPLE_AUTOGLYPHS[2],
+      url4:SAMPLE_AUTOGLYPHS[3],
       name:"Autoglyphs",
       webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
       themeColor:Color.label,
       themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
-      collectionColor:Color.black,
+      collectionColor:Color.white,
       disableRecentTrades:false,
       blur:0,
       samplePadding:10,
