@@ -103,7 +103,7 @@ struct AddFavSheet: View {
                 VStack {
                   Text(rank.map { "RarityRank: \($0)" } ?? "")
                     .font(.footnote)
-                    .foregroundColor(info.themeLabelColor)
+                    .foregroundColor(Color.gray)
                   Text("")
                     .font(.footnote)
                 }
