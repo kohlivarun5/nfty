@@ -100,6 +100,14 @@ struct AddFavSheet: View {
               .shadow(color:info.themeColor,radius: 2)
             VStack {
               HStack {
+                VStack {
+                  Text(rank.map { "RarityRank: \($0)" } ?? "")
+                    .font(.footnote)
+                    .foregroundColor(info.themeLabelColor)
+                  Text("")
+                    .font(.footnote)
+                }
+                .padding()
                 Spacer()
                 VStack(alignment: .trailing) {
                   TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
@@ -107,19 +115,6 @@ struct AddFavSheet: View {
                 }
               }
               Spacer()
-              HStack {
-                VStack(alignment: .leading) {
-                  Spacer()
-                  rank.map {
-                    Text("RarityRank: \($0)")
-                      .font(.footnote)
-                      .foregroundColor(info.themeLabelColor)
-                  }
-                  .padding()
-                  .animation(.default)
-                }
-                Spacer()
-              }
             }
           }
           .padding()
