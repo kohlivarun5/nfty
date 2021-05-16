@@ -23,8 +23,6 @@ struct AutoglyphDrawing: Shape {
     let width: CGFloat = rect.width
     let pixel : CGFloat = width / (cells * cellPixels)
     
-    let topPadded : CGFloat = 0.0
-    
     return Path { path in
       
       // print(utf8)
@@ -37,7 +35,7 @@ struct AutoglyphDrawing: Shape {
       strings.enumerated().forEach { (rowIndex,str) in
         // print(str)
         
-        let minY = topPadded + (CGFloat(rowIndex) * (cellPixels * pixel))
+        let minY = (CGFloat(rowIndex) * (cellPixels * pixel))
         let midY = minY + (cellHalfPixels * pixel)
         let maxY = minY + (cellPixels * pixel)
         
