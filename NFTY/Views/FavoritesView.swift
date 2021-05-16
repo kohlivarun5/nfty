@@ -135,7 +135,7 @@ struct FavoritesView: View {
       Button(action: {
         self.showAddFavSheet = true
       }) {
-        Image(systemName:"plus.circle.fill")
+        Image(systemName:"magnifyingglass.circle.fill")
       }
     }
     .sheet(isPresented: $showAddFavSheet,onDismiss: {
