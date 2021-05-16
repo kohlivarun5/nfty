@@ -68,7 +68,16 @@ struct NftDetail: View {
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
-    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+    .navigationBarItems(
+      leading:
+        Button(action: {presentationMode.wrappedValue.dismiss()},
+               label: { BackButton() }),
+      trailing:
+        Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+          Image(systemName: "arrow.up.right.square.fill")
+            .foregroundColor(Color(UIColor.darkGray))
+        }
+    )
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank(nft.tokenId)
