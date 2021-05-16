@@ -17,10 +17,12 @@ struct AutoglyphDrawing: Shape {
   private let cellPixels : CGFloat = 20.0
   
   let utf8 : String
+
   func path(in rect: CGRect) -> Path {
     
     let width: CGFloat = rect.width
     let pixel : CGFloat = width / (cells * cellPixels)
+    
     return Path { path in
       
       // print(utf8)
@@ -64,13 +66,14 @@ struct AutoglyphDrawing: Shape {
            */
           
           case "O":
-            path.move(to:CGPoint(x: midX, y: midY))
+            path.move(to:CGPoint(x: maxX, y: midY))
             path.addArc(
               center: CGPoint(x: midX, y: midY),
               radius: cellHalfPixels * pixel,
               startAngle:.degrees(0),
               endAngle:.degrees(360),
-              clockwise: true)
+              clockwise: false)
+            
           case "+":
             path.move(to:CGPoint(x: midX, y: minY))
             path.addLine(to: CGPoint(x:midX,y:maxY))
@@ -143,6 +146,7 @@ struct AutoglyphView: View {
   var samples : [String] // TODO Use
   var themeColor : Color
   var width : CGFloat
+  
   var body: some View {
     VStack {
       ObservedPromiseView(

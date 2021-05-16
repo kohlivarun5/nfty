@@ -41,9 +41,18 @@ struct AddFavSheet: View {
   private var collectionsDict = collectionsFactory.collections
   @State private var collectionAddress : String = ""
   @State private var tokenId : String = ""
+  @State var rank : UInt? = nil
   
   @ObservedObject private var nft : NftWithCollection = NftWithCollection()
   
+  private func onChange() {
+    nft.update(address:collectionAddress,tokenId:UInt(tokenId))
+    UInt(tokenId).map { tokenId in
+      collectionsFactory.getByAddress(collectionAddress).map { collection in
+        self.rank = collection.info.rarityRank(tokenId)
+      }
+    }
+  }
   
   var body: some View {
     VStack {
@@ -60,7 +69,7 @@ struct AddFavSheet: View {
                })
           .pickerStyle(SegmentedPickerStyle())
           .onChange(of: collectionAddress) { tag in
-            nft.update(address:collectionAddress,tokenId:UInt(tokenId))
+            self.onChange()
           }
         
         TextField("Token",text:$tokenId)
@@ -72,7 +81,7 @@ struct AddFavSheet: View {
             textField.becomeFirstResponder()
           }
           .onChange(of: tokenId) { val in
-            nft.update(address:collectionAddress,tokenId:UInt(tokenId))
+            self.onChange()
           }
         
         switch(nft.state) {
@@ -88,8 +97,17 @@ struct AddFavSheet: View {
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:info.themeColor,radius: 2)
-            VStack(alignment: .trailing) {
+            VStack {
               HStack {
+                VStack {
+                  Text(rank.map { "RarityRank: \($0)" } ?? "")
+                    .font(.footnote)
+                    .foregroundColor(Color.gray)
+                  Text("")
+                    .font(.footnote)
+                }
+                .padding()
+                
                 Spacer()
                 TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
                   .padding()

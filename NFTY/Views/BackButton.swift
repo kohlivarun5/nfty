@@ -11,7 +11,7 @@ import SwiftUI
 struct BackButton: View {
     var body: some View {
       HStack {
-        Image(systemName: "chevron.backward")
+        Image(systemName: "chevron.backward.circle.fill")
           .foregroundColor(Color(UIColor.darkGray))
       }
     }
