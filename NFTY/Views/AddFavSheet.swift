@@ -108,11 +108,10 @@ struct AddFavSheet: View {
                     .font(.footnote)
                 }
                 .padding()
+                
                 Spacer()
-                VStack(alignment: .trailing) {
-                  TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
-                    .padding()
-                }
+                TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
+                  .padding()
               }
               Spacer()
             }
