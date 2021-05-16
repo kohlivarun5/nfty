@@ -50,7 +50,6 @@ struct AddFavSheet: View {
     UInt(tokenId).map { tokenId in
       collectionsFactory.getByAddress(collectionAddress).map { collection in
         self.rank = collection.info.rarityRank(tokenId)
-        print(rank)
       }
     }
   }

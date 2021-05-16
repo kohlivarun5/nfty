@@ -17,10 +17,14 @@ struct AutoglyphDrawing: Shape {
   private let cellPixels : CGFloat = 20.0
   
   let utf8 : String
+  let verticalPadding : CGFloat?
   func path(in rect: CGRect) -> Path {
     
     let width: CGFloat = rect.width
     let pixel : CGFloat = width / (cells * cellPixels)
+    
+    let topPadded = verticalPadding.map { $0 / 2 } ?? 0
+    
     return Path { path in
       
       // print(utf8)
@@ -33,7 +37,7 @@ struct AutoglyphDrawing: Shape {
       strings.enumerated().forEach { (rowIndex,str) in
         // print(str)
         
-        let minY = CGFloat(rowIndex) * (cellPixels * pixel)
+        let minY = topPadded + (CGFloat(rowIndex) * (cellPixels * pixel))
         let midY = minY + (cellHalfPixels * pixel)
         let maxY = minY + (cellPixels * pixel)
         
@@ -119,18 +123,19 @@ struct AutoglyphDrawing: Shape {
 struct AutoglyphText : View {
   let autoglyph : Media.Autoglyph?
   let width : CGFloat
+  let verticalPadding : CGFloat?
   
   var body: some View {
     switch(autoglyph) {
     case .none:
-      AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64))
+      AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64),verticalPadding:verticalPadding)
         .stroke(Color.systemBackground)
-        .frame(width: width, height: width)
+        .frame(width: width, height: width + (verticalPadding ?? 0.0))
         .padding()
     case .some(let text):
-      AutoglyphDrawing(utf8:text.utf8)
+      AutoglyphDrawing(utf8:text.utf8,verticalPadding:verticalPadding)
         .stroke(Color.systemBackground)
-        .frame(width: width, height: width)
+        .frame(width: width, height: width + (verticalPadding ?? 0.0))
         .padding()
     }
   }
@@ -143,21 +148,22 @@ struct AutoglyphView: View {
   var samples : [String] // TODO Use
   var themeColor : Color
   var width : CGFloat
+  let verticalPadding : CGFloat?
   var body: some View {
     VStack {
       ObservedPromiseView(
         data:autoglyph,
         progress:
           ZStack {
-            AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64))
+            AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64),verticalPadding:verticalPadding)
               .stroke(Color.systemBackground)
-              .frame(width: width, height: width)
+              .frame(width: width, height: width + (verticalPadding ?? 0.0))
               .padding()
             ProgressView()
               .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
               .scaleEffect(2,anchor: .center)
           }) {
-        AutoglyphText(autoglyph:$0,width: width)
+        AutoglyphText(autoglyph:$0,width: width,verticalPadding:verticalPadding)
           .background(themeColor)
       }
     }
@@ -172,6 +178,7 @@ struct AutoglyphView_Previews: PreviewProvider {
                     ObservablePromise(resolved:Media.Autoglyph(utf8:"data:text/plain;charset=utf-8,.|.|.O..-.-.-.-.-.|.|.|.O.O.O.O..O.O.O.O.|.|.|.-.-.-.-.-..O.|.|.%0A|-.|.O|.O-.|..|.O-.O..|..-.O-.|..|.-O.-..|..O.-O.|..|.-O.|O.|.-|%0A..|-..|-.OO-..|...|..O-..O|..O-..-O..|O..-O..|...|..-OO.-|..-|..%0A||-...OO|....OO--...O|--...||-....-||...--|O...--OO....|OO...-||%0A..........O.OOOOO||-||--.-............-.--||-||OOOOO.O..........%0AOO.......-|||OO.......-|-|OOO......OOO|-|-.......OO|||-.......OO%0A.||O..--O..-||O..-|O..-||...-|O..O|-...||-..O|-..O||-..O--..O||.%0A..-O..-O.-O..|..|..-O.--O.-O..|..|..O-.O--.O-..|..|..O-.O-..O-..%0A-O.|..O.-.-..|.-O.|.-O.|.|..O.-..-.O..|.|.O-.|.O-.|..-.-.O..|.O-%0A.-O..-.-.|.|.-.|.|.O.O.|.O.O..-..-..O.O.|.O.O.|.|.-.|.|.-.-..O-.%0A-.O.O|.O-.|..-.O-.O.O|.O-.|-.-.OO.-.-|.-O.|O.O.-O.-..|.-O.|O.O.-%0A.|-..|-..|..|-..|-.O|..O|..O-..OO..-O..|O..|O.-|..-|..|..-|..-|.%0A-...O||....||.....||....O|-...OOOO...-|O....||.....||....||O...-%0A...OOO|||---.---.........OOOO||||||OOOO.........---.---|||OOO...%0A-||OOOO......--|-|OO.O.......-||||-.......O.OO|-|--......OOOO||-%0A...-O...-|O..-||O...|O...-|O..-||-..O|-...O|...O||-..O|-...O-...%0A-O.-O..|O.-|..-O.-O..|..-O..|O.--.O|..O-..|..O-.O-..|-.O|..O-.O-%0A.-..|.-..|.-..|.-..|....|....|....|....|....|..-.|..-.|..-.|..-.%0A|.|.|.|.|.O.|.O.O.O.O.|.O.O.O-O..O-O.O.O.|.O.O.O.O.|.O.|.|.|.|.|%0A.O..-.O-.O.O|.O..|..-.|-.|..-.O..O.-..|.-|.-..|..O.|O.O.-O.-..O.%0A|..O|..O-.O|...|..O-..|-..|..O|..|O..|..-|..-O..|...|O.-O..|O..|%0A..O||...OO|...OO|....O|-...O||....||O...-|O....|OO...|OO...||O..%0A||------..........||||||---..........---||||||..........------||%0A...--||-||OO.......---||||OOO......OOO||||---.......OO||-||--...%0AO....-|O..-|O...-|O...-|...-|O....O|-...|-...O|-...O|-..O|-....O%0A.-O.-|..|O..|O.-O..|..-|..|O.-O..O-.O|..|-..|..O-.O|..O|..|-.O-.%0AO.|..O.-..|.-O.|..O.|.-O.|.-O.|..|.O-.|.O-.|.O..|.O-.|..-.O..|.O%0A.O.|.O.O.O-O.O.O.....O.O-O-O........O-O-O.O.....O.O.O-O.O.O.|.O.%0AO-.|.O-.O..-.O..|.O-.|.O|.O..|.OO.|..O.|O.|.-O.|..O.-..O.-O.|.-O%0A..O-..|...-..|-.O|-.O|..O-..|..OO..|..-O..|O.-|O.-|..-...|..-O..%0AO|-...O|--..O||-..OO|....O|....OO....|O....|OO..-||O..--|O...-|O%0A..........OOO|||-...........OOOOOOOO...........-|||OOO..........%0A..........OOO|||-...........OOOOOOOO...........-|||OOO..........%0AO|-...O|--..O||-..OO|....O|....OO....|O....|OO..-||O..--|O...-|O%0A..O-..|...-..|-.O|-.O|..O-..|..OO..|..-O..|O.-|O.-|..-...|..-O..%0AO-.|.O-.O..-.O..|.O-.|.O|.O..|.OO.|..O.|O.|.-O.|..O.-..O.-O.|.-O%0A.O.|.O.O.O-O.O.O.....O.O-O-O........O-O-O.O.....O.O.O-O.O.O.|.O.%0AO.|..O.-..|.-O.|..O.|.-O.|.-O.|..|.O-.|.O-.|.O..|.O-.|..-.O..|.O%0A.-O.-|..|O..|O.-O..|..-|..|O.-O..O-.O|..|-..|..O-.O|..O|..|-.O-.%0AO....-|O..-|O...-|O...-|...-|O....O|-...|-...O|-...O|-..O|-....O%0A...--||-||OO.......---||||OOO......OOO||||---.......OO||-||--...%0A||------..........||||||---..........---||||||..........------||%0A..O||...OO|...OO|....O|-...O||....||O...-|O....|OO...|OO...||O..%0A|..O|..O-.O|...|..O-..|-..|..O|..|O..|..-|..-O..|...|O.-O..|O..|%0A.O..-.O-.O.O|.O..|..-.|-.|..-.O..O.-..|.-|.-..|..O.|O.O.-O.-..O.%0A|.|.|.|.|.O.|.O.O.O.O.|.O.O.O-O..O-O.O.O.|.O.O.O.O.|.O.|.|.|.|.|%0A.-..|.-..|.-..|.-..|....|....|....|....|....|..-.|..-.|..-.|..-.%0A-O.-O..|O.-|..-O.-O..|..-O..|O.--.O|..O-..|..O-.O-..|-.O|..O-.O-%0A...-O...-|O..-||O...|O...-|O..-||-..O|-...O|...O||-..O|-...O-...%0A-||OOOO......--|-|OO.O.......-||||-.......O.OO|-|--......OOOO||-%0A...OOO|||---.---.........OOOO||||||OOOO.........---.---|||OOO...%0A-...O||....||.....||....O|-...OOOO...-|O....||.....||....||O...-%0A.|-..|-..|..|-..|-.O|..O|..O-..OO..-O..|O..|O.-|..-|..|..-|..-|.%0A-.O.O|.O-.|..-.O-.O.O|.O-.|-.-.OO.-.-|.-O.|O.O.-O.-..|.-O.|O.O.-%0A.-O..-.-.|.|.-.|.|.O.O.|.O.O..-..-..O.O.|.O.O.|.|.-.|.|.-.-..O-.%0A-O.|..O.-.-..|.-O.|.-O.|.|..O.-..-.O..|.|.O-.|.O-.|..-.-.O..|.O-%0A..-O..-O.-O..|..|..-O.--O.-O..|..|..O-.O--.O-..|..|..O-.O-..O-..%0A.||O..--O..-||O..-|O..-||...-|O..O|-...||-..O|-..O||-..O--..O||.%0AOO.......-|||OO.......-|-|OOO......OOO|-|-.......OO|||-.......OO%0A..........O.OOOOO||-||--.-............-.--||-||OOOOO.O..........%0A||-...OO|....OO--...O|--...||-....-||...--|O...--OO....|OO...-||%0A..|-..|-.OO-..|...|..O-..O|..O-..-O..|O..-O..|...|..-OO.-|..-|..%0A|-.|.O|.O-.|..|.O-.O..|..-.O-.|..|.-O.-..|..O.-O.|..|.-O.|O.|.-|%0A.|.|.O..-.-.-.-.-.|.|.|.O.O.O.O..O.O.O.O.|.|.|.-.-.-.-.-..O.|.|.%0A")),
                   samples:SAMPLE_PUNKS,
                   themeColor:Color.secondary,
-                  width:300)
+                  width:300,
+                  verticalPadding:nil)
   }
 }
