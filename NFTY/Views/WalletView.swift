@@ -23,7 +23,8 @@ struct WalletView: View {
         ConnectWalletSheet(address: $address)
         
           .onAppear {
-            if let addr = UserDefaults.standard.string(forKey: UserDefaultsKeys.walletAddress.rawValue) {
+            if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
+                                                                    .walletAddress.rawValue) {
               self.address = try? EthereumAddress(hex:addr,eip55: false)
             }
           }

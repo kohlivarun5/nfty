@@ -40,12 +40,12 @@ struct FavButton: View {
       .frame(width: 44, height: 44)
       .onTapGesture(count:self.isFavorite ? 2 : 1) {
         self.isFavorite = !self.isFavorite
-        switch (UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]) {
+        switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]) {
         case .none:
           var favorites : [String : [String : Bool]] = [:]
           favorites[nft.address] = [:]
           favorites[nft.address]![String(nft.tokenId)] = self.isFavorite
-          UserDefaults.standard.set(favorites,forKey:UserDefaultsKeys.favoritesDict.rawValue)
+          NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
         case .some(var favorites):
           switch (favorites[nft.address]) {
           case .none:
@@ -53,12 +53,12 @@ struct FavButton: View {
           case .some:
             favorites[nft.address]![String(nft.tokenId)] = self.isFavorite
           }
-          UserDefaults.standard.set(favorites,forKey:UserDefaultsKeys.favoritesDict.rawValue)
+          NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
         }
       }
       .padding()
       .onAppear {
-        let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+        let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
         self.isFavorite = favorites?[nft.address]?[String(nft.tokenId)] ?? false
       }
   }

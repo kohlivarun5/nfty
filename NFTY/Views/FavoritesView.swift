@@ -139,13 +139,13 @@ struct FavoritesView: View {
       }
     }
     .sheet(isPresented: $showAddFavSheet,onDismiss: {
-      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
       updateFavorites(favorites ?? [:])
     }) {
       AddFavSheet()
     }
     .onAppear {
-      let favorites = UserDefaults.standard.object(forKey: UserDefaultsKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+      let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
       updateFavorites(favorites ?? [:])
     }
   }
