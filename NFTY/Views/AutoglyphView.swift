@@ -73,8 +73,14 @@ struct AutoglyphDrawing: Shape {
               center: CGPoint(x: midX, y: midY),
               radius: cellHalfPixels * pixel,
               startAngle:.degrees(0),
-              endAngle:.degrees(360),
+              endAngle:.degrees(180),
               clockwise: true)
+            path.addArc(
+              center: CGPoint(x: midX, y: midY),
+              radius: cellHalfPixels * pixel,
+              startAngle:.degrees(360),
+              endAngle:.degrees(180),
+              clockwise: false)
           case "+":
             path.move(to:CGPoint(x: midX, y: minY))
             path.addLine(to: CGPoint(x:midX,y:maxY))
