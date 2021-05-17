@@ -44,8 +44,11 @@ struct NftDetail: View {
       
       HStack() {
         VStack(alignment:.leading) {
-          Text(nft.name)
-            .font(.headline)
+          HStack {
+            Text(nft.name)
+              .font(.headline)
+            OpenSeaLink(nft:nft)
+          }
           Text("#\(nft.tokenId)")
             .font(.subheadline)
           rank.map {
@@ -71,12 +74,7 @@ struct NftDetail: View {
     .navigationBarItems(
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() }),
-      trailing:
-        Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
-          Image(systemName: "arrow.up.right.square.fill")
-            .foregroundColor(Color(UIColor.darkGray))
-        }
+               label: { BackButton() })
     )
     .ignoresSafeArea(edges: .top)
     .onAppear {

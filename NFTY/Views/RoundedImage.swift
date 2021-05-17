@@ -81,7 +81,10 @@ struct RoundedImage: View {
         
         HStack {
           VStack(alignment:.leading) {
-            Text(nft.name)
+            HStack {
+              Text(nft.name)
+              OpenSeaLink(nft:nft)
+            }
             Text("#\(nft.tokenId)")
             rank.map {
               Text("RarityRank: \($0)")
