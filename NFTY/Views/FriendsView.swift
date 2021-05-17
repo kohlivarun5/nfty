@@ -36,7 +36,7 @@ struct FriendsView: View {
               Text(name)
                 .font(.title3)
               Spacer()
-              Text(address.trunc(length:30))
+              Text(address.trunc(length:20))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             }
