@@ -13,17 +13,32 @@ struct PrivateCollectionView: View {
   
   @State private var isFriend : Bool = false
   
+  @State private var showDialog = false
+  
   let address : EthereumAddress
-
-  private func setFriend(_ isFriend:Bool) {
+  
+  private func setFriend(_ name:String?) {
     
-    switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : Bool]) {
+    switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
     case .none:
-      var friends : [String : Bool] = [:]
-      friends[address.hex(eip55: true)] = isFriend
-      NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
+      switch name {
+      case .some(let name):
+        var friends : [String : String] = [:]
+        friends[address.hex(eip55: true)] = name
+        self.isFriend = true
+        NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
+      case .none:
+        self.isFriend = false
+      }
     case .some(var friends):
-      friends[address.hex(eip55: true)] = isFriend
+      switch name {
+      case .some(let name):
+        friends[address.hex(eip55: true)] = name
+        self.isFriend = true
+      case .none:
+        friends.removeValue(forKey: address.hex(eip55: true))
+        self.isFriend = false
+      }
       NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
     }
   }
@@ -31,16 +46,25 @@ struct PrivateCollectionView: View {
   var body: some View {
     WalletTokensView(tokens: getOwnerTokens(address))
       .onAppear {
-        let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : Bool]
-        self.isFriend = friends?[address.hex(eip55: true)] ?? false
+        let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+        self.isFriend = (friends?[address.hex(eip55: true)]) != .none
       }
+      .alert(isPresented: $showDialog,
+             TextAlert(title: "Enter friend name",message:"") { result in
+              if let text = result {
+                self.setFriend(text)
+              }
+             })
       .navigationBarTitle("Private Collection",displayMode: .inline)
       .navigationBarBackButtonHidden(true)
       .navigationBarItems(
         leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
         trailing: Button(action: {
-            self.isFriend = !self.isFriend
-            self.setFriend(self.isFriend)
+          if (self.isFriend) {
+            self.setFriend(nil)
+          } else {
+            self.showDialog = true
+          }
         }, label: {
           Image(systemName: isFriend ? "person.crop.circle.badge.minus" : "person.crop.circle.badge.plus")
         })

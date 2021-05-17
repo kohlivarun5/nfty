@@ -10,20 +10,13 @@ import Web3
 
 struct FriendsView: View {
   
-  @State private var friends : [String] = []
+  @State private var friends : [String : String] = [:]
   
   @State private var isLoading = true
   
-  private func updateFriends(_ dict : [String : Bool]) {
+  private func updateFriends(_ dict : [String : String]) {
+    self.friends = dict
     self.isLoading = false
-    friends = []
-    dict.forEach { (address,isFriend) in
-      if (isFriend) {
-        (try? EthereumAddress(hex:address, eip55: true)).map { _ in
-          friends.append(address)
-        }
-      }
-    }
   }
   
   var body: some View {
@@ -36,21 +29,23 @@ struct FriendsView: View {
           .scaleEffect(3,anchor: .center)
           .padding()
       case false:
-        List(friends, id: \.self) { address in
+        
+        List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
           NavigationLink(destination: PrivateCollectionView(address: (try! EthereumAddress(hex:address, eip55: true)))) {
             HStack() {
-              Text("Address")
+              Text(name)
                 .font(.title3)
               Spacer()
               Text(address.trunc(length:30))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             }
+            .padding()
           }
         }
       }
     }.onAppear {
-      let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : Bool]
+      let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       updateFriends(friendDict ?? [:])
     }
   }
