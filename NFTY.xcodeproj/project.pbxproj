@@ -29,6 +29,7 @@
 		4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */; };
 		4F5F8F5C26532BE200FAD814 /* OpenSeaLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */; };
 		4F5F8F5E26532D9C00FAD814 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5D26532D9C00FAD814 /* WebView.swift */; };
+		4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */; };
 		4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
 		4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */; };
 		4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D395C262BD76E007E79BB /* CollectionsView.swift */; };
@@ -152,6 +153,7 @@
 		4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldAlertView.swift; path = "NFTY/Preview Content/MyPlayground.playground/TextFieldAlertView.swift"; sourceTree = SOURCE_ROOT; };
 		4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaLink.swift; sourceTree = "<group>"; };
 		4F5F8F5D26532D9C00FAD814 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = SOURCE_ROOT; };
+		4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabel.swift; sourceTree = "<group>"; };
 		4F667F6D264B291000E7A214 /* ObservablePromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservablePromise.swift; sourceTree = "<group>"; };
 		4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedPromiseView.swift; sourceTree = "<group>"; };
 		4F6D395C262BD76E007E79BB /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
+				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 			);
 			path = Views;
@@ -780,6 +783,7 @@
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
+				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,

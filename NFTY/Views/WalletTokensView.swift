@@ -25,12 +25,7 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        Text(address.hex(eip55:true).trunc(length:30))
-          .onTapGesture(count: 2) {
-            UIPasteboard.general.string = address.hex(eip55:true)
-          }
-          .font(.subheadline)
-          .foregroundColor(.secondary)
+        AddressLabel(address:address.hex(eip55:true),maxLen:30)
       }
       Divider()
       VStack {
