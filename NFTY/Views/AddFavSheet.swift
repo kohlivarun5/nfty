@@ -57,7 +57,7 @@ struct AddFavSheet: View {
   var body: some View {
     VStack {
       VStack {
-        Text("Add Favorite")
+        Text("Search NFT")
           .font(.title2)
           .fontWeight(.bold)
         Picker("Collection",
