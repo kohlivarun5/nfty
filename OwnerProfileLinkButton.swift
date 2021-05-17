@@ -10,8 +10,6 @@ import Web3
 
 struct UserProfileButton : View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
   let address : EthereumAddress?
   
   var body : some View {
@@ -20,11 +18,7 @@ struct UserProfileButton : View {
       Image(systemName: "flame.fill")
     case .some (let address):
       NavigationLink(
-        destination:
-          WalletTokensView(tokens: getOwnerTokens(address))
-          .navigationBarTitle("Private Collection",displayMode: .inline)
-          .navigationBarBackButtonHidden(true)
-          .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+        destination:PrivateCollectionView(address: address)
       ) {
         Image(systemName: "person.crop.circle")
           .font(.largeTitle)

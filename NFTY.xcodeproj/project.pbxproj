@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724A2651E740002DD748 /* PrivateCollectionView.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
@@ -123,6 +124,7 @@
 
 /* Begin PBXFileReference section */
 		4F0872492650CB85002DD748 /* NFTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTY.entitlements; sourceTree = "<group>"; };
+		4F08724A2651E740002DD748 /* PrivateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateCollectionView.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
@@ -399,6 +401,7 @@
 				4F6D3974262BE4F3007E79BB /* NftImage.swift */,
 				4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */,
 				4FA20037264DE73700E81BE6 /* OwnerProfileLinkButton.swift */,
+				4F08724A2651E740002DD748 /* PrivateCollectionView.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
@@ -762,6 +765,7 @@
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
+				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
