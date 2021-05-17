@@ -44,13 +44,13 @@ struct NftDetail: View {
       
       HStack() {
         VStack(alignment:.leading) {
+          Text(nft.name)
+            .font(.headline)
           HStack {
-            Text(nft.name)
-              .font(.headline)
+            Text("#\(nft.tokenId)")
+              .font(.subheadline)
             OpenSeaLink(nft:nft)
           }
-          Text("#\(nft.tokenId)")
-            .font(.subheadline)
           rank.map {
             Text("RarityRank: \($0)")
               .font(.footnote)
