@@ -387,4 +387,5 @@ let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
 enum CloudDefaultStorageKeys : String {
   case walletAddress = "walletAddress"
   case favoritesDict = "favoritesDict"
+  case friendsDict = "friendsDict"
 }

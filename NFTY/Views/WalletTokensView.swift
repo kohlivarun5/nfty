@@ -25,12 +25,10 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        Text(address.hex(eip55:true).trunc(length:30))
+        AddressLabel(address:address.hex(eip55:true),maxLen:30)
           .onTapGesture(count: 2) {
             UIPasteboard.general.string = address.hex(eip55:true)
           }
-          .font(.subheadline)
-          .foregroundColor(.secondary)
       }
       Divider()
       VStack {
@@ -134,8 +132,8 @@ struct WalletTokensView: View {
 }
 
 struct WalletTokensView_Previews: PreviewProvider {
-    static var previews: some View {
-      WalletTokensView(tokens:NftOwnerTokens(
-                       ownerAddress:SAMPLE_WALLET_ADDRESS))
-    }
+  static var previews: some View {
+    WalletTokensView(tokens:NftOwnerTokens(
+                      ownerAddress:SAMPLE_WALLET_ADDRESS))
+  }
 }
