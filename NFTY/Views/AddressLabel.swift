@@ -13,12 +13,8 @@ struct AddressLabel: View {
   
   var body: some View {
     Text(address.trunc(length:maxLen))
-      .onTapGesture {
-        UIPasteboard.general.string = address
-      }
       .font(.system(size:12, design: .monospaced))
       .foregroundColor(.secondary)
-      
   }
 }
 

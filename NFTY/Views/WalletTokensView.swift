@@ -26,6 +26,9 @@ struct WalletOverview: View {
         }
         Spacer()
         AddressLabel(address:address.hex(eip55:true),maxLen:30)
+          .onTapGesture(count: 2) {
+            UIPasteboard.general.string = address.hex(eip55:true)
+          }
       }
       Divider()
       VStack {
@@ -129,8 +132,8 @@ struct WalletTokensView: View {
 }
 
 struct WalletTokensView_Previews: PreviewProvider {
-    static var previews: some View {
-      WalletTokensView(tokens:NftOwnerTokens(
-                       ownerAddress:SAMPLE_WALLET_ADDRESS))
-    }
+  static var previews: some View {
+    WalletTokensView(tokens:NftOwnerTokens(
+                      ownerAddress:SAMPLE_WALLET_ADDRESS))
+  }
 }
