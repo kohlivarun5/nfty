@@ -116,7 +116,7 @@ struct FavoritesView: View {
             .foregroundColor(.secondary)
         case _:
           ScrollView {
-            LazyVStack(pinnedViews:[.sectionHeaders]) {  
+            LazyVStack(pinnedViews:[.sectionHeaders]) {
               ForEach(nfts,id:\.id) { nft in
                 let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
                 let samples = [info.url1,info.url2,info.url3,info.url4];
