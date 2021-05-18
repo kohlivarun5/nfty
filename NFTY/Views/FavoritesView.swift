@@ -14,8 +14,6 @@ struct FavoritesView: View {
   typealias FavoritesDict = [String : [String : NFTWithLazyPrice?]]
   @State private var favorites : FavoritesDict = [:]
   
-  @State private var showSorted = false
-  @State private var filterZeros = false
   @State private var selectedTokenId: UInt? = nil
   @State private var isLoading = true
   
@@ -66,16 +64,40 @@ struct FavoritesView: View {
       }
     }
   }
-  
-  struct FillAll: View {
-    let color: Color
-    
-    var body: some View {
-      GeometryReader { proxy in
-        self.color.frame(width: proxy.size.width * 1.3).fixedSize()
+  private func sorted(_ l:[NFTWithLazyPrice]) -> [NFTWithLazyPrice] {
+    let res = l.sorted(by:{ left,right in
+      switch(left.indicativePriceWei.state,right.indicativePriceWei.state) {
+      case (.loading,.loading):
+        return true
+      case (.loading,.resolved):
+        return false
+      case (.resolved,.loading):
+        return true
+      case (.resolved(let statusLeft),.resolved(let statusRight)):
+        switch (statusLeft,statusRight) {
+        case (.known(let leftInfo),.known(let rightInfo)):
+          return (leftInfo.blockNumber ?? 0) > (rightInfo.blockNumber ?? 0)
+        case (.known,_):
+          return true
+        case (_,.known):
+          return false
+        case (.notSeenSince(let leftInfo),.notSeenSince(let rightInfo)):
+          return leftInfo.blockNumber > rightInfo.blockNumber
+        case (.burnt,.notSeenSince):
+          return false
+        case (.notSeenSince,.burnt):
+          return true
+        case (.burnt,_):
+          return false
+        case (_,.burnt):
+          return true
+        }
       }
-    }
+    })
+    // print(res[safe:0]);
+    return res;
   }
+  
   var body: some View {
     
     VStack {
@@ -86,7 +108,7 @@ struct FavoritesView: View {
           .scaleEffect(3,anchor: .center)
           .padding()
       case false:
-        let nfts = dictToNfts(self.favorites);
+        let nfts = sorted(dictToNfts(self.favorites));
         switch(nfts.count) {
         case 0:
           Text("No Favorites Added")
@@ -94,7 +116,7 @@ struct FavoritesView: View {
             .foregroundColor(.secondary)
         case _:
           ScrollView {
-            LazyVStack(pinnedViews:[.sectionHeaders]){
+            LazyVStack(pinnedViews:[.sectionHeaders]) {  
               ForEach(nfts,id:\.id) { nft in
                 let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
                 let samples = [info.url1,info.url2,info.url3,info.url4];
