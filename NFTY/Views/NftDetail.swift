@@ -76,7 +76,7 @@ struct NftDetail: View {
         Button(action: {presentationMode.wrappedValue.dismiss()},
                label: { BackButton() }),
       trailing: Button(action: {
-        guard let urlShare = URL(string: "https://www.nftygo.com/") else { return }
+        guard let urlShare = URL(string: "https://nftygo.com/") else { return }
         let activityVC = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
         UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
       }, label: {
