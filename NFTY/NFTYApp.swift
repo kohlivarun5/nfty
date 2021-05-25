@@ -78,6 +78,8 @@ struct NFTYApp: App {
         .accentColor(.secondary)
         
         
+      }.onOpenURL { url in
+        print(url)
       }
     }
   }

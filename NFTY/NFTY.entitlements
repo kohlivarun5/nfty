@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:www.nftygo.com</string>
 		<string>applinks:nftygo.com</string>
+		<string>applinks:*.nftygo.com</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array/>

@@ -74,8 +74,17 @@ struct NftDetail: View {
     .navigationBarItems(
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
+               label: { BackButton() }),
+      trailing: Button(action: {
+        guard let urlShare = URL(string: "https://www.nftygo.com/") else { return }
+        let activityVC = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
+        UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
+      }, label: {
+        Image(systemName: "arrowshape.turn.up.forward.circle")
+          .foregroundColor(Color(UIColor.darkGray))
+      })
     )
+    
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank(nft.tokenId)
