@@ -83,6 +83,15 @@ struct FeedView: View {
     return res;
   }
   
+  private func triggerRefresh() {
+    self.refreshButton = .loading
+    self.trades.loadLatest() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+    }
+    let impactMed = UIImpactFeedbackGenerator(style: .soft)
+    impactMed.impactOccurred()
+  }
+  
   var body: some View {
     
     VStack {
@@ -141,10 +150,7 @@ struct FeedView: View {
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.refreshButton = .loading
-            self.trades.loadLatest() {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
-            }
+            self.triggerRefresh()
           }
           LazyVStack {
             let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
@@ -201,12 +207,7 @@ struct FeedView: View {
         case .loading:
         ProgressView()
       case .loaded:
-        Button(action: {
-          self.refreshButton = .loading
-          self.trades.loadLatest() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
-          }
-        }) {
+        Button(action: self.triggerRefresh) {
           Image(systemName:"arrow.clockwise.circle")
             .padding()
         }
