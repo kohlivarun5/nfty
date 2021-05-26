@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Web3
 
 extension UINavigationController: UIGestureRecognizerDelegate {
   override open func viewDidLoad() {
@@ -22,6 +23,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 struct NFTYApp: App {
   enum SheetStateEnum {
     case nft(String,UInt)
+    case user(EthereumAddress)
   }
   struct SheetState : Identifiable {
     let state : SheetStateEnum
@@ -30,12 +32,13 @@ struct NFTYApp: App {
       switch state {
       case .nft(let address,let tokenId):
         return "nft(\(address),\(tokenId))"
+      case .user(let address):
+        return "user(\(address.hex(eip55:true)))"
       }
     }
   }
   
   @State private var sheetState : SheetState? = nil
-  @State private var showSheet : Bool = false
   
   var body: some Scene {
     WindowGroup {
@@ -105,18 +108,26 @@ struct NFTYApp: App {
           switch (params["address"] as? String,(params["tokenId"] as? String).flatMap { UInt($0) }) {
           case (.some(let address),.some(let tokenId)):
             self.sheetState = SheetState(state: .nft(address,tokenId))
-            print(self.sheetState)
-            self.showSheet = true
           default:
+            break
+          }
+        case .some("user"):
+          let params = url.params()
+          switch (params["address"] as? String).flatMap { try? EthereumAddress(hex:$0,eip55:false) } {
+          case .some(let address):
+            self.sheetState = SheetState(state: .user(address))
+          case .none:
             break
           }
         default:
           break
         }
-      }.sheet(item: $sheetState, onDismiss: { self.showSheet = nil }) { (item:SheetState) in
+      }.sheet(item: $sheetState, onDismiss: { self.sheetState = nil }) { (item:SheetState) in
         switch item.state {
         case .nft(let address,let tokenId):
           NftUrlView(address: address, tokenId: tokenId)
+        case .user(let address):
+          UserUrlView(address: address)
         }
       }
       
