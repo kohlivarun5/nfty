@@ -53,6 +53,12 @@ struct FeedView: View {
   
   @ObservedObject var trades : CompositeRecentTradesObject
   
+  enum RefreshButton {
+    case hidden
+    case loading
+    case loaded
+  }
+  @State private var refreshButton : RefreshButton = .hidden
   @State private var action: String? = ""
   @State private var isLoading = true
   
@@ -135,7 +141,10 @@ struct FeedView: View {
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.trades.loadLatest() { }
+            self.refreshButton = .loading
+            self.trades.loadLatest() {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+            }
           }
           LazyVStack {
             let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
@@ -182,6 +191,24 @@ struct FeedView: View {
       self.trades.loadMore() {
         DispatchQueue.main.async {
           self.isLoading = false
+          self.refreshButton = .loaded
+        }
+      }
+    }.toolbar {
+      switch refreshButton {
+        case .hidden:
+        EmptyView()
+        case .loading:
+        ProgressView()
+      case .loaded:
+        Button(action: {
+          self.refreshButton = .loading
+          self.trades.loadLatest() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+          }
+        }) {
+          Image(systemName:"arrow.clockwise.circle")
+            .padding()
         }
       }
     }
