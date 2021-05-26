@@ -20,6 +20,22 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
 @main
 struct NFTYApp: App {
+  enum SheetStateEnum {
+    case nft(String,UInt)
+  }
+  struct SheetState : Identifiable {
+    let state : SheetStateEnum
+    
+    var id : String {
+      switch state {
+      case .nft(let address,let tokenId):
+        return "nft(\(address),\(tokenId))"
+      }
+    }
+  }
+  
+  @State private var sheetState : SheetState? = nil
+  @State private var showSheet : Bool = false
   
   var body: some Scene {
     WindowGroup {
@@ -79,8 +95,31 @@ struct NFTYApp: App {
         
         
       }.onOpenURL { url in
-        print(url)
+        print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
+        print("URL.last=\(url.pathComponents.last)")
+        print("URL.params=\(url.params())")
+        
+        switch url.pathComponents.last {
+        case .some("nft"):
+          let params = url.params()
+          switch (params["address"] as? String,(params["tokenId"] as? String).flatMap { UInt($0) }) {
+          case (.some(let address),.some(let tokenId)):
+            self.sheetState = SheetState(state: .nft(address,tokenId))
+            print(self.sheetState)
+            self.showSheet = true
+          default:
+            break
+          }
+        default:
+          break
+        }
+      }.sheet(item: $sheetState, onDismiss: { self.showSheet = nil }) { (item:SheetState) in
+        switch item.state {
+        case .nft(let address,let tokenId):
+          NftUrlView(address: address, tokenId: tokenId)
+        }
       }
+      
     }
   }
 }

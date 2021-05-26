@@ -380,6 +380,23 @@ extension String {
   }
 }
 
+extension URL {
+  func params() -> [String:Any] {
+    var dict = [String:Any]()
+    
+    if let components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
+      if let queryItems = components.queryItems {
+        for item in queryItems {
+          dict[item.name] = item.value!
+        }
+      }
+      return dict
+    } else {
+      return [:]
+    }
+  }
+}
+
 let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
   hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
   eip55:false)
