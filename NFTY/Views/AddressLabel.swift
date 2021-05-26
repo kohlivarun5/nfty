@@ -17,7 +17,7 @@ struct AddressLabel: View {
       Text(address.trunc(length:maxLen))
         .font(.system(size:12, design: .monospaced))
         .foregroundColor(.secondary)
-      Spacer()
+      
       Button(action: {
         var components = URLComponents()
         components.scheme = "https"
@@ -40,7 +40,7 @@ struct AddressLabel: View {
       }, label: {
         Image(systemName: "arrowshape.turn.up.forward.circle")
           .foregroundColor(.secondary)
-      })
+      }).padding(.leading)
     }
   }
 }
