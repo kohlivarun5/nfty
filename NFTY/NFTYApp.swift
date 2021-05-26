@@ -45,17 +45,6 @@ struct NFTYApp: App {
       TabView {
         
         NavigationView {
-          CollectionsView(collections:COLLECTIONS)
-            .navigationBarTitle("Gallery")
-        }
-        .tabItem {
-          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
-        
-        NavigationView {
           FeedView(trades:CompositeCollection)
             .navigationBarTitle("Recent")
         }
@@ -65,6 +54,15 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
+        NavigationView {
+          CollectionsView(collections:COLLECTIONS)
+            .navigationBarTitle("Gallery")
+        }
+        .tabItem {
+          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
         
         NavigationView {
           FriendsView()
