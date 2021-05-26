@@ -88,7 +88,7 @@ struct FeedView: View {
     self.trades.loadLatest() {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
     }
-    let impactMed = UIImpactFeedbackGenerator(style: .soft)
+    let impactMed = UIImpactFeedbackGenerator(style: .light)
     impactMed.impactOccurred()
   }
   
