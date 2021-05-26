@@ -13,6 +13,7 @@ struct AddressLabel: View {
   
   var body: some View {
     HStack {
+      Spacer()
       Text(address.trunc(length:maxLen))
         .font(.system(size:12, design: .monospaced))
         .foregroundColor(.secondary)
