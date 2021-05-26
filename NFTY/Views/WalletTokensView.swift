@@ -117,7 +117,8 @@ struct WalletTokensView: View {
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRank
+                    rarityRank:info.rarityRank,
+                    hideOwnerLink:false
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()
                 }

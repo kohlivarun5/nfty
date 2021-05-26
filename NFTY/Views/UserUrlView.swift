@@ -46,7 +46,7 @@ struct UserUrlView: View {
             .font(.title2)
           Spacer()
         }
-        HStack {
+        /* HStack {
           Spacer()
           Button(action: {
             switch (self.friendName) {
@@ -58,7 +58,7 @@ struct UserUrlView: View {
           }, label: {
             Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
           })
-        }.padding(.trailing)
+        }.padding(.trailing) */
       }.padding(.top)
       
       WalletTokensView(tokens: getOwnerTokens(address))

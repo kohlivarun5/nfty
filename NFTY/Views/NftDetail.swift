@@ -21,6 +21,7 @@ struct NftDetail: View {
   var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
   var rarityRank : RarityRankGetter
+  var hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
   @State var tokens : [UInt]? = nil
@@ -34,9 +35,14 @@ struct NftDetail: View {
           .frame(minHeight: 450)
         VStack(alignment: .leading) {
           Spacer()
-          HStack {
-            OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
-            Spacer()
+          switch hideOwnerLink {
+          case true:
+            EmptyView()
+          case false:
+            HStack {
+              OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
+              Spacer()
+            }
           }
         }
         .padding()
@@ -121,6 +127,7 @@ struct NftDetail_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,
-      rarityRank:SampleCollection.info.rarityRank)
+      rarityRank:SampleCollection.info.rarityRank,
+      hideOwnerLink:false)
   }
 }

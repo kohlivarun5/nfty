@@ -31,7 +31,8 @@ struct NftUrlView: View {
         themeColor:info.themeColor,
         themeLabelColor:info.themeLabelColor,
         similarTokens:info.similarTokens,
-        rarityRank:info.rarityRank
+        rarityRank:info.rarityRank,
+        hideOwnerLink:true
       )
     }
   }
