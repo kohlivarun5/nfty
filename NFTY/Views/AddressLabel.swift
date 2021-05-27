@@ -12,9 +12,14 @@ struct AddressLabel: View {
   let maxLen : Int
   
   var body: some View {
+    
     Text(address.trunc(length:maxLen))
       .font(.system(size:12, design: .monospaced))
       .foregroundColor(.secondary)
+      .onTapGesture(count: 2) {
+        UIPasteboard.general.string = address
+      }
+    
   }
 }
 

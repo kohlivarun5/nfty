@@ -55,6 +55,8 @@ struct FavButton: View {
           }
           NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
         }
+        let impactMed = UIImpactFeedbackGenerator(style: .light)
+        impactMed.impactOccurred()
       }
       .padding()
       .onAppear {

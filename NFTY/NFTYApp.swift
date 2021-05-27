@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Web3
 
 extension UINavigationController: UIGestureRecognizerDelegate {
   override open func viewDidLoad() {
@@ -20,21 +21,28 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
 @main
 struct NFTYApp: App {
+  enum SheetStateEnum {
+    case nft(String,UInt)
+    case user(EthereumAddress)
+  }
+  struct SheetState : Identifiable {
+    let state : SheetStateEnum
+    
+    var id : String {
+      switch state {
+      case .nft(let address,let tokenId):
+        return "nft(\(address),\(tokenId))"
+      case .user(let address):
+        return "user(\(address.hex(eip55:true)))"
+      }
+    }
+  }
+  
+  @State private var sheetState : SheetState? = nil
   
   var body: some Scene {
     WindowGroup {
       TabView {
-        
-        NavigationView {
-          CollectionsView(collections:COLLECTIONS)
-            .navigationBarTitle("Gallery")
-        }
-        .tabItem {
-          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
         
         NavigationView {
           FeedView(trades:CompositeCollection)
@@ -46,6 +54,15 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
+        NavigationView {
+          CollectionsView(collections:COLLECTIONS)
+            .navigationBarTitle("Gallery")
+        }
+        .tabItem {
+          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
         
         NavigationView {
           FriendsView()
@@ -78,7 +95,40 @@ struct NFTYApp: App {
         .accentColor(.secondary)
         
         
+      }.onOpenURL { url in
+        print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
+        print("URL.last=\(url.pathComponents.last)")
+        print("URL.params=\(url.params())")
+        
+        switch url.pathComponents.last {
+        case .some("nft"):
+          let params = url.params()
+          switch (params["address"] as? String,(params["tokenId"] as? String).flatMap { UInt($0) }) {
+          case (.some(let address),.some(let tokenId)):
+            self.sheetState = SheetState(state: .nft(address,tokenId))
+          default:
+            break
+          }
+        case .some("user"):
+          let params = url.params()
+          switch (params["address"] as? String).flatMap { try? EthereumAddress(hex:$0,eip55:false) } {
+          case .some(let address):
+            self.sheetState = SheetState(state: .user(address))
+          case .none:
+            break
+          }
+        default:
+          break
+        }
+      }.sheet(item: $sheetState, onDismiss: { self.sheetState = nil }) { (item:SheetState) in
+        switch item.state {
+        case .nft(let address,let tokenId):
+          NftUrlView(address: address, tokenId: tokenId)
+        case .user(let address):
+          UserUrlView(address: address)
+        }
       }
+      
     }
   }
 }

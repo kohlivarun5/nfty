@@ -53,6 +53,12 @@ struct FeedView: View {
   
   @ObservedObject var trades : CompositeRecentTradesObject
   
+  enum RefreshButton {
+    case hidden
+    case loading
+    case loaded
+  }
+  @State private var refreshButton : RefreshButton = .hidden
   @State private var action: String? = ""
   @State private var isLoading = true
   
@@ -75,6 +81,15 @@ struct FeedView: View {
     })
     // print(res[safe:0]);
     return res;
+  }
+  
+  private func triggerRefresh() {
+    self.refreshButton = .loading
+    self.trades.loadLatest() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+    }
+    let impactMed = UIImpactFeedbackGenerator(style: .light)
+    impactMed.impactOccurred()
   }
   
   var body: some View {
@@ -135,7 +150,7 @@ struct FeedView: View {
       case false:
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.trades.loadLatest() { }
+            self.triggerRefresh()
           }
           LazyVStack {
             let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
@@ -166,7 +181,8 @@ struct FeedView: View {
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,
-                  rarityRank:info.rarityRank
+                  rarityRank:info.rarityRank,
+                  hideOwnerLink:false
                 ),tag:String(nft.nft.tokenId),selection:$action) {}
                 .hidden()
               }.onAppear {
@@ -181,6 +197,19 @@ struct FeedView: View {
       self.trades.loadMore() {
         DispatchQueue.main.async {
           self.isLoading = false
+          self.refreshButton = .loaded
+        }
+      }
+    }.toolbar {
+      switch refreshButton {
+        case .hidden:
+        EmptyView()
+        case .loading:
+        ProgressView()
+      case .loaded:
+        Button(action: self.triggerRefresh) {
+          Image(systemName:"arrow.clockwise.circle")
+            .padding()
         }
       }
     }

@@ -25,10 +25,7 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        AddressLabel(address:address.hex(eip55:true),maxLen:30)
-          .onTapGesture(count: 2) {
-            UIPasteboard.general.string = address.hex(eip55:true)
-          }
+        AddressLabelWithShare(address:address.hex(eip55:true),maxLen:25)
       }
       Divider()
       VStack {
@@ -117,7 +114,8 @@ struct WalletTokensView: View {
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRank
+                    rarityRank:info.rarityRank,
+                    hideOwnerLink:false
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()
                 }

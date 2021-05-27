@@ -21,6 +21,7 @@ struct NftDetail: View {
   var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter
   var rarityRank : RarityRankGetter
+  var hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
   @State var tokens : [UInt]? = nil
@@ -34,9 +35,14 @@ struct NftDetail: View {
           .frame(minHeight: 450)
         VStack(alignment: .leading) {
           Spacer()
-          HStack {
-            OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
-            Spacer()
+          switch hideOwnerLink {
+          case true:
+            EmptyView()
+          case false:
+            HStack {
+              OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
+              Spacer()
+            }
           }
         }
         .padding()
@@ -74,8 +80,33 @@ struct NftDetail: View {
     .navigationBarItems(
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
+               label: { BackButton() }),
+      trailing: Button(action: {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "nftygo.com"
+        components.path = "/nft"
+        components.queryItems = [
+          URLQueryItem(name: "address", value: nft.address),
+          URLQueryItem(name: "tokenId", value: String(nft.tokenId))
+        ]
+        guard let urlShare = components.url else { return }
+        
+        // https://stackoverflow.com/a/64962982
+        let shareActivity = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
+        if let vc = UIApplication.shared.windows.first?.rootViewController {
+          shareActivity.popoverPresentationController?.sourceView = vc.view
+          //Setup share activity position on screen on bottom center
+          shareActivity.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height, width: 0, height: 0)
+          shareActivity.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
+          vc.present(shareActivity, animated: true, completion: nil)
+        }
+      }, label: {
+        Image(systemName: "arrowshape.turn.up.forward.circle")
+          .foregroundColor(Color(UIColor.darkGray))
+      })
     )
+    
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank(nft.tokenId)
@@ -96,6 +127,7 @@ struct NftDetail_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,
-      rarityRank:SampleCollection.info.rarityRank)
+      rarityRank:SampleCollection.info.rarityRank,
+      hideOwnerLink:false)
   }
 }
