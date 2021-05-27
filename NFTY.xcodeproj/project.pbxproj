@@ -21,6 +21,7 @@
 		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
 		4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */; };
 		4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21C265DF1F400AD320D /* UserUrlView.swift */; };
+		4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */; };
 		4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E52648BB17007C8002 /* WalletView.swift */; };
 		4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */; };
 		4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */; };
@@ -145,6 +146,7 @@
 		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftUrlView.swift; sourceTree = "<group>"; };
 		4F4DD21C265DF1F400AD320D /* UserUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUrlView.swift; sourceTree = "<group>"; };
+		4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabelWithShare.swift; sourceTree = "<group>"; };
 		4F55A8E52648BB17007C8002 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensView.swift; sourceTree = "<group>"; };
 		4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectWalletSheet.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 			children = (
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
 				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
+				4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
 				4F4C6981264F6483005B9A23 /* AutoglyphView.swift */,
 				4F4CA8052635D813001534A6 /* BackButton.swift */,
@@ -771,6 +774,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
 				4FA20038264DE73700E81BE6 /* OwnerProfileLinkButton.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,

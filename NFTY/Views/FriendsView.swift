@@ -36,7 +36,7 @@ struct FriendsView: View {
               Text(name)
                 .font(.title3)
               Spacer()
-              AddressLabel(address:address,maxLen:10)
+              AddressLabel(address:address,maxLen:15)
             }
             .padding()
           }
