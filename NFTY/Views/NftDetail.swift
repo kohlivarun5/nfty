@@ -69,7 +69,14 @@ struct NftDetail: View {
       }.padding()
       tokens.map { tokens in
         VStack {
-          Divider()
+          ZStack {
+            Divider()
+            Text("Similar Tokens")
+              .font(.caption)
+              .padding(.trailing)
+              .padding(.leading)
+              .background(Color.systemBackground)
+          }
           SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
         }
       }
