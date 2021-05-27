@@ -72,7 +72,7 @@ struct NftDetail: View {
           ZStack {
             Divider()
             Text("Similar Tokens")
-              .font(.caption)
+              .font(.caption).italic()
               .padding(.trailing)
               .padding(.leading)
               .background(Color.systemBackground)
