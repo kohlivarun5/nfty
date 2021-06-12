@@ -73,6 +73,7 @@ struct NftDetail: View {
             Divider()
             Text("Similar Tokens")
               .font(.caption).italic()
+              .foregroundColor(.secondaryLabel)
               .padding(.trailing)
               .padding(.leading)
               .background(Color.systemBackground)
