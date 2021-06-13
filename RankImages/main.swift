@@ -10,7 +10,7 @@ import Vision
 
 let isFull = true
 
-let totalSupply = isFull ? 1704 : 10
+let totalSupply = isFull ? 2048 : 10
 let collectionName = "AsciiPunks"
 
 func getDocumentsDirectory() -> URL {

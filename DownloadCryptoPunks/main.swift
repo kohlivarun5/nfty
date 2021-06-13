@@ -26,7 +26,7 @@ var collectionName = "AsciiPunks"
 // let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
 let totalSize = 1704 //CryptoPunksCollection.info.totalSupply
 
-for tokenId in 1...totalSize {
+for tokenId in 1703...2048 {
   
   let imageUrl = makeImageUrl(UInt(tokenId))
   print(imageUrl);
