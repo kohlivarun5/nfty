@@ -12,7 +12,7 @@ import Web3ContractABI
 
 class Erc721Contract {
   
-  private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
+  // private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
   var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
@@ -146,7 +146,7 @@ class Erc721Contract {
   init (address:String) {
     self.contractAddressHex = address
     ethContract = EthContract(address)
-    initFromBlock = (UserDefaults.standard.object(forKey: "\(address).initFromBlock") as? BigUInt) ?? INIT_BLOCK
+    initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
     // name = ethContract.name()
   }

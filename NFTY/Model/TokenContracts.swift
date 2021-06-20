@@ -47,13 +47,14 @@ func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
 
 class TxFetcher {
   
-  struct TxInfo {
+  struct TxInfo : Codable {
     var value : BigUInt
     var blockNumber : EthereumQuantity
   }
   
-  private var txCache : [EthereumData:Promise<TxInfo?>] = [:]
-  private var accessLock = NSLock()
+  private var txCache = try! DiskStorage<EthereumData, TxInfo>(
+    config: DiskConfig(name: "TxFetcher.txCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: TxInfo.self))
   
   private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
     web3.eth.getTransactionByHash(blockHash:transactionHash)
@@ -75,15 +76,14 @@ class TxFetcher {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      accessLock.lock()
-      switch txCache[txHash] {
+      switch (try? txCache.object(forKey:txHash)) {
       case .some(let p):
-        accessLock.unlock()
-        return p
+        return Promise.value(p)
       case .none:
         let p = eventOfTx(transactionHash: txHash)
-        self.txCache[txHash] = p
-        accessLock.unlock()
+        p.done {
+          $0.flatMap { try? self.txCache.setObject($0, forKey: txHash) }
+        }.catch { print($0) }
         return p
       }
     }
@@ -111,7 +111,7 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 }
 
 class LogsFetcher {
-  private var blockDecrements : BigUInt = 10000
+  private var blockDecrements : BigUInt = 2000
   private var toBlock = EthereumQuantityTag.latest
   private var mostRecentBlock = EthereumQuantityTag.latest
   
@@ -131,6 +131,7 @@ class LogsFetcher {
   }
   
   private func updateMostRecent(_ blockNumber:EthereumQuantity?) {
+    
     switch (blockNumber) {
     case .some(let blockNum):
       switch (self.mostRecentBlock.tagType) {
@@ -144,9 +145,9 @@ class LogsFetcher {
       case .block(let seen):
         switch (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) {
         case .some(let prev):
-          UserDefaults.standard.set(String(max(prev,seen - 70000 /* 1 week */)),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(max(prev,seen - 500)),forKey: "\(address).initFromBlock")
         case .none:
-          UserDefaults.standard.set(String(seen - 70000 /* 1 week */),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(seen - 500),forKey: "\(address).initFromBlock")
         }
       default:
         break
@@ -196,6 +197,7 @@ class LogsFetcher {
       if case let logs? = result.result {
         self.toBlock = EthereumQuantityTag.block(self.fromBlock)
         self.fromBlock = self.fromBlock - self.blockDecrements
+        
         logs.indices.forEach { index in
           let log = logs[index];
           response(log)

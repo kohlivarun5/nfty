@@ -43,7 +43,7 @@ class BAYC_Contract : ContractInterface {
             
             
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-              print(data,response,error)
+              // print(data,response,error)
               do {
                 seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data!))
               } catch {
@@ -61,7 +61,7 @@ class BAYC_Contract : ContractInterface {
             request.httpMethod = "GET"
             
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-              print(data,response,error)
+              // print(data,response,error)
               seal.fulfill(data.map { Media.IpfsImage(data:$0) })
             }).resume()
           }
@@ -88,11 +88,15 @@ class BAYC_Contract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
+    var counter = 0
     return ethContract.transfer.fetch(onDone:onDone) { log in
+      
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let onPrice = { (indicativePriceWei:BigUInt?) in
+        counter+=1
+        print(counter,tokenId)
         response(NFTWithPrice(
           nft:NFT(
             address:self.contractAddressHex,
