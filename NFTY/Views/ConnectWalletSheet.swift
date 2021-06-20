@@ -15,6 +15,8 @@ struct ConnectWalletSheet: View {
   @Binding var address : EthereumAddress?
   @State var badAddressError : String = ""
   
+  @State var metamaskLoading = true
+  
   @State var badImportWalletError : String = ""
   
   var body: some View {
@@ -35,6 +37,9 @@ struct ConnectWalletSheet: View {
           
           Spacer()
           Button(action: {
+            
+            metamaskLoading.toggle()
+            
             UIImpactFeedbackGenerator(style: .light)
               .impactOccurred()
             
@@ -45,18 +50,28 @@ struct ConnectWalletSheet: View {
             
           }) {
             
-            VStack {
-              Image("Metamask")
-                .resizable()
-                .frame(width: 60,height:60)
+            (metamaskLoading
+              ? AnyView(
+                ProgressView()
+                  .scaleEffect(2.0, anchor: .center)
+                  .frame(width: 80,height:80)
+              )
+              
+              : AnyView(
                 
-              Text("Connect using MetaMask")
-                .font(.caption)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.orange)
-            }
-            .frame(minWidth: 0, maxWidth: .infinity)
+                VStack {
+                  Image("Metamask")
+                    .resizable()
+                    .frame(width: 60,height:60)
+                  
+                  Text("Connect using MetaMask")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.orange)
+                }
+              )
+            ).frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .border(Color.orange)
             .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
