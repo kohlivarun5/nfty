@@ -18,21 +18,16 @@ struct NftImageImpl: View {
     ObservedPromiseView(
       data:url,
       progress:
-        ZStack {
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .background(themeColor)
-            .blur(radius:20)
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
-            .scaleEffect(2.0, anchor: .center)
-        }) { url in
+        Image(
+          samples[
+            Int.random(in: 0..<samples.count)
+          ])
+        .interpolation(.none)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .padding()
+        .blur(radius:20)
+    ) { url in
       
       KFImage.url(url)
         .placeholder {
@@ -48,7 +43,7 @@ struct NftImageImpl: View {
         }
         .diskCacheExpiration(.never)
         .loadDiskFileSynchronously()
-        .fade(duration: 0.25)
+        .fade(duration: 0.001)
         .interpolation(.none)
         .resizable()
         .aspectRatio(contentMode: .fit)
