@@ -758,7 +758,6 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-
   private var drawingCache = try! DiskStorage<BigUInt, Media.AsciiPunk>(
     config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.AsciiPunk.self))
@@ -1036,7 +1035,10 @@ class AsciiPunksContract : ContractInterface {
 
 class AutoglyphsContract : ContractInterface {
   
-  private var drawingCache : [BigUInt : ObservablePromise<Media.Autoglyph?>] = [:]
+  private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
+    config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Media.Autoglyph.self))
+  
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private var name = "Autoglyph"
@@ -1077,14 +1079,18 @@ class AutoglyphsContract : ContractInterface {
   private var ethContract = GlyphContract(contractAddress:"0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.Autoglyph?> {
-    switch(self.drawingCache[tokenId]) {
+    switch(try? drawingCache.object(forKey:tokenId)) {
     case .some(let p):
-      return p
+      return ObservablePromise(resolved: p)
     case .none:
+      
       let p = ethContract.drawContract.draw(tokenId);
       let observable = ObservablePromise(promise: p)
-      DispatchQueue.main.async {
-        self.drawingCache[tokenId] = observable
+      
+      p.done { drawing in
+        drawing.flatMap {
+          try? self.drawingCache.setObject($0, forKey: tokenId)
+        }
       }
       return observable
     }

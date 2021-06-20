@@ -68,7 +68,7 @@ enum Media {
     }
   }
   
-  struct Autoglyph {
+  struct Autoglyph : Codable {
     let utf8 : String
   }
   
