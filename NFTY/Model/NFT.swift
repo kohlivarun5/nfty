@@ -50,7 +50,7 @@ struct MediaImageEager : MediaImage {
 
 enum Media {
   
-  struct AsciiPunk {
+  struct AsciiPunk : Codable {
     let unicode : String
   }
   
@@ -68,7 +68,7 @@ enum Media {
     }
   }
   
-  struct Autoglyph {
+  struct Autoglyph : Codable {
     let utf8 : String
   }
   

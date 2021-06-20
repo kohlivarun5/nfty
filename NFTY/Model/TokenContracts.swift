@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Cache
+
 import Web3
 import Web3PromiseKit
 import Web3ContractABI
@@ -92,7 +94,7 @@ var txFetcher = TxFetcher()
 
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-var INIT_BLOCK = BigUInt(12405014)
+var INIT_BLOCK = BigUInt(12642194)
 
 protocol ContractInterface {
   
@@ -137,6 +139,19 @@ class LogsFetcher {
       default:
         self.mostRecentBlock = .block(blockNum.quantity + 1)
       }
+      
+      switch (self.mostRecentBlock.tagType) {
+      case .block(let seen):
+        switch (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) {
+        case .some(let prev):
+          UserDefaults.standard.set(String(max(prev,seen - 70000 /* 1 week */)),forKey: "\(address).initFromBlock")
+        case .none:
+          UserDefaults.standard.set(String(seen - 70000 /* 1 week */),forKey: "\(address).initFromBlock")
+        }
+      default:
+        break
+      }
+      
     case .none:
       break
     }
@@ -215,8 +230,9 @@ class CryptoPunksContract : ContractInterface {
   private var name = "CryptoPunks"
   
   let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+  private let initFromBlock : BigUInt
   private var punksBoughtLogs : LogsFetcher
-  private let initFromBlock = INIT_BLOCK
+  
   
   class EthContract : EthereumContract {
     let eth = web3.eth
@@ -241,6 +257,7 @@ class CryptoPunksContract : ContractInterface {
   private var ethContract = EthContract()
   
   init () {
+    initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
   }
   
@@ -293,7 +310,7 @@ class CryptoPunksContract : ContractInterface {
                 blockNumber: log.blockNumber?.quantity)
           ))
         }
-                 
+        
         self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
           .done(on:DispatchQueue.global(qos:.userInteractive)) {
             onPrice($0?.value)
@@ -472,16 +489,16 @@ class CryptoPunksContract : ContractInterface {
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     getOwnerTokensFromOpenSea(address:address)
-    .then(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> Promise<Void> in
-      return when(
-        fulfilled:tokenIds.map { self.getToken($0).done { response($0) } }
-      )
-    }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
-      onDone()
-    }.catch {
-      print ($0)
-      onDone()
-    }
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> Promise<Void> in
+        return when(
+          fulfilled:tokenIds.map { self.getToken($0).done { response($0) } }
+        )
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+        onDone()
+      }.catch {
+        print ($0)
+        onDone()
+      }
   }
   
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
@@ -559,9 +576,10 @@ class CryptoKittiesAuction : ContractInterface {
   private let saleAuctionContract = SaleAuctionContract()
   
   private var auctionSuccessfulFetcher : LogsFetcher
-  private let initFromBlock = INIT_BLOCK
+  private let initFromBlock : BigUInt
   
   init () {
+    initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     auctionSuccessfulFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:saleAuctionContract.addressHex,indexedTopics: [])
   }
   
@@ -756,7 +774,10 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-  private var drawingCache : [BigUInt : ObservablePromise<Media.AsciiPunk?>] = [:]
+  private var drawingCache = try! DiskStorage<BigUInt, Media.AsciiPunk>(
+    config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Media.AsciiPunk.self))
+  
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
@@ -769,7 +790,7 @@ class AsciiPunksContract : ContractInterface {
   
   let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
   private var transfer : LogsFetcher
-  private let initFromBlock = INIT_BLOCK
+  private let initFromBlock : BigUInt
   
   class EthContract : EthereumContract {
     let eth = web3.eth
@@ -830,18 +851,20 @@ class AsciiPunksContract : ContractInterface {
   private var ethContract = EthContract()
   
   init () {
+    initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
   }
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.AsciiPunk?> {
-    switch(self.drawingCache[tokenId]) {
+    switch(try? drawingCache.object(forKey:tokenId)) {
     case .some(let p):
-      return p
+      return ObservablePromise(resolved: p)
     case .none:
       let p = ethContract.draw(tokenId);
-      let observable = ObservablePromise(promise: p)
-      DispatchQueue.main.async {
-        self.drawingCache[tokenId] = observable
+      let observable = ObservablePromise(promise: p) { drawing in
+        drawing.flatMap {
+          try? self.drawingCache.setObject($0, forKey: tokenId)
+        }
       }
       return observable
     }
@@ -1028,7 +1051,10 @@ class AsciiPunksContract : ContractInterface {
 
 class AutoglyphsContract : ContractInterface {
   
-  private var drawingCache : [BigUInt : ObservablePromise<Media.Autoglyph?>] = [:]
+  private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
+    config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Media.Autoglyph.self))
+  
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private var name = "Autoglyph"
@@ -1053,7 +1079,7 @@ class AutoglyphsContract : ContractInterface {
           return Media.Autoglyph(utf8:outputs["uri"] as! String)
         }
     }
-
+    
   }
   
   class GlyphContract : Erc721Contract {
@@ -1069,14 +1095,16 @@ class AutoglyphsContract : ContractInterface {
   private var ethContract = GlyphContract(contractAddress:"0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.Autoglyph?> {
-    switch(self.drawingCache[tokenId]) {
+    switch(try? drawingCache.object(forKey:tokenId)) {
     case .some(let p):
-      return p
+      return ObservablePromise(resolved: p)
     case .none:
+      
       let p = ethContract.drawContract.draw(tokenId);
-      let observable = ObservablePromise(promise: p)
-      DispatchQueue.main.async {
-        self.drawingCache[tokenId] = observable
+      let observable = ObservablePromise(promise: p) { drawing in
+        drawing.flatMap {
+          try? self.drawingCache.setObject($0, forKey: tokenId)
+        }
       }
       return observable
     }
@@ -1216,18 +1244,20 @@ class AutoglyphsContract : ContractInterface {
 
 
 class BlockFetcherImpl {
-  private var blocksCache : [EthereumQuantityTag:Promise<EthereumBlockObject?>] = [:]
   
-  func getBlock(blockNumber:EthereumQuantityTag) -> Promise<EthereumBlockObject?> {
-    switch(self.blocksCache[blockNumber]) {
+  private var blocksCache = try! DiskStorage<EthereumQuantityTag, EthereumBlockObject>(
+    config: DiskConfig(name: "BlockFetcherCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: EthereumBlockObject.self))
+  
+  func getBlock(blockNumber:EthereumQuantityTag) -> ObservablePromise<EthereumBlockObject?> {
+    switch(try? blocksCache.object(forKey:blockNumber)) {
     case .some(let p):
-      return p
+      return ObservablePromise(resolved: p)
     case .none:
       let p = web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
-      DispatchQueue.main.async {
-        self.blocksCache[blockNumber] = p
+      return ObservablePromise(promise: p) { block in
+        block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
       }
-      return p
     }
   }
   

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import URLImage
 import BigInt
 
 struct RoundedImage: View {

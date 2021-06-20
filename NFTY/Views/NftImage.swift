@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import URLImage
+import Kingfisher
 
 struct NftImageImpl: View {
   
@@ -18,7 +18,19 @@ struct NftImageImpl: View {
     ObservedPromiseView(
       data:url,
       progress:
-        ZStack {
+        Image(
+          samples[
+            Int.random(in: 0..<samples.count)
+          ])
+        .interpolation(.none)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .padding()
+        .blur(radius:20)
+    ) { url in
+      
+      KFImage.url(url)
+        .placeholder {
           Image(
             samples[
               Int.random(in: 0..<samples.count)
@@ -27,60 +39,17 @@ struct NftImageImpl: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
-            .background(themeColor)
             .blur(radius:20)
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
-            .scaleEffect(2.0, anchor: .center)
-        }) { url in
-      URLImage(
-        url:url,
-        options: URLImageOptions(
-          expireAfter: 60 * 60 * 24 * 10
-        ),
-        empty: {
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .background(themeColor)
-            .blur(radius:20)
-        },
-        inProgress: { progress in
-          ZStack {
-            Image(
-              samples[
-                Int.random(in: 0..<samples.count)
-              ])
-              .interpolation(.none)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .padding()
-              .background(themeColor)
-              .blur(radius:20)
-            ProgressView(value:progress)
-              .progressViewStyle(CircularProgressViewStyle(tint: themeColor))
-              .scaleEffect(2.0, anchor: .center)
-          }
-        },
-        failure: { error, retry in         // Display error and retry button
-          VStack {
-            Text(error.localizedDescription)
-            Button("Retry", action: retry)
-          }
-        },
-        content: { image in                // Content view
-          image
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .background(themeColor)
-        })
+        }
+        .diskCacheExpiration(.never)
+        .loadDiskFileSynchronously()
+        .fade(duration: 0.001)
+        .interpolation(.none)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .padding()
+      
+      
     }
   }
 }
