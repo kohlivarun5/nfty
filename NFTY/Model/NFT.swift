@@ -324,11 +324,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:asciiPunksContract),
-  
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:baycContract.contractAddressHex,
-      // TODO
       url1:SAMPLE_BAYC[0],
       url2:SAMPLE_BAYC[1],
       url3:SAMPLE_BAYC[2],
@@ -338,14 +336,13 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.label,
       themeLabelColor:Color.systemBackground,
       subThemeColor:Color.label,
-      collectionColor:Color.black,
+      collectionColor:Color.label,
       disableRecentTrades:false,
       blur:0,
-      samplePadding:10,
+      samplePadding:15,
       similarTokens: { tokenId in nil },
       rarityRank : { tokenId in nil }),
     contract:baycContract),
-  
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,

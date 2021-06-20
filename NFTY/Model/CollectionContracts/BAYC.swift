@@ -88,15 +88,12 @@ class BAYC_Contract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    var counter = 0
     return ethContract.transfer.fetch(onDone:onDone) { log in
       
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let onPrice = { (indicativePriceWei:BigUInt?) in
-        counter+=1
-        print(counter,tokenId)
         response(NFTWithPrice(
           nft:NFT(
             address:self.contractAddressHex,

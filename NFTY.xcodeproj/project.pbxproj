@@ -276,6 +276,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F27A7C6267FE1EB008CCB0A /* CollectionContracts */ = {
+			isa = PBXGroup;
+			children = (
+				4F27A7C4267FB702008CCB0A /* BAYC.swift */,
+			);
+			path = CollectionContracts;
+			sourceTree = "<group>";
+		};
 		4F446F2126376C3600BE739E /* ParseTokenDistances */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,7 +455,7 @@
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
-				4F27A7C4267FB702008CCB0A /* BAYC.swift */,
+				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
 			);
