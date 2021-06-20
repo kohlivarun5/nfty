@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Cache
+
 import Web3
 import Web3PromiseKit
 import Web3ContractABI
@@ -756,7 +758,11 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-  private var drawingCache : [BigUInt : ObservablePromise<Media.AsciiPunk?>] = [:]
+
+  private var drawingCache = try! DiskStorage<BigUInt, Media.AsciiPunk>(
+    config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Media.AsciiPunk.self))
+    
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   private let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
@@ -834,14 +840,16 @@ class AsciiPunksContract : ContractInterface {
   }
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.AsciiPunk?> {
-    switch(self.drawingCache[tokenId]) {
+    switch(try? drawingCache.object(forKey:tokenId)) {
     case .some(let p):
-      return p
+      return ObservablePromise(resolved: p)
     case .none:
       let p = ethContract.draw(tokenId);
       let observable = ObservablePromise(promise: p)
-      DispatchQueue.main.async {
-        self.drawingCache[tokenId] = observable
+      p.done { drawing in
+        drawing.flatMap {
+          try? self.drawingCache.setObject($0, forKey: tokenId)
+        }
       }
       return observable
     }

@@ -35,6 +35,17 @@ struct NftImageImpl: View {
         }) { url in
       
       KFImage.url(url)
+        .placeholder {
+          Image(
+            samples[
+              Int.random(in: 0..<samples.count)
+            ])
+            .interpolation(.none)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding()
+            .blur(radius:20)
+        }
         .diskCacheExpiration(.never)
         .loadDiskFileSynchronously()
         .fade(duration: 0.25)
