@@ -28,7 +28,7 @@
 		<key>DownloadCryptoPunks.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>24</integer>
+			<integer>0</integer>
 		</dict>
 		<key>MyPlayground (Playground) 1.xcscheme</key>
 		<dict>
@@ -54,12 +54,12 @@
 		<key>NFTY.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>25</integer>
+			<integer>4</integer>
 		</dict>
 		<key>ParseTokenDistances.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<key>PromiseKit (Playground) 1.xcscheme</key>
 		<dict>
@@ -106,17 +106,17 @@
 		<key>RankImages.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>28</integer>
+			<integer>1</integer>
 		</dict>
 		<key>RarityRanking.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>27</integer>
+			<integer>2</integer>
 		</dict>
 		<key>TestUI.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>26</integer>
+			<integer>5</integer>
 		</dict>
 	</dict>
 </dict>
