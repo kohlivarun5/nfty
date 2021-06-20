@@ -18,12 +18,15 @@ extension Date {
 }
 
 struct BlockTimestampView : View {
-  @ObservedObject var timestamp : ObservablePromise<String?>
+  @ObservedObject var block : ObservablePromise<EthereumBlockObject?>
   
   var body: some View {
-    ObservedPromiseView(data: timestamp, progress: Text("...    ")) { timestamp in
-      Text(timestamp ?? "...    ")
-      
+    ObservedPromiseView(data: block, progress: Text("...    ")) { block in
+      Text(
+        (block?.timestamp).map {
+          Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay()
+        } ?? "...    "
+      )
     }
   }
 }
@@ -41,11 +44,7 @@ struct BlockTimeLabel: View {
       Text("...    ")
     case .some(let blockNum):
       BlockTimestampView(
-        timestamp:ObservablePromise(
-          promise:BlocksFetcher.getBlock(blockNumber:.block(blockNum)).compactMap { block in
-            return (block?.timestamp).map { Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay() }
-          }
-        ))
+        block:BlocksFetcher.getBlock(blockNumber:.block(blockNum)))
     }
   }
 }
