@@ -61,7 +61,6 @@
 		4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
 		4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
 		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
-		4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB9A808262B451F00C58AF9 /* URLImage */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
 		4FBF8AF2264E004700569DCA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF1264E004700569DCA /* main.swift */; };
@@ -244,7 +243,6 @@
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
-				4FB9A809262B451F00C58AF9 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,7 +555,6 @@
 			);
 			name = NFTY;
 			packageProductDependencies = (
-				4FB9A808262B451F00C58AF9 /* URLImage */,
 				4FC744722630FD7D0060FC6D /* Web3PromiseKit */,
 				4FC744742630FD7D0060FC6D /* Web3ContractABI */,
 				4FC744762630FD7D0060FC6D /* Web3 */,
@@ -670,9 +667,7 @@
 			);
 			mainGroup = 4FB9A7A4262B28A300C58AF9;
 			packageReferences = (
-				4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */,
 				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
-				4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
@@ -1352,22 +1347,6 @@
 				minimumVersion = 0.1.3;
 			};
 		};
-		4F856BDA2632B43B00BB5E07 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.11.0;
-			};
-		};
-		4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.3;
-			};
-		};
 		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Boilertalk/Web3.swift";
@@ -1383,11 +1362,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		4FB9A808262B451F00C58AF9 /* URLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4FB9A807262B451F00C58AF9 /* XCRemoteSwiftPackageReference "url-image" */;
-			productName = URLImage;
 		};
 		4FC744722630FD7D0060FC6D /* Web3PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
