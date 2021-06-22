@@ -144,20 +144,18 @@ struct NftImage: View {
                 samples[
                   Int.random(in: 0..<samples.count)
                 ])
-                .interpolation(.none)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .padding()
+                .padding(15)
                 .blur(radius:20)
               ProgressView()
             }
           ,
           view: { ipfs in
             Image(uiImage: UIImage(data:ipfs!.data)!)
-              .interpolation(.none)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .padding()
+              .padding(15)
           })
       }
       //.padding()

@@ -111,7 +111,8 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 }
 
 class LogsFetcher {
-  private var blockDecrements : BigUInt = 2000
+  private let blockDecrements : BigUInt
+  private let searchBlocks : BigUInt
   private var toBlock = EthereumQuantityTag.latest
   private var mostRecentBlock = EthereumQuantityTag.latest
   
@@ -128,6 +129,8 @@ class LogsFetcher {
       web3.eth.abi.encodeEventSignature(self.event)
     ]
     self.topics.append(contentsOf: indexedTopics)
+    self.searchBlocks = 500
+    self.blockDecrements = searchBlocks * 4
   }
   
   private func updateMostRecent(_ blockNumber:EthereumQuantity?) {
@@ -145,9 +148,9 @@ class LogsFetcher {
       case .block(let seen):
         switch (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) {
         case .some(let prev):
-          UserDefaults.standard.set(String(max(prev,seen - 500)),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(max(prev,seen - searchBlocks)),forKey: "\(address).initFromBlock")
         case .none:
-          UserDefaults.standard.set(String(seen - 500),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(seen - searchBlocks),forKey: "\(address).initFromBlock")
         }
       default:
         break
@@ -184,7 +187,7 @@ class LogsFetcher {
     }
   }
   
-  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
+  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void,retries:Int = 20) {
     
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
@@ -203,6 +206,11 @@ class LogsFetcher {
           response(log)
           self.updateMostRecent(log.blockNumber)
         }
+        
+        if (logs.count == 0 && retries > 0) {
+          return self.fetch(onDone:onDone,response,retries:retries-1);
+        }
+        
       } else {
         print(result)
       }
