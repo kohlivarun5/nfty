@@ -94,16 +94,20 @@ class BAYC_Contract : ContractInterface {
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
+        
+        // BAYC has too much noise, so we skip nil prices
+        if let price = priceIfNotZero(indicativePriceWei) {
+          response(NFTWithPrice(
+            nft:NFT(
+              address:self.contractAddressHex,
+              tokenId:tokenId,
+              name:self.name,
+              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+            indicativePriceWei:NFTPriceInfo(
+              price:price,
+              blockNumber:log.blockNumber?.quantity)
+          ))
+        }
       };
       
       self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -122,16 +126,20 @@ class BAYC_Contract : ContractInterface {
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
+        
+        // BAYC has too much noise, so we skip nil prices
+        if let price = priceIfNotZero(indicativePriceWei) {
+          response(NFTWithPrice(
+            nft:NFT(
+              address:self.contractAddressHex,
+              tokenId:tokenId,
+              name:self.name,
+              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+            indicativePriceWei:NFTPriceInfo(
+              price:price,
+              blockNumber:log.blockNumber?.quantity)
+          ))
+        }
       };
       
       self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
