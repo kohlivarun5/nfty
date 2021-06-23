@@ -187,7 +187,7 @@ class LogsFetcher {
     }
   }
   
-  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void,retries:Int = 20) {
+  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void,retries:Int = 10) {
     
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
