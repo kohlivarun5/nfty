@@ -128,7 +128,7 @@ struct NFTYApp: App {
           UserUrlView(address: address)
         }
       }
-      
+      .accentColor(Color.orange)
     }
   }
 }
