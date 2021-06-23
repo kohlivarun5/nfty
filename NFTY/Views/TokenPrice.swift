@@ -46,7 +46,7 @@ struct TokenPriceKnown : View {
         EmptyView()
       }
       BlockTimeLabel(blockNumber:info.blockNumber)
-        .font(.footnote)
+        .font(.caption2)
         .foregroundColor(subtleColor(self.color))
     }
   }

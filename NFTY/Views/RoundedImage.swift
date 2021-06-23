@@ -62,7 +62,7 @@ struct RoundedImage: View {
   private func cornerRadius(_ width:Width) -> CGFloat {
     switch(width) {
     case .normal:
-      return 25
+      return 20
     case .narrow:
       return 10
     }
@@ -85,6 +85,8 @@ struct RoundedImage: View {
               Text("#\(nft.tokenId)")
               OpenSeaLink(nft:nft)
             }
+            .font(.footnote)
+            
             rank.map {
               Text("RarityRank: \($0)")
                 .font(.footnote)

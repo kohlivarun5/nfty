@@ -97,7 +97,7 @@ struct NFTYApp: App {
         
       }.onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
-        print("URL.last=\(url.pathComponents.last)")
+        print("URL.last=\(String(describing: url.pathComponents.last))")
         print("URL.params=\(url.params())")
         
         switch url.pathComponents.last {
@@ -111,7 +111,7 @@ struct NFTYApp: App {
           }
         case .some("user"):
           let params = url.params()
-          switch (params["address"] as? String).flatMap { try? EthereumAddress(hex:$0,eip55:false) } {
+          switch (params["address"] as? String).flatMap({ try? EthereumAddress(hex:$0,eip55:false) }) {
           case .some(let address):
             self.sheetState = SheetState(state: .user(address))
           case .none:

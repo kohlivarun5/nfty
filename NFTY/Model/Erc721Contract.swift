@@ -12,7 +12,7 @@ import Web3ContractABI
 
 class Erc721Contract {
   
-  private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
+  // private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
   var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
@@ -69,17 +69,17 @@ class Erc721Contract {
         }
     }
     
-    /*
-     func tokenURI(tokenId: BigUInt) -> Promise<String> {
-     let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
-     let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
-     let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
-     return method.invoke(tokenId).call()
-     .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-     return outputs["tokenURI"] as! String
-     }
-     }
-     */
+    
+    func tokenURI(tokenId: BigUInt) -> Promise<String> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
+      let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
+      return method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["tokenURI"] as! String
+        }
+    }
+     
     
     func ownerOf(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
@@ -146,7 +146,7 @@ class Erc721Contract {
   init (address:String) {
     self.contractAddressHex = address
     ethContract = EthContract(address)
-    initFromBlock = (UserDefaults.standard.object(forKey: "\(address).initFromBlock") as? BigUInt) ?? INIT_BLOCK
+    initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
     // name = ethContract.name()
   }

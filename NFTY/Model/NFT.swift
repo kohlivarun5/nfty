@@ -86,9 +86,28 @@ enum Media {
     }
   }
   
+  struct IpfsImage : Codable {
+    let data : Data
+  }
+  
+  struct IpfsImageLazy {
+    private var tokenId : BigUInt
+    private let download : (BigUInt) -> ObservablePromise<IpfsImage?>
+    
+    init(tokenId:BigUInt,download : @escaping (BigUInt) -> ObservablePromise<IpfsImage?>) {
+      self.tokenId = tokenId
+      self.download = download
+    }
+    
+    var image : ObservablePromise<IpfsImage?> {
+      self.download(self.tokenId)
+    }
+  }
+  
   case image(MediaImage)
   case asciiPunk(AsciiPunkLazy)
   case autoglyph(AutoglyphLazy)
+  case ipfsImage(IpfsImageLazy)
 }
 
 struct NFT: Identifiable {
@@ -228,6 +247,13 @@ let SAMPLE_AUTOGLYPHS : [String] = [
   "glyph374"
 ]
 
+let SAMPLE_BAYC : [String] = [
+  "SampleBAYC1",
+  "SampleBAYC2",
+  "SampleBAYC3",
+  "SampleBAYC4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
@@ -238,6 +264,7 @@ let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 let autoGlyphsContract = AutoglyphsContract()
+let baycContract = BAYC_Contract()
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -297,6 +324,25 @@ let CompositeCollection = CompositeRecentTradesObject([
       similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:asciiPunksContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:baycContract.contractAddressHex,
+      url1:SAMPLE_BAYC[0],
+      url2:SAMPLE_BAYC[1],
+      url3:SAMPLE_BAYC[2],
+      url4:SAMPLE_BAYC[3],
+      name:"BoredApeYachtClub",
+      webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.white,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens: { tokenId in nil },
+      rarityRank : { tokenId in nil }),
+    contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,

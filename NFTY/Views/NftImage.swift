@@ -135,6 +135,28 @@ struct NftImage: View {
         AutoglyphView(autoglyph:autoglyph.autoglyph,samples:samples,themeColor:themeColor,width:autoglyphWidth(size))
           .padding(.top,autoglypPaddingTop(size))
           .padding(.bottom,autoglypPaddingBottom(size))
+      case .ipfsImage(let ipfs):
+        ObservedPromiseView(
+          data: ipfs.image,
+          progress:
+            ZStack {
+              Image(
+                samples[
+                  Int.random(in: 0..<samples.count)
+                ])
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(15)
+                .blur(radius:20)
+              ProgressView()
+            }
+          ,
+          view: { ipfs in
+            Image(uiImage: UIImage(data:ipfs!.data)!)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding(15)
+          })
       }
       //.padding()
       HStack {
