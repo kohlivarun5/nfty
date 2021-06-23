@@ -124,8 +124,10 @@ struct NFTYApp: App {
         switch item.state {
         case .nft(let address,let tokenId):
           NftUrlView(address: address, tokenId: tokenId)
+            .accentColor(Color.orange)
         case .user(let address):
           UserUrlView(address: address)
+            .accentColor(Color.orange)
         }
       }
       .accentColor(Color.orange)
