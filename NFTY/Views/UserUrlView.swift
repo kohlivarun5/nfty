@@ -12,7 +12,7 @@ struct UserUrlView: View {
   @State private var friendName : String? = nil
   @State private var showDialog = false
   
-  let address : EthereumAddress
+  @State var address : EthereumAddress
   
   private func setFriend(_ name:String?) {
     self.friendName = name
@@ -46,7 +46,8 @@ struct UserUrlView: View {
             .font(.title2)
           Spacer()
         }
-        /* HStack {
+        
+        HStack {
           Spacer()
           Button(action: {
             switch (self.friendName) {
@@ -57,8 +58,9 @@ struct UserUrlView: View {
             }
           }, label: {
             Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
-          })
-        }.padding(.trailing) */
+              .renderingMode(.original)
+          }).padding(.trailing)
+        }
       }.padding(.top)
       
       WalletTokensView(tokens: getOwnerTokens(address))
@@ -66,7 +68,14 @@ struct UserUrlView: View {
           let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
           self.friendName = friends?[address.hex(eip55: true)]
         }
+        .alert(isPresented: $showDialog,
+               TextAlert(title: "Enter friend name",message:friendName ?? "") { result in
+                if let text = result {
+                  self.setFriend(text)
+                }
+               })
     }
+    
   }
 }
 
