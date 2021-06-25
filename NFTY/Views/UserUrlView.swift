@@ -59,6 +59,7 @@ struct UserUrlView: View {
           }, label: {
             Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
               .renderingMode(.original)
+              .accentColor(.gray)
           }).padding(.trailing)
         }
       }.padding(.top)
