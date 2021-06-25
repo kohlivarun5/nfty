@@ -9,16 +9,17 @@ import SwiftUI
 import Web3
 
 struct UserUrlView: View {
-  @State private var friendName : String? = nil
+  @State private var isFav : Bool = false
   @State private var showDialog = false
   
   @State var address : EthereumAddress
+  @State var friendName : String? = nil
   
-  private func setFriend(_ name:String?) {
-    self.friendName = name
+  private func setFriend(_ isFav:Bool) {
+    self.isFav = isFav
     switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
     case .none:
-      switch name {
+      switch self.friendName {
       case .some(let name):
         var friends : [String : String] = [:]
         friends[address.hex(eip55: true)] = name
@@ -27,7 +28,7 @@ struct UserUrlView: View {
         break
       }
     case .some(var friends):
-      switch name {
+      switch self.friendName {
       case .some(let name):
         friends[address.hex(eip55: true)] = name
       case .none:
@@ -50,16 +51,15 @@ struct UserUrlView: View {
         HStack {
           Spacer()
           Button(action: {
-            switch (self.friendName) {
-            case .none:
+            if (self.friendName != nil || self.isFav) {
+              self.setFriend(!self.isFav)
+            } else {
               self.showDialog = true
-            case .some:
-              self.setFriend(nil)
             }
           }, label: {
-            Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
+            Image(systemName: isFav ? "person.crop.circle.badge.minus" : "person.crop.circle.badge.plus")
               .renderingMode(.original)
-              .accentColor(.gray)
+              .accentColor(.secondary)
           }).padding(.trailing)
         }
       }.padding(.top)
@@ -67,12 +67,16 @@ struct UserUrlView: View {
       WalletTokensView(tokens: getOwnerTokens(address))
         .onAppear {
           let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-          self.friendName = friends?[address.hex(eip55: true)]
+          if (self.friendName == nil) {
+            self.friendName = friends?[address.hex(eip55: true)]
+          }
+          self.isFav = friends?[address.hex(eip55: true)] != nil
         }
         .alert(isPresented: $showDialog,
                TextAlert(title: "Enter friend name",message:friendName ?? "") { result in
                 if let text = result {
-                  self.setFriend(text)
+                  self.friendName = text
+                  self.setFriend(true)
                 }
                })
     }
