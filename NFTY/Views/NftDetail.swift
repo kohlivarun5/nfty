@@ -18,7 +18,7 @@ struct NftDetail: View {
   var samples:[String]
   var themeColor : Color
   var themeLabelColor : Color
-  var similarTokens : SimilarTokensGetter
+  var similarTokens : SimilarTokensGetter?
   var rarityRank : RarityRankGetter
   var hideOwnerLink : Bool
   @State var rank : UInt? = nil
@@ -70,7 +70,7 @@ struct NftDetail: View {
         VStack {
           ZStack {
             Divider()
-            Text("Similar Tokens")
+            Text("Similar \(similarTokens?.label ?? "Tokens")")
               .font(.caption).italic()
               .foregroundColor(.secondaryLabel)
               .padding(.trailing)
@@ -117,10 +117,12 @@ struct NftDetail: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank(nft.tokenId)
-      Promise.value(similarTokens(nft.tokenId))
-        .done(on:.main) { tokens in
-          self.tokens = tokens
-        }.catch { print($0) }
+      similarTokens.map { similarTokens in
+        Promise.value(similarTokens.get(nft.tokenId))
+          .done(on:.main) { tokens in
+            self.tokens = tokens
+          }.catch { print($0) }
+      }
     }
   }
 }
