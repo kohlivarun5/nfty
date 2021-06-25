@@ -13,7 +13,7 @@ struct UserUrlView: View {
   @State private var showDialog = false
   
   @State var address : EthereumAddress
-  @State var friendName : String? = nil
+  @State var friendName : String?
   
   private func setFriend(_ isFav:Bool) {
     self.isFav = isFav
@@ -86,6 +86,6 @@ struct UserUrlView: View {
 
 struct UserUrlView_Previews: PreviewProvider {
   static var previews: some View {
-    UserUrlView(address: SAMPLE_WALLET_ADDRESS)
+    UserUrlView(address: SAMPLE_WALLET_ADDRESS,friendName:nil)
   }
 }
