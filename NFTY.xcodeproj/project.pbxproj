@@ -12,6 +12,19 @@
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
 		4F27A7C5267FB702008CCB0A /* BAYC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7C4267FB702008CCB0A /* BAYC.swift */; };
+		4F27A7C72682D1A1008CCB0A /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
+		4F27A7C82682D1AC008CCB0A /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
+		4F27A7C92682D1B0008CCB0A /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
+		4F27A7CA2682D1B4008CCB0A /* BAYC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7C4267FB702008CCB0A /* BAYC.swift */; };
+		4F27A7CB2682D1BA008CCB0A /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
+		4F27A7CD2682D1EF008CCB0A /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7CC2682D1EF008CCB0A /* Web3 */; };
+		4F27A7CF2682D1EF008CCB0A /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7CE2682D1EF008CCB0A /* Web3ContractABI */; };
+		4F27A7D12682D1EF008CCB0A /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7D02682D1EF008CCB0A /* Web3PromiseKit */; };
+		4F27A7D32682D222008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7D22682D222008CCB0A /* Cache */; };
+		4F27A7D42682D23A008CCB0A /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
+		4F27A7D72682D276008CCB0A /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D62682D276008CCB0A /* UIExtensions.swift */; };
+		4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
+		4F27A7DA2682D326008CCB0A /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
@@ -135,6 +148,8 @@
 		4F08724A2651E740002DD748 /* PrivateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateCollectionView.swift; sourceTree = "<group>"; };
 		4F08724C2651EAC0002DD748 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		4F27A7C4267FB702008CCB0A /* BAYC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAYC.swift; sourceTree = "<group>"; };
+		4F27A7D62682D276008CCB0A /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
+		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
@@ -218,6 +233,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F27A7CF2682D1EF008CCB0A /* Web3ContractABI in Frameworks */,
+				4F27A7D32682D222008CCB0A /* Cache in Frameworks */,
+				4F27A7D12682D1EF008CCB0A /* Web3PromiseKit in Frameworks */,
+				4F27A7CD2682D1EF008CCB0A /* Web3 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +428,7 @@
 			isa = PBXGroup;
 			children = (
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
+				4F27A7D62682D276008CCB0A /* UIExtensions.swift */,
 				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
 				4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
@@ -449,6 +469,7 @@
 				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
+				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
@@ -512,6 +533,12 @@
 			dependencies = (
 			);
 			name = DownloadCryptoPunks;
+			packageProductDependencies = (
+				4F27A7CC2682D1EF008CCB0A /* Web3 */,
+				4F27A7CE2682D1EF008CCB0A /* Web3ContractABI */,
+				4F27A7D02682D1EF008CCB0A /* Web3PromiseKit */,
+				4F27A7D22682D222008CCB0A /* Cache */,
+			);
 			productName = RankTokenImages;
 			productReference = 4F58A01C263675E700E258C1 /* DownloadCryptoPunks */;
 			productType = "com.apple.product-type.tool";
@@ -755,7 +782,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F27A7C72682D1A1008CCB0A /* NFT.swift in Sources */,
+				4F27A7C92682D1B0008CCB0A /* TokenContracts.swift in Sources */,
+				4F27A7CA2682D1B4008CCB0A /* BAYC.swift in Sources */,
+				4F27A7C82682D1AC008CCB0A /* ObservablePromise.swift in Sources */,
 				4F58A01F263675E700E258C1 /* main.swift in Sources */,
+				4F27A7DA2682D326008CCB0A /* TokenProtocols.swift in Sources */,
+				4F27A7CB2682D1BA008CCB0A /* Erc721Contract.swift in Sources */,
+				4F27A7D42682D23A008CCB0A /* ModelData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,6 +817,7 @@
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
 				4FA20038264DE73700E81BE6 /* OwnerProfileLinkButton.swift in Sources */,
+				4F27A7D72682D276008CCB0A /* UIExtensions.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
@@ -792,6 +827,7 @@
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */,
 				4F27A7C5267FB702008CCB0A /* BAYC.swift in Sources */,
+				4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */,
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
 				4F5F8F5C26532BE200FAD814 /* OpenSeaLink.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
@@ -1108,7 +1144,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1118,7 +1154,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.6;
+				MARKETING_VERSION = 1.2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1135,7 +1171,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1145,7 +1181,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.6;
+				MARKETING_VERSION = 1.2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1392,6 +1428,26 @@
 			productName = Kingfisher;
 		};
 		4F27A7C2267F9760008CCB0A /* Cache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
+			productName = Cache;
+		};
+		4F27A7CC2682D1EF008CCB0A /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3;
+		};
+		4F27A7CE2682D1EF008CCB0A /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3ContractABI;
+		};
+		4F27A7D02682D1EF008CCB0A /* Web3PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3PromiseKit;
+		};
+		4F27A7D22682D222008CCB0A /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
 			productName = Cache;
