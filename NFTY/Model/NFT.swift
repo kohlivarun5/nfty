@@ -174,7 +174,11 @@ enum TokenPriceType {
   case lazy(ObservablePromise<NFTPriceStatus>)
 }
 
-typealias SimilarTokensGetter = (UInt) -> [UInt]?
+struct SimilarTokensGetter {
+  let label : String
+  let get : (UInt) -> [UInt]?
+}
+
 typealias RarityRankGetter = (UInt) -> UInt?
 struct CollectionInfo {
   let address: String
@@ -191,7 +195,7 @@ struct CollectionInfo {
   let disableRecentTrades : Bool
   let blur:CGFloat
   let samplePadding:CGFloat
-  let similarTokens : SimilarTokensGetter
+  let similarTokens : SimilarTokensGetter?
   let rarityRank : RarityRankGetter
 }
 struct CollectionData : HasContractInterface {

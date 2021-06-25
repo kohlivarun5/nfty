@@ -9,16 +9,17 @@ import SwiftUI
 import Web3
 
 struct UserUrlView: View {
-  @State private var friendName : String? = nil
+  @State private var isFav : Bool = false
   @State private var showDialog = false
   
-  let address : EthereumAddress
+  @State var address : EthereumAddress
+  @State var friendName : String?
   
-  private func setFriend(_ name:String?) {
-    self.friendName = name
+  private func setFriend(_ isFav:Bool) {
+    self.isFav = isFav
     switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
     case .none:
-      switch name {
+      switch self.friendName {
       case .some(let name):
         var friends : [String : String] = [:]
         friends[address.hex(eip55: true)] = name
@@ -27,7 +28,7 @@ struct UserUrlView: View {
         break
       }
     case .some(var friends):
-      switch name {
+      switch self.friendName {
       case .some(let name):
         friends[address.hex(eip55: true)] = name
       case .none:
@@ -46,32 +47,45 @@ struct UserUrlView: View {
             .font(.title2)
           Spacer()
         }
-        /* HStack {
+        
+        HStack {
           Spacer()
           Button(action: {
-            switch (self.friendName) {
-            case .none:
+            if (self.friendName != nil || self.isFav) {
+              self.setFriend(!self.isFav)
+            } else {
               self.showDialog = true
-            case .some:
-              self.setFriend(nil)
             }
           }, label: {
-            Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
-          })
-        }.padding(.trailing) */
+            Image(systemName: isFav ? "person.crop.circle.badge.minus" : "person.crop.circle.badge.plus")
+              .renderingMode(.original)
+              .accentColor(.secondary)
+          }).padding(.trailing)
+        }
       }.padding(.top)
       
       WalletTokensView(tokens: getOwnerTokens(address))
         .onAppear {
           let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-          self.friendName = friends?[address.hex(eip55: true)]
+          if (self.friendName == nil) {
+            self.friendName = friends?[address.hex(eip55: true)]
+          }
+          self.isFav = friends?[address.hex(eip55: true)] != nil
         }
+        .alert(isPresented: $showDialog,
+               TextAlert(title: "Enter friend name",message:friendName ?? "") { result in
+                if let text = result {
+                  self.friendName = text
+                  self.setFriend(true)
+                }
+               })
     }
+    
   }
 }
 
 struct UserUrlView_Previews: PreviewProvider {
   static var previews: some View {
-    UserUrlView(address: SAMPLE_WALLET_ADDRESS)
+    UserUrlView(address: SAMPLE_WALLET_ADDRESS,friendName:nil)
   }
 }

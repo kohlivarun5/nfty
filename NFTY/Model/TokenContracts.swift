@@ -187,7 +187,7 @@ class LogsFetcher {
     }
   }
   
-  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void,retries:Int = 10) {
+  func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
@@ -208,7 +208,7 @@ class LogsFetcher {
         }
         
         if (logs.count == 0 && retries > 0) {
-          return self.fetch(onDone:onDone,response,retries:retries-1);
+          return self.fetch(onDone:onDone,retries:retries-1,response);
         }
         
       } else {
@@ -893,7 +893,7 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return transfer.fetch(onDone:onDone) { log in
+    return transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
@@ -1121,7 +1121,7 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.fetch(onDone:onDone) { log in
+    return ethContract.transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       

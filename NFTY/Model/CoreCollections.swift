@@ -24,7 +24,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:10,
-      similarTokens : { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Punks") { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:cryptoPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
@@ -43,7 +43,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:10,
-      similarTokens: { tokenId in nil },
+      similarTokens: nil,
       rarityRank : { tokenId in nil }),
     contract:autoGlyphsContract),
   CompositeRecentTradesObject.CollectionInitializer(
@@ -62,7 +62,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:10,
-      similarTokens : { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Punks")  { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
     contract:asciiPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
@@ -81,7 +81,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:15,
-      similarTokens: { tokenId in nil },
+      similarTokens: nil,
       rarityRank : { tokenId in nil }),
     contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
@@ -99,7 +99,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       disableRecentTrades:true,
       blur:0,samplePadding:0,
-      similarTokens: { tokenId in nil },
+      similarTokens: nil,
       rarityRank : { tokenId in nil }),
     contract:cryptoKittiesContract),
 ]
