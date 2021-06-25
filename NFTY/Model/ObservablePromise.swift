@@ -32,7 +32,7 @@ class ObservablePromise<T> : ObservableObject {
   func load() {
     switch(state) {
     case .loading:
-      self.promise.done { val in
+      self.promise.done(on:.main) { val in
         self.state = .resolved(val)
         self.onDone.map {
           $0(val)
