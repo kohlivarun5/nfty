@@ -9,14 +9,14 @@ import Foundation
 
 print("Hello, World!")
 
-let isFull = true
+let isFull = false
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]
 }
 
-let collectionName = "AsciiPunks"
+let collectionName = "BoredApeYachtClub"
 //let totalSupply = 10000
 
 struct TokenDistance: Codable {

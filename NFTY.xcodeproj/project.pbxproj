@@ -22,11 +22,12 @@
 		4F27A7D12682D1EF008CCB0A /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7D02682D1EF008CCB0A /* Web3PromiseKit */; };
 		4F27A7D32682D222008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7D22682D222008CCB0A /* Cache */; };
 		4F27A7D42682D23A008CCB0A /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
-		4F27A7D72682D276008CCB0A /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D62682D276008CCB0A /* UIExtensions.swift */; };
 		4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
 		4F27A7DA2682D326008CCB0A /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
 		4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4F27A7DF26876906008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
+		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
+		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
@@ -149,9 +150,10 @@
 		4F08724A2651E740002DD748 /* PrivateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateCollectionView.swift; sourceTree = "<group>"; };
 		4F08724C2651EAC0002DD748 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		4F27A7C4267FB702008CCB0A /* BAYC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAYC.swift; sourceTree = "<group>"; };
-		4F27A7D62682D276008CCB0A /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
+		4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_nearestTokens.json; sourceTree = "<group>"; };
+		4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_rarityRanks.json; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
@@ -454,7 +456,6 @@
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */,
 				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
-				4F27A7D62682D276008CCB0A /* UIExtensions.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
 				4F4DD21C265DF1F400AD320D /* UserUrlView.swift */,
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
@@ -483,6 +484,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
+				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
 				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
 				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
@@ -749,7 +752,9 @@
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -818,7 +823,6 @@
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
 				4FA20038264DE73700E81BE6 /* OwnerProfileLinkButton.swift in Sources */,
-				4F27A7D72682D276008CCB0A /* UIExtensions.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,

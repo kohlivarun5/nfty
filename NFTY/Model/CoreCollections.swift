@@ -6,6 +6,25 @@
 //
 
 import Foundation
+import SwiftUI
+import Web3
+
+public extension Color {
+  static let lightText = Color(UIColor.lightText)
+  static let darkText = Color(UIColor.darkText)
+  
+  static let label = Color(UIColor.label)
+  static let secondaryLabel = Color(UIColor.secondaryLabel)
+  static let tertiaryLabel = Color(UIColor.tertiaryLabel)
+  static let quaternaryLabel = Color(UIColor.quaternaryLabel)
+  
+  static let systemBackground = Color(UIColor.systemBackground)
+  static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
+  static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
+  
+  // There are more..
+}
+
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -81,8 +100,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:15,
-      similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      similarTokens : SimilarTokensGetter(label:"Apes")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
+      rarityRank : { tokenId in BAYC_rarityRanks[safe:Int(tokenId)] }),
     contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

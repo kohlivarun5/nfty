@@ -8,10 +8,10 @@
 import Foundation
 import Vision
 
-let isFull = true
+let isFull = false
 
-let totalSupply = isFull ? 2048 : 10
-let collectionName = "AsciiPunks"
+let totalSupply = isFull ? 10000 : 100
+let collectionName = "BoredApeYachtClub"
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

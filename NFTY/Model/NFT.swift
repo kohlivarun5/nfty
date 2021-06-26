@@ -263,6 +263,10 @@ let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
 let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 
+let BAYC_nearestTokens : [[UInt]] = load("BoredApeYachtClub_nearestTokens.json")
+let BAYC_rarityRanks : [UInt] = load("BoredApeYachtClub_rarityRanks.json")
+
+
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
