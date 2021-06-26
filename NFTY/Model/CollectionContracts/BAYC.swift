@@ -129,12 +129,16 @@ class BAYC_Contract : ContractInterface {
         
         // BAYC has too much noise, so we skip nil prices
         if let price = priceIfNotZero(indicativePriceWei) {
+          
+          let ipfsImage = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
+          ipfsImage.image.load()
+          
           response(NFTWithPrice(
             nft:NFT(
               address:self.contractAddressHex,
               tokenId:tokenId,
               name:self.name,
-              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+              media:.ipfsImage(ipfsImage)),
             indicativePriceWei:NFTPriceInfo(
               price:price,
               blockNumber:log.blockNumber?.quantity)
