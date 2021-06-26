@@ -32,7 +32,7 @@ func downloadIpfsImage(_ tokenId:UInt) -> Promise<Media.IpfsImage?> {
 
 var collectionName = baycContract.name
 // let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 10
+let totalSize = 10000
 
 var promises : [Promise<Void>] = []
 
