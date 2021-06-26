@@ -38,7 +38,7 @@ struct AsciiPunkView: View {
     VStack {
       ObservedPromiseView(
         data:asciiPunk,
-        progress:
+        progress: {
           ZStack {
             Text(String(repeating: "\n", count: 12))
               .font(.system(size:fontSize, design: .monospaced))
@@ -47,7 +47,7 @@ struct AsciiPunkView: View {
             ProgressView()
               .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
               .scaleEffect(2,anchor: .center)
-          }) {
+          }}) {
         AsciiText(ascii:$0,fontSize: fontSize)
       }
     }

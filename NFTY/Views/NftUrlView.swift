@@ -20,7 +20,7 @@ struct NftUrlView: View {
     
     ObservedPromiseView(
       data: nft,
-      progress: ProgressView()) { nft in
+      progress: {ProgressView()}) { nft in
       // print(nft)
       let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
       let samples = [info.url1,info.url2,info.url3,info.url4];

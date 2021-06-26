@@ -12,9 +12,9 @@ struct ObservedPromiseView<T,ProgressView,ResolvedView> : View where ProgressVie
   
   @ObservedObject var data : ObservablePromise<T>
   private let view : (T) -> ResolvedView
-  private let progress : ProgressView
+  private let progress : () -> ProgressView
   
-  init(data:ObservablePromise<T>,progress:ProgressView,@ViewBuilder view: @escaping (T) -> ResolvedView) {
+  init(data:ObservablePromise<T>,@ViewBuilder progress:@escaping () -> ProgressView,@ViewBuilder view: @escaping (T) -> ResolvedView) {
     self.data = data
     self.progress = progress
     self.view = view
@@ -23,7 +23,7 @@ struct ObservedPromiseView<T,ProgressView,ResolvedView> : View where ProgressVie
   var body: some View {
     switch (data.state) {
     case .loading:
-      self.progress
+      self.progress()
         .onAppear {
           self.data.load()
         }
@@ -35,7 +35,7 @@ struct ObservedPromiseView<T,ProgressView,ResolvedView> : View where ProgressVie
 
 struct ObservedPromiseView_Previews: PreviewProvider {
   static var previews: some View {
-    ObservedPromiseView(data:ObservablePromise(resolved:"Done"),progress:ProgressView()) { data in
+    ObservedPromiseView(data:ObservablePromise(resolved:"Done"),progress:{ ProgressView()}) { data in
       Text(data)
     }
   }

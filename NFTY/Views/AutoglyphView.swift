@@ -151,7 +151,7 @@ struct AutoglyphView: View {
     VStack {
       ObservedPromiseView(
         data:autoglyph,
-        progress:
+        progress: {
           ZStack {
             AutoglyphDrawing(utf8:String(repeating:String(repeating: ".", count: 64) + "\n",count:64))
               .stroke(Color.systemBackground)
@@ -160,7 +160,7 @@ struct AutoglyphView: View {
             ProgressView()
               .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
               .scaleEffect(2,anchor: .center)
-          }) {
+          }}) {
         AutoglyphText(autoglyph:$0,width: width)
           .background(themeColor)
       }

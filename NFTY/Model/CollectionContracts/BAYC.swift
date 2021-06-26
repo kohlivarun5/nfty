@@ -131,7 +131,7 @@ class BAYC_Contract : ContractInterface {
         if let price = priceIfNotZero(indicativePriceWei) {
           
           let ipfsImage = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
-          ipfsImage.image.load()
+          // ipfsImage.image.load()
           
           response(NFTWithPrice(
             nft:NFT(
