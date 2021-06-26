@@ -17,7 +17,7 @@ struct NftImageImpl: View {
     
     ObservedPromiseView(
       data:url,
-      progress:
+      progress: {
         Image(
           samples[
             Int.random(in: 0..<samples.count)
@@ -27,6 +27,7 @@ struct NftImageImpl: View {
         .aspectRatio(contentMode: .fit)
         .padding()
         .blur(radius:20)
+      }
     ) { url in
       
       KFImage.url(url)
@@ -62,7 +63,7 @@ struct NftIpfsImageView: View {
     
     ObservedPromiseView(
       data: image,
-      progress:
+      progress: {
         ZStack {
           Image(
             samples[
@@ -74,7 +75,7 @@ struct NftIpfsImageView: View {
             .blur(radius:20)
           ProgressView()
         }
-      ,
+      },
       view: { ipfs in
         Image(uiImage: UIImage(data:ipfs!.data)!)
           .resizable()

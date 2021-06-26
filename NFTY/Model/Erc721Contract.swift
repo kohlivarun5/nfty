@@ -147,7 +147,7 @@ class Erc721Contract {
     self.contractAddressHex = address
     ethContract = EthContract(address)
     initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
     // name = ethContract.name()
   }
   
@@ -287,7 +287,8 @@ class Erc721Contract {
    event:self.Transfer,
    fromBlock:self.initFromBlock,
    address:self.contractAddressHex,
-   indexedTopics: [nil,nil,tokenIdTopic])
+   indexedTopics: [nil,nil,tokenIdTopic],
+   blockDecrements: 10000)
    
    let p =
    self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
