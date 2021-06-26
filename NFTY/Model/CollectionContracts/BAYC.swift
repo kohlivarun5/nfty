@@ -45,7 +45,12 @@ class BAYC_Contract : ContractInterface {
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
               do {
-                seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data!))
+                switch(data) {
+                case .some(let data):
+                  seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                case .none:
+                  seal.reject("Data is null with error=\(error),response=\(response)" as! Error)
+                }
               } catch {
                 seal.reject("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")" as! Error)
               }

@@ -34,30 +34,32 @@ var collectionName = baycContract.name
 // let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
 let totalSize = 10000
 
-var promises : [Promise<Void>] = []
+var prev : Promise<Void> = Promise.value(())
 
 for tokenId in 0...totalSize {
   
+  let next : Promise<Void> =
+    prev
+    .then {
+      downloadIpfsImage(UInt(tokenId))
+    }.map { image -> Void in
+      print("Downloaded \(tokenId)")
+      let filename = getDocumentsDirectory()
+        .appendingPathComponent("../")
+        .appendingPathComponent("Github")
+        .appendingPathComponent("NFTY")
+        .appendingPathComponent("DownloadCryptoPunks")
+        .appendingPathComponent("Images")
+        .appendingPathComponent(collectionName)
+        .appendingPathComponent("png")
+        .appendingPathComponent("\(tokenId).png")
+      image.flatMap { try! $0.data.write(to: filename) }
+    }
   
-  promises.append(
-    downloadIpfsImage(UInt(tokenId))
-      .done { image -> Void in
-        print("Downloaded \(tokenId)")
-        let filename = getDocumentsDirectory()
-          .appendingPathComponent("../")
-          .appendingPathComponent("Github")
-          .appendingPathComponent("NFTY")
-          .appendingPathComponent("DownloadCryptoPunks")
-          .appendingPathComponent("Images")
-          .appendingPathComponent(collectionName)
-          .appendingPathComponent("png")
-          .appendingPathComponent("\(tokenId).png")
-        image.flatMap { try! $0.data.write(to: filename) }
-      }
-  )
+  prev = next
 }
 
-try? hang(when(fulfilled: promises))
+try? hang(prev)
 // .done(on: DispatchQueue.main) { print("Done") }
 // .catch(on: DispatchQueue.main) { print($0)}
 
