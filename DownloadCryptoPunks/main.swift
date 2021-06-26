@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import PromiseKit
+import BigInt
 
 print("Hello, World!")
 
@@ -22,31 +24,41 @@ private func makeImageUrl(_ tokenId:UInt) -> URL? {
   return URL(string:"https://api.asciipunks.com/punks/\(tokenId)/rendered.png")
 }
 
-var collectionName = "AsciiPunks"
-// let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 1704 //CryptoPunksCollection.info.totalSupply
-
-for tokenId in 1703...2048 {
-  
-  let imageUrl = makeImageUrl(UInt(tokenId))
-  print(imageUrl);
-  switch(imageUrl) {
-  case .some(let url):
-    let data = downloadImageUrl(url:url)
-    let filename = getDocumentsDirectory()
-      .appendingPathComponent("../")
-      .appendingPathComponent("Github")
-      .appendingPathComponent("NFTY")
-      .appendingPathComponent("DownloadCryptoPunks")
-      .appendingPathComponent("Images")
-      .appendingPathComponent(collectionName)
-      .appendingPathComponent("png")
-      .appendingPathComponent("\(tokenId).png")
-    data.flatMap { try! $0.write(to: filename) }
-  case .none:
-    print("Bad URL:\(imageUrl)")
-  }
+func downloadIpfsImage(_ tokenId:UInt) -> Promise<Media.IpfsImage?> {
+  print("Downloading \(tokenId)")
+  return baycContract.ethContract.image(BigUInt(tokenId))
 }
 
+
+var collectionName = baycContract.name
+// let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
+let totalSize = 10
+
+var promises : [Promise<Void>] = []
+
+for tokenId in 0...totalSize {
+  
+  
+  promises.append(
+    downloadIpfsImage(UInt(tokenId))
+      .done { image -> Void in
+        print("Downloaded \(tokenId)")
+        let filename = getDocumentsDirectory()
+          .appendingPathComponent("../")
+          .appendingPathComponent("Github")
+          .appendingPathComponent("NFTY")
+          .appendingPathComponent("DownloadCryptoPunks")
+          .appendingPathComponent("Images")
+          .appendingPathComponent(collectionName)
+          .appendingPathComponent("png")
+          .appendingPathComponent("\(tokenId).png")
+        image.flatMap { try! $0.data.write(to: filename) }
+      }
+  )
+}
+
+try? hang(when(fulfilled: promises))
+// .done(on: DispatchQueue.main) { print("Done") }
+// .catch(on: DispatchQueue.main) { print($0)}
 
 

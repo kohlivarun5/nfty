@@ -21,7 +21,7 @@ class BAYC_Contract : ContractInterface {
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
-  private var name = "BoredApeYachtClub"
+  let name = "BoredApeYachtClub"
   
   let contractAddressHex = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
   
@@ -69,7 +69,7 @@ class BAYC_Contract : ContractInterface {
     }
   }
   
-  private var ethContract = IpfsImageEthContract(address:"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+  var ethContract = IpfsImageEthContract(address:"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     switch(try? imageCache.object(forKey:tokenId)) {
