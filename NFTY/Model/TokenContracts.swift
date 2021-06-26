@@ -110,115 +110,6 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
   return price.flatMap { $0 != 0 ? $0 : nil }
 }
 
-class LogsFetcher {
-  private let blockDecrements : BigUInt
-  private let searchBlocks : BigUInt
-  private var toBlock = EthereumQuantityTag.latest
-  private var mostRecentBlock = EthereumQuantityTag.latest
-  
-  let event : SolidityEvent
-  var fromBlock : BigUInt
-  var address : String
-  var topics : [String?]
-  
-  init(event:SolidityEvent,fromBlock:BigUInt,address:String,indexedTopics:[String?]) {
-    self.event = event;
-    self.fromBlock = fromBlock;
-    self.address = address
-    self.topics = [
-      web3.eth.abi.encodeEventSignature(self.event)
-    ]
-    self.topics.append(contentsOf: indexedTopics)
-    self.searchBlocks = 500
-    self.blockDecrements = searchBlocks * 4
-  }
-  
-  private func updateMostRecent(_ blockNumber:EthereumQuantity?) {
-    
-    switch (blockNumber) {
-    case .some(let blockNum):
-      switch (self.mostRecentBlock.tagType) {
-      case .block(let seen):
-        self.mostRecentBlock = .block(max(seen,blockNum.quantity + 1)) // +1 as fromBlock is inclusive otherwise
-      default:
-        self.mostRecentBlock = .block(blockNum.quantity + 1)
-      }
-      
-      switch (self.mostRecentBlock.tagType) {
-      case .block(let seen):
-        switch (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) {
-        case .some(let prev):
-          UserDefaults.standard.set(String(max(prev,seen - searchBlocks)),forKey: "\(address).initFromBlock")
-        case .none:
-          UserDefaults.standard.set(String(seen - searchBlocks),forKey: "\(address).initFromBlock")
-        }
-      default:
-        break
-      }
-      
-    case .none:
-      break
-    }
-  }
-  
-  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
-    if (self.mostRecentBlock == .latest) {
-      return onDone()
-    }
-    
-    return web3.eth.getLogs(
-      params:EthereumGetLogParams(
-        fromBlock:self.mostRecentBlock,
-        toBlock: EthereumQuantityTag.latest,
-        address:try! EthereumAddress(hex: self.address, eip55: false),
-        topics: self.topics
-      )
-    ) { result in
-      if case let logs? = result.result {
-        logs.indices.forEach { index in
-          let log = logs[index];
-          response(log)
-          self.updateMostRecent(log.blockNumber)
-        }
-      } else {
-        print(result)
-      }
-      onDone()
-    }
-  }
-  
-  func fetch(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void,retries:Int = 10) {
-    
-    return web3.eth.getLogs(
-      params:EthereumGetLogParams(
-        fromBlock:.block(self.fromBlock),
-        toBlock: self.toBlock,
-        address:try! EthereumAddress(hex: self.address, eip55: false),
-        topics: self.topics
-      )
-    ) { result in
-      if case let logs? = result.result {
-        self.toBlock = EthereumQuantityTag.block(self.fromBlock)
-        self.fromBlock = self.fromBlock - self.blockDecrements
-        
-        logs.indices.forEach { index in
-          let log = logs[index];
-          response(log)
-          self.updateMostRecent(log.blockNumber)
-        }
-        
-        if (logs.count == 0 && retries > 0) {
-          return self.fetch(onDone:onDone,response,retries:retries-1);
-        }
-        
-      } else {
-        print(result)
-      }
-      onDone()
-    }
-  }
-}
-
 class CryptoPunksContract : ContractInterface {
   
   
@@ -268,7 +159,7 @@ class CryptoPunksContract : ContractInterface {
   
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+    punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
   }
   
   private func imageUrl(_ tokenId:UInt) -> URL? {
@@ -441,13 +332,15 @@ class CryptoPunksContract : ContractInterface {
               event:self.PunkBought,
               fromBlock:self.initFromBlock,
               address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic])
+              indexedTopics: [tokenIdTopic],
+              blockDecrements: 10000)
             
             let punkOfferedFetcher = LogsFetcher(
               event:self.PunkOffered,
               fromBlock:self.initFromBlock,
               address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic])
+              indexedTopics: [tokenIdTopic],
+              blockDecrements: 10000)
             
             let p =
               self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
@@ -590,7 +483,7 @@ class CryptoKittiesAuction : ContractInterface {
   
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    auctionSuccessfulFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:saleAuctionContract.addressHex,indexedTopics: [])
+    auctionSuccessfulFetcher = LogsFetcher(event:AuctionSuccessful,fromBlock:initFromBlock,address:saleAuctionContract.addressHex,indexedTopics: [],blockDecrements: nil)
   }
   
   private func getOwnerKitties(address:EthereumAddress) -> Promise<KittiesByWallet> {
@@ -740,7 +633,8 @@ class CryptoKittiesAuction : ContractInterface {
             event:self.AuctionSuccessful,
             fromBlock:self.initFromBlock,
             address:self.saleAuctionContract.addressHex,
-            indexedTopics: [])
+            indexedTopics: [],
+            blockDecrements: 5000)
           let p =
             self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
@@ -862,7 +756,7 @@ class AsciiPunksContract : ContractInterface {
   
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [])
+    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
   }
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.AsciiPunk?> {
@@ -893,7 +787,7 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return transfer.fetch(onDone:onDone) { log in
+    return transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
@@ -1002,7 +896,8 @@ class AsciiPunksContract : ContractInterface {
               event:self.Transfer,
               fromBlock:self.initFromBlock,
               address:self.contractAddressHex,
-              indexedTopics: [nil,nil,tokenIdTopic])
+              indexedTopics: [nil,nil,tokenIdTopic],
+              blockDecrements: 10000)
             
             let p =
               self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
@@ -1121,7 +1016,7 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.fetch(onDone:onDone) { log in
+    return ethContract.transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
@@ -1195,7 +1090,8 @@ class AutoglyphsContract : ContractInterface {
               event:self.ethContract.Transfer,
               fromBlock:self.ethContract.initFromBlock,
               address:self.contractAddressHex,
-              indexedTopics: [nil,nil,tokenIdTopic])
+              indexedTopics: [nil,nil,tokenIdTopic],
+              blockDecrements: 10000)
             
             let p =
               self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)

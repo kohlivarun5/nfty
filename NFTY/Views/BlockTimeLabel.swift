@@ -21,7 +21,7 @@ struct BlockTimestampView : View {
   @ObservedObject var block : ObservablePromise<EthereumBlockObject?>
   
   var body: some View {
-    ObservedPromiseView(data: block, progress: Text("...    ")) { block in
+    ObservedPromiseView(data: block, progress: {Text("...    ")}) { block in
       Text(
         (block?.timestamp).map {
           Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay()

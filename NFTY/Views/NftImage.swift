@@ -17,7 +17,7 @@ struct NftImageImpl: View {
     
     ObservedPromiseView(
       data:url,
-      progress:
+      progress: {
         Image(
           samples[
             Int.random(in: 0..<samples.count)
@@ -27,6 +27,7 @@ struct NftImageImpl: View {
         .aspectRatio(contentMode: .fit)
         .padding()
         .blur(radius:20)
+      }
     ) { url in
       
       KFImage.url(url)
@@ -51,6 +52,36 @@ struct NftImageImpl: View {
       
       
     }
+  }
+}
+
+struct NftIpfsImageView: View {
+  
+  @ObservedObject var image : ObservablePromise<Media.IpfsImage?>
+  var samples : [String]
+  var body: some View {
+    
+    ObservedPromiseView(
+      data: image,
+      progress: {
+        ZStack {
+          Image(
+            samples[
+              Int.random(in: 0..<samples.count)
+            ])
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding(15)
+            .blur(radius:20)
+          ProgressView()
+        }
+      },
+      view: { ipfs in
+        Image(uiImage: UIImage(data:ipfs!.data)!)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding(15)
+      })
   }
 }
 
@@ -136,29 +167,9 @@ struct NftImage: View {
           .padding(.top,autoglypPaddingTop(size))
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
-        ObservedPromiseView(
-          data: ipfs.image,
-          progress:
-            ZStack {
-              Image(
-                samples[
-                  Int.random(in: 0..<samples.count)
-                ])
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(15)
-                .blur(radius:20)
-              ProgressView()
-            }
-          ,
-          view: { ipfs in
-            Image(uiImage: UIImage(data:ipfs!.data)!)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .padding(15)
-          })
+        NftIpfsImageView(image:ipfs.image,samples:samples)
+        
       }
-      //.padding()
       HStack {
         Spacer()
         switch(size) {

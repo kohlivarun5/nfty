@@ -23,7 +23,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 struct NFTYApp: App {
   enum SheetStateEnum {
     case nft(String,UInt)
-    case user(EthereumAddress)
+    case user(EthereumAddress,friendName:String?)
   }
   struct SheetState : Identifiable {
     let state : SheetStateEnum
@@ -32,8 +32,8 @@ struct NFTYApp: App {
       switch state {
       case .nft(let address,let tokenId):
         return "nft(\(address),\(tokenId))"
-      case .user(let address):
-        return "user(\(address.hex(eip55:true)))"
+      case .user(let address,let friendName):
+        return "user(\(address.hex(eip55:true)),\(friendName ?? ""))"
       }
     }
   }
@@ -113,7 +113,7 @@ struct NFTYApp: App {
           let params = url.params()
           switch (params["address"] as? String).flatMap({ try? EthereumAddress(hex:$0,eip55:false) }) {
           case .some(let address):
-            self.sheetState = SheetState(state: .user(address))
+            self.sheetState = SheetState(state: .user(address,friendName:params["name"] as? String))
           case .none:
             break
           }
@@ -124,11 +124,13 @@ struct NFTYApp: App {
         switch item.state {
         case .nft(let address,let tokenId):
           NftUrlView(address: address, tokenId: tokenId)
-        case .user(let address):
-          UserUrlView(address: address)
+            .accentColor(Color.orange)
+        case .user(let address,let friendName):
+          UserUrlView(address: address,friendName:friendName)
+            .accentColor(Color.orange)
         }
       }
-      
+      .accentColor(Color.orange)
     }
   }
 }

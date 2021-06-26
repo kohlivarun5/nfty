@@ -77,7 +77,7 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
       uiViewController.present(context.coordinator.alertController!, animated: true)
     }
     if !isPresented && uiViewController.presentedViewController == context.coordinator.alertController {
-      uiViewController.dismiss(animated: true)
+      // uiViewController.dismiss(animated: true)
     }
   }
 }

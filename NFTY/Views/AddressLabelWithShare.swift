@@ -24,6 +24,12 @@ struct AddressLabelWithShare: View {
         components.queryItems = [
           URLQueryItem(name: "address", value: address)
         ]
+        
+        let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+        friends?[address].map { name in
+          components.queryItems?.append(URLQueryItem(name: "name", value: name))
+        }
+        
         guard let urlShare = components.url else { return }
         
         // https://stackoverflow.com/a/64962982
