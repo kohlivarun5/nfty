@@ -171,7 +171,8 @@ class BAYC_Contract : ContractInterface {
               event:self.ethContract.Transfer,
               fromBlock:self.ethContract.initFromBlock,
               address:self.contractAddressHex,
-              indexedTopics: [nil,nil,tokenIdTopic])
+              indexedTopics: [nil,nil,tokenIdTopic],
+              blockDecrements: 10000)
             
             let p =
               self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
