@@ -95,7 +95,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
       themeColor:Color.black,
       themeLabelColor:Color.white,
-      subThemeColor:Color.white,
+      subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
       blur:0,

@@ -32,17 +32,13 @@ func downloadIpfsImage(_ tokenId:UInt) -> Promise<Media.IpfsImage?> {
 
 var collectionName = baycContract.name
 // let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 10000
+let totalSize = 4080 //10000
 
-var prev : Promise<Void> = Promise.value(())
+let from = UserDefaults.standard.integer(forKey:"\(collectionName).startTokenId")
 
-for tokenId in 0...totalSize {
-  
-  let next : Promise<Void> =
-    prev
-    .then {
-      downloadIpfsImage(UInt(tokenId))
-    }.map { image -> Void in
+func saveToken(_ tokenId : Int) -> Promise<Void> {
+    downloadIpfsImage(UInt(tokenId))
+    .map { image -> Void in
       print("Downloaded \(tokenId)")
       let filename = getDocumentsDirectory()
         .appendingPathComponent("../")
@@ -55,8 +51,34 @@ for tokenId in 0...totalSize {
         .appendingPathComponent("\(tokenId).png")
       image.flatMap { try! $0.data.write(to: filename) }
     }
+}
+
+var tokenId = 4050 //UserDefaults.standard.integer(forKey: "\(collectionName).startTokenId")
+// if (tokenId == 0 || tokenId == totalSize ) { tokenId = 2000 }
+var prev : Promise<Int> = Promise.value(tokenId)
+print(tokenId)
+
+let parallelCount = 10
+while tokenId < totalSize {
   
+  // print(tokenId)
+  
+  let next = prev.then { tokenId -> Promise<Int> in
+    print(tokenId)
+    UserDefaults.standard.set(tokenId, forKey: "\(collectionName).startTokenId")
+    var promises : [Promise<Void>] = []
+    var count = 0
+    while (tokenId + count) < totalSize && count < parallelCount {
+      print(tokenId,count)
+      promises.append(saveToken(tokenId + count))
+      count+=1
+    }
+    return when(fulfilled:promises).map { () -> Int in return tokenId + count }
+  }
+  
+  tokenId+=parallelCount
   prev = next
+  
 }
 
 try? hang(prev)

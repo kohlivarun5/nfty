@@ -333,6 +333,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4F74AA452688C4E4000C7A7C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		4FA02CCC265046D600B0B9C5 /* TestUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,15 +395,16 @@
 		4FB9A7AF262B28A300C58AF9 /* NFTY */ = {
 			isa = PBXGroup;
 			children = (
+				4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */,
+				4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */,
+				4FB9A7B9262B28A400C58AF9 /* Info.plist */,
+				4FB9A7F8262B3B1A00C58AF9 /* Model */,
 				4F0872492650CB85002DD748 /* NFTY.entitlements */,
 				4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */,
-				4FB9A7F9262B3B3000C58AF9 /* Resources */,
-				4FB9A7F8262B3B1A00C58AF9 /* Model */,
-				4FB9A7F7262B3B0600C58AF9 /* Views */,
-				4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */,
-				4FB9A7B9262B28A400C58AF9 /* Info.plist */,
-				4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */,
 				4FB9A7B6262B28A400C58AF9 /* Preview Content */,
+				4FB9A7F9262B3B3000C58AF9 /* Resources */,
+				4F74AA452688C4E4000C7A7C /* ViewModel */,
+				4FB9A7F7262B3B0600C58AF9 /* Views */,
 			);
 			path = NFTY;
 			sourceTree = "<group>";
@@ -469,7 +478,6 @@
 			isa = PBXGroup;
 			children = (
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
-				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
 				4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */,
 				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,

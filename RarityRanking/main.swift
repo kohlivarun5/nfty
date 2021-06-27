@@ -9,7 +9,7 @@ import Foundation
 
 print("Hello, World!")
 
-let isFull = false
+let isFull = true
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -19,10 +19,7 @@ func getDocumentsDirectory() -> URL {
 let collectionName = "BoredApeYachtClub"
 //let totalSupply = 10000
 
-struct TokenDistance: Codable {
-  var tokenId: Int
-  var distance: Float
-}
+typealias TokenDistance = [Float]
 
 func load<T:Decodable>(_ name:String) -> T {
   
@@ -64,7 +61,7 @@ let closestForRanking = 10
 
 let nearestTokens : [ [TokenDistance] ] = load("nearestTokens")
 let closestSums = nearestTokens.enumerated().map { (index,distances) in
-  return TokenSumOfClosest(tokenId:index,sum:distances.prefix(10).reduce(0) { $0 + $1.distance })
+  return TokenSumOfClosest(tokenId:index,sum:distances.prefix(10).reduce(0) { $0 + $1[1] })
 }.sorted(by: { $0.sum > $1.sum } )
 
 var ranks : [Int] =  Array(repeating: 0, count:nearestTokens.count)

@@ -47,12 +47,19 @@ class BAYC_Contract : ContractInterface {
               do {
                 switch(data) {
                 case .some(let data):
-                  seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                  if (data.isEmpty) {
+                    print(data,response,error)
+                    seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                  } else {
+                    seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                  }
                 case .none:
-                  seal.reject("Data is null with error=\(error),response=\(response)" as! Error)
+                  print(data,response,error)
+                  seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
                 }
               } catch {
-                seal.reject("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")" as! Error)
+                print(data,response,error)
+                seal.reject(error)
               }
             }).resume()
           }
