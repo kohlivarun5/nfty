@@ -725,7 +725,6 @@
 				4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
-				4F74AA4626890DAA000C7A7C /* XCRemoteSwiftPackageReference "ZippyJSON" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1428,14 +1427,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.3;
-			};
-		};
-		4F74AA4626890DAA000C7A7C /* XCRemoteSwiftPackageReference "ZippyJSON" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/michaeleisel/ZippyJSON";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.4;
 			};
 		};
 		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {
