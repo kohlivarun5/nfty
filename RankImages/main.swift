@@ -10,7 +10,7 @@ import Vision
 
 let isFull = true
 
-let totalSupply = isFull ? 10000 : 10
+let totalSupply = isFull ? 9999 : 10
 let collectionName = "BoredApeYachtClub"
 
 func getDocumentsDirectory() -> URL {
