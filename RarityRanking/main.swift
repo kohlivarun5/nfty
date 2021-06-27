@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ZippyJSON
 
 print("Hello, World!")
 
@@ -33,7 +32,7 @@ func load<T:Decodable>(_ name:String) -> T {
     .appendingPathComponent("\(collectionName)Distances\(isFull ? "" : "_small").json")
   
   let data = try! Data(contentsOf: filename)
-  let decoder = ZippyJSONDecoder()
+  let decoder = JSONDecoder()
   return try! decoder.decode(T.self, from: data)
 }
 
