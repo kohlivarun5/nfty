@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZippyJSON
 
 print("Hello, World!")
 
@@ -32,7 +33,7 @@ func load<T:Decodable>(_ name:String) -> T {
     .appendingPathComponent("\(collectionName)Distances\(isFull ? "" : "_small").json")
   
   let data = try! Data(contentsOf: filename)
-  let decoder = JSONDecoder()
+  let decoder = ZippyJSONDecoder()
   return try! decoder.decode(T.self, from: data)
 }
 
@@ -60,6 +61,7 @@ struct TokenSumOfClosest {
 let closestForRanking = 10
 
 let nearestTokens : [ [TokenDistance] ] = load("nearestTokens")
+print("Loaded distances")
 let closestSums = nearestTokens.enumerated().map { (index,distances) in
   return TokenSumOfClosest(tokenId:index,sum:distances.prefix(10).reduce(0) { $0 + $1[1] })
 }.sorted(by: { $0.sum > $1.sum } )
