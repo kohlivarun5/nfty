@@ -16,13 +16,10 @@ func getDocumentsDirectory() -> URL {
   return paths[0]
 }
 
-let collectionName = "AsciiPunks"
+let collectionName = "BoredApeYachtClub"
 //let totalSupply = 10000
 
-struct TokenDistance: Codable {
-  var tokenId: Int
-  var distance: Float
-}
+typealias TokenDistance = [Float]
 
 func load<T:Decodable>(_ name:String) -> T {
   
@@ -63,8 +60,9 @@ struct TokenSumOfClosest {
 let closestForRanking = 10
 
 let nearestTokens : [ [TokenDistance] ] = load("nearestTokens")
+print("Loaded distances")
 let closestSums = nearestTokens.enumerated().map { (index,distances) in
-  return TokenSumOfClosest(tokenId:index,sum:distances.prefix(10).reduce(0) { $0 + $1.distance })
+  return TokenSumOfClosest(tokenId:index,sum:distances.prefix(10).reduce(0) { $0 + $1[1] })
 }.sorted(by: { $0.sum > $1.sum } )
 
 var ranks : [Int] =  Array(repeating: 0, count:nearestTokens.count)

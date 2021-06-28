@@ -21,7 +21,7 @@ class BAYC_Contract : ContractInterface {
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
-  private var name = "BoredApeYachtClub"
+  let name = "BoredApeYachtClub"
   
   let contractAddressHex = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
   
@@ -45,9 +45,21 @@ class BAYC_Contract : ContractInterface {
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
               do {
-                seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data!))
+                switch(data) {
+                case .some(let data):
+                  if (data.isEmpty) {
+                    print(data,response,error)
+                    seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                  } else {
+                    seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                  }
+                case .none:
+                  print(data,response,error)
+                  seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+                }
               } catch {
-                seal.reject("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")" as! Error)
+                print(data,response,error)
+                seal.reject(error)
               }
             }).resume()
           }
@@ -69,7 +81,7 @@ class BAYC_Contract : ContractInterface {
     }
   }
   
-  private var ethContract = IpfsImageEthContract(address:"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+  var ethContract = IpfsImageEthContract(address:"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     switch(try? imageCache.object(forKey:tokenId)) {

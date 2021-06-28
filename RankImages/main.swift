@@ -10,8 +10,8 @@ import Vision
 
 let isFull = true
 
-let totalSupply = isFull ? 2048 : 10
-let collectionName = "AsciiPunks"
+let totalSupply = isFull ? 9999 : 10
+let collectionName = "BoredApeYachtClub"
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -59,15 +59,12 @@ func save<T: Encodable>(_ obj : T) -> Void? {
   return data.flatMap { try! $0.write(to: filename) }
 }
 
-struct TokenDistance: Codable {
-  var tokenId: Int
-  var distance: Float
-}
+typealias TokenDistance = [Float]
 
 print("Creating Data")
 var distances : [[TokenDistance]] = Array(repeating: [], count: totalSupply+1)
 for tokenId in 1...totalSupply {
-  distances[tokenId] = Array(repeating:TokenDistance(tokenId:-1,distance:-1),count:totalSupply+1)
+  distances[tokenId] = Array(repeating:[-1.0,-1.0],count:totalSupply+1)
 }
 
 print("Creating images")
@@ -89,11 +86,12 @@ for tokenId in 1...totalSupply {
   let image1 = getTokenImageObservation(tokenId)
   for tokenId2 in 1...totalSupply {
     let image2 = getTokenImageObservation(tokenId2)
-    try image1!.computeDistance(&distances[tokenId][tokenId2].distance, to: image2!)
-    distances[tokenId][tokenId2].tokenId = tokenId2
+    var distance : Float = -1.0
+    try image1!.computeDistance(&distance, to: image2!)
+    distances[tokenId][tokenId2] = [Float(tokenId2),Float(distance)]
     print("Done tokenId2=\(tokenId2)")
   }
-  distances[tokenId].sort(by:{$0.distance < $1.distance})
+  distances[tokenId].sort(by:{$0[1] < $1[1]})
   print("Done tokenId=\(tokenId)")
 }
 
