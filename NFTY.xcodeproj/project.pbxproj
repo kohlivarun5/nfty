@@ -35,6 +35,7 @@
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F468F682645FECB00CA6525 /* AddFavSheet.swift */; };
 		4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 4F468F6B2646D63E00CA6525 /* Introspect */; };
+		4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */; };
 		4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C6981264F6483005B9A23 /* AutoglyphView.swift */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
 		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
@@ -66,7 +67,6 @@
 		4FA02CD0265046D600B0B9C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02CCF265046D600B0B9C5 /* ContentView.swift */; };
 		4FA02CD2265046D700B0B9C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA02CD1265046D700B0B9C5 /* Assets.xcassets */; };
 		4FA02CD5265046D700B0B9C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA02CD4265046D700B0B9C5 /* Preview Assets.xcassets */; };
-		4FA20038264DE73700E81BE6 /* OwnerProfileLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA20037264DE73700E81BE6 /* OwnerProfileLinkButton.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -161,6 +161,7 @@
 		4F446F2226376C3600BE739E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
+		4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerProfileLinkButton.swift; sourceTree = "<group>"; };
 		4F4C6981264F6483005B9A23 /* AutoglyphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoglyphView.swift; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
 		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -197,7 +198,6 @@
 		4FA02CD1265046D700B0B9C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FA02CD4265046D700B0B9C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4FA02CD6265046D700B0B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4FA20037264DE73700E81BE6 /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerProfileLinkButton.swift; sourceTree = SOURCE_ROOT; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -459,7 +459,7 @@
 				4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */,
 				4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */,
 				4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */,
-				4FA20037264DE73700E81BE6 /* OwnerProfileLinkButton.swift */,
+				4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */,
 				4F08724A2651E740002DD748 /* PrivateCollectionView.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
@@ -832,9 +832,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
-				4FA20038264DE73700E81BE6 /* OwnerProfileLinkButton.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
