@@ -62,10 +62,15 @@ struct NftDetail: View {
               .foregroundColor(.secondaryLabel)
           }
         }
+        .padding(.leading)
         Spacer()
-        TokenPrice(price:price,color:.label)
+        TradableTokenPrice(price:price,color:.label)
           .font(.title)
-      }.padding()
+          .padding(.top,8)
+          // When no tokens, we need bottom padding, like autoglyphs
+          .padding(.bottom,tokens == nil ? 14 : 0)
+        
+      }
       tokens.map { tokens in
         VStack {
           ZStack {
