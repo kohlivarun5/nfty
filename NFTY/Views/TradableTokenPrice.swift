@@ -48,21 +48,28 @@ struct TradableTokenPrice: View {
   let color : Style
   
   var body: some View {
-    HStack {
-      TokenPrice(price:price,color:color)
-        .padding(.trailing,5)
-      Image(systemName: "chevron.right.circle.fill")
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .frame(height: 30)
-        .foregroundColor(.secondaryLabel)
-    }
-    .padding(.top,8)
-    .padding(.bottom,8)
-    .padding(.leading)
-    .padding(.trailing,10)
     
-    .background(RoundedCorners(color: .secondarySystemBackground, tl: 20, tr: 00, bl: 20, br: 0))
+    Button(action: {
+      UIImpactFeedbackGenerator(style:.soft)
+        .impactOccurred()
+    },label:{
+      
+      HStack {
+        TokenPrice(price:price,color:color)
+          .padding(.trailing,5)
+        Image(systemName: "chevron.right.circle.fill")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(height: 30)
+          .foregroundColor(.secondaryLabel)
+      }
+      .padding(.top,8)
+      .padding(.bottom,8)
+      .padding(.leading)
+      .padding(.trailing,10)
+      
+      .background(RoundedCorners(color: .secondarySystemBackground, tl: 20, tr: 00, bl: 20, br: 0))
+    })
   }
 }
 
