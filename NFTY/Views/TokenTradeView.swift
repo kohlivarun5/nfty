@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import BigInt
+import Web3
 
 struct TokenTradeView: View {
   
@@ -25,6 +27,59 @@ struct TokenTradeView: View {
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 200
   @State var rank : UInt? = nil
+  
+  @State var events : [TradeEvent] = [
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+      ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    ),
+    TradeEvent(
+      type: .offer,
+      value: BigUInt(200000000),
+      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
+    )
+  ]
   
   var body: some View {
     VStack {
@@ -62,7 +117,36 @@ struct TokenTradeView: View {
         .foregroundColor(.label)
       }
       
-      Spacer()
+      
+      ZStack {
+        Divider()
+        Text("Token History")
+          .font(.caption).italic()
+          .foregroundColor(.secondaryLabel)
+          .padding(.trailing)
+          .padding(.leading)
+          .background(Color.systemBackground)
+      }
+      
+      List(events.indices) { index in
+        Text("\(Int(events[index].value))")
+          .padding()
+      }
+      
+      HStack {
+        Spacer()
+        Text("Buy Now")
+          .font(.title)
+        Spacer()
+      }
+      .padding()
+      .padding(.bottom,20)
+      .background(
+        RoundedCorners(
+          color: .green,
+          tl: 20, tr: 20, bl: 0, br: 0))
+      .foregroundColor(.label)
+      
     }
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
@@ -73,6 +157,7 @@ struct TokenTradeView: View {
                label: { BackButton() })
     )
     .ignoresSafeArea(edges: .top)
+    .ignoresSafeArea(edges: .bottom)
     .introspectTabBarController { (UITabBarController) in
       UITabBarController.tabBar.isHidden = true
       uiTabarController = UITabBarController
