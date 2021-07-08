@@ -23,12 +23,12 @@ struct TokenTradeView: View {
   let rarityRank : RarityRankGetter
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 160
+  let height : CGFloat = 200
   @State var rank : UInt? = nil
   
   var body: some View {
     VStack {
-      VStack {
+      VStack(spacing:0) {
         NftImage(
           nft:nft,
           samples:samples,
