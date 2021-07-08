@@ -25,13 +25,22 @@ struct NftDetail: View {
   
   @State var tokens : [UInt]? = nil
   
+  @State var showTradeView : Bool = false
+  
   var body: some View {
     
     VStack {
       
       ZStack {
-        NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:.large)
-          .frame(minHeight: 450)
+        NftImage(
+          nft:nft,
+          samples:samples,
+          themeColor:themeColor,
+          themeLabelColor:themeLabelColor,
+          size:.large
+        )
+        .frame(minHeight: 450)
+        
         VStack(alignment: .leading) {
           Spacer()
           switch hideOwnerLink {
@@ -64,12 +73,29 @@ struct NftDetail: View {
         }
         .padding(.leading)
         Spacer()
-        TradableTokenPrice(price:price,color:.label)
-          .font(.title)
-          .padding(.top,8)
-          // When no tokens, we need bottom padding, like autoglyphs
-          .padding(.bottom,tokens == nil ? 14 : 0)
         
+        NavigationLink(
+          destination:TokenTradeView(
+            nft: nft,
+            price:price,
+            samples: samples,
+            themeColor:themeColor,
+            themeLabelColor:themeLabelColor,
+            size: .small,
+            rarityRank:rarityRank),
+          isActive:$showTradeView) {
+          Button(action: {
+            UIImpactFeedbackGenerator(style:.soft)
+              .impactOccurred()
+            self.showTradeView = true
+          }) {
+            TradableTokenPrice(price:price,color:.label)
+              .font(.title)
+              .padding(.top,8)
+              // When no tokens, we need bottom padding, like autoglyphs
+              .padding(.bottom,tokens == nil ? 14 : 0)
+          }
+          }
       }
       tokens.map { tokens in
         VStack {
