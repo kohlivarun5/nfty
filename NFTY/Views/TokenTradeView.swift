@@ -133,7 +133,6 @@ struct TokenTradeView: View {
           .padding()
       }
       
-      /*
       HStack {
         Button(action: {
           UIImpactFeedbackGenerator(style:.soft)
@@ -142,7 +141,6 @@ struct TokenTradeView: View {
           HStack {
             Spacer()
             Text("Enter Bid")
-              .font(.title2)
             Spacer()
           }
           .padding()
@@ -160,7 +158,6 @@ struct TokenTradeView: View {
           HStack {
             Spacer()
             Text("Buy Now")
-              .font(.title2)
             Spacer()
           }
           .padding()
@@ -170,8 +167,9 @@ struct TokenTradeView: View {
               tl: 20, tr: 0, bl: 20, br: 0))
           .foregroundColor(.label)
         }
-      }.padding(.bottom,25)
-      */
+      }
+      .font(.title2.weight(.bold))
+      .padding(.bottom,25)
       
     }
     .animation(.default)
