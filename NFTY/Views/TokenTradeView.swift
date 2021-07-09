@@ -146,9 +146,8 @@ struct TokenTradeView: View {
           .padding()
           .background(
             RoundedCorners(
-              color: .orange,
+              color: .flatOrange,
               tl: 0, tr: 20, bl: 0, br: 20))
-          .foregroundColor(.label)
         }
         
         Button(action: {
@@ -163,11 +162,11 @@ struct TokenTradeView: View {
           .padding()
           .background(
             RoundedCorners(
-              color: .green,
+              color: .flatGreen,
               tl: 20, tr: 0, bl: 20, br: 0))
-          .foregroundColor(.label)
         }
       }
+      .foregroundColor(.black)
       .font(.title2.weight(.bold))
       .padding(.bottom,25)
       
