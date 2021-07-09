@@ -96,6 +96,10 @@ var txFetcher = TxFetcher()
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 var INIT_BLOCK = BigUInt(12642194)
 
+protocol TokenEventsFetcher {
+  func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void)
+}
+
 protocol ContractInterface {
   
   var contractAddressHex: String { get }
@@ -104,6 +108,8 @@ protocol ContractInterface {
   func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
   func ownerOf(_ tokenId:UInt) -> Promise<EthereumAddress?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
+  
+  func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
 }
 
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
@@ -111,6 +117,8 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 }
 
 class CryptoPunksContract : ContractInterface {
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
+  
   
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
@@ -411,6 +419,8 @@ class CryptoPunksContract : ContractInterface {
 }
 
 class CryptoKittiesAuction : ContractInterface {
+
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
@@ -754,6 +764,10 @@ class AsciiPunksContract : ContractInterface {
   }
   private var ethContract = EthContract()
   
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+    return nil
+  }
+  
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
@@ -955,6 +969,8 @@ class AsciiPunksContract : ContractInterface {
 
 
 class AutoglyphsContract : ContractInterface {
+  
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
   
   private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
     config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),

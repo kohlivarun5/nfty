@@ -174,3 +174,44 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
 }
+
+
+class NftRecentEventsObject : ObservableObject {
+  @Published var events: [TradeEvent] = []
+  var eventsPublished: Published<[TradeEvent]> { _events }
+  var eventsPublisher: Published<[TradeEvent]>.Publisher { $events }
+  
+  private var isLoading = false
+  var fetcher : TokenEventsFetcher
+  
+  init(fetcher:TokenEventsFetcher) {
+    self.fetcher = fetcher
+  }
+  
+  func loadMore(_ callback : @escaping () -> Void) {
+    guard !isLoading else {
+      return
+    }
+    self.isLoading = true
+    fetcher.getEvents(
+      onDone:{
+        self.isLoading = false;
+        callback();
+      }) { event in
+      DispatchQueue.main.async {
+        self.events.append(event)
+      }
+    }
+  }
+  
+  func getEvents(currentIndex:Int?) {
+    guard let index = currentIndex else {
+      loadMore() {}
+      return
+    }
+    let thresholdIndex = self.events.index(self.events.endIndex, offsetBy: -5)
+    if index >= thresholdIndex {
+      loadMore() {}
+    }
+  }
+}

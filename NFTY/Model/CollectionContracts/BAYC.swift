@@ -83,6 +83,10 @@ class BAYC_Contract : ContractInterface {
   
   var ethContract = IpfsImageEthContract(address:"0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
   
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+    return ethContract.getEventsFetcher(tokenId)
+  }
+  
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     switch(try? imageCache.object(forKey:tokenId)) {
     case .some(let p):

@@ -128,10 +128,7 @@ struct TokenTradeView: View {
           .background(Color.systemBackground)
       }
       
-      List(events.indices) { index in
-        Text("\(Int(events[index].value))")
-          .padding()
-      }
+      TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
       
       HStack {
         Button(action: {
