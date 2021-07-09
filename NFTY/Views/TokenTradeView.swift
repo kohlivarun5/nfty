@@ -25,7 +25,7 @@ struct TokenTradeView: View {
   let rarityRank : RarityRankGetter
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 200
+  let height : CGFloat = 300
   @State var rank : UInt? = nil
   
   @State var events : [TradeEvent] = [
@@ -33,7 +33,7 @@ struct TokenTradeView: View {
       type: .offer,
       value: BigUInt(200000000),
       blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-      ),
+    ),
     TradeEvent(
       type: .offer,
       value: BigUInt(200000000),
@@ -83,13 +83,14 @@ struct TokenTradeView: View {
   
   var body: some View {
     VStack {
+      
       VStack(spacing:0) {
         NftImage(
           nft:nft,
           samples:samples,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
-          size:.small
+          size:.medium
         )
         .frame(height:height)
         .padding(.top,20)
@@ -117,10 +118,9 @@ struct TokenTradeView: View {
         .foregroundColor(.label)
       }
       
-      
       ZStack {
         Divider()
-        Text("Token History")
+        Text("History")
           .font(.caption).italic()
           .foregroundColor(.secondaryLabel)
           .padding(.trailing)
@@ -133,19 +133,45 @@ struct TokenTradeView: View {
           .padding()
       }
       
+      /*
       HStack {
-        Spacer()
-        Text("Buy Now")
-          .font(.title)
-        Spacer()
-      }
-      .padding()
-      .padding(.bottom,20)
-      .background(
-        RoundedCorners(
-          color: .green,
-          tl: 20, tr: 20, bl: 0, br: 0))
-      .foregroundColor(.label)
+        Button(action: {
+          UIImpactFeedbackGenerator(style:.soft)
+            .impactOccurred()
+        }) {
+          HStack {
+            Spacer()
+            Text("Enter Bid")
+              .font(.title2)
+            Spacer()
+          }
+          .padding()
+          .background(
+            RoundedCorners(
+              color: .orange,
+              tl: 0, tr: 20, bl: 0, br: 20))
+          .foregroundColor(.label)
+        }
+        
+        Button(action: {
+          UIImpactFeedbackGenerator(style:.soft)
+            .impactOccurred()
+        }) {
+          HStack {
+            Spacer()
+            Text("Buy Now")
+              .font(.title2)
+            Spacer()
+          }
+          .padding()
+          .background(
+            RoundedCorners(
+              color: .green,
+              tl: 20, tr: 0, bl: 20, br: 0))
+          .foregroundColor(.label)
+        }
+      }.padding(.bottom,25)
+      */
       
     }
     .animation(.default)
