@@ -352,14 +352,32 @@ class Erc721Contract {
   }
   
   class EventsFetcher : TokenEventsFetcher {
-    let transerFetcher : LogsFetcher
+    let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
+      SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
+      SolidityEvent.Parameter(name: "to", type: .address, indexed: true),
+      SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
+    ])
     
+    let transerFetcher : LogsFetcher
+    var reachedMint = false
     init(transferFetcher:LogsFetcher) {
       self.transerFetcher = transferFetcher
     }
     
     func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
-      return transerFetcher.fetch(onDone:onDone) { log in
+      print("Fetching events")
+      if (reachedMint) { return onDone() }
+      
+      return transerFetcher.fetch(onDone: {
+        if (!self.reachedMint) {
+          self.getEvents(onDone:onDone,response)
+        } else { onDone() }
+      }) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
+        let from = res["from"] as! EthereumAddress
+        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+          self.reachedMint = true
+        }
         
         txFetcher.eventOfTx(transactionHash: log.transactionHash)
           .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
@@ -383,7 +401,7 @@ class Erc721Contract {
       fromBlock:self.initFromBlock,
       address:self.contractAddressHex,
       indexedTopics: [nil,nil,tokenIdTopic],
-      blockDecrements: 10000)
+      blockDecrements: 100000)
     
     return EventsFetcher(transferFetcher:transerFetcher)
   }

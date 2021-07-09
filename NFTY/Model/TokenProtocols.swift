@@ -189,17 +189,20 @@ class NftRecentEventsObject : ObservableObject {
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
-    guard !isLoading else {
-      return
-    }
+    guard !isLoading else { return }
     self.isLoading = true
+    print("Calling getEvents")
     fetcher.getEvents(
       onDone:{
         self.isLoading = false;
+        print(self.events.count)
         callback();
       }) { event in
       DispatchQueue.main.async {
         self.events.append(event)
+        self.events.sort { left, right in
+          return left.blockNumber.quantity > right.blockNumber.quantity
+        }
       }
     }
   }

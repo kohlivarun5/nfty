@@ -18,12 +18,6 @@ struct TradeEventsList: View {
     
     @ObservedObject var events : NftRecentEventsObject
     
-    private func sorted(_ l:[TradeEvent]) -> [TradeEvent] {
-      return l.sorted(by:{ left,right in
-        return left.blockNumber.quantity > right.blockNumber.quantity
-      })
-    }
-    
     var body: some View {
       switch(isLoading) {
       case true:
@@ -36,9 +30,12 @@ struct TradeEventsList: View {
             }
           }
       case false:
-        let data = sorted(events.events);
-        List(data.indices) { index in
-          Text("\(Int(data[index].blockNumber.quantity))")
+        List(events.events.indices) { index in
+          HStack {
+            Text("\(Int(events.events[index].blockNumber.quantity))")
+            Spacer()
+            Text("\(Int(events.events[index].value))")
+          }
             .padding()
             .onAppear {
               self.events.getEvents(currentIndex:index);
