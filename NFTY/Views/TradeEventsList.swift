@@ -21,25 +21,43 @@ struct TradeEventsList: View {
     var body: some View {
       switch(isLoading) {
       case true:
-        ProgressView()
-          .onAppear {
-            self.events.loadMore {
-              DispatchQueue.main.async {
-                self.isLoading = false
+        VStack {
+          Spacer()
+          ProgressView()
+            .scaleEffect(2.0, anchor: .center)
+            .onAppear {
+              self.events.loadMore {
+                DispatchQueue.main.async {
+                  self.isLoading = false
+                }
               }
             }
-          }
+          Spacer()
+        }
       case false:
-        List(events.events.indices) { index in
+        List(events.events,id:\.self.blockNumber.quantity) { event in
           HStack {
-            Text("\(Int(events.events[index].blockNumber.quantity))")
-            Spacer()
-            Text("\(Int(events.events[index].value))")
-          }
-            .padding()
-            .onAppear {
-              self.events.getEvents(currentIndex:index);
+            switch(event.value) {
+            case 0:
+              Text("Transfer")
+                .frame(width:120,alignment: .trailing)
+                .font(.footnote)
+                .foregroundColor(.secondaryLabel)
+            default:
+              UsdText(wei:event.value)
+                .frame(width:120,alignment: .trailing)
+                
             }
+            Spacer()
+            Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+            Spacer()
+            BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+              .frame(width:120,alignment: .trailing)
+          }
+          .padding()
+          /* .onAppear {
+            self.events.getEvents(currentIndex:0);
+          } */
         }
         .animation(.default)
       }
