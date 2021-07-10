@@ -43,13 +43,15 @@ struct TradeEventsList: View {
                 .frame(width:120,alignment: .trailing)
                 .font(.footnote)
                 .foregroundColor(.secondaryLabel)
+              Spacer()
+              Image(systemName: "arrowshape.zigzag.forward")
             default:
               UsdText(wei:event.value)
                 .frame(width:120,alignment: .trailing)
+              Spacer()
+              Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
                 
             }
-            Spacer()
-            Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
             Spacer()
             BlockTimeLabel(blockNumber: event.blockNumber.quantity)
               .frame(width:120,alignment: .trailing)
