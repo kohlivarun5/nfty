@@ -364,8 +364,6 @@ class Erc721Contract {
     }
     
     func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
-      print("Fetching events")
-      
       var reachedMint = false
       
       return transferFetcher.fetchAllLogs(onDone: {

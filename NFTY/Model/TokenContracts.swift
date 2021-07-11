@@ -405,7 +405,6 @@ class CryptoPunksContract : ContractInterface {
     }
     
     func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
-      print("Fetching events")
       var counter = 0
       
       punkBoughtFetcher.fetchAllLogs(onDone: {

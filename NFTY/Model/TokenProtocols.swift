@@ -191,7 +191,6 @@ class NftRecentEventsObject : ObservableObject {
   func loadMore(_ callback : @escaping () -> Void) {
     guard !isLoading else { return }
     self.isLoading = true
-    print("Calling getEvents")
     fetcher.getEvents(
       onDone:{
         self.isLoading = false;

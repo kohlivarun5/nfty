@@ -74,28 +74,34 @@ struct NftDetail: View {
         .padding(.leading)
         Spacer()
         
-        NavigationLink(
-          destination:TokenTradeView(
-            nft: nft,
-            price:price,
-            samples: samples,
-            themeColor:themeColor,
-            themeLabelColor:themeLabelColor,
-            size: .small,
-            rarityRank:rarityRank),
-          isActive:$showTradeView) {
-          Button(action: {
-            UIImpactFeedbackGenerator(style:.soft)
-              .impactOccurred()
-            self.showTradeView = true
-          }) {
-            TradableTokenPrice(price:price,color:.label)
-              .font(.title)
-              .padding(.top,8)
-              // When no tokens, we need bottom padding, like autoglyphs
-              .padding(.bottom,tokens == nil ? 14 : 0)
+        switch(tokens) {
+        case .none:
+          TokenPrice(price:price,color:.label)
+            .font(.title)
+            .padding()
+        case .some:
+          NavigationLink(
+            destination:TokenTradeView(
+              nft: nft,
+              price:price,
+              samples: samples,
+              themeColor:themeColor,
+              themeLabelColor:themeLabelColor,
+              size: .small,
+              rarityRank:rarityRank),
+            isActive:$showTradeView
+          ) {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.showTradeView = true
+            }) {
+              TradableTokenPrice(price:price,color:.label)
+                .font(.title)
+                .padding(.top,8)
+            }
           }
-          }
+        }
       }
       tokens.map { tokens in
         VStack {
