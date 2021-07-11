@@ -130,6 +130,7 @@ struct TokenTradeView: View {
       
       TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
       
+      /* TODO Hide till tradiing
       HStack {
         Button(action: {
           UIImpactFeedbackGenerator(style:.soft)
@@ -166,8 +167,17 @@ struct TokenTradeView: View {
       .foregroundColor(.black)
       .font(.title2.weight(.bold))
       .padding(.bottom,25)
+       */
       
     }
+    /*
+     .introspectTabBarController { (UITabBarController) in
+     UITabBarController.tabBar.isHidden = true
+     uiTabarController = UITabBarController
+     }.onDisappear{
+     uiTabarController?.tabBar.isHidden = false
+     }
+     .ignoresSafeArea(edges: .bottom)*/
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
@@ -177,14 +187,6 @@ struct TokenTradeView: View {
                label: { BackButton() })
     )
     .ignoresSafeArea(edges: .top)
-    .ignoresSafeArea(edges: .bottom)
-    .introspectTabBarController { (UITabBarController) in
-      UITabBarController.tabBar.isHidden = true
-      uiTabarController = UITabBarController
-    }.onDisappear{
-      uiTabarController?.tabBar.isHidden = false
-    }
-    .animation(.default)
     .onAppear {
       self.rank = rarityRank(nft.tokenId)
     }
