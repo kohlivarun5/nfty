@@ -10,6 +10,52 @@ import BigInt
 import Web3
 
 
+
+struct TradeEventIconView : View {
+  
+  let type : TradeEventType
+  
+  var body: some View {
+    switch (type) {
+    case .bought:
+      VStack(spacing:5) {
+        Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+        Text("Sale")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
+      }
+    case .bid:
+      VStack(spacing:5) {
+        Image(systemName: "hand.point.up.left")
+        Text("Bid")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
+      }
+    case .offer:
+      VStack(spacing:5) {
+        Image(systemName: "target")
+        Text("Offer")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
+      }
+    case .minted:
+      VStack(spacing:5) {
+        Image(systemName: "sparkles")
+        Text("Minted")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
+      }
+    case .transfer:
+      VStack(spacing:5) {
+        Image(systemName: "arrowshape.zigzag.forward")
+        Text("Transfer")
+          .font(.footnote)
+          .foregroundColor(.secondaryLabel)
+      }
+    }
+  }
+}
+
 struct TradeEventsList: View {
   
   struct TradeEventsListImpl: View {
@@ -17,21 +63,6 @@ struct TradeEventsList: View {
     @State private var isLoading = true
     
     @ObservedObject var events : NftRecentEventsObject
-    
-    private func getEventIconName(type:TradeEventType) -> String {
-      switch (type) {
-      case .bought:
-        return "arrow.up.right.and.arrow.down.left.rectangle"
-      case .bid:
-        return "hand.point.up.left"
-      case .offer:
-        return "target"
-      case .minted:
-        return "lasso.sparkles"
-      case .transfer:
-        return "arrowshape.zigzag.forward"
-      }
-    }
     
     var body: some View {
       switch(isLoading) {
@@ -57,10 +88,10 @@ struct TradeEventsList: View {
             switch(event.value) {
             case 0:
               HStack {
-                Text("Transfer")
+                Text("")
                   .frame(width:120,alignment: .trailing)
                 Spacer()
-                Image(systemName: getEventIconName(type:.transfer))
+                TradeEventIconView(type:.transfer)
                 Spacer()
                 BlockTimeLabel(blockNumber: event.blockNumber.quantity)
                   .frame(width:120,alignment: .trailing)
@@ -72,7 +103,7 @@ struct TradeEventsList: View {
                 UsdText(wei:event.value)
                   .frame(width:120,alignment: .trailing)
                 Spacer()
-                Image(systemName: getEventIconName(type:event.type))
+                TradeEventIconView(type:event.type)
                 Spacer()
                 BlockTimeLabel(blockNumber: event.blockNumber.quantity)
                   .frame(width:120,alignment: .trailing)

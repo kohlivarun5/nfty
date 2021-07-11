@@ -28,59 +28,6 @@ struct TokenTradeView: View {
   let height : CGFloat = 300
   @State var rank : UInt? = nil
   
-  @State var events : [TradeEvent] = [
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    ),
-    TradeEvent(
-      type: .offer,
-      value: BigUInt(200000000),
-      blockNumber: EthereumQuantity(quantity:BigUInt(12642194))
-    )
-  ]
-  
   var body: some View {
     VStack {
       
