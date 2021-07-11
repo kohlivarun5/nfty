@@ -9,27 +9,6 @@ import Foundation
 import SwiftUI
 import Web3
 
-public extension Color {
-  static let lightText = Color(UIColor.lightText)
-  static let darkText = Color(UIColor.darkText)
-  
-  static let label = Color(UIColor.label)
-  static let secondaryLabel = Color(UIColor.secondaryLabel)
-  static let tertiaryLabel = Color(UIColor.tertiaryLabel)
-  static let quaternaryLabel = Color(UIColor.quaternaryLabel)
-  
-  static let systemBackground = Color(UIColor.systemBackground)
-  static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
-  static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
-  
-  static let flatGreen = Color(red: 85/255, green: 239/255, blue: 196/255)
-  static let flatOrange = Color(red: 253/255, green: 203/255, blue: 110/255)
-  static let flatRed = Color(red: 225/255, green: 112/255, blue: 85/255)
-  
-  // There are more..
-}
-
-
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
