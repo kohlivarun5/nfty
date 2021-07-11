@@ -18,6 +18,19 @@ struct TradeEventsList: View {
     
     @ObservedObject var events : NftRecentEventsObject
     
+    private func getEventIconName(type:TradeEventType) -> String {
+      switch (type) {
+      case .bought:
+        return "arrow.up.right.and.arrow.down.left.rectangle"
+      case .offer:
+        return "hand.point.up.left"
+      case .minted:
+        return "lasso.sparkles"
+      case .transfer:
+        return "arrowshape.zigzag.forward"
+      }
+    }
+    
     var body: some View {
       switch(isLoading) {
       case true:
@@ -36,32 +49,41 @@ struct TradeEventsList: View {
         }
       case false:
         List(events.events,id:\.self.blockNumber.quantity) { event in
-          HStack {
+          
+          VStack {
+          
             switch(event.value) {
             case 0:
-              Text("Transfer")
-                .frame(width:120,alignment: .trailing)
-                .font(.footnote)
-                .foregroundColor(.secondaryLabel)
-              Spacer()
-              Image(systemName: "arrowshape.zigzag.forward")
+              HStack {
+                Text("Transfer")
+                  .frame(width:120,alignment: .trailing)
+                Spacer()
+                Image(systemName: getEventIconName(type:.transfer))
+                Spacer()
+                BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  .frame(width:120,alignment: .trailing)
+              }
+              .foregroundColor(.secondaryLabel)
+              .font(.footnote)
             default:
-              UsdText(wei:event.value)
-                .frame(width:120,alignment: .trailing)
-              Spacer()
-              Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
-                
+              HStack {
+                UsdText(wei:event.value)
+                  .frame(width:120,alignment: .trailing)
+                Spacer()
+                Image(systemName: getEventIconName(type:event.type))
+                Spacer()
+                BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  .frame(width:120,alignment: .trailing)
+              }
+              
             }
-            Spacer()
-            BlockTimeLabel(blockNumber: event.blockNumber.quantity)
-              .frame(width:120,alignment: .trailing)
           }
           .padding()
+          .animation(.default)
           /* .onAppear {
-            self.events.getEvents(currentIndex:0);
-          } */
+           self.events.getEvents(currentIndex:0);
+           } */
         }
-        .animation(.default)
       }
       
     }

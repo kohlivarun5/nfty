@@ -358,34 +358,36 @@ class Erc721Contract {
       SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
     ])
     
-    let transerFetcher : LogsFetcher
-    var reachedMint = false
+    let transferFetcher : LogsFetcher
     init(transferFetcher:LogsFetcher) {
-      self.transerFetcher = transferFetcher
+      self.transferFetcher = transferFetcher
     }
     
     func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
       print("Fetching events")
-      if (reachedMint) { return onDone() }
       
-      return transerFetcher.fetch(onDone: {
-        if (!self.reachedMint) {
-          self.getEvents(onDone:onDone,response)
-        } else { onDone() }
+      var reachedMint = false
+      
+      return transferFetcher.fetchAllLogs(onDone: {
+        if (reachedMint) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
         let from = res["from"] as! EthereumAddress
-        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
-          self.reachedMint = true
-        }
         
+        var type : TradeEventType = .bought
+        
+        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+          reachedMint = true
+          type = .minted
+        }
+          
         txFetcher.eventOfTx(transactionHash: log.transactionHash)
           .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:
-              return TradeEvent(type:TradeEventType.bought,value:BigUInt(0),blockNumber:log.blockNumber!)
+              return TradeEvent(type:.transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
             case .some(let tx):
-              return TradeEvent(type:TradeEventType.bought,value:tx.value,blockNumber:tx.blockNumber)
+              return TradeEvent(type:type,value:tx.value,blockNumber:tx.blockNumber)
             }
           }.done { response($0) }
           .catch { print($0) }
@@ -401,7 +403,7 @@ class Erc721Contract {
       fromBlock:self.initFromBlock,
       address:self.contractAddressHex,
       indexedTopics: [nil,nil,tokenIdTopic],
-      blockDecrements: 100000)
+      blockDecrements: 10000)
     
     return EventsFetcher(transferFetcher:transerFetcher)
   }

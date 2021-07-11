@@ -12,6 +12,8 @@ import Web3
 enum TradeEventType {
   case offer
   case bought
+  case minted
+  case transfer
 }
 
 struct TradeEvent {
