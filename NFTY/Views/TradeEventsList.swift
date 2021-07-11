@@ -48,9 +48,9 @@ struct TradeEventIconView : View {
     case .transfer:
       VStack(spacing:5) {
         Image(systemName: "arrowshape.zigzag.forward")
-        Text("Transfer")
+        /* Text("")
           .font(.footnote)
-          .foregroundColor(.secondaryLabel)
+          .foregroundColor(.secondaryLabel) */
       }
     }
   }
@@ -88,7 +88,7 @@ struct TradeEventsList: View {
             switch(event.value) {
             case 0:
               HStack {
-                Text("")
+                Text("Transfer")
                   .frame(width:120,alignment: .trailing)
                 Spacer()
                 TradeEventIconView(type:.transfer)
