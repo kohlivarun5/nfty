@@ -11,6 +11,7 @@ import Web3
 
 enum TradeEventType {
   case offer
+  case bid
   case bought
   case minted
   case transfer

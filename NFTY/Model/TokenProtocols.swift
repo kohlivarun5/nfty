@@ -195,7 +195,7 @@ class NftRecentEventsObject : ObservableObject {
     fetcher.getEvents(
       onDone:{
         self.isLoading = false;
-        print(self.events.count)
+        // print(self.events.count)
         callback();
       }) { event in
       DispatchQueue.main.async {

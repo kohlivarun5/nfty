@@ -117,9 +117,6 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 }
 
 class CryptoPunksContract : ContractInterface {
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
-  
-  
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
@@ -134,6 +131,12 @@ class CryptoPunksContract : ContractInterface {
     SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
     SolidityEvent.Parameter(name: "minValue", type: .uint256, indexed: false),
     SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
+  ])
+  
+  private let PunkBidEntered: SolidityEvent = SolidityEvent(name: "PunkBidEntered", anonymous: false, inputs: [
+    SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+    SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
+    SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true)
   ])
   
   private var name = "CryptoPunks"
@@ -369,6 +372,100 @@ class CryptoPunksContract : ContractInterface {
         }
       )
     );
+  }
+  
+  
+  class EventsFetcher : TokenEventsFetcher {
+    private let PunkBought: SolidityEvent = SolidityEvent(name: "PunkBought", anonymous: false, inputs: [
+      SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+      SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
+      SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true),
+      SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
+    ])
+    
+    private let PunkOffered: SolidityEvent = SolidityEvent(name: "PunkOffered", anonymous: false, inputs: [
+      SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+      SolidityEvent.Parameter(name: "minValue", type: .uint256, indexed: false),
+      SolidityEvent.Parameter(name: "toAddress", type: .address, indexed: true)
+    ])
+    
+    private let PunkBidEntered: SolidityEvent = SolidityEvent(name: "PunkBidEntered", anonymous: false, inputs: [
+      SolidityEvent.Parameter(name: "punkIndex", type: .uint256, indexed: true),
+      SolidityEvent.Parameter(name: "value", type: .uint256, indexed: false),
+      SolidityEvent.Parameter(name: "fromAddress", type: .address, indexed: true)
+    ])
+    
+    private var punkBoughtFetcher : LogsFetcher
+    private var punkOfferedFetcher : LogsFetcher
+    private var punkBidFetcher : LogsFetcher
+    init(punkBoughtFetcher:LogsFetcher,punkOfferedFetcher:LogsFetcher,punkBidFetcher:LogsFetcher) {
+      self.punkBoughtFetcher = punkBoughtFetcher
+      self.punkOfferedFetcher = punkOfferedFetcher
+      self.punkBidFetcher = punkBidFetcher
+    }
+    
+    func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
+      print("Fetching events")
+      var counter = 0
+      
+      punkBoughtFetcher.fetchAllLogs(onDone: {
+        counter+=1
+        if (counter >= 3) { onDone() }
+      }) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+        
+        let from = res["fromAddress"] as! EthereumAddress
+        var type : TradeEventType = .bought
+        
+        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+          type = .minted
+        }
+        response(TradeEvent(type:type, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+      }
+      
+      punkOfferedFetcher.fetchAllLogs(onDone: {
+        counter+=1
+        if (counter >= 3) { onDone() }
+      }) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
+        response(TradeEvent(type:.offer, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
+      }
+      
+      punkBidFetcher.fetchAllLogs(onDone: {
+        counter+=1
+        if (counter >= 3) { onDone() }
+      }) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.PunkBidEntered,from:log);
+        response(TradeEvent(type:.bid, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+      }
+    }
+      
+  }
+  
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+    let punkBoughtFetcher = LogsFetcher(
+      event:self.PunkBought,
+      fromBlock:self.initFromBlock,
+      address:self.contractAddressHex,
+      indexedTopics: [tokenIdTopic],
+      blockDecrements: 10000)
+    
+    let punkOfferedFetcher = LogsFetcher(
+      event:self.PunkOffered,
+      fromBlock:self.initFromBlock,
+      address:self.contractAddressHex,
+      indexedTopics: [tokenIdTopic],
+      blockDecrements: 10000)
+    
+    let punkBidFetcher = LogsFetcher(
+      event:self.PunkBidEntered,
+      fromBlock:self.initFromBlock,
+      address:self.contractAddressHex,
+      indexedTopics: [tokenIdTopic],
+      blockDecrements: 10000)
+    
+    return EventsFetcher(punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,punkBidFetcher:punkBidFetcher)
   }
   
   struct Asset: Codable {
@@ -971,8 +1068,6 @@ class AsciiPunksContract : ContractInterface {
 
 class AutoglyphsContract : ContractInterface {
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
-  
   private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
     config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.Autoglyph.self))
@@ -1015,6 +1110,9 @@ class AutoglyphsContract : ContractInterface {
   }
   
   private var ethContract = GlyphContract(contractAddress:"0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
+  
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return ethContract.getEventsFetcher(tokenId) }
+  
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.Autoglyph?> {
     switch(try? drawingCache.object(forKey:tokenId)) {

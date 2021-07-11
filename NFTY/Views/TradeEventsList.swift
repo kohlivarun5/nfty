@@ -22,8 +22,10 @@ struct TradeEventsList: View {
       switch (type) {
       case .bought:
         return "arrow.up.right.and.arrow.down.left.rectangle"
-      case .offer:
+      case .bid:
         return "hand.point.up.left"
+      case .offer:
+        return "target"
       case .minted:
         return "lasso.sparkles"
       case .transfer:
