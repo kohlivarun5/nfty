@@ -47,15 +47,20 @@ struct TokenTradeView: View {
           VStack(alignment: .leading) {
             Text(nft.name)
               .font(.headline)
-            Text("#\(nft.tokenId)")
-              .font(.subheadline)
+            HStack {
+              Text("#\(nft.tokenId)")
+              OpenSeaLink(nft:nft)
+            }
+            .font(.footnote)
             rank.map {
               Text("RarityRank: \($0)")
                 .font(.footnote)
+                .foregroundColor(.secondaryLabel)
             }
           }
           Spacer()
           TokenPrice(price:price,color:.label)
+            .font(.title)
         }
         .padding()
         .background(

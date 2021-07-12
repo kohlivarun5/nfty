@@ -15,6 +15,7 @@ struct RoundedImage: View {
   var samples : [String]
   var themeColor : Color
   var themeLabelColor : Color
+  var rarityRank : RarityRankGetter
   var rank : UInt?
   
   enum Width {
@@ -28,7 +29,7 @@ struct RoundedImage: View {
        samples : [String],
        themeColor : Color,
        themeLabelColor : Color,
-       rarityRank : RarityRankGetter,
+       rarityRank : @escaping RarityRankGetter,
        width:Width)
   {
     
@@ -37,6 +38,7 @@ struct RoundedImage: View {
     self.samples = samples
     self.themeColor = themeColor
     self.themeLabelColor = themeLabelColor
+    self.rarityRank = rarityRank
     self.rank = rarityRank(nft.tokenId)
     self.width = width
   }
@@ -77,7 +79,6 @@ struct RoundedImage: View {
       case .narrow:
         HStack {}
       case .normal:
-        
         HStack {
           VStack(alignment:.leading) {
             Text(nft.name)
@@ -94,10 +95,22 @@ struct RoundedImage: View {
             }
           }
           Spacer()
-          TokenPrice(price:price,color:.label)
+          TradeHistorySheet(content: {
+            TokenPrice(price:price,color:.label)
+          },sheetContent: {
+            TokenTradeView(
+              nft: nft,
+              price:price,
+              samples: samples,
+              themeColor:themeColor,
+              themeLabelColor:themeLabelColor,
+              size: .small,
+              rarityRank:rarityRank)
+          })
         }
         .font(.subheadline)
         .padding()
+        
       }
     }
     
