@@ -117,4 +117,28 @@ class LogsFetcher {
       onDone()
     }
   }
+  
+  func fetchAllLogs(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
+  
+    web3.eth.getLogs(
+      params:EthereumGetLogParams(
+        fromBlock:.block(0),
+        toBlock: .latest,
+        address:try! EthereumAddress(hex: self.address, eip55: false),
+        topics: self.topics
+      )
+    ) { result in
+      if case let logs? = result.result {
+        logs.indices.forEach { index in
+          let log = logs[index];
+          response(log)
+        }
+      } else {
+        print(result)
+      }
+      onDone()
+    }
+  }
+    
+    
 }

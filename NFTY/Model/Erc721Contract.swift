@@ -79,7 +79,7 @@ class Erc721Contract {
           return outputs["tokenURI"] as! String
         }
     }
-     
+    
     
     func ownerOf(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
@@ -351,4 +351,58 @@ class Erc721Contract {
     return ethContract.ownerOf(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
+  class EventsFetcher : TokenEventsFetcher {
+    let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
+      SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
+      SolidityEvent.Parameter(name: "to", type: .address, indexed: true),
+      SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
+    ])
+    
+    let transferFetcher : LogsFetcher
+    init(transferFetcher:LogsFetcher) {
+      self.transferFetcher = transferFetcher
+    }
+    
+    func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
+      var reachedMint = false
+      
+      return transferFetcher.fetchAllLogs(onDone: {
+        if (reachedMint) { onDone() }
+      }) { log in
+        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
+        let from = res["from"] as! EthereumAddress
+        
+        var type : TradeEventType = .bought
+        
+        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+          reachedMint = true
+          type = .minted
+        }
+          
+        txFetcher.eventOfTx(transactionHash: log.transactionHash)
+          .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
+            switch(txData) {
+            case .none:
+              return TradeEvent(type:.transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
+            case .some(let tx):
+              return TradeEvent(type:type,value:tx.value,blockNumber:tx.blockNumber)
+            }
+          }.done { response($0) }
+          .catch { print($0) }
+      }
+    }
+  }
+  
+  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+    
+    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+    let transerFetcher = LogsFetcher(
+      event:self.Transfer,
+      fromBlock:self.initFromBlock,
+      address:self.contractAddressHex,
+      indexedTopics: [nil,nil,tokenIdTopic],
+      blockDecrements: 10000)
+    
+    return EventsFetcher(transferFetcher:transerFetcher)
+  }
 }

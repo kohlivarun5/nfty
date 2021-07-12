@@ -15,7 +15,6 @@ enum Style {
 
 struct TokenPriceKnown : View {
   let info : NFTPriceInfo
-  
   let color : Style
   
   private func color(_ color:Style) -> Color {
@@ -123,7 +122,6 @@ struct TokenPriceLazy : View {
 
 struct TokenPrice: View {
   let price : TokenPriceType
-  
   let color : Style
   
   var body: some View {

@@ -25,13 +25,22 @@ struct NftDetail: View {
   
   @State var tokens : [UInt]? = nil
   
+  @State var showTradeView : Bool = false
+  
   var body: some View {
     
     VStack {
       
       ZStack {
-        NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:.large)
-          .frame(minHeight: 450)
+        NftImage(
+          nft:nft,
+          samples:samples,
+          themeColor:themeColor,
+          themeLabelColor:themeLabelColor,
+          size:.large
+        )
+        .frame(minHeight: 450)
+        
         VStack(alignment: .leading) {
           Spacer()
           switch hideOwnerLink {
@@ -62,10 +71,38 @@ struct NftDetail: View {
               .foregroundColor(.secondaryLabel)
           }
         }
+        .padding(.leading)
         Spacer()
-        TokenPrice(price:price,color:.label)
-          .font(.title)
-      }.padding()
+        
+        switch(tokens) {
+        case .none:
+          TokenPrice(price:price,color:.label)
+            .font(.title)
+            .padding()
+        case .some:
+          NavigationLink(
+            destination:TokenTradeView(
+              nft: nft,
+              price:price,
+              samples: samples,
+              themeColor:themeColor,
+              themeLabelColor:themeLabelColor,
+              size: .small,
+              rarityRank:rarityRank),
+            isActive:$showTradeView
+          ) {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.showTradeView = true
+            }) {
+              TradableTokenPrice(price:price,color:.label)
+                .font(.title)
+                .padding(.top,8)
+            }
+          }
+        }
+      }
       tokens.map { tokens in
         VStack {
           ZStack {
