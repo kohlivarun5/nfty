@@ -20,7 +20,7 @@ struct AsciiText : View {
         .padding()
     case .some(let text):
       Text(text.unicode)
-        .font(.system(size:fontSize, design: .monospaced))
+        .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
         .foregroundColor(Color.systemBackground)
         .padding()
     }
