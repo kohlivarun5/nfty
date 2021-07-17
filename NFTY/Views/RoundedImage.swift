@@ -95,7 +95,7 @@ struct RoundedImage: View {
             }
           }
           Spacer()
-          TradeHistorySheet(content: {
+          SheetButton(content: {
             TokenPrice(price:price,color:.label)
           },sheetContent: {
             TokenTradeView(

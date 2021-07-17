@@ -1,5 +1,5 @@
 //
-//  TradeHistorySheet.swift
+//  SheetButton.swift
 //  NFTY
 //
 //  Created by Varun Kohli on 7/11/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TradeHistorySheet<ButtonView,SheetView> : View where ButtonView:View, SheetView : View {
+struct SheetButton<ButtonView,SheetView> : View where ButtonView:View, SheetView : View {
   @State private var showSheet = false
   
   private let content : () -> ButtonView
@@ -24,8 +24,8 @@ struct TradeHistorySheet<ButtonView,SheetView> : View where ButtonView:View, She
   }
 }
 
-struct TradeHistorySheet_Previews: PreviewProvider {
+struct SheetButton_Previews: PreviewProvider {
   static var previews: some View {
-    TradeHistorySheet(content:{Text("")},sheetContent: { Text("")})
+    SheetButton(content:{Text("")},sheetContent: { Text("")})
   }
 }

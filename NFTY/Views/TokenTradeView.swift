@@ -13,9 +13,6 @@ struct TokenTradeView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  @State var uiTabarController: UITabBarController?
-  
-  
   let nft:NFT
   let price:TokenPriceType
   let samples:[String]
@@ -82,7 +79,6 @@ struct TokenTradeView: View {
       
       TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
       
-      /* TODO Hide till tradiing
       HStack {
         Button(action: {
           UIImpactFeedbackGenerator(style:.soft)
@@ -91,6 +87,8 @@ struct TokenTradeView: View {
           HStack {
             Spacer()
             Text("Enter Bid")
+              .foregroundColor(.black)
+              .font(.title2.weight(.bold))
             Spacer()
           }
           .padding()
@@ -100,13 +98,12 @@ struct TokenTradeView: View {
               tl: 0, tr: 20, bl: 0, br: 20))
         }
         
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-        }) {
+        SheetButton(content: {
           HStack {
             Spacer()
-            Text("Buy Now")
+            Text("Sell")
+              .foregroundColor(.black)
+              .font(.title2.weight(.bold))
             Spacer()
           }
           .padding()
@@ -114,22 +111,25 @@ struct TokenTradeView: View {
             RoundedCorners(
               color: .flatGreen,
               tl: 20, tr: 0, bl: 20, br: 0))
-        }
+        },sheetContent: {
+          BidOfferView(
+            nft: nft,
+            price:price,
+            samples: samples,
+            themeColor:themeColor,
+            themeLabelColor:themeLabelColor,
+            size: .small,
+            rarityRank:rarityRank)
+        })
       }
-      .foregroundColor(.black)
-      .font(.title2.weight(.bold))
-      .padding(.bottom,25)
-       */
+      .padding(.bottom,10)
+      .padding(.top,10)
+      .background(
+        RoundedCorners(
+          color: .secondarySystemBackground,
+          tl: 10, tr: 10, bl: 0, br: 0))
       
     }
-    /*
-     .introspectTabBarController { (UITabBarController) in
-     UITabBarController.tabBar.isHidden = true
-     uiTabarController = UITabBarController
-     }.onDisappear{
-     uiTabarController?.tabBar.isHidden = false
-     }
-     .ignoresSafeArea(edges: .bottom)*/
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
