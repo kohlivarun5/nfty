@@ -31,6 +31,20 @@ struct BidOfferView: View {
     priceInWei = Double(eth).map { BigUInt($0 * 1e18) }
   }
   
+  enum SpotState {
+    case loading
+    case localCurrency(Double)
+    case unknown
+  }
+  
+  @State private var spot : SpotState = .loading
+  
+  private func onSubmit() {
+    print(eth)
+    print(priceInWei)
+    print(spot)
+  }
+  
   var body: some View {
     VStack {
       
@@ -81,7 +95,7 @@ struct BidOfferView: View {
         Text("Set Price in ETH")
           .font(.title3).italic()
           .foregroundColor(.secondaryLabel)
-          .padding()
+          .padding(10)
           .background(Color.systemBackground)
       }
       
@@ -99,41 +113,71 @@ struct BidOfferView: View {
         Text("Sale Price")
           .font(.title3).italic()
           .foregroundColor(.secondaryLabel)
-          .padding()
+          .padding(10)
           .background(Color.systemBackground)
       }
       
       VStack {
         
-        switch (priceInWei) {
-        case .some(let price):
-          UsdText(wei:price)
-        case .none:
+        switch(spot,priceInWei) {
+        case (.loading,_):
+          ProgressView()
+            .onAppear {
+              switch(self.spot) {
+              case .loading:
+                EthSpot.getLiveRate()
+                  .done(on:.main) { spot in
+                    switch(spot) {
+                    case .none:
+                      self.spot = .unknown
+                    case .some(let rate):
+                      self.spot = .localCurrency(rate)
+                    }
+                  }.catch { print ($0) }
+              case .localCurrency,.unknown:
+                break
+              }
+            }
+        case (.localCurrency(let rate),.some(let price)):
+          Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+        case (.unknown,.some(let price)):
+          Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+        case (_,.none):
           Text(" ")
         }
-      
+        
+        
         HStack {
           Button(action: {
             UIImpactFeedbackGenerator(style:.soft)
               .impactOccurred()
+            self.onSubmit()
           }) {
             HStack {
               Spacer()
-              Text("Submit Sale")
+              Text("Start Sale")
               Spacer()
             }
             .padding()
             .foregroundColor(.white)
             .background(priceInWei == nil ? Color.gray : Color.green)
             .cornerRadius(40)
-            .padding()
+            .padding(.leading)
+            .padding(.trailing)
+            .padding(.top,10)
           }
           .disabled(priceInWei == nil)
         }
         .foregroundColor(.black)
       }.font(.title2.weight(.bold))
       
-      //Spacer()
+      Text("NFTYgo deducts 0.3% as protocol fees when sale settles")
+        .padding(.bottom,5)
+        .padding(.top,5)
+        .font(.footnote)
+        .foregroundColor(.secondary)
+      
+      Spacer()
       
       
     }

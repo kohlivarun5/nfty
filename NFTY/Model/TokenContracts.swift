@@ -1298,7 +1298,8 @@ class UserEthRate {
     let data : SpotData
   }
   
-  private func getRate() -> Promise<Double?> {
+  func getLiveRate() -> Promise<Double?> {
+    print("Getting spot")
     switch(NSLocale.current.currencyCode) {
     case .none:
       return Promise.value(nil)
@@ -1307,7 +1308,9 @@ class UserEthRate {
         var request = URLRequest(url: URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot")!)
         request.httpMethod = "GET"
         
+        print("Calling coinbae api for \(localCurrencyCode)")
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          print("Got response from coinbase")
           do {
             let jsonDecoder = JSONDecoder()
             let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
@@ -1326,7 +1329,7 @@ class UserEthRate {
     case .some(let p):
       return p
     case .none:
-      let p = getRate()
+      let p = getLiveRate()
       DispatchQueue.main.async {
         self.cache = p
       }
