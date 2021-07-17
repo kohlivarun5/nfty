@@ -112,7 +112,7 @@ struct TokenTradeView: View {
               color: .flatGreen,
               tl: 20, tr: 0, bl: 20, br: 0))
         },sheetContent: {
-          BidOfferView(
+          NewOfferView(
             nft: nft,
             price:price,
             samples: samples,

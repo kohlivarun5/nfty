@@ -1,5 +1,5 @@
 //
-//  BidOfferView.swift
+//  NewOfferView.swift
 //  NFTY
 //
 //  Created by Varun Kohli on 7/16/21.
@@ -9,7 +9,7 @@ import SwiftUI
 import BigInt
 import Web3
 
-struct BidOfferView: View {
+struct NewOfferView: View {
   
   let nft:NFT
   let price:TokenPriceType
@@ -189,9 +189,9 @@ struct BidOfferView: View {
   }
 }
 
-struct BidOfferView_Previews: PreviewProvider {
+struct NewOfferView_Previews: PreviewProvider {
   static var previews: some View {
-    BidOfferView(
+    NewOfferView(
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:123450,blockNumber: nil)),
       samples:SAMPLE_PUNKS,
