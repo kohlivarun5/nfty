@@ -139,20 +139,26 @@ struct NFTPriceInfo {
   let blockNumber : BigUInt?
 }
 
+enum NFTPriceStatus {
+  case known(NFTPriceInfo)
+  case notSeenSince(NFTNotSeenSince)
+  case burnt
+}
+
+enum TokenPriceType {
+  case eager(NFTPriceInfo)
+  case lazy(ObservablePromise<NFTPriceStatus>)
+}
+
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let indicativePriceWei : NFTPriceInfo
+  let indicativePriceWei : TokenPriceType
   
   var id : NFT.NftID {
     return nft.id
   }
 }
 
-enum NFTPriceStatus {
-  case known(NFTPriceInfo)
-  case notSeenSince(NFTNotSeenSince)
-  case burnt
-}
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
@@ -170,11 +176,6 @@ struct NFTWithLazyPrice : Identifiable {
   var indicativePriceWei : ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
-}
-
-enum TokenPriceType {
-  case eager(NFTPriceInfo)
-  case lazy(ObservablePromise<NFTPriceStatus>)
 }
 
 struct SimilarTokensGetter {

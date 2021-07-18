@@ -203,33 +203,31 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-          indicativePriceWei:
+          indicativePriceWei:.eager(
             NFTPriceInfo(
               price:value,
-              blockNumber: log.blockNumber?.quantity)
+              blockNumber: log.blockNumber?.quantity))
         ))
       case .none:
-        let onPrice = { (indicativePriceWei:BigUInt?) in
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:tokenId,
-              name:self.name,
-              media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-            indicativePriceWei:
-              NFTPriceInfo(
-                price:priceIfNotZero(indicativePriceWei),
-                blockNumber: log.blockNumber?.quantity)
-          ))
-        }
-        
-        self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-          .done(on:DispatchQueue.global(qos:.userInteractive)) {
-            onPrice($0?.value)
-          }.catch { error in
-            print(error);
-            onPrice(nil)
-          }
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          indicativePriceWei:.lazy(
+            ObservablePromise(
+              promise:
+                self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+                .map { $0?.value }
+                .map { (indicativePriceWei:BigUInt?) in
+                  .known(NFTPriceInfo(
+                          price:priceIfNotZero(indicativePriceWei),
+                          blockNumber: log.blockNumber?.quantity))
+                }
+            )
+          )
+        ))
       }
     }
   }
@@ -248,33 +246,31 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-          indicativePriceWei:
+          indicativePriceWei:.eager(
             NFTPriceInfo(
               price:value,
-              blockNumber: log.blockNumber?.quantity)
+              blockNumber: log.blockNumber?.quantity))
         ))
       case .none:
-        let onPrice = { (indicativePriceWei:BigUInt?) in
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:tokenId,
-              name:self.name,
-              media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-            indicativePriceWei:
-              NFTPriceInfo(
-                price:priceIfNotZero(indicativePriceWei),
-                blockNumber: log.blockNumber?.quantity)
-          ))
-        }
-        
-        self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-          .done(on:DispatchQueue.global(qos:.userInteractive)) {
-            onPrice($0?.value)
-          }.catch { error in
-            print(error);
-            onPrice(nil)
-          }
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          indicativePriceWei:.lazy(
+            ObservablePromise(
+              promise:
+                self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+                .map { $0?.value }
+                .map { (indicativePriceWei:BigUInt?) in
+                  .known(NFTPriceInfo(
+                          price:priceIfNotZero(indicativePriceWei),
+                          blockNumber: log.blockNumber?.quantity))
+                }
+            )
+          )
+        ))
       }
     }
   }
@@ -666,9 +662,9 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        indicativePriceWei:NFTPriceInfo(
+        indicativePriceWei:.eager(NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-          blockNumber: log.blockNumber?.quantity)
+          blockNumber: log.blockNumber?.quantity))
       ))
     }
   }
@@ -683,9 +679,9 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        indicativePriceWei:NFTPriceInfo(
+        indicativePriceWei:.eager(NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-          blockNumber: log.blockNumber?.quantity)
+          blockNumber: log.blockNumber?.quantity))
       ))
     }
   }
@@ -902,54 +898,49 @@ class AsciiPunksContract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
-      };
-      
-      self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(NFTPriceInfo(
+                        price:indicativePriceWei,
+                        blockNumber:log.blockNumber?.quantity))
+              }
+          ))
+      ))
     }
   }
-  
+      
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.updateLatest(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
-      
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
-      };
-      
-      self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(NFTPriceInfo(
+                        price:indicativePriceWei,
+                        blockNumber:log.blockNumber?.quantity))
+              }
+          ))
+      ))
     }
   }
   
@@ -1134,26 +1125,25 @@ class AutoglyphsContract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
-      };
-      
-      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(
+                  NFTPriceInfo(
+                    price:priceIfNotZero(indicativePriceWei),
+                    blockNumber:log.blockNumber?.quantity))
+              }
+          ))
+      ))
     }
   }
   
@@ -1162,26 +1152,25 @@ class AutoglyphsContract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        response(NFTWithPrice(
-          nft:NFT(
-            address:self.contractAddressHex,
-            tokenId:tokenId,
-            name:self.name,
-            media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-          indicativePriceWei:NFTPriceInfo(
-            price:priceIfNotZero(indicativePriceWei),
-            blockNumber:log.blockNumber?.quantity)
-        ))
-      };
-      
-      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(
+                  NFTPriceInfo(
+                    price:priceIfNotZero(indicativePriceWei),
+                    blockNumber:log.blockNumber?.quantity))
+              }
+          ))
+      ))
     }
   }
   

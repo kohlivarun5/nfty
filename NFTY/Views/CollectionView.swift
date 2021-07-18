@@ -41,35 +41,18 @@ struct CollectionView: View {
     }
   }
   
-  private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
-    let res = l.sorted(by:{ left,right in
-      switch(left.indicativePriceWei.blockNumber,right.indicativePriceWei.blockNumber) {
-      case (.none,.none):
-        return true
-      case (.some(let l),.some(let r)):
-        return l > r;
-      case (.none,.some):
-        return true;
-      case (.some,.none):
-        return false;
-      }
-    })
-    // print(res[safe:0]);
-    return res;
-  }
-  
   var body: some View {
     
     ScrollView {
       LazyVStack {
-        let data = sorted(recentTrades.recentTrades);
-        ForEach(data.indices,id: \.self) { index in
+        let data = recentTrades.recentTrades
+        ForEach(recentTrades.recentTrades.indices,id: \.self) { index in
           let nft = data[index];
           let samples = [info.url1,info.url2,info.url3,info.url4];
           ZStack {
             RoundedImage(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
@@ -84,7 +67,7 @@ struct CollectionView: View {
             
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,

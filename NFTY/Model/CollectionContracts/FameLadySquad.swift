@@ -81,8 +81,10 @@ class FameLadySquad_Contract : ContractInterface {
     case .none:
       let p = ethContract.image(tokenId);
       let observable = ObservablePromise(promise: p) { image in
-        image.flatMap {
-          try? self.imageCache.setObject($0, forKey: tokenId)
+        DispatchQueue.global(qos:.userInteractive).async {
+          image.flatMap {
+            try? self.imageCache.setObject($0, forKey: tokenId)
+          }
         }
       }
       return observable
@@ -102,29 +104,24 @@ class FameLadySquad_Contract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        
-        if let price = priceIfNotZero(indicativePriceWei) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:tokenId,
-              name:self.name,
-              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-            indicativePriceWei:NFTPriceInfo(
-              price:price,
-              blockNumber:log.blockNumber?.quantity)
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(NFTPriceInfo(
+                        price:indicativePriceWei,
+                        blockNumber:log.blockNumber?.quantity))
+              }
           ))
-        }
-      };
-      
-      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      ))
     }
   }
   
@@ -133,29 +130,24 @@ class FameLadySquad_Contract : ContractInterface {
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
-      let onPrice = { (indicativePriceWei:BigUInt?) in
-        
-        if let price = priceIfNotZero(indicativePriceWei) {
-          response(NFTWithPrice(
-            nft:NFT(
-              address:self.contractAddressHex,
-              tokenId:tokenId,
-              name:self.name,
-              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-            indicativePriceWei:NFTPriceInfo(
-              price:price,
-              blockNumber:log.blockNumber?.quantity)
+      response(NFTWithPrice(
+        nft:NFT(
+          address:self.contractAddressHex,
+          tokenId:tokenId,
+          name:self.name,
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        indicativePriceWei:.lazy(
+          ObservablePromise(
+            promise:
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              .map { $0?.value }
+              .map { (indicativePriceWei:BigUInt?) in
+                .known(NFTPriceInfo(
+                        price:indicativePriceWei,
+                        blockNumber:log.blockNumber?.quantity))
+              }
           ))
-        }
-      };
-      
-      self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-        .done(on:DispatchQueue.global(qos:.userInteractive)) {
-          onPrice($0?.value)
-        }.catch { error in
-          print(error);
-          onPrice(nil)
-        }
+      ))
     }
   }
   
