@@ -110,6 +110,7 @@ class FameLadySquad_Contract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -117,7 +118,7 @@ class FameLadySquad_Contract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -136,6 +137,7 @@ class FameLadySquad_Contract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -143,7 +145,7 @@ class FameLadySquad_Contract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))

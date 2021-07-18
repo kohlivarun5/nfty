@@ -203,6 +203,7 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          blockNumber: log.blockNumber?.quantity,
           indicativePriceWei:.eager(
             NFTPriceInfo(
               price:value,
@@ -215,6 +216,7 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          blockNumber: log.blockNumber?.quantity,
           indicativePriceWei:.lazy(
             ObservablePromise(
               promise:
@@ -246,6 +248,7 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          blockNumber: log.blockNumber?.quantity,
           indicativePriceWei:.eager(
             NFTPriceInfo(
               price:value,
@@ -258,6 +261,7 @@ class CryptoPunksContract : ContractInterface {
             tokenId:tokenId,
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          blockNumber: log.blockNumber?.quantity,
           indicativePriceWei:.lazy(
             ObservablePromise(
               promise:
@@ -662,6 +666,7 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.eager(NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity))
@@ -679,6 +684,7 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.eager(NFTPriceInfo(
           price: priceIfNotZero(res["totalPrice"] as? BigUInt),
           blockNumber: log.blockNumber?.quantity))
@@ -904,6 +910,7 @@ class AsciiPunksContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -911,7 +918,7 @@ class AsciiPunksContract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -929,6 +936,7 @@ class AsciiPunksContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -936,7 +944,7 @@ class AsciiPunksContract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -1131,6 +1139,7 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -1158,6 +1167,7 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:

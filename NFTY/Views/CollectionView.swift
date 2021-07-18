@@ -41,6 +41,23 @@ struct CollectionView: View {
     }
   }
   
+  private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
+    let res = l.sorted(by:{ left,right in
+      switch(left.blockNumber,right.blockNumber) {
+      case (.none,.none):
+        return true
+      case (.some(let l),.some(let r)):
+        return l > r;
+      case (.none,.some):
+        return true;
+      case (.some,.none):
+        return false;
+      }
+    })
+    // print(res[safe:0]);
+    return res;
+  }
+  
   var body: some View {
     
     ScrollView {

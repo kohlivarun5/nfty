@@ -115,6 +115,7 @@ class BAYC_Contract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -122,7 +123,7 @@ class BAYC_Contract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -141,6 +142,7 @@ class BAYC_Contract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+        blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(
             promise:
@@ -148,7 +150,7 @@ class BAYC_Contract : ContractInterface {
               .map { $0?.value }
               .map { (indicativePriceWei:BigUInt?) in
                 .known(NFTPriceInfo(
-                        price:indicativePriceWei,
+                        price:priceIfNotZero(indicativePriceWei),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))

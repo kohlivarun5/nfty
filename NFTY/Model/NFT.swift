@@ -152,6 +152,7 @@ enum TokenPriceType {
 
 struct NFTWithPrice : Identifiable {
   let nft : NFT
+  let blockNumber : BigUInt?
   let indicativePriceWei : TokenPriceType
   
   var id : NFT.NftID {
