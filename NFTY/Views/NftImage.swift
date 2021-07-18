@@ -47,10 +47,9 @@ struct NftImageImpl: View {
         .fade(duration: 0.001)
         .interpolation(.none)
         .resizable()
+        .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
         .aspectRatio(contentMode: .fit)
         .padding()
-      
-      
     }
   }
 }

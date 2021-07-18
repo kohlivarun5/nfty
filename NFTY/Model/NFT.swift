@@ -260,6 +260,13 @@ let SAMPLE_BAYC : [String] = [
   "SampleBAYC4"
 ]
 
+let SAMPLE_FLG : [String] = [
+  "SampleLady1",
+  "SampleLady2",
+  "SampleLady3",
+  "SampleLady4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
@@ -275,3 +282,4 @@ let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 let autoGlyphsContract = AutoglyphsContract()
 let baycContract = BAYC_Contract()
+let fameLadyContract = FameLadySquad_Contract()

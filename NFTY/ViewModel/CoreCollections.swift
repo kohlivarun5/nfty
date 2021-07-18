@@ -88,6 +88,25 @@ let CompositeCollection = CompositeRecentTradesObject([
     contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
+      address:fameLadyContract.contractAddressHex,
+      url1:SAMPLE_FLG[0],
+      url2:SAMPLE_FLG[1],
+      url3:SAMPLE_FLG[2],
+      url4:SAMPLE_FLG[3],
+      name:"FameLadySquad",
+      webLink: URL(string:"https://fameladysquad.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens : nil,//SimilarTokensGetter(label:"Ladies")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
+      rarityRank : { tokenId in nil }),// { tokenId in BAYC_rarityRanks[safe:Int(tokenId)] }),
+    contract:fameLadyContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
       url1:SAMPLE_KITTIES[0],
       url2:SAMPLE_KITTIES[1],

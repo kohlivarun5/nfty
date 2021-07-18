@@ -11,6 +11,7 @@
 		4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724C2651EAC0002DD748 /* FriendsView.swift */; };
 		4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB825269AA26900AD5165 /* UIKitUtils.swift */; };
 		4F0FB828269BECD000AD5165 /* TradeHistorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB827269BECD000AD5165 /* TradeHistorySheet.swift */; };
+		4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
 		4F27A7C5267FB702008CCB0A /* BAYC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7C4267FB702008CCB0A /* BAYC.swift */; };
@@ -156,6 +157,7 @@
 		4F08724C2651EAC0002DD748 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		4F0FB825269AA26900AD5165 /* UIKitUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUtils.swift; sourceTree = "<group>"; };
 		4F0FB827269BECD000AD5165 /* TradeHistorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistorySheet.swift; sourceTree = "<group>"; };
+		4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FameLadySquad.swift; sourceTree = "<group>"; };
 		4F27A7C4267FB702008CCB0A /* BAYC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAYC.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				4F27A7C4267FB702008CCB0A /* BAYC.swift */,
+				4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -889,6 +892,7 @@
 				4FB9A7DF262B307C00C58AF9 /* CircleImage.swift in Sources */,
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
+				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
 				4F0FB828269BECD000AD5165 /* TradeHistorySheet.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
@@ -1182,7 +1186,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1192,7 +1196,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1209,7 +1213,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1219,7 +1223,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.2.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

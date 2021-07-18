@@ -94,7 +94,7 @@ var txFetcher = TxFetcher()
 
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-var INIT_BLOCK = BigUInt(12642194)
+var INIT_BLOCK = BigUInt(12851498)
 
 protocol TokenEventsFetcher {
   func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void)
