@@ -11,6 +11,12 @@ import BigInt
 
 print("Hello, World!")
 
+let contract = fameLadyContract
+
+var collectionName = contract.name
+let totalSize = 8887
+
+
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]
@@ -26,13 +32,8 @@ private func makeImageUrl(_ tokenId:UInt) -> URL? {
 
 func downloadIpfsImage(_ tokenId:UInt) -> Promise<Media.IpfsImage?> {
   print("Downloading \(tokenId)")
-  return baycContract.ethContract.image(BigUInt(tokenId))
+  return contract.ethContract.image(BigUInt(tokenId))
 }
-
-
-var collectionName = baycContract.name
-// let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 4080 //10000
 
 let from = UserDefaults.standard.integer(forKey:"\(collectionName).startTokenId")
 
@@ -53,7 +54,7 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
     }
 }
 
-var tokenId = 4050 //UserDefaults.standard.integer(forKey: "\(collectionName).startTokenId")
+var tokenId = UserDefaults.standard.integer(forKey: "\(collectionName).startTokenId")
 // if (tokenId == 0 || tokenId == totalSize ) { tokenId = 2000 }
 var prev : Promise<Int> = Promise.value(tokenId)
 print(tokenId)

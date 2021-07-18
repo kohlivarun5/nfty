@@ -12,6 +12,9 @@
 		4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB825269AA26900AD5165 /* UIKitUtils.swift */; };
 		4F0FB828269BECD000AD5165 /* TradeHistorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB827269BECD000AD5165 /* TradeHistorySheet.swift */; };
 		4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
+		4F0FB83126A49B2800AD5165 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
+		4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
+		4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
 		4F27A7C5267FB702008CCB0A /* BAYC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7C4267FB702008CCB0A /* BAYC.swift */; };
@@ -158,6 +161,8 @@
 		4F0FB825269AA26900AD5165 /* UIKitUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUtils.swift; sourceTree = "<group>"; };
 		4F0FB827269BECD000AD5165 /* TradeHistorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeHistorySheet.swift; sourceTree = "<group>"; };
 		4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FameLadySquad.swift; sourceTree = "<group>"; };
+		4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_rarityRanks.json; sourceTree = "<group>"; };
+		4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_nearestTokens.json; sourceTree = "<group>"; };
 		4F27A7C4267FB702008CCB0A /* BAYC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BAYC.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -510,6 +515,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
+				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
 				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
 				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
@@ -774,6 +781,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
@@ -782,6 +790,7 @@
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
@@ -822,6 +831,7 @@
 				4F27A7CA2682D1B4008CCB0A /* BAYC.swift in Sources */,
 				4F27A7C82682D1AC008CCB0A /* ObservablePromise.swift in Sources */,
 				4F27A7DF26876906008CCB0A /* LogsFetcher.swift in Sources */,
+				4F0FB83126A49B2800AD5165 /* FameLadySquad.swift in Sources */,
 				4F58A01F263675E700E258C1 /* main.swift in Sources */,
 				4F27A7DA2682D326008CCB0A /* TokenProtocols.swift in Sources */,
 				4F27A7CB2682D1BA008CCB0A /* Erc721Contract.swift in Sources */,

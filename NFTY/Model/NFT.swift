@@ -260,7 +260,7 @@ let SAMPLE_BAYC : [String] = [
   "SampleBAYC4"
 ]
 
-let SAMPLE_FLG : [String] = [
+let SAMPLE_FLS : [String] = [
   "SampleLady1",
   "SampleLady2",
   "SampleLady3",
@@ -276,6 +276,8 @@ let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 let BAYC_nearestTokens : [[UInt]] = load("BoredApeYachtClub_nearestTokens.json")
 let BAYC_rarityRanks : [UInt] = load("BoredApeYachtClub_rarityRanks.json")
 
+let FLS_nearestTokens : [[UInt]] = load("FameLadySquad_nearestTokens.json")
+let FLS_rarityRanks : [UInt] = load("FameLadySquad_rarityRanks.json")
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();

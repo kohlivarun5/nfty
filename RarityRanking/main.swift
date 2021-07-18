@@ -16,7 +16,7 @@ func getDocumentsDirectory() -> URL {
   return paths[0]
 }
 
-let collectionName = "BoredApeYachtClub"
+let collectionName = "FameLadySquad"
 //let totalSupply = 10000
 
 typealias TokenDistance = [Float]
