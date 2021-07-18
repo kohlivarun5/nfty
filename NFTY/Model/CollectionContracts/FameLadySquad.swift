@@ -11,6 +11,7 @@ import BigInt
 import PromiseKit
 import Web3
 import Web3ContractABI
+import UIKit
 
 
 class FameLadySquad_Contract : ContractInterface {
@@ -27,49 +28,32 @@ class FameLadySquad_Contract : ContractInterface {
   
   class IpfsImageEthContract : Erc721Contract {
     
-    struct TokenUriData : Codable {
-      let image : String
-    }
+    // till 4443 inclusive, it is QmRRRcbfE3fTqBLTmmYMxENaNmAffv7ihJnwFkAimBP4Ac
+    // after it is QmTwNwAerqdP3LXcZnCCPyqQzTyB26R5xbsqEy5Vh3h6Dw
     
     func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
       return Promise { seal in
-        var request = URLRequest(
-          url:URL(string:"https://ipfs.infura.io:5001/api/v0/cat?arg=QmZcsYci9njCygp3GtFEhHzz4JsTMofzPFoX8MQoBKdRcL%2F\(tokenId)")!)
+        
+        let url = tokenId < 4444
+          ? URL(string:"https://nft-1.mypinata.cloud/ipfs/QmRRRcbfE3fTqBLTmmYMxENaNmAffv7ihJnwFkAimBP4Ac/\(tokenId).png")!
+          : URL(string:"https://nft-1.mypinata.cloud/ipfs/QmTwNwAerqdP3LXcZnCCPyqQzTyB26R5xbsqEy5Vh3h6Dw/\(tokenId).png")!
+        
+        var request = URLRequest(url:url)
         request.httpMethod = "GET"
         
         URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+          // print(data,response,error)
+          
+          // Compress these images on download, as they cause jitter in UI scrolling
+          
           DispatchQueue.global(qos:.userInteractive).async {
-            // print(data,response,error)
-            do {
-              switch(data) {
-              case .some(let data):
-                if (data.isEmpty) {
-                  print(data,response,error)
-                  seal.reject(NSError(domain:"", code:404, userInfo:nil))
-                } else {
-                  seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
-                }
-              case .none:
-                print(data,response,error)
-                seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
-              }
-            } catch {
-              print(data,response,error)
-              seal.reject(error)
+            data.map {
+              let image = UIImage(data:$0)!
+              let data = image.jpegData(compressionQuality: 0.1)!
+              seal.fulfill(Media.IpfsImage(data: data))
             }
           }
         }).resume()
-      }.then(on: DispatchQueue.global(qos:.userInteractive)) { (uriData:TokenUriData) -> Promise<Media.IpfsImage?> in
-        return Promise { seal in
-          //print(uriData)
-          var request = URLRequest(url:URL(string:uriData.image)!)
-          request.httpMethod = "GET"
-          
-          URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-            // print(data,response,error)
-            seal.fulfill(data.map { Media.IpfsImage(data:$0) })
-          }).resume()
-        }
       }
     }
   }
