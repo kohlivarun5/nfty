@@ -99,10 +99,9 @@ class FameLadySquad_Contract : ContractInterface {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
+              .map {
                 .known(NFTPriceInfo(
-                        price:priceIfNotZero(indicativePriceWei),
+                        price:priceIfNotZero($0?.value),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -126,10 +125,9 @@ class FameLadySquad_Contract : ContractInterface {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
+              .map {
                 .known(NFTPriceInfo(
-                        price:priceIfNotZero(indicativePriceWei),
+                        price:priceIfNotZero($0?.value),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))

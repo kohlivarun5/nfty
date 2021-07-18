@@ -221,10 +221,9 @@ class CryptoPunksContract : ContractInterface {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-                .map { $0?.value }
-                .map { (indicativePriceWei:BigUInt?) in
+                .map {
                   .known(NFTPriceInfo(
-                          price:priceIfNotZero(indicativePriceWei),
+                          price:priceIfNotZero($0?.value),
                           blockNumber: log.blockNumber?.quantity))
                 }
             )
@@ -266,10 +265,9 @@ class CryptoPunksContract : ContractInterface {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-                .map { $0?.value }
-                .map { (indicativePriceWei:BigUInt?) in
+                .map {
                   .known(NFTPriceInfo(
-                          price:priceIfNotZero(indicativePriceWei),
+                          price:priceIfNotZero($0?.value),
                           blockNumber: log.blockNumber?.quantity))
                 }
             )
@@ -915,10 +913,9 @@ class AsciiPunksContract : ContractInterface {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
+              .map {
                 .known(NFTPriceInfo(
-                        price:priceIfNotZero(indicativePriceWei),
+                        price:priceIfNotZero($0?.value),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -941,10 +938,9 @@ class AsciiPunksContract : ContractInterface {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
+              .map {
                 .known(NFTPriceInfo(
-                        price:priceIfNotZero(indicativePriceWei),
+                        price:priceIfNotZero($0?.value),
                         blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -1144,11 +1140,9 @@ class AutoglyphsContract : ContractInterface {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
-                .known(
-                  NFTPriceInfo(
-                    price:priceIfNotZero(indicativePriceWei),
+              .map {
+                .known(NFTPriceInfo(
+                        price:priceIfNotZero($0?.value),
                     blockNumber:log.blockNumber?.quantity))
               }
           ))
@@ -1172,11 +1166,9 @@ class AutoglyphsContract : ContractInterface {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map { $0?.value }
-              .map { (indicativePriceWei:BigUInt?) in
-                .known(
-                  NFTPriceInfo(
-                    price:priceIfNotZero(indicativePriceWei),
+              .map {
+                .known(NFTPriceInfo(
+                        price:priceIfNotZero($0?.value),
                     blockNumber:log.blockNumber?.quantity))
               }
           ))

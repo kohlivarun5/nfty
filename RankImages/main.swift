@@ -81,7 +81,7 @@ func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
   }
 }
 
-for tokenId in 1...totalSupply {
+for tokenId in 0...totalSupply {
   print("Starting tokenId=\(tokenId)")
   let image1 = getTokenImageObservation(tokenId)
   for tokenId2 in 1...totalSupply {
