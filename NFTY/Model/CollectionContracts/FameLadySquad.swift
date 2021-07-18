@@ -15,16 +15,82 @@ import Web3ContractABI
 
 class FameLadySquad_Contract : ContractInterface {
   
-  private func imageUrl(_ tokenId:UInt) -> URL? {
-    return URL(string:"https://nft-1.mypinata.cloud/ipfs/QmRRRcbfE3fTqBLTmmYMxENaNmAffv7ihJnwFkAimBP4Ac/\(tokenId).png")
-  }
+  private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
+    config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name = "FameLadySquad"
   
   let contractAddressHex = "0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47"
-  let ethContract = Erc721Contract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
+  
+  class IpfsImageEthContract : Erc721Contract {
+    
+    struct TokenUriData : Codable {
+      let image : String
+    }
+    
+    func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
+      return Promise { seal in
+        var request = URLRequest(
+          url:URL(string:"https://ipfs.infura.io:5001/api/v0/cat?arg=QmZcsYci9njCygp3GtFEhHzz4JsTMofzPFoX8MQoBKdRcL%2F\(tokenId)")!)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+          DispatchQueue.global(qos:.userInteractive).async {
+            // print(data,response,error)
+            do {
+              switch(data) {
+              case .some(let data):
+                if (data.isEmpty) {
+                  print(data,response,error)
+                  seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                } else {
+                  seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                }
+              case .none:
+                print(data,response,error)
+                seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+              }
+            } catch {
+              print(data,response,error)
+              seal.reject(error)
+            }
+          }
+        }).resume()
+      }.then(on: DispatchQueue.global(qos:.userInteractive)) { (uriData:TokenUriData) -> Promise<Media.IpfsImage?> in
+        return Promise { seal in
+          //print(uriData)
+          var request = URLRequest(url:URL(string:uriData.image)!)
+          request.httpMethod = "GET"
+          
+          URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+            // print(data,response,error)
+            seal.fulfill(data.map { Media.IpfsImage(data:$0) })
+          }).resume()
+        }
+      }
+    }
+  }
+  
+  private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
+    switch(try? imageCache.object(forKey:tokenId)) {
+    case .some(let p):
+      return ObservablePromise(resolved: p)
+    case .none:
+      let p = ethContract.image(tokenId);
+      let observable = ObservablePromise(promise: p) { image in
+        image.flatMap {
+          try? self.imageCache.setObject($0, forKey: tokenId)
+        }
+      }
+      return observable
+    }
+  }
+  
+  
+  let ethContract = IpfsImageEthContract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
     return ethContract.getEventsFetcher(tokenId)
@@ -44,7 +110,7 @@ class FameLadySquad_Contract : ContractInterface {
               address:self.contractAddressHex,
               tokenId:tokenId,
               name:self.name,
-              media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
             indicativePriceWei:NFTPriceInfo(
               price:price,
               blockNumber:log.blockNumber?.quantity)
@@ -75,7 +141,7 @@ class FameLadySquad_Contract : ContractInterface {
               address:self.contractAddressHex,
               tokenId:tokenId,
               name:self.name,
-              media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+              media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
             indicativePriceWei:NFTPriceInfo(
               price:price,
               blockNumber:log.blockNumber?.quantity)
@@ -101,7 +167,7 @@ class FameLadySquad_Contract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         getPrice: {
           switch(self.ethContract.pricesCache[tokenId]) {
           case .some(let p):

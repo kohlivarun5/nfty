@@ -47,7 +47,6 @@ struct NftImageImpl: View {
         .fade(duration: 0.001)
         .interpolation(.none)
         .resizable()
-        .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
         .aspectRatio(contentMode: .fit)
         .padding()
     }
@@ -79,6 +78,7 @@ struct NftIpfsImageView: View {
         Image(uiImage: UIImage(data:ipfs!.data)!)
           .resizable()
           .aspectRatio(contentMode: .fit)
+          .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
           .padding(15)
       })
   }
