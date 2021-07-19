@@ -43,7 +43,7 @@ struct CollectionView: View {
   
   private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
     let res = l.sorted(by:{ left,right in
-      switch(left.indicativePriceWei.blockNumber,right.indicativePriceWei.blockNumber) {
+      switch(left.blockNumber,right.blockNumber) {
       case (.none,.none):
         return true
       case (.some(let l),.some(let r)):
@@ -69,7 +69,7 @@ struct CollectionView: View {
           ZStack {
             RoundedImage(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
@@ -84,7 +84,7 @@ struct CollectionView: View {
             
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,

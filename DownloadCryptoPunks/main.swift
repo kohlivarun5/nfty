@@ -11,6 +11,12 @@ import BigInt
 
 print("Hello, World!")
 
+let contract = fameLadyContract
+
+var collectionName = contract.name
+let totalSize = 8888
+
+
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]
@@ -20,24 +26,21 @@ func downloadImageUrl(url:URL) -> Data? {
   return try? Data(contentsOf: url)
 }
 
-private func makeImageUrl(_ tokenId:UInt) -> URL? {
-  return URL(string:"https://api.asciipunks.com/punks/\(tokenId)/rendered.png")
+private func makeImageUrl(_ tokenId:UInt) -> URL {
+  // till 4443 inclusive, it is QmRRRcbfE3fTqBLTmmYMxENaNmAffv7ihJnwFkAimBP4Ac
+  // after it is QmTwNwAerqdP3LXcZnCCPyqQzTyB26R5xbsqEy5Vh3h6Dw
+  
+  return URL(string:"https://nft-1.mypinata.cloud/ipfs/QmTwNwAerqdP3LXcZnCCPyqQzTyB26R5xbsqEy5Vh3h6Dw/\(tokenId).png")!
 }
 
 func downloadIpfsImage(_ tokenId:UInt) -> Promise<Media.IpfsImage?> {
   print("Downloading \(tokenId)")
-  return baycContract.ethContract.image(BigUInt(tokenId))
+  return contract.ethContract.image(BigUInt(tokenId))
 }
 
-
-var collectionName = baycContract.name
-// let contractAddressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
-let totalSize = 4080 //10000
-
-let from = UserDefaults.standard.integer(forKey:"\(collectionName).startTokenId")
-
 func saveToken(_ tokenId : Int) -> Promise<Void> {
-    downloadIpfsImage(UInt(tokenId))
+  
+  downloadImageUrl(url:makeImageUrl(UInt(tokenId)))
     .map { image -> Void in
       print("Downloaded \(tokenId)")
       let filename = getDocumentsDirectory()
@@ -49,11 +52,12 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
         .appendingPathComponent(collectionName)
         .appendingPathComponent("png")
         .appendingPathComponent("\(tokenId).png")
-      image.flatMap { try! $0.data.write(to: filename) }
+      try? image.write(to: filename)
     }
+    return Promise.value(())
 }
 
-var tokenId = 4050 //UserDefaults.standard.integer(forKey: "\(collectionName).startTokenId")
+var tokenId = 4444 //UserDefaults.standard.integer(forKey: "\(collectionName).startTokenId")
 // if (tokenId == 0 || tokenId == totalSize ) { tokenId = 2000 }
 var prev : Promise<Int> = Promise.value(tokenId)
 print(tokenId)

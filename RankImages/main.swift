@@ -10,8 +10,8 @@ import Vision
 
 let isFull = true
 
-let totalSupply = isFull ? 9999 : 10
-let collectionName = "BoredApeYachtClub"
+let totalSupply = isFull ? 8887 : 10
+let collectionName = "FameLadySquad"
 
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -63,7 +63,7 @@ typealias TokenDistance = [Float]
 
 print("Creating Data")
 var distances : [[TokenDistance]] = Array(repeating: [], count: totalSupply+1)
-for tokenId in 1...totalSupply {
+for tokenId in 0...totalSupply {
   distances[tokenId] = Array(repeating:[-1.0,-1.0],count:totalSupply+1)
 }
 
@@ -81,7 +81,7 @@ func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
   }
 }
 
-for tokenId in 1...totalSupply {
+for tokenId in 0...totalSupply {
   print("Starting tokenId=\(tokenId)")
   let image1 = getTokenImageObservation(tokenId)
   for tokenId2 in 1...totalSupply {

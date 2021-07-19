@@ -139,20 +139,27 @@ struct NFTPriceInfo {
   let blockNumber : BigUInt?
 }
 
+enum NFTPriceStatus {
+  case known(NFTPriceInfo)
+  case notSeenSince(NFTNotSeenSince)
+  case burnt
+}
+
+enum TokenPriceType {
+  case eager(NFTPriceInfo)
+  case lazy(ObservablePromise<NFTPriceStatus>)
+}
+
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let indicativePriceWei : NFTPriceInfo
+  let blockNumber : BigUInt?
+  let indicativePriceWei : TokenPriceType
   
   var id : NFT.NftID {
     return nft.id
   }
 }
 
-enum NFTPriceStatus {
-  case known(NFTPriceInfo)
-  case notSeenSince(NFTNotSeenSince)
-  case burnt
-}
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
@@ -170,11 +177,6 @@ struct NFTWithLazyPrice : Identifiable {
   var indicativePriceWei : ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
-}
-
-enum TokenPriceType {
-  case eager(NFTPriceInfo)
-  case lazy(ObservablePromise<NFTPriceStatus>)
 }
 
 struct SimilarTokensGetter {
@@ -260,6 +262,20 @@ let SAMPLE_BAYC : [String] = [
   "SampleBAYC4"
 ]
 
+let SAMPLE_FLS : [String] = [
+  "SampleLady1",
+  "SampleLady2",
+  "SampleLady3",
+  "SampleLady4"
+]
+
+let SAMPLE_CRHDL : [String] = [
+  "SampleHodler1",
+  "SampleHodler2",
+  "SampleHodler3",
+  "SampleHodler4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
@@ -269,9 +285,13 @@ let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 let BAYC_nearestTokens : [[UInt]] = load("BoredApeYachtClub_nearestTokens.json")
 let BAYC_rarityRanks : [UInt] = load("BoredApeYachtClub_rarityRanks.json")
 
+let FLS_nearestTokens : [[UInt]] = load("FameLadySquad_nearestTokens.json")
+let FLS_rarityRanks : [UInt] = load("FameLadySquad_rarityRanks.json")
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 let autoGlyphsContract = AutoglyphsContract()
 let baycContract = BAYC_Contract()
+let fameLadyContract = FameLadySquad_Contract()
+let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers", address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
