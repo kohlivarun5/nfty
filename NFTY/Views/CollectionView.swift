@@ -62,8 +62,8 @@ struct CollectionView: View {
     
     ScrollView {
       LazyVStack {
-        let data = recentTrades.recentTrades
-        ForEach(recentTrades.recentTrades.indices,id: \.self) { index in
+        let data = sorted(recentTrades.recentTrades);
+        ForEach(data.indices,id: \.self) { index in
           let nft = data[index];
           let samples = [info.url1,info.url2,info.url3,info.url4];
           ZStack {
