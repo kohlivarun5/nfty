@@ -9,6 +9,16 @@ import Foundation
 import SwiftUI
 import Web3
 
+let cryptoPunksContract =  CryptoPunksContract();
+let cryptoKittiesContract = CryptoKittiesAuction();
+let asciiPunksContract = AsciiPunksContract();
+let autoGlyphsContract = AutoglyphsContract()
+let baycContract = BAYC_Contract()
+let fameLadyContract = FameLadySquad_Contract()
+let CRHDL_Contract = IpfsCollectionContract(
+  name: "CryptoHodlers",
+  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
