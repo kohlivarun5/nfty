@@ -205,9 +205,9 @@ class IpfsCollectionContract : ContractInterface {
       let image : String
     }
     
-    func image(tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
+    func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
       return ethContract.tokenURI(tokenId:tokenId)
-        .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
+        .then(on: DispatchQueue.global(qos:.userInitiated)) { (uri:String) -> Promise<TokenUriData> in
           
           return Promise { seal in
             
@@ -238,7 +238,7 @@ class IpfsCollectionContract : ContractInterface {
             }).resume()
           }
           
-        }.then(on: DispatchQueue.global(qos:.userInteractive)) { (uriData:TokenUriData) -> Promise<Media.IpfsImage?> in
+        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Media.IpfsImage?> in
           
           return Promise { seal in
             
@@ -260,8 +260,6 @@ class IpfsCollectionContract : ContractInterface {
   
   let name : String
   let contractAddressHex : String
-
-  
   var ethContract : IpfsImageEthContract
   
   init(name:String,address:String) {
@@ -283,7 +281,7 @@ class IpfsCollectionContract : ContractInterface {
       return ObservablePromise(resolved: p)
     case .none:
       
-      let p = ethContract.image(tokenId:tokenId);
+      let p = ethContract.image(tokenId);
       let observable = ObservablePromise(promise: p) { image in
         image.flatMap {
           try? self.imageCache.setObject($0, forKey: tokenId)
