@@ -19,7 +19,7 @@ let lastIndex = 9999
 print("Started downloading collection:\(collectionName)")
 
 func saveToken(_ tokenId : Int) -> Promise<Void> {
-  return contract.ethContract.image(tokenId:BigUInt(tokenId))
+  return contract.ethContract.image(BigUInt(tokenId))
     .map { image -> Void in
       print("Downloaded \(tokenId)")
       let filename = getImageFileName(collectionName,UInt(tokenId))
@@ -29,7 +29,7 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
 
 let startIndexKey = "DownloadCollection.\(collectionName).startTokenId"
 
-let downloadStartIndex = UserDefaults.standard.integer(forKey:startIndexKey) 
+let downloadStartIndex = UserDefaults.standard.integer(forKey:startIndexKey)
 
 let parallelCount = 10
 
@@ -40,7 +40,6 @@ while tokenId < (lastIndex + 1) {
   
   let next = prev.then { tokenId -> Promise<Int> in
     print(tokenId)
-    UserDefaults.standard.set(tokenId, forKey:startIndexKey)
     var promises : [Promise<Void>] = []
     var count = 0
     while (tokenId + count) < (lastIndex + 1) && count < parallelCount {
@@ -48,7 +47,10 @@ while tokenId < (lastIndex + 1) {
       promises.append(saveToken(tokenId + count))
       count+=1
     }
-    return when(fulfilled:promises).map { () -> Int in return tokenId + count }
+    return when(fulfilled:promises).map { () -> Int in
+      UserDefaults.standard.set(tokenId, forKey:startIndexKey)
+      return tokenId + count
+    }
   }
   
   tokenId+=parallelCount
