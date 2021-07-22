@@ -131,8 +131,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:15,
-      similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      similarTokens : SimilarTokensGetter(label:"Hodlers") { tokenId in CRHDL_nearestTokens[safe:Int(tokenId)] },
+      rarityRank : { tokenId in CRHDL_rarityRanks[safe:Int(tokenId)] }),
     contract:CRHDL_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

@@ -56,11 +56,6 @@
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
-		4FA02CCE265046D600B0B9C5 /* TestUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02CCD265046D600B0B9C5 /* TestUIApp.swift */; };
-		4FA02CD0265046D600B0B9C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA02CCF265046D600B0B9C5 /* ContentView.swift */; };
-		4FA02CD2265046D700B0B9C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA02CD1265046D700B0B9C5 /* Assets.xcassets */; };
-		4FA02CD5265046D700B0B9C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FA02CD4265046D700B0B9C5 /* Preview Assets.xcassets */; };
-		4FA10FEB26A8E0AD00719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
 		4FA10FF526A8E0E200719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FF426A8E0E200719D22 /* main.swift */; };
 		4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFA26A8E55A00719D22 /* Web3 */; };
 		4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFC26A8E55F00719D22 /* Web3ContractABI */; };
@@ -76,13 +71,12 @@
 		4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100926A8E7C800719D22 /* Web3PromiseKit */; };
 		4FA1100C26A8E7E000719D22 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100B26A8E7E000719D22 /* Cache */; };
 		4FA1101426A8EA6500719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101326A8EA6500719D22 /* main.swift */; };
-		4FA1101926A8EAF800719D22 /* CalculateImageDistances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */; };
 		4FA1101A26A8EAF800719D22 /* CalculateImageDistances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */; };
 		4FA1101B26A8EB0300719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
-		4FA1101D26A8EFC600719D22 /* NearestNeighbors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */; };
 		4FA1101E26A8EFC600719D22 /* NearestNeighbors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */; };
-		4FA1102026A8F32800719D22 /* CalculateRarityRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */; };
 		4FA1102126A8F32800719D22 /* CalculateRarityRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */; };
+		4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */; };
+		4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -123,24 +117,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4F446F1E26376C3600BE739E /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		4F58A02A2636785400E258C1 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		4FA10FF026A8E0E200719D22 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -151,15 +127,6 @@
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 		4FA1100F26A8EA6500719D22 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		4FBF8AED264E004700569DCA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -188,7 +155,6 @@
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
-		4F446F2026376C3600BE739E /* ParseTokenDistances */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParseTokenDistances; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
 		4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerProfileLinkButton.swift; sourceTree = "<group>"; };
@@ -202,7 +168,6 @@
 		4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensView.swift; sourceTree = "<group>"; };
 		4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectWalletSheet.swift; sourceTree = "<group>"; };
 		4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTimeLabel.swift; sourceTree = "<group>"; };
-		4F58A02C2636785400E258C1 /* RankImages */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RankImages; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
 		4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldAlertView.swift; path = "NFTY/Preview Content/MyPlayground.playground/TextFieldAlertView.swift"; sourceTree = SOURCE_ROOT; };
 		4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaLink.swift; sourceTree = "<group>"; };
@@ -221,12 +186,6 @@
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4FA02CC62650469900B0B9C5 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
-		4FA02CCB265046D600B0B9C5 /* TestUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4FA02CCD265046D600B0B9C5 /* TestUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUIApp.swift; sourceTree = "<group>"; };
-		4FA02CCF265046D600B0B9C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		4FA02CD1265046D700B0B9C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4FA02CD4265046D700B0B9C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		4FA02CD6265046D700B0B9C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTRankingUtils.swift; sourceTree = "<group>"; };
 		4FA10FF226A8E0E200719D22 /* DownloadCollection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCollection; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA10FF426A8E0E200719D22 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -235,6 +194,8 @@
 		4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateImageDistances.swift; sourceTree = "<group>"; };
 		4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearestNeighbors.swift; sourceTree = "<group>"; };
 		4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateRarityRank.swift; sourceTree = "<group>"; };
+		4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_nearestTokens.json; sourceTree = "<group>"; };
+		4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_rarityRanks.json; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -253,7 +214,6 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
-		4FBF8AEF264E004700569DCA /* RarityRanking */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RarityRanking; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
@@ -262,27 +222,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4F446F1D26376C3600BE739E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4F58A0292636785400E258C1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4FA02CC8265046D600B0B9C5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4FA10FEF26A8E0E200719D22 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -328,13 +267,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4FBF8AEC264E004700569DCA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -360,26 +292,6 @@
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		4FA02CCC265046D600B0B9C5 /* TestUI */ = {
-			isa = PBXGroup;
-			children = (
-				4FA02CCD265046D600B0B9C5 /* TestUIApp.swift */,
-				4FA02CCF265046D600B0B9C5 /* ContentView.swift */,
-				4FA02CD1265046D700B0B9C5 /* Assets.xcassets */,
-				4FA02CD6265046D700B0B9C5 /* Info.plist */,
-				4FA02CD3265046D700B0B9C5 /* Preview Content */,
-			);
-			path = TestUI;
-			sourceTree = "<group>";
-		};
-		4FA02CD3265046D700B0B9C5 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				4FA02CD4265046D700B0B9C5 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		4FA10FF326A8E0E200719D22 /* DownloadCollection */ = {
@@ -415,7 +327,6 @@
 			isa = PBXGroup;
 			children = (
 				4FB72E4626A8DF250083F255 /* NFTRanking */,
-				4FA02CCC265046D600B0B9C5 /* TestUI */,
 				4F58A06C2636942200E258C1 /* Frameworks */,
 				4FB9A7AF262B28A300C58AF9 /* NFTY */,
 				4FB9A7C1262B28A400C58AF9 /* NFTYTests */,
@@ -430,10 +341,6 @@
 				4FB9A7AD262B28A300C58AF9 /* NFTY.app */,
 				4FB9A7BE262B28A400C58AF9 /* NFTYTests.xctest */,
 				4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */,
-				4F58A02C2636785400E258C1 /* RankImages */,
-				4F446F2026376C3600BE739E /* ParseTokenDistances */,
-				4FBF8AEF264E004700569DCA /* RarityRanking */,
-				4FA02CCB265046D600B0B9C5 /* TestUI.app */,
 				4FA10FF226A8E0E200719D22 /* DownloadCollection */,
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
 			);
@@ -546,6 +453,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
+				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
 				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
 				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
 				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
@@ -563,59 +472,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4F446F1F26376C3600BE739E /* ParseTokenDistances */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4F446F2626376C3600BE739E /* Build configuration list for PBXNativeTarget "ParseTokenDistances" */;
-			buildPhases = (
-				4F446F1C26376C3600BE739E /* Sources */,
-				4F446F1D26376C3600BE739E /* Frameworks */,
-				4F446F1E26376C3600BE739E /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ParseTokenDistances;
-			packageProductDependencies = (
-			);
-			productName = ParseTokenDistances;
-			productReference = 4F446F2026376C3600BE739E /* ParseTokenDistances */;
-			productType = "com.apple.product-type.tool";
-		};
-		4F58A02B2636785400E258C1 /* RankImages */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4F58A0302636785400E258C1 /* Build configuration list for PBXNativeTarget "RankImages" */;
-			buildPhases = (
-				4F58A0282636785400E258C1 /* Sources */,
-				4F58A0292636785400E258C1 /* Frameworks */,
-				4F58A02A2636785400E258C1 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RankImages;
-			productName = RankImages;
-			productReference = 4F58A02C2636785400E258C1 /* RankImages */;
-			productType = "com.apple.product-type.tool";
-		};
-		4FA02CCA265046D600B0B9C5 /* TestUI */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4FA02CD7265046D700B0B9C5 /* Build configuration list for PBXNativeTarget "TestUI" */;
-			buildPhases = (
-				4FA02CC7265046D600B0B9C5 /* Sources */,
-				4FA02CC8265046D600B0B9C5 /* Frameworks */,
-				4FA02CC9265046D600B0B9C5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = TestUI;
-			productName = TestUI;
-			productReference = 4FA02CCB265046D600B0B9C5 /* TestUI.app */;
-			productType = "com.apple.product-type.application";
-		};
 		4FA10FF126A8E0E200719D22 /* DownloadCollection */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */;
@@ -717,25 +573,6 @@
 			productReference = 4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		4FBF8AEE264E004700569DCA /* RarityRanking */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4FBF8AF5264E004700569DCA /* Build configuration list for PBXNativeTarget "RarityRanking" */;
-			buildPhases = (
-				4FBF8AEB264E004700569DCA /* Sources */,
-				4FBF8AEC264E004700569DCA /* Frameworks */,
-				4FBF8AED264E004700569DCA /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RarityRanking;
-			packageProductDependencies = (
-			);
-			productName = RarityRanking;
-			productReference = 4FBF8AEF264E004700569DCA /* RarityRanking */;
-			productType = "com.apple.product-type.tool";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -748,15 +585,6 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
-					4F446F1F26376C3600BE739E = {
-						CreatedOnToolsVersion = 12.4;
-					};
-					4F58A02B2636785400E258C1 = {
-						CreatedOnToolsVersion = 12.4;
-					};
-					4FA02CCA265046D600B0B9C5 = {
-						CreatedOnToolsVersion = 12.5;
-					};
 					4FA10FF126A8E0E200719D22 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -773,9 +601,6 @@
 					4FB9A7C8262B28A400C58AF9 = {
 						CreatedOnToolsVersion = 12.4;
 						TestTargetID = 4FB9A7AC262B28A300C58AF9;
-					};
-					4FBF8AEE264E004700569DCA = {
-						CreatedOnToolsVersion = 12.5;
 					};
 				};
 			};
@@ -801,10 +626,6 @@
 				4FB9A7AC262B28A300C58AF9 /* NFTY */,
 				4FB9A7BD262B28A400C58AF9 /* NFTYTests */,
 				4FB9A7C8262B28A400C58AF9 /* NFTYUITests */,
-				4F58A02B2636785400E258C1 /* RankImages */,
-				4F446F1F26376C3600BE739E /* ParseTokenDistances */,
-				4FBF8AEE264E004700569DCA /* RarityRanking */,
-				4FA02CCA265046D600B0B9C5 /* TestUI */,
 				4FA10FF126A8E0E200719D22 /* DownloadCollection */,
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
 			);
@@ -812,15 +633,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4FA02CC9265046D600B0B9C5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FA02CD5265046D700B0B9C5 /* Preview Assets.xcassets in Resources */,
-				4FA02CD2265046D700B0B9C5 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4FB9A7AB262B28A300C58AF9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -836,7 +648,9 @@
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -858,32 +672,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4F446F1C26376C3600BE739E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FA1101D26A8EFC600719D22 /* NearestNeighbors.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4F58A0282636785400E258C1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FA1101926A8EAF800719D22 /* CalculateImageDistances.swift in Sources */,
-				4FA10FEB26A8E0AD00719D22 /* NFTRankingUtils.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4FA02CC7265046D600B0B9C5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FA02CD0265046D600B0B9C5 /* ContentView.swift in Sources */,
-				4FA02CCE265046D600B0B9C5 /* TestUIApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4FA10FEE26A8E0E200719D22 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -984,14 +772,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4FBF8AEB264E004700569DCA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FA1102026A8F32800719D22 /* CalculateRarityRank.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1008,102 +788,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		4F446F2426376C3600BE739E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		4F446F2526376C3600BE739E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		4F58A0312636785400E258C1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		4F58A0322636785400E258C1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		4FA02CD8265046D700B0B9C5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TestUI/Preview Content\"";
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TestUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.TestUI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		4FA02CD9265046D700B0B9C5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TestUI/Preview Content\"";
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TestUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.TestUI;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		4FA10FF726A8E0E200719D22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1410,62 +1094,9 @@
 			};
 			name = Release;
 		};
-		4FBF8AF3264E004700569DCA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		4FBF8AF4264E004700569DCA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4F446F2626376C3600BE739E /* Build configuration list for PBXNativeTarget "ParseTokenDistances" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4F446F2426376C3600BE739E /* Debug */,
-				4F446F2526376C3600BE739E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4F58A0302636785400E258C1 /* Build configuration list for PBXNativeTarget "RankImages" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4F58A0312636785400E258C1 /* Debug */,
-				4F58A0322636785400E258C1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4FA02CD7265046D700B0B9C5 /* Build configuration list for PBXNativeTarget "TestUI" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4FA02CD8265046D700B0B9C5 /* Debug */,
-				4FA02CD9265046D700B0B9C5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1516,15 +1147,6 @@
 			buildConfigurations = (
 				4FB9A7D9262B28A400C58AF9 /* Debug */,
 				4FB9A7DA262B28A400C58AF9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4FBF8AF5264E004700569DCA /* Build configuration list for PBXNativeTarget "RarityRanking" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4FBF8AF3264E004700569DCA /* Debug */,
-				4FBF8AF4264E004700569DCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
