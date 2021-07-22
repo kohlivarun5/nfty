@@ -32,29 +32,27 @@ let parallelCount = 10
 var tokenId = firstIndex
 var prev : [Promise<Int>] = Array(repeating:Promise.value(tokenId), count: parallelCount)
 
-for index in firstIndex...(parallelCount-1) {
+for index in 0...(parallelCount-1) {
   prev[index] = Promise.value(index)
 }
 
 let fileManager = FileManager.default
 
 while tokenId < (lastIndex + 1) {
-  var count = 0
-  while (tokenId + count) < (lastIndex + 1) && count < parallelCount {
-    // print(count)
-    let next = prev[count].then { tokenId -> Promise<Int> in
+  
+  for index in 0...(parallelCount-1) {
+    let next = prev[index].then { tokenId -> Promise<Int> in
       // print(tokenId,count)
       let p =
-        fileManager.fileExists(atPath: getImageFileName(collectionName,UInt(tokenId+count)).path)
-        ? Promise.value(tokenId + count)
-        : saveToken(tokenId + count).map { tokenId + count }
+        fileManager.fileExists(atPath: getImageFileName(collectionName,UInt(tokenId)).path)
+        ? Promise.value(tokenId+parallelCount)
+        : saveToken(tokenId).map { tokenId + parallelCount }
       return p.map { index in
         print("Done \(index)")
         return index
       }
     }
-    prev[count] = next
-    count+=1
+    prev[index] = next
   }
   tokenId+=parallelCount
 }
