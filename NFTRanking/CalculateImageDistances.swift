@@ -40,7 +40,7 @@ class CalculateImageDistances {
   }
   
   private func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
-    switch(tokenImages[safe:tokenId]) {
+    switch(tokenImages[tokenId]) {
     case .none:
       let image = featureprintObservationForImage(tokenId: tokenId)
       tokenImages[tokenId] = image
@@ -63,21 +63,21 @@ class CalculateImageDistances {
       for tokenId2 in (firstIndex+1)...lastIndex {
         
         guard let image1Unwrapped = image1 else {
+          print("tokenid=\(tokenId) is empty")
           distances[tokenId][tokenId2] = [Float(tokenId2),MAX_DISTANCE]
           continue
         }
         
-        let image2 = getTokenImageObservation(tokenId2)
-        
-        guard let image2Unwrapped = image2 else {
+        guard let image2 = getTokenImageObservation(tokenId2) else {
+          print("tokenid=\(tokenId2) is empty")
           distances[tokenId][tokenId2] = [Float(tokenId2),MAX_DISTANCE]
           continue
         }
         
         var distance : Float = -1.0
-        try? image1Unwrapped.computeDistance(&distance, to: image2Unwrapped)
+        try? image1Unwrapped.computeDistance(&distance, to: image2)
         distances[tokenId][tokenId2] = [Float(tokenId2),Float(distance)]
-        print("Done tokenId2=\(tokenId2)")
+        // print("Done tokenId2=\(tokenId2)")
       }
       distances[tokenId].sort(by:{$0[1] < $1[1]})
       print("Done tokenId=\(tokenId)")
