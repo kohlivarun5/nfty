@@ -27,36 +27,37 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
     }
 }
 
-let startIndexKey = "DownloadCollection.\(collectionName).startTokenId"
-
-let downloadStartIndex = UserDefaults.standard.integer(forKey:startIndexKey)
-
 let parallelCount = 10
 
-var tokenId = downloadStartIndex
-var prev : Promise<Int> = Promise.value(tokenId)
+var tokenId = firstIndex
+var prev : [Promise<Int>] = Array(repeating:Promise.value(tokenId), count: parallelCount)
 
-while tokenId < (lastIndex + 1) {
-  
-  let next = prev.then { tokenId -> Promise<Int> in
-    print(tokenId)
-    var promises : [Promise<Void>] = []
-    var count = 0
-    while (tokenId + count) < (lastIndex + 1) && count < parallelCount {
-      print(tokenId,count)
-      promises.append(saveToken(tokenId + count))
-      count+=1
-    }
-    return when(fulfilled:promises).map { () -> Int in
-      UserDefaults.standard.set(tokenId, forKey:startIndexKey)
-      return tokenId + count
-    }
-  }
-  
-  tokenId+=parallelCount
-  prev = next
-  
+for index in firstIndex...(parallelCount-1) {
+  prev[index] = Promise.value(index)
 }
 
-try? hang(prev)
+let fileManager = FileManager.default
+
+while tokenId < (lastIndex + 1) {
+  var count = 0
+  while (tokenId + count) < (lastIndex + 1) && count < parallelCount {
+    // print(tokenId)
+    let next = prev[count].then { tokenId -> Promise<Int> in
+      // print(tokenId,count)
+      let p =
+        fileManager.fileExists(atPath: getImageFileName(collectionName,UInt(tokenId+count)).path)
+        ? Promise.value(tokenId + count)
+        : saveToken(tokenId + count).map { tokenId + count }
+      return p.map { index in
+        print("Done \(index)")
+        return index
+      }
+    }
+    prev[count] = next
+    count+=1
+  }
+  tokenId+=parallelCount
+}
+
+try? hang(when(fulfilled:prev))
 print("Done")

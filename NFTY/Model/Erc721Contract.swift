@@ -212,7 +212,9 @@ class IpfsCollectionContract : ContractInterface {
           return Promise { seal in
             
             var request = URLRequest(
-              url:URL(string: uri.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
+              url:URL(string: uri.replacingOccurrences(
+                        of: "ipfs://",
+                        with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
             request.httpMethod = "GET"
             
             
