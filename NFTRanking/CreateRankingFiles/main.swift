@@ -11,7 +11,7 @@ import Foundation
 
 let collectionName = "CryptoHodlers"
 
-let isFull = false
+let isFull = true
 let firstIndex = 0
 let lastIndex = isFull ? 9999 : 10
 
@@ -23,7 +23,7 @@ let doCalculateRarityRank = true
 
 // PIPELINE
 
-let calculator = CalculateImageDistances(firstIndex: 0,lastIndex: isFull ? 9999 : 10,collectionName:collectionName)
+let calculator = CalculateImageDistances(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName)
 if (doCalculateDistances) {
   calculator.calculateDistances()
 } else {

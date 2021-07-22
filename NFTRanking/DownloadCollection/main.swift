@@ -16,6 +16,9 @@ let collectionName = contract.name
 let firstIndex = 0
 let lastIndex = 9999
 
+let minFileSize = 1000
+let parallelCount = 10
+
 print("Started downloading collection:\(collectionName)")
 
 func saveToken(_ tokenId : Int) -> Promise<Void> {
@@ -26,8 +29,6 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
       try? image?.data.write(to: filename)
     }
 }
-
-let parallelCount = 10
 
 var tokenId = firstIndex
 var prev : [Promise<Int>] = Array(repeating:Promise.value(tokenId), count: parallelCount)
@@ -57,5 +58,20 @@ while tokenId < (lastIndex + 1) {
   tokenId+=parallelCount
 }
 
-try? hang(when(fulfilled:prev))
-print("Done")
+try hang(when(fulfilled:prev))
+print("Done downloading. Veryfing now")
+
+var indexMissing = false
+
+for index in firstIndex...lastIndex {
+  let path = getImageFileName(collectionName,UInt(index)).path
+  indexMissing = indexMissing || !fileManager.fileExists(atPath:path)
+  
+  let attr = try fileManager.attributesOfItem(atPath: path)
+  if (minFileSize > attr[FileAttributeKey.size] as! UInt64) {
+    print("Token=\(index) is empty")
+    // try fileManager.removeItem(atPath: path)
+  }
+  
+}
+print("All downloaded=\(!indexMissing)")
