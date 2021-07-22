@@ -58,7 +58,7 @@ class TxFetcher {
   
   private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
     web3.eth.getTransactionByHash(blockHash:transactionHash)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:EthereumTransactionObject?) in
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) in
         switch(txData) {
         case .none: return nil
         case .some(let tx):

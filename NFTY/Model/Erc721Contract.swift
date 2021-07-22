@@ -54,7 +54,7 @@ class Erc721Contract {
       let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
       return
         method.invoke(address,index).call()
-        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+        .map(on:DispatchQueue.global(qos:.userInitiated)) { outputs in
           return outputs["tokenId"] as! BigUInt
         }
     }
@@ -95,7 +95,7 @@ class Erc721Contract {
   func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
     
     txFetcher.eventOfTx(transactionHash: transactionHash)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
         switch(txData) {
         case .none: return nil
         case .some(let tx):
@@ -169,7 +169,7 @@ class Erc721Contract {
         }
           
         txFetcher.eventOfTx(transactionHash: log.transactionHash)
-          .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
+          .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:
               return TradeEvent(type:.transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
