@@ -60,7 +60,20 @@ class CalculateImageDistances {
     for tokenId in firstIndex...lastIndex {
       print("Starting tokenId=\(tokenId)")
       let image1 = getTokenImageObservation(tokenId)
-      for tokenId2 in (firstIndex+1)...lastIndex {
+      
+      if (tokenId == lastIndex) {
+        for tokenId2 in firstIndex...lastIndex {
+          distances[tokenId][tokenId2] = distances[tokenId2][tokenId]
+        }
+        continue
+      }
+      
+      for tokenId2 in firstIndex...tokenId {
+        if (tokenId == tokenId2) { continue }
+        distances[tokenId][tokenId2] = distances[tokenId2][tokenId]
+      }
+      
+      for tokenId2 in (tokenId+1)...lastIndex {
         
         guard let image1Unwrapped = image1 else {
           print("tokenid=\(tokenId) is empty")
