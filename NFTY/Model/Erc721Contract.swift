@@ -282,7 +282,6 @@ class IpfsCollectionContract : ContractInterface {
     case .some(let p):
       return ObservablePromise(resolved: p)
     case .none:
-      
       let p = ethContract.image(tokenId);
       let observable = ObservablePromise(promise: p) { image in
         image.flatMap {
