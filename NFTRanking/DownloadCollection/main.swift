@@ -41,7 +41,7 @@ let fileManager = FileManager.default
 while tokenId < (lastIndex + 1) {
   var count = 0
   while (tokenId + count) < (lastIndex + 1) && count < parallelCount {
-    // print(tokenId)
+    // print(count)
     let next = prev[count].then { tokenId -> Promise<Int> in
       // print(tokenId,count)
       let p =
