@@ -12,8 +12,7 @@ import Vision
 class CalculateImageFeaturePrints {
   let firstIndex : Int
   let lastIndex : Int
-  let collectionName : String
-  
+  let collectionName : String  
   var tokenImages : [VNFeaturePrintObservation?]
   
   init(firstIndex:Int,lastIndex:Int,collectionName:String) {

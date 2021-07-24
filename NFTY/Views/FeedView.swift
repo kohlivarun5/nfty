@@ -165,7 +165,7 @@ struct FeedView: View {
                   samples:samples,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
-                  rarityRank:info.rarityRank,
+                  rarityRank:info.rarityRanking,
                   width: .normal
                 )
                 .padding()
@@ -181,7 +181,7 @@ struct FeedView: View {
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,
-                  rarityRank:info.rarityRank,
+                  rarityRank:info.rarityRanking,
                   hideOwnerLink:false
                 ),tag:String(nft.nft.tokenId),selection:$action) {}
                 .hidden()
