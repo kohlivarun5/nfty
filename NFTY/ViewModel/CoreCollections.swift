@@ -37,7 +37,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks") { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] }),
+      rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] },
+      rarityListGetter : RarityRankingImpl(CryptoPunks_rarityRanks)
+    ),
     contract:cryptoPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -56,7 +58,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      rarityRank : { tokenId in nil },
+      rarityListGetter: nil
+    ),
     contract:autoGlyphsContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -75,7 +79,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks")  { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
+      rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] },
+      rarityListGetter : RarityRankingImpl(AsciiPunks_rarityRanks)
+    ),
     contract:asciiPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -94,7 +100,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Apes")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in BAYC_rarityRanks[safe:Int(tokenId)] }),
+      rarityRank : { tokenId in BAYC_rarityRanks[safe:Int(tokenId)] },
+      rarityListGetter : RarityRankingImpl(BAYC_rarityRanks)
+    ),
     contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -113,7 +121,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Ladies")  { tokenId in FLS_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in FLS_rarityRanks[safe:Int(tokenId)] }),
+      rarityRank : { tokenId in FLS_rarityRanks[safe:Int(tokenId)] },
+      rarityListGetter : RarityRankingImpl(FLS_rarityRanks)
+    ),
     contract:fameLadyContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -132,7 +142,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Hodlers") { tokenId in CRHDL_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in CRHDL_rarityRanks[safe:Int(tokenId)] }),
+      rarityRank : { tokenId in CRHDL_rarityRanks[safe:Int(tokenId)] },
+      rarityListGetter : RarityRankingImpl(CRHDL_rarityRanks)
+    ),
     contract:CRHDL_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -150,7 +162,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:true,
       blur:0,samplePadding:0,
       similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      rarityRank : { tokenId in nil },
+      rarityListGetter: nil
+    ),
     contract:cryptoKittiesContract),
 ]
 )

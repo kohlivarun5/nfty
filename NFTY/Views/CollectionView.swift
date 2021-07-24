@@ -18,7 +18,8 @@ struct CollectionView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  private var info : CollectionInfo
+  private let collection : Collection
+  private let info : CollectionInfo
   
   @ObservedObject var recentTrades : NftRecentTradesObject
   
@@ -27,6 +28,7 @@ struct CollectionView: View {
   @State private var action: String? = ""
   
   init(collection:Collection) {
+    self.collection = collection;
     self.info = collection.info;
     self.recentTrades = collection.data.recentTrades;
   }
@@ -100,13 +102,25 @@ struct CollectionView: View {
       }.animation(.default)
     }
     .toolbar {
-        Link(destination: info.webLink) {
-          Image(systemName: "safari")
-        }
+      
+      self.info.rarityListGetter.map { ranked in
+        NavigationLink(
+          destination:
+            TokenListView(
+              title:"\(info.name) Ranking",
+              collection: self.collection,
+              tokenIds:ranked.sortedTokenIds
+            )
+        ) { Image(systemName: "list.number") }
+      }
+      
+      Link(destination: info.webLink) { Image(systemName: "safari") }
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
-    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+    .navigationBarItems(
+      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
+    )
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil)
     }

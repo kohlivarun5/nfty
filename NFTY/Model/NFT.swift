@@ -185,6 +185,23 @@ struct SimilarTokensGetter {
 }
 
 typealias RarityRankGetter = (UInt) -> UInt?
+
+protocol RarityRanking {
+  var sortedTokenIds :  [UInt] { get }
+}
+
+class RarityRankingImpl : RarityRanking {
+  let sortedTokenIds : [UInt]
+  init(_ ranks:[UInt]) {
+    var indexed : [(Int,UInt)] = []
+    for (index, element) in ranks.enumerated() {
+      indexed.append((index,element))
+    }
+    indexed.sort { $0.1 < $1.1 }
+    self.sortedTokenIds = indexed.map { UInt($0.0) }
+  }
+}
+
 struct CollectionInfo {
   let address: String
   let url1: String
@@ -202,6 +219,7 @@ struct CollectionInfo {
   let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter?
   let rarityRank : RarityRankGetter
+  let rarityListGetter : RarityRanking?
 }
 struct CollectionData : HasContractInterface {
   let recentTrades: NftRecentTradesObject

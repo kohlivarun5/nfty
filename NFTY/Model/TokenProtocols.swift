@@ -217,3 +217,47 @@ class NftRecentEventsObject : ObservableObject {
     }
   }
 }
+
+class NftTokenList : ObservableObject {
+  @Published var tokens: [NFTWithLazyPrice] = []
+  var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
+  var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
+  
+  private let loadingChunk = 20
+  private var isLoading = false
+  let contract : ContractInterface
+  let tokenIds : [UInt]
+  
+  init(contract:ContractInterface,tokenIds:[UInt]) {
+    self.contract = contract
+    self.tokenIds = tokenIds
+  }
+  
+  func loadMore(_ callback : @escaping () -> Void) {
+    guard !isLoading else { return }
+    self.isLoading = true
+    
+    var index = tokens.count
+    var promises : [Promise<Void>] = []
+    while(index < tokenIds.count && promises.count < loadingChunk) {
+      let tokenId = tokenIds[index]
+      let p = contract.getToken(tokenId)
+        .done(on:.main) { self.tokens.append($0) }
+      promises.append(p)
+      index+=1
+    }
+    
+    when(fulfilled:promises).done(on:.main) { self.isLoading = false }.catch { print($0) }
+  }
+  
+  func next(currentIndex:Int?) {
+    guard let index = currentIndex else {
+      loadMore() {}
+      return
+    }
+    let thresholdIndex = self.tokens.index(self.tokens.endIndex, offsetBy: -5)
+    if index >= thresholdIndex {
+      loadMore() {}
+    }
+  }
+}
