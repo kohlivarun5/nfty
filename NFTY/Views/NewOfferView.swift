@@ -17,7 +17,7 @@ struct NewOfferView: View {
   let themeColor : Color
   let themeLabelColor : Color
   let size : NftImage.Size
-  let rarityRank : RarityRankGetter
+  let rarityRank : RarityRanking?
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -184,7 +184,7 @@ struct NewOfferView: View {
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .onAppear {
-      self.rank = rarityRank(nft.tokenId)
+      self.rank = rarityRank?.getRank(nft.tokenId)
     }
   }
 }
@@ -198,6 +198,6 @@ struct NewOfferView_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRank)
+      rarityRank:SampleCollection.info.rarityRanking)
   }
 }

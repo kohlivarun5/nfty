@@ -104,7 +104,8 @@ struct CollectionView: View {
     .toolbar {
       switch(self.info.rarityRanking) {
       // UNCOMMENT TO SHOW RANKING
-      /* case .some(let ranked):
+      // /*
+       case .some(let ranked):
         NavigationLink(
           destination:
             TokenListView(
@@ -113,7 +114,7 @@ struct CollectionView: View {
               tokenIds:ranked.sortedTokenIds
             )
         ) { Image(systemName: "list.number") }
-       case .none: */ default:
+       case .none:// */ default:
         Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
       }
     }
