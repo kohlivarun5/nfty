@@ -207,7 +207,7 @@ class IpfsCollectionContract : ContractInterface {
     
     func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
       return ethContract.tokenURI(tokenId:tokenId)
-        .then(on: DispatchQueue.global(qos:.userInitiated)) { (uri:String) -> Promise<TokenUriData> in
+        .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
           return Promise { seal in
             

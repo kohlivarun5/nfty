@@ -13,7 +13,6 @@ class CalculateImageFeaturePrints {
   let firstIndex : Int
   let lastIndex : Int
   let collectionName : String
-  let MAX_DISTANCE = Float.infinity
   
   var tokenImages : [VNFeaturePrintObservation?]
   
