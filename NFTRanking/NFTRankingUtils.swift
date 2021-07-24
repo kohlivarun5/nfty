@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias TokenDistance = [Float]
+
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]
@@ -25,6 +27,12 @@ func getDistancesFilename(_ collectionName:String) -> URL {
   return getResourcesDirectory()
     .appendingPathComponent("\(collectionName)Distances.json")
 }
+
+func getFeaturesFilename(_ collectionName:String) -> URL {
+  return getResourcesDirectory()
+    .appendingPathComponent("\(collectionName)Features.json")
+}
+
 
 func getNeighborsFilename(_ collectionName:String) -> URL {
   return getResourcesDirectory()

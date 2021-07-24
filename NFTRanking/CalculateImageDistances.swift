@@ -8,8 +8,6 @@
 import Foundation
 import Vision
 
-typealias TokenDistance = [Float]
-
 class CalculateImageDistances {
   let firstIndex : Int
   let lastIndex : Int
@@ -19,35 +17,12 @@ class CalculateImageDistances {
   var tokenImages : [VNFeaturePrintObservation?]
   var distances : [[TokenDistance]]
     
-  init(firstIndex:Int,lastIndex:Int,collectionName:String) {
+  init(firstIndex:Int,lastIndex:Int,collectionName:String,tokenImages : [VNFeaturePrintObservation?]) {
     self.firstIndex = firstIndex
     self.lastIndex = lastIndex
     self.collectionName = collectionName
-    self.tokenImages = Array(repeating:nil, count: (lastIndex - firstIndex) + 1)
+    self.tokenImages = tokenImages
     self.distances = Array(repeating: [], count: (lastIndex - firstIndex) + 1)
-  }
-  
-  private func featureprintObservationForImage(tokenId:Int) -> VNFeaturePrintObservation? {
-    let requestHandler = VNImageRequestHandler(data:loadImageData(collectionName,UInt(tokenId)), options: [:])
-    let request = VNGenerateImageFeaturePrintRequest()
-    do {
-      try requestHandler.perform([request])
-      return request.results?.first as? VNFeaturePrintObservation
-    } catch {
-      print("Vision error: \(error)")
-      return nil
-    }
-  }
-  
-  private func getTokenImageObservation(_ tokenId:Int) -> VNFeaturePrintObservation? {
-    switch(tokenImages[tokenId]) {
-    case .none:
-      let image = featureprintObservationForImage(tokenId: tokenId)
-      tokenImages[tokenId] = image
-      return image
-    case .some(let image):
-      return image
-    }
   }
   
   func calculateDistances() {
@@ -59,30 +34,20 @@ class CalculateImageDistances {
     print("Creating images")
     for tokenId in firstIndex...lastIndex {
       print("Starting tokenId=\(tokenId)")
-      let image1 = getTokenImageObservation(tokenId)
+      let image1 = tokenImages[tokenId]
       
-      if (tokenId == lastIndex) {
-        for tokenId2 in firstIndex...lastIndex {
-          distances[tokenId][tokenId2] = distances[tokenId2][tokenId]
+      guard let image1Unwrapped = image1 else {
+        // print("tokenid=\(tokenId) is empty")
+        for tokenId2 in (firstIndex+1)...lastIndex {
+          distances[tokenId][tokenId2] = [Float(tokenId2),MAX_DISTANCE]
         }
         continue
       }
       
-      for tokenId2 in firstIndex...tokenId {
-        if (tokenId == tokenId2) { continue }
-        distances[tokenId][tokenId2] = distances[tokenId2][tokenId]
-      }
-      
-      for tokenId2 in (tokenId+1)...lastIndex {
+      for tokenId2 in firstIndex...lastIndex {
         
-        guard let image1Unwrapped = image1 else {
-          print("tokenid=\(tokenId) is empty")
-          distances[tokenId][tokenId2] = [Float(tokenId2),MAX_DISTANCE]
-          continue
-        }
-        
-        guard let image2 = getTokenImageObservation(tokenId2) else {
-          print("tokenid=\(tokenId2) is empty")
+        guard let image2 = tokenImages[tokenId2] else {
+          // print("tokenid=\(tokenId2) is empty")
           distances[tokenId][tokenId2] = [Float(tokenId2),MAX_DISTANCE]
           continue
         }

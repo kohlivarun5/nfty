@@ -13,9 +13,10 @@ let collectionName = "CryptoHodlers"
 
 let isFull = true
 let firstIndex = 0
-let lastIndex = isFull ? 9999 : 10
+let lastIndex = isFull ? 9999 : 100
 
 // STAGES
+let doCalculateFeatures = true
 let doCalculateDistances = true
 let doNearestNeghbors = true
 let doCalculateRarityRank = true
@@ -23,7 +24,12 @@ let doCalculateRarityRank = true
 
 // PIPELINE
 
-let calculator = CalculateImageDistances(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName)
+let features = CalculateImageFeaturePrints(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName)
+features.loadFeaturesFromFile()
+if (doCalculateFeatures) {
+  features.calculateFeatures()
+}
+let calculator = CalculateImageDistances(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName,tokenImages: features.tokenImages)
 if (doCalculateDistances) {
   calculator.calculateDistances()
 } else {

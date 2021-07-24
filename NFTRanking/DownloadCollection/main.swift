@@ -17,7 +17,7 @@ let firstIndex = 0
 let lastIndex = 9999
 
 let minFileSize = 1000
-let parallelCount = 10
+let parallelCount = 5
 
 print("Started downloading collection:\(collectionName)")
 
@@ -44,8 +44,10 @@ while tokenId < (lastIndex + 1) {
   for index in 0...(parallelCount-1) {
     let next = prev[index].then { tokenId -> Promise<Int> in
       // print(tokenId,count)
+      let fileName = getImageFileName(collectionName,UInt(tokenId)).path
       let p =
-        fileManager.fileExists(atPath: getImageFileName(collectionName,UInt(tokenId)).path)
+        fileManager.fileExists(atPath:fileName)
+        && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
         ? Promise.value(tokenId+parallelCount)
         : saveToken(tokenId).map { tokenId + parallelCount }
       return p.map { index in

@@ -79,6 +79,7 @@
 		4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */; };
 		4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
 		4FA1102726A9102500719D22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
+		4FA1102926AA27D400719D22 /* CalculateImageFeaturePrints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -198,6 +199,7 @@
 		4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateRarityRank.swift; sourceTree = "<group>"; };
 		4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_nearestTokens.json; sourceTree = "<group>"; };
 		4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_rarityRanks.json; sourceTree = "<group>"; };
+		4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateImageFeaturePrints.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */,
 				4FA1101226A8EA6500719D22 /* CreateRankingFiles */,
 				4FA10FF326A8E0E200719D22 /* DownloadCollection */,
+				4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */,
 			);
 			path = NFTRanking;
 			sourceTree = "<group>";
@@ -701,6 +704,7 @@
 				4FA1101E26A8EFC600719D22 /* NearestNeighbors.swift in Sources */,
 				4FA1101B26A8EB0300719D22 /* NFTRankingUtils.swift in Sources */,
 				4FA1101426A8EA6500719D22 /* main.swift in Sources */,
+				4FA1102926AA27D400719D22 /* CalculateImageFeaturePrints.swift in Sources */,
 				4FA1101A26A8EAF800719D22 /* CalculateImageDistances.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
