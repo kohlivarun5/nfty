@@ -105,7 +105,7 @@ struct FavoritesView: View {
                     samples:samples,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
-                    rarityRank:info.rarityRank,
+                    rarityRank:info.rarityRanking,
                     width: .normal
                   )
                   .padding()
@@ -120,7 +120,7 @@ struct FavoritesView: View {
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRank,
+                    rarityRank:info.rarityRanking,
                     hideOwnerLink:false
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()

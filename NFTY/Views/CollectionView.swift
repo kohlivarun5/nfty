@@ -75,7 +75,7 @@ struct CollectionView: View {
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
-              rarityRank: info.rarityRank,
+              rarityRank: info.rarityRanking,
               width: .normal
             )
             .padding()
@@ -91,7 +91,7 @@ struct CollectionView: View {
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,
-              rarityRank:info.rarityRank,
+              rarityRank:info.rarityRanking,
               hideOwnerLink:false
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
@@ -102,8 +102,8 @@ struct CollectionView: View {
       }.animation(.default)
     }
     .toolbar {
-      
-      self.info.rarityListGetter.map { ranked in
+      switch(self.info.rarityRanking) {
+      case .some(let ranked):
         NavigationLink(
           destination:
             TokenListView(
@@ -112,15 +112,14 @@ struct CollectionView: View {
               tokenIds:ranked.sortedTokenIds
             )
         ) { Image(systemName: "list.number") }
+      case .none:
+        Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
       }
-      
-      Link(destination: info.webLink) { Image(systemName: "safari") }
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
-      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
-    )
+      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil)
     }

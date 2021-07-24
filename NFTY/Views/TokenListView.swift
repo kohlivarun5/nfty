@@ -38,7 +38,7 @@ struct TokenListView: View {
                 samples:samples,
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
-                rarityRank:info.rarityRank,
+                rarityRank:info.rarityRanking,
                 width: .normal
               )
               .padding()
@@ -50,7 +50,7 @@ struct TokenListView: View {
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
                 similarTokens:info.similarTokens,
-                rarityRank:info.rarityRank,
+                rarityRank:info.rarityRanking,
                 hideOwnerLink:false
               ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
               .hidden()
@@ -66,7 +66,10 @@ struct TokenListView: View {
       }
       .navigationBarTitle(title,displayMode: .inline)
       .navigationBarBackButtonHidden(true)
-      .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+      .navigationBarItems(
+        leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+        trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
+      )
     }
 }
 
