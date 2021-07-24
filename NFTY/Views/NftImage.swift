@@ -75,11 +75,26 @@ struct NftIpfsImageView: View {
         }
       },
       view: { ipfs in
-        Image(uiImage: UIImage(data:ipfs!.data)!)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-          .padding(15)
+        switch(UIImage(data:ipfs!.data)) {
+        case .none:
+          ZStack {
+            Image(
+              samples[
+                Int.random(in: 0..<samples.count)
+              ])
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding(15)
+              .blur(radius:20)
+            ProgressView()
+          }
+        case .some(let uiImage):
+          Image(uiImage: uiImage)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+            .padding(15)
+        }
       })
   }
 }
