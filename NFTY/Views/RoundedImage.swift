@@ -15,7 +15,7 @@ struct RoundedImage: View {
   var samples : [String]
   var themeColor : Color
   var themeLabelColor : Color
-  var rarityRank : RarityRankGetter
+  var rarityRank : RarityRanking?
   var rank : UInt?
   
   enum Width {
@@ -29,7 +29,7 @@ struct RoundedImage: View {
        samples : [String],
        themeColor : Color,
        themeLabelColor : Color,
-       rarityRank : @escaping RarityRankGetter,
+       rarityRank : RarityRanking?,
        width:Width)
   {
     
@@ -39,7 +39,7 @@ struct RoundedImage: View {
     self.themeColor = themeColor
     self.themeLabelColor = themeLabelColor
     self.rarityRank = rarityRank
-    self.rank = rarityRank(nft.tokenId)
+    self.rank = rarityRank?.getRank(nft.tokenId)
     self.width = width
   }
   
@@ -132,7 +132,7 @@ struct RoundedImage_Previews: PreviewProvider {
         samples:SAMPLE_PUNKS,
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,
-        rarityRank: SampleCollection.info.rarityRank,
+        rarityRank: SampleCollection.info.rarityRanking,
         width: .normal)
     }
   }

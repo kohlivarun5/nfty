@@ -68,7 +68,7 @@ struct FeedView: View {
   
   private func sorted(_ l:[NFTWithPriceAndInfo]) -> [NFTWithPriceAndInfo] {
     let res = l.sorted(by:{ left,right in
-      switch(left.nftWithPrice.indicativePriceWei.blockNumber,right.nftWithPrice.indicativePriceWei.blockNumber) {
+      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
       case (.none,.none):
         return true
       case (.some(let l),.some(let r)):
@@ -161,11 +161,11 @@ struct FeedView: View {
               ZStack {
                 RoundedImage(
                   nft:nft.nft,
-                  price:.eager(nft.indicativePriceWei),
+                  price:nft.indicativePriceWei,
                   samples:samples,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
-                  rarityRank:info.rarityRank,
+                  rarityRank:info.rarityRanking,
                   width: .normal
                 )
                 .padding()
@@ -176,12 +176,12 @@ struct FeedView: View {
                 
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
-                  price:.eager(nft.indicativePriceWei),
+                  price:nft.indicativePriceWei,
                   samples:samples,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,
-                  rarityRank:info.rarityRank,
+                  rarityRank:info.rarityRanking,
                   hideOwnerLink:false
                 ),tag:String(nft.nft.tokenId),selection:$action) {}
                 .hidden()

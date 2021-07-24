@@ -139,20 +139,27 @@ struct NFTPriceInfo {
   let blockNumber : BigUInt?
 }
 
+enum NFTPriceStatus {
+  case known(NFTPriceInfo)
+  case notSeenSince(NFTNotSeenSince)
+  case burnt
+}
+
+enum TokenPriceType {
+  case eager(NFTPriceInfo)
+  case lazy(ObservablePromise<NFTPriceStatus>)
+}
+
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let indicativePriceWei : NFTPriceInfo
+  let blockNumber : BigUInt?
+  let indicativePriceWei : TokenPriceType
   
   var id : NFT.NftID {
     return nft.id
   }
 }
 
-enum NFTPriceStatus {
-  case known(NFTPriceInfo)
-  case notSeenSince(NFTNotSeenSince)
-  case burnt
-}
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
@@ -172,17 +179,32 @@ struct NFTWithLazyPrice : Identifiable {
   }
 }
 
-enum TokenPriceType {
-  case eager(NFTPriceInfo)
-  case lazy(ObservablePromise<NFTPriceStatus>)
-}
-
 struct SimilarTokensGetter {
   let label : String
   let get : (UInt) -> [UInt]?
 }
 
-typealias RarityRankGetter = (UInt) -> UInt?
+protocol RarityRanking {
+  var sortedTokenIds :  [UInt] { get }
+  func getRank(_ tokenId:UInt) -> UInt?
+}
+
+class RarityRankingImpl : RarityRanking {
+  let ranks : [UInt]
+  let sortedTokenIds : [UInt]
+  init(_ ranks:[UInt]) {
+    self.ranks = ranks
+    var indexed : [(Int,UInt)] = []
+    for (index, element) in ranks.enumerated() {
+      indexed.append((index,element))
+    }
+    indexed.sort { $0.1 < $1.1 }
+    self.sortedTokenIds = indexed.map { UInt($0.0) }
+  }
+  
+  func getRank(_ tokenId:UInt) -> UInt? { return ranks[safe:Int(tokenId)] }
+}
+
 struct CollectionInfo {
   let address: String
   let url1: String
@@ -199,7 +221,7 @@ struct CollectionInfo {
   let blur:CGFloat
   let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter?
-  let rarityRank : RarityRankGetter
+  let rarityRanking : RarityRanking?
 }
 struct CollectionData : HasContractInterface {
   let recentTrades: NftRecentTradesObject
@@ -260,6 +282,20 @@ let SAMPLE_BAYC : [String] = [
   "SampleBAYC4"
 ]
 
+let SAMPLE_FLS : [String] = [
+  "SampleLady1",
+  "SampleLady2",
+  "SampleLady3",
+  "SampleLady4"
+]
+
+let SAMPLE_CRHDL : [String] = [
+  "SampleHodler1",
+  "SampleHodler2",
+  "SampleHodler3",
+  "SampleHodler4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
@@ -269,9 +305,8 @@ let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 let BAYC_nearestTokens : [[UInt]] = load("BoredApeYachtClub_nearestTokens.json")
 let BAYC_rarityRanks : [UInt] = load("BoredApeYachtClub_rarityRanks.json")
 
+let FLS_nearestTokens : [[UInt]] = load("FameLadySquad_nearestTokens.json")
+let FLS_rarityRanks : [UInt] = load("FameLadySquad_rarityRanks.json")
 
-let cryptoPunksContract =  CryptoPunksContract();
-let cryptoKittiesContract = CryptoKittiesAuction();
-let asciiPunksContract = AsciiPunksContract();
-let autoGlyphsContract = AutoglyphsContract()
-let baycContract = BAYC_Contract()
+let CRHDL_nearestTokens : [[UInt]] = load("CryptoHodlers_nearestTokens.json")
+let CRHDL_rarityRanks : [UInt] = load("CryptoHodlers_rarityRanks.json")

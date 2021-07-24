@@ -33,7 +33,7 @@ struct SimilarTokensView: View {
                 samples:samples,
                 themeColor:info.subThemeColor,
                 themeLabelColor:info.themeLabelColor,
-                rarityRank: info.rarityRank,
+                rarityRank: info.rarityRanking,
                 width: .narrow
               )
               //.scaleEffect(0.9)
@@ -49,7 +49,7 @@ struct SimilarTokensView: View {
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
                 similarTokens:info.similarTokens,
-                rarityRank:info.rarityRank,
+                rarityRank:info.rarityRanking,
                 hideOwnerLink:false
               ),tag:String(nft.nft.tokenId),selection:$action) {}
               .hidden()

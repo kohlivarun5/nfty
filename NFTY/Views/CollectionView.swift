@@ -18,7 +18,8 @@ struct CollectionView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  private var info : CollectionInfo
+  private let collection : Collection
+  private let info : CollectionInfo
   
   @ObservedObject var recentTrades : NftRecentTradesObject
   
@@ -27,6 +28,7 @@ struct CollectionView: View {
   @State private var action: String? = ""
   
   init(collection:Collection) {
+    self.collection = collection;
     self.info = collection.info;
     self.recentTrades = collection.data.recentTrades;
   }
@@ -43,7 +45,7 @@ struct CollectionView: View {
   
   private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
     let res = l.sorted(by:{ left,right in
-      switch(left.indicativePriceWei.blockNumber,right.indicativePriceWei.blockNumber) {
+      switch(left.blockNumber,right.blockNumber) {
       case (.none,.none):
         return true
       case (.some(let l),.some(let r)):
@@ -69,11 +71,11 @@ struct CollectionView: View {
           ZStack {
             RoundedImage(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
-              rarityRank: info.rarityRank,
+              rarityRank: info.rarityRanking,
               width: .normal
             )
             .padding()
@@ -84,12 +86,12 @@ struct CollectionView: View {
             
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
-              price:.eager(nft.indicativePriceWei),
+              price:nft.indicativePriceWei,
               samples:samples,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,
-              rarityRank:info.rarityRank,
+              rarityRank:info.rarityRanking,
               hideOwnerLink:false
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
@@ -100,13 +102,25 @@ struct CollectionView: View {
       }.animation(.default)
     }
     .toolbar {
-        Link(destination: info.webLink) {
-          Image(systemName: "safari")
-        }
+      switch(self.info.rarityRanking) {
+      // UNCOMMENT TO SHOW RANKING
+      /* case .some(let ranked):
+        NavigationLink(
+          destination:
+            TokenListView(
+              title:"\(info.name) Ranking",
+              collection: self.collection,
+              tokenIds:ranked.sortedTokenIds
+            )
+        ) { Image(systemName: "list.number") }
+       case .none: */ default:
+        Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
+      }
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
-    .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+    .navigationBarItems(
+      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil)
     }

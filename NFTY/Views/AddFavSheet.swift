@@ -49,7 +49,7 @@ struct AddFavSheet: View {
     nft.update(address:collectionAddress,tokenId:UInt(tokenId))
     UInt(tokenId).map { tokenId in
       collectionsFactory.getByAddress(collectionAddress).map { collection in
-        self.rank = collection.info.rarityRank(tokenId)
+        self.rank = collection.info.rarityRanking?.getRank(tokenId)
       }
     }
   }

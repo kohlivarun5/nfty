@@ -19,7 +19,7 @@ struct NftDetail: View {
   var themeColor : Color
   var themeLabelColor : Color
   var similarTokens : SimilarTokensGetter?
-  var rarityRank : RarityRankGetter
+  var rarityRank : RarityRanking?
   var hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
@@ -153,7 +153,7 @@ struct NftDetail: View {
     
     .ignoresSafeArea(edges: .top)
     .onAppear {
-      self.rank = rarityRank(nft.tokenId)
+      self.rank = rarityRank?.getRank(nft.tokenId)
       similarTokens.map { similarTokens in
         Promise.value(similarTokens.get(nft.tokenId))
           .done(on:.main) { tokens in
@@ -173,7 +173,7 @@ struct NftDetail_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,
-      rarityRank:SampleCollection.info.rarityRank,
+      rarityRank:SampleCollection.info.rarityRanking,
       hideOwnerLink:false)
   }
 }

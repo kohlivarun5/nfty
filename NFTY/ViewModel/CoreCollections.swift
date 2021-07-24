@@ -9,6 +9,16 @@ import Foundation
 import SwiftUI
 import Web3
 
+let cryptoPunksContract =  CryptoPunksContract();
+let cryptoKittiesContract = CryptoKittiesAuction();
+let asciiPunksContract = AsciiPunksContract();
+let autoGlyphsContract = AutoglyphsContract()
+let baycContract = BAYC_Contract()
+let fameLadyContract = FameLadySquad_Contract()
+let CRHDL_Contract = IpfsCollectionContract(
+  name: "CryptoHodlers",
+  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -27,7 +37,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks") { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in CryptoPunks_rarityRanks[safe:Int(tokenId)] }),
+      rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
+    ),
     contract:cryptoPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -46,7 +57,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      rarityRanking: nil
+    ),
     contract:autoGlyphsContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -65,7 +77,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks")  { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in AsciiPunks_rarityRanks[safe:Int(tokenId)] }),
+      rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
+    ),
     contract:asciiPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -84,8 +97,49 @@ let CompositeCollection = CompositeRecentTradesObject([
       blur:0,
       samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Apes")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
-      rarityRank : { tokenId in BAYC_rarityRanks[safe:Int(tokenId)] }),
+      rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
+    ),
     contract:baycContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:fameLadyContract.contractAddressHex,
+      url1:SAMPLE_FLS[0],
+      url2:SAMPLE_FLS[1],
+      url3:SAMPLE_FLS[2],
+      url4:SAMPLE_FLS[3],
+      name:"FameLadySquad",
+      webLink: URL(string:"https://fameladysquad.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens : SimilarTokensGetter(label:"Ladies")  { tokenId in FLS_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(FLS_rarityRanks)
+    ),
+    contract:fameLadyContract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CRHDL_Contract.contractAddressHex,
+      url1:SAMPLE_CRHDL[0],
+      url2:SAMPLE_CRHDL[1],
+      url3:SAMPLE_CRHDL[2],
+      url4:SAMPLE_CRHDL[3],
+      name:CRHDL_Contract.name,
+      webLink: URL(string:"https://cryptohodlers.io/")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens : SimilarTokensGetter(label:"Hodlers") { tokenId in CRHDL_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
+    ),
+    contract:CRHDL_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
@@ -102,7 +156,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:true,
       blur:0,samplePadding:0,
       similarTokens: nil,
-      rarityRank : { tokenId in nil }),
+      rarityRanking: nil
+    ),
     contract:cryptoKittiesContract),
 ]
 )
@@ -127,47 +182,6 @@ struct CollectionsFactory {
 }
 
 let collectionsFactory = CollectionsFactory()
-
-extension Array {
-  subscript (safe index: Int) -> Element? {
-    return indices ~= index ? self[index] : nil
-  }
-}
-
-extension String {
-  /*
-   Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-   - Parameter length: Desired maximum lengths of a string
-   - Parameter trailing: A 'String' that will be appended after the truncation.
-   
-   - Returns: 'String' object.
-   */
-  func trunc(length: Int, trailing: String = "…") -> String {
-    return (self.count > length) ? self.prefix(length) + trailing : self
-  }
-  
-  func deletingPrefix(_ prefix: String) -> String {
-    guard self.hasPrefix(prefix) else { return self }
-    return String(self.dropFirst(prefix.count))
-  }
-}
-
-extension URL {
-  func params() -> [String:Any] {
-    var dict = [String:Any]()
-    
-    if let components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
-      if let queryItems = components.queryItems {
-        for item in queryItems {
-          dict[item.name] = item.value!
-        }
-      }
-      return dict
-    } else {
-      return [:]
-    }
-  }
-}
 
 let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
   hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
