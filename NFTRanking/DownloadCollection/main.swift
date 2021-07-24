@@ -61,7 +61,7 @@ while tokenId < (lastIndex + 1) {
 }
 
 try hang(when(fulfilled:prev))
-print("Done downloading. Veryfing now")
+print("Done downloading. Verifing now")
 
 var indexMissing = false
 
