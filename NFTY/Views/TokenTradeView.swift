@@ -79,55 +79,14 @@ struct TokenTradeView: View {
       
       TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
       
-      HStack {
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-        }) {
-          HStack {
-            Spacer()
-            Text("Enter Bid")
-              .foregroundColor(.black)
-              .font(.title2.weight(.bold))
-            Spacer()
-          }
-          .padding()
-          .background(
-            RoundedCorners(
-              color: .flatOrange,
-              tl: 0, tr: 20, bl: 0, br: 20))
-        }
-        
-        SheetButton(content: {
-          HStack {
-            Spacer()
-            Text("Sell")
-              .foregroundColor(.black)
-              .font(.title2.weight(.bold))
-            Spacer()
-          }
-          .padding()
-          .background(
-            RoundedCorners(
-              color: .flatGreen,
-              tl: 20, tr: 0, bl: 20, br: 0))
-        },sheetContent: {
-          NewOfferView(
-            nft: nft,
-            price:price,
-            samples: samples,
-            themeColor:themeColor,
-            themeLabelColor:themeLabelColor,
-            size: .small,
-            rarityRank:rarityRank)
-        })
-      }
-      .padding(.bottom,10)
-      .padding(.top,10)
-      .background(
-        RoundedCorners(
-          color: .secondarySystemBackground,
-          tl: 10, tr: 10, bl: 0, br: 0))
+      TokenTradeActions(
+        nft: nft,
+        price:price,
+        samples: samples,
+        themeColor:themeColor,
+        themeLabelColor:themeLabelColor,
+        size: .small,
+        rarityRank:rarityRank)
       
     }
     .animation(.default)
