@@ -94,7 +94,7 @@ struct ConnectWalletSheet: View {
                   
                   let url = try! walletConnect.connectToWallet(link:"trust:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
                     print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
@@ -225,9 +225,18 @@ extension ConnectWalletSheet: WalletConnectDelegate {
     self.connection = ConnectionState.failed
   }
   
-  func didConnect() {
+  func didConnect(account:EthereumAddress?) {
     print("didConnect")
     self.connection = ConnectionState.connected
+    self.address = account
+    switch(self.address) {
+    case .none:
+      self.badAddressError = "Imported bad address"
+    case .some(let account):
+      self.badAddressError = ""
+      NSUbiquitousKeyValueStore.default.set(account.hex(eip55:true), forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
+      presentationMode.wrappedValue.dismiss()
+    }
   }
   
   func didDisconnect() {

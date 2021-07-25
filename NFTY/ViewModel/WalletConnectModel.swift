@@ -6,12 +6,12 @@
 //
 
 import Foundation
-
+import Web3
 import WalletConnectSwift
 
 protocol WalletConnectDelegate {
   func failedToConnect()
-  func didConnect()
+  func didConnect(account:EthereumAddress?)
   func didDisconnect()
 }
 
@@ -84,7 +84,7 @@ class WalletConnect {
   }
   
   func reconnectIfNeeded() {
-    if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: sessionKey) as? Data,
+    if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data,
        let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
       client = Client(delegate: self, dAppInfo: session.dAppInfo)
       try? client.reconnect(to: session)
@@ -118,21 +118,24 @@ extension WalletConnect: ClientDelegate {
   }
   
   func client(_ client: Client, didConnect session: Session) {
-    print("didConnect session client\(client)")
+    print("didConnect session=\(session)")
     self.session = session
     let sessionData = try! JSONEncoder().encode(session)
-    NSUbiquitousKeyValueStore.default.set(sessionData, forKey: sessionKey)
-    delegate.didConnect()
+    NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
+    delegate.didConnect(
+      account:session.walletInfo?.accounts[safe:0].flatMap {
+        try? EthereumAddress(hex:$0,eip55: false)
+      })
   }
   
   func client(_ client: Client, didDisconnect session: Session) {
     print("client didDisconnect")
-    NSUbiquitousKeyValueStore.default.removeObject(forKey: sessionKey)
+    NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
     delegate.didDisconnect()
   }
   
   func client(_ client: Client, didUpdate session: Session) {
-    print("client didUpdate")
+    print("client didUpdate, session=\(session)")
     // do nothing
   }
 }
