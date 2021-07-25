@@ -15,8 +15,6 @@ struct ConnectWalletSheet: View {
   @Binding var address : EthereumAddress?
   @State var badAddressError : String = ""
   
-  @State var badImportWalletError : String = ""
-  
   enum ConnectionState {
     case disconnected
     case connecting
@@ -27,38 +25,50 @@ struct ConnectWalletSheet: View {
   @State var connection : ConnectionState = .disconnected
   @State var walletConnect: WalletConnect?
   
-  // private var walletConnect : WalletConnect
-  
-  
   var body: some View {
     VStack {
       Spacer()
       
-      VStack {
+      VStack(spacing:20) {
         
-        
-        Text("Connect Wallet")
-          .font(.title2)
-          .fontWeight(.bold)
-        
-        Text("")
-          .font(.title2)
-        
-        HStack(spacing:30) {
-          
-          Spacer()
-          switch(walletConnect) {
-          case .none:
-            ProgressView()
-          case .some(let walletConnect):
-            switch(connection) {
-            case .failed,.disconnected:
+        switch(walletConnect) {
+        case .none:
+          ProgressView()
+        case .some(let walletConnect):
+          switch(connection) {
+          case .connecting:
+            VStack {
+              ProgressView()
+                .scaleEffect(2.0, anchor: .center)
+                .frame(width: 80,height:80)
+              Text("Connecting...")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            }
+          case .failed,.disconnected,.connected:
+            switch(walletConnect.session?.walletInfo?.peerMeta.name) {
+            case .none:
+              Text("Connect Wallet")
+                .font(.title2)
+                .fontWeight(.bold)
+            case .some(let name):
+              VStack {
+                Text("Currently connected using:")
+                  .fontWeight(.bold).font(.title2)
+                Text(name)
+                  .fontWeight(.bold).font(.title2)
+              }
+            }
+            
+            HStack(spacing:30) {
+              Spacer()
+              
               HStack {
                 
                 Button(action:{
                   UIImpactFeedbackGenerator(style: .light)
                     .impactOccurred()
-
+                  
                   let url = try! walletConnect.connectToWallet(link:"metamask:")
                   // we need a delay so that WalletConnectClient can send handshake request
                   DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
@@ -94,7 +104,7 @@ struct ConnectWalletSheet: View {
                   
                   let url = try! walletConnect.connectToWallet(link:"trust:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
                     print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
@@ -120,33 +130,21 @@ struct ConnectWalletSheet: View {
                       .stroke(Color.blue, lineWidth: 1))
                 }
               }
-              
-            case .connecting:
-              ProgressView()
-                .scaleEffect(2.0, anchor: .center)
-                .frame(width: 80,height:80)
-            case .connected:
+              Spacer()
+            }
+            
+            if (connection == .failed) {
               VStack {
-                Image("Metamask")
-                  .resizable()
-                  .frame(width: 60,height:60)
-                
-                Text("Connected using MetaMask")
-                  .font(.caption)
-                  .fontWeight(.bold)
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(Color.orange)
+                Text("Failed to connect")
+                  .font(.footnote)
+                  .foregroundColor(.secondary)
+                Text("Please try again")
+                  .font(.footnote)
+                  .foregroundColor(.secondary)
               }
             }
           }
-          
-          Spacer()
         }
-        
-        
-        Text(badImportWalletError)
-          .font(.footnote)
-          .foregroundColor(.secondary)
       }
       .padding()
       .animation(.easeIn)

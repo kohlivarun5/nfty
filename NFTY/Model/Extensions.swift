@@ -48,6 +48,12 @@ extension String {
     guard self.hasPrefix(prefix) else { return self }
     return String(self.dropFirst(prefix.count))
   }
+  
+  func encodeURIComponent() -> String? {
+    let characterSet = CharacterSet.init(charactersIn: "@\"!*'();:@&=+$,/?%#[]").inverted
+    return self.addingPercentEncoding(withAllowedCharacters: characterSet)
+  }
+  
 }
 
 extension URL {

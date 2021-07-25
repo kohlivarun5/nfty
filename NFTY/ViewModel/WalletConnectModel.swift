@@ -16,17 +16,7 @@ protocol WalletConnectDelegate {
 }
 
 extension WCURL {
-  var partiallyPercentEncodedStr: String {
-    let params = "bridge=\(bridgeURL.absoluteString)&key=\(key)"
-      .addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
-    return "wc:\(topic)@\(version)?\(params))"
-  }
-  
-  var fullyPercentEncodedStr: String {
-    /*"wc:\(topic)@\(version)?bridge=\(bridgeURL.absoluteURL)&key=\(key)"
-      .addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
- */
-    
+  var fullyPercentEncodedStr: String { 
     absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
   }
 }
@@ -40,6 +30,12 @@ class WalletConnect {
   
   init(delegate: WalletConnectDelegate) {
     self.delegate = delegate
+    
+    if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data,
+       let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
+      self.client = Client(delegate: self, dAppInfo: session.dAppInfo)
+      self.session = session
+    }
   }
   
   func connect() -> WCURL {
@@ -71,7 +67,7 @@ class WalletConnect {
   }
   
   func connectToWallet(link: String) throws -> URL {
-    let wcUrl = try connect()
+    let wcUrl = connect()
     let uri = wcUrl.fullyPercentEncodedStr
     var delimiter: String
     if link.contains("http") {
@@ -82,7 +78,7 @@ class WalletConnect {
     let urlStr = "\(link)\(delimiter)wc?uri=\(uri)"
     return URL(string: urlStr)!
   }
-  
+
   func reconnectIfNeeded() {
     if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data,
        let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
