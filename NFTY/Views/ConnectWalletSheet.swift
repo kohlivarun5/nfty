@@ -15,7 +15,7 @@ struct ConnectWalletSheet: View {
   @Binding var address : EthereumAddress?
   @State var badAddressError : String = ""
   
-  @State var metamaskLoading = true
+  @State var metamaskLoading = false
   
   @State var badImportWalletError : String = ""
   

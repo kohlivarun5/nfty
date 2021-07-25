@@ -26,45 +26,6 @@
           "branch": null,
           "revision": "4e31051c63cc0ddf10a25cf5318856c510cf77f4",
           "version": "1.4.0"
-<<<<<<< HEAD
-=======
-        }
-      },
-      {
-        "package": "Firebase",
-        "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
-        "state": {
-          "branch": null,
-          "revision": "c6328a01c4db4c5dfd5ce0159a48a129ef6f4505",
-          "version": "7.11.0"
-        }
-      },
-      {
-        "package": "GoogleAppMeasurement",
-        "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
-        "state": {
-          "branch": null,
-          "revision": "7a263c22915db6e421dbf84bd3b4367a870588d9",
-          "version": "7.11.0"
-        }
-      },
-      {
-        "package": "GoogleDataTransport",
-        "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
-        "state": {
-          "branch": null,
-          "revision": "369716b8d7518a530ce3c3a251436d72546debd8",
-          "version": "8.4.0"
-        }
-      },
-      {
-        "package": "GoogleUtilities",
-        "repositoryURL": "https://github.com/google/GoogleUtilities.git",
-        "state": {
-          "branch": null,
-          "revision": "1c47ea135322768023ecdcc9db79bf3df821209f",
-          "version": "7.3.0"
->>>>>>> origin/walletConnect
         }
       },
       {
@@ -95,8 +56,6 @@
         }
       },
       {
-<<<<<<< HEAD
-=======
         "package": "Starscream",
         "repositoryURL": "https://github.com/daltoniam/Starscream.git",
         "state": {
@@ -124,24 +83,12 @@
         }
       },
       {
->>>>>>> origin/walletConnect
         "package": "Introspect",
         "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect.git",
         "state": {
           "branch": null,
           "revision": "2e09be8af614401bc9f87d40093ec19ce56ccaf2",
           "version": "0.1.3"
-        }
-      },
-      {
-<<<<<<< HEAD
-=======
-        "package": "URLImage",
-        "repositoryURL": "https://github.com/dmytro-anokhin/url-image",
-        "state": {
-          "branch": null,
-          "revision": "c1a906515b0a440927b96204b778058871b22f23",
-          "version": "2.2.3"
         }
       },
       {
@@ -154,7 +101,6 @@
         }
       },
       {
->>>>>>> origin/walletConnect
         "package": "Web3",
         "repositoryURL": "https://github.com/Boilertalk/Web3.swift",
         "state": {
