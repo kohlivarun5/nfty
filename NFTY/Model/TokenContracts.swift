@@ -293,7 +293,7 @@ class CryptoPunksContract : ContractInterface {
           //print(log);
           let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
           log.blockNumber.map { blockNumber in
-            events.append(TradeEvent(type: .offer, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+            events.append(TradeEvent(type: .ask, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
           }
         }
       }
@@ -425,7 +425,7 @@ class CryptoPunksContract : ContractInterface {
         if (counter >= 3) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
-        response(TradeEvent(type:.offer, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:.ask, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
       }
       
       punkBidFetcher.fetchAllLogs(onDone: {

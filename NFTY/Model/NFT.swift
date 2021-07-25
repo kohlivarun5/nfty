@@ -10,7 +10,7 @@ import SwiftUI
 import Web3
 
 enum TradeEventType {
-  case offer
+  case ask
   case bid
   case bought
   case minted

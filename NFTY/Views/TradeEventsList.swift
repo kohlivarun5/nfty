@@ -31,10 +31,10 @@ struct TradeEventIconView : View {
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
-    case .offer:
+    case .ask:
       VStack(spacing:5) {
         Image(systemName: "target")
-        Text("Offer")
+        Text("Ask")
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
