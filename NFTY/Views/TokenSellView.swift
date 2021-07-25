@@ -1,16 +1,16 @@
 //
-//  NewOfferView.swift
+//  TokenSellView.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 7/16/21.
+//  Created by Varun Kohli on 7/25/21.
 //
 
 import SwiftUI
 import BigInt
 import Web3
 
-struct NewOfferView: View {
-  
+
+struct TokenSellView: View {
   let nft:NFT
   let price:TokenPriceType
   let samples:[String]
@@ -92,7 +92,7 @@ struct NewOfferView: View {
       
       ZStack {
         Divider()
-        Text("Set Price in ETH")
+        Text("Set Ask Price in ETH")
           .font(.title3).italic()
           .foregroundColor(.secondaryLabel)
           .padding(10)
@@ -159,8 +159,8 @@ struct NewOfferView: View {
               Spacer()
             }
             .padding()
-            .foregroundColor(.white)
-            .background(priceInWei == nil ? Color.gray : Color.green)
+            .foregroundColor(priceInWei == nil ? .white : .black)
+            .background(priceInWei == nil ? Color.gray : Color.flatGreen)
             .cornerRadius(40)
             .padding(.leading)
             .padding(.trailing)
@@ -189,15 +189,15 @@ struct NewOfferView: View {
   }
 }
 
-struct NewOfferView_Previews: PreviewProvider {
-  static var previews: some View {
-    NewOfferView(
-      nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:123450,blockNumber: nil)),
-      samples:SAMPLE_PUNKS,
-      themeColor:SampleCollection.info.themeColor,
-      themeLabelColor:SampleCollection.info.themeLabelColor,
-      size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking)
-  }
+struct TokenSellView_Previews: PreviewProvider {
+    static var previews: some View {
+      TokenSellView(
+        nft:SampleToken,
+        price:.eager(NFTPriceInfo(price:123450,blockNumber: nil)),
+        samples:SAMPLE_PUNKS,
+        themeColor:SampleCollection.info.themeColor,
+        themeLabelColor:SampleCollection.info.themeLabelColor,
+        size:.normal,
+        rarityRank:SampleCollection.info.rarityRanking)
+    }
 }

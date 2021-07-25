@@ -71,7 +71,7 @@ struct TokenTradeActions: View {
                   tl: 20, tr: 20, bl: 20, br: 20))
               .padding([.leading,.trailing],50)
             },sheetContent: {
-              NewOfferView(
+              TokenBuyView(
                 nft: nft,
                 price:price,
                 samples: samples,
@@ -97,7 +97,7 @@ struct TokenTradeActions: View {
                   tl: 20, tr: 20, bl: 20, br: 20))
               .padding([.leading,.trailing],50)
             },sheetContent: {
-              NewOfferView(
+              TokenSellView(
                 nft: nft,
                 price:price,
                 samples: samples,
