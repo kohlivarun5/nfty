@@ -15,9 +15,20 @@ struct ConnectWalletSheet: View {
   @Binding var address : EthereumAddress?
   @State var badAddressError : String = ""
   
-  @State var metamaskLoading = false
-  
   @State var badImportWalletError : String = ""
+  
+  enum ConnectionState {
+    case disconnected
+    case connecting
+    case connected
+    case failed
+  }
+  
+  @State var connection : ConnectionState = .disconnected
+  @State var walletConnect: WalletConnect?
+  
+  // private var walletConnect : WalletConnect
+  
   
   var body: some View {
     VStack {
@@ -36,81 +47,97 @@ struct ConnectWalletSheet: View {
         HStack(spacing:30) {
           
           Spacer()
-          Button(action: {
-            
-            metamaskLoading.toggle()
-            
-            UIImpactFeedbackGenerator(style: .light)
-              .impactOccurred()
-            
-            if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
-              print(string)
-            }
-            
-          }) {
-            
-            (metamaskLoading
-              ? AnyView(
-                ProgressView()
-                  .scaleEffect(2.0, anchor: .center)
-                  .frame(width: 80,height:80)
-              )
-              
-              : AnyView(
+          switch(walletConnect) {
+          case .none:
+            ProgressView()
+          case .some(let walletConnect):
+            switch(connection) {
+            case .failed,.disconnected:
+              HStack {
                 
-                VStack {
-                  Image("Metamask")
-                    .resizable()
-                    .frame(width: 60,height:60)
+                Button(action:{
+                  UIImpactFeedbackGenerator(style: .light)
+                    .impactOccurred()
+
+                  let url = try! walletConnect.connectToWallet(link:"metamask:")
+                  // we need a delay so that WalletConnectClient can send handshake request
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                  }
+                  self.connection = .connecting
                   
-                  Text("Connect using MetaMask")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.orange)
+                }) {
+                  VStack {
+                    Image("Metamask")
+                      .resizable()
+                      .frame(width: 60,height:60)
+                    
+                    Text("Connect using MetaMask")
+                      .font(.caption)
+                      .fontWeight(.bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(Color.orange)
+                  }
+                  .frame(minWidth: 0, maxWidth: .infinity)
+                  .padding()
+                  .border(Color.orange)
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .overlay(
+                    RoundedRectangle(cornerRadius:20, style: .continuous)
+                      .stroke(Color.orange, lineWidth: 1))
                 }
-              )
-            ).frame(minWidth: 0, maxWidth: .infinity)
-            .padding()
-            .border(Color.orange)
-            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .overlay(
-              RoundedRectangle(cornerRadius:20, style: .continuous)
-                .stroke(Color.orange, lineWidth: 1))
+                
+                Button(action:{
+                  UIImpactFeedbackGenerator(style: .light)
+                    .impactOccurred()
+                  
+                  let url = try! walletConnect.connectToWallet(link:"trust:")
+                  // we need a delay so that WalletConnectClient can send handshake request
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                  }
+                  self.connection = .connecting
+                }) {
+                  VStack {
+                    Image("TrustWallet")
+                      .resizable()
+                      .frame(width: 60,height:60)
+                    
+                    Text("Connect using Trust Wallet")
+                      .font(.caption)
+                      .fontWeight(.bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(Color.blue)
+                  }
+                  .frame(minWidth: 0, maxWidth: .infinity)
+                  .padding()
+                  .border(Color.blue)
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .overlay(
+                    RoundedRectangle(cornerRadius:20, style: .continuous)
+                      .stroke(Color.blue, lineWidth: 1))
+                }
+              }
+              
+            case .connecting:
+              ProgressView()
+                .scaleEffect(2.0, anchor: .center)
+                .frame(width: 80,height:80)
+            case .connected:
+              VStack {
+                Image("Metamask")
+                  .resizable()
+                  .frame(width: 60,height:60)
+                
+                Text("Connected using MetaMask")
+                  .font(.caption)
+                  .fontWeight(.bold)
+                  .multilineTextAlignment(.center)
+                  .foregroundColor(Color.orange)
+              }
+            }
           }
           
-          Button(action: {
-            
-            UIImpactFeedbackGenerator(style: .light)
-              .impactOccurred()
-            
-            if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
-              print(string)
-            }
-            
-          }) {
-            
-            VStack {
-              Image("TrustWallet")
-                .resizable()
-                .frame(width: 60,height:60)
-              
-              Text("Connect using Trust Wallet")
-                .font(.caption)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color.blue)
-            }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .padding()
-            .border(Color.blue)
-            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .overlay(
-              RoundedRectangle(cornerRadius:20, style: .continuous)
-                .stroke(Color.blue, lineWidth: 1))
-          }
           Spacer()
         }
         
@@ -183,6 +210,27 @@ struct ConnectWalletSheet: View {
       
       Spacer()
     }
+    .onAppear {
+      self.walletConnect = WalletConnect(delegate:self)
+    }
+  }
+}
+
+
+extension ConnectWalletSheet: WalletConnectDelegate {
+  func failedToConnect() {
+    print("failedToConnect")
+    self.connection = ConnectionState.failed
+  }
+  
+  func didConnect() {
+    print("didConnect")
+    self.connection = ConnectionState.connected
+  }
+  
+  func didDisconnect() {
+    print("didDisconnect")
+    self.connection = ConnectionState.disconnected
   }
 }
 
