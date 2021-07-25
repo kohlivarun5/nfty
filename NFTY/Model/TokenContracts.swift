@@ -110,6 +110,9 @@ protocol ContractInterface {
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
+  
+  var tradeActions : TokenTradeInterface? { get }
+  
 }
 
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
@@ -168,9 +171,25 @@ class CryptoPunksContract : ContractInterface {
   }
   private var ethContract = EthContract()
   
+  struct TradeActions : TokenTradeInterface {
+    
+    let ethContract : EthContract
+    
+    func getBidPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
+      return Promise.value(nil)
+    }
+    
+    func getAskPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
+      return Promise.value(nil)
+    }
+  }
+  
+  var tradeActions: TokenTradeInterface?
+  
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
+    tradeActions = TradeActions(ethContract:ethContract)
   }
   
   private func imageUrl(_ tokenId:UInt) -> URL? {
@@ -513,6 +532,8 @@ class CryptoPunksContract : ContractInterface {
 }
 
 class CryptoKittiesAuction : ContractInterface {
+  
+  var tradeActions: TokenTradeInterface? = nil
 
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
   
@@ -783,6 +804,8 @@ class CryptoKittiesAuction : ContractInterface {
 }
 
 class AsciiPunksContract : ContractInterface {
+  
+  var tradeActions: TokenTradeInterface? = nil
   
   private var drawingCache = try! DiskStorage<BigUInt, Media.AsciiPunk>(
     config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
@@ -1061,6 +1084,8 @@ class AsciiPunksContract : ContractInterface {
 
 
 class AutoglyphsContract : ContractInterface {
+  
+  var tradeActions: TokenTradeInterface? = nil
   
   private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
     config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),

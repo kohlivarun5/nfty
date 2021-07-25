@@ -18,6 +18,7 @@ struct TokenBuyView: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
+  let tradeActions : TokenTradeInterface
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -92,25 +93,7 @@ struct TokenBuyView: View {
       
       ZStack {
         Divider()
-        Text("Set Bid in ETH")
-          .font(.title3).italic()
-          .foregroundColor(.secondaryLabel)
-          .padding(10)
-          .background(Color.systemBackground)
-      }
-      
-      TextField("ETH",text:$eth)
-        .font(.title3)
-        .keyboardType(.decimalPad)
-        .multilineTextAlignment(.center)
-        .introspectTextField { textField in
-          textField.becomeFirstResponder()
-        }
-        .onChange(of: eth) { val in self.onPriceEntered() }
-      
-      ZStack{
-        Divider()
-        Text("Bid Price")
+        Text("Enter Bid")
           .font(.title3).italic()
           .foregroundColor(.secondaryLabel)
           .padding(10)
@@ -118,58 +101,150 @@ struct TokenBuyView: View {
       }
       
       VStack {
-        
-        switch(spot,priceInWei) {
-        case (.loading,_):
-          ProgressView()
-            .onAppear {
-              switch(self.spot) {
-              case .loading:
-                EthSpot.getLiveRate()
-                  .done(on:.main) { spot in
-                    switch(spot) {
-                    case .none:
-                      self.spot = .unknown
-                    case .some(let rate):
-                      self.spot = .localCurrency(rate)
-                    }
-                  }.catch { print ($0) }
-              case .localCurrency,.unknown:
-                break
-              }
-            }
-        case (.localCurrency(let rate),.some(let price)):
-          Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
-        case (.unknown,.some(let price)):
-          Text(ethFormatter.string(for:(Double(price) / 1e18))!)
-        case (_,.none):
-          Text(" ")
-        }
-        
-        
         HStack {
-          Button(action: {
-            UIImpactFeedbackGenerator(style:.soft)
-              .impactOccurred()
-            self.onSubmit()
-          }) {
-            HStack {
-              Spacer()
-              Text("Submit Bid")
-              Spacer()
-            }
-            .padding()
-            .foregroundColor(priceInWei == nil ? .white : .black)
-            .background(priceInWei == nil ? Color.gray : Color.flatOrange)
-            .cornerRadius(40)
-            .padding(.leading)
-            .padding(.trailing)
-            .padding(.top,10)
+          Text("Bid price in ETH")
+            .font(.title3.weight(.bold))
+          Spacer()
+          TextField("ETH",text:$eth)
+            .font(.title3)
+            .keyboardType(.decimalPad)
+            .multilineTextAlignment(.center)
+            /*.introspectTextField { textField in
+              textField.becomeFirstResponder()
+            }*/
+            .onChange(of: eth) { val in self.onPriceEntered() }
+        }.padding(10)
+        HStack {
+          Text("Fiat Price")
+            .font(.title3.weight(.bold))
+          Spacer()
+          switch(spot,priceInWei) {
+          case (.loading,_):
+            ProgressView()
+              .onAppear {
+                switch(self.spot) {
+                case .loading:
+                  EthSpot.getLiveRate()
+                    .done(on:.main) { spot in
+                      switch(spot) {
+                      case .none:
+                        self.spot = .unknown
+                      case .some(let rate):
+                        self.spot = .localCurrency(rate)
+                      }
+                    }.catch { print ($0) }
+                case .localCurrency,.unknown:
+                  break
+                }
+              }
+          case (.localCurrency(let rate),.some(let price)):
+            Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+              .font(.title3)
+          case (.unknown,.some(let price)):
+            Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+              .font(.title3)
+          case (_,.none):
+            Text(" ")
           }
-          .disabled(priceInWei == nil)
+        }.padding(10)
+      }
+      HStack {
+        Button(action: {
+          UIImpactFeedbackGenerator(style:.soft)
+            .impactOccurred()
+          self.onSubmit()
+        }) {
+          HStack {
+            Spacer()
+            Text("Submit Bid")
+              .font(.title2.weight(.bold))
+            Spacer()
+          }
+          .padding()
+          .foregroundColor(priceInWei == nil ? .white : .black)
+          .background(priceInWei == nil ? Color.gray : Color.flatOrange)
+          .cornerRadius(40)
+          .padding(.leading)
+          .padding(.trailing)
+          .padding(.top,10)
         }
-        .foregroundColor(.black)
-      }.font(.title2.weight(.bold))
+        .disabled(priceInWei == nil)
+      }
+      
+      ZStack {
+        Divider()
+        Text("Current Ask Price")
+          .font(.title3).italic()
+          .foregroundColor(.secondaryLabel)
+          .padding(10)
+          .background(Color.systemBackground)
+      }
+      
+      VStack {
+        HStack {
+          Text("Ask price in ETH")
+            .font(.title3.weight(.bold))
+          Spacer()
+          Text(ethFormatter.string(for:(Double(0) / 1e18))!)
+            .font(.title3)
+        }.padding(10)
+        HStack {
+          Text("Fiat Price")
+            .font(.title3.weight(.bold))
+          Spacer()
+          switch(spot,priceInWei) {
+          case (.loading,_):
+            ProgressView()
+              .onAppear {
+                switch(self.spot) {
+                case .loading:
+                  EthSpot.getLiveRate()
+                    .done(on:.main) { spot in
+                      switch(spot) {
+                      case .none:
+                        self.spot = .unknown
+                      case .some(let rate):
+                        self.spot = .localCurrency(rate)
+                      }
+                    }.catch { print ($0) }
+                case .localCurrency,.unknown:
+                  break
+                }
+              }
+          case (.localCurrency(let rate),.some(let price)):
+            Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+              .font(.title3)
+          case (.unknown,.some(let price)):
+            Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+              .font(.title3)
+          case (_,.none):
+            Text(" ")
+          }
+        }.padding(10)
+      }
+      HStack {
+        Button(action: {
+          UIImpactFeedbackGenerator(style:.soft)
+            .impactOccurred()
+          self.onSubmit()
+        }) {
+          HStack {
+            Spacer()
+            Text("Buy Now")
+              .font(.title2.weight(.bold))
+            Spacer()
+          }
+          .padding()
+          .foregroundColor(priceInWei == nil ? .white : .black)
+          .background(priceInWei == nil ? Color.gray : Color.flatOrange)
+          .cornerRadius(40)
+          .padding(.leading)
+          .padding(.trailing)
+          .padding(.top,10)
+        }
+        .disabled(priceInWei == nil)
+      }
+      
       
       Spacer()
       
@@ -183,14 +258,16 @@ struct TokenBuyView: View {
 }
 
 struct TokenBuyView_Previews: PreviewProvider {
-    static var previews: some View {
-      TokenBuyView(
-        nft:SampleToken,
-        price:.eager(NFTPriceInfo(price:123450,blockNumber: nil)),
-        samples:SAMPLE_PUNKS,
-        themeColor:SampleCollection.info.themeColor,
-        themeLabelColor:SampleCollection.info.themeLabelColor,
-        size:.normal,
-        rarityRank:SampleCollection.info.rarityRanking)
-    }
+  static var previews: some View {
+    TokenBuyView(
+      nft:SampleToken,
+      price:.eager(NFTPriceInfo(price:123450,blockNumber: nil)),
+      samples:SAMPLE_PUNKS,
+      themeColor:SampleCollection.info.themeColor,
+      themeLabelColor:SampleCollection.info.themeLabelColor,
+      size:.normal,
+      rarityRank:SampleCollection.info.rarityRanking,
+      tradeActions: SampleCollection.data.contract.tradeActions!
+    )
+  }
 }

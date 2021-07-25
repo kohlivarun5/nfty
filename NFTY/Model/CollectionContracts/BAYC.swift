@@ -15,6 +15,8 @@ import Web3ContractABI
 
 class BAYC_Contract : ContractInterface {
   
+  var tradeActions: TokenTradeInterface? = nil
+  
   private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
     config: DiskConfig(name: "BAYC.ImageCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))

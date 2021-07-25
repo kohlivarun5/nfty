@@ -16,6 +16,8 @@ import UIKit
 
 class FameLadySquad_Contract : ContractInterface {
   
+  var tradeActions: TokenTradeInterface? = nil
+  
   private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
     config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))

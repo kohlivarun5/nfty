@@ -199,6 +199,8 @@ class Erc721Contract {
 
 class IpfsCollectionContract : ContractInterface {
   
+  var tradeActions: TokenTradeInterface? = nil
+  
   class IpfsImageEthContract : Erc721Contract {
     
     struct TokenUriData : Codable {

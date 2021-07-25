@@ -24,8 +24,8 @@ struct TokenTradeActions: View {
     case buyActions
     case sellActions
   }
-  
   @State private var actionsState : ActionsState? = nil
+  @State private var tradeActions : TokenTradeInterface? = nil
   
   init(
     nft:NFT,
@@ -49,10 +49,10 @@ struct TokenTradeActions: View {
     
     HStack {
       
-      switch(actionsState) {
-      case .none:
+      switch(actionsState,tradeActions) {
+      case (.none,_),(_,.none):
         EmptyView()
-      case .some(let actions):
+      case (.some(let actions),.some(let tradeActions)):
         HStack {
           switch(actions) {
           case .buyActions:
@@ -78,7 +78,9 @@ struct TokenTradeActions: View {
                 themeColor:themeColor,
                 themeLabelColor:themeLabelColor,
                 size: .small,
-                rarityRank:rarityRank)
+                rarityRank:rarityRank,
+                tradeActions: tradeActions
+              )
             })
             
           case .sellActions:
@@ -104,20 +106,22 @@ struct TokenTradeActions: View {
                 themeColor:themeColor,
                 themeLabelColor:themeLabelColor,
                 size: .small,
-                rarityRank:rarityRank)
+                rarityRank:rarityRank,
+                tradeActions: tradeActions
+              )
             })
           }
         }
         .padding(.bottom,10)
       /*
        
-        .padding(.top,10)
-        .background(Color.secondarySystemBackground)
-        
-        .background(
-          RoundedCorners(
-            color: .secondarySystemBackground,
-            tl: 10, tr: 10, bl: 0, br: 0))*/
+       .padding(.top,10)
+       .background(Color.secondarySystemBackground)
+       
+       .background(
+       RoundedCorners(
+       color: .secondarySystemBackground,
+       tl: 10, tr: 10, bl: 0, br: 0))*/
       }
     }
     .onAppear {
@@ -126,7 +130,10 @@ struct TokenTradeActions: View {
         self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
       }
       
-      collectionsFactory.getByAddress(nft.address)!.data.contract.ownerOf(nft.tokenId)
+      let contract = collectionsFactory.getByAddress(nft.address)!.data.contract
+      self.tradeActions = contract.tradeActions
+      
+      contract.ownerOf(nft.tokenId)
         .done { ownerAddress in
           self.actionsState = walletAddress == ownerAddress ? .sellActions : .buyActions
         }

@@ -18,6 +18,7 @@ struct TokenSellView: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
+  let tradeActions : TokenTradeInterface
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -198,6 +199,8 @@ struct TokenSellView_Previews: PreviewProvider {
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,
         size:.normal,
-        rarityRank:SampleCollection.info.rarityRanking)
+        rarityRank:SampleCollection.info.rarityRanking,
+        tradeActions: SampleCollection.data.contract.tradeActions!
+      )
     }
 }
