@@ -61,7 +61,8 @@ struct ConnectWalletSheet: View {
 
                   let url = try! walletConnect.connectToWallet(link:"metamask:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+                    print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
                   self.connection = .connecting
@@ -93,7 +94,8 @@ struct ConnectWalletSheet: View {
                   
                   let url = try! walletConnect.connectToWallet(link:"trust:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+                    print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
                   self.connection = .connecting

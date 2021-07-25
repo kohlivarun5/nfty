@@ -23,6 +23,10 @@ extension WCURL {
   }
   
   var fullyPercentEncodedStr: String {
+    /*"wc:\(topic)@\(version)?bridge=\(bridgeURL.absoluteURL)&key=\(key)"
+      .addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+ */
+    
     absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
   }
 }
