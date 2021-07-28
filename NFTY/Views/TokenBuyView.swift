@@ -91,166 +91,142 @@ struct TokenBuyView: View {
       }
       .padding()
       
-      ZStack {
-        Divider()
-        Text("Enter Bid")
-          .font(.title3).italic()
-          .foregroundColor(.secondaryLabel)
-          .padding(10)
-          .background(Color.systemBackground)
-      }
       
-      VStack {
-        HStack {
-          Text("Bid price in ETH")
-            .font(.title3.weight(.bold))
-          Spacer()
-          TextField("ETH",text:$eth)
-            .font(.title3)
-            .keyboardType(.decimalPad)
-            .multilineTextAlignment(.center)
-            /*.introspectTextField { textField in
-              textField.becomeFirstResponder()
-            }*/
-            .onChange(of: eth) { val in self.onPriceEntered() }
-        }.padding(10)
-        HStack {
-          Text("Fiat Price")
-            .font(.title3.weight(.bold))
-          Spacer()
-          switch(spot,priceInWei) {
-          case (.loading,_):
-            ProgressView()
-              .onAppear {
-                switch(self.spot) {
-                case .loading:
-                  EthSpot.getLiveRate()
-                    .done(on:.main) { spot in
-                      switch(spot) {
-                      case .none:
-                        self.spot = .unknown
-                      case .some(let rate):
-                        self.spot = .localCurrency(rate)
-                      }
-                    }.catch { print ($0) }
-                case .localCurrency,.unknown:
-                  break
-                }
+      Form {
+        Section(
+          header: Text("Bid"),
+          footer: HStack {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.onSubmit()
+            }) {
+              HStack {
+                Spacer()
+                Text("Submit Bid")
+                  .font(.callout)
+                  .fontWeight(.bold)
+                Spacer()
               }
-          case (.localCurrency(let rate),.some(let price)):
-            Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
-              .font(.title3)
-          case (.unknown,.some(let price)):
-            Text(ethFormatter.string(for:(Double(price) / 1e18))!)
-              .font(.title3)
-          case (_,.none):
-            Text(" ")
-          }
-        }.padding(10)
-      }
-      HStack {
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-          self.onSubmit()
-        }) {
-          HStack {
-            Spacer()
-            Text("Submit Bid")
-              .font(.title2.weight(.bold))
-            Spacer()
-          }
-          .padding()
-          .foregroundColor(priceInWei == nil ? .white : .black)
-          .background(priceInWei == nil ? Color.gray : Color.flatOrange)
-          .cornerRadius(40)
-          .padding(.leading)
-          .padding(.trailing)
-          .padding(.top,10)
-        }
-        .disabled(priceInWei == nil)
-      }
-      
-      ZStack {
-        Divider()
-        Text("Current Ask Price")
-          .font(.title3).italic()
-          .foregroundColor(.secondaryLabel)
-          .padding(10)
-          .background(Color.systemBackground)
-      }
-      
-      VStack {
-        HStack {
-          Text("Ask price in ETH")
-            .font(.title3.weight(.bold))
-          Spacer()
-          Text(ethFormatter.string(for:(Double(0) / 1e18))!)
-            .font(.title3)
-        }.padding(10)
-        HStack {
-          Text("Fiat Price")
-            .font(.title3.weight(.bold))
-          Spacer()
-          switch(spot,priceInWei) {
-          case (.loading,_):
-            ProgressView()
-              .onAppear {
-                switch(self.spot) {
-                case .loading:
-                  EthSpot.getLiveRate()
-                    .done(on:.main) { spot in
-                      switch(spot) {
-                      case .none:
-                        self.spot = .unknown
-                      case .some(let rate):
-                        self.spot = .localCurrency(rate)
-                      }
-                    }.catch { print ($0) }
-                case .localCurrency,.unknown:
-                  break
-                }
+            }
+            .padding(10)
+            .foregroundColor(priceInWei == nil ? .white : .black)
+            .background(priceInWei == nil ? Color.gray : Color.flatOrange)
+            .cornerRadius(40)
+            .padding(10)
+            .disabled(priceInWei == nil)
+          },
+          content: {
+            HStack {
+              Text("Enter Bid (in ETH)")
+              Spacer()
+              TextField("",text:$eth)
+                .multilineTextAlignment(.trailing)
+                .keyboardType(.decimalPad)
+                .onChange(of: eth) { val in self.onPriceEntered() }
+              
+            }
+            
+            HStack {
+              Text("Fiat Price")
+              Spacer()
+              switch(spot,priceInWei) {
+              case (.loading,_):
+                ProgressView()
+                  .onAppear {
+                    switch(self.spot) {
+                    case .loading:
+                      EthSpot.getLiveRate()
+                        .done(on:.main) { spot in
+                          switch(spot) {
+                          case .none:
+                            self.spot = .unknown
+                          case .some(let rate):
+                            self.spot = .localCurrency(rate)
+                          }
+                        }.catch { print ($0) }
+                    case .localCurrency,.unknown:
+                      break
+                    }
+                  }
+              case (.localCurrency(let rate),.some(let price)):
+                Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+              case (.unknown,.some(let price)):
+                Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+              case (_,.none):
+                Text(" ")
               }
-          case (.localCurrency(let rate),.some(let price)):
-            Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
-              .font(.title3)
-          case (.unknown,.some(let price)):
-            Text(ethFormatter.string(for:(Double(price) / 1e18))!)
-              .font(.title3)
-          case (_,.none):
-            Text(" ")
-          }
-        }.padding(10)
-      }
-      HStack {
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-          self.onSubmit()
-        }) {
-          HStack {
-            Spacer()
-            Text("Buy Now")
-              .font(.title2.weight(.bold))
-            Spacer()
-          }
-          .padding()
-          .foregroundColor(priceInWei == nil ? .white : .black)
-          .background(priceInWei == nil ? Color.gray : Color.flatOrange)
-          .cornerRadius(40)
-          .padding(.leading)
-          .padding(.trailing)
-          .padding(.top,10)
-        }
-        .disabled(priceInWei == nil)
+            }
+          })
+       
+        Section {} // Spacer
+        
+        Section(
+          header: Text("Ask"),
+          footer: HStack {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.onSubmit()
+            }) {
+              HStack {
+                Spacer()
+                Text("Buy Now")
+                  .font(.callout)
+                  .fontWeight(.bold)
+                Spacer()
+              }
+            }
+            .padding(10)
+            .foregroundColor(.black)
+            .background(Color.flatGreen)
+            .cornerRadius(40)
+            .padding(10)
+          },
+          content: {
+            HStack {
+              Text("Current Ask")
+              Spacer()
+              Text(ethFormatter.string(for:(Double(0) / 1e18))!)
+            }
+            
+            HStack {
+              Text("Fiat Price")
+              Spacer()
+              switch(spot,priceInWei) {
+              case (.loading,_):
+                ProgressView()
+                  .onAppear {
+                    switch(self.spot) {
+                    case .loading:
+                      EthSpot.getLiveRate()
+                        .done(on:.main) { spot in
+                          switch(spot) {
+                          case .none:
+                            self.spot = .unknown
+                          case .some(let rate):
+                            self.spot = .localCurrency(rate)
+                          }
+                        }.catch { print ($0) }
+                    case .localCurrency,.unknown:
+                      break
+                    }
+                  }
+              case (.localCurrency(let rate),.some(let price)):
+                Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+              case (.unknown,.some(let price)):
+                Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+              case (_,.none):
+                Text(" ")
+              }
+            }
+          })
       }
       
       
       Spacer()
       
     }
-    .animation(.default)
-    .navigationBarTitle("",displayMode:.large)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
     }

@@ -57,7 +57,7 @@ struct TokenTradeView: View {
           }
           Spacer()
           TokenPrice(price:price,color:.label)
-            .font(.title)
+            .font(.title2)
         }
         .padding()
         .background(

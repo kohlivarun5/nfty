@@ -77,7 +77,7 @@ struct NftDetail: View {
         switch(tokens) {
         case .none:
           TokenPrice(price:price,color:.label)
-            .font(.title)
+            .font(.title2)
             .padding()
         case .some:
           NavigationLink(
@@ -97,7 +97,7 @@ struct NftDetail: View {
               self.showTradeView = true
             }) {
               TradableTokenPrice(price:price,color:.label)
-                .font(.title)
+                .font(.title2)
                 .padding(.top,8)
             }
           }
