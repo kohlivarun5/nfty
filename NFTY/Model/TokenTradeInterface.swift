@@ -12,7 +12,7 @@ import BigInt
 
 protocol TokenTradeInterface {
   func getBidPrice(_ tokenId:UInt) -> Promise<BigUInt?>
-  func getAskPrice(_ tokenId:UInt) -> Promise<BigUInt?>
+  func getAskPrice(_ tokenId:UInt) -> Promise<BigUInt?> // Should also return if tied to specific address
   
   // func withdrawAsk(_ tokenId:Uint) -> Promise<BigUInt>
 }
