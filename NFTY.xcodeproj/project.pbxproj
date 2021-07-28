@@ -87,6 +87,7 @@
 		4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
 		4FA1102726A9102500719D22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
 		4FA1102926AA27D400719D22 /* CalculateImageFeaturePrints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */; };
+		4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
 		4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B7262B28A400C58AF9 /* Preview Assets.xcassets */; };
@@ -213,6 +214,7 @@
 		4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_nearestTokens.json; sourceTree = "<group>"; };
 		4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_rarityRanks.json; sourceTree = "<group>"; };
 		4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateImageFeaturePrints.swift; sourceTree = "<group>"; };
+		4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunks.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
 		4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			children = (
 				4F27A7C4267FB702008CCB0A /* BAYC.swift */,
 				4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */,
+				4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */,
 				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F6AC07D26AD17B0000A7539 /* WalletConnectModel.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
