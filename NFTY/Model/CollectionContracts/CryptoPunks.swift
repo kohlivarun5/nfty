@@ -59,6 +59,25 @@ class CryptoPunksContract : ContractInterface {
           return outputs["address"] as! EthereumAddress
         }
     }
+    
+    func punksOfferedForSale(_ tokenId:BigUInt) -> Promise<BigUInt?> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      
+      let outputs = [
+        SolidityFunctionParameter(name: "isForSale", type: .bool),
+        SolidityFunctionParameter(name: "punkIndex", type: .uint256),
+        SolidityFunctionParameter(name: "seller", type: .address),
+        SolidityFunctionParameter(name: "minValue", type: .uint256),
+        SolidityFunctionParameter(name: "onlySellTo", type: .address)
+      ]
+      let method = SolidityConstantFunction(name: "punksOfferedForSale", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return (outputs["minValue"] as? BigUInt).flatMap(priceIfNotZero)
+        }
+    }
+    
   }
   private var ethContract = EthContract()
   
@@ -71,7 +90,7 @@ class CryptoPunksContract : ContractInterface {
     }
     
     func getAskPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
-      return Promise.value(nil)
+      return ethContract.punksOfferedForSale(BigUInt(tokenId))
     }
   }
   

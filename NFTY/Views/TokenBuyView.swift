@@ -192,7 +192,7 @@ struct TokenBuyView: View {
               HStack {
                 Text("Current Ask")
                 Spacer()
-                Text(ethFormatter.string(for:(Double(0) / 1e18))!)
+                Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
               }
               
               HStack {
