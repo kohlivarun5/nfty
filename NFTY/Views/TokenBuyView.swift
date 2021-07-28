@@ -26,10 +26,11 @@ struct TokenBuyView: View {
   
   @State private var eth : String = ""
   
-  @State private var priceInWei : BigUInt? = nil
+  @State private var bidPriceInWei : BigUInt? = nil
+  @State private var askPriceInWei : BigUInt? = nil
   
-  private func onPriceEntered() {
-    priceInWei = Double(eth).map { BigUInt($0 * 1e18) }
+  private func onBidPriceEntered() {
+    bidPriceInWei = Double(eth).map { BigUInt($0 * 1e18) }
   }
   
   enum SpotState {
@@ -42,7 +43,7 @@ struct TokenBuyView: View {
   
   private func onSubmit() {
     print(eth)
-    print(priceInWei)
+    print(bidPriceInWei)
     print(spot)
   }
   
@@ -50,7 +51,6 @@ struct TokenBuyView: View {
     VStack {
       
       HStack(alignment: .bottom) {
-        
         
         RoundedImage(
           nft:nft,
@@ -110,11 +110,11 @@ struct TokenBuyView: View {
               }
             }
             .padding(10)
-            .foregroundColor(priceInWei == nil ? .white : .black)
-            .background(priceInWei == nil ? Color.gray : Color.flatOrange)
+            .foregroundColor(bidPriceInWei == nil ? .white : .black)
+            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
             .cornerRadius(40)
             .padding(10)
-            .disabled(priceInWei == nil)
+            .disabled(bidPriceInWei == nil)
           },
           content: {
             HStack {
@@ -123,14 +123,14 @@ struct TokenBuyView: View {
               TextField("",text:$eth)
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
-                .onChange(of: eth) { val in self.onPriceEntered() }
+                .onChange(of: eth) { val in self.onBidPriceEntered() }
               
             }
             
             HStack {
               Text("Fiat Price")
               Spacer()
-              switch(spot,priceInWei) {
+              switch(spot,bidPriceInWei) {
               case (.loading,_):
                 ProgressView()
                   .onAppear {
@@ -157,78 +157,82 @@ struct TokenBuyView: View {
                 Text(" ")
               }
             }
-          })
-       
+          }
+        )
+        
         Section {} // Spacer
         
-        Section(
-          header: Text("Ask"),
-          footer: HStack {
-            Button(action: {
-              UIImpactFeedbackGenerator(style:.soft)
-                .impactOccurred()
-              self.onSubmit()
-            }) {
+        switch(askPriceInWei) {
+        case .none:
+          Section {}
+        case .some(let askPriceInWei):
+          Section(
+            header: Text("Ask"),
+            footer: HStack {
+              Button(action: {
+                UIImpactFeedbackGenerator(style:.soft)
+                  .impactOccurred()
+                self.onSubmit()
+              }) {
+                HStack {
+                  Spacer()
+                  Text("Buy Now")
+                    .font(.callout)
+                    .fontWeight(.bold)
+                  Spacer()
+                }
+              }
+              .padding(10)
+              .foregroundColor(.black)
+              .background(Color.flatGreen)
+              .cornerRadius(40)
+              .padding(10)
+            },
+            content: {
               HStack {
+                Text("Current Ask")
                 Spacer()
-                Text("Buy Now")
-                  .font(.callout)
-                  .fontWeight(.bold)
-                Spacer()
+                Text(ethFormatter.string(for:(Double(0) / 1e18))!)
               }
-            }
-            .padding(10)
-            .foregroundColor(.black)
-            .background(Color.flatGreen)
-            .cornerRadius(40)
-            .padding(10)
-          },
-          content: {
-            HStack {
-              Text("Current Ask")
-              Spacer()
-              Text(ethFormatter.string(for:(Double(0) / 1e18))!)
-            }
-            
-            HStack {
-              Text("Fiat Price")
-              Spacer()
-              switch(spot,priceInWei) {
-              case (.loading,_):
-                ProgressView()
-                  .onAppear {
-                    switch(self.spot) {
-                    case .loading:
-                      EthSpot.getLiveRate()
-                        .done(on:.main) { spot in
-                          switch(spot) {
-                          case .none:
-                            self.spot = .unknown
-                          case .some(let rate):
-                            self.spot = .localCurrency(rate)
-                          }
-                        }.catch { print ($0) }
-                    case .localCurrency,.unknown:
-                      break
+              
+              HStack {
+                Text("Fiat Price")
+                Spacer()
+                switch(spot) {
+                case .loading:
+                  ProgressView()
+                    .onAppear {
+                      switch(self.spot) {
+                      case .loading:
+                        EthSpot.getLiveRate()
+                          .done(on:.main) { spot in
+                            switch(spot) {
+                            case .none:
+                              self.spot = .unknown
+                            case .some(let rate):
+                              self.spot = .localCurrency(rate)
+                            }
+                          }.catch { print ($0) }
+                      case .localCurrency,.unknown:
+                        break
+                      }
                     }
-                  }
-              case (.localCurrency(let rate),.some(let price)):
-                Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
-              case (.unknown,.some(let price)):
-                Text(ethFormatter.string(for:(Double(price) / 1e18))!)
-              case (_,.none):
-                Text(" ")
+                case .localCurrency(let rate):
+                  Text(currencyFormatter.string(for:((Double(askPriceInWei) / 1e18) * rate))!)
+                case .unknown:
+                  Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
+                }
               }
             }
-          })
+          )
+        }
       }
-      
-      
-      Spacer()
       
     }
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
+      self.tradeActions.getAskPrice(nft.tokenId)
+        .done { self.askPriceInWei = $0 }
     }
   }
 }
