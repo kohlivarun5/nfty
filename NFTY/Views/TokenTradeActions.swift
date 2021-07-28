@@ -77,7 +77,7 @@ struct TokenTradeActions: View {
                 samples: samples,
                 themeColor:themeColor,
                 themeLabelColor:themeLabelColor,
-                size: .small,
+                size: .xsmall,
                 rarityRank:rarityRank,
                 tradeActions: tradeActions
               )
@@ -105,7 +105,7 @@ struct TokenTradeActions: View {
                 samples: samples,
                 themeColor:themeColor,
                 themeLabelColor:themeLabelColor,
-                size: .small,
+                size: .xsmall,
                 rarityRank:rarityRank,
                 tradeActions: tradeActions
               )

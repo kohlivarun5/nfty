@@ -57,7 +57,7 @@ struct RoundedImage: View {
     case .normal:
       return .normal
     case .narrow:
-      return .small
+      return .xsmall
     }
   }
   
@@ -104,7 +104,7 @@ struct RoundedImage: View {
               samples: samples,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
-              size: .small,
+              size: .xsmall,
               rarityRank:rarityRank)
           })
         }

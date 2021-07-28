@@ -22,7 +22,7 @@ struct TokenTradeView: View {
   let rarityRank : RarityRanking?
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 300
+  let height : CGFloat = 220
   @State var rank : UInt? = nil
   
   var body: some View {
@@ -34,7 +34,7 @@ struct TokenTradeView: View {
           samples:samples,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
-          size:.medium
+          size:.small
         )
         .frame(height:height)
         .padding(.top,20)
