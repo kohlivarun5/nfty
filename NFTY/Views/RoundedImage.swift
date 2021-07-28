@@ -105,7 +105,9 @@ struct RoundedImage: View {
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .xsmall,
-              rarityRank:rarityRank)
+              rarityRank:rarityRank,
+              isSheet:true)
+              .ignoresSafeArea(edges:.bottom)
           })
         }
         .font(.subheadline)

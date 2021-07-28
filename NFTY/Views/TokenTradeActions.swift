@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Web3
+import PromiseKit
 
 struct TokenTradeActions: View {
   
@@ -20,12 +21,24 @@ struct TokenTradeActions: View {
   
   @State private var walletAddress : EthereumAddress? = nil
   
+  struct TradeActionInfo {
+    let tradeActions : TokenTradeInterface
+    let currentBidPriceInWei : Promise<BigUInt?>
+    let currentAskPriceInWei : Promise<BigUInt?>
+  }
+  
+  @State private var tradeActions : TradeActionInfo? = nil
+  
+  @State var currentBidPriceInWei : BigUInt?
+  @State var currentAskPriceInWei : BigUInt?
+  
+  
   enum ActionsState {
     case buyActions
     case sellActions
   }
   @State private var actionsState : ActionsState? = nil
-  @State private var tradeActions : TokenTradeInterface? = nil
+  
   
   init(
     nft:NFT,
@@ -47,81 +60,107 @@ struct TokenTradeActions: View {
   
   var body: some View {
     
-    HStack {
+    VStack {
       
-      switch(actionsState,tradeActions) {
-      case (.none,_),(_,.none):
-        EmptyView()
-      case (.some(let actions),.some(let tradeActions)):
-        HStack {
-          switch(actions) {
-          case .buyActions:
-            SheetButton(content: {
-              HStack {
-                Spacer()
-                Text("Buy")
-                  .foregroundColor(.black)
-                  .font(.title2.weight(.bold))
-                Spacer()
-              }
-              .padding(10)
-              .background(
-                RoundedCorners(
-                  color: .flatOrange,
-                  tl: 20, tr: 20, bl: 20, br: 20))
-              .padding([.leading,.trailing],50)
-            },sheetContent: {
-              TokenBuyView(
-                nft: nft,
-                price:price,
-                samples: samples,
-                themeColor:themeColor,
-                themeLabelColor:themeLabelColor,
-                size: .xsmall,
-                rarityRank:rarityRank,
-                tradeActions: tradeActions
-              )
-            })
-            
-          case .sellActions:
-            SheetButton(content: {
-              HStack {
-                Spacer()
-                Text("Sell")
-                  .foregroundColor(.black)
-                  .font(.title2.weight(.bold))
-                Spacer()
-              }
-              .padding(10)
-              .background(
-                RoundedCorners(
-                  color: .flatGreen,
-                  tl: 20, tr: 20, bl: 20, br: 20))
-              .padding([.leading,.trailing],50)
-            },sheetContent: {
-              TokenSellView(
-                nft: nft,
-                price:price,
-                samples: samples,
-                themeColor:themeColor,
-                themeLabelColor:themeLabelColor,
-                size: .xsmall,
-                rarityRank:rarityRank,
-                tradeActions: tradeActions
-              )
-            })
+      HStack {
+        
+        VStack(alignment: .center) {
+          Text("Bid")
+          switch(currentBidPriceInWei) {
+          case .none:
+            Text("N/A")
+          case .some(let wei):
+            UsdText(wei: wei)
           }
         }
-        .padding(.bottom,10)
-      /*
-       
-       .padding(.top,10)
-       .background(Color.secondarySystemBackground)
-       
-       .background(
-       RoundedCorners(
-       color: .secondarySystemBackground,
-       tl: 10, tr: 10, bl: 0, br: 0))*/
+        
+        VStack(alignment: .center) {
+          Text("Ask")
+          switch(currentAskPriceInWei) {
+          case .none:
+            Text("N/A")
+          case .some(let wei):
+            UsdText(wei: wei)
+          }
+        }
+      }
+      
+      HStack {
+        
+        switch(actionsState,tradeActions) {
+        case (.none,_),(_,.none):
+          EmptyView()
+        case (.some(let actions),.some(let tradeActions)):
+          HStack {
+            switch(actions) {
+            case .buyActions:
+              SheetButton(content: {
+                HStack {
+                  Spacer()
+                  Text("Buy")
+                    .foregroundColor(.black)
+                    .font(.title2.weight(.bold))
+                  Spacer()
+                }
+                .padding(10)
+                .background(
+                  RoundedCorners(
+                    color: .flatOrange,
+                    tl: 20, tr: 20, bl: 20, br: 20))
+                .padding([.leading,.trailing],50)
+              },sheetContent: {
+                TokenBuyView(
+                  nft: nft,
+                  price:price,
+                  samples: samples,
+                  themeColor:themeColor,
+                  themeLabelColor:themeLabelColor,
+                  size: .xsmall,
+                  rarityRank:rarityRank,
+                  tradeActions: tradeActions.tradeActions
+                )
+              })
+              
+            case .sellActions:
+              SheetButton(content: {
+                HStack {
+                  Spacer()
+                  Text("Sell")
+                    .foregroundColor(.black)
+                    .font(.title2.weight(.bold))
+                  Spacer()
+                }
+                .padding(10)
+                .background(
+                  RoundedCorners(
+                    color: .flatGreen,
+                    tl: 20, tr: 20, bl: 20, br: 20))
+                .padding([.leading,.trailing],50)
+              },sheetContent: {
+                TokenSellView(
+                  nft: nft,
+                  price:price,
+                  samples: samples,
+                  themeColor:themeColor,
+                  themeLabelColor:themeLabelColor,
+                  size: .xsmall,
+                  rarityRank:rarityRank,
+                  tradeActions: tradeActions.tradeActions
+                )
+              })
+            }
+          }
+          .padding(.bottom,10)
+        /*
+         
+         .padding(.top,10)
+         .background(Color.secondarySystemBackground)
+         
+         .background(
+         RoundedCorners(
+         color: .secondarySystemBackground,
+         tl: 10, tr: 10, bl: 0, br: 0))*/
+        }
       }
     }
     .onAppear {
@@ -131,7 +170,19 @@ struct TokenTradeActions: View {
       }
       
       let contract = collectionsFactory.getByAddress(nft.address)!.data.contract
-      self.tradeActions = contract.tradeActions
+      contract.tradeActions.map { tradeActions in
+        self.tradeActions = TradeActionInfo(
+          tradeActions: tradeActions,
+          currentBidPriceInWei: tradeActions.getBidPrice(nft.tokenId),
+          currentAskPriceInWei: tradeActions.getAskPrice(nft.tokenId))
+        
+        self.tradeActions?.currentAskPriceInWei
+          .done { self.currentAskPriceInWei = $0 }
+        
+        self.tradeActions?.currentBidPriceInWei
+          .done { self.currentBidPriceInWei = $0 }
+      }
+      
       
       contract.ownerOf(nft.tokenId)
         .done { ownerAddress in

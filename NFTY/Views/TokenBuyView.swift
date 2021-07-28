@@ -27,9 +27,10 @@ struct TokenBuyView: View {
   @State private var eth : String = ""
   
   @State private var currentBidPriceInWei : BigUInt? = nil
+  @State private var currentAskPriceInWei : BigUInt? = nil
   
   @State private var bidPriceInWei : BigUInt? = nil
-  @State private var askPriceInWei : BigUInt? = nil
+  
   
   private func onBidPriceEntered() {
     bidPriceInWei = Double(eth).map { BigUInt($0 * 1e18) }
@@ -199,7 +200,7 @@ struct TokenBuyView: View {
         
         Section {} // Spacer
         
-        switch(askPriceInWei) {
+        switch(currentAskPriceInWei) {
         case .none:
           Section {}
         case .some(let askPriceInWei):
@@ -269,7 +270,7 @@ struct TokenBuyView: View {
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
       self.tradeActions.getAskPrice(nft.tokenId)
-        .done { self.askPriceInWei = $0 }
+        .done { self.currentAskPriceInWei = $0 }
       
       self.tradeActions.getBidPrice(nft.tokenId)
         .done { self.currentBidPriceInWei = $0 }

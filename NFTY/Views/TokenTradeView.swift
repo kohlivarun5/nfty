@@ -20,6 +20,7 @@ struct TokenTradeView: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
+  let isSheet : Bool
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 220
@@ -87,6 +88,12 @@ struct TokenTradeView: View {
         themeLabelColor:themeLabelColor,
         size: .small,
         rarityRank:rarityRank)
+        .padding(.bottom,isSheet ? 20 : 0)
+        .background(
+          RoundedCorners(
+            color: .secondarySystemBackground,
+            tl: 20, tr: 20, bl: 0, br: 0))
+      
       
     }
     .animation(.default)
@@ -113,6 +120,7 @@ struct TokenTradeView_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking)
+      rarityRank:SampleCollection.info.rarityRanking,
+      isSheet:false)
   }
 }

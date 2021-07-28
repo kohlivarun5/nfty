@@ -88,7 +88,8 @@ struct NftDetail: View {
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .small,
-              rarityRank:rarityRank),
+              rarityRank:rarityRank,
+              isSheet:false),
             isActive:$showTradeView
           ) {
             Button(action: {
