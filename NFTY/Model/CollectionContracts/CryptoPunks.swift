@@ -74,7 +74,24 @@ class CryptoPunksContract : ContractInterface {
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-          return (outputs["minValue"] as? BigUInt).flatMap(priceIfNotZero)
+          return outputs["isForSale"] as! Bool ? (outputs["minValue"] as? BigUInt).flatMap(priceIfNotZero) : nil
+        }
+    }
+    
+    func punkBids(_ tokenId:BigUInt) -> Promise<BigUInt?> {
+      let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
+      
+      let outputs = [
+        SolidityFunctionParameter(name: "hasBid", type: .bool),
+        SolidityFunctionParameter(name: "punkIndex", type: .uint256),
+        SolidityFunctionParameter(name: "bidder", type: .address),
+        SolidityFunctionParameter(name: "value", type: .uint256)
+      ]
+      let method = SolidityConstantFunction(name: "punkBids", inputs: inputs, outputs: outputs, handler: self)
+      return
+        method.invoke(tokenId).call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["hasBid"] as! Bool ? (outputs["minValue"] as? BigUInt).flatMap(priceIfNotZero) : nil
         }
     }
     
@@ -86,7 +103,7 @@ class CryptoPunksContract : ContractInterface {
     let ethContract : EthContract
     
     func getBidPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
-      return Promise.value(nil)
+      return ethContract.punkBids(BigUInt(tokenId))
     }
     
     func getAskPrice(_ tokenId: UInt) -> Promise<BigUInt?> {

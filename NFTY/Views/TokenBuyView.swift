@@ -26,6 +26,8 @@ struct TokenBuyView: View {
   
   @State private var eth : String = ""
   
+  @State private var currentBidPriceInWei : BigUInt? = nil
+  
   @State private var bidPriceInWei : BigUInt? = nil
   @State private var askPriceInWei : BigUInt? = nil
   
@@ -117,6 +119,41 @@ struct TokenBuyView: View {
             .disabled(bidPriceInWei == nil)
           },
           content: {
+            
+            switch(currentBidPriceInWei) {
+            case .none:
+              EmptyView()
+            case .some(let currentBidPriceInWei):
+              HStack {
+                Text("Current Bid")
+                Spacer()
+                switch(spot) {
+                case .loading:
+                  ProgressView()
+                    .onAppear {
+                      switch(self.spot) {
+                      case .loading:
+                        EthSpot.getLiveRate()
+                          .done(on:.main) { spot in
+                            switch(spot) {
+                            case .none:
+                              self.spot = .unknown
+                            case .some(let rate):
+                              self.spot = .localCurrency(rate)
+                            }
+                          }.catch { print ($0) }
+                      case .localCurrency,.unknown:
+                        break
+                      }
+                    }
+                case .localCurrency(let rate):
+                  Text(currencyFormatter.string(for:((Double(currentBidPriceInWei) / 1e18) * rate))!)
+                case .unknown:
+                  Text(ethFormatter.string(for:(Double(currentBidPriceInWei) / 1e18))!)
+                }
+              }
+            }
+            
             HStack {
               Text("Enter Bid (in ETH)")
               Spacer()
@@ -233,6 +270,9 @@ struct TokenBuyView: View {
       self.rank = rarityRank?.getRank(nft.tokenId)
       self.tradeActions.getAskPrice(nft.tokenId)
         .done { self.askPriceInWei = $0 }
+      
+      self.tradeActions.getBidPrice(nft.tokenId)
+        .done { self.currentBidPriceInWei = $0 }
     }
   }
 }
