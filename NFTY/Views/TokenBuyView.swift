@@ -147,22 +147,6 @@ struct TokenBuyView: View {
                 switch(spot) {
                 case .loading:
                   ProgressView()
-                    .onAppear {
-                      switch(self.spot) {
-                      case .loading:
-                        EthSpot.getLiveRate()
-                          .done(on:.main) { spot in
-                            switch(spot) {
-                            case .none:
-                              self.spot = .unknown
-                            case .some(let rate):
-                              self.spot = .localCurrency(rate)
-                            }
-                          }.catch { print ($0) }
-                      case .localCurrency,.unknown:
-                        break
-                      }
-                    }
                 case .localCurrency(let rate):
                   Text(currencyFormatter.string(for:((Double(currentBidPriceInWei) / 1e18) * rate))!)
                 case .unknown:
@@ -187,22 +171,6 @@ struct TokenBuyView: View {
               switch(spot,bidPriceInWei) {
               case (.loading,_):
                 ProgressView()
-                  .onAppear {
-                    switch(self.spot) {
-                    case .loading:
-                      EthSpot.getLiveRate()
-                        .done(on:.main) { spot in
-                          switch(spot) {
-                          case .none:
-                            self.spot = .unknown
-                          case .some(let rate):
-                            self.spot = .localCurrency(rate)
-                          }
-                        }.catch { print ($0) }
-                    case .localCurrency,.unknown:
-                      break
-                    }
-                  }
               case (.localCurrency(let rate),.some(let price)):
                 Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
                   .fontWeight(.semibold)
@@ -306,6 +274,22 @@ struct TokenBuyView: View {
     }
     
     .onAppear {
+      
+      switch(self.spot) {
+      case .loading:
+        EthSpot.getLiveRate()
+          .done(on:.main) { spot in
+            switch(spot) {
+            case .none:
+              self.spot = .unknown
+            case .some(let rate):
+              self.spot = .localCurrency(rate)
+            }
+          }.catch { print ($0) }
+      case .localCurrency,.unknown:
+        break
+      }
+      
       self.rank = rarityRank?.getRank(nft.tokenId)
       self.tradeActions.currentAskPriceInWei
         .done { self.currentAskPriceInWei = $0 }
