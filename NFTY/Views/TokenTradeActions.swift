@@ -21,12 +21,6 @@ struct TokenTradeActions: View {
   
   @State private var walletAddress : EthereumAddress? = nil
   
-  struct TradeActionInfo {
-    let tradeActions : TokenTradeInterface
-    let currentBidPriceInWei : Promise<BigUInt?>
-    let currentAskPriceInWei : Promise<BigUInt?>
-  }
-  
   @State private var tradeActions : TradeActionInfo? = nil
   
   @State var currentBidPriceInWei : BigUInt?
@@ -135,7 +129,7 @@ struct TokenTradeActions: View {
                   themeLabelColor:themeLabelColor,
                   size: .xsmall,
                   rarityRank:rarityRank,
-                  tradeActions: tradeActions.tradeActions
+                  tradeActions: tradeActions
                 )
               })
               

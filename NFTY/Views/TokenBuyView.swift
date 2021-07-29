@@ -18,7 +18,7 @@ struct TokenBuyView: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
-  let tradeActions : TokenTradeInterface
+  let tradeActions : TradeActionInfo
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -307,10 +307,10 @@ struct TokenBuyView: View {
     
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      self.tradeActions.getAskPrice(nft.tokenId)
+      self.tradeActions.currentAskPriceInWei
         .done { self.currentAskPriceInWei = $0 }
       
-      self.tradeActions.getBidPrice(nft.tokenId)
+      self.tradeActions.currentBidPriceInWei
         .done { self.currentBidPriceInWei = $0 }
     }
   }
@@ -326,7 +326,10 @@ struct TokenBuyView_Previews: PreviewProvider {
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
       rarityRank:SampleCollection.info.rarityRanking,
-      tradeActions: SampleCollection.data.contract.tradeActions!
+      tradeActions: TradeActionInfo(
+        tradeActions: SampleCollection.data.contract.tradeActions!,
+        currentBidPriceInWei:SampleCollection.data.contract.tradeActions!.getBidPrice(SampleToken.tokenId),
+        currentAskPriceInWei:SampleCollection.data.contract.tradeActions!.getAskPrice(SampleToken.tokenId))
     )
   }
 }
