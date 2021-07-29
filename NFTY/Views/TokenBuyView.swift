@@ -205,10 +205,10 @@ struct TokenBuyView: View {
                   }
               case (.localCurrency(let rate),.some(let price)):
                 Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
-                  .fontWeight(.bold)
+                  .fontWeight(.semibold)
               case (.unknown,.some(let price)):
                 Text(ethFormatter.string(for:(Double(price) / 1e18))!)
-                  .fontWeight(.bold)
+                  .fontWeight(.semibold)
               case (_,.none):
                 Text(" ")
               }
@@ -292,10 +292,10 @@ struct TokenBuyView: View {
                     }
                 case .localCurrency(let rate):
                   Text(currencyFormatter.string(for:((Double(askPriceInWei) / 1e18) * rate))!)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                 case .unknown:
                   Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                 }
               }
             }

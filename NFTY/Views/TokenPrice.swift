@@ -39,7 +39,7 @@ struct TokenPriceKnown : View {
     VStack(alignment: .trailing) {
       switch(info.price) {
       case .some(let wei):
-        UsdText(wei:wei)
+        UsdText(wei:wei,fontWeight:nil)
           .foregroundColor(color(self.color))
       case .none:
         EmptyView()

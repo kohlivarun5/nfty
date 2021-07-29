@@ -62,28 +62,46 @@ struct TokenTradeActions: View {
     
     VStack {
       
-      HStack {
+      HStack(alignment:.center) {
         
-        VStack(alignment: .center) {
-          Text("Bid")
-          switch(currentBidPriceInWei) {
-          case .none:
-            Text("N/A")
-          case .some(let wei):
-            UsdText(wei: wei)
+        HStack {
+          Spacer()
+          VStack(alignment: .center) {
+            Text("Bid")
+              .italic()
+              .padding(.bottom,1)
+            switch(currentBidPriceInWei) {
+            case .none:
+              Text("N/A")
+                .foregroundColor(.secondary)
+                .font(.caption)
+            case .some(let wei):
+              UsdText(wei: wei,fontWeight:.semibold)
+            }
           }
+          Spacer()
         }
-        
-        VStack(alignment: .center) {
-          Text("Ask")
-          switch(currentAskPriceInWei) {
-          case .none:
-            Text("N/A")
-          case .some(let wei):
-            UsdText(wei: wei)
+        Divider().frame(height:25)
+        HStack {
+          Spacer()
+          VStack(alignment: .center) {
+            Text("Ask")
+              .italic()
+              .padding(.bottom,1)
+            switch(currentAskPriceInWei) {
+            case .none:
+              Text("N/A")
+                .foregroundColor(.secondary)
+                .font(.caption)
+            case .some(let wei):
+              UsdText(wei: wei,fontWeight:.semibold)
+            }
           }
+          Spacer()
         }
       }
+      .padding(.top,10)
+      .padding(.bottom,2)
       
       HStack {
         
@@ -97,7 +115,7 @@ struct TokenTradeActions: View {
               SheetButton(content: {
                 HStack {
                   Spacer()
-                  Text("Buy")
+                  Text("Trade")
                     .foregroundColor(.black)
                     .font(.title2.weight(.bold))
                   Spacer()
@@ -202,6 +220,10 @@ struct TokenTradeActions_Previews: PreviewProvider {
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
       rarityRank:SampleCollection.info.rarityRanking)
+      .background(
+        RoundedCorners(
+          color: .secondarySystemBackground,
+          tl: 20, tr: 20, bl: 0, br: 0))
     
   }
 }

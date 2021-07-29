@@ -100,7 +100,7 @@ struct TradeEventsList: View {
               .font(.footnote)
             default:
               HStack {
-                UsdText(wei:event.value)
+                UsdText(wei:event.value,fontWeight: nil)
                   .frame(width:120,alignment: .trailing)
                 Spacer()
                 TradeEventIconView(type:event.type)

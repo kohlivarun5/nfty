@@ -121,6 +121,6 @@ struct TokenTradeView_Previews: PreviewProvider {
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
       rarityRank:SampleCollection.info.rarityRanking,
-      isSheet:false)
+      isSheet:true)
   }
 }
