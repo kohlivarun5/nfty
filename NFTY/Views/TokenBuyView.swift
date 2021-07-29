@@ -65,6 +65,8 @@ struct TokenBuyView: View {
           width: .narrow
         )
         
+        Spacer()
+        
         VStack {
           
           HStack {
@@ -82,22 +84,33 @@ struct TokenBuyView: View {
           rank.map { rank in
             HStack {
               Text("RarityRank")
-              Spacer()
               Text("#\(rank)")
+              Spacer()
             }
             .font(.footnote)
             .foregroundColor(.secondaryLabel)
           }
           
+          HStack {
+            Spacer()
+            TokenPrice(price:price,color:.label)
+              .font(.title2)
+          }
+          .padding(.top,20)
+          
         }
-        .padding()
+        .padding(10)
+        .background(Color.secondarySystemBackground)
+        .cornerRadius(10)
+        .padding(10)
+        .padding(.top,10)
       }
-      .padding()
+      .padding(10)
       
       
       Form {
         Section(
-          header: Text("Bid"),
+          header: Text(""),
           footer: HStack {
             Button(action: {
               UIImpactFeedbackGenerator(style:.soft)
@@ -121,13 +134,16 @@ struct TokenBuyView: View {
           },
           content: {
             
-            switch(currentBidPriceInWei) {
-            case .none:
-              EmptyView()
-            case .some(let currentBidPriceInWei):
-              HStack {
-                Text("Current Bid")
-                Spacer()
+            HStack {
+              Text("Current Bid")
+              Spacer()
+              
+              switch(currentBidPriceInWei) {
+              case .none:
+                Text("N/A")
+                  .foregroundColor(.secondary)
+                  .font(.caption)
+              case .some(let currentBidPriceInWei):
                 switch(spot) {
                 case .loading:
                   ProgressView()
@@ -156,9 +172,9 @@ struct TokenBuyView: View {
             }
             
             HStack {
-              Text("Enter Bid (in ETH)")
+              Text("Bid (in ETH)")
               Spacer()
-              TextField("",text:$eth)
+              TextField("Enter Bid",text:$eth)
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
                 .onChange(of: eth) { val in self.onBidPriceEntered() }
@@ -166,7 +182,7 @@ struct TokenBuyView: View {
             }
             
             HStack {
-              Text("Fiat Price")
+              Text("Bid Price")
               Spacer()
               switch(spot,bidPriceInWei) {
               case (.loading,_):
@@ -189,8 +205,10 @@ struct TokenBuyView: View {
                   }
               case (.localCurrency(let rate),.some(let price)):
                 Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+                  .fontWeight(.bold)
               case (.unknown,.some(let price)):
                 Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+                  .fontWeight(.bold)
               case (_,.none):
                 Text(" ")
               }
@@ -198,44 +216,61 @@ struct TokenBuyView: View {
           }
         )
         
-        Section {} // Spacer
-        
-        switch(currentAskPriceInWei) {
-        case .none:
-          Section {}
-        case .some(let askPriceInWei):
-          Section(
-            header: Text("Ask"),
-            footer: HStack {
-              Button(action: {
-                UIImpactFeedbackGenerator(style:.soft)
-                  .impactOccurred()
-                self.onSubmit()
-              }) {
-                HStack {
-                  Spacer()
-                  Text("Buy Now")
-                    .font(.callout)
-                    .fontWeight(.bold)
-                  Spacer()
-                }
-              }
-              .padding(10)
-              .foregroundColor(.black)
-              .background(Color.flatGreen)
-              .cornerRadius(40)
-              .padding(10)
-            },
-            content: {
+        Section(
+          header: Text(""),
+          footer: HStack {
+            switch (currentAskPriceInWei) {
+            case .some:
               HStack {
-                Text("Current Ask")
-                Spacer()
+                Button(action: {
+                  UIImpactFeedbackGenerator(style:.soft)
+                    .impactOccurred()
+                  self.onSubmit()
+                }) {
+                  HStack {
+                    Spacer()
+                    Text("Buy Now")
+                      .font(.callout)
+                      .fontWeight(.bold)
+                    Spacer()
+                  }
+                }
+                .padding(10)
+                .foregroundColor(.black)
+                .background(Color.flatGreen)
+                .cornerRadius(40)
+                .padding(10)
+              }
+            case .none:
+              EmptyView()
+            }
+          },
+          content: {
+            
+            HStack {
+              Text("Current Ask (in ETH)")
+              Spacer()
+              switch(currentAskPriceInWei) {
+              case .none:
+                Text("N/A")
+                  .foregroundColor(.secondary)
+                  .font(.caption)
+              case .some(let askPriceInWei):
                 Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
               }
+            }
+            
+            HStack {
+              Text("Ask Price")
+              Spacer()
               
-              HStack {
-                Text("Fiat Price")
-                Spacer()
+              switch(currentAskPriceInWei) {
+              case .none:
+                Text("N/A")
+                  .foregroundColor(.secondary)
+                  .font(.caption)
+              case .some(let askPriceInWei):
+                
                 switch(spot) {
                 case .loading:
                   ProgressView()
@@ -257,16 +292,19 @@ struct TokenBuyView: View {
                     }
                 case .localCurrency(let rate):
                   Text(currencyFormatter.string(for:((Double(askPriceInWei) / 1e18) * rate))!)
+                    .fontWeight(.bold)
                 case .unknown:
                   Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
+                    .fontWeight(.bold)
                 }
               }
             }
-          )
-        }
+          }
+        )
       }
       
     }
+    
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
       self.tradeActions.getAskPrice(nft.tokenId)
