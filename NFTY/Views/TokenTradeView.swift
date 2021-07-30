@@ -23,7 +23,7 @@ struct TokenTradeView: View {
   let isSheet : Bool
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 220
+  let height : CGFloat = 240
   @State var rank : UInt? = nil
   
   var body: some View {
