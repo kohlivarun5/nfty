@@ -156,9 +156,9 @@ struct TokenBuyView: View {
             }
             
             HStack {
-              Text("Bid (in ETH)")
+              Text("Bid Amount (in ETH)")
               Spacer()
-              TextField("Enter Bid",text:$eth)
+              TextField("Enter amount in ETH",text:$eth)
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
                 .onChange(of: eth) { val in self.onBidPriceEntered() }

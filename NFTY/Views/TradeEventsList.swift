@@ -100,7 +100,7 @@ struct TradeEventsList: View {
               .font(.footnote)
             default:
               HStack {
-                UsdText(wei:event.value,fontWeight: nil)
+                UsdText(wei:event.value,fontWeight: event.type == .bought ? .semibold : nil)
                   .frame(width:120,alignment: .trailing)
                 Spacer()
                 TradeEventIconView(type:event.type)
@@ -108,10 +108,10 @@ struct TradeEventsList: View {
                 BlockTimeLabel(blockNumber: event.blockNumber.quantity)
                   .frame(width:120,alignment: .trailing)
               }
-              
+              .foregroundColor(event.type == .bought || event.type == .minted ? .label : .secondary)
             }
           }
-          .padding()
+          .padding(5)
           .animation(.default)
           /* .onAppear {
            self.events.getEvents(currentIndex:0);

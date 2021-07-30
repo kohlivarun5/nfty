@@ -88,7 +88,7 @@ struct TokenTradeView: View {
         themeLabelColor:themeLabelColor,
         size: .small,
         rarityRank:rarityRank)
-        .padding(.bottom,isSheet ? 20 : 0)
+        .padding(.bottom,isSheet ? 12 : 0)
         .background(
           RoundedCorners(
             color: .secondarySystemBackground,

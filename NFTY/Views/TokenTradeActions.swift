@@ -56,47 +56,52 @@ struct TokenTradeActions: View {
     
     VStack {
       
-      HStack(alignment:.center) {
-        
-        HStack {
-          Spacer()
-          VStack(alignment: .center) {
-            Text("Bid")
-              .italic()
-              .padding(.bottom,1)
-            switch(currentBidPriceInWei) {
-            case .none:
-              Text("N/A")
-                .foregroundColor(.secondary)
-                .font(.caption)
-            case .some(let wei):
-              UsdText(wei: wei,fontWeight:.semibold)
+      switch (tradeActions,currentBidPriceInWei,currentAskPriceInWei) {
+      case (.none,_,_),(_,.none,.none):
+        EmptyView()
+      case (.some,_,_):
+        HStack(alignment:.center) {
+          
+          HStack {
+            Spacer()
+            VStack(alignment: .center) {
+              Text("Bid")
+                .italic()
+                .padding(.bottom,1)
+              switch(currentBidPriceInWei) {
+              case .none:
+                Text("N/A")
+                  .foregroundColor(.secondary)
+                  .font(.caption)
+              case .some(let wei):
+                UsdText(wei: wei,fontWeight:.semibold)
+              }
             }
+            Spacer()
           }
-          Spacer()
-        }
-        Divider().frame(height:25)
-        HStack {
-          Spacer()
-          VStack(alignment: .center) {
-            Text("Ask")
-              .italic()
-              .padding(.bottom,1)
-            switch(currentAskPriceInWei) {
-            case .none:
-              Text("N/A")
-                .foregroundColor(.secondary)
-                .font(.caption)
-            case .some(let wei):
-              UsdText(wei: wei,fontWeight:.semibold)
+          Divider().frame(height:25)
+          HStack {
+            Spacer()
+            VStack(alignment: .center) {
+              Text("Ask")
+                .italic()
+                .padding(.bottom,1)
+              switch(currentAskPriceInWei) {
+              case .none:
+                Text("N/A")
+                  .foregroundColor(.secondary)
+                  .font(.caption)
+              case .some(let wei):
+                UsdText(wei: wei,fontWeight:.semibold)
+              }
             }
+            Spacer()
           }
-          Spacer()
         }
+        .padding(.top,10)
+        .padding(.bottom,2)
       }
-      .padding(.top,10)
-      .padding(.bottom,2)
-      
+        
       HStack {
         
         switch(actionsState,tradeActions) {
@@ -163,6 +168,7 @@ struct TokenTradeActions: View {
             }
           }
           .padding(.bottom,10)
+          .padding(.top,currentBidPriceInWei == nil && currentAskPriceInWei == nil ? 10 : 0)
         /*
          
          .padding(.top,10)
