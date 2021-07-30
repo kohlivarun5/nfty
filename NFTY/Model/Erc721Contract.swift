@@ -422,3 +422,9 @@ class IpfsCollectionContract : ContractInterface {
   }
   
 }
+
+
+
+// OPENSEA ORDER FETCHER
+// curl --request GET \
+// --url 'https://api.opensea.io/api/v1/assets?token_ids=5822&asset_contract_address=0xf3e6dbbe461c6fa492cea7cb1f5c5ea660eb1b47&order_direction=desc&offset=0&limit=20'
