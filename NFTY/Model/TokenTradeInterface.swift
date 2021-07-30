@@ -9,10 +9,22 @@ import Foundation
 import PromiseKit
 import BigInt
 
+struct BidInfo {
+  let wei : BigUInt
+}
+
+struct AskInfo {
+  let wei : BigUInt
+}
+
+struct BidAsk {
+  let bid : BidInfo?
+  let ask : AskInfo?
+}
 
 protocol TokenTradeInterface {
-  func getBidPrice(_ tokenId:UInt) -> Promise<BigUInt?>
-  func getAskPrice(_ tokenId:UInt) -> Promise<BigUInt?> // Should also return if tied to specific address
+  var supportsTrading : Bool { get }
+  func getBidAsk(_ tokenId:UInt) -> Promise<BidAsk>
   
   // func withdrawAsk(_ tokenId:Uint) -> Promise<BigUInt>
 }

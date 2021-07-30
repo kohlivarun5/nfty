@@ -163,8 +163,7 @@ struct NFTWithPrice : Identifiable {
 
 struct TradeActionInfo {
   let tradeActions : TokenTradeInterface
-  let currentBidPriceInWei : Promise<BigUInt?>
-  let currentAskPriceInWei : Promise<BigUInt?>
+  let bidAsk : Promise<BidAsk>
 }
 
 struct NFTWithLazyPrice : Identifiable {

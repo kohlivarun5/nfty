@@ -291,11 +291,12 @@ struct TokenBuyView: View {
       }
       
       self.rank = rarityRank?.getRank(nft.tokenId)
-      self.tradeActions.currentAskPriceInWei
-        .done { self.currentAskPriceInWei = $0 }
-      
-      self.tradeActions.currentBidPriceInWei
-        .done { self.currentBidPriceInWei = $0 }
+      self.tradeActions.bidAsk
+        .done {
+          self.currentAskPriceInWei = $0.ask.map { $0.wei }
+          self.currentBidPriceInWei = $0.bid.map { $0.wei }
+          
+        }
     }
   }
 }
@@ -312,8 +313,8 @@ struct TokenBuyView_Previews: PreviewProvider {
       rarityRank:SampleCollection.info.rarityRanking,
       tradeActions: TradeActionInfo(
         tradeActions: SampleCollection.data.contract.tradeActions!,
-        currentBidPriceInWei:SampleCollection.data.contract.tradeActions!.getBidPrice(SampleToken.tokenId),
-        currentAskPriceInWei:SampleCollection.data.contract.tradeActions!.getAskPrice(SampleToken.tokenId))
+        bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId)
+        )
     )
   }
 }

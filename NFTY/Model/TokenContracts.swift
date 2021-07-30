@@ -394,8 +394,6 @@ class CryptoKittiesAuction : ContractInterface {
 
 class AsciiPunksContract : ContractInterface {
   
-  var tradeActions: TokenTradeInterface? = nil
-  
   private var drawingCache = try! DiskStorage<BigUInt, Media.AsciiPunk>(
     config: DiskConfig(name: "AsciiPunksDrawingsCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.AsciiPunk.self))
@@ -411,6 +409,7 @@ class AsciiPunksContract : ContractInterface {
   private var name = "AsciiPunks"
   
   let contractAddressHex = "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC"
+  var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try! EthereumAddress(hex: "0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC", eip55: false))
   private var transfer : LogsFetcher
   private let initFromBlock : BigUInt
   
@@ -674,8 +673,6 @@ class AsciiPunksContract : ContractInterface {
 
 class AutoglyphsContract : ContractInterface {
   
-  var tradeActions: TokenTradeInterface? = nil
-  
   private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
     config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.Autoglyph.self))
@@ -685,6 +682,8 @@ class AutoglyphsContract : ContractInterface {
   private var name = "Autoglyph"
   
   let contractAddressHex = "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782"
+  var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try!
+                                                            EthereumAddress(hex: "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782", eip55: false))
   
   class DrawEthContract : EthereumContract {
     let eth = web3.eth

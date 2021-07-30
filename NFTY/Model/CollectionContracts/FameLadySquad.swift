@@ -16,8 +16,6 @@ import UIKit
 
 class FameLadySquad_Contract : ContractInterface {
   
-  var tradeActions: TokenTradeInterface? = nil
-  
   private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
     config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))
@@ -27,6 +25,8 @@ class FameLadySquad_Contract : ContractInterface {
   let name = "FameLadySquad"
   
   let contractAddressHex = "0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47"
+  
+  var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try! EthereumAddress(hex: "0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47", eip55: false))
   
   class IpfsImageEthContract : Erc721Contract {
     

@@ -15,7 +15,7 @@ import Web3ContractABI
 
 class BAYC_Contract : ContractInterface {
   
-  var tradeActions: TokenTradeInterface? = nil
+  
   
   private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
     config: DiskConfig(name: "BAYC.ImageCache",expiry: .never),
@@ -26,6 +26,8 @@ class BAYC_Contract : ContractInterface {
   let name = "BoredApeYachtClub"
   
   let contractAddressHex = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+  
+  var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try! EthereumAddress(hex: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", eip55: false))
   
   class IpfsImageEthContract : Erc721Contract {
     

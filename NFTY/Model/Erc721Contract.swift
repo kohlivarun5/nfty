@@ -199,8 +199,6 @@ class Erc721Contract {
 
 class IpfsCollectionContract : ContractInterface {
   
-  var tradeActions: TokenTradeInterface? = nil
-  
   class IpfsImageEthContract : Erc721Contract {
     
     struct TokenUriData : Codable {
@@ -266,6 +264,8 @@ class IpfsCollectionContract : ContractInterface {
   let contractAddressHex : String
   var ethContract : IpfsImageEthContract
   
+  var tradeActions: TokenTradeInterface?
+  
   init(name:String,address:String) {
     self.imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
@@ -273,6 +273,7 @@ class IpfsCollectionContract : ContractInterface {
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
+    self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
   }
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
@@ -422,9 +423,3 @@ class IpfsCollectionContract : ContractInterface {
   }
   
 }
-
-
-
-// OPENSEA ORDER FETCHER
-// curl --request GET \
-// --url 'https://api.opensea.io/api/v1/assets?token_ids=5822&asset_contract_address=0xf3e6dbbe461c6fa492cea7cb1f5c5ea660eb1b47&order_direction=desc&offset=0&limit=20'

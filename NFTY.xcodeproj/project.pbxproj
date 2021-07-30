@@ -100,6 +100,7 @@
 		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
+		4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
 		4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
 		4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
 		4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
@@ -233,6 +234,7 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
+		4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaApi.swift; sourceTree = "<group>"; };
 		4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 				4F0FB83626A50BF000AD5165 /* Extensions.swift */,
 				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
+				4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -754,6 +757,7 @@
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4F6AC08226AE1134000A7539 /* TokenTradeActions.swift in Sources */,
+				4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */,
 				4F5F8F5E26532D9C00FAD814 /* WebView.swift in Sources */,
 				4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,

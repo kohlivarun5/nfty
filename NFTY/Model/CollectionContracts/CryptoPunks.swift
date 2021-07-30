@@ -99,15 +99,21 @@ class CryptoPunksContract : ContractInterface {
   private var ethContract = EthContract()
   
   struct TradeActions : TokenTradeInterface {
-    
+    var supportsTrading : Bool = true
     let ethContract : EthContract
     
-    func getBidPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
-      return ethContract.punkBids(BigUInt(tokenId))
-    }
-    
-    func getAskPrice(_ tokenId: UInt) -> Promise<BigUInt?> {
-      return ethContract.punksOfferedForSale(BigUInt(tokenId))
+    func getBidAsk(_ tokenId: UInt) -> Promise<BidAsk> {
+      
+      ethContract.punkBids(BigUInt(tokenId))
+        .then { bidPrice in
+          ethContract.punksOfferedForSale(BigUInt(tokenId))
+            .map { askPrice in
+              return BidAsk(
+                bid:bidPrice.map { BidInfo(wei:$0) },
+                ask:askPrice.map { AskInfo(wei:$0) }
+              )
+            }
+        }
     }
   }
   

@@ -69,7 +69,8 @@ struct TokenTradeActions: View {
           Spacer()
         }
         .padding(.top,10)
-        .padding(.bottom,2)
+        .padding(.bottom,actionsState == nil ? 10 : 2)
+        .font(actionsState == nil ? .title3 : .body)
         
       case (.some,.none,.some(let askPrice)):
         HStack {
@@ -80,7 +81,8 @@ struct TokenTradeActions: View {
           Spacer()
         }
         .padding(.top,10)
-        .padding(.bottom,2)
+        .padding(.bottom,actionsState == nil ? 10 : 2)
+        .font(actionsState == nil ? .title3 : .body)
         
       case (.some,.some(let bidPrice),.some(let askPrice)):
         HStack(alignment:.center) {
@@ -200,20 +202,26 @@ struct TokenTradeActions: View {
       contract.tradeActions.map { tradeActions in
         self.tradeActions = TradeActionInfo(
           tradeActions: tradeActions,
-          currentBidPriceInWei: tradeActions.getBidPrice(nft.tokenId),
-          currentAskPriceInWei: tradeActions.getAskPrice(nft.tokenId))
-        
-        self.tradeActions?.currentAskPriceInWei
-          .done { self.currentAskPriceInWei = $0 }
-        
-        self.tradeActions?.currentBidPriceInWei
-          .done { self.currentBidPriceInWei = $0 }
+          bidAsk: tradeActions.getBidAsk(nft.tokenId))
+          
+        self.tradeActions?.bidAsk
+          .done {
+            self.currentBidPriceInWei = $0.bid.map { $0.wei }
+            self.currentAskPriceInWei = $0.ask.map { $0.wei }
+          }
       }
       
       
       contract.ownerOf(nft.tokenId)
         .done { ownerAddress in
-          self.actionsState = walletAddress == ownerAddress ? .sellActions : .buyActions
+          self.actionsState = self.tradeActions.flatMap {
+            switch($0.tradeActions.supportsTrading) {
+            case false:
+              return nil
+            case true:
+              return walletAddress == ownerAddress ? .sellActions : .buyActions
+            }
+          }
         }
     }
   }
