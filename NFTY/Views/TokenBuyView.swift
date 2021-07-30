@@ -148,7 +148,7 @@ struct TokenBuyView: View {
                 case .loading:
                   ProgressView()
                 case .localCurrency(let rate):
-                  Text(currencyFormatter.string(for:((Double(currentBidPriceInWei) / 1e18) * rate))!)
+                  Text("\(currencyFormatter.string(for:((Double(currentBidPriceInWei) / 1e18) * rate))!) (\(Text(ethFormatter.string(for:(Double(currentBidPriceInWei) / 1e18))!)))")
                 case .unknown:
                   Text(ethFormatter.string(for:(Double(currentBidPriceInWei) / 1e18))!)
                 }

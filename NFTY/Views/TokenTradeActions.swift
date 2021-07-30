@@ -59,7 +59,30 @@ struct TokenTradeActions: View {
       switch (tradeActions,currentBidPriceInWei,currentAskPriceInWei) {
       case (.none,_,_),(_,.none,.none):
         EmptyView()
-      case (.some,_,_):
+        
+      case (.some,.some(let bidPrice),.none):
+        HStack {
+          Spacer()
+          Text("Current Bid")
+          Spacer()
+          UsdText(wei: bidPrice,fontWeight:.semibold)
+          Spacer()
+        }
+        .padding(.top,10)
+        .padding(.bottom,2)
+        
+      case (.some,.none,.some(let askPrice)):
+        HStack {
+          Spacer()
+          Text("Asking For")
+          Spacer()
+          UsdText(wei: askPrice,fontWeight:.semibold)
+          Spacer()
+        }
+        .padding(.top,10)
+        .padding(.bottom,2)
+        
+      case (.some,.some(let bidPrice),.some(let askPrice)):
         HStack(alignment:.center) {
           
           HStack {
@@ -68,14 +91,7 @@ struct TokenTradeActions: View {
               Text("Bid")
                 .italic()
                 .padding(.bottom,1)
-              switch(currentBidPriceInWei) {
-              case .none:
-                Text("N/A")
-                  .foregroundColor(.secondary)
-                  .font(.caption)
-              case .some(let wei):
-                UsdText(wei: wei,fontWeight:.semibold)
-              }
+              UsdText(wei: bidPrice,fontWeight:.semibold)
             }
             Spacer()
           }
@@ -86,14 +102,7 @@ struct TokenTradeActions: View {
               Text("Ask")
                 .italic()
                 .padding(.bottom,1)
-              switch(currentAskPriceInWei) {
-              case .none:
-                Text("N/A")
-                  .foregroundColor(.secondary)
-                  .font(.caption)
-              case .some(let wei):
-                UsdText(wei: wei,fontWeight:.semibold)
-              }
+              UsdText(wei: askPrice,fontWeight:.semibold)
             }
             Spacer()
           }
@@ -101,7 +110,7 @@ struct TokenTradeActions: View {
         .padding(.top,10)
         .padding(.bottom,2)
       }
-        
+      
       HStack {
         
         switch(actionsState,tradeActions) {
