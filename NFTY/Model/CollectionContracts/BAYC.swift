@@ -123,9 +123,12 @@ class BAYC_Contract : ContractInterface {
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
               .map {
-                .known(NFTPriceInfo(
-                        price:priceIfNotZero($0?.value),
-                        blockNumber:log.blockNumber?.quantity))
+                let price = priceIfNotZero($0?.value);
+                return NFTPriceStatus.known(
+                  NFTPriceInfo(
+                    price:price,
+                    blockNumber:log.blockNumber?.quantity,
+                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           ))
       ))
@@ -149,9 +152,12 @@ class BAYC_Contract : ContractInterface {
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
               .map {
-                .known(NFTPriceInfo(
-                        price:priceIfNotZero($0?.value),
-                        blockNumber:log.blockNumber?.quantity))
+                let price = priceIfNotZero($0?.value);
+                return NFTPriceStatus.known(
+                  NFTPriceInfo(
+                    price:price,
+                    blockNumber:log.blockNumber?.quantity,
+                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           ))
       ))
@@ -185,7 +191,7 @@ class BAYC_Contract : ContractInterface {
               .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
                 switch(event) {
                 case .trade(let event):
-                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity))
+                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
                 case .notSeenSince(let since):
                   return NFTPriceStatus.notSeenSince(since)
                 }

@@ -64,6 +64,8 @@ struct TokenTradeActions: View {
         HStack {
           Spacer()
           Text("Current Bid")
+            .foregroundColor(.secondary)
+            .italic()
           Spacer()
           UsdText(wei: bidPrice,fontWeight:.semibold)
           Spacer()
@@ -76,6 +78,8 @@ struct TokenTradeActions: View {
         HStack {
           Spacer()
           Text("Asking For")
+            .foregroundColor(.secondary)
+            .italic()
           Spacer()
           UsdText(wei: askPrice,fontWeight:.semibold)
           Spacer()
@@ -234,7 +238,7 @@ struct TokenTradeActions_Previews: PreviewProvider {
   static var previews: some View {
     TokenTradeActions(
       nft: SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
+      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
       samples:SAMPLE_PUNKS,
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,

@@ -132,13 +132,17 @@ struct FavoritesView: View {
         }
       }
     }
-    .toolbar {
-      Button(action: {
-        self.showAddFavSheet = true
-      }) {
-        Image(systemName:"magnifyingglass.circle.fill")
-      }
-    }
+    .navigationBarItems(
+      trailing:
+        Button(action: {
+          self.showAddFavSheet = true
+        }) {
+          Image(systemName:"magnifyingglass.circle.fill")
+            .font(.title3)
+            .foregroundColor(.orange)
+            .padding(10)
+        }
+    )
     .sheet(isPresented: $showAddFavSheet,onDismiss: {
       let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
       updateFavorites(favorites ?? [:])

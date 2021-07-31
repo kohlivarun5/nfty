@@ -39,8 +39,12 @@ struct TokenPriceKnown : View {
     VStack(alignment: .trailing) {
       switch(info.price) {
       case .some(let wei):
-        UsdText(wei:wei,fontWeight:nil)
-          .foregroundColor(color(self.color))
+        HStack {
+          UsdText(wei:wei,fontWeight:nil)
+            .foregroundColor(color(self.color))
+          Image(systemName: TradeEventIcon.systemName(info.type))
+            .font(.caption2)
+        }
       case .none:
         EmptyView()
       }
@@ -112,8 +116,8 @@ struct TokenPriceLazy : View {
       data: status,
       progress: {
         ProgressView()
-        .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-        .scaleEffect(anchor: .center)
+          .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+          .scaleEffect(anchor: .center)
           .padding(.trailing)}) {
       TokenPriceStatus(status:$0,color:color)
     }
@@ -138,6 +142,6 @@ struct TokenPrice: View {
 
 struct TokenPrice_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),color:.label)
+    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label)
   }
 }

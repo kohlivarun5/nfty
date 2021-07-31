@@ -60,17 +60,30 @@ struct AddFavSheet: View {
         Text("Search NFT")
           .font(.title2)
           .fontWeight(.bold)
-        Picker("Collection",
-               selection:$collectionAddress,
-               content: {
-                ForEach(collectionsDict.map{$0}, id: \.self.0, content: { (key,collection) in
-                  Text(collection.info.name)
-                })
-               })
-          .pickerStyle(SegmentedPickerStyle())
-          .onChange(of: collectionAddress) { tag in
-            self.onChange()
-          }
+        HStack {
+          Spacer()
+          Picker(
+            selection:$collectionAddress,
+            label:
+              HStack {
+                Text("Select Collection")
+                  .foregroundColor(.orange)
+                Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
+                  .foregroundColor(.secondary)
+              }
+            ,
+            content: {
+              ForEach(collectionsDict.map{$0}, id: \.self.0, content: { (key,collection) in
+                Text(collection.info.name)
+              })
+            }
+          )
+          .pickerStyle(MenuPickerStyle())
+          .onChange(of: collectionAddress) { tag in self.onChange() }
+          Spacer()
+        }
+        .animation(.none)
+        .padding(.bottom,5)
         
         TextField("Token",text:$tokenId)
           .textContentType(.oneTimeCode)

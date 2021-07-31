@@ -94,6 +94,8 @@ struct RoundedImage: View {
                 .foregroundColor(.secondaryLabel)
             }
           }
+          .padding(.leading,10)
+          
           Spacer()
           SheetButton(content: {
             TokenPrice(price:price,color:.label)
@@ -109,9 +111,16 @@ struct RoundedImage: View {
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)
           })
+          .padding(.leading,5)
+          .padding(.trailing,3)
+          .padding([.top,.bottom],5)
+          .background(RoundedCorners(color: .secondarySystemBackground, tl: 5, tr: 5, bl: 5, br: 5))
+          .padding(.bottom,5)
+          .padding(.trailing,10)
+          .shadow(radius: 0)
         }
         .font(.subheadline)
-        .padding()
+        .padding([.top,.bottom],10)
         
       }
     }
@@ -121,7 +130,7 @@ struct RoundedImage: View {
     .clipShape(RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous))
     .overlay(
       RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.gray, lineWidth: 1))
-    .shadow(color:Color.primary,radius: 2)
+    .shadow(radius: 1)
   }
 }
 
@@ -130,7 +139,7 @@ struct RoundedImage_Previews: PreviewProvider {
     Group {
       RoundedImage(
         nft:SampleToken,
-        price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
+        price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
         samples:SAMPLE_PUNKS,
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,

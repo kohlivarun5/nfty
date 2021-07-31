@@ -10,6 +10,22 @@ import BigInt
 import Web3
 
 
+struct TradeEventIcon {
+  static func systemName(_ type:TradeEventType) -> String {
+    switch (type) {
+    case .bought:
+      return "arrow.up.right.and.arrow.down.left.rectangle"
+    case .bid:
+      return "hand.point.up.left"
+    case .ask:
+      return "target"
+    case .minted:
+      return "sparkles"
+    case .transfer:
+      return "arrowshape.zigzag.forward"
+    }
+  }
+}
 
 struct TradeEventIconView : View {
   
@@ -19,38 +35,38 @@ struct TradeEventIconView : View {
     switch (type) {
     case .bought:
       VStack(spacing:5) {
-        Image(systemName: "arrow.up.right.and.arrow.down.left.rectangle")
+        Image(systemName: TradeEventIcon.systemName(type))
         Text("Sale")
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
     case .bid:
       VStack(spacing:5) {
-        Image(systemName: "hand.point.up.left")
+        Image(systemName: TradeEventIcon.systemName(type))
         Text("Bid")
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
     case .ask:
       VStack(spacing:5) {
-        Image(systemName: "target")
+        Image(systemName: TradeEventIcon.systemName(type))
         Text("Ask")
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
     case .minted:
       VStack(spacing:5) {
-        Image(systemName: "sparkles")
+        Image(systemName: TradeEventIcon.systemName(type))
         Text("Minted")
           .font(.footnote)
           .foregroundColor(.secondaryLabel)
       }
     case .transfer:
       VStack(spacing:5) {
-        Image(systemName: "arrowshape.zigzag.forward")
+        Image(systemName: TradeEventIcon.systemName(type))
         /* Text("")
-          .font(.footnote)
-          .foregroundColor(.secondaryLabel) */
+         .font(.footnote)
+         .foregroundColor(.secondaryLabel) */
       }
     }
   }
@@ -84,7 +100,7 @@ struct TradeEventsList: View {
         List(events.events,id:\.self.blockNumber.quantity) { event in
           
           VStack {
-          
+            
             switch(event.value) {
             case 0:
               HStack {
