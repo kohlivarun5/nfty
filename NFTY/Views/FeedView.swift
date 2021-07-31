@@ -203,10 +203,10 @@ struct FeedView: View {
             ProgressView()
           case .loaded:
             Button(action: self.triggerRefresh) {
-              Image(systemName:"arrow.clockwise.circle")
+              Image(systemName:"arrow.clockwise.circle.fill")
                 .font(.title3)
                 .foregroundColor(.orange)
-                .padding()
+                .padding(10)
             }
           }
         }
