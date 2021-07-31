@@ -115,7 +115,7 @@ struct TokenTradeView_Previews: PreviewProvider {
   static var previews: some View {
     TokenTradeView(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),
+      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
       samples:SAMPLE_PUNKS,
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,

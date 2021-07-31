@@ -138,6 +138,7 @@ struct NFT: Identifiable {
 struct NFTPriceInfo {
   let price : BigUInt?
   let blockNumber : BigUInt?
+  let type : TradeEventType
 }
 
 enum NFTPriceStatus {

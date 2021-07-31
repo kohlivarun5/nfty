@@ -39,7 +39,7 @@ struct TradableTokenPrice_Previews: PreviewProvider {
         Spacer()
         
         TradableTokenPrice(
-          price:.eager(NFTPriceInfo(price:0,blockNumber: nil)),color:.label)
+          price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label)
       }
       Spacer()
     }
