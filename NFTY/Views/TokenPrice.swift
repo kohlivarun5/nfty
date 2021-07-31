@@ -43,7 +43,7 @@ struct TokenPriceKnown : View {
           UsdText(wei:wei,fontWeight:nil)
             .foregroundColor(color(self.color))
           Image(systemName: TradeEventIcon.systemName(info.type))
-            .font(.system(size:7))
+            .font(.caption2)
         }
       case .none:
         EmptyView()
