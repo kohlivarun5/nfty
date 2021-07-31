@@ -35,7 +35,8 @@ struct UsdText: View {
   
   @State private var spot : SpotState = .loading
   
-  var wei:BigUInt
+  let wei:BigUInt
+  let fontWeight : Font.Weight?
   var body: some View {
     switch(spot) {
     case .loading:
@@ -58,14 +59,16 @@ struct UsdText: View {
         }
     case .localCurrency(let rate):
       Text(currencyFormatter.string(for:((Double(wei) / 1e18) * rate))!)
+        .fontWeight(fontWeight)
     case .unknown:
       Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+        .fontWeight(fontWeight)
     }
   }
 }
 
 struct UsdText_Previews: PreviewProvider {
   static var previews: some View {
-    UsdText(wei:BigUInt(2.2))
+    UsdText(wei:BigUInt(2.2),fontWeight: nil)
   }
 }

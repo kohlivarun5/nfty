@@ -52,7 +52,7 @@ struct FavoritesView: View {
         }
         
         if (isFav) {
-          collectionsFactory.getByAddress(address).map {
+          _ = collectionsFactory.getByAddress(address).map {
             $0.data.contract.getToken(UInt(tokenId)!)
               .done(on:.main) { nft in
                 self.favorites[address]!.updateValue(nft,forKey:tokenId)

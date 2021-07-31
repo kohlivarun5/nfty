@@ -25,6 +25,8 @@ class BAYC_Contract : ContractInterface {
   
   let contractAddressHex = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
   
+  var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try! EthereumAddress(hex: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", eip55: false))
+  
   class IpfsImageEthContract : Erc721Contract {
     
     struct TokenUriData : Codable {

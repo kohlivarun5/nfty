@@ -57,7 +57,7 @@ struct RoundedImage: View {
     case .normal:
       return .normal
     case .narrow:
-      return .small
+      return .xsmall
     }
   }
   
@@ -95,7 +95,7 @@ struct RoundedImage: View {
             }
           }
           Spacer()
-          TradeHistorySheet(content: {
+          SheetButton(content: {
             TokenPrice(price:price,color:.label)
           },sheetContent: {
             TokenTradeView(
@@ -104,8 +104,10 @@ struct RoundedImage: View {
               samples: samples,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
-              size: .small,
-              rarityRank:rarityRank)
+              size: .xsmall,
+              rarityRank:rarityRank,
+              isSheet:true)
+              .ignoresSafeArea(edges:.bottom)
           })
         }
         .font(.subheadline)

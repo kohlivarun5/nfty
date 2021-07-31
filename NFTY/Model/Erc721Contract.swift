@@ -264,6 +264,8 @@ class IpfsCollectionContract : ContractInterface {
   let contractAddressHex : String
   var ethContract : IpfsImageEthContract
   
+  var tradeActions: TokenTradeInterface?
+  
   init(name:String,address:String) {
     self.imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
@@ -271,6 +273,7 @@ class IpfsCollectionContract : ContractInterface {
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
+    self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
   }
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {

@@ -77,7 +77,7 @@ struct NftDetail: View {
         switch(tokens) {
         case .none:
           TokenPrice(price:price,color:.label)
-            .font(.title)
+            .font(.title2)
             .padding()
         case .some:
           NavigationLink(
@@ -88,7 +88,8 @@ struct NftDetail: View {
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .small,
-              rarityRank:rarityRank),
+              rarityRank:rarityRank,
+              isSheet:false),
             isActive:$showTradeView
           ) {
             Button(action: {
@@ -97,7 +98,7 @@ struct NftDetail: View {
               self.showTradeView = true
             }) {
               TradableTokenPrice(price:price,color:.label)
-                .font(.title)
+                .font(.title2)
                 .padding(.top,8)
             }
           }
@@ -154,7 +155,7 @@ struct NftDetail: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      similarTokens.map { similarTokens in
+      _ = similarTokens.map { similarTokens in
         Promise.value(similarTokens.get(nft.tokenId))
           .done(on:.main) { tokens in
             self.tokens = tokens

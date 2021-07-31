@@ -13,9 +13,6 @@ struct TokenTradeView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  @State var uiTabarController: UITabBarController?
-  
-  
   let nft:NFT
   let price:TokenPriceType
   let samples:[String]
@@ -23,9 +20,10 @@ struct TokenTradeView: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
+  let isSheet : Bool
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 300
+  let height : CGFloat = 240
   @State var rank : UInt? = nil
   
   var body: some View {
@@ -37,7 +35,7 @@ struct TokenTradeView: View {
           samples:samples,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
-          size:.medium
+          size:.small
         )
         .frame(height:height)
         .padding(.top,20)
@@ -60,7 +58,7 @@ struct TokenTradeView: View {
           }
           Spacer()
           TokenPrice(price:price,color:.label)
-            .font(.title)
+            .font(.title2)
         }
         .padding()
         .background(
@@ -82,54 +80,22 @@ struct TokenTradeView: View {
       
       TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
       
-      /* TODO Hide till tradiing
-      HStack {
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-        }) {
-          HStack {
-            Spacer()
-            Text("Enter Bid")
-            Spacer()
-          }
-          .padding()
-          .background(
-            RoundedCorners(
-              color: .flatOrange,
-              tl: 0, tr: 20, bl: 0, br: 20))
-        }
-        
-        Button(action: {
-          UIImpactFeedbackGenerator(style:.soft)
-            .impactOccurred()
-        }) {
-          HStack {
-            Spacer()
-            Text("Buy Now")
-            Spacer()
-          }
-          .padding()
-          .background(
-            RoundedCorners(
-              color: .flatGreen,
-              tl: 20, tr: 0, bl: 20, br: 0))
-        }
-      }
-      .foregroundColor(.black)
-      .font(.title2.weight(.bold))
-      .padding(.bottom,25)
-       */
+      TokenTradeActions(
+        nft: nft,
+        price:price,
+        samples: samples,
+        themeColor:themeColor,
+        themeLabelColor:themeLabelColor,
+        size: .small,
+        rarityRank:rarityRank)
+        .padding(.bottom,isSheet ? 12 : 0)
+        .background(
+          RoundedCorners(
+            color: .secondarySystemBackground,
+            tl: 20, tr: 20, bl: 0, br: 0))
+      
       
     }
-    /*
-     .introspectTabBarController { (UITabBarController) in
-     UITabBarController.tabBar.isHidden = true
-     uiTabarController = UITabBarController
-     }.onDisappear{
-     uiTabarController?.tabBar.isHidden = false
-     }
-     .ignoresSafeArea(edges: .bottom)*/
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
@@ -154,6 +120,7 @@ struct TokenTradeView_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking)
+      rarityRank:SampleCollection.info.rarityRanking,
+      isSheet:true)
   }
 }

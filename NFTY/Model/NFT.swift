@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 import Web3
+import PromiseKit
 
 enum TradeEventType {
-  case offer
+  case ask
   case bid
   case bought
   case minted
@@ -160,6 +161,10 @@ struct NFTWithPrice : Identifiable {
   }
 }
 
+struct TradeActionInfo {
+  let tradeActions : TokenTradeInterface
+  let bidAsk : Promise<BidAsk>
+}
 
 struct NFTWithLazyPrice : Identifiable {
   let nft : NFT
