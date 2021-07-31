@@ -64,6 +64,7 @@ struct TokenTradeActions: View {
         HStack {
           Spacer()
           Text("Current Bid")
+            .italic()
           Spacer()
           UsdText(wei: bidPrice,fontWeight:.semibold)
           Spacer()
@@ -76,6 +77,7 @@ struct TokenTradeActions: View {
         HStack {
           Spacer()
           Text("Asking For")
+            .italic()
           Spacer()
           UsdText(wei: askPrice,fontWeight:.semibold)
           Spacer()
