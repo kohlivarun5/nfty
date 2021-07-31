@@ -64,15 +64,18 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
-        NavigationView {
-          FriendsView()
-            .navigationBarTitle("Friends")
+        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
+          
+          NavigationView {
+            FriendsView()
+              .navigationBarTitle("Friends")
+          }
+          .tabItem {
+            Label("Friends",systemImage:"person.2.square.stack")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          .accentColor(.secondary)
         }
-        .tabItem {
-          Label("Friends",systemImage:"person.2.square.stack")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
         
         NavigationView {
           FavoritesView()
