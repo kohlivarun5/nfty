@@ -40,7 +40,7 @@ struct OpenSeaApi {
           //print(data.map { String(decoding: $0, as: UTF8.self)})
           let jsonDecoder = JSONDecoder()
           let assets = try jsonDecoder.decode(AssetOrders.self, from: data!)
-          print(assets)
+          // print(assets)
           
           switch(assets.assets[safe:0]?.sell_orders[safe:0]) {
           case .none:
