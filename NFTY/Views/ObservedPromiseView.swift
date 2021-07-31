@@ -25,7 +25,9 @@ struct ObservedPromiseView<T,ProgressView,ResolvedView> : View where ProgressVie
     case .loading:
       self.progress()
         .onAppear {
-          self.data.load()
+          DispatchQueue.global(qos:.userInteractive).async {
+            self.data.load()
+          }
         }
     case .resolved(let t):
       self.view(t)

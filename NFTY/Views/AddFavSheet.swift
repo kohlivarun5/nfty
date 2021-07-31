@@ -62,21 +62,28 @@ struct AddFavSheet: View {
           .fontWeight(.bold)
         HStack {
           Spacer()
-          Picker("Select Collection",
-                 selection:$collectionAddress,
-                 content: {
-                  ForEach(collectionsDict.map{$0}, id: \.self.0, content: { (key,collection) in
-                    Text(collection.info.name)
-                  })
-                 })
-            .foregroundColor(.orange)
-            .pickerStyle(MenuPickerStyle())
-            .onChange(of: collectionAddress) { tag in
-              self.onChange()
+          Picker(
+            selection:$collectionAddress,
+            label:
+              HStack {
+                Text("Select Collection")
+                  .foregroundColor(.orange)
+                Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
+                  .foregroundColor(.secondary)
+              }
+            ,
+            content: {
+              ForEach(collectionsDict.map{$0}, id: \.self.0, content: { (key,collection) in
+                Text(collection.info.name)
+              })
             }
+          )
+          .pickerStyle(MenuPickerStyle())
+          .onChange(of: collectionAddress) { tag in self.onChange() }
           Spacer()
-          
         }
+        .animation(.none)
+        .padding(.bottom,5)
         
         TextField("Token",text:$tokenId)
           .textContentType(.oneTimeCode)
