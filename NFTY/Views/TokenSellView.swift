@@ -41,9 +41,6 @@ struct TokenSellView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
-    print(eth)
-    print(priceInWei)
-    print(spot)
   }
   
   var body: some View {

@@ -155,7 +155,7 @@ struct NftDetail: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      similarTokens.map { similarTokens in
+      _ = similarTokens.map { similarTokens in
         Promise.value(similarTokens.get(nft.tokenId))
           .done(on:.main) { tokens in
             self.tokens = tokens

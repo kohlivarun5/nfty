@@ -68,9 +68,9 @@ struct TokenTradeActions: View {
           UsdText(wei: bidPrice,fontWeight:.semibold)
           Spacer()
         }
+        .font(.title3)
         .padding(.top,10)
         .padding(.bottom,actionsState == nil ? 10 : 2)
-        .font(actionsState == nil ? .title3 : .body)
         
       case (.some,.none,.some(let askPrice)):
         HStack {
@@ -80,9 +80,9 @@ struct TokenTradeActions: View {
           UsdText(wei: askPrice,fontWeight:.semibold)
           Spacer()
         }
+        .font(.title3)
         .padding(.top,10)
         .padding(.bottom,actionsState == nil ? 10 : 2)
-        .font(actionsState == nil ? .title3 : .body)
         
       case (.some,.some(let bidPrice),.some(let askPrice)):
         HStack(alignment:.center) {
@@ -110,7 +110,7 @@ struct TokenTradeActions: View {
           }
         }
         .padding(.top,10)
-        .padding(.bottom,2)
+        .padding(.bottom,actionsState == nil ? 10 : 2)
       }
       
       HStack {
@@ -203,26 +203,29 @@ struct TokenTradeActions: View {
         self.tradeActions = TradeActionInfo(
           tradeActions: tradeActions,
           bidAsk: tradeActions.getBidAsk(nft.tokenId))
-          
+        
         self.tradeActions?.bidAsk
           .done {
             self.currentBidPriceInWei = $0.bid.map { $0.wei }
             self.currentAskPriceInWei = $0.ask.map { $0.wei }
           }
+          .catch { print($0) }
       }
       
       
-      contract.ownerOf(nft.tokenId)
-        .done { ownerAddress in
-          self.actionsState = self.tradeActions.flatMap {
-            switch($0.tradeActions.supportsTrading) {
-            case false:
-              return nil
-            case true:
-              return walletAddress == ownerAddress ? .sellActions : .buyActions
-            }
-          }
-        }
+      /*
+       contract.ownerOf(nft.tokenId)
+       .done { ownerAddress in
+       self.actionsState = self.tradeActions.flatMap {
+       switch($0.tradeActions.supportsTrading) {
+       case false:
+       return nil
+       case true:
+       return walletAddress == ownerAddress ? .sellActions : .buyActions
+       }
+       }
+       }
+       */
     }
   }
 }

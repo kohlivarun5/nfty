@@ -45,9 +45,11 @@ struct TokenBuyView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
+    /*
     print(eth)
     print(bidPriceInWei)
     print(spot)
+     */
   }
   
   var body: some View {
@@ -295,8 +297,8 @@ struct TokenBuyView: View {
         .done {
           self.currentAskPriceInWei = $0.ask.map { $0.wei }
           self.currentBidPriceInWei = $0.bid.map { $0.wei }
-          
         }
+        .catch { print($0) }
     }
   }
 }

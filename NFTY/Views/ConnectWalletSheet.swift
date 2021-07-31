@@ -28,7 +28,7 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      
+      /*
       VStack(spacing:20) {
         
         switch(walletConnect) {
@@ -158,9 +158,10 @@ struct ConnectWalletSheet: View {
           .padding(.leading)
           .background(Color.systemBackground)
       }
+      */
       
       VStack {
-        Text("Save Wallet Address")
+        Text("Add Wallet using Address")
           .font(.title2)
           .fontWeight(.bold)
         
@@ -194,7 +195,7 @@ struct ConnectWalletSheet: View {
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .foregroundColor(.white)
-            .background(Color.gray)
+            .background(Color.green)
             .cornerRadius(40)
             
             Spacer()
