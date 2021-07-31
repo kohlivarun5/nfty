@@ -21,7 +21,7 @@ struct WalletView: View {
       switch (address) {
       case .none:
         ConnectWalletSheet(address: $address)
-        
+          
           .onAppear {
             if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
                                                                     .walletAddress.rawValue) {
@@ -32,13 +32,18 @@ struct WalletView: View {
         WalletTokensView(tokens: getOwnerTokens(address))
       }
     }
-    .toolbar {
-      Button(action: {
-        self.showAddressSheet = true
-      }) {
-        Image(systemName:"at.badge.plus")
-      }
-    }
+    .navigationBarItems(
+      trailing:
+        Button(action: {
+          self.showAddressSheet = true
+        }) {
+          Image(systemName:"at.badge.plus")
+            .renderingMode(.original)
+            .accentColor(.orange)
+            .font(.title3)
+            .padding(10)
+        }
+    )
     .sheet(isPresented: $showAddressSheet) {
       ConnectWalletSheet(address:$address)
     }
