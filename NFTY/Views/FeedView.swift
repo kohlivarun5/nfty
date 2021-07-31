@@ -193,23 +193,29 @@ struct FeedView: View {
         }.coordinateSpace(name: "RefreshControl")
       }
     }
+    .navigationBarItems(
+      trailing:
+        HStack {
+          switch refreshButton {
+          case .hidden:
+            EmptyView()
+          case .loading:
+            ProgressView()
+          case .loaded:
+            Button(action: self.triggerRefresh) {
+              Image(systemName:"arrow.clockwise.circle")
+                .font(.title3)
+                .foregroundColor(.orange)
+                .padding()
+            }
+          }
+        }
+    )
     .onAppear {
       self.trades.loadMore() {
         DispatchQueue.main.async {
           self.isLoading = false
           self.refreshButton = .loaded
-        }
-      }
-    }.toolbar {
-      switch refreshButton {
-        case .hidden:
-        EmptyView()
-        case .loading:
-        ProgressView()
-      case .loaded:
-        Button(action: self.triggerRefresh) {
-          Image(systemName:"arrow.clockwise.circle")
-            .padding()
         }
       }
     }
