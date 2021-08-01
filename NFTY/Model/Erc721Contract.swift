@@ -10,6 +10,7 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 import Cache
+import UIKit
 
 class Erc721Contract {
   
@@ -250,7 +251,15 @@ class IpfsCollectionContract : ContractInterface {
             
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
-              seal.fulfill(data.map { Media.IpfsImage(data:$0) })
+              
+              DispatchQueue.global(qos:.userInteractive).async {
+                data.map {
+                  let image = UIImage(data:$0)!
+                  let data = image.jpegData(compressionQuality: 0.1)!
+                  seal.fulfill(Media.IpfsImage(data: data))
+                }
+              }
+              
             }).resume()
           }
         }

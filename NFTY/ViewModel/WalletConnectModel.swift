@@ -50,8 +50,11 @@ class WalletConnect {
      https://https://metamask.app.link/wc?uri=wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.org&key=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae
      */
     
+    // https://github.com/gnosis/safe-ios/blob/d4301687ce0a84e6bab2de398948d980deef3873/Multisig/Cross-layer/Configuration/Config.Example.xcconfig#L85
+    let bridgeUrl = "https://safe-walletconnect.gnosis.io/" //https://wcbridge.zerion.io" //"https://bridge.walletconnect.org"
+    
     let wcUrl =  WCURL(topic: UUID().uuidString,
-                       bridgeURL: URL(string: "https://bridge.walletconnect.org")!,
+                       bridgeURL: URL(string: bridgeUrl)!,
                        key: try! randomKey())
     let clientMeta = Session.ClientMeta(name: "NFTYgo",
                                         description: "NFTYgo",
