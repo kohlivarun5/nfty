@@ -114,10 +114,9 @@ struct RoundedImage: View {
           .padding(.leading,5)
           .padding(.trailing,3)
           .padding([.top,.bottom],5)
-          .background(RoundedCorners(color: .secondarySystemBackground, tl: 5, tr: 5, bl: 5, br: 5))
+          .background(RoundedCorners(color: .secondarySystemBackground, tl: 10, tr: 10, bl: 10, br: 10))
           .padding(.bottom,5)
           .padding(.trailing,10)
-          .shadow(radius: 0)
         }
         .font(.subheadline)
         .padding([.top,.bottom],10)
