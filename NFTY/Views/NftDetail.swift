@@ -11,7 +11,8 @@ import PromiseKit
 
 struct NftDetail: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  @EnvironmentObject var context: AppContext
+  @Environment(\.presentationMode) private var presentationMode
   
   var nft:NFT
   var price:TokenPriceType
@@ -118,6 +119,9 @@ struct NftDetail: View {
           SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
         }
       }
+    }
+    .onChange(of: context.navToHome) { _ in
+      presentationMode.wrappedValue.dismiss()
     }
     .animation(.default)
     .navigationBarTitle("",displayMode:.large)
