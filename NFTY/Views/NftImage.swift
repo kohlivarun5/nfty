@@ -207,8 +207,7 @@ struct NftImage: View {
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
         case .xsmall,.small:
-          VStack {
-          }
+          EmptyView()
         }
       }
     }.background(themeColor)

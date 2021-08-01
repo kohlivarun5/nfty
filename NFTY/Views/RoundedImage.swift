@@ -119,7 +119,8 @@ struct RoundedImage: View {
           .padding(.trailing,10)
         }
         .font(.subheadline)
-        .padding([.top,.bottom],10)
+        .padding(.bottom,10)
+        .padding(.top,5)
         
       }
     }
