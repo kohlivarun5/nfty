@@ -330,3 +330,6 @@ let FLS_rarityRanks : [UInt] = load("FameLadySquad_rarityRanks.json")
 
 let CRHDL_nearestTokens : [[UInt]] = load("CryptoHodlers_nearestTokens.json")
 let CRHDL_rarityRanks : [UInt] = load("CryptoHodlers_rarityRanks.json")
+
+let CypherCity_nearestTokens : [[UInt]] = load("CypherCity_nearestTokens.json")
+let CypherCity_rarityRanks : [UInt] = load("CypherCity_rarityRanks.json")

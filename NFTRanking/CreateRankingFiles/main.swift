@@ -9,11 +9,11 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "CryptoHodlers"
+let collectionName = "CypherCity"
 
 let isFull = true
 let firstIndex = 0
-let lastIndex = isFull ? 9999 : 100
+let lastIndex = isFull ? 8887 : 100
 
 // STAGES
 let doCalculateFeatures = true
@@ -29,6 +29,7 @@ features.loadFeaturesFromFile()
 if (doCalculateFeatures) {
   features.calculateFeatures()
 }
+
 let calculator = CalculateImageDistances(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName,tokenImages: features.tokenImages)
 if (doCalculateDistances) {
   calculator.calculateDistances()

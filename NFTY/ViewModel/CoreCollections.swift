@@ -186,8 +186,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       blur:0,
       samplePadding:15,
-      similarTokens: nil,
-      rarityRanking: nil
+      similarTokens : SimilarTokensGetter(label:"Cyphers") { tokenId in CypherCity_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
     contract:CYPHER_CITY_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
