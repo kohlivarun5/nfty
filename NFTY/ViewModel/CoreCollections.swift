@@ -92,7 +92,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       url2:SAMPLE_BAYC[1],
       url3:SAMPLE_BAYC[2],
       url4:SAMPLE_BAYC[3],
-      name:"BoredApeYachtClub",
+      name:"BAYC",
       webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
       themeColor:Color.black,
       themeLabelColor:Color.white,

@@ -161,7 +161,7 @@ class Erc721Contract {
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
         let from = res["from"] as! EthereumAddress
         
-        var type : TradeEventType = .bought
+        var type : TradeEventType? = nil
         
         if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
           reachedMint = true
@@ -172,9 +172,9 @@ class Erc721Contract {
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:
-              return TradeEvent(type:.transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
+              return TradeEvent(type:type ?? .transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
             case .some(let tx):
-              return TradeEvent(type:type,value:tx.value,blockNumber:tx.blockNumber)
+              return TradeEvent(type:type ?? .bought,value:tx.value,blockNumber:tx.blockNumber)
             }
           }.done { response($0) }
           .catch { print($0) }
