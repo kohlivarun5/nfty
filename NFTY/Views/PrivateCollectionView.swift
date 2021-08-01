@@ -9,7 +9,8 @@ import SwiftUI
 import Web3
 
 struct PrivateCollectionView: View {
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  @EnvironmentObject var context: AppContext
+  @Environment(\.presentationMode) private var presentationMode
   
   @State private var friendName : String? = nil
   
@@ -69,6 +70,9 @@ struct PrivateCollectionView: View {
             .accentColor(.orange)
         })
       )
+      .onChange(of: context.navToHome) { _ in
+        presentationMode.wrappedValue.dismiss()
+      }
   }
 }
 

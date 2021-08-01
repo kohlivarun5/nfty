@@ -19,8 +19,17 @@ extension UINavigationController: UIGestureRecognizerDelegate {
   }
 }
 
+
+class AppContext: ObservableObject {
+  @Published var selectedTab = ""
+  @Published var navToHome = false
+}
+
 @main
 struct NFTYApp: App {
+  
+  @StateObject var context = AppContext()
+  
   enum SheetStateEnum {
     case nft(String,UInt)
     case user(EthereumAddress,friendName:String?)
@@ -40,9 +49,11 @@ struct NFTYApp: App {
   
   @State private var sheetState : SheetState? = nil
   
+  @Environment(\.presentationMode) private var presentationMode
+  
   var body: some Scene {
     WindowGroup {
-      TabView {
+      TabView(selection: $context.selectedTab) {
         
         NavigationView {
           FeedView(trades:CompositeCollection)
@@ -51,6 +62,7 @@ struct NFTYApp: App {
         .tabItem {
           Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
         }
+        .tag("Recent")
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
@@ -61,6 +73,7 @@ struct NFTYApp: App {
         .tabItem {
           Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
         }
+        .tag("Gallery")
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
@@ -73,6 +86,7 @@ struct NFTYApp: App {
           .tabItem {
             Label("Friends",systemImage:"person.2.square.stack")
           }
+          .tag("Friends")
           .navigationViewStyle(StackNavigationViewStyle())
           .accentColor(.secondary)
         }
@@ -84,6 +98,7 @@ struct NFTYApp: App {
         .tabItem {
           Label("Favorites",systemImage:"heart.fill")
         }
+        .tag("Favorites")
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
@@ -94,11 +109,17 @@ struct NFTYApp: App {
         .tabItem {
           Label("Wallet",systemImage:"lock.rectangle.stack.fill")
         }
+        .tag("Wallet")
         .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.secondary)
         
         
-      }.onOpenURL { url in
+      }
+      .environmentObject(context)
+      .onReceive(context.$selectedTab) { selection in
+        context.navToHome.toggle()
+      }
+      .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
         print("URL.last=\(String(describing: url.pathComponents.last))")
         print("URL.params=\(url.params())")
