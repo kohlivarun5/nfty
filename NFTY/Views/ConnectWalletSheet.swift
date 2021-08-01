@@ -11,8 +11,8 @@ import Web3
 struct ConnectWalletSheet: View {
   
   @Environment(\.presentationMode) var presentationMode
+  @EnvironmentObject var userWallet: UserWallet
   
-  @Binding var address : EthereumAddress?
   @State var badAddressError : String = ""
   
   enum ConnectionState {
@@ -172,12 +172,12 @@ struct ConnectWalletSheet: View {
           if let string = UIPasteboard.general.string {
             // text was found and placed in the "string" constant
             print(string)
-            self.address = try? EthereumAddress(hex:string,eip55: false)
-            if (self.address == nil) {
+            switch(try? EthereumAddress(hex:string,eip55: false)) {
+            case .none:
               self.badAddressError = "Invalid Address Pasted"
-            } else {
+            case .some(let address):
               self.badAddressError = ""
-              NSUbiquitousKeyValueStore.default.set(string, forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
+              userWallet.saveWalletAddress(address:address)
               presentationMode.wrappedValue.dismiss()
             }
           }
@@ -227,13 +227,12 @@ extension ConnectWalletSheet: WalletConnectDelegate {
   func didConnect(account:EthereumAddress?) {
     print("didConnect")
     self.connection = ConnectionState.connected
-    self.address = account
-    switch(self.address) {
+    switch(account) {
     case .none:
       self.badAddressError = "Imported bad address"
-    case .some(let account):
+    case .some(let address):
       self.badAddressError = ""
-      NSUbiquitousKeyValueStore.default.set(account.hex(eip55:true), forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
+      self.userWallet.saveWalletAddress(address:address)
       presentationMode.wrappedValue.dismiss()
     }
   }
@@ -247,6 +246,6 @@ extension ConnectWalletSheet: WalletConnectDelegate {
 class ConnectWalletSheet_Previews: PreviewProvider {
   @State static private var address : EthereumAddress? = nil
   static var previews: some View {
-    ConnectWalletSheet(address:$address)
+    ConnectWalletSheet()
   }
 }

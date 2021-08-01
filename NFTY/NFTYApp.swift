@@ -40,6 +40,8 @@ struct NFTYApp: App {
   
   @State private var sheetState : SheetState? = nil
   
+  @StateObject var userWallet = UserWallet()
+  
   var body: some Scene {
     WindowGroup {
       TabView {
@@ -134,6 +136,7 @@ struct NFTYApp: App {
         }
       }
       .accentColor(Color.orange)
+      .environmentObject(userWallet)
     }
   }
 }
