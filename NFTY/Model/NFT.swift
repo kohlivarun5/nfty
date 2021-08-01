@@ -302,6 +302,13 @@ let SAMPLE_CRHDL : [String] = [
   "SampleHodler4"
 ]
 
+let SAMPLE_CROWNS : [String] = [
+  "SAMPLE_CROWN1",
+  "SAMPLE_CROWN2",
+  "SAMPLE_CROWN3",
+  "SAMPLE_CROWN4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 

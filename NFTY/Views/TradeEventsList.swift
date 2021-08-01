@@ -101,8 +101,8 @@ struct TradeEventsList: View {
           
           VStack {
             
-            switch(event.value) {
-            case 0:
+            switch(event.value,event.type) {
+            case (0,.bought):
               HStack {
                 Text("Transfer")
                   .frame(width:120,alignment: .trailing)
@@ -114,6 +114,17 @@ struct TradeEventsList: View {
               }
               .foregroundColor(.secondaryLabel)
               .font(.footnote)
+            case (0,_):
+              HStack {
+                Text("")
+                  .frame(width:120,alignment: .trailing)
+                Spacer()
+                TradeEventIconView(type:event.type)
+                Spacer()
+                BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  .frame(width:120,alignment: .trailing)
+              }
+              .foregroundColor(event.type == .bought || event.type == .minted ? .label : .secondary)
             default:
               HStack {
                 UsdText(wei:event.value,fontWeight: event.type == .bought ? .semibold : nil)

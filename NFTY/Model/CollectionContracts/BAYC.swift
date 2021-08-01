@@ -21,7 +21,7 @@ class BAYC_Contract : ContractInterface {
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
-  let name = "BoredApeYachtClub"
+  let name = "BAYC"
   
   let contractAddressHex = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
   
