@@ -23,6 +23,11 @@ let CROWNS_Contract = IpfsCollectionContract(
   name: "Crowns",
   address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
 
+let CYPHER_CITY_Contract = IpfsCollectionContract(
+  name: "Cypher City",
+  address: "0x00C396383400a1EF2eB401052dBF5d989B2da481")
+
+
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -165,6 +170,26 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking: nil
     ),
     contract:CROWNS_Contract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CYPHER_CITY_Contract.contractAddressHex,
+      url1:SAMPLE_CYPHER[0],
+      url2:SAMPLE_CYPHER[1],
+      url3:SAMPLE_CYPHER[2],
+      url4:SAMPLE_CYPHER[3],
+      name:CYPHER_CITY_Contract.name,
+      webLink: URL(string:"https://cyphercity.io/home")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens: nil,
+      rarityRanking: nil
+    ),
+    contract:CYPHER_CITY_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,

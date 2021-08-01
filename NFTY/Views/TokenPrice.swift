@@ -36,11 +36,11 @@ struct TokenPriceKnown : View {
   }
   
   var body: some View {
-    VStack(alignment: .trailing) {
+    VStack {
       switch(info.price) {
       case .some(let wei):
         HStack {
-          UsdText(wei:wei,fontWeight:nil)
+          UsdText(wei:wei,fontWeight:.semibold)
             .foregroundColor(color(self.color))
           Image(systemName: TradeEventIcon.systemName(info.type))
             .font(.caption2)
@@ -51,6 +51,7 @@ struct TokenPriceKnown : View {
       BlockTimeLabel(blockNumber:info.blockNumber)
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
+        .padding([.top,.bottom],info.price == nil ? 2 : 0)
     }
   }
 }
@@ -83,7 +84,7 @@ struct TokenPriceStatus : View {
     case .known(let info):
       TokenPriceKnown(info:info,color:color)
     case .notSeenSince(let since):
-      VStack(alignment: .trailing) {
+      VStack {
         Text("Not seen since")
         BlockTimeLabel(blockNumber:since.blockNumber)
       }
@@ -118,7 +119,8 @@ struct TokenPriceLazy : View {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle(tint: .gray))
           .scaleEffect(anchor: .center)
-          .padding(.trailing)}) {
+          .padding([.leading,.trailing])
+      }) {
       TokenPriceStatus(status:$0,color:color)
     }
   }
