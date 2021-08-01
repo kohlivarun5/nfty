@@ -28,7 +28,7 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      /*
+      
       VStack(spacing:20) {
         
         switch(walletConnect) {
@@ -47,10 +47,13 @@ struct ConnectWalletSheet: View {
             }
           case .failed,.disconnected,.connected:
             switch(walletConnect.session?.walletInfo?.peerMeta.name) {
-            case .none:
+            case .none,.some:
+              EmptyView()
+            /*
               Text("Connect Wallet")
                 .font(.title2)
                 .fontWeight(.bold)
+            
             case .some(let name):
               VStack {
                 Text("Currently connected using:")
@@ -58,20 +61,21 @@ struct ConnectWalletSheet: View {
                 Text(name)
                   .fontWeight(.bold).font(.title2)
               }
+            */
             }
             
             HStack(spacing:30) {
               Spacer()
               
               HStack {
-                
+                /*
                 Button(action:{
                   UIImpactFeedbackGenerator(style: .light)
                     .impactOccurred()
                   
                   let url = try! walletConnect.connectToWallet(link:"metamask:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
                     print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
@@ -97,14 +101,14 @@ struct ConnectWalletSheet: View {
                     RoundedRectangle(cornerRadius:20, style: .continuous)
                       .stroke(Color.orange, lineWidth: 1))
                 }
-                
+                */
                 Button(action:{
                   UIImpactFeedbackGenerator(style: .light)
                     .impactOccurred()
                   
                   let url = try! walletConnect.connectToWallet(link:"trust:")
                   // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
                     print("Launching=\(url)")
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                   }
@@ -158,7 +162,6 @@ struct ConnectWalletSheet: View {
           .padding(.leading)
           .background(Color.systemBackground)
       }
-      */
       
       VStack {
         Text("Add Wallet using Address")
