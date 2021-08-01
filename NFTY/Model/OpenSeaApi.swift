@@ -20,7 +20,7 @@ struct OpenSeaApi {
     }
     
     struct Asset: Codable {
-      let sell_orders : [SellOrder]
+      let sell_orders : [SellOrder]?
     }
     
     struct AssetOrders: Codable {
@@ -42,7 +42,7 @@ struct OpenSeaApi {
           let assets = try jsonDecoder.decode(AssetOrders.self, from: data!)
           // print(assets)
           
-          switch(assets.assets[safe:0]?.sell_orders[safe:0]) {
+          switch(assets.assets[safe:0]?.sell_orders?[safe:0]) {
           case .none:
             seal.fulfill(BidAsk(bid:nil,ask:nil))
           case .some(let order):

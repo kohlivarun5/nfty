@@ -302,7 +302,7 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
+  private func getTokenHistoryImpl(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     var events : [TradeEvent] = []
     return Promise { seal in
       fetcher.fetch(onDone:{seal.fulfill(events)}) { log in
@@ -328,11 +328,19 @@ class CryptoKittiesAuction : ContractInterface {
           )
         )
       case (0,_):
-        return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
+        return self.getTokenHistoryImpl(tokenId,fetcher:fetcher,retries:retries-1)
       default:
         return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
+  }
+  
+  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt,tradeActions:TokenTradeInterface?) -> Promise<TradeEventStatus> {
+    return getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
+      .then { event -> Promise<TradeEventStatus> in
+        tradeActions?.getBidAsk(tokenId).map { _ in event}
+          ?? Promise.value(event)
+      }
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
@@ -354,7 +362,7 @@ class CryptoKittiesAuction : ContractInterface {
             indexedTopics: [],
             blockDecrements: 5000)
           let p =
-            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10)
+            self.getTokenHistory(tokenId,fetcher:auctionDoneFetcher,retries:10,tradeActions:self.tradeActions)
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -567,7 +575,7 @@ class AsciiPunksContract : ContractInterface {
     }
   }
   
-  private func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
+  private func getTokenHistoryImpl(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     var events : [Promise<TradeEvent?>] = []
     return Promise { seal in
       fetcher.fetch(onDone:{
@@ -595,11 +603,19 @@ class AsciiPunksContract : ContractInterface {
           )
         )
       case (0,_):
-        return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
+        return self.getTokenHistoryImpl(tokenId,fetcher:fetcher,retries:retries-1)
       default:
         return Promise.value(TradeEventStatus.trade(events.first!))
       }
     }
+  }
+  
+  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt,tradeActions:TokenTradeInterface?) -> Promise<TradeEventStatus> {
+    return getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
+      .then { event -> Promise<TradeEventStatus> in
+        tradeActions?.getBidAsk(tokenId).map { _ in event}
+          ?? Promise.value(event)
+      }
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
@@ -625,7 +641,7 @@ class AsciiPunksContract : ContractInterface {
               blockDecrements: 10000)
             
             let p =
-              self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+              self.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30,tradeActions: nil)//self.tradeActions)
               .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
                 switch(event) {
                 case .trade(let event):
@@ -826,7 +842,7 @@ class AutoglyphsContract : ContractInterface {
               blockDecrements: 10000)
             
             let p =
-              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30,tradeActions:nil)//self.tradeActions)
               .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
                 switch(event) {
                 case .trade(let event):

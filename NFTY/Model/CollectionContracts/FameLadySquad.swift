@@ -166,7 +166,7 @@ class FameLadySquad_Contract : ContractInterface {
               blockDecrements: 10000)
             
             let p =
-              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30,tradeActions:nil)//self.tradeActions)
               .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
                 switch(event) {
                 case .trade(let event):

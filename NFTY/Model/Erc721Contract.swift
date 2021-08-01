@@ -104,7 +104,7 @@ class Erc721Contract {
       }
   }
   
-  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
+  private func getTokenHistoryImpl(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
     var events : [Promise<TradeEvent?>] = []
     return Promise { seal in
       fetcher.fetch(onDone:{
@@ -129,10 +129,38 @@ class Erc721Contract {
           )
         )
       case (0,_):
-        return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
+        return self.getTokenHistoryImpl(tokenId,fetcher:fetcher,retries:retries-1)
       default:
         return Promise.value(TradeEventStatus.trade(events.first!))
       }
+    }
+  }
+  
+  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt,tradeActions:TokenTradeInterface?) -> Promise<TradeEventStatus> {
+    return Promise { seal in
+      getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
+        .done { event in
+          switch (tradeActions) {
+          case .none:
+            return seal.fulfill(event)
+          case .some(let tradeActions):
+            tradeActions.getBidAsk(tokenId)
+              .map { bidAsk in
+                switch(bidAsk.bid,bidAsk.ask) {
+                case (.some,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (_,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.some(let bid),_):
+                  return TradeEventStatus.trade(TradeEvent(type: .bid, value: bid.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.none,.none):
+                  return event
+                }
+              }
+              .done { seal.fulfill($0) }
+              .catch { _ in seal.fulfill(event) }
+          }
+        }
     }
   }
   
@@ -167,7 +195,7 @@ class Erc721Contract {
           reachedMint = true
           type = .minted
         }
-          
+        
         txFetcher.eventOfTx(transactionHash: log.transactionHash)
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
@@ -377,7 +405,7 @@ class IpfsCollectionContract : ContractInterface {
               blockDecrements: 10000)
             
             let p =
-              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30,tradeActions:nil)//self.tradeActions)
               .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
                 switch(event) {
                 case .trade(let event):
