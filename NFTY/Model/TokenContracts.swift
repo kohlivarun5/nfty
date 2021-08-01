@@ -336,11 +336,31 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt,tradeActions:TokenTradeInterface?) -> Promise<TradeEventStatus> {
-    return getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
-      .then { event -> Promise<TradeEventStatus> in
-        tradeActions?.getBidAsk(tokenId).map { _ in event}
-          ?? Promise.value(event)
-      }
+    return Promise { seal in
+      getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
+        .done { event in
+          switch (tradeActions) {
+          case .none:
+            return seal.fulfill(event)
+          case .some(let tradeActions):
+            tradeActions.getBidAsk(tokenId)
+              .map { bidAsk in
+                switch(bidAsk.bid,bidAsk.ask) {
+                case (.some,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (_,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.some(let bid),_):
+                  return TradeEventStatus.trade(TradeEvent(type: .bid, value: bid.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.none,.none):
+                  return event
+                }
+              }
+              .done { seal.fulfill($0) }
+              .catch { _ in seal.fulfill(event) }
+          }
+        }
+    }
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
@@ -611,11 +631,31 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt,tradeActions:TokenTradeInterface?) -> Promise<TradeEventStatus> {
-    return getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
-      .then { event -> Promise<TradeEventStatus> in
-        tradeActions?.getBidAsk(tokenId).map { _ in event}
-          ?? Promise.value(event)
-      }
+    return Promise { seal in
+      getTokenHistoryImpl(tokenId,fetcher:fetcher,retries: retries)
+        .done { event in
+          switch (tradeActions) {
+          case .none:
+            return seal.fulfill(event)
+          case .some(let tradeActions):
+            tradeActions.getBidAsk(tokenId)
+              .map { bidAsk in
+                switch(bidAsk.bid,bidAsk.ask) {
+                case (.some,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (_,.some(let ask)):
+                  return TradeEventStatus.trade(TradeEvent(type: .ask, value: ask.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.some(let bid),_):
+                  return TradeEventStatus.trade(TradeEvent(type: .bid, value: bid.wei, blockNumber: EthereumQuantity.init(quantity: BigUInt(110))))
+                case (.none,.none):
+                  return event
+                }
+              }
+              .done { seal.fulfill($0) }
+              .catch { _ in seal.fulfill(event) }
+          }
+        }
+    }
   }
   
   func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
