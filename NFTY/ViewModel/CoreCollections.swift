@@ -19,6 +19,11 @@ let CRHDL_Contract = IpfsCollectionContract(
   name: "CryptoHodlers",
   address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
 
+let CROWNS_Contract = IpfsCollectionContract(
+  name: "Crowns",
+  address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
+
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -140,6 +145,26 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
     contract:CRHDL_Contract),
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CROWNS_Contract.contractAddressHex,
+      url1:SAMPLE_CROWNS[0],
+      url2:SAMPLE_CROWNS[1],
+      url3:SAMPLE_CROWNS[2],
+      url4:SAMPLE_CROWNS[3],
+      name:CROWNS_Contract.name,
+      webLink: URL(string:"https://fameladysquad.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      blur:0,
+      samplePadding:15,
+      similarTokens: nil,
+      rarityRanking: nil
+    ),
+    contract:CROWNS_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
