@@ -26,7 +26,6 @@ struct TokenTradeActions: View {
   @State var currentBidPriceInWei : BigUInt?
   @State var currentAskPriceInWei : BigUInt?
   
-  
   enum ActionsState {
     case buyActions
     case sellActions
@@ -126,7 +125,35 @@ struct TokenTradeActions: View {
           HStack {
             switch(actions) {
             case .buyActions:
-              SheetButton(content: {
+              /*
+               SheetButton(content: {
+               HStack {
+               Spacer()
+               Text("Trade")
+               .foregroundColor(.black)
+               .font(.title2.weight(.bold))
+               Spacer()
+               }
+               .padding(10)
+               .background(
+               RoundedCorners(
+               color: .flatOrange,
+               tl: 20, tr: 20, bl: 20, br: 20))
+               .padding([.leading,.trailing],50)
+               },sheetContent: {
+               TokenBuyView(
+               nft: nft,
+               price:price,
+               samples: samples,
+               themeColor:themeColor,
+               themeLabelColor:themeLabelColor,
+               size: .xsmall,
+               rarityRank:rarityRank,
+               tradeActions: tradeActions
+               )
+               })
+               */
+              Link(destination: URL(string:"https://metamask.app.link/dapp/opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
                 HStack {
                   Spacer()
                   Text("Trade")
@@ -140,20 +167,11 @@ struct TokenTradeActions: View {
                     color: .flatOrange,
                     tl: 20, tr: 20, bl: 20, br: 20))
                 .padding([.leading,.trailing],50)
-              },sheetContent: {
-                TokenBuyView(
-                  nft: nft,
-                  price:price,
-                  samples: samples,
-                  themeColor:themeColor,
-                  themeLabelColor:themeLabelColor,
-                  size: .xsmall,
-                  rarityRank:rarityRank,
-                  tradeActions: tradeActions
-                )
-              })
+              }
               
             case .sellActions:
+              
+              /*
               SheetButton(content: {
                 HStack {
                   Spacer()
@@ -180,6 +198,23 @@ struct TokenTradeActions: View {
                   tradeActions: tradeActions.tradeActions
                 )
               })
+ */
+              
+              Link(destination: URL(string:"https://metamask.app.link/dapp/opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+                HStack {
+                  Spacer()
+                  Text("Sell")
+                    .foregroundColor(.black)
+                    .font(.title2.weight(.bold))
+                  Spacer()
+                }
+                .padding(10)
+                .background(
+                  RoundedCorners(
+                    color: .flatGreen,
+                    tl: 20, tr: 20, bl: 20, br: 20))
+                .padding([.leading,.trailing],50)
+              }
             }
           }
           .padding(.bottom,10)
@@ -215,21 +250,19 @@ struct TokenTradeActions: View {
           }
           .catch { print($0) }
       }
+      contract.ownerOf(nft.tokenId)
+        .done { ownerAddress in
+          self.actionsState = self.tradeActions.flatMap {
+            switch($0.tradeActions.supportsTrading) {
+            /*case false:
+              return nil
+            case true:*/
+            default:
+              return walletAddress == ownerAddress ? .sellActions : .buyActions
+            }
+          }
+        }
       
-      
-      /*
-       contract.ownerOf(nft.tokenId)
-       .done { ownerAddress in
-       self.actionsState = self.tradeActions.flatMap {
-       switch($0.tradeActions.supportsTrading) {
-       case false:
-       return nil
-       case true:
-       return walletAddress == ownerAddress ? .sellActions : .buyActions
-       }
-       }
-       }
-       */
     }
   }
 }
