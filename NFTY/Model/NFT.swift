@@ -224,8 +224,6 @@ struct CollectionInfo {
   let subThemeColor:Color
   let collectionColor:Color
   let disableRecentTrades : Bool
-  let blur:CGFloat
-  let samplePadding:CGFloat
   let similarTokens : SimilarTokensGetter?
   let rarityRanking : RarityRanking?
 }

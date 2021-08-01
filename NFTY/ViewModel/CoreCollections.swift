@@ -44,8 +44,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks") { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
@@ -64,8 +62,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.white,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:10,
       similarTokens: nil,
       rarityRanking: nil
     ),
@@ -84,8 +80,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:10,
       similarTokens : SimilarTokensGetter(label:"Punks")  { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
     ),
@@ -104,8 +98,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Apes")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
     ),
@@ -124,8 +116,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Ladies")  { tokenId in FLS_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(FLS_rarityRanks)
     ),
@@ -144,8 +134,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Hodlers") { tokenId in CRHDL_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
@@ -164,8 +152,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:15,
       similarTokens: nil,
       rarityRanking: nil
     ),
@@ -184,8 +170,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      blur:0,
-      samplePadding:15,
       similarTokens : SimilarTokensGetter(label:"Cyphers") { tokenId in CypherCity_nearestTokens[safe:Int(tokenId)] },
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
@@ -204,7 +188,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       collectionColor:/* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       disableRecentTrades:true,
-      blur:0,samplePadding:0,
       similarTokens: nil,
       rarityRanking: nil
     ),

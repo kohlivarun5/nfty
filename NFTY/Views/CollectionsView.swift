@@ -21,7 +21,7 @@ struct CollectionsView: View {
       .interpolation(.none)
       .resizable()
       .aspectRatio(contentMode: .fit)
-      .padding(collection.info.samplePadding)
+      .cornerRadius(10)
   }
   
   var body: some View {
@@ -41,6 +41,7 @@ struct CollectionsView: View {
                   sampleImage(url:collection.info.url4,collection:collection)
                 }
               }
+              .padding(10)
               .background(collection.info.collectionColor)
               
               
@@ -48,7 +49,7 @@ struct CollectionsView: View {
                 Text(collection.info.name)
               }
               .font(.headline)
-              .padding()
+              .padding(.bottom,10)
               
             }
             .border(Color.label)
