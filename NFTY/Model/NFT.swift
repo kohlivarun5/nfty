@@ -309,6 +309,13 @@ let SAMPLE_CROWNS : [String] = [
   "SAMPLE_CROWN4"
 ]
 
+let SAMPLE_CYPHER : [String] = [
+  "SAMPLE_CYPHER1",
+  "SAMPLE_CYPHER2",
+  "SAMPLE_CYPHER3",
+  "SAMPLE_CYPHER4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
