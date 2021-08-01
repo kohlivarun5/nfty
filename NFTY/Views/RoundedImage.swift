@@ -94,7 +94,7 @@ struct RoundedImage: View {
                 .foregroundColor(.secondaryLabel)
             }
           }
-          .padding(.leading,10)
+          .padding(.leading)
           
           Spacer()
           SheetButton(content: {
@@ -112,7 +112,7 @@ struct RoundedImage: View {
               .ignoresSafeArea(edges:.bottom)
           })
           .padding(.leading,5)
-          .padding(.trailing,3)
+          .padding(.trailing,5)
           .padding([.top,.bottom],5)
           .background(RoundedCorners(color: .secondarySystemBackground, tl: 10, tr: 10, bl: 10, br: 10))
           .padding(.bottom,5)
