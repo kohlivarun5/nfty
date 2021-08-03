@@ -155,7 +155,7 @@ struct TokenTradeActions: View {
                )
                })
                */
-              Link(destination: URL(string:"touch-https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+              Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
                 HStack {
                   Spacer()
                   Text("Trade")
@@ -202,7 +202,7 @@ struct TokenTradeActions: View {
               })
  */
               
-              Link(destination: URL(string:"touch-https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+              Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
                 HStack {
                   Spacer()
                   Text("Sell")

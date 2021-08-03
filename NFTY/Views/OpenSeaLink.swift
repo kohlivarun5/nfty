@@ -21,7 +21,7 @@ struct OpenSeaLink: View {
     }.sheet(isPresented: $showSheet) {
       WebView(request: URLRequest(url:URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!))
       
-      Link(destination: URL(string:"touch-https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+      Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
         HStack(spacing:50) {
           Spacer()
           VStack {
