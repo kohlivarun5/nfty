@@ -179,7 +179,6 @@ struct TokenSellView: View {
       
       
     }
-    .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)

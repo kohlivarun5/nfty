@@ -56,7 +56,7 @@ class NftRecentTradesObject : ObservableObject {
       loadMore() {}
       return
     }
-    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
+    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -5)
     if index >= thresholdIndex {
       loadMore() {}
     }
@@ -146,7 +146,7 @@ class CompositeRecentTradesObject : ObservableObject {
       return
     }
     
-    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -20)
+    let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -5)
     if index >= thresholdIndex {
       loadMore() {}
     }

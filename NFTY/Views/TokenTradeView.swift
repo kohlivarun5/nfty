@@ -96,7 +96,6 @@ struct TokenTradeView: View {
       
       
     }
-    .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(

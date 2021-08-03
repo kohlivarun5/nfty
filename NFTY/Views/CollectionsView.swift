@@ -57,7 +57,6 @@ struct CollectionsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             .overlay(
               RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.label, lineWidth: 4))
-            .shadow(radius: 3)
             .padding()
             
             NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}
@@ -68,7 +67,7 @@ struct CollectionsView: View {
             self.action = collection.info.address
           }
         }
-      }.animation(.default)
+      }
     }
   }
 }

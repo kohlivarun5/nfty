@@ -139,10 +139,6 @@ struct TradeEventsList: View {
             }
           }
           .padding(5)
-          .animation(.default)
-          /* .onAppear {
-           self.events.getEvents(currentIndex:0);
-           } */
         }
       }
       

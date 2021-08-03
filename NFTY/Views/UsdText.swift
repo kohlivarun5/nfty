@@ -39,43 +39,25 @@ var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:nil)
 
 struct UsdText: View {
   
-  enum SpotState {
-    case loading
-    case localCurrency(Double)
-    case unknown
-  }
-  
-  @State private var spot : SpotState = .loading
+  @ObservedObject private var spot = EthSpot.get()
   
   let wei:BigUInt
   let fontWeight : Font.Weight?
   var body: some View {
-    switch(spot) {
-    case .loading:
-      ProgressView()
-        .onAppear {
-          switch(self.spot) {
-          case .loading:
-            EthSpot.get()
-              .done(on:.main) { spot in
-                switch(spot) {
-                case .none:
-                  self.spot = .unknown
-                case .some(let rate):
-                  self.spot = .localCurrency(rate)
-                }
-              }.catch { print ($0) }
-          case .localCurrency,.unknown:
-            break
-          }
+    ObservedPromiseView(
+      data: spot,
+      progress: { Text("") },
+      view: { spot in
+        switch(spot) {
+        case .none:
+          Text(EthString(wei: wei))
+            .fontWeight(fontWeight)
+        case .some(let rate):
+          Text(UsdString(wei: wei, rate:rate))
+            .fontWeight(fontWeight)
         }
-    case .localCurrency(let rate):
-      Text(UsdString(wei: wei, rate:rate))
-        .fontWeight(fontWeight)
-    case .unknown:
-      Text(EthString(wei: wei))
-        .fontWeight(fontWeight)
-    }
+      })
+      .animation(.default)
   }
 }
 

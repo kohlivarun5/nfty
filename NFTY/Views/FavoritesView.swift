@@ -127,7 +127,6 @@ struct FavoritesView: View {
                 }
               }
             }
-            .animation(.default)
           }
         }
       }

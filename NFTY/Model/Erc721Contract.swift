@@ -206,7 +206,15 @@ class IpfsCollectionContract : ContractInterface {
       let image : String
     }
     
-    func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
+    static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
+      return data
+        .flatMap { UIImage(data:$0) }
+        .flatMap { $0.jpegData(compressionQuality: 0.1) }
+        .flatMap { UIImage(data:$0) }
+        .map { Media.IpfsImage(image:$0) }
+    }
+    
+    func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
@@ -241,7 +249,7 @@ class IpfsCollectionContract : ContractInterface {
             }).resume()
           }
           
-        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Media.IpfsImage?> in
+        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
             
@@ -251,22 +259,14 @@ class IpfsCollectionContract : ContractInterface {
             
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
-              
-              DispatchQueue.global(qos:.userInteractive).async {
-                data.map {
-                  let image = UIImage(data:$0)!
-                  let data = image.jpegData(compressionQuality: 0.1)!
-                  seal.fulfill(Media.IpfsImage(data: data))
-                }
-              }
-              
+              seal.fulfill(data)
             }).resume()
           }
         }
     }
   }
   
-  private var imageCache : DiskStorage<BigUInt, Media.IpfsImage>
+  private var imageCache : DiskStorage<BigUInt,UIImage>
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -276,9 +276,9 @@ class IpfsCollectionContract : ContractInterface {
   var tradeActions: TokenTradeInterface?
   
   init(name:String,address:String) {
-    self.imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
+    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
-      transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))
+      transformer: TransformerFactory.forImage())
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
@@ -290,17 +290,28 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    switch(try? imageCache.object(forKey:tokenId)) {
-    case .some(let p):
-      return ObservablePromise(resolved: p)
-    case .none:
-      let p = ethContract.image(tokenId);
-      let observable = ObservablePromise(promise: p) { image in
-        image.flatMap {
-          try? self.imageCache.setObject($0, forKey: tokenId)
+    return ObservablePromise(promise: Promise { seal in
+      DispatchQueue.global(qos:.userInteractive).async {
+        switch(try? self.imageCache.object(forKey:tokenId)) {
+        case .some(let image):
+          seal.fulfill(Media.IpfsImage(image: image))
+        case .none:
+          self.ethContract.image(tokenId)
+            .done(on:DispatchQueue.global(qos: .userInteractive)) {
+              seal.fulfill(IpfsImageEthContract.imageOfData($0))
+            }
+            .catch {
+              print($0)
+              seal.fulfill(nil)
+            }
         }
       }
-      return observable
+    }) { image in
+      DispatchQueue.global(qos:.userInteractive).async {
+        image.flatMap {
+          try? self.imageCache.setObject($0.image, forKey: tokenId)
+        }
+      }
     }
   }
   

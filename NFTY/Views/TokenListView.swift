@@ -62,7 +62,6 @@ struct TokenListView: View {
         }.onAppear {
           nfts.loadMore {} // TODO
         }
-        .animation(.default)
       }
       .navigationBarTitle(title,displayMode: .inline)
       .navigationBarBackButtonHidden(true)

@@ -119,7 +119,6 @@ struct NftDetail: View {
         }
       }
     }
-    .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(

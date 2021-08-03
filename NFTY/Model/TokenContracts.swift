@@ -905,7 +905,7 @@ var BlocksFetcher = BlockFetcherImpl()
 
 
 class UserEthRate {
-  private var cache : Promise<Double?>? = nil
+  private var cache : ObservablePromise<Double?>? = nil
   
   struct SpotResponse : Decodable {
     struct SpotData : Decodable {
@@ -942,15 +942,13 @@ class UserEthRate {
     }
   }
   
-  func get() -> Promise<Double?> {
+  func get() -> ObservablePromise<Double?> {
     switch(self.cache) {
     case .some(let p):
       return p
     case .none:
-      let p = getLiveRate()
-      DispatchQueue.main.async {
-        self.cache = p
-      }
+      let p = ObservablePromise(promise: getLiveRate())
+      self.cache = p
       return p
     }
   }

@@ -116,9 +116,7 @@ struct TokenPriceLazy : View {
     ObservedPromiseView(
       data: status,
       progress: {
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-          .scaleEffect(anchor: .center)
+        Text(" ··· ")
           .padding([.leading,.trailing])
       }) {
       TokenPriceStatus(status:$0,color:color)
@@ -138,7 +136,7 @@ struct TokenPrice: View {
       case .lazy(let status):
         TokenPriceLazy(status: status,color:color)
       }
-    }.animation(.none)
+    }
   }
 }
 

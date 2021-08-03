@@ -135,6 +135,7 @@ struct NFTYApp: App {
             .accentColor(Color.orange)
         }
       }
+      .animation(.none)
       .accentColor(Color.orange)
       .environmentObject(userWallet)
     }

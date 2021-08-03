@@ -42,8 +42,8 @@ struct NftImageImpl: View {
             .padding()
             .blur(radius:20)
         }
+        .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 800, height: 800)))
         .diskCacheExpiration(.never)
-        .loadDiskFileSynchronously()
         .fade(duration: 0.001)
         .interpolation(.none)
         .resizable()
@@ -75,7 +75,7 @@ struct NftIpfsImageView: View {
         }
       },
       view: { ipfs in
-        switch(UIImage(data:ipfs!.data)) {
+        switch(ipfs?.image) {
         case .none:
           ZStack {
             Image(
@@ -210,7 +210,9 @@ struct NftImage: View {
           EmptyView()
         }
       }
-    }.background(themeColor)
+    }
+    .background(themeColor)
+    .animation(.default)
   }
 }
 

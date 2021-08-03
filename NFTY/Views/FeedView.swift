@@ -139,11 +139,8 @@ struct FeedView: View {
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .overlay(
                   RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 1))
-                .shadow(color:Color.primary,radius: 2)
-                
               }
               .padding()
-              .animation(.default)
             }
           }
         }
@@ -189,7 +186,7 @@ struct FeedView: View {
                 self.trades.getRecentTrades(currentIndex:index)
               }
             }.textCase(nil)
-          }.animation(.default)
+          }
         }.coordinateSpace(name: "RefreshControl")
       }
     }

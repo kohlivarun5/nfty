@@ -101,7 +101,7 @@ struct CollectionView: View {
             self.recentTrades.getRecentTrades(currentIndex:index);
           }
         }
-      }.animation(.default)
+      }
     }
     .toolbar {
       switch(self.info.rarityRanking,userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {

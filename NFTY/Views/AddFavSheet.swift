@@ -82,7 +82,6 @@ struct AddFavSheet: View {
           .onChange(of: collectionAddress) { tag in self.onChange() }
           Spacer()
         }
-        .animation(.none)
         .padding(.bottom,5)
         
         TextField("Token",text:$tokenId)
@@ -109,7 +108,6 @@ struct AddFavSheet: View {
                      size:.medium)
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .shadow(color:info.themeColor,radius: 2)
             VStack {
               HStack {
                 VStack {
@@ -159,7 +157,7 @@ struct AddFavSheet: View {
         
       }
       .padding()
-      .animation(.easeIn)
+     
     }
   }
 }
