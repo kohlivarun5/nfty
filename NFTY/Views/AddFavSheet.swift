@@ -109,7 +109,6 @@ struct AddFavSheet: View {
                      size:.medium)
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .shadow(color:info.themeColor,radius: 2)
             VStack {
               HStack {
                 VStack {

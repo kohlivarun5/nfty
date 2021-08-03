@@ -13,15 +13,10 @@ let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 let autoGlyphsContract = AutoglyphsContract()
-let baycContract = BAYC_Contract()
+let baycContract = IpfsCollectionContract(name:"BAYC",address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
 let fameLadyContract = FameLadySquad_Contract()
-let CRHDL_Contract = IpfsCollectionContract(
-  name: "CryptoHodlers",
-  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
-
-let CROWNS_Contract = IpfsCollectionContract(
-  name: "Crowns",
-  address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
+let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers",address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
+let CROWNS_Contract = IpfsCollectionContract(name: "Crowns",address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
 
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",

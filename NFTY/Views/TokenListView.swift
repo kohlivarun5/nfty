@@ -56,13 +56,14 @@ struct TokenListView: View {
               .hidden()
             }
             .onAppear {
-              self.nfts.next(currentIndex: index)
+              DispatchQueue.global(qos:.userInitiated).async {
+                self.nfts.next(currentIndex: index)
+              }
             }
           }
         }.onAppear {
           nfts.loadMore {} // TODO
         }
-        .animation(.default)
       }
       .navigationBarTitle(title,displayMode: .inline)
       .navigationBarBackButtonHidden(true)

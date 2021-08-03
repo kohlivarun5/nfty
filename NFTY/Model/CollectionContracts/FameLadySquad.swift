@@ -16,9 +16,9 @@ import UIKit
 
 class FameLadySquad_Contract : ContractInterface {
   
-  private var imageCache = try! DiskStorage<BigUInt, Media.IpfsImage>(
+  private var imageCache = try! DiskStorage<BigUInt, UIImage>(
     config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage.self))
+    transformer:TransformerFactory.forImage())
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
@@ -33,7 +33,15 @@ class FameLadySquad_Contract : ContractInterface {
     // till 4443 inclusive, it is QmRRRcbfE3fTqBLTmmYMxENaNmAffv7ihJnwFkAimBP4Ac
     // after it is QmTwNwAerqdP3LXcZnCCPyqQzTyB26R5xbsqEy5Vh3h6Dw
     
-    func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
+    static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
+      return data
+        .flatMap { UIImage(data:$0) }
+        .flatMap { $0.jpegData(compressionQuality: 0.1) }
+        .flatMap { UIImage(data:$0) }
+        .map { Media.IpfsImage(image:$0) }
+    }
+    
+    func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return Promise { seal in
         
         let url = tokenId < 4444
@@ -47,36 +55,37 @@ class FameLadySquad_Contract : ContractInterface {
           // print(data,response,error)
           
           // Compress these images on download, as they cause jitter in UI scrolling
-          
-          DispatchQueue.global(qos:.userInteractive).async {
-            data.map {
-              let image = UIImage(data:$0)!
-              let data = image.jpegData(compressionQuality: 0.1)!
-              seal.fulfill(Media.IpfsImage(data: data))
-            }
-          }
+          seal.fulfill(data)
         }).resume()
       }
     }
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    switch(try? imageCache.object(forKey:tokenId)) {
-    case .some(let p):
-      return ObservablePromise(resolved: p)
-    case .none:
-      let p = ethContract.image(tokenId);
-      let observable = ObservablePromise(promise: p) { image in
-        DispatchQueue.global(qos:.userInteractive).async {
-          image.flatMap {
-            try? self.imageCache.setObject($0, forKey: tokenId)
-          }
+    return ObservablePromise(promise: Promise { seal in
+      DispatchQueue.global(qos:.userInteractive).async {
+        switch(try? self.imageCache.object(forKey:tokenId)) {
+        case .some(let image):
+          seal.fulfill(Media.IpfsImage(image: image))
+        case .none:
+          self.ethContract.image(tokenId)
+            .done(on:DispatchQueue.global(qos: .userInteractive)) {
+              seal.fulfill(IpfsImageEthContract.imageOfData($0))
+            }
+            .catch {
+              print($0)
+              seal.fulfill(nil)
+            }
         }
       }
-      return observable
+    }) { image in
+      DispatchQueue.global(qos:.userInteractive).async {
+        image.flatMap {
+          try? self.imageCache.setObject($0.image, forKey: tokenId)
+        }
+      }
     }
   }
-  
   
   let ethContract = IpfsImageEthContract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
   

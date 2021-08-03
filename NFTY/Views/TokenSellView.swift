@@ -137,9 +137,9 @@ struct TokenSellView: View {
               }
             }
         case (.localCurrency(let rate),.some(let price)):
-          Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+          Text(UsdString(wei:price,rate:rate))
         case (.unknown,.some(let price)):
-          Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+          Text(EthString(wei:price))
         case (_,.none):
           Text(" ")
         }
@@ -179,7 +179,6 @@ struct TokenSellView: View {
       
       
     }
-    .animation(.default)
     .navigationBarTitle("",displayMode:.large)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)

@@ -129,8 +129,7 @@ struct RoundedImage: View {
     .frame(width:frameWidth(width))
     .clipShape(RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous))
     .overlay(
-      RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.gray, lineWidth: 1))
-    .shadow(radius: 1)
+      RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.gray, lineWidth: 2))
   }
 }
 

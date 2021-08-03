@@ -18,6 +18,8 @@ struct CollectionView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
+  @EnvironmentObject var userWallet: UserWallet
+  
   private let collection : Collection
   private let info : CollectionInfo
   
@@ -96,16 +98,16 @@ struct CollectionView: View {
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
           }.onAppear {
-            self.recentTrades.getRecentTrades(currentIndex:index);
+            DispatchQueue.global(qos:.userInitiated).async {
+              self.recentTrades.getRecentTrades(currentIndex:index);
+            }
           }
         }
-      }.animation(.default)
+      }
     }
     .toolbar {
-      switch(self.info.rarityRanking) {
-      // UNCOMMENT TO SHOW RANKING
-      /*
-       case .some(let ranked):
+      switch(self.info.rarityRanking,userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
+       case (.some(let ranked),true):
         NavigationLink(
           destination:
             TokenListView(
@@ -113,15 +115,21 @@ struct CollectionView: View {
               collection: self.collection,
               tokenIds:ranked.sortedTokenIds
             )
-        ) { Image(systemName: "list.number") }
-       case .none:*/ default:
+        ) {
+          Image(systemName: "list.number")
+            .font(.title3)
+            .foregroundColor(.orange)
+            .padding(10)
+        }
+      default:
         Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
       }
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
-      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }))
+      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
+    )
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil)
     }

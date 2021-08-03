@@ -90,8 +90,8 @@ enum Media {
     }
   }
   
-  struct IpfsImage : Codable {
-    let data : Data
+  struct IpfsImage {
+    let image : UIImage // let data : Data
   }
   
   struct IpfsImageLazy {

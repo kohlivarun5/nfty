@@ -138,12 +138,9 @@ struct FeedView: View {
                 .frame(width:250)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 1))
-                .shadow(color:Color.primary,radius: 2)
-                
+                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 2))
               }
               .padding()
-              .animation(.default)
             }
           }
         }
@@ -186,10 +183,12 @@ struct FeedView: View {
                 ),tag:String(nft.nft.tokenId),selection:$action) {}
                 .hidden()
               }.onAppear {
-                self.trades.getRecentTrades(currentIndex:index)
+                DispatchQueue.global(qos:.userInitiated).async {
+                  self.trades.getRecentTrades(currentIndex:index)
+                }
               }
             }.textCase(nil)
-          }.animation(.default)
+          }
         }.coordinateSpace(name: "RefreshControl")
       }
     }

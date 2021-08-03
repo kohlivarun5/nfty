@@ -76,15 +76,23 @@ class TxFetcher {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      switch (try? txCache.object(forKey:txHash)) {
-      case .some(let p):
-        return Promise.value(p)
-      case .none:
-        let p = eventOfTx(transactionHash: txHash)
-        p.done {
-          $0.flatMap { try? self.txCache.setObject($0, forKey: txHash) }
-        }.catch { print($0) }
-        return p
+      return Promise { seal in
+        DispatchQueue.global(qos:.userInteractive).async {
+          switch (try? self.txCache.object(forKey:txHash)) {
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
+            let p = self.eventOfTx(transactionHash: txHash)
+            p.done(on:DispatchQueue.global(qos:.userInteractive)) {
+              $0.flatMap { try? self.txCache.setObject($0, forKey: txHash) }
+              seal.fulfill($0)
+            }
+            .catch {
+              print($0)
+              seal.fulfill(nil)
+            }
+          }
+        }
       }
     }
   }
@@ -888,24 +896,33 @@ class BlockFetcherImpl {
     transformer: TransformerFactory.forCodable(ofType: EthereumBlockObject.self))
   
   func getBlock(blockNumber:EthereumQuantityTag) -> ObservablePromise<EthereumBlockObject?> {
-    switch(try? blocksCache.object(forKey:blockNumber)) {
-    case .some(let p):
-      return ObservablePromise(resolved: p)
-    case .none:
-      let p = web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
-      return ObservablePromise(promise: p) { block in
-        block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
+    return ObservablePromise(
+      promise: Promise { seal in
+        DispatchQueue.global(qos:.userInteractive).async {
+          switch(try? self.blocksCache.object(forKey:blockNumber)) {
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
+            web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) { seal.fulfill($0) }
+              .catch {
+                print($0)
+                seal.fulfill(nil)
+              }
+          }
+        }
       }
+    ) { block in
+      block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
     }
   }
-  
 }
 
 var BlocksFetcher = BlockFetcherImpl()
 
 
 class UserEthRate {
-  private var cache : Promise<Double?>? = nil
+  private var cache : ObservablePromise<Double?>? = nil
   
   struct SpotResponse : Decodable {
     struct SpotData : Decodable {
@@ -942,15 +959,13 @@ class UserEthRate {
     }
   }
   
-  func get() -> Promise<Double?> {
+  func get() -> ObservablePromise<Double?> {
     switch(self.cache) {
     case .some(let p):
       return p
     case .none:
-      let p = getLiveRate()
-      DispatchQueue.main.async {
-        self.cache = p
-      }
+      let p = ObservablePromise(promise: getLiveRate())
+      self.cache = p
       return p
     }
   }

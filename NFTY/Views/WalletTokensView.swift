@@ -121,7 +121,6 @@ struct WalletTokensView: View {
                 }
               }
             }
-            .animation(.default)
           }
         }
       }

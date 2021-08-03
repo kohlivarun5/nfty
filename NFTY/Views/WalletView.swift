@@ -13,21 +13,14 @@ import Web3
 struct WalletView: View {
   
   @State private var showAddressSheet = false
-  @State private var address : EthereumAddress? = nil
+  @EnvironmentObject var userWallet: UserWallet
   
   var body: some View {
     
     VStack {
-      switch (address) {
+      switch (userWallet.walletAddress) {
       case .none:
-        ConnectWalletSheet(address: $address)
-          
-          .onAppear {
-            if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
-                                                                    .walletAddress.rawValue) {
-              self.address = try? EthereumAddress(hex:addr,eip55: false)
-            }
-          }
+        ConnectWalletSheet()
       case .some(let address):
         WalletTokensView(tokens: getOwnerTokens(address))
       }
@@ -45,7 +38,7 @@ struct WalletView: View {
         }
     )
     .sheet(isPresented: $showAddressSheet) {
-      ConnectWalletSheet(address:$address)
+      ConnectWalletSheet()
     }
   }
 }

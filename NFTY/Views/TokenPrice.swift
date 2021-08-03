@@ -52,6 +52,7 @@ struct TokenPriceKnown : View {
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
         .padding([.top,.bottom],info.price == nil ? 2 : 0)
+        .padding([.leading,.trailing],2)
     }
   }
 }
@@ -116,9 +117,7 @@ struct TokenPriceLazy : View {
     ObservedPromiseView(
       data: status,
       progress: {
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-          .scaleEffect(anchor: .center)
+        Text(" ··· ")
           .padding([.leading,.trailing])
       }) {
       TokenPriceStatus(status:$0,color:color)
@@ -138,7 +137,7 @@ struct TokenPrice: View {
       case .lazy(let status):
         TokenPriceLazy(status: status,color:color)
       }
-    }.animation(.none)
+    }
   }
 }
 
