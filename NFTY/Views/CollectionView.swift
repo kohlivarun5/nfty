@@ -98,7 +98,9 @@ struct CollectionView: View {
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
           }.onAppear {
-            self.recentTrades.getRecentTrades(currentIndex:index);
+            DispatchQueue.global(qos:.userInitiated).async {
+              self.recentTrades.getRecentTrades(currentIndex:index);
+            }
           }
         }
       }

@@ -56,7 +56,9 @@ struct TokenListView: View {
               .hidden()
             }
             .onAppear {
-              self.nfts.next(currentIndex: index)
+              DispatchQueue.global(qos:.userInitiated).async {
+                self.nfts.next(currentIndex: index)
+              }
             }
           }
         }.onAppear {

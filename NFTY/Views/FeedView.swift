@@ -183,7 +183,9 @@ struct FeedView: View {
                 ),tag:String(nft.nft.tokenId),selection:$action) {}
                 .hidden()
               }.onAppear {
-                self.trades.getRecentTrades(currentIndex:index)
+                DispatchQueue.global(qos:.userInitiated).async {
+                  self.trades.getRecentTrades(currentIndex:index)
+                }
               }
             }.textCase(nil)
           }
