@@ -93,6 +93,7 @@ struct TokenTradeView: View {
           RoundedCorners(
             color: .secondarySystemBackground,
             tl: 20, tr: 20, bl: 0, br: 0))
+        .animation(.default)
       
       
     }

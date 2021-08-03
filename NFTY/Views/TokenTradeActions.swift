@@ -95,6 +95,7 @@ struct TokenTradeActions: View {
             VStack(alignment: .center) {
               Text("Bid")
                 .italic()
+                .foregroundColor(.secondary)
                 .padding(.bottom,1)
               UsdText(wei: bidPrice,fontWeight:.semibold)
             }
@@ -106,6 +107,7 @@ struct TokenTradeActions: View {
             VStack(alignment: .center) {
               Text("Ask")
                 .italic()
+                .foregroundColor(.secondary)
                 .padding(.bottom,1)
               UsdText(wei: askPrice,fontWeight:.semibold)
             }
