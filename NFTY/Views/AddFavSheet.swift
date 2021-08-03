@@ -82,6 +82,7 @@ struct AddFavSheet: View {
           .onChange(of: collectionAddress) { tag in self.onChange() }
           Spacer()
         }
+        .animation(.none)
         .padding(.bottom,5)
         
         TextField("Token",text:$tokenId)
@@ -157,7 +158,7 @@ struct AddFavSheet: View {
         
       }
       .padding()
-     
+      .animation(.easeIn)
     }
   }
 }
