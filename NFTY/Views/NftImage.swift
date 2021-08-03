@@ -42,7 +42,6 @@ struct NftImageImpl: View {
             .padding()
             .blur(radius:20)
         }
-        .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 800, height: 800)))
         .diskCacheExpiration(.never)
         .fade(duration: 0.001)
         .interpolation(.none)
