@@ -52,6 +52,7 @@ struct TokenPriceKnown : View {
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
         .padding([.top,.bottom],info.price == nil ? 2 : 0)
+        .padding([.leading,.trailing],2)
     }
   }
 }
