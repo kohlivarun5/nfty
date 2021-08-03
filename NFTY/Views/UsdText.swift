@@ -27,7 +27,7 @@ var currencyFormatterWholeNumbers = formatter(symbol:nil,maximumFractionDigits:0
 
 func UsdString(wei:BigUInt,rate:Double) -> String {
   let amount = ((Double(wei) / 1e18) * rate)
-  let formatter = amount >= 1000 ? currencyFormatterWholeNumbers : currencyFormatter
+  let formatter = amount >= 10000 ? currencyFormatterWholeNumbers : currencyFormatter
   return formatter.string(for:amount)!
 }
 
