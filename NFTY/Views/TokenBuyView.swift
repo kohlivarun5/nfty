@@ -150,9 +150,9 @@ struct TokenBuyView: View {
                 case .loading:
                   ProgressView()
                 case .localCurrency(let rate):
-                  Text("\(currencyFormatter.string(for:((Double(currentBidPriceInWei) / 1e18) * rate))!) (\(Text(ethFormatter.string(for:(Double(currentBidPriceInWei) / 1e18))!)))")
+                  Text("\(UsdString(wei:currentBidPriceInWei,rate:rate)) (\(Text(EthString(wei:currentBidPriceInWei))))")
                 case .unknown:
-                  Text(ethFormatter.string(for:(Double(currentBidPriceInWei) / 1e18))!)
+                  Text(EthString(wei:currentBidPriceInWei))
                 }
               }
             }
@@ -174,10 +174,10 @@ struct TokenBuyView: View {
               case (.loading,_):
                 ProgressView()
               case (.localCurrency(let rate),.some(let price)):
-                Text(currencyFormatter.string(for:((Double(price) / 1e18) * rate))!)
+                Text(UsdString(wei:price,rate:rate))
                   .fontWeight(.semibold)
               case (.unknown,.some(let price)):
-                Text(ethFormatter.string(for:(Double(price) / 1e18))!)
+                Text(EthString(wei:price))
                   .fontWeight(.semibold)
               case (_,.none):
                 Text(" ")
@@ -261,10 +261,10 @@ struct TokenBuyView: View {
                       }
                     }
                 case .localCurrency(let rate):
-                  Text(currencyFormatter.string(for:((Double(askPriceInWei) / 1e18) * rate))!)
+                  Text(UsdString(wei:askPriceInWei,rate:rate))
                     .fontWeight(.semibold)
                 case .unknown:
-                  Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
+                  Text(EthString(wei:askPriceInWei))
                     .fontWeight(.semibold)
                 }
               }

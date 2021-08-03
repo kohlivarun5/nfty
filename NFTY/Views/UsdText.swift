@@ -8,22 +8,34 @@
 import SwiftUI
 import BigInt
 
-func formatter(symbol:String?) -> Formatter {
+func formatter(symbol:String?,maximumFractionDigits:Int?) -> Formatter {
   let currencyFormatter = NumberFormatter()
   currencyFormatter.usesGroupingSeparator = true
   currencyFormatter.numberStyle = .currency
   // localize to your grouping and decimal separator
   currencyFormatter.locale = Locale.current
-  switch(symbol) {
-  case .some(let sym):
-    currencyFormatter.currencySymbol = sym
-  case .none:
-    break
+  _ = maximumFractionDigits.map {
+    currencyFormatter.maximumFractionDigits = $0
   }
+  
+  _ = symbol.map { currencyFormatter.currencySymbol = $0 }
+  
   return currencyFormatter
 }
-var currencyFormatter = formatter(symbol:nil)
-var ethFormatter = formatter(symbol:"Ξ")
+var currencyFormatter = formatter(symbol:nil,maximumFractionDigits:nil)
+var currencyFormatterWholeNumbers = formatter(symbol:nil,maximumFractionDigits:0)
+
+func UsdString(wei:BigUInt,rate:Double) -> String {
+  let amount = ((Double(wei) / 1e18) * rate)
+  let formatter = amount >= 1000 ? currencyFormatterWholeNumbers : currencyFormatter
+  return formatter.string(for:amount)!
+}
+
+func EthString(wei:BigUInt) -> String {
+  return ethFormatter.string(for:(Double(wei) / 1e18))!
+}
+
+var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:nil)
 
 struct UsdText: View {
   
@@ -58,10 +70,10 @@ struct UsdText: View {
           }
         }
     case .localCurrency(let rate):
-      Text(currencyFormatter.string(for:((Double(wei) / 1e18) * rate))!)
+      Text(UsdString(wei: wei, rate:rate))
         .fontWeight(fontWeight)
     case .unknown:
-      Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+      Text(EthString(wei: wei))
         .fontWeight(fontWeight)
     }
   }
