@@ -190,7 +190,7 @@ class CryptoPunksContract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return punksBoughtLogs.updateLatest(onDone:onDone) { log in
+    return punksBoughtLogs.updateLatest(onDone:onDone) { index,log in
       
       let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
       let tokenId = UInt(res["punkIndex"] as! BigUInt)

@@ -124,16 +124,21 @@ class FameLadySquad_Contract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.updateLatest(onDone:onDone) { log in
+    return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
+      
+      let image = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
+      if (index < 2) {
+        image.image.load()
+      }
       
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+          media:.ipfsImage(image)),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy(
           ObservablePromise(

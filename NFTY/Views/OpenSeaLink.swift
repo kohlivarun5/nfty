@@ -8,7 +8,20 @@
 import SwiftUI
 
 struct OpenSeaLink: View {
+  @StateObject var userSettings = UserSettings()
   @State private var showSheet = false
+  
+  static func url(nft:NFT,dappBrowser:UserSettings.DappBrowser?) -> URL {
+    let path = "opensea.io/assets/\(nft.address)/\(nft.tokenId)"
+    switch(dappBrowser) {
+    case .none,.some(.Native):
+      return URL(string:"https://\(path)")!
+    case .some(.Metamask):
+      return URL(string:"https://metamask.app.link/dapp/\(path)")!
+    case .some(.Opera):
+      return URL(string:"touch-https://\(path)")!
+    }
+  }
   
   let nft : NFT
   var body: some View {
@@ -21,7 +34,7 @@ struct OpenSeaLink: View {
     }.sheet(isPresented: $showSheet) {
       WebView(request: URLRequest(url:URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!))
       
-      Link(destination: URL(string:"https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+      Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
         HStack(spacing:50) {
           Spacer()
           VStack {

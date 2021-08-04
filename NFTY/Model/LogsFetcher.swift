@@ -61,7 +61,7 @@ class LogsFetcher {
     }
   }
   
-  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (EthereumLogObject) -> Void) {
+  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (Int,EthereumLogObject) -> Void) {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
@@ -77,7 +77,7 @@ class LogsFetcher {
       if case let logs? = result.result {
         logs.indices.forEach { index in
           let log = logs[index];
-          response(log)
+          response(index,log)
           self.updateMostRecent(log.blockNumber)
         }
       } else {
