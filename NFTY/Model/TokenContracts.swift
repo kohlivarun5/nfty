@@ -292,7 +292,7 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return auctionSuccessfulFetcher.updateLatest(onDone:onDone) { log in
+    return auctionSuccessfulFetcher.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
       response(NFTWithPrice(
@@ -548,7 +548,7 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return transfer.updateLatest(onDone:onDone) { log in
+    return transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       response(NFTWithPrice(
@@ -783,7 +783,7 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.updateLatest(onDone:onDone) { log in
+    return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
