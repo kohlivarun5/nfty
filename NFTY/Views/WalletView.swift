@@ -30,7 +30,7 @@ struct WalletView: View {
         Button(action: {
           self.showAddressSheet = true
         }) {
-          Image(systemName:"at.badge.plus")
+          Image(systemName:"gearshape")
             .renderingMode(.original)
             .accentColor(.orange)
             .font(.title3)
