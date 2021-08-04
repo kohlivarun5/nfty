@@ -19,6 +19,8 @@ struct TokenTradeActions: View {
   let size : NftImage.Size
   let rarityRank : RarityRanking?
   
+  @StateObject var userSettings = UserSettings()
+  
   @State private var walletAddress : EthereumAddress? = nil
   
   @State private var tradeActions : TradeActionInfo? = nil
@@ -155,7 +157,7 @@ struct TokenTradeActions: View {
                )
                })
                */
-              Link(destination: URL(string:"touch-https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+              Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
                   Text("Trade")
@@ -202,7 +204,7 @@ struct TokenTradeActions: View {
               })
  */
               
-              Link(destination: URL(string:"touch-https://opensea.io/assets/\(nft.address)/\(nft.tokenId)")!) {
+              Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
                   Text("Sell")

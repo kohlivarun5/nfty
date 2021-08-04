@@ -12,7 +12,7 @@ import Web3
 
 struct WalletView: View {
   
-  @State private var showAddressSheet = false
+  @State private var showSettings = false
   @EnvironmentObject var userWallet: UserWallet
   
   var body: some View {
@@ -28,17 +28,16 @@ struct WalletView: View {
     .navigationBarItems(
       trailing:
         Button(action: {
-          self.showAddressSheet = true
+          self.showSettings = true
         }) {
           Image(systemName:"gearshape")
-            .renderingMode(.original)
             .accentColor(.orange)
             .font(.title3)
             .padding(10)
         }
     )
-    .sheet(isPresented: $showAddressSheet) {
-      ConnectWalletSheet()
+    .sheet(isPresented: $showSettings) {
+      UserSettingsView()
     }
   }
 }

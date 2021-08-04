@@ -88,6 +88,8 @@
 		4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */; };
 		4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */; };
 		4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1D26B7628700102174 /* UserWalletModel.swift */; };
+		4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */; };
+		4FAA1E2226BA26E900102174 /* UserSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */; };
 		4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
@@ -217,6 +219,8 @@
 		4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_nearestTokens.json; sourceTree = "<group>"; };
 		4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_rarityRanks.json; sourceTree = "<group>"; };
 		4FAA1E1D26B7628700102174 /* UserWalletModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserWalletModel.swift; sourceTree = "<group>"; };
+		4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
+		4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsModel.swift; sourceTree = "<group>"; };
 		4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunks.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
@@ -315,6 +319,7 @@
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4F6AC07C26AD17B0000A7539 /* WalletConnectModel.swift */,
+				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -459,6 +464,7 @@
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
+				4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -756,6 +762,8 @@
 				4F6AC08626AE1C8B000A7539 /* TokenBuyView.swift in Sources */,
 				4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
+				4FAA1E2226BA26E900102174 /* UserSettingsModel.swift in Sources */,
+				4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
