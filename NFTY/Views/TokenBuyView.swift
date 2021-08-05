@@ -19,6 +19,7 @@ struct TokenBuyView: View {
   let size : NftImage.Size
   let rarityRank : RarityRanking?
   let tradeActions : TradeActionInfo
+  let actions : TradeActionsInterface
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -316,7 +317,8 @@ struct TokenBuyView_Previews: PreviewProvider {
       tradeActions: TradeActionInfo(
         tradeActions: SampleCollection.data.contract.tradeActions!,
         bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId)
-        )
+        ),
+      actions:SampleCollection.data.contract.tradeActions!.actions!
     )
   }
 }

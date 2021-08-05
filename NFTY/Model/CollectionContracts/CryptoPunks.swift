@@ -95,11 +95,37 @@ class CryptoPunksContract : ContractInterface {
         }
     }
     
+    func enterBidForPunk(tokenId: BigUInt,wei:BigUInt,from:EthereumAddress) -> EthereumTransaction {
+      // function enterBidForPunk(uint punkIndex) payable {
+      
+      let inputs = [SolidityFunctionParameter(name: "punkIndex", type: .uint256)]
+      let method = SolidityPayableFunction(name: "enterBidForPunk", inputs: inputs, outputs: [], handler: self)
+      
+      return method.invoke(tokenId).createTransaction(
+        nonce: nil,
+        from: from,
+        value:EthereumQuantity(quantity: wei),
+        gas: 21000,
+        gasPrice: nil)!
+    }
   }
+  
   private var ethContract = EthContract()
   
-  struct TradeActions : TokenTradeInterface {
-    var supportsTrading : Bool = true
+  struct TradeActions : TradeActionsInterface {
+    let ethContract : EthContract
+    func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+      return wallet.sendTransaction(tx:
+                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+    }
+  }
+  
+  struct TradeInterface : TokenTradeInterface {
+    
+    var actions: TradeActionsInterface? {
+      return TradeActions(ethContract: ethContract)
+    }
+    
     let ethContract : EthContract
     
     func getBidAsk(_ tokenId: UInt) -> Promise<BidAsk> {
@@ -122,7 +148,7 @@ class CryptoPunksContract : ContractInterface {
   init () {
     initFromBlock = (UserDefaults.standard.string(forKey: "\(contractAddressHex).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     punksBoughtLogs = LogsFetcher(event:PunkBought,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
-    tradeActions = TradeActions(ethContract:ethContract)
+    tradeActions = TradeInterface(ethContract:ethContract)
   }
   
   private func imageUrl(_ tokenId:UInt) -> URL? {
