@@ -9,6 +9,7 @@ import Foundation
 import Web3
 import WalletConnectSwift
 import PromiseKit
+import SwiftUI
 
 class UserWallet: ObservableObject {
   @Published var walletAddress : EthereumAddress?
@@ -106,6 +107,8 @@ class UserWallet: ObservableObject {
   }
   
   struct WalletConnectProvider : WalletProvider {
+    @Environment(\.openURL) var openURL
+    
     let account : EthereumAddress
     let client : Client
     let session : Session
@@ -123,8 +126,8 @@ class UserWallet: ObservableObject {
         nonce: tx.nonce?.hex()
       )
       print(transaction)
-      
-      return Promise { seal in
+      // try? client.reconnect(to: session)
+      let p = Promise<EthereumTransactionReceiptObject> { seal in
         try? client.eth_sendTransaction(
           url: session.url,
           transaction: transaction)
@@ -134,6 +137,17 @@ class UserWallet: ObservableObject {
           //seal.fulfill(Ethere
         }
       }
+      
+      let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
+      let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+      print("trust://wc?uri=\(uri)")
+      let url = URL(string:"trust://wc?uri=\(uri)")!
+      print(url)
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+        openURL(url)
+      }
+      
+      return p
     }
   }
   
@@ -143,6 +157,7 @@ class UserWallet: ObservableObject {
       walletConnectSession.map { session in
         
         let client = Client(delegate: self, dAppInfo: session.dAppInfo)
+        //try? client.reconnect(to: session)
         
         return WalletConnectProvider(
           account: account,

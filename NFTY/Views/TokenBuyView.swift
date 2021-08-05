@@ -53,6 +53,8 @@ struct TokenBuyView: View {
     userWallet.walletProvider().map { wallet in
       bidPriceInWei.map {
         actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:wallet)
+          .done { print ($0) }
+          .catch { print($0) }
       }
     }
     
