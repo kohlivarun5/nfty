@@ -115,6 +115,7 @@ class CryptoPunksContract : ContractInterface {
   struct TradeActions : TradeActionsInterface {
     let ethContract : EthContract
     func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+      print("submitting")
       return wallet.sendTransaction(tx:
                                       ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
     }

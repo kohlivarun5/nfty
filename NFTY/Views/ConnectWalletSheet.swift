@@ -23,7 +23,6 @@ struct ConnectWalletSheet: View {
   }
   
   @State var connection : ConnectionState = .disconnected
-  @State var walletConnect: WalletConnect?
   
   var body: some View {
     VStack {
@@ -31,10 +30,10 @@ struct ConnectWalletSheet: View {
       
       VStack(spacing:20) {
         
-        switch(walletConnect) {
+        switch(userWallet.walletConnectSession) {
         case .none:
           ProgressView()
-        case .some(let walletConnect):
+        case .some(let session):
           switch(connection) {
           case .connecting:
             VStack {
@@ -46,67 +45,15 @@ struct ConnectWalletSheet: View {
                 .foregroundColor(.secondary)
             }
           case .failed,.disconnected,.connected:
-            switch(walletConnect.session?.walletInfo?.peerMeta.name) {
-            case .none,.some:
-              EmptyView()
-            /*
-              Text("Connect Wallet")
-                .font(.title2)
-                .fontWeight(.bold)
-            
-            case .some(let name):
-              VStack {
-                Text("Currently connected using:")
-                  .fontWeight(.bold).font(.title2)
-                Text(name)
-                  .fontWeight(.bold).font(.title2)
-              }
-            */
-            }
-            
             HStack(spacing:30) {
               Spacer()
               
               HStack {
-                /*
                 Button(action:{
                   UIImpactFeedbackGenerator(style: .light)
                     .impactOccurred()
                   
-                  let url = try! walletConnect.connectToWallet(link:"metamask:")
-                  // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-                    print("Launching=\(url)")
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                  }
-                  self.connection = .connecting
-                  
-                }) {
-                  VStack {
-                    Image("Metamask")
-                      .resizable()
-                      .frame(width: 60,height:60)
-                    
-                    Text("Connect using MetaMask")
-                      .font(.caption)
-                      .fontWeight(.bold)
-                      .multilineTextAlignment(.center)
-                      .foregroundColor(Color.orange)
-                  }
-                  .frame(minWidth: 0, maxWidth: .infinity)
-                  .padding()
-                  .border(Color.orange)
-                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                  .overlay(
-                    RoundedRectangle(cornerRadius:20, style: .continuous)
-                      .stroke(Color.orange, lineWidth: 1))
-                }
-                */
-                Button(action:{
-                  UIImpactFeedbackGenerator(style: .light)
-                    .impactOccurred()
-                  
-                  let url = try! walletConnect.connectToWallet(link:"trust:")
+                  let url = try! userWallet.connectToWallet(link:"trust:")
                   // we need a delay so that WalletConnectClient can send handshake request
                   DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
                     print("Launching=\(url)")
@@ -214,35 +161,6 @@ struct ConnectWalletSheet: View {
       
       Spacer()
     }
-    .onAppear {
-      self.walletConnect = WalletConnect(delegate:self)
-    }
-  }
-}
-
-
-extension ConnectWalletSheet: WalletConnectDelegate {
-  func failedToConnect() {
-    print("failedToConnect")
-    self.connection = ConnectionState.failed
-  }
-  
-  func didConnect(account:EthereumAddress?) {
-    print("didConnect")
-    self.connection = ConnectionState.connected
-    switch(account) {
-    case .none:
-      self.badAddressError = "Imported bad address"
-    case .some(let address):
-      self.badAddressError = ""
-      self.userWallet.saveWalletAddress(address:address)
-      presentationMode.wrappedValue.dismiss()
-    }
-  }
-  
-  func didDisconnect() {
-    print("didDisconnect")
-    self.connection = ConnectionState.disconnected
   }
 }
 

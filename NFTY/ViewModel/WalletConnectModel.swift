@@ -8,34 +8,24 @@
 import Foundation
 import Web3
 import WalletConnectSwift
-
+/*
 protocol WalletConnectDelegate {
   func failedToConnect()
   func didConnect(account:EthereumAddress?)
   func didDisconnect()
 }
 
-extension WCURL {
-  var fullyPercentEncodedStr: String { 
-    absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
-  }
-}
-
 class WalletConnect {
-  var client: Client!
-  var session: Session!
+  var userWallet: UserWallet
   var delegate: WalletConnectDelegate
+  
+  var client = Client!
   
   let sessionKey = "\(Bundle.main.bundleIdentifier!).WalletConnect"
   
-  init(delegate: WalletConnectDelegate) {
+  init(userWallet:UserWallet,delegate: WalletConnectDelegate) {
     self.delegate = delegate
-    
-    if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data,
-       let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
-      self.client = Client(delegate: self, dAppInfo: session.dAppInfo)
-      self.session = session
-    }
+    self.userWallet = userWallet
   }
   
   func connect() -> WCURL {
@@ -82,6 +72,7 @@ class WalletConnect {
     return URL(string: urlStr)!
   }
 
+  /*
   func reconnectIfNeeded() {
     if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data,
        let session = try? JSONDecoder().decode(Session.self, from: oldSessionObject) {
@@ -89,6 +80,7 @@ class WalletConnect {
       try? client.reconnect(to: session)
     }
   }
+ */
   
   // https://developer.apple.com/documentation/security/1399291-secrandomcopybytes
   private func randomKey() throws -> String {
@@ -118,7 +110,8 @@ extension WalletConnect: ClientDelegate {
   
   func client(_ client: Client, didConnect session: Session) {
     print("didConnect session=\(session)")
-    self.session = session
+    self.userWallet.saveWalletConnectSession(session)
+      
     let sessionData = try! JSONEncoder().encode(session)
     NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
     delegate.didConnect(
@@ -138,3 +131,5 @@ extension WalletConnect: ClientDelegate {
     // do nothing
   }
 }
+
+ */
