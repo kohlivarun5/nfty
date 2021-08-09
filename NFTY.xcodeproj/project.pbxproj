@@ -64,6 +64,8 @@
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
+		4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
+		4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */; };
 		4FA10FF526A8E0E200719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FF426A8E0E200719D22 /* main.swift */; };
 		4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFA26A8E55A00719D22 /* Web3 */; };
 		4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFC26A8E55F00719D22 /* Web3ContractABI */; };
@@ -205,6 +207,8 @@
 		4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsCollectionContract.swift; sourceTree = "<group>"; };
 		4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCollectionContract.swift; sourceTree = "<group>"; };
 		4FA0B2AB26C09BD200821413 /* CollectionContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionContracts.swift; sourceTree = "<group>"; };
+		4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_nearestTokens.json; sourceTree = "<group>"; };
+		4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_rarityRanks.json; sourceTree = "<group>"; };
 		4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTRankingUtils.swift; sourceTree = "<group>"; };
 		4FA10FF226A8E0E200719D22 /* DownloadCollection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCollection; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA10FF426A8E0E200719D22 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -493,6 +497,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
+				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
 				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
 				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
 				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
@@ -693,10 +699,12 @@
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
+				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
