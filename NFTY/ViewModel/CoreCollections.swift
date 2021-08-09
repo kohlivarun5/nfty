@@ -178,7 +178,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       url2:SAMPLE_CCB[1],
       url3:SAMPLE_CCB[2],
       url4:SAMPLE_CCB[3],
-      name:CCB_Contract.name,
+      name:"NFTokers",
       webLink: URL(string:"https://cryptocannabisclub.com/")!,
       themeColor:Color.black,
       themeLabelColor:Color.white,
