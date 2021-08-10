@@ -57,40 +57,6 @@ struct NFTYApp: App {
         .accentColor(.secondary)
         
         NavigationView {
-          FavoritesView()
-            .navigationBarTitle("Favorites")
-        }
-        .tabItem {
-          Label("Favorites",systemImage:"heart.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
-        userWallet.walletAddress.map { address in
-          
-          NavigationView {
-            ActivityView(address:address)
-              .navigationBarTitle("Activity")
-          }
-          .tabItem {
-            Label("Activity",systemImage:"hand.point.up.left")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-          .accentColor(.secondary)
-        }
-        
-        NavigationView {
-          WalletView()
-            .navigationBarTitle("Wallet",displayMode: .inline)
-        }
-        .tabItem {
-          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
-        
-        NavigationView {
           CollectionsView(collections:COLLECTIONS)
             .navigationBarTitle("Gallery")
         }
@@ -113,6 +79,25 @@ struct NFTYApp: App {
           .accentColor(.secondary)
         }
         
+        NavigationView {
+          FavoritesView()
+            .navigationBarTitle("Favorites")
+        }
+        .tabItem {
+          Label("Favorites",systemImage:"heart.fill")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
+        
+        NavigationView {
+          WalletView()
+            .navigationBarTitle("Wallet",displayMode: .inline)
+        }
+        .tabItem {
+          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .accentColor(.secondary)
         
         
       }.onOpenURL { url in

@@ -75,16 +75,34 @@ struct OpenSeaApi {
       let token_id : String
       let asset_contract: AssetContract
     }
+    
+    enum Side : Int,Codable {
+      case bid = 0
+      case ask = 1
+    }
+    
     struct AssetOrders: Codable {
       let asset: Asset
       let current_price : String
       let payment_token : String
+      let side : Side
+      let expiration_time : UInt
+      
+      static func sideToEvent(_ side:Side) -> TradeEventType {
+        switch (side) {
+        case .bid:
+          return TradeEventType.bid
+        case .ask:
+          return TradeEventType.ask
+        }
+      }
+      
+      
     }
     
     struct Orders : Codable {
       let orders : [AssetOrders]
     }
-    
     
     return Promise { seal in
       var request = URLRequest(
@@ -99,12 +117,25 @@ struct OpenSeaApi {
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
+          // print(data)
           let orders = try jsonDecoder.decode(Orders.self, from: data!)
           
           print(orders)
           
           seal.fulfill(
             orders.orders
+              .sorted {
+                switch($0.expiration_time,$1.expiration_time) {
+                case (0,0):
+                  return false
+                case (0,_):
+                  return false
+                case (_,0):
+                  return true
+                default:
+                  return $0.expiration_time < $1.expiration_time
+                }
+              }
               .map { order in
                 collectionsFactory
                   .getByAddress(
@@ -127,7 +158,7 @@ struct OpenSeaApi {
                               NFTPriceInfo(
                                 price: wei,
                                 blockNumber: nil,
-                                type: TradeEventType.bid)
+                                type:AssetOrders.sideToEvent(order.side))
                             )
                           )
                         })
