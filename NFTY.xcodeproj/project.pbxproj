@@ -206,7 +206,6 @@
 		4FA02CC62650469900B0B9C5 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsCollectionContract.swift; sourceTree = "<group>"; };
 		4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCollectionContract.swift; sourceTree = "<group>"; };
-		4FA0B2AB26C09BD200821413 /* CollectionContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionContracts.swift; sourceTree = "<group>"; };
 		4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_nearestTokens.json; sourceTree = "<group>"; };
 		4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_rarityRanks.json; sourceTree = "<group>"; };
 		4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTRankingUtils.swift; sourceTree = "<group>"; };
@@ -334,7 +333,6 @@
 			isa = PBXGroup;
 			children = (
 				4FA10FF426A8E0E200719D22 /* main.swift */,
-				4FA0B2AB26C09BD200821413 /* CollectionContracts.swift */,
 			);
 			path = DownloadCollection;
 			sourceTree = "<group>";
@@ -1036,7 +1034,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1063,7 +1061,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

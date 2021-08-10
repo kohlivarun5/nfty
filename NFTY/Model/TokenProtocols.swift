@@ -237,17 +237,17 @@ class NftTokenList : ObservableObject {
     guard !isLoading else { return }
     self.isLoading = true
     
+    let before = tokens.count
+    
     var index = tokens.count
-    var promises : [Promise<Void>] = []
-    while(index < tokenIds.count && promises.count < loadingChunk) {
+    while(index < tokenIds.count && index < (before + loadingChunk)) {
       let tokenId = tokenIds[index]
-      let p = contract.getToken(tokenId)
-        .done(on:.main) { self.tokens.append($0) }
-      promises.append(p)
+      let nft = contract.getToken(tokenId)
+      self.tokens.append(nft)
       index+=1
     }
     
-    when(fulfilled:promises).done(on:.main) { self.isLoading = false }.catch { print($0) }
+    self.isLoading = false
   }
   
   func next(currentIndex:Int?) {

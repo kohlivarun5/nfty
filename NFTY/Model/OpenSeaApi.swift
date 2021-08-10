@@ -10,6 +10,10 @@ import Web3
 import PromiseKit
 
 
+let ETH_ADDRESS = "0x0000000000000000000000000000000000000000"
+
+let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+
 struct OpenSeaApi {
   
   static func getBidAsk(contract:EthereumAddress,tokenId:UInt) -> Promise<BidAsk> {
@@ -47,7 +51,8 @@ struct OpenSeaApi {
             seal.fulfill(BidAsk(bid:nil,ask:nil))
           case .some(let order):
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
-            case ("0x0000000000000000000000000000000000000000",.some(let wei)):
+            case (ETH_ADDRESS,.some(let wei)),
+                 (WETH_ADDRESS,.some(let wei)):
               seal.fulfill(BidAsk(bid:nil,ask:AskInfo(wei: wei)))
             default:
               seal.fulfill(BidAsk(bid:nil,ask:nil))
@@ -60,6 +65,50 @@ struct OpenSeaApi {
       }).resume()
     }
   }
+  
+  static func userOrders(maker:EthereumAddress) -> Promise<BidAsk> {
+    
+    struct AssetContract: Codable {
+      let address: String
+    }
+    struct Asset: Codable {
+      let token_id : String
+      let asset_contract: AssetContract
+    }
+    struct AssetOrders: Codable {
+      let asset: Asset
+      let current_price : String
+      let payment_token : String
+    }
+    
+    struct Orders : Codable {
+      let orders : [AssetOrders]
+    }
+    
+    
+    return Promise { seal in
+      var request = URLRequest(
+        url: URL(
+          string:
+            "https://api.opensea.io/wyvern/v1/orders?maker=\(maker.hex(eip55: true))&bundled=false&include_bundled=false&include_invalid=false&offset=0&order_by=created_date&order_direction=desc"
+          )!
+        )
+          
+      request.httpMethod = "GET"
+      
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          let jsonDecoder = JSONDecoder()
+          let orders = try jsonDecoder.decode(Orders.self, from: data!)
+          orders.orders.map { order in print(order) }
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      }).resume()
+    }
+  }
+  
 }
 
 

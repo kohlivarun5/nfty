@@ -113,7 +113,9 @@ protocol ContractInterface {
   var contractAddressHex: String { get }
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
-  func getToken(_ tokenId:UInt) -> Promise<NFTWithLazyPrice>
+  
+  func getNFT(_ tokenId:UInt) -> NFT
+  func getToken(_ tokenId:UInt) -> NFTWithLazyPrice
   func ownerOf(_ tokenId:UInt) -> Promise<EthereumAddress?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
   
@@ -343,13 +345,18 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    return Promise.value(NFTWithLazyPrice(
-      nft:NFT(
-        address:self.contractAddressHex,
-        tokenId:UInt(tokenId),
-        name:self.name,
-        media:.image(getMediaImage(BigUInt(tokenId)))),
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:UInt(tokenId),
+      name:self.name,
+      media:.image(getMediaImage(BigUInt(tokenId))))
+  }
+  
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
+    NFTWithLazyPrice(
+      nft:getNFT(tokenId),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
         case .some(let p):
@@ -378,20 +385,15 @@ class CryptoKittiesAuction : ContractInterface {
           return observable
         }
       }
-    ))
+    )
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     self.getOwnerKitties(address: address)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { (kitties:KittiesByWallet) -> Promise<Void> in
-        return when(
-          fulfilled:
-            kitties.kitties.map { kitty in
-              self.getToken(kitty.id).done {
-                response($0)
-              }
-            }
-        )
+      .map(on:DispatchQueue.global(qos:.userInteractive)) { (kitties:KittiesByWallet) -> [Void] in
+        return kitties.kitties.map { kitty in
+          response(self.getToken(kitty.id))
+        }
       }.catch {
         print ($0)
       }
@@ -610,15 +612,18 @@ class AsciiPunksContract : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    
-    Promise.value(
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw)))
+  }
+  
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
       NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        nft:getNFT(tokenId),
         getPrice: {
           switch(self.pricesCache[tokenId]) {
           case .some(let p):
@@ -650,7 +655,6 @@ class AsciiPunksContract : ContractInterface {
           }
         }
       )
-    );
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
@@ -664,7 +668,7 @@ class AsciiPunksContract : ContractInterface {
               Array(0...tokensNum-1).map { index -> Promise<Void> in
                 return
                   self.ethContract.tokenOfOwnerByIndex(address: address,index:index)
-                  .then { tokenId in
+                  .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {
                     response($0)
@@ -688,7 +692,7 @@ class AsciiPunksContract : ContractInterface {
 
 
 class AutoglyphsContract : ContractInterface {
-  
+
   private var drawingCache = try! DiskStorage<BigUInt, Media.Autoglyph>(
     config: DiskConfig(name: "AutoglyphsDrawingsCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: Media.Autoglyph.self))
@@ -811,15 +815,17 @@ class AutoglyphsContract : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    
-    Promise.value(
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw)))
+  }
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
       NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+        nft:getNFT(tokenId),
         getPrice: {
           switch(self.ethContract.pricesCache[tokenId]) {
           case .some(let p):
@@ -851,7 +857,6 @@ class AutoglyphsContract : ContractInterface {
           }
         }
       )
-    );
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
@@ -865,7 +870,7 @@ class AutoglyphsContract : ContractInterface {
               Array(0...tokensNum-1).map { index -> Promise<Void> in
                 return
                   self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
-                  .then { tokenId in
+                  .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {
                     response($0)

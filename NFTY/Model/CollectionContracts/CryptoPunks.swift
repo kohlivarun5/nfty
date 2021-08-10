@@ -281,55 +281,56 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    
-    Promise.value(
-      NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-        getPrice: {
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      media:.image(MediaImageEager(self.imageUrl(tokenId)!)))
+  }
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
+    NFTWithLazyPrice(
+      nft:getNFT(tokenId),
+      getPrice: {
+        
+        switch(self.pricesCache[tokenId]) {
+        case .some(let p):
+          return p
+        case .none:
+          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+          let punkBoughtFetcher = LogsFetcher(
+            event:self.PunkBought,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic],
+            blockDecrements: 10000)
           
-          switch(self.pricesCache[tokenId]) {
-          case .some(let p):
-            return p
-          case .none:
-            let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-            let punkBoughtFetcher = LogsFetcher(
-              event:self.PunkBought,
-              fromBlock:self.initFromBlock,
-              address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic],
-              blockDecrements: 10000)
-            
-            let punkOfferedFetcher = LogsFetcher(
-              event:self.PunkOffered,
-              fromBlock:self.initFromBlock,
-              address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic],
-              blockDecrements: 10000)
-            
-            let p =
-              self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
-              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
-                switch(event) {
-                case .trade(let event):
-                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
-                case .notSeenSince(let since):
-                  return NFTPriceStatus.notSeenSince(since)
-                }
+          let punkOfferedFetcher = LogsFetcher(
+            event:self.PunkOffered,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic],
+            blockDecrements: 10000)
+          
+          let p =
+            self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
+            .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
               }
-            let observable = ObservablePromise(promise:p)
-            DispatchQueue.main.async {
-              self.pricesCache[tokenId] = observable
             }
-            return observable
+          let observable = ObservablePromise(promise:p)
+          DispatchQueue.main.async {
+            self.pricesCache[tokenId] = observable
           }
+          return observable
         }
-      )
-    );
+      }
+    )
   }
   
   
@@ -454,11 +455,9 @@ class CryptoPunksContract : ContractInterface {
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     getOwnerTokensFromOpenSea(address:address)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> Promise<Void> in
-        return when(
-          fulfilled:tokenIds.map { self.getToken($0).done { response($0) } }
-        )
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+      .map(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> [Void] in
+        return tokenIds.map { response(self.getToken($0)) }
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:[Void]) -> Void in
         onDone()
       }.catch {
         print ($0)

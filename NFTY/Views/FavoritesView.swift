@@ -53,11 +53,9 @@ struct FavoritesView: View {
         
         if (isFav) {
           _ = collectionsFactory.getByAddress(address).map {
-            $0.data.contract.getToken(UInt(tokenId)!)
-              .done(on:.main) { nft in
-                self.favorites[address]!.updateValue(nft,forKey:tokenId)
-                self.isLoading = false // **** Update isLoading when we add to the list
-              }.catch { print($0) }
+            let nft = $0.data.contract.getToken(UInt(tokenId)!)
+            self.favorites[address]!.updateValue(nft,forKey:tokenId)
+            self.isLoading = false // **** Update isLoading when we add to the list
           }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
