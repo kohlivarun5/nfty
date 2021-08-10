@@ -41,7 +41,7 @@ struct BlockTimeLabel: View {
   var body: some View {
     switch blockNumber {
     case .none:
-      Text("...    ")
+      EmptyView()
     case .some(let blockNum):
       BlockTimestampView(
         block:BlocksFetcher.getBlock(blockNumber:.block(blockNum)))
