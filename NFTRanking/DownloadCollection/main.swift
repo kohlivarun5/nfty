@@ -9,24 +9,34 @@ import Foundation
 import PromiseKit
 import BigInt
 
-let contract = IpfsCollectionContract(
-  name: "CryptoHodlers",
-  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
-let collectionName = contract.name
-let firstIndex = 0
-let lastIndex = 9999
+//let contract = UrlCollectionContract(name: "CryptoCannabisClub", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
+let collectionName = "CryptoCannabisClub"
+let firstIndex = 1
+let lastIndex = 10000
 
 let minFileSize = 1000
 let parallelCount = 5
 
+
+func image(_ tokenId:BigUInt) -> Promise<Data?> {
+  return Promise { seal in
+    var request = URLRequest(url:URL(string:"https://api.cryptocannabisclub.com/image/\(tokenId)")!)
+    request.httpMethod = "GET"
+    URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+      // print(data,response,error)
+      seal.fulfill(data)
+    }).resume()
+  }
+}
+
 print("Started downloading collection:\(collectionName)")
 
 func saveToken(_ tokenId : Int) -> Promise<Void> {
-  return contract.ethContract.image(BigUInt(tokenId))
+  return image(BigUInt(tokenId))
     .map { image -> Void in
       print("Downloaded \(tokenId)")
       let filename = getImageFileName(collectionName,UInt(tokenId))
-      try? image?.data.write(to: filename)
+      try? image?.write(to: filename)
     }
 }
 

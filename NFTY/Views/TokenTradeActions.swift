@@ -266,6 +266,7 @@ struct TokenTradeActions: View {
             }
           }
         }
+        .catch { print($0) }
       
     }
   }

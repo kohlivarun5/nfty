@@ -22,13 +22,13 @@ class CalculateImageDistances {
     self.lastIndex = lastIndex
     self.collectionName = collectionName
     self.tokenImages = tokenImages
-    self.distances = Array(repeating: [], count: (lastIndex - firstIndex) + 1)
+    self.distances = Array(repeating: [], count: lastIndex + 1)
   }
   
   func calculateDistances() {
     print("Calculating Distances")
     for tokenId in firstIndex...lastIndex {
-      distances[tokenId] = Array(repeating:[-1.0,-1.0],count:(lastIndex - firstIndex + 1))
+      distances[tokenId] = Array(repeating:[-1.0,-1.0],count:(lastIndex + 1))
     }
     
     print("Creating images")

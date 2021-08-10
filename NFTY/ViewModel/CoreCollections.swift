@@ -17,6 +17,7 @@ let baycContract = IpfsCollectionContract(name:"BAYC",address: "0xBC4CA0EdA7647A
 let fameLadyContract = FameLadySquad_Contract()
 let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers",address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
 let CROWNS_Contract = IpfsCollectionContract(name: "Crowns",address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
+let CCB_Contract = UrlCollectionContract(name: "NFTokers", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
 
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
@@ -169,6 +170,26 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
     contract:CYPHER_CITY_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CCB_Contract.contractAddressHex,
+      url1:SAMPLE_CCB[0],
+      url2:SAMPLE_CCB[1],
+      url3:SAMPLE_CCB[2],
+      url4:SAMPLE_CCB[3],
+      name:CCB_Contract.name,
+      webLink: URL(string:"https://cryptocannabisclub.com/")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(CCD_rarityRanks)
+    ),
+    contract:CCB_Contract),
+  
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,

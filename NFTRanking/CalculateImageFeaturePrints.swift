@@ -19,7 +19,7 @@ class CalculateImageFeaturePrints {
     self.firstIndex = firstIndex
     self.lastIndex = lastIndex
     self.collectionName = collectionName
-    self.tokenImages = Array(repeating:nil, count: (lastIndex - firstIndex) + 1)
+    self.tokenImages = Array(repeating:nil, count: (lastIndex + 1))
   }
   
   private func featureprintObservationForImage(tokenId:Int) -> VNFeaturePrintObservation? {
