@@ -111,9 +111,14 @@ struct CollectionView: View {
         NavigationLink(
           destination:
             TokenListView(
-              title:"\(info.name) Ranking",
               collection: self.collection,
               tokenIds:ranked.sortedTokenIds
+            )
+            .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(
+              leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+              trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
             )
         ) {
           Image(systemName: "list.number")

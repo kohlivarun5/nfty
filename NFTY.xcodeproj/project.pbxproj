@@ -66,6 +66,8 @@
 		4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
 		4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
 		4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */; };
+		4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2B226C2260F00821413 /* ActivityView.swift */; };
+		4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2B426C228D500821413 /* StaticTokenListView.swift */; };
 		4FA10FF526A8E0E200719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FF426A8E0E200719D22 /* main.swift */; };
 		4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFA26A8E55A00719D22 /* Web3 */; };
 		4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFC26A8E55F00719D22 /* Web3ContractABI */; };
@@ -208,6 +210,8 @@
 		4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCollectionContract.swift; sourceTree = "<group>"; };
 		4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_nearestTokens.json; sourceTree = "<group>"; };
 		4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_rarityRanks.json; sourceTree = "<group>"; };
+		4FA0B2B226C2260F00821413 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		4FA0B2B426C228D500821413 /* StaticTokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticTokenListView.swift; sourceTree = "<group>"; };
 		4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTRankingUtils.swift; sourceTree = "<group>"; };
 		4FA10FF226A8E0E200719D22 /* DownloadCollection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCollection; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA10FF426A8E0E200719D22 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -470,6 +474,8 @@
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
 				4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */,
+				4FA0B2B226C2260F00821413 /* ActivityView.swift */,
+				4FA0B2B426C228D500821413 /* StaticTokenListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -777,6 +783,7 @@
 				4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */,
 				4F5F8F5E26532D9C00FAD814 /* WebView.swift in Sources */,
 				4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */,
+				4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
@@ -807,6 +814,7 @@
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
 				4F673CA02697E5F400CA6918 /* TradeEventsList.swift in Sources */,
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
+				4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */,
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,

@@ -66,7 +66,7 @@ struct OpenSeaApi {
     }
   }
   
-  static func userOrders(maker:EthereumAddress) -> Promise<BidAsk> {
+  static func userOrders(maker:EthereumAddress) -> Promise<[NFTWithLazyPrice]> {
     
     struct AssetContract: Codable {
       let address: String
@@ -91,16 +91,44 @@ struct OpenSeaApi {
         url: URL(
           string:
             "https://api.opensea.io/wyvern/v1/orders?maker=\(maker.hex(eip55: true))&bundled=false&include_bundled=false&include_invalid=false&offset=0&order_by=created_date&order_direction=desc"
-          )!
-        )
-          
+        )!
+      )
+      
       request.httpMethod = "GET"
       
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
           let orders = try jsonDecoder.decode(Orders.self, from: data!)
-          orders.orders.map { order in print(order) }
+          
+          seal.fulfill(
+            orders.orders.map { order in
+              (collectionsFactory
+                .getByAddress(order.asset.asset_contract.address)?
+                .data.contract.getNFT(UInt(order.asset.token_id)!)
+              )
+              .flatMap { nft in
+                switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
+                case (ETH_ADDRESS,.some(let wei)),
+                     (WETH_ADDRESS,.some(let wei)):
+                  NFTWithLazyPrice(
+                    nft: nft,
+                    getPrice: () -> ObservablePromise<NFTPriceStatus>(
+                      resolved: NFTPriceStatus.known(
+                        NFTPriceInfo(
+                          price: wei,
+                          blockNumber: nil,
+                          type: TradeEventType.bid)
+                      )
+                    )
+                  )
+                default:
+                  nil
+                }
+              }
+            }
+            .filter { $0 != nil }
+          )
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.reject(NSError(domain:"", code:404, userInfo:nil))

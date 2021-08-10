@@ -1,38 +1,23 @@
 //
-//  TokenListView.swift
+//  StaticTokenListView.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 7/24/21.
+//  Created by Varun Kohli on 8/9/21.
 //
 
 import SwiftUI
-import Web3
 
-struct TokenListView: View {
+struct StaticTokenListView: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
-  let collection : Collection
-  
-  @ObservedObject var nfts : NftTokenList
+  @State var nfts : [NFTWithLazyPrice]
   @State private var selectedTokenId: UInt? = nil
-  
-  init(collection:Collection,tokenIds:[UInt]) {
-    self.collection = collection
-    self.nfts = NftTokenList(contract:collection.data.contract,tokenIds:tokenIds)
-  }
-  
-  init(collection:Collection,nfts:NftTokenList) {
-    self.collection = collection
-    self.nfts = nfts
-  }
   
   var body: some View {
     ScrollView {
       LazyVStack {
-        ForEach(nfts.tokens.indices,id:\.self) { index in
-          let nft = nfts.tokens[index];
-          let info = collection.info
+        ForEach(nfts.indices,id:\.self) { index in
+          let nft = nfts[index];
+          let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
           let samples = [info.url1,info.url2,info.url3,info.url4];
           ZStack {
             RoundedImage(
@@ -58,21 +43,14 @@ struct TokenListView: View {
             ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
             .hidden()
           }
-          .onAppear {
-            DispatchQueue.global(qos:.userInitiated).async {
-              self.nfts.next(currentIndex: index)
-            }
-          }
         }
-      }.onAppear {
-        nfts.loadMore {} // TODO
       }
     }
   }
 }
 
-struct TokenListView_Previews: PreviewProvider {
+struct StaticTokenListView_Previews: PreviewProvider {
   static var previews: some View {
-    TokenListView(collection:SampleCollection,tokenIds:[])
+    StaticTokenListView(nfts:[])
   }
 }
