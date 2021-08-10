@@ -56,8 +56,6 @@ struct WalletView: View {
                 .animation(.default).transition(.opacity)
             }
           }
-          
-          Spacer()
         }
         
       }
