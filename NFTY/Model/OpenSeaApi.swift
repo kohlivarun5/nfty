@@ -120,7 +120,7 @@ struct OpenSeaApi {
           // print(data)
           let orders = try jsonDecoder.decode(Orders.self, from: data!)
           
-          print(orders)
+          //print(orders)
           
           seal.fulfill(
             orders.orders
