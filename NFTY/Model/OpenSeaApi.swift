@@ -101,33 +101,44 @@ struct OpenSeaApi {
           let jsonDecoder = JSONDecoder()
           let orders = try jsonDecoder.decode(Orders.self, from: data!)
           
+          print(orders)
+          
           seal.fulfill(
-            orders.orders.map { order in
-              (collectionsFactory
-                .getByAddress(order.asset.asset_contract.address)?
-                .data.contract.getNFT(UInt(order.asset.token_id)!)
-              )
-              .flatMap { nft in
-                switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
-                case (ETH_ADDRESS,.some(let wei)),
-                     (WETH_ADDRESS,.some(let wei)):
-                  NFTWithLazyPrice(
-                    nft: nft,
-                    getPrice: () -> ObservablePromise<NFTPriceStatus>(
-                      resolved: NFTPriceStatus.known(
-                        NFTPriceInfo(
-                          price: wei,
-                          blockNumber: nil,
-                          type: TradeEventType.bid)
-                      )
-                    )
-                  )
-                default:
-                  nil
-                }
+            orders.orders
+              .map { order in
+                collectionsFactory
+                  .getByAddress(
+                    try! EthereumAddress(hex: order.asset.asset_contract.address, eip55: false)
+                      .hex(eip55: true))
+                  .flatMap { collection in
+                    UInt(order.asset.token_id).map {
+                      collection.data.contract.getNFT($0)
+                    }
+                  }
+                  .flatMap { (nft:NFT) -> NFTWithLazyPrice? in
+                    switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
+                    case (ETH_ADDRESS,.some(let wei)),
+                         (WETH_ADDRESS,.some(let wei)):
+                      return NFTWithLazyPrice(
+                        nft: nft,
+                        getPrice: {
+                          ObservablePromise<NFTPriceStatus>(
+                            resolved: NFTPriceStatus.known(
+                              NFTPriceInfo(
+                                price: wei,
+                                blockNumber: nil,
+                                type: TradeEventType.bid)
+                            )
+                          )
+                        })
+                    default:
+                      return nil
+                    }
+                  }
               }
-            }
-            .filter { $0 != nil }
+              .filter { $0 != nil }
+              .map { $0! }
+            
           )
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
