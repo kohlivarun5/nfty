@@ -39,6 +39,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
       let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling balanceOf")
       return
         method.invoke(address).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -52,6 +53,7 @@ class Erc721Contract {
         SolidityFunctionParameter(name: "index", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokenOfOwnerByIndex")
       return
         method.invoke(address,index).call()
         .map(on:DispatchQueue.global(qos:.userInitiated)) { outputs in
@@ -64,6 +66,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
       let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokenURI")
       return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["tokenURI"] as! String
@@ -75,6 +78,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling ownerOf")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in

@@ -50,8 +50,9 @@ class UrlCollectionContract : ContractInterface {
   
   func image(_ tokenId:BigUInt) -> Promise<Data?> {
     return Promise { seal in
-    var request = URLRequest(url:URL(string:"\(self.baseUri)\(tokenId)")!)
-    request.httpMethod = "GET"
+      var request = URLRequest(url:URL(string:"\(self.baseUri)\(tokenId)")!)
+      request.httpMethod = "GET"
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
         // print(data,response,error)
         

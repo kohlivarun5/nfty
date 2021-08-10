@@ -53,6 +53,7 @@ class CryptoPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "punkIndexToAddress", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punkIndexToAddress")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -71,6 +72,7 @@ class CryptoPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "onlySellTo", type: .address)
       ]
       let method = SolidityConstantFunction(name: "punksOfferedForSale", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punksOfferedForSale")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -88,6 +90,7 @@ class CryptoPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "value", type: .uint256)
       ]
       let method = SolidityConstantFunction(name: "punkBids", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punkBids")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -439,6 +442,7 @@ class CryptoPunksContract : ContractInterface {
       var request = URLRequest(url: URL(string: "https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")!)
       request.httpMethod = "GET"
       
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()

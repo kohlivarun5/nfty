@@ -39,6 +39,7 @@ struct OpenSeaApi {
       
       request.httpMethod = "GET"
       
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           //print(data.map { String(decoding: $0, as: UTF8.self)})
@@ -114,6 +115,7 @@ struct OpenSeaApi {
       
       request.httpMethod = "GET"
       
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()

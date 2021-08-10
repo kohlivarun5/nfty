@@ -52,6 +52,7 @@ class FameLadySquad_Contract : ContractInterface {
         var request = URLRequest(url:url)
         request.httpMethod = "GET"
         
+        print("calling \(request.url!)")
         URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
           // print(data,response,error)
           

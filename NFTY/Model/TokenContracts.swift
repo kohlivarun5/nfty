@@ -26,6 +26,7 @@ extension Web3.Eth {
     params: EthereumGetLogParams,
     response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
   ) {
+    print("calling web3.eth.getLogs")
     let req = RPCRequest<[EthereumGetLogParams]>(
       id: properties.rpcId,
       jsonrpc: Web3.jsonrpc,
@@ -177,6 +178,7 @@ class CryptoKittiesAuction : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .array(type: .uint256, length: nil))]
       let method = SolidityConstantFunction(name: "tokensOfOwner", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokensOfOwner")
       return
         method.invoke(address).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -188,6 +190,7 @@ class CryptoKittiesAuction : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "kittyIndexToOwner", inputs: inputs, outputs: outputs, handler: self)
+      print("calling kittyIndexToOwner")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -219,7 +222,7 @@ class CryptoKittiesAuction : ContractInterface {
       request.httpMethod = "GET"
       request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
       
-      
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
@@ -241,7 +244,7 @@ class CryptoKittiesAuction : ContractInterface {
       request.httpMethod = "GET"
       request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
       
-      
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
@@ -438,6 +441,7 @@ class AsciiPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
+      print("calling draw")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -449,6 +453,7 @@ class AsciiPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
       let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling balanceOf")
       return
         method.invoke(address).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -462,6 +467,7 @@ class AsciiPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "index", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokenOfOwnerByIndex")
       return
         method.invoke(address,index).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -473,6 +479,7 @@ class AsciiPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling ownerOf")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -715,6 +722,7 @@ class AutoglyphsContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "uri", type: .string)]
       let method = SolidityConstantFunction(name: "draw", inputs: inputs, outputs: outputs, handler: self)
+      print("calling draw")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in

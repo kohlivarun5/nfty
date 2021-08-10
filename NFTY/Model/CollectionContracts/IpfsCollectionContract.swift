@@ -41,7 +41,7 @@ class IpfsCollectionContract : ContractInterface {
                         with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
             request.httpMethod = "GET"
             
-            
+            print("calling \(request.url!)")
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
               do {
@@ -72,6 +72,7 @@ class IpfsCollectionContract : ContractInterface {
               url:URL(string:uriData.image.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
             request.httpMethod = "GET"
             
+            print("calling \(request.url!)")
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
               seal.fulfill(data)

@@ -65,7 +65,7 @@ class LogsFetcher {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
-    
+
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
@@ -90,7 +90,7 @@ class LogsFetcher {
   }
   
   func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-    
+
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(self.fromBlock),
