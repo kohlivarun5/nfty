@@ -70,7 +70,6 @@ struct NftIpfsImageView: View {
             .aspectRatio(contentMode: .fit)
             .padding(15)
             .blur(radius:20)
-          ProgressView()
         }
       },
       view: { ipfs in
@@ -85,7 +84,6 @@ struct NftIpfsImageView: View {
               .aspectRatio(contentMode: .fit)
               .padding(15)
               .blur(radius:20)
-            ProgressView()
           }
         case .some(let uiImage):
           Image(uiImage: uiImage)

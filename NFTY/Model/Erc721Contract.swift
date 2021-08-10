@@ -104,10 +104,10 @@ class Erc721Contract {
       }
   }
   
-  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
+  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher) -> Promise<TradeEventStatus> {
     var events : [Promise<TradeEvent?>] = []
     return Promise { seal in
-      fetcher.fetch(onDone:{
+      fetcher.fetchAllLogs(onDone:{
         when(fulfilled:events)
           .done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
@@ -119,8 +119,8 @@ class Erc721Contract {
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
-      switch(events.count,retries) {
-      case (0,0):
+      switch(events.count) {
+      case 0:
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
@@ -128,8 +128,6 @@ class Erc721Contract {
             )
           )
         )
-      case (0,_):
-        return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
       default:
         return Promise.value(TradeEventStatus.trade(events.first!))
       }

@@ -32,12 +32,14 @@ class ObservablePromise<T> : ObservableObject {
   func load() {
     switch(state) {
     case .loading:
-      self.promise.done(on:.main) { val in
-        self.state = .resolved(val)
-        self.onDone.map {
-          $0(val)
+      self.promise
+        .map(on:.main) { val in
+          self.state = .resolved(val)
+          return val
         }
-      }.catch { print($0) }
+        .done(on:DispatchQueue.global(qos: .userInteractive)) { val in
+          self.onDone.map { $0(val) }
+        }.catch { print($0) }
     case .resolved:
       break
     }

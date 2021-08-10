@@ -70,7 +70,7 @@ class FameLadySquad_Contract : ContractInterface {
           seal.fulfill(Media.IpfsImage(image: image))
         case .none:
           self.ethContract.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .userInteractive)) {
+            .done(on:DispatchQueue.global(qos: .background)) {
               seal.fulfill(IpfsImageEthContract.imageOfData($0))
             }
             .catch {
@@ -181,10 +181,10 @@ class FameLadySquad_Contract : ContractInterface {
             fromBlock:self.ethContract.initFromBlock,
             address:self.contractAddressHex,
             indexedTopics: [nil,nil,tokenIdTopic],
-            blockDecrements: 10000)
+            blockDecrements: 100000)
           
           let p =
-            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):

@@ -50,13 +50,16 @@ class UrlCollectionContract : ContractInterface {
   
   func image(_ tokenId:BigUInt) -> Promise<Data?> {
     return Promise { seal in
-      var request = URLRequest(url:URL(string:"\(self.baseUri)\(tokenId)")!)
-      request.httpMethod = "GET"
+    var request = URLRequest(url:URL(string:"\(self.baseUri)\(tokenId)")!)
+    request.httpMethod = "GET"
       URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
         // print(data,response,error)
+        
+        // Compress these images on download, as they cause jitter in UI scrolling
         seal.fulfill(data)
       }).resume()
     }
+    
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
@@ -67,7 +70,7 @@ class UrlCollectionContract : ContractInterface {
           seal.fulfill(Media.IpfsImage(image: image))
         case .none:
           self.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .userInteractive)) {
+            .done(on:DispatchQueue.global(qos: .background)) {
               seal.fulfill(UrlCollectionContract.imageOfData($0))
             }
             .catch {
@@ -171,10 +174,10 @@ class UrlCollectionContract : ContractInterface {
             fromBlock:self.ethContract.initFromBlock,
             address:self.contractAddressHex,
             indexedTopics: [nil,nil,tokenIdTopic],
-            blockDecrements: 10000)
+            blockDecrements: 100000)
           
           let p =
-            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
+            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
