@@ -18,10 +18,14 @@ struct ActivityView: View {
     ObservedPromiseView(
       data: data,
       progress: {
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(3,anchor: .center)
-          .padding()
+        VStack {
+          Spacer()
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .scaleEffect(3,anchor: .center)
+            .padding()
+          Spacer()
+        }
       }) {
       StaticTokenListView(nfts: $0)
     }

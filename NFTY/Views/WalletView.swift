@@ -50,10 +50,8 @@ struct WalletView: View {
             switch(self.tokensPage) {
             case .owned:
               WalletTokensView(tokens: getOwnerTokens(address))
-                .animation(.default).transition(.opacity)
             case .activity:
               ActivityView(address:address)
-                .animation(.default).transition(.opacity)
             }
           }
         }
