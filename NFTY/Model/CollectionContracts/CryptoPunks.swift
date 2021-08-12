@@ -173,7 +173,7 @@ class CryptoPunksContract : ContractInterface {
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
           blockNumber: log.blockNumber?.quantity,
-          indicativePriceWei:.lazy(
+          indicativePriceWei:.lazy {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -186,7 +186,7 @@ class CryptoPunksContract : ContractInterface {
                       type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
                 }
             )
-          )
+          }
         ))
       }
     }
@@ -221,7 +221,7 @@ class CryptoPunksContract : ContractInterface {
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
           blockNumber: log.blockNumber?.quantity,
-          indicativePriceWei:.lazy(
+          indicativePriceWei:.lazy {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -234,7 +234,7 @@ class CryptoPunksContract : ContractInterface {
                       type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
                 }
             )
-          )
+          }
         ))
       }
     }

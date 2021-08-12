@@ -106,7 +106,7 @@ class FameLadySquad_Contract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy(
+        indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -118,7 +118,8 @@ class FameLadySquad_Contract : ContractInterface {
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
-          ))
+          )
+        }
       ))
     }
   }
@@ -137,7 +138,7 @@ class FameLadySquad_Contract : ContractInterface {
           name:self.name,
           media:.ipfsImage(image)),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy(
+        indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -149,7 +150,8 @@ class FameLadySquad_Contract : ContractInterface {
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
-          ))
+          )
+        }
       ))
     }
   }

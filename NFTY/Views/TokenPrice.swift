@@ -135,7 +135,7 @@ struct TokenPrice: View {
       case .eager(let info):
         TokenPriceKnown(info:info,color:color)
       case .lazy(let status):
-        TokenPriceLazy(status: status,color:color)
+        TokenPriceLazy(status: status(),color:color)
       }
     }
   }

@@ -99,7 +99,7 @@ class CompositeRecentTradesObject : ObservableObject {
   private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
     switch(trade.nftWithPrice.indicativePriceWei) {
     case .lazy(let promise):
-      promise.loadMore { onDone() }
+      promise().loadMore { onDone() }
     case .eager:
       onDone()
     }

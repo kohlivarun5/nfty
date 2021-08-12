@@ -97,8 +97,8 @@ class Erc721Contract {
   }
   
   func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
-    
-    txFetcher.eventOfTx(transactionHash: transactionHash)
+    print("eventOfTx");
+    return txFetcher.eventOfTx(transactionHash: transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
         switch(txData) {
         case .none: return nil
