@@ -45,7 +45,10 @@ class ObservablePromise<T> : ObservableObject {
           self.onDone.map { $0(val) }
           onThisDone()
         }.catch { print($0) }
-    case .resolved:
+    case .resolved(let val):
+      DispatchQueue.main.async {
+        self.state = .resolved(val)
+      }
       onThisDone()
     }
   }

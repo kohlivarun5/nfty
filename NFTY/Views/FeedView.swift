@@ -193,10 +193,12 @@ struct FeedView: View {
         }
     )
     .onAppear {
-      self.trades.loadMore() {
-        DispatchQueue.main.async {
-          self.isLoading = false
-          self.refreshButton = .loaded
+      if (self.isLoading) {
+        self.trades.loadMore() {
+          DispatchQueue.main.async {
+            self.isLoading = false
+            self.refreshButton = .loaded
+          }
         }
       }
     }

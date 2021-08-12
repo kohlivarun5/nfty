@@ -114,7 +114,11 @@ class IpfsCollectionContract : ContractInterface {
         case .none:
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
-              seal.fulfill(IpfsImageEthContract.imageOfData($0))
+              let image = IpfsImageEthContract.imageOfData($0)
+              image.flatMap {
+                try? self.imageCache.setObject($0.image, forKey: tokenId)
+              }
+              seal.fulfill(image)
             }
             .catch {
               print($0)
@@ -122,13 +126,7 @@ class IpfsCollectionContract : ContractInterface {
             }
         }
       }
-    }) { image in
-      DispatchQueue.global(qos:.userInteractive).async {
-        image.flatMap {
-          try? self.imageCache.setObject($0.image, forKey: tokenId)
-        }
-      }
-    }
+    })
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
@@ -167,9 +165,6 @@ class IpfsCollectionContract : ContractInterface {
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let image = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
-      if (index < 2) {
-        image.image.load()
-      }
       
       response(NFTWithPrice(
         nft:NFT(

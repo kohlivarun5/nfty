@@ -72,7 +72,11 @@ class FameLadySquad_Contract : ContractInterface {
         case .none:
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
-              seal.fulfill(IpfsImageEthContract.imageOfData($0))
+              let image = IpfsImageEthContract.imageOfData($0)
+              image.flatMap {
+                try? self.imageCache.setObject($0.image, forKey: tokenId)
+              }
+              seal.fulfill(image)
             }
             .catch {
               print($0)
@@ -80,13 +84,7 @@ class FameLadySquad_Contract : ContractInterface {
             }
         }
       }
-    }) { image in
-      DispatchQueue.global(qos:.userInteractive).async {
-        image.flatMap {
-          try? self.imageCache.setObject($0.image, forKey: tokenId)
-        }
-      }
-    }
+    })
   }
   
   let ethContract = IpfsImageEthContract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
@@ -131,9 +129,6 @@ class FameLadySquad_Contract : ContractInterface {
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let image = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
-      if (index < 2) {
-        image.image.load()
-      }
       
       response(NFTWithPrice(
         nft:NFT(
