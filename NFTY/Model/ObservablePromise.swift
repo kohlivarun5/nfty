@@ -37,16 +37,16 @@ class ObservablePromise<T> : ObservableObject {
     switch(state) {
     case .loading:
       self.promise
-        .map(on:.main) { val in
+        .map(on:.main) { val -> T in
           self.state = .resolved(val)
-          onThisDone()
           return val
         }
-        .done(on:DispatchQueue.global(qos: .userInteractive)) { val in
+        .done(on:DispatchQueue.global(qos: .userInteractive)) { val -> Void in
           self.onDone.map { $0(val) }
+          onThisDone()
         }.catch { print($0) }
     case .resolved:
-      break
+      onThisDone()
     }
   }
   

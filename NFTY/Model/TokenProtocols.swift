@@ -117,7 +117,7 @@ class CompositeRecentTradesObject : ObservableObject {
         image.image.loadMore { self.loadPrice(trade,onDone: onDone) }
       }
     case .none:
-      break
+      onDone()
     }
     
   }
@@ -137,13 +137,14 @@ class CompositeRecentTradesObject : ObservableObject {
     }
     
     self.preload(list:sorted,index: 0, onDone: {
-      self.preload(list:sorted,index: 2, onDone: { })
+      self.preload(list:sorted,index: 2, onDone: {
+        DispatchQueue.main.async {
+          self.recentTrades = sorted
+          onDone()
+        }
+      })
     })
     
-    DispatchQueue.main.async {
-      self.recentTrades = sorted
-      onDone()
-    }
   }
   
   init(_ collections:[CollectionInitializer]) {
