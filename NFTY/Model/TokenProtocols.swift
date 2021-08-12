@@ -93,8 +93,58 @@ class CompositeRecentTradesObject : ObservableObject {
   
   var collections : [Collection]
   
-  private var pendingCounter = 0
-  private var pendingCounterLatest = 0
+  private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
+    switch(trade.nftWithPrice.indicativePriceWei) {
+    case .lazy(let promise):
+      promise.loadMore { onDone() }
+    case .eager:
+      onDone()
+    }
+  }
+  
+  private func preload(list:[NFTWithPriceAndInfo],index:Int,onDone: @escaping () -> Void) {
+    
+    switch(list[safe:index]) {
+    case .some(let trade):
+      switch(trade.nftWithPrice.nft.media) {
+      case .asciiPunk(let punk):
+        punk.ascii.loadMore { self.loadPrice(trade,onDone: onDone) }
+      case .autoglyph(let glyph):
+        glyph.autoglyph.loadMore { self.loadPrice(trade,onDone: onDone) }
+      case .image(let image):
+        image.url.loadMore { self.loadPrice(trade,onDone: onDone) }
+      case .ipfsImage(let image):
+        image.image.loadMore { self.loadPrice(trade,onDone: onDone) }
+      }
+    case .none:
+      break
+    }
+    
+  }
+  
+  private func onDone(_ onDone : @escaping () -> Void) {
+    let sorted = self.recentTrades.sorted { left,right in
+      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
+      case (.none,.none):
+        return true
+      case (.some(let l),.some(let r)):
+        return l > r;
+      case (.none,.some):
+        return true;
+      case (.some,.none):
+        return false;
+      }
+    }
+    
+    self.preload(list:sorted,index: 0, onDone: {
+      self.preload(list:sorted,index: 2, onDone: { })
+    })
+    
+    DispatchQueue.main.async {
+      self.recentTrades = sorted
+      onDone()
+    }
+  }
   
   init(_ collections:[CollectionInitializer]) {
     weak var selfWorkaround: CompositeRecentTradesObject?
@@ -121,23 +171,23 @@ class CompositeRecentTradesObject : ObservableObject {
     selfWorkaround = self
   }
   
-  func loadMore(_ onDone : @escaping () -> Void) {
-    if (pendingCounter > 0) {
-      return
-    }
-    
-    pendingCounter = 0
-    self.collections.forEach { collection in
-      if (!collection.info.disableRecentTrades) {
-        pendingCounter += 1
+  private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
+    switch(self.collections[safe:index]) {
+    case .some(let collection):
+      if (collection.info.disableRecentTrades) {
+        self.loadMoreIndex(index:index+1,onDone:onDone)
+      } else {
         collection.data.recentTrades.loadMore() {
-          DispatchQueue.main.async {
-            self.pendingCounter-=1
-            if (self.pendingCounter == 0) { onDone() }
-          }
+          self.loadMoreIndex(index:index+1,onDone:onDone)
         }
       }
+    case .none:
+      self.onDone(onDone)
     }
+  }
+  
+  func loadMore(_ onDone : @escaping () -> Void) {
+    loadMoreIndex(index: 0,onDone: onDone)
   }
   
   func getRecentTrades(currentIndex:Int?) {
@@ -152,25 +202,24 @@ class CompositeRecentTradesObject : ObservableObject {
     }
   }
   
-  func loadLatest(_ onDone : @escaping () -> Void) {
-    if (pendingCounterLatest > 0) {
-      return
-    }
+  private func loadLatestIndex(index:Int,onDone : @escaping () -> Void) {
     
-    pendingCounter = 0
-    self.collections.forEach { collection in
-      if (!collection.info.disableRecentTrades) {
-        pendingCounter += 1
+    switch(self.collections[safe:index]) {
+    case .some(let collection):
+      if (collection.info.disableRecentTrades) {
+        self.loadLatestIndex(index:index+1,onDone:onDone)
+      } else {
         collection.data.recentTrades.loadLatest() {
-          DispatchQueue.main.async {
-            self.pendingCounterLatest-=1
-            if (self.pendingCounterLatest < 2) {
-              onDone()
-            }
-          }
+          self.loadLatestIndex(index:index+1,onDone:onDone)
         }
       }
+    case .none:
+      self.onDone(onDone)
     }
+  }
+  
+  func loadLatest(_ onDone : @escaping () -> Void) {
+    loadLatestIndex(index:0,onDone: onDone)
   }
   
 }

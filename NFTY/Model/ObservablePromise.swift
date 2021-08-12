@@ -30,11 +30,16 @@ class ObservablePromise<T> : ObservableObject {
   }
   
   func load() {
+    loadMore { }
+  }
+  
+  func loadMore(_ onThisDone:@escaping () -> Void) {
     switch(state) {
     case .loading:
       self.promise
         .map(on:.main) { val in
           self.state = .resolved(val)
+          onThisDone()
           return val
         }
         .done(on:DispatchQueue.global(qos: .userInteractive)) { val in
@@ -44,4 +49,5 @@ class ObservablePromise<T> : ObservableObject {
       break
     }
   }
+  
 }

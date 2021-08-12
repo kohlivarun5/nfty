@@ -58,10 +58,12 @@ class TxFetcher {
     transformer: TransformerFactory.forCodable(ofType: TxInfo.self))
   
   private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
-    web3.eth.getTransactionByHash(blockHash:transactionHash)
-      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) in
+    print("getTransactionByHash");
+    return web3.eth.getTransactionByHash(blockHash:transactionHash)
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
         switch(txData) {
-        case .none: return nil
+        case .none:
+          return nil
         case .some(let tx):
           switch(tx.value.quantity,tx.blockNumber) {
           case (_,.none): return nil
@@ -914,6 +916,7 @@ class BlockFetcherImpl {
           case .some(let p):
             seal.fulfill(p)
           case .none:
+            print("getBlockByNumber")
             web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
               .done(on:DispatchQueue.global(qos:.userInteractive)) { seal.fulfill($0) }
               .catch {
