@@ -36,23 +36,38 @@ struct TokenPriceKnown : View {
   }
   
   var body: some View {
-    VStack {
-      switch(info.price) {
-      case .some(let wei):
+    switch(info.price,info.blockNumber) {
+    case (.some(let wei),.some(let blockNumber)):
+      VStack {
+        
         HStack {
           UsdText(wei:wei,fontWeight:.semibold)
             .foregroundColor(color(self.color))
           Image(systemName: TradeEventIcon.systemName(info.type))
             .font(.caption2)
         }
-      case .none:
-        EmptyView()
+        
+        BlockTimeLabel(blockNumber:blockNumber)
+          .font(.caption2)
+          .foregroundColor(subtleColor(self.color))
+          .padding([.top,.bottom],info.price == nil ? 2 : 0)
+          .padding([.leading,.trailing],2)
       }
-      BlockTimeLabel(blockNumber:info.blockNumber)
+    case (.none,.some(let blockNumber)):
+      BlockTimeLabel(blockNumber:blockNumber)
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
         .padding([.top,.bottom],info.price == nil ? 2 : 0)
         .padding([.leading,.trailing],2)
+    case (.some(let wei),.none):
+      HStack {
+        UsdText(wei:wei,fontWeight:.semibold)
+          .foregroundColor(color(self.color))
+        Image(systemName: TradeEventIcon.systemName(info.type))
+          .font(.caption2)
+      }
+    case (.none,.none):
+      EmptyView()
     }
   }
 }

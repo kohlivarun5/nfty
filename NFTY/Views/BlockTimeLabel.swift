@@ -21,11 +21,11 @@ struct BlockTimestampView : View {
   @ObservedObject var block : ObservablePromise<EthereumBlockObject?>
   
   var body: some View {
-    ObservedPromiseView(data: block, progress: {Text("...    ")}) { block in
+    ObservedPromiseView(data: block, progress: {Text(" ··· ")}) { block in
       Text(
         (block?.timestamp).map {
           Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay()
-        } ?? "...    "
+        } ?? " ··· "
       )
     }
   }
@@ -41,7 +41,7 @@ struct BlockTimeLabel: View {
   var body: some View {
     switch blockNumber {
     case .none:
-      EmptyView()
+      Text(" ··· ")
     case .some(let blockNum):
       BlockTimestampView(
         block:BlocksFetcher.getBlock(blockNumber:.block(blockNum)))
