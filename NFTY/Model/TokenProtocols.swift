@@ -83,6 +83,9 @@ class NftRecentTradesObject : ObservableObject {
 
 class CompositeRecentTradesObject : ObservableObject {
   @Published var recentTrades: [NFTWithPriceAndInfo] = []
+  
+  private var loadedItems: [NFTWithPriceAndInfo] = []
+  
   var recentTradesPublished: Published<[NFTWithPriceAndInfo]> { _recentTrades }
   var recentTradesPublisher: Published<[NFTWithPriceAndInfo]>.Publisher { $recentTrades }
   
@@ -123,7 +126,13 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func onDone(_ onDone : @escaping () -> Void) {
-    let sorted = self.recentTrades.sorted { left,right in
+    if (loadedItems.count == 0) { onDone() }
+    
+    var items = self.recentTrades
+    items.append(contentsOf: self.loadedItems)
+    self.loadedItems = []
+    
+    let sorted = items.sorted { left,right in
       switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
       case (.none,.none):
         return true
@@ -137,7 +146,7 @@ class CompositeRecentTradesObject : ObservableObject {
     }
     
     self.preload(list:sorted,index: 0, onDone: {
-      self.preload(list:sorted,index: 2, onDone: {
+      self.preload(list:sorted,index: 1, onDone: {
         DispatchQueue.main.async {
           self.recentTrades = sorted
           onDone()
@@ -157,13 +166,13 @@ class CompositeRecentTradesObject : ObservableObject {
           recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+                selfWorkaround!.loadedItems.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
               }
             }
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),at:0)
+                selfWorkaround!.loadedItems.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
               }
             }
           }),
