@@ -134,7 +134,7 @@ class CompositeRecentTradesObject : ObservableObject {
   private func onDone(_ onDone : @escaping () -> Void) {
     if (loadedItems.count == 0) { onDone() }
     
-    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }	
+    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }
     items.append(contentsOf: self.loadedItems)
     self.loadedItems = []
     
