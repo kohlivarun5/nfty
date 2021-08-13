@@ -17,7 +17,8 @@ struct WalletView: View {
   
   enum TokensPage : Int {
     case owned
-    case activity
+    case bids
+    case sales
   }
   
   @State private var tokensPage : TokensPage = .owned
@@ -39,7 +40,8 @@ struct WalletView: View {
                   }),
                  label: Text("")) {
             Text("Owned").tag(TokensPage.owned.rawValue)
-            Text("Activity").tag(TokensPage.activity.rawValue)
+            Text("Bids").tag(TokensPage.bids.rawValue)
+            Text("Sales").tag(TokensPage.sales.rawValue)
           }
           .pickerStyle(SegmentedPickerStyle())
           
@@ -50,8 +52,10 @@ struct WalletView: View {
             switch(self.tokensPage) {
             case .owned:
               WalletTokensView(tokens: getOwnerTokens(address))
-            case .activity:
-              ActivityView(address:address)
+            case .bids:
+              ActivityView(address:address,side:OpenSeaApi.Side.buy)
+            case .sales:
+              ActivityView(address:address,side:OpenSeaApi.Side.sell)
             }
           }
         }

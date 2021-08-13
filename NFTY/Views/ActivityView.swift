@@ -10,8 +10,8 @@ import Web3
 
 struct ActivityView: View {
   @ObservedObject var data : ObservablePromise<[NFTWithLazyPrice]>
-  init(address:EthereumAddress) {
-    self.data = ObservablePromise(promise:OpenSeaApi.userOrders(maker: address))
+  init(address:EthereumAddress,side:OpenSeaApi.Side?) {
+    self.data = ObservablePromise(promise:OpenSeaApi.userOrders(maker: address,side:side))
   }
   
   var body: some View {
@@ -34,6 +34,6 @@ struct ActivityView: View {
 
 struct ActivityView_Previews: PreviewProvider {
   static var previews: some View {
-    ActivityView(address: SAMPLE_WALLET_ADDRESS)
+    ActivityView(address: SAMPLE_WALLET_ADDRESS,side:nil)
   }
 }
