@@ -47,7 +47,7 @@ struct TokenTradeView: View {
               .font(.headline)
             HStack {
               Text("#\(nft.tokenId)")
-              OpenSeaLink(nft:nft)
+              DappLink(destination: DappLink.openSeaPath(nft: nft))
             }
             .font(.footnote)
             rank.map {

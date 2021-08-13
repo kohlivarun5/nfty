@@ -157,7 +157,7 @@ struct TokenTradeActions: View {
                )
                })
                */
-              Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
                   Text("Trade")
@@ -204,7 +204,7 @@ struct TokenTradeActions: View {
               })
  */
               
-              Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
                   Text("Sell")

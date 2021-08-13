@@ -136,6 +136,7 @@ class CompositeRecentTradesObject : ObservableObject {
     
     var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }
     items.append(contentsOf: self.loadedItems)
+    
     self.loadedItems = []
     
     let sorted = items.sorted { left,right in
@@ -150,6 +151,18 @@ class CompositeRecentTradesObject : ObservableObject {
         return false;
       }
     }
+    
+    /*
+     
+     switch(sorted[safe:0]) {
+     case .some(let item):
+     sorted[0] = NFTItem(nft: item.nft, isNew: true)
+     case .none:
+     break
+     }
+     
+     */
+    
     
     self.preload(list:sorted,index: 0, onDone: {
       self.preload(list:sorted,index: 1, onDone: {
