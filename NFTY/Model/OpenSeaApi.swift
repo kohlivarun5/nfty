@@ -67,7 +67,12 @@ struct OpenSeaApi {
     }
   }
   
-  static func userOrders(maker:EthereumAddress) -> Promise<[NFTWithLazyPrice]> {
+  enum Side : Int,Codable {
+    case buy = 0
+    case sell = 1
+  }
+  
+  static func userOrders(maker:EthereumAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
     
     struct AssetContract: Codable {
       let address: String
@@ -77,10 +82,6 @@ struct OpenSeaApi {
       let asset_contract: AssetContract
     }
     
-    enum Side : Int,Codable {
-      case bid = 0
-      case ask = 1
-    }
     
     struct AssetOrders: Codable {
       let asset: Asset
@@ -91,9 +92,9 @@ struct OpenSeaApi {
       
       static func sideToEvent(_ side:Side) -> TradeEventType {
         switch (side) {
-        case .bid:
+        case .buy:
           return TradeEventType.bid
-        case .ask:
+        case .sell:
           return TradeEventType.ask
         }
       }
@@ -105,13 +106,14 @@ struct OpenSeaApi {
       let orders : [AssetOrders]
     }
     
+    var urlString = "https://api.opensea.io/wyvern/v1/orders?maker=\(maker.hex(eip55: true))&bundled=false&include_bundled=false&include_invalid=false&offset=0&order_by=created_date&order_direction=desc"
+    
+    _ = side.map {
+      urlString = "\(urlString)&side=\($0.rawValue)"
+    }
+    
     return Promise { seal in
-      var request = URLRequest(
-        url: URL(
-          string:
-            "https://api.opensea.io/wyvern/v1/orders?maker=\(maker.hex(eip55: true))&bundled=false&include_bundled=false&include_invalid=false&offset=0&order_by=created_date&order_direction=desc"
-        )!
-      )
+      var request = URLRequest(url: URL(string:urlString)!)
       
       request.httpMethod = "GET"
       
