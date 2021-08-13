@@ -63,7 +63,7 @@ struct NftDetail: View {
           HStack {
             Text("#\(nft.tokenId)")
               .font(.subheadline)
-            OpenSeaLink(nft:nft)
+            DappLink(destination: DappLink.openSeaPath(nft: nft))
           }
           rank.map {
             Text("RarityRank: \($0)")

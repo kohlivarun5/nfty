@@ -84,7 +84,7 @@ struct RoundedImage: View {
             Text(nft.name)
             HStack {
               Text("#\(nft.tokenId)")
-              OpenSeaLink(nft:nft)
+              DappLink(destination: DappLink.openSeaPath(nft: nft))
             }
             .font(.footnote)
             
