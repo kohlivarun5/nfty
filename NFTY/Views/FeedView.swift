@@ -149,7 +149,7 @@ struct FeedView: View {
                   rarityRank:info.rarityRanking,
                   width: .normal
                 )
-                .shadow(color:.flatOrange,radius:10)
+                .shadow(color:.flatOrange,radius:item.isNew ? 10 : 0)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view

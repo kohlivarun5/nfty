@@ -90,8 +90,8 @@ class CompositeRecentTradesObject : ObservableObject {
   
   @Published var recentTrades: [NFTItem] = []
   
-  private var loadedItems: [NFTWithPriceAndInfo] = []
-  
+  private var loadedItems: [NFTItem] = []
+    
   var recentTradesPublished: Published<[NFTItem]> { _recentTrades }
   var recentTradesPublisher: Published<[NFTItem]>.Publisher { $recentTrades }
   
@@ -134,8 +134,8 @@ class CompositeRecentTradesObject : ObservableObject {
   private func onDone(_ onDone : @escaping () -> Void) {
     if (loadedItems.count == 0) { onDone() }
     
-    var items = self.recentTrades
-    items.append(contentsOf: self.loadedItems.map { NFTItem(nft: $0, isNew: true)})
+    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }	
+    items.append(contentsOf: self.loadedItems)
     self.loadedItems = []
     
     let sorted = items.sorted { left,right in
@@ -172,13 +172,17 @@ class CompositeRecentTradesObject : ObservableObject {
           recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.loadedItems.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+                selfWorkaround!.loadedItems.append(
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: false)
+                )
               }
             }
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.loadedItems.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+                selfWorkaround!.loadedItems.append(
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: true)
+                )
               }
             }
           }),
