@@ -149,7 +149,7 @@ enum NFTPriceStatus {
 
 enum TokenPriceType {
   case eager(NFTPriceInfo)
-  case lazy(ObservablePromise<NFTPriceStatus>)
+  case lazy(() -> ObservablePromise<NFTPriceStatus>)
 }
 
 struct NFTWithPrice : Identifiable {
@@ -180,7 +180,7 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  var indicativePriceWei : ObservablePromise<NFTPriceStatus> {
+  func indicativePriceWei() -> ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
 }

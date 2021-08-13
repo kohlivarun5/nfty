@@ -72,7 +72,7 @@ struct RoundedImage: View {
   
   var body: some View {
     
-    VStack {
+    VStack(spacing:0) {
       NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
       
       switch(width) {
@@ -119,8 +119,8 @@ struct RoundedImage: View {
           .padding(.trailing,10)
         }
         .font(.subheadline)
-        .padding(.bottom,10)
-        .padding(.top,5)
+        .padding([.top,.bottom],10)
+        .background(Color.systemBackground)
         
       }
     }

@@ -39,6 +39,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
       let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling balanceOf")
       return
         method.invoke(address).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -52,6 +53,7 @@ class Erc721Contract {
         SolidityFunctionParameter(name: "index", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let method = SolidityConstantFunction(name: "tokenOfOwnerByIndex", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokenOfOwnerByIndex")
       return
         method.invoke(address,index).call()
         .map(on:DispatchQueue.global(qos:.userInitiated)) { outputs in
@@ -64,6 +66,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
       let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
+      print("calling tokenURI")
       return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["tokenURI"] as! String
@@ -75,6 +78,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
+      print("calling ownerOf")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -93,8 +97,7 @@ class Erc721Contract {
   }
   
   func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
-    
-    txFetcher.eventOfTx(transactionHash: transactionHash)
+    return txFetcher.eventOfTx(transactionHash: transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
         switch(txData) {
         case .none: return nil
@@ -104,10 +107,10 @@ class Erc721Contract {
       }
   }
   
-  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher,retries:UInt) -> Promise<TradeEventStatus> {
+  func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher) -> Promise<TradeEventStatus> {
     var events : [Promise<TradeEvent?>] = []
     return Promise { seal in
-      fetcher.fetch(onDone:{
+      fetcher.fetchAllLogs(onDone:{
         when(fulfilled:events)
           .done(on:DispatchQueue.global(qos:.userInteractive)) { events in
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
@@ -119,8 +122,8 @@ class Erc721Contract {
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
       events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
-      switch(events.count,retries) {
-      case (0,0):
+      switch(events.count) {
+      case 0:
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
@@ -128,8 +131,6 @@ class Erc721Contract {
             )
           )
         )
-      case (0,_):
-        return self.getTokenHistory(tokenId,fetcher:fetcher,retries:retries-1)
       default:
         return Promise.value(TradeEventStatus.trade(events.first!))
       }

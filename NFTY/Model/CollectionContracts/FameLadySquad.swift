@@ -16,6 +16,7 @@ import UIKit
 
 class FameLadySquad_Contract : ContractInterface {
   
+  
   private var imageCache = try! DiskStorage<BigUInt, UIImage>(
     config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
     transformer:TransformerFactory.forImage())
@@ -51,6 +52,7 @@ class FameLadySquad_Contract : ContractInterface {
         var request = URLRequest(url:url)
         request.httpMethod = "GET"
         
+        print("calling \(request.url!)")
         URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
           // print(data,response,error)
           
@@ -69,8 +71,12 @@ class FameLadySquad_Contract : ContractInterface {
           seal.fulfill(Media.IpfsImage(image: image))
         case .none:
           self.ethContract.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .userInteractive)) {
-              seal.fulfill(IpfsImageEthContract.imageOfData($0))
+            .done(on:DispatchQueue.global(qos: .background)) {
+              let image = IpfsImageEthContract.imageOfData($0)
+              image.flatMap {
+                try? self.imageCache.setObject($0.image, forKey: tokenId)
+              }
+              seal.fulfill(image)
             }
             .catch {
               print($0)
@@ -78,13 +84,7 @@ class FameLadySquad_Contract : ContractInterface {
             }
         }
       }
-    }) { image in
-      DispatchQueue.global(qos:.userInteractive).async {
-        image.flatMap {
-          try? self.imageCache.setObject($0.image, forKey: tokenId)
-        }
-      }
-    }
+    })
   }
   
   let ethContract = IpfsImageEthContract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
@@ -106,7 +106,7 @@ class FameLadySquad_Contract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy(
+        indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -118,7 +118,8 @@ class FameLadySquad_Contract : ContractInterface {
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
-          ))
+          )
+        }
       ))
     }
   }
@@ -129,9 +130,6 @@ class FameLadySquad_Contract : ContractInterface {
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       let image = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
-      if (index < 2) {
-        image.image.load()
-      }
       
       response(NFTWithPrice(
         nft:NFT(
@@ -140,7 +138,7 @@ class FameLadySquad_Contract : ContractInterface {
           name:self.name,
           media:.ipfsImage(image)),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy(
+        indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -152,52 +150,55 @@ class FameLadySquad_Contract : ContractInterface {
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
-          ))
+          )
+        }
       ))
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)))
+  }
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     
-    Promise.value(
-      NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-        getPrice: {
-          switch(self.ethContract.pricesCache[tokenId]) {
-          case .some(let p):
-            return p
-          case .none:
-            let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-            let transerFetcher = LogsFetcher(
-              event:self.ethContract.Transfer,
-              fromBlock:self.ethContract.initFromBlock,
-              address:self.contractAddressHex,
-              indexedTopics: [nil,nil,tokenIdTopic],
-              blockDecrements: 10000)
-            
-            let p =
-              self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher,retries:30)
-              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
-                switch(event) {
-                case .trade(let event):
-                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
-                case .notSeenSince(let since):
-                  return NFTPriceStatus.notSeenSince(since)
-                }
+    NFTWithLazyPrice(
+      nft:getNFT(tokenId),
+      getPrice: {
+        switch(self.ethContract.pricesCache[tokenId]) {
+        case .some(let p):
+          return p
+        case .none:
+          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+          let transerFetcher = LogsFetcher(
+            event:self.ethContract.Transfer,
+            fromBlock:self.ethContract.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [nil,nil,tokenIdTopic],
+            blockDecrements: 100000)
+          
+          let p =
+            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher)
+            .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
               }
-            let observable = ObservablePromise(promise: p)
-            DispatchQueue.main.async {
-              self.ethContract.pricesCache[tokenId] = observable
             }
-            return observable
+          let observable = ObservablePromise(promise: p)
+          DispatchQueue.main.async {
+            self.ethContract.pricesCache[tokenId] = observable
           }
+          return observable
         }
-      )
-    );
+      }
+    )
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
@@ -211,7 +212,7 @@ class FameLadySquad_Contract : ContractInterface {
               Array(0...tokensNum-1).map { index -> Promise<Void> in
                 return
                   self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
-                  .then { tokenId in
+                  .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {
                     response($0)

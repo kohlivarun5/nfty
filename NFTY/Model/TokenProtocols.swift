@@ -82,9 +82,18 @@ class NftRecentTradesObject : ObservableObject {
 }
 
 class CompositeRecentTradesObject : ObservableObject {
-  @Published var recentTrades: [NFTWithPriceAndInfo] = []
-  var recentTradesPublished: Published<[NFTWithPriceAndInfo]> { _recentTrades }
-  var recentTradesPublisher: Published<[NFTWithPriceAndInfo]>.Publisher { $recentTrades }
+  
+  struct NFTItem {
+    let nft : NFTWithPriceAndInfo
+    var isNew : Bool
+  }
+  
+  @Published var recentTrades: [NFTItem] = []
+  
+  private var loadedItems: [NFTItem] = []
+    
+  var recentTradesPublished: Published<[NFTItem]> { _recentTrades }
+  var recentTradesPublisher: Published<[NFTItem]>.Publisher { $recentTrades }
   
   struct CollectionInitializer {
     var info : CollectionInfo
@@ -93,8 +102,65 @@ class CompositeRecentTradesObject : ObservableObject {
   
   var collections : [Collection]
   
-  private var pendingCounter = 0
-  private var pendingCounterLatest = 0
+  private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
+    switch(trade.nftWithPrice.indicativePriceWei) {
+    case .lazy(let promise):
+      promise().loadMore { onDone() }
+    case .eager:
+      onDone()
+    }
+  }
+  
+  private func preload(list:[NFTItem],index:Int,onDone: @escaping () -> Void) {
+    
+    switch(list[safe:index]) {
+    case .some(let trade):
+      switch(trade.nft.nftWithPrice.nft.media) {
+      case .asciiPunk(let punk):
+        punk.ascii.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
+      case .autoglyph(let glyph):
+        glyph.autoglyph.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
+      case .image(let image):
+        image.url.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
+      case .ipfsImage(let image):
+        image.image.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
+      }
+    case .none:
+      onDone()
+    }
+    
+  }
+  
+  private func onDone(_ onDone : @escaping () -> Void) {
+    if (loadedItems.count == 0) { onDone() }
+    
+    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }
+    items.append(contentsOf: self.loadedItems)
+    self.loadedItems = []
+    
+    let sorted = items.sorted { left,right in
+      switch(left.nft.nftWithPrice.blockNumber,right.nft.nftWithPrice.blockNumber) {
+      case (.none,.none):
+        return true
+      case (.some(let l),.some(let r)):
+        return l > r;
+      case (.none,.some):
+        return true;
+      case (.some,.none):
+        return false;
+      }
+    }
+    
+    self.preload(list:sorted,index: 0, onDone: {
+      self.preload(list:sorted,index: 1, onDone: {
+        DispatchQueue.main.async {
+          self.recentTrades = sorted
+          onDone()
+        }
+      })
+    })
+    
+  }
   
   init(_ collections:[CollectionInitializer]) {
     weak var selfWorkaround: CompositeRecentTradesObject?
@@ -106,13 +172,17 @@ class CompositeRecentTradesObject : ObservableObject {
           recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.recentTrades.append(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info))
+                selfWorkaround!.loadedItems.append(
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: false)
+                )
               }
             }
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.recentTrades.insert(NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),at:0)
+                selfWorkaround!.loadedItems.append(
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: true)
+                )
               }
             }
           }),
@@ -121,23 +191,23 @@ class CompositeRecentTradesObject : ObservableObject {
     selfWorkaround = self
   }
   
-  func loadMore(_ onDone : @escaping () -> Void) {
-    if (pendingCounter > 0) {
-      return
-    }
-    
-    pendingCounter = 0
-    self.collections.forEach { collection in
-      if (!collection.info.disableRecentTrades) {
-        pendingCounter += 1
+  private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
+    switch(self.collections[safe:index]) {
+    case .some(let collection):
+      if (collection.info.disableRecentTrades) {
+        self.loadMoreIndex(index:index+1,onDone:onDone)
+      } else {
         collection.data.recentTrades.loadMore() {
-          DispatchQueue.main.async {
-            self.pendingCounter-=1
-            if (self.pendingCounter == 0) { onDone() }
-          }
+          self.loadMoreIndex(index:index+1,onDone:onDone)
         }
       }
+    case .none:
+      self.onDone(onDone)
     }
+  }
+  
+  func loadMore(_ onDone : @escaping () -> Void) {
+    loadMoreIndex(index: 0,onDone: onDone)
   }
   
   func getRecentTrades(currentIndex:Int?) {
@@ -152,25 +222,24 @@ class CompositeRecentTradesObject : ObservableObject {
     }
   }
   
-  func loadLatest(_ onDone : @escaping () -> Void) {
-    if (pendingCounterLatest > 0) {
-      return
-    }
+  private func loadLatestIndex(index:Int,onDone : @escaping () -> Void) {
     
-    pendingCounter = 0
-    self.collections.forEach { collection in
-      if (!collection.info.disableRecentTrades) {
-        pendingCounter += 1
+    switch(self.collections[safe:index]) {
+    case .some(let collection):
+      if (collection.info.disableRecentTrades) {
+        self.loadLatestIndex(index:index+1,onDone:onDone)
+      } else {
         collection.data.recentTrades.loadLatest() {
-          DispatchQueue.main.async {
-            self.pendingCounterLatest-=1
-            if (self.pendingCounterLatest < 2) {
-              onDone()
-            }
-          }
+          self.loadLatestIndex(index:index+1,onDone:onDone)
         }
       }
+    case .none:
+      self.onDone(onDone)
     }
+  }
+  
+  func loadLatest(_ onDone : @escaping () -> Void) {
+    loadLatestIndex(index:0,onDone: onDone)
   }
   
 }
@@ -237,17 +306,17 @@ class NftTokenList : ObservableObject {
     guard !isLoading else { return }
     self.isLoading = true
     
+    let before = tokens.count
+    
     var index = tokens.count
-    var promises : [Promise<Void>] = []
-    while(index < tokenIds.count && promises.count < loadingChunk) {
+    while(index < tokenIds.count && index < (before + loadingChunk)) {
       let tokenId = tokenIds[index]
-      let p = contract.getToken(tokenId)
-        .done(on:.main) { self.tokens.append($0) }
-      promises.append(p)
+      let nft = contract.getToken(tokenId)
+      self.tokens.append(nft)
       index+=1
     }
     
-    when(fulfilled:promises).done(on:.main) { self.isLoading = false }.catch { print($0) }
+    self.isLoading = false
   }
   
   func next(currentIndex:Int?) {

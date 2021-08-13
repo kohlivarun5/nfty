@@ -53,6 +53,7 @@ class CryptoPunksContract : ContractInterface {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "punkIndexToAddress", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punkIndexToAddress")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -71,6 +72,7 @@ class CryptoPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "onlySellTo", type: .address)
       ]
       let method = SolidityConstantFunction(name: "punksOfferedForSale", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punksOfferedForSale")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -88,6 +90,7 @@ class CryptoPunksContract : ContractInterface {
         SolidityFunctionParameter(name: "value", type: .uint256)
       ]
       let method = SolidityConstantFunction(name: "punkBids", inputs: inputs, outputs: outputs, handler: self)
+      print("calling punkBids")
       return
         method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
@@ -170,7 +173,7 @@ class CryptoPunksContract : ContractInterface {
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
           blockNumber: log.blockNumber?.quantity,
-          indicativePriceWei:.lazy(
+          indicativePriceWei:.lazy {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -183,7 +186,7 @@ class CryptoPunksContract : ContractInterface {
                       type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
                 }
             )
-          )
+          }
         ))
       }
     }
@@ -218,7 +221,7 @@ class CryptoPunksContract : ContractInterface {
             name:self.name,
             media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
           blockNumber: log.blockNumber?.quantity,
-          indicativePriceWei:.lazy(
+          indicativePriceWei:.lazy {
             ObservablePromise(
               promise:
                 self.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -231,7 +234,7 @@ class CryptoPunksContract : ContractInterface {
                       type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
                 }
             )
-          )
+          }
         ))
       }
     }
@@ -281,55 +284,56 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
-  func getToken(_ tokenId: UInt) -> Promise<NFTWithLazyPrice> {
-    
-    Promise.value(
-      NFTWithLazyPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
-        getPrice: {
+  func getNFT(_ tokenId: UInt) -> NFT {
+    NFT(
+      address:self.contractAddressHex,
+      tokenId:tokenId,
+      name:self.name,
+      media:.image(MediaImageEager(self.imageUrl(tokenId)!)))
+  }
+  
+  func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
+    NFTWithLazyPrice(
+      nft:getNFT(tokenId),
+      getPrice: {
+        
+        switch(self.pricesCache[tokenId]) {
+        case .some(let p):
+          return p
+        case .none:
+          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+          let punkBoughtFetcher = LogsFetcher(
+            event:self.PunkBought,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic],
+            blockDecrements: 10000)
           
-          switch(self.pricesCache[tokenId]) {
-          case .some(let p):
-            return p
-          case .none:
-            let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-            let punkBoughtFetcher = LogsFetcher(
-              event:self.PunkBought,
-              fromBlock:self.initFromBlock,
-              address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic],
-              blockDecrements: 10000)
-            
-            let punkOfferedFetcher = LogsFetcher(
-              event:self.PunkOffered,
-              fromBlock:self.initFromBlock,
-              address:self.contractAddressHex,
-              indexedTopics: [tokenIdTopic],
-              blockDecrements: 10000)
-            
-            let p =
-              self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
-              .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
-                switch(event) {
-                case .trade(let event):
-                  return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
-                case .notSeenSince(let since):
-                  return NFTPriceStatus.notSeenSince(since)
-                }
+          let punkOfferedFetcher = LogsFetcher(
+            event:self.PunkOffered,
+            fromBlock:self.initFromBlock,
+            address:self.contractAddressHex,
+            indexedTopics: [tokenIdTopic],
+            blockDecrements: 10000)
+          
+          let p =
+            self.getTokenHistory(tokenId,punkBoughtFetcher:punkBoughtFetcher,punkOfferedFetcher:punkOfferedFetcher,retries:30)
+            .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
+              switch(event) {
+              case .trade(let event):
+                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+              case .notSeenSince(let since):
+                return NFTPriceStatus.notSeenSince(since)
               }
-            let observable = ObservablePromise(promise:p)
-            DispatchQueue.main.async {
-              self.pricesCache[tokenId] = observable
             }
-            return observable
+          let observable = ObservablePromise(promise:p)
+          DispatchQueue.main.async {
+            self.pricesCache[tokenId] = observable
           }
+          return observable
         }
-      )
-    );
+      }
+    )
   }
   
   
@@ -438,6 +442,7 @@ class CryptoPunksContract : ContractInterface {
       var request = URLRequest(url: URL(string: "https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")!)
       request.httpMethod = "GET"
       
+      print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
           let jsonDecoder = JSONDecoder()
@@ -454,11 +459,9 @@ class CryptoPunksContract : ContractInterface {
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     getOwnerTokensFromOpenSea(address:address)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> Promise<Void> in
-        return when(
-          fulfilled:tokenIds.map { self.getToken($0).done { response($0) } }
-        )
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:Void) -> Void in
+      .map(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> [Void] in
+        return tokenIds.map { response(self.getToken($0)) }
+      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:[Void]) -> Void in
         onDone()
       }.catch {
         print ($0)

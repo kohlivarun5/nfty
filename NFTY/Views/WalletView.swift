@@ -15,6 +15,13 @@ struct WalletView: View {
   @State private var showSettings = false
   @EnvironmentObject var userWallet: UserWallet
   
+  enum TokensPage : Int {
+    case owned
+    case activity
+  }
+  
+  @State private var tokensPage : TokensPage = .owned
+  
   var body: some View {
     
     VStack {
@@ -22,7 +29,33 @@ struct WalletView: View {
       case .none:
         ConnectWalletSheet()
       case .some(let address):
-        WalletTokensView(tokens: getOwnerTokens(address))
+        VStack {
+          Picker(selection: Binding<Int>(
+                  get: { self.tokensPage.rawValue },
+                  set: { tag in
+                    withAnimation { // needed explicit for transitions
+                      self.tokensPage = TokensPage(rawValue: tag)!
+                    }
+                  }),
+                 label: Text("")) {
+            Text("Owned").tag(TokensPage.owned.rawValue)
+            Text("Activity").tag(TokensPage.activity.rawValue)
+          }
+          .pickerStyle(SegmentedPickerStyle())
+          
+          Spacer()
+          // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
+          ZStack {
+            //Rectangle().fill(Color.clear)
+            switch(self.tokensPage) {
+            case .owned:
+              WalletTokensView(tokens: getOwnerTokens(address))
+            case .activity:
+              ActivityView(address:address)
+            }
+          }
+        }
+        
       }
     }
     .navigationBarItems(
