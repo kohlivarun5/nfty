@@ -82,12 +82,18 @@ class NftRecentTradesObject : ObservableObject {
 }
 
 class CompositeRecentTradesObject : ObservableObject {
-  @Published var recentTrades: [NFTWithPriceAndInfo] = []
+  
+  struct NFTItem {
+    let nft : NFTWithPriceAndInfo
+    var isNew : Bool
+  }
+  
+  @Published var recentTrades: [NFTItem] = []
   
   private var loadedItems: [NFTWithPriceAndInfo] = []
   
-  var recentTradesPublished: Published<[NFTWithPriceAndInfo]> { _recentTrades }
-  var recentTradesPublisher: Published<[NFTWithPriceAndInfo]>.Publisher { $recentTrades }
+  var recentTradesPublished: Published<[NFTItem]> { _recentTrades }
+  var recentTradesPublisher: Published<[NFTItem]>.Publisher { $recentTrades }
   
   struct CollectionInitializer {
     var info : CollectionInfo
@@ -105,19 +111,19 @@ class CompositeRecentTradesObject : ObservableObject {
     }
   }
   
-  private func preload(list:[NFTWithPriceAndInfo],index:Int,onDone: @escaping () -> Void) {
+  private func preload(list:[NFTItem],index:Int,onDone: @escaping () -> Void) {
     
     switch(list[safe:index]) {
     case .some(let trade):
-      switch(trade.nftWithPrice.nft.media) {
+      switch(trade.nft.nftWithPrice.nft.media) {
       case .asciiPunk(let punk):
-        punk.ascii.loadMore { self.loadPrice(trade,onDone: onDone) }
+        punk.ascii.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
       case .autoglyph(let glyph):
-        glyph.autoglyph.loadMore { self.loadPrice(trade,onDone: onDone) }
+        glyph.autoglyph.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
       case .image(let image):
-        image.url.loadMore { self.loadPrice(trade,onDone: onDone) }
+        image.url.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
       case .ipfsImage(let image):
-        image.image.loadMore { self.loadPrice(trade,onDone: onDone) }
+        image.image.loadMore { self.loadPrice(trade.nft,onDone: onDone) }
       }
     case .none:
       onDone()
@@ -129,11 +135,11 @@ class CompositeRecentTradesObject : ObservableObject {
     if (loadedItems.count == 0) { onDone() }
     
     var items = self.recentTrades
-    items.append(contentsOf: self.loadedItems)
+    items.append(contentsOf: self.loadedItems.map { NFTItem(nft: $0, isNew: true)})
     self.loadedItems = []
     
     let sorted = items.sorted { left,right in
-      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
+      switch(left.nft.nftWithPrice.blockNumber,right.nft.nftWithPrice.blockNumber) {
       case (.none,.none):
         return true
       case (.some(let l),.some(let r)):

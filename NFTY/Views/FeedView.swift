@@ -134,10 +134,12 @@ struct FeedView: View {
           }
           LazyVStack {
             ForEach(trades.recentTrades.indices,id:\.self) { index in
-              let info = trades.recentTrades[index].info
-              let nft = trades.recentTrades[index].nftWithPrice
+              let item = trades.recentTrades[index]
+              let info = item.nft.info
+              let nft = item.nft.nftWithPrice
               let samples = [info.url1,info.url2,info.url3,info.url4];
               ZStack {
+                                
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
@@ -147,6 +149,7 @@ struct FeedView: View {
                   rarityRank:info.rarityRanking,
                   width: .normal
                 )
+                .shadow(color:.flatOrange,radius:10)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
