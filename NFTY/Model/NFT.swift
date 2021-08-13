@@ -328,6 +328,13 @@ let SAMPLE_TBH : [String] = [
   "SAMPLE_TBH4"
 ]
 
+let SAMPLE_COOL_CATS : [String] = [
+  "COOL_CATS1",
+  "COOL_CATS2",
+  "COOL_CATS3",
+  "COOL_CATS4"
+]
+
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 

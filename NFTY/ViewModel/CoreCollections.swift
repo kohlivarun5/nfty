@@ -26,6 +26,7 @@ let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
   address: "0x00C396383400a1EF2eB401052dBF5d989B2da481")
 
+let CoolCats_Contract = IpfsCollectionContract(name: "CoolCats",address: "0x1A92f7381B9F03921564a437210bB9396471050C")
 
 
 let CompositeCollection = CompositeRecentTradesObject([
@@ -192,6 +193,26 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CCB_Contract),
+  
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CoolCats_Contract.contractAddressHex,
+      url1:SAMPLE_COOL_CATS[0],
+      url2:SAMPLE_COOL_CATS[1],
+      url3:SAMPLE_COOL_CATS[2],
+      url4:SAMPLE_COOL_CATS[3],
+      name:CoolCats_Contract.name,
+      webLink: URL(string:"https://www.coolcatsnft.com/")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+    ),
+    contract:CoolCats_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
