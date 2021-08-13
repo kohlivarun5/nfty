@@ -19,6 +19,9 @@ let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers",address: "0xe1
 let CROWNS_Contract = IpfsCollectionContract(name: "Crowns",address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
 let CCB_Contract = UrlCollectionContract(name: "NFTokers", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
 
+let Birdhouse_Contract = UrlCollectionContract(name: "TheBirdHouse", address: "0x149915F1FD17fe5899ADac2542Be90690eD8A526", baseUri: "https://tbh-data.s3.amazonaws.com/final/images/")
+
+
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
   address: "0x00C396383400a1EF2eB401052dBF5d989B2da481")
@@ -189,6 +192,25 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CCB_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:Birdhouse_Contract.contractAddressHex,
+      url1:SAMPLE_TBH[0],
+      url2:SAMPLE_TBH[1],
+      url3:SAMPLE_TBH[2],
+      url4:SAMPLE_TBH[3],
+      name:Birdhouse_Contract.name,
+      webLink: URL(string:"https://thebirdhouse.app")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+    ),
+    contract:Birdhouse_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
