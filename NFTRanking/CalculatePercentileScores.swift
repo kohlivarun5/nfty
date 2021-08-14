@@ -47,7 +47,7 @@ class CalculatePercentileScores {
       var score = 0
       attributes.forEach { attr in
         let count = self.attributes[attr.trait_type]?[attr.value] ?? 0
-        score = totalCount - Int(count)
+        score = score + (totalCount - Int(count))
         
         self.tokenAttributes[tokenId].append(
           TokenAttributePercentile(
