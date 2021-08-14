@@ -44,6 +44,7 @@ struct WalletView: View {
             Text("Sales").tag(TokensPage.sales.rawValue)
           }
           .pickerStyle(SegmentedPickerStyle())
+          .colorMultiply(.flatOrange)
           
           Spacer()
           // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
