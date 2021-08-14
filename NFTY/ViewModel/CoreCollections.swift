@@ -29,8 +29,7 @@ let CoolCats_Contract = IpfsCollectionContract(name: "CoolCats",address: "0x1A92
 
 let DeadFellaz_Contract = IpfsCollectionContract(name: "DeadFellaz",address: "0x2acAb3DEa77832C09420663b0E1cB386031bA17B")
 
-let GutterCat_Contract = IpfsCollectionContract(name: "GutterCatGang", address: "0xEdB61f74B0d09B2558F1eeb79B247c1F363Ae452")
-
+let GutterCatGang_Contract = IpfsCollectionContract(name: "GutterCatGang", address: "0xEdB61f74B0d09B2558F1eeb79B247c1F363Ae452")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(

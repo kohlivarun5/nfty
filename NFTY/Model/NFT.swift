@@ -342,7 +342,7 @@ let SAMPLE_DEAD_FELLAZ : [String] = [
   "DEAD_FELLAZ4"
 ]
 
-let SAMPLE_CGC : [String] = [
+let SAMPLE_GCG : [String] = [
   "GUTTER_CAT1",
   "GUTTER_CAT2",
   "GUTTER_CAT3",
