@@ -58,7 +58,6 @@ struct CollectionView: View {
         return false;
       }
     })
-    // print(res[safe:0]);
     return res;
   }
   

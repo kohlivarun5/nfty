@@ -105,6 +105,21 @@ class Erc721Contract {
           return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
         }
       }
+      .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
+        switch(event?.value) {
+        case .none,.some(0):
+          return wethFetcher.valueOfTx(transactionHash: transactionHash)
+            .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
+              switch(txData) {
+              case .none: return nil
+              case .some(let tx):
+                return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+              }
+            }
+        case .some:
+          return Promise.value(event)
+        }
+      }
   }
   
   func getTokenHistory(_ tokenId: UInt,fetcher:LogsFetcher) -> Promise<TradeEventStatus> {
@@ -177,7 +192,24 @@ class Erc721Contract {
             case .some(let tx):
               return TradeEvent(type:type ?? .bought,value:tx.value,blockNumber:tx.blockNumber)
             }
-          }.done { response($0) }
+          }
+          .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent) -> Promise<TradeEvent> in
+            switch(event.value) {
+            case 0:
+              return wethFetcher.valueOfTx(transactionHash: log.transactionHash)
+                .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
+                  switch(txData) {
+                  case .none:
+                    return event
+                  case .some(let tx):
+                    return TradeEvent(type:type ?? .bought,value:tx.value,blockNumber:tx.blockNumber)
+                  }
+                }
+            default:
+              return Promise.value(event)
+            }
+          }
+          .done { response($0) }
           .catch { print($0) }
       }
     }

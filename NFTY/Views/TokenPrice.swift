@@ -50,15 +50,12 @@ struct TokenPriceKnown : View {
         BlockTimeLabel(blockNumber:blockNumber)
           .font(.caption2)
           .foregroundColor(subtleColor(self.color))
-          .padding([.top,.bottom],info.price == nil ? 2 : 0)
-          .padding([.leading,.trailing],2)
       }
     case (.none,.some(let blockNumber)):
       BlockTimeLabel(blockNumber:blockNumber)
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
-        .padding([.top,.bottom],info.price == nil ? 2 : 0)
-        .padding([.leading,.trailing],2)
+        .padding([.top,.bottom],2)
     case (.some(let wei),.none):
       HStack {
         UsdText(wei:wei,fontWeight:.semibold)
@@ -133,7 +130,7 @@ struct TokenPriceLazy : View {
       data: status,
       progress: {
         Text(" ··· ")
-          .padding([.leading,.trailing])
+          .padding([.leading,.trailing],5)
       }) {
       TokenPriceStatus(status:$0,color:color)
     }
@@ -152,7 +149,7 @@ struct TokenPrice: View {
       case .lazy(let status):
         TokenPriceLazy(status: status(),color:color)
       }
-    }
+    }.padding([.leading,.trailing],5)
   }
 }
 
