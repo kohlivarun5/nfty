@@ -23,7 +23,6 @@ class CalculatePercentileScores {
     let percentile : Double
   }
   
-  var tokenScores : [UInt]
   var tokenAttributes : [ [TokenAttributePercentile] ]
   
   init(firstIndex:Int,lastIndex:Int,collectionName:String,attributes:[ String : [String : UInt] ]) {
@@ -48,24 +47,33 @@ class CalculatePercentileScores {
       var score = 0
       attributes.forEach { attr in
         let count = self.attributes[attr.trait_type]?[attr.value] ?? 0
-        score = totalCount - count
+        score = totalCount - Int(count)
         
         self.tokenAttributes[tokenId].append(
           TokenAttributePercentile(
             name:attr.trait_type,
             value:attr.value,
-            percentile: score/totalCount)
+            percentile: Double(score)/Double(totalCount))
         )
       }
-      self.tokenScores[tokenId] = score
+      self.tokenScores[tokenId] = UInt(score)
       print("Done tokenId=\(tokenId)")
     }
     
-    saveJSON(getAttributePercentiles(collectionName),self.attributes)
-    print("Done Calculating Percentiles")
+    saveJSON(getAttributeScoresFilename(collectionName),self.tokenAttributes)
+    print("Done Calculating Attribute Scores")
+    
+    let tokensSortedByScore = self.tokenScores.enumerated()
+      .sorted(by: { $0.element > $1.element } )
+    
+    var ranks : [Int] =  Array(repeating: 0, count:totalCount)
+    _ = tokensSortedByScore.enumerated().map { (index,info) in
+      ranks[Int(info.element)] = index + 1
+    }
+    
+    saveJSON(getAttributeRankFilename(collectionName),ranks)
+    print("Done Calculating Attribute Ranks")
     
   }
-  
-  func loadPercentilesFromFile() { attributes = loadJSON(getAttributePercentiles(collectionName)) }
   
 }

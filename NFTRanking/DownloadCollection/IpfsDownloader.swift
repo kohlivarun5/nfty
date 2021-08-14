@@ -9,21 +9,6 @@ import Foundation
 import BigInt
 import PromiseKit
 
-struct Erc721TokenAttribute : Codable {
-  let trait_type : String
-  let value : String
-}
-
-struct Erc721TokenUriData : Codable {
-  let image : String
-  let attributes : [Erc721TokenAttribute]
-}
-
-struct Erc721TokenData : Codable {
-  let image : Data
-  let attributes : [Erc721TokenAttribute]
-}
-
 struct IpfsDownloader {
   let name : String
   let baseUri : String

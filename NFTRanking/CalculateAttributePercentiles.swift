@@ -38,11 +38,11 @@ class CalculateAttributePercentiles {
       print("Done tokenId=\(tokenId)")
     }
     
-    saveJSON(getAttributePercentiles(collectionName),self.attributes)
+    saveJSON(getAttributePercentilesFilename(collectionName),self.attributes)
     print("Done Calculating Percentiles")
     
   }
   
-  func loadPercentilesFromFile() { attributes = loadJSON(getAttributePercentiles(collectionName)) }
+  func loadPercentilesFromFile() { attributes = loadJSON(getAttributePercentilesFilename(collectionName)) }
   
 }

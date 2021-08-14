@@ -9,6 +9,22 @@ import Foundation
 
 typealias TokenDistance = [Float]
 
+struct Erc721TokenAttribute : Codable {
+  let trait_type : String
+  let value : String
+}
+
+struct Erc721TokenUriData : Codable {
+  let image : String
+  let attributes : [Erc721TokenAttribute]
+}
+
+struct Erc721TokenData : Codable {
+  let image : Data
+  let attributes : [Erc721TokenAttribute]
+}
+
+
 func getDocumentsDirectory() -> URL {
   let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
   return paths[0]

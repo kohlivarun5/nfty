@@ -9,18 +9,19 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "CoolCats"
+let collectionName = "DeadFellaz"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 9932 : 100
+let firstIndex = 1
+let lastIndex = isFull ? 100 : 100
 
 // STAGES
-let doCalculateFeatures = true
-let doCalculateDistances = true
-let doNearestNeghbors = true
-let doCalculateRarityRank = true
+let doCalculateFeatures = false
+let doCalculateDistances = false
+let doNearestNeghbors = false
+let doCalculateRarityRank = false
 let doCalculatePercentiles = true
+let doCalculateAttrScores = true
 
 
 // PIPELINE
@@ -57,4 +58,13 @@ if (doCalculatePercentiles) {
   percentiles.calculatePercentiles()
 } else {
   percentiles.loadPercentilesFromFile()
+}
+
+let attrScores = CalculatePercentileScores(
+  firstIndex: firstIndex,
+  lastIndex: lastIndex,
+  collectionName: collectionName,
+  attributes: percentiles.attributes)
+if (doCalculateAttrScores) {
+  attrScores.calculateScores()
 }
