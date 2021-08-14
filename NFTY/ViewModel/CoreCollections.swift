@@ -247,8 +247,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+      similarTokens : SimilarTokensGetter(label:"Birds") { tokenId in BirdHouse_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:Birdhouse_Contract),
   

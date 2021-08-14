@@ -10,9 +10,9 @@ import PromiseKit
 import BigInt
 
 //let contract = UrlCollectionContract(name: "CryptoCannabisClub", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
-let collectionName = "CryptoCannabisClub"
-let firstIndex = 1
-let lastIndex = 10000
+let collectionName = "BirdHouse"
+let firstIndex = 0
+let lastIndex = 5999
 
 let minFileSize = 1000
 let parallelCount = 5
@@ -20,7 +20,7 @@ let parallelCount = 5
 
 func image(_ tokenId:BigUInt) -> Promise<Data?> {
   return Promise { seal in
-    var request = URLRequest(url:URL(string:"https://api.cryptocannabisclub.com/image/\(tokenId)")!)
+    var request = URLRequest(url:URL(string:"https://tbh-data.s3.amazonaws.com/final/images/\(tokenId)")!)
     request.httpMethod = "GET"
     URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
       // print(data,response,error)
