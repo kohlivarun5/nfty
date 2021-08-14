@@ -43,7 +43,7 @@ class UrlCollectionContract : ContractInterface {
   static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
     return data
       .flatMap { UIImage(data:$0) }
-      .flatMap { $0.jpegData(compressionQuality: 0.5) }
+      .flatMap { $0.jpegData(compressionQuality: 0.1) }
       .flatMap { UIImage(data:$0) }
       .map { Media.IpfsImage(image:$0) }
   }

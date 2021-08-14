@@ -88,11 +88,10 @@ struct RoundedImage: View {
             }
             .font(.footnote)
             
-            rank.map {
-              Text("RarityRank: \($0)")
-                .font(.caption2)
-                .foregroundColor(.secondaryLabel)
-            }
+            Text(rank.map { "RarityRank: \($0)" } ?? "")
+              .font(.caption2)
+              .foregroundColor(.secondaryLabel)
+            
           }
           .padding(.leading)
           
