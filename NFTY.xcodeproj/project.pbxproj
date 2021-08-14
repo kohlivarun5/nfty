@@ -27,6 +27,8 @@
 		4F1E4F4426C85111009D27E6 /* CalculateAttributePercentiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */; };
 		4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */; };
 		4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */; };
+		4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */; };
+		4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */; };
 		4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26243026AC0BBA00B5A208 /* TokenListView.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
@@ -196,6 +198,8 @@
 		4F1E4F3D26C850B7009D27E6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeScores.json; sourceTree = "<group>"; };
 		4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeRanks.json; sourceTree = "<group>"; };
+		4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_attributeRanks.json; sourceTree = "<group>"; };
+		4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_attributeScores.json; sourceTree = "<group>"; };
 		4F26243026AC0BBA00B5A208 /* TokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListView.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -558,6 +562,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */,
+				4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */,
 				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
 				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
 				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
@@ -795,10 +801,12 @@
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
 				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
+				4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */,
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
+				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,

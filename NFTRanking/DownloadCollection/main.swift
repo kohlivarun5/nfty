@@ -12,15 +12,15 @@ import BigInt
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
 
 let downloader = IpfsDownloader(
-  name: "DeadFellaz",
-  baseUri:"https://api.deadfellaz.io/traits/")
-let firstIndex = 1
-let lastIndex = 10000
+  name: "CoolCats",
+  baseUri:"https://api.coolcatsnft.com/cat/")
+let firstIndex = 0
+let lastIndex = 9932
 
 let collectionName = downloader.name
 
 let minFileSize = 1000
-let parallelCount = 5
+let parallelCount = 1
 
 
 func image(_ tokenId:BigUInt) -> Promise<Data?> {
