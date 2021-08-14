@@ -72,7 +72,12 @@ struct OpenSeaApi {
     case sell = 1
   }
   
-  static func userOrders(maker:EthereumAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
+  enum QueryAddress {
+    case maker(EthereumAddress)
+    case owner(EthereumAddress)
+  }
+  
+  static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
     
     struct AssetContract: Codable {
       let address: String
@@ -83,7 +88,7 @@ struct OpenSeaApi {
     }
     
     
-    struct AssetOrders: Codable {
+    struct AssetOrder: Codable {
       let asset: Asset
       let current_price : String
       let payment_token : String
@@ -103,17 +108,36 @@ struct OpenSeaApi {
     }
     
     struct Orders : Codable {
-      let orders : [AssetOrders]
+      let orders : [AssetOrder]
     }
     
-    var urlString = "https://api.opensea.io/wyvern/v1/orders?maker=\(maker.hex(eip55: true))&bundled=false&include_bundled=false&include_invalid=false&offset=0&order_by=created_date&order_direction=desc"
     
-    _ = side.map {
-      urlString = "\(urlString)&side=\($0.rawValue)"
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/wyvern/v1/orders"
+    components.queryItems = [
+      URLQueryItem(name: "bundled", value: String(false)),
+      URLQueryItem(name: "include_bundled", value: String(false)),
+      URLQueryItem(name: "include_invalid", value: String(false)),
+      URLQueryItem(name: "offset", value: String(0)),
+      URLQueryItem(name: "order_by", value: "created_date"),
+      URLQueryItem(name: "order_direction", value: "desc"),
+    ]
+    
+    switch(address) {
+    case .maker(let maker):
+      components.queryItems?.append(URLQueryItem(name: "maker", value: maker.hex(eip55: true)))
+    case .owner(let owner):
+      components.queryItems?.append(URLQueryItem(name: "owner", value: owner.hex(eip55: true)))
+    }
+    
+    side.map {
+      components.queryItems?.append(URLQueryItem(name: "side", value: String($0.rawValue)))
     }
     
     return Promise { seal in
-      var request = URLRequest(url: URL(string:urlString)!)
+      var request = URLRequest(url:components.url!)
       
       request.httpMethod = "GET"
       
@@ -122,11 +146,20 @@ struct OpenSeaApi {
         do {
           let jsonDecoder = JSONDecoder()
           // print(data)
-          let orders = try jsonDecoder.decode(Orders.self, from: data!)
+          var orders = try jsonDecoder.decode(Orders.self, from: data!)
           
           //print(orders)
+          // remove duplicates, we request ordered by highest first
+          var uniqueOrdersDict : [String:AssetOrder] = [:]
+          orders.orders.forEach { order in
+            let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
+            uniqueOrdersDict[key] = uniqueOrdersDict[key] ?? order
+          }
+          
+          orders = Orders(orders: uniqueOrdersDict.map { $1 })
           
           seal.fulfill(
+            // sort by earliest expiry first
             orders.orders
               .sorted {
                 switch($0.expiration_time,$1.expiration_time) {
@@ -162,7 +195,7 @@ struct OpenSeaApi {
                               NFTPriceInfo(
                                 price: wei,
                                 blockNumber: nil,
-                                type:AssetOrders.sideToEvent(order.side))
+                                type:AssetOrder.sideToEvent(order.side))
                             )
                           )
                         })

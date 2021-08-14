@@ -19,6 +19,7 @@ struct WalletView: View {
     case owned
     case bids
     case sales
+    case offers
   }
   
   @State private var tokensPage : TokensPage = .owned
@@ -42,9 +43,10 @@ struct WalletView: View {
             Text("Owned").tag(TokensPage.owned.rawValue)
             Text("Bids").tag(TokensPage.bids.rawValue)
             Text("Sales").tag(TokensPage.sales.rawValue)
+            Text("Offers").tag(TokensPage.offers.rawValue)
           }
           .pickerStyle(SegmentedPickerStyle())
-          .colorMultiply(.flatOrange)
+          .colorMultiply(.orange)
           
           Spacer()
           // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
@@ -54,9 +56,11 @@ struct WalletView: View {
             case .owned:
               WalletTokensView(tokens: getOwnerTokens(address))
             case .bids:
-              ActivityView(address:address,side:OpenSeaApi.Side.buy)
+              ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
             case .sales:
-              ActivityView(address:address,side:OpenSeaApi.Side.sell)
+              ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
+            case .offers:
+              ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
             }
           }
         }
