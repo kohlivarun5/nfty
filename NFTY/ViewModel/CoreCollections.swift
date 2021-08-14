@@ -254,6 +254,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:Birdhouse_Contract),
   
+  /*
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:GutterCatGang_Contract.contractAddressHex,
@@ -272,6 +273,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:GutterCatGang_Contract),
+ */
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
