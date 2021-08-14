@@ -9,10 +9,26 @@ import Foundation
 import PromiseKit
 import BigInt
 
-//let contract = UrlCollectionContract(name: "CryptoCannabisClub", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
-let collectionName = "BirdHouse"
+// var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
+
+let downloader = IpfsDownloader(
+  name: "CoolCats",
+  baseUri:"https://api.coolcatsnft.com/cat/")
+
 let firstIndex = 0
-let lastIndex = 5999
+let lastIndex = 9932
+
+
+/*
+ let downloader = IpfsDownloader(
+ name: "DeadFellaz",
+ baseUri:"https://api.deadfellaz.io/traits/")
+ let firstIndex = 1
+ let lastIndex = 10000
+
+ */
+
+let collectionName = downloader.name
 
 let minFileSize = 1000
 let parallelCount = 5
@@ -32,11 +48,11 @@ func image(_ tokenId:BigUInt) -> Promise<Data?> {
 print("Started downloading collection:\(collectionName)")
 
 func saveToken(_ tokenId : Int) -> Promise<Void> {
-  return image(BigUInt(tokenId))
-    .map { image -> Void in
+  return downloader.tokenData(BigUInt(tokenId))
+    .map { data -> Void in
       print("Downloaded \(tokenId)")
       let filename = getImageFileName(collectionName,UInt(tokenId))
-      try? image?.write(to: filename)
+      try? data.image.write(to: filename)
     }
 }
 
