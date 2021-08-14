@@ -21,13 +21,13 @@ let CCB_Contract = UrlCollectionContract(name: "NFTokers", address: "0x80a4B80C6
 
 let Birdhouse_Contract = UrlCollectionContract(name: "TheBirdHouse", address: "0x149915F1FD17fe5899ADac2542Be90690eD8A526", baseUri: "https://tbh-data.s3.amazonaws.com/final/images/")
 
-
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
   address: "0x00C396383400a1EF2eB401052dBF5d989B2da481")
 
 let CoolCats_Contract = IpfsCollectionContract(name: "CoolCats",address: "0x1A92f7381B9F03921564a437210bB9396471050C")
 
+let DeadFellaz_Contract = IpfsCollectionContract(name: "DeadFellaz",address: "0x2acAb3DEa77832C09420663b0E1cB386031bA17B")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -213,6 +213,25 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CoolCats_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:DeadFellaz_Contract.contractAddressHex,
+      url1:SAMPLE_DEAD_FELLAZ[0],
+      url2:SAMPLE_DEAD_FELLAZ[1],
+      url3:SAMPLE_DEAD_FELLAZ[2],
+      url4:SAMPLE_DEAD_FELLAZ[3],
+      name:DeadFellaz_Contract.name,
+      webLink: URL(string:"https://www.deadfellaz.io")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+    ),
+    contract:DeadFellaz_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

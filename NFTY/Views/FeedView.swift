@@ -84,9 +84,9 @@ struct FeedView: View {
           LazyVStack {
             let sampleInfos = [
               CompositeCollection.collections[0].info,
-              CompositeCollection.collections[1].info,
-              CompositeCollection.collections[2].info,
-              CompositeCollection.collections[0].info
+              CompositeCollection.collections[3].info,
+              CompositeCollection.collections[4].info,
+              CompositeCollection.collections[5].info
             ]
             
             ForEach(sampleInfos.indices,id:\.self) { index in
