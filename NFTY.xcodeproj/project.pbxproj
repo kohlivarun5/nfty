@@ -21,6 +21,12 @@
 		4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */; };
 		4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */; };
 		4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */; };
+		4F1E4F3E26C850B7009D27E6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3D26C850B7009D27E6 /* main.swift */; };
+		4F1E4F4226C850FF009D27E6 /* CalculatePercentileScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */; };
+		4F1E4F4326C85107009D27E6 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
+		4F1E4F4426C85111009D27E6 /* CalculateAttributePercentiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */; };
+		4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */; };
+		4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */; };
 		4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26243026AC0BBA00B5A208 /* TokenListView.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
@@ -141,6 +147,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4F1E4F3926C850B7009D27E6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		4FA10FF026A8E0E200719D22 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -177,6 +192,10 @@
 		4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_nearestTokens.json; sourceTree = "<group>"; };
 		4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_nearestTokens.json; sourceTree = "<group>"; };
 		4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_rarityRanks.json; sourceTree = "<group>"; };
+		4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CreateAttributeScores; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1E4F3D26C850B7009D27E6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeScores.json; sourceTree = "<group>"; };
+		4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeRanks.json; sourceTree = "<group>"; };
 		4F26243026AC0BBA00B5A208 /* TokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListView.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -273,6 +292,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4F1E4F3826C850B7009D27E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FA10FEF26A8E0E200719D22 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -322,6 +348,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E4F3D26C850B7009D27E6 /* main.swift */,
+			);
+			path = CreateAttributeScores;
+			sourceTree = "<group>";
+		};
 		4F27A7C6267FE1EB008CCB0A /* CollectionContracts */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,6 +409,7 @@
 				4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */,
 				4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */,
 				4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */,
+				4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */,
 				4FA1101226A8EA6500719D22 /* CreateRankingFiles */,
 				4FA10FF326A8E0E200719D22 /* DownloadCollection */,
 				4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */,
@@ -404,6 +439,7 @@
 				4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */,
 				4FA10FF226A8E0E200719D22 /* DownloadCollection */,
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
+				4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -522,6 +558,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
+				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
 				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
 				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
 				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
@@ -551,6 +589,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */;
+			buildPhases = (
+				4F1E4F3726C850B7009D27E6 /* Sources */,
+				4F1E4F3826C850B7009D27E6 /* Frameworks */,
+				4F1E4F3926C850B7009D27E6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CreateAttributeScores;
+			productName = CreateAttributeScores;
+			productReference = 4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */;
+			productType = "com.apple.product-type.tool";
+		};
 		4FA10FF126A8E0E200719D22 /* DownloadCollection */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */;
@@ -665,6 +720,9 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					4F1E4F3A26C850B7009D27E6 = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
 					4FA10FF126A8E0E200719D22 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -709,6 +767,7 @@
 				4FB9A7C8262B28A400C58AF9 /* NFTYUITests */,
 				4FA10FF126A8E0E200719D22 /* DownloadCollection */,
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
+				4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */,
 			);
 		};
 /* End PBXProject section */
@@ -731,6 +790,7 @@
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
+				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
 				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
@@ -738,6 +798,7 @@
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
@@ -763,6 +824,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F1E4F3726C850B7009D27E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1E4F4326C85107009D27E6 /* NFTRankingUtils.swift in Sources */,
+				4F1E4F4226C850FF009D27E6 /* CalculatePercentileScores.swift in Sources */,
+				4F1E4F4426C85111009D27E6 /* CalculateAttributePercentiles.swift in Sources */,
+				4F1E4F3E26C850B7009D27E6 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FA10FEE26A8E0E200719D22 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -892,6 +964,32 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4F1E4F4026C850B7009D27E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F1E4F4126C850B7009D27E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		4FA10FF726A8E0E200719D22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1201,6 +1299,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1E4F4026C850B7009D27E6 /* Debug */,
+				4F1E4F4126C850B7009D27E6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

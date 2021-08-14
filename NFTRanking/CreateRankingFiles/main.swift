@@ -13,15 +13,13 @@ let collectionName = "DeadFellaz"
 
 let isFull = true
 let firstIndex = 1
-let lastIndex = isFull ? 100 : 100
+let lastIndex = isFull ? 10000 : 100
 
 // STAGES
-let doCalculateFeatures = false
-let doCalculateDistances = false
-let doNearestNeghbors = false
-let doCalculateRarityRank = false
-let doCalculatePercentiles = true
-let doCalculateAttrScores = true
+let doCalculateFeatures = true
+let doCalculateDistances = true
+let doNearestNeghbors = true
+let doCalculateRarityRank = true
 
 
 // PIPELINE
@@ -49,22 +47,4 @@ if (doNearestNeghbors) {
 let rarityCalc = CalculateRarityRank(collectionName: collectionName)
 if (doCalculateRarityRank) {
   rarityCalc.saveRanking(distances:calculator.distances)
-}
-
-
-// Percentiles
-let percentiles = CalculateAttributePercentiles(firstIndex: firstIndex, lastIndex: lastIndex, collectionName: collectionName)
-if (doCalculatePercentiles) {
-  percentiles.calculatePercentiles()
-} else {
-  percentiles.loadPercentilesFromFile()
-}
-
-let attrScores = CalculatePercentileScores(
-  firstIndex: firstIndex,
-  lastIndex: lastIndex,
-  collectionName: collectionName,
-  attributes: percentiles.attributes)
-if (doCalculateAttrScores) {
-  attrScores.calculateScores()
 }

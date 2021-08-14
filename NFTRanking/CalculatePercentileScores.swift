@@ -53,7 +53,7 @@ class CalculatePercentileScores {
           TokenAttributePercentile(
             name:attr.trait_type,
             value:attr.value,
-            percentile: Double(score)/Double(totalCount))
+            percentile: Double(count)/Double(totalCount))
         )
       }
       self.tokenScores[tokenId] = UInt(score)
@@ -66,11 +66,12 @@ class CalculatePercentileScores {
     let tokensSortedByScore = self.tokenScores.enumerated()
       .sorted(by: { $0.element > $1.element } )
     
-    var ranks : [Int] =  Array(repeating: 0, count:totalCount)
+    // print(tokensSortedByScore)
+    var ranks : [Int] =  Array(repeating: 0, count:totalCount + 1)
     _ = tokensSortedByScore.enumerated().map { (index,info) in
-      ranks[Int(info.element)] = index + 1
+      ranks[Int(info.offset)] = index + 1
     }
-    
+    // print(tokensSortedByScore)
     saveJSON(getAttributeRankFilename(collectionName),ranks)
     print("Done Calculating Attribute Ranks")
     
