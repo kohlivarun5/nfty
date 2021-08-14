@@ -342,14 +342,6 @@ let SAMPLE_DEAD_FELLAZ : [String] = [
   "DEAD_FELLAZ4"
 ]
 
-let SAMPLE_GCG : [String] = [
-  "GUTTER_CAT1",
-  "GUTTER_CAT2",
-  "GUTTER_CAT3",
-  "GUTTER_CAT4"
-]
-
-
 let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
