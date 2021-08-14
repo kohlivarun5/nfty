@@ -61,9 +61,10 @@ struct WalletView: View {
             Text("Offers").tag(TokensPage.offers.rawValue)
           }
           .pickerStyle(SegmentedPickerStyle())
-          .colorMultiply(.flatOrange)
-          .padding([.trailing,.leading],10)
-          .padding([.top,.bottom],5)
+          .colorMultiply(.orange)
+          .padding([.trailing,.leading])
+          .padding(.top,5)
+          .padding(.bottom,7)
           
         }
         

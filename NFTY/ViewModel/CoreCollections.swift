@@ -209,8 +209,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+      similarTokens : SimilarTokensGetter(label:"Cats") { tokenId in CoolCats_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
     ),
     contract:CoolCats_Contract),
   
@@ -228,8 +228,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+      similarTokens : SimilarTokensGetter(label:"Fellaz") { tokenId in DeadFellaz_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
     ),
     contract:DeadFellaz_Contract),
   
@@ -247,8 +247,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+      similarTokens : SimilarTokensGetter(label:"Birds") { tokenId in BirdHouse_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:Birdhouse_Contract),
   

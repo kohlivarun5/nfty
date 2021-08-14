@@ -14,6 +14,8 @@ struct CollectionsView: View {
   @State private var showSorted = false
   @State private var filterZeros = false
   
+  @State private var showAddFavSheet = false
+  
   @State private var action: String? = nil
   
   private func sampleImage(url:String,collection:Collection) -> some View {
@@ -69,6 +71,18 @@ struct CollectionsView: View {
         }
       }
     }
+    .navigationBarItems(
+      trailing:
+        Button(action: {
+          self.showAddFavSheet = true
+        }) {
+          Image(systemName:"magnifyingglass.circle.fill")
+            .font(.title3)
+            .foregroundColor(.orange)
+            .padding(10)
+        }
+    )
+    .sheet(isPresented: $showAddFavSheet) { AddFavSheet() }
   }
 }
 

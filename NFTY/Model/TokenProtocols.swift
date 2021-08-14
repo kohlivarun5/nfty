@@ -322,7 +322,9 @@ class NftTokenList : ObservableObject {
     while(index < tokenIds.count && index < (before + loadingChunk)) {
       let tokenId = tokenIds[index]
       let nft = contract.getToken(tokenId)
-      self.tokens.append(nft)
+      DispatchQueue.main.async {
+        self.tokens.append(nft)
+      }
       index+=1
     }
     

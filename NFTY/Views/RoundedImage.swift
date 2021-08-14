@@ -125,6 +125,8 @@ struct RoundedImage: View {
       }
     }
     
+    .animation(.default)
+    
     .border(Color.secondary)
     .frame(width:frameWidth(width))
     .clipShape(RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous))
