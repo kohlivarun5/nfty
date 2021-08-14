@@ -79,7 +79,7 @@ struct RoundedImage: View {
       case .narrow:
         HStack {}
       case .normal:
-        HStack {
+        HStack(alignment:.center) {
           VStack(alignment:.leading) {
             Text(nft.name)
             HStack {
@@ -88,9 +88,11 @@ struct RoundedImage: View {
             }
             .font(.footnote)
             
-            Text(rank.map { "RarityRank: \($0)" } ?? "")
-              .font(.caption2)
-              .foregroundColor(.secondaryLabel)
+            rank.map {
+              Text( "RarityRank: \($0)")
+                .font(.caption2)
+                .foregroundColor(.secondaryLabel)
+            }
             
           }
           .padding(.leading)
@@ -114,7 +116,6 @@ struct RoundedImage: View {
           .padding(.trailing,5)
           .padding([.top,.bottom],5)
           .background(RoundedCorners(color: .secondarySystemBackground, tl: 10, tr: 10, bl: 10, br: 10))
-          .padding(.bottom,5)
           .padding(.trailing,10)
         }
         .font(.subheadline)
