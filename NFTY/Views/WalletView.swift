@@ -31,7 +31,22 @@ struct WalletView: View {
       case .none:
         ConnectWalletSheet()
       case .some(let address):
-        VStack {
+        VStack(spacing:0) {
+          // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
+          ZStack {
+            //Rectangle().fill(Color.clear)
+            switch(self.tokensPage) {
+            case .owned:
+              WalletTokensView(tokens: getOwnerTokens(address))
+            case .bids:
+              ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
+            case .sales:
+              ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
+            case .offers:
+              ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
+            }
+          }
+          
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
                   set: { tag in
@@ -47,22 +62,9 @@ struct WalletView: View {
           }
           .pickerStyle(SegmentedPickerStyle())
           .colorMultiply(.flatOrange)
+          .padding([.trailing,.leading],10)
+          .padding([.top,.bottom],5)
           
-          Spacer()
-          // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
-          ZStack {
-            //Rectangle().fill(Color.clear)
-            switch(self.tokensPage) {
-            case .owned:
-              WalletTokensView(tokens: getOwnerTokens(address))
-            case .bids:
-              ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
-            case .sales:
-              ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
-            case .offers:
-              ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
-            }
-          }
         }
         
       }
