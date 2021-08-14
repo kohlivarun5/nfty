@@ -20,6 +20,7 @@ let doCalculateFeatures = true
 let doCalculateDistances = true
 let doNearestNeghbors = true
 let doCalculateRarityRank = true
+let doCalculatePercentiles = true
 
 
 // PIPELINE
@@ -47,4 +48,13 @@ if (doNearestNeghbors) {
 let rarityCalc = CalculateRarityRank(collectionName: collectionName)
 if (doCalculateRarityRank) {
   rarityCalc.saveRanking(distances:calculator.distances)
+}
+
+
+// Percentiles
+let percentiles = CalculateAttributePercentiles(firstIndex: firstIndex, lastIndex: lastIndex, collectionName: collectionName)
+if (doCalculatePercentiles) {
+  percentiles.calculatePercentiles()
+} else {
+  percentiles.loadPercentilesFromFile()
 }

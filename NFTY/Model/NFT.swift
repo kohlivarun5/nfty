@@ -365,3 +365,6 @@ let CypherCity_rarityRanks : [UInt] = load("CypherCity_rarityRanks.json")
 
 let BirdHouse_nearestTokens : [[UInt]] = load("BirdHouse_nearestTokens.json")
 let BirdHouse_rarityRanks : [UInt] = load("BirdHouse_rarityRanks.json")
+
+let CoolCats_nearestTokens : [[UInt]] = load("CoolCats_nearestTokens.json")
+let CoolCats_rarityRanks : [UInt] = load("CoolCats_rarityRanks.json")

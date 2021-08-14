@@ -209,8 +209,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+      similarTokens : SimilarTokensGetter(label:"Cats") { tokenId in CoolCats_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
     ),
     contract:CoolCats_Contract),
   

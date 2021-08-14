@@ -28,6 +28,21 @@ func getDistancesFilename(_ collectionName:String) -> URL {
     .appendingPathComponent("\(collectionName)Distances.json")
 }
 
+func getAttributePercentilesFilename(_ collectionName:String) -> URL {
+  return getResourcesDirectory()
+    .appendingPathComponent("\(collectionName)AttributePercentiles.json")
+}
+
+func getAttributeRankFilename(_ collectionName:String) -> URL {
+  return getResourcesDirectory()
+    .appendingPathComponent("\(collectionName)_attributeRanks.json")
+}
+
+func getAttributeScoresFilename(_ collectionName:String) -> URL {
+  return getResourcesDirectory()
+    .appendingPathComponent("\(collectionName)_attributeScores.json")
+}
+
 func getFeaturesFilename(_ collectionName:String) -> URL {
   return getResourcesDirectory()
     .appendingPathComponent("\(collectionName)Features.json")
