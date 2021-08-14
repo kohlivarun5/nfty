@@ -29,6 +29,9 @@ let CoolCats_Contract = IpfsCollectionContract(name: "CoolCats",address: "0x1A92
 
 let DeadFellaz_Contract = IpfsCollectionContract(name: "DeadFellaz",address: "0x2acAb3DEa77832C09420663b0E1cB386031bA17B")
 
+let GutterCat_Contract = IpfsCollectionContract(name: "GutterCatGang", address: "0xEdB61f74B0d09B2558F1eeb79B247c1F363Ae452")
+
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -251,6 +254,25 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:Birdhouse_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:GutterCatGang_Contract.contractAddressHex,
+      url1:SAMPLE_GCG[0],
+      url2:SAMPLE_GCG[1],
+      url3:SAMPLE_GCG[2],
+      url4:SAMPLE_GCG[3],
+      name:GutterCatGang_Contract.name,
+      webLink: URL(string:"https://guttercatgang.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil,//SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      rarityRanking : nil//RarityRankingImpl(CCD_rarityRanks)
+    ),
+    contract:GutterCatGang_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
