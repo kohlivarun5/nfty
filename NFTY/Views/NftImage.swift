@@ -209,7 +209,6 @@ struct NftImage: View {
       }
     }
     .background(themeColor)
-    .animation(.default)
   }
 }
 
