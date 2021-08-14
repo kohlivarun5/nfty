@@ -28,21 +28,28 @@ struct IpfsDownloader {
   let name : String
   let baseUri : String
   
+  let ipfsHost : String? = "http://127.0.0.1:8080/ipfs/"
+  
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in
       
-      let uri = "\(baseUri)/\(tokenId)"
+      var uri = "\(baseUri)/\(tokenId)"
       
-      var request = URLRequest(
-        url:URL(string:
-                  uri /*
-                  .replacingOccurrences(
-                    of: "ipfs://",
-                    with: "http://127.0.0.1:8080/ipfs/")
-                  .replacingOccurrences(
-                    of: "https://ipfs.io/ipfs/",
-                    with: "http://127.0.0.1:8080/ipfs/")*/
-        )!)
+      uri =
+        ipfsHost.map {
+          uri
+            .replacingOccurrences(
+              of: "ipfs://",
+              with: $0)
+            .replacingOccurrences(
+              of: "https://ipfs.io/ipfs/",
+              with: $0)
+            .replacingOccurrences(
+              of: "https://gateway.pinata.cloud/ipfs/",
+              with: $0)
+        } ?? uri
+      
+      var request = URLRequest(url:URL(string:uri)!)
       request.httpMethod = "GET"
       
       print("calling \(request.url!)")
@@ -52,17 +59,17 @@ struct IpfsDownloader {
           switch(data) {
           case .some(let data):
             if (data.isEmpty) {
-              // print(data,response,error)
+              print(data,response,error)
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
             } else {
               seal.fulfill(try JSONDecoder().decode(Erc721TokenUriData.self, from: data))
             }
           case .none:
-            // print(data,response,error)
+            print(data,response,error)
             seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
           }
         } catch {
-          // print(data,response,error)
+          print(data,response,error)
           seal.reject(error)
         }
       }).resume()
@@ -71,17 +78,22 @@ struct IpfsDownloader {
       
       return Promise { seal in
         
+        var uri = uriData.image
+        uri =
+          ipfsHost.map {
+            uri
+              .replacingOccurrences(
+                of: "ipfs://",
+                with: $0)
+              .replacingOccurrences(
+                of: "https://ipfs.io/ipfs/",
+                with: $0)
+              .replacingOccurrences(
+                of: "https://gateway.pinata.cloud/ipfs/",
+                with: $0)
+          } ?? uri
         
-        var request = URLRequest(
-          url:URL(string:
-                    uriData.image
-                    /*.replacingOccurrences(
-                      of: "ipfs://",
-                      with: "http://127.0.0.1:8080/ipfs/")
-                    .replacingOccurrences(
-                      of: "https://ipfs.io/ipfs/",
-                      with: "http://127.0.0.1:8080/ipfs/")*/
-          )!)
+        var request = URLRequest(url:URL(string:uri)!)
         request.httpMethod = "GET"
         
         print("calling \(request.url!)")
@@ -91,6 +103,7 @@ struct IpfsDownloader {
           case .some(let data):
             seal.fulfill(Erc721TokenData(image:data,attributes:uriData.attributes))
           case .none:
+            print(data,response,error)
             seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
           }
         }).resume()

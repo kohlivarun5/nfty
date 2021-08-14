@@ -12,21 +12,10 @@ import BigInt
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
 
 let downloader = IpfsDownloader(
-  name: "CoolCats",
-  baseUri:"https://api.coolcatsnft.com/cat/")
-
-let firstIndex = 0
-let lastIndex = 9932
-
-
-/*
- let downloader = IpfsDownloader(
- name: "DeadFellaz",
- baseUri:"https://api.deadfellaz.io/traits/")
- let firstIndex = 1
- let lastIndex = 10000
-
- */
+  name: "DeadFellaz",
+  baseUri:"https://api.deadfellaz.io/traits/")
+let firstIndex = 1
+let lastIndex = 10000
 
 let collectionName = downloader.name
 
@@ -60,7 +49,7 @@ var tokenId = firstIndex
 var prev : [Promise<Int>] = Array(repeating:Promise.value(tokenId), count: parallelCount)
 
 for index in 0...(parallelCount-1) {
-  prev[index] = Promise.value(index)
+  prev[index] = Promise.value(firstIndex + index)
 }
 
 let fileManager = FileManager.default

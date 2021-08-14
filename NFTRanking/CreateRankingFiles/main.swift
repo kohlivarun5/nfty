@@ -9,11 +9,11 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "BirdHouse"
+let collectionName = "CoolCats"
 
 let isFull = true
 let firstIndex = 0
-let lastIndex = isFull ? 5999 : 100
+let lastIndex = isFull ? 9932 : 100
 
 // STAGES
 let doCalculateFeatures = true
