@@ -19,6 +19,8 @@
 		4F1E4F2D26C842D3009D27E6 /* CalculatePercentileScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */; };
 		4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */; };
 		4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */; };
+		4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */; };
+		4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */; };
 		4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26243026AC0BBA00B5A208 /* TokenListView.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
@@ -173,6 +175,8 @@
 		4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatePercentileScores.swift; sourceTree = "<group>"; };
 		4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_rarityRanks.json; sourceTree = "<group>"; };
 		4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_nearestTokens.json; sourceTree = "<group>"; };
+		4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_nearestTokens.json; sourceTree = "<group>"; };
+		4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_rarityRanks.json; sourceTree = "<group>"; };
 		4F26243026AC0BBA00B5A208 /* TokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListView.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -518,6 +522,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
+				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
 				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
 				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
 				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
@@ -715,6 +721,7 @@
 				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
+				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
@@ -726,6 +733,7 @@
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
