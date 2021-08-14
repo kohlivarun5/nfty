@@ -58,6 +58,20 @@ func getImageFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
   
 }
 
+func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
+  return
+    getDocumentsDirectory()
+    .appendingPathComponent("../")
+    .appendingPathComponent("Github")
+    .appendingPathComponent("NFTY")
+    .appendingPathComponent("data")
+    .appendingPathComponent("Images")
+    .appendingPathComponent(collectionName)
+    .appendingPathComponent("attributes")
+    .appendingPathComponent("\(tokenId).json")
+  
+}
+
 func loadImageData(_ collectionName:String,_ tokenId:UInt) -> Data {
   let filename = getImageFileName(collectionName,tokenId)
   return try! Data(contentsOf: filename)
