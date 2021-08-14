@@ -210,7 +210,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       collectionColor:Color.black,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(label:"Cats") { tokenId in CoolCats_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : RarityRankingImpl(load("CoolCats_attributeRanks.json"))
+      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
     ),
     contract:CoolCats_Contract),
   
@@ -229,7 +229,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       collectionColor:Color.black,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(label:"Fellaz") { tokenId in DeadFellaz_nearestTokens[safe:Int(tokenId)] },
-      rarityRanking : RarityRankingImpl(load("DeadFellaz_attributeRanks.json"))
+      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
     ),
     contract:DeadFellaz_Contract),
   
