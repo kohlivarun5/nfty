@@ -44,7 +44,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       collectionColor:Color.yellow,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks") { tokenId in CryptoPunks_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:cryptoPunksContract),
@@ -80,7 +80,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks")  { tokenId in AsciiPunks_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"AsciiPunks_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
     ),
     contract:asciiPunksContract),
@@ -98,7 +98,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Apes")  { tokenId in BAYC_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Apes",nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
     ),
     contract:baycContract),
@@ -116,7 +116,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Ladies")  { tokenId in FLS_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Ladies",nearestTokensFileName:"FameLadySquad_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(FLS_rarityRanks)
     ),
     contract:fameLadyContract),
@@ -134,7 +134,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Hodlers") { tokenId in CRHDL_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Hodlers",nearestTokensFileName:"CryptoHodlers_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
     contract:CRHDL_Contract),
@@ -170,7 +170,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Cyphers") { tokenId in CypherCity_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Cyphers",nearestTokensFileName:"CypherCity_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
     contract:CYPHER_CITY_Contract),
@@ -189,7 +189,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"NFTokers") { tokenId in CCD_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"NFTokers",nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CCB_Contract),
@@ -209,7 +209,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Cats") { tokenId in CoolCats_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Cats",nearestTokensFileName:"CoolCats_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
     ),
     contract:CoolCats_Contract),
@@ -228,7 +228,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Fellaz") { tokenId in DeadFellaz_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Fellaz",nearestTokensFileName:"DeadFellaz_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
     ),
     contract:DeadFellaz_Contract),
@@ -247,7 +247,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Birds") { tokenId in BirdHouse_nearestTokens[safe:Int(tokenId)] },
+      similarTokens : SimilarTokensGetter(label:"Birds",nearestTokensFileName:"BirdHouse_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:Birdhouse_Contract),
