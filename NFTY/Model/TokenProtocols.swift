@@ -154,11 +154,8 @@ class CompositeRecentTradesObject : ObservableObject {
     
     /*
      
-     switch(sorted[safe:0]) {
-     case .some(let item):
-     sorted[0] = NFTItem(nft: item.nft, isNew: true)
-     case .none:
-     break
+     _ = sorted.first.map { item in
+      sorted[0] = NFTItem(nft: item.nft, isNew: true)
      }
      
      */

@@ -47,7 +47,7 @@ struct OpenSeaApi {
           let assets = try jsonDecoder.decode(AssetOrders.self, from: data!)
           // print(assets)
           
-          switch(assets.assets[safe:0]?.sell_orders?[safe:0]) {
+          switch(assets.assets.first?.sell_orders?.first) {
           case .none:
             seal.fulfill(BidAsk(bid:nil,ask:nil))
           case .some(let order):

@@ -31,24 +31,7 @@ struct WalletView: View {
       case .none:
         ConnectWalletSheet()
       case .some(let address):
-        VStack {
-          Picker(selection: Binding<Int>(
-                  get: { self.tokensPage.rawValue },
-                  set: { tag in
-                    withAnimation { // needed explicit for transitions
-                      self.tokensPage = TokensPage(rawValue: tag)!
-                    }
-                  }),
-                 label: Text("")) {
-            Text("Owned").tag(TokensPage.owned.rawValue)
-            Text("Bids").tag(TokensPage.bids.rawValue)
-            Text("Sales").tag(TokensPage.sales.rawValue)
-            Text("Offers").tag(TokensPage.offers.rawValue)
-          }
-          .pickerStyle(SegmentedPickerStyle())
-          .colorMultiply(.orange)
-          
-          Spacer()
+        VStack(spacing:0) {
           // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
           ZStack {
             //Rectangle().fill(Color.clear)
@@ -63,6 +46,25 @@ struct WalletView: View {
               ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
             }
           }
+          
+          Picker(selection: Binding<Int>(
+                  get: { self.tokensPage.rawValue },
+                  set: { tag in
+                    withAnimation { // needed explicit for transitions
+                      self.tokensPage = TokensPage(rawValue: tag)!
+                    }
+                  }),
+                 label: Text("")) {
+            Text("Owned").tag(TokensPage.owned.rawValue)
+            Text("Bids").tag(TokensPage.bids.rawValue)
+            Text("Sales").tag(TokensPage.sales.rawValue)
+            Text("Offers").tag(TokensPage.offers.rawValue)
+          }
+          .pickerStyle(SegmentedPickerStyle())
+          .colorMultiply(.flatOrange)
+          .padding([.trailing,.leading],10)
+          .padding([.top,.bottom],5)
+          
         }
         
       }

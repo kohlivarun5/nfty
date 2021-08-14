@@ -103,6 +103,77 @@ class TxFetcher {
 
 var txFetcher = TxFetcher()
 
+class WETHFetcher {
+  
+  struct Info : Codable {
+    var value : BigUInt
+    var blockNumber : EthereumQuantity
+  }
+  
+  private var cache = try! DiskStorage<EthereumData, Info>(
+    config: DiskConfig(name: "WETHFetcher.cache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Info.self))
+  
+  private func valueOfTx(transactionHash:EthereumData) -> Promise<Info?> {
+    print("getTransactionReceipt");
+    return web3.eth.getTransactionReceipt(transactionHash: transactionHash)
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionReceiptObject?) -> Info? in
+        switch(txData) {
+        case .none:
+          return nil
+        case .some(let tx):
+          return tx.logs
+            .compactMap { log in
+              if (log.address.hex(eip55:false) != WETH_ADDRESS) {
+                return nil
+              }
+              
+              if (!log.topics.contains(
+                try! EthereumData.string(
+                  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")
+              )) {
+                return nil
+              }
+              
+              return try! web3.eth.abi.decodeParameter(type:SolidityType.uint256,from:log.data.hex()) as! BigUInt
+              
+              // Get data for the log
+            }
+            .first
+            .map { Info(value:$0,blockNumber: tx.blockNumber) }
+        }
+      }
+  }
+  
+  func valueOfTx(transactionHash:EthereumData?) -> Promise<Info?> {
+    switch transactionHash {
+    case .none:
+      return Promise.value(nil)
+    case .some(let txHash):
+      return Promise { seal in
+        DispatchQueue.global(qos:.userInteractive).async {
+          switch (try? self.cache.object(forKey:txHash)) {
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
+            let p = self.valueOfTx(transactionHash: txHash)
+            p.done(on:DispatchQueue.global(qos:.userInteractive)) {
+              $0.flatMap { try? self.cache.setObject($0, forKey: txHash) }
+              seal.fulfill($0)
+            }
+            .catch {
+              print($0)
+              seal.fulfill(nil)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+var wethFetcher = WETHFetcher()
+
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 var INIT_BLOCK = BigUInt(12850064 - (Date.from(year:2021,month:7,day:18)!.timeIntervalSinceNow / 15))
@@ -525,6 +596,21 @@ class AsciiPunksContract : ContractInterface {
         case .none: return nil
         case .some(let tx):
           return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+        }
+      }
+      .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
+        switch(event?.value) {
+        case .none,.some(0):
+          return wethFetcher.valueOfTx(transactionHash: transactionHash)
+            .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
+              switch(txData) {
+              case .none: return nil
+              case .some(let tx):
+                return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+              }
+            }
+        case .some:
+          return Promise.value(event)
         }
       }
   }
