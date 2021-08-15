@@ -156,7 +156,7 @@ struct NftDetail: View {
                    label: Text("")) {
               Text("Similar \(similarTokens?.label ?? "Tokens")")
                 .tag(SimilarSectionPage.similar.rawValue)
-              Text("Attribures")
+              Text("Attributes")
                 .tag(SimilarSectionPage.attributes.rawValue)
             }
             .pickerStyle(SegmentedPickerStyle())

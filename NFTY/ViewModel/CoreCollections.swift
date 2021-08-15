@@ -212,10 +212,14 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Cats",nearestTokensFileName:"CoolCats_nearestTokens.json"),
-      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
-    ),
-    contract:CoolCats_Contract),
+      similarTokens : SimilarTokensGetter(
+        label:"Cats",
+        nearestTokensFileName:"CoolCats_nearestTokens.json",
+        propertiesJsonFileName:"CoolCats_attributeScores.json"
+      ),
+    rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
+  ),
+  contract:CoolCats_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -231,10 +235,14 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Fellaz",nearestTokensFileName:"DeadFellaz_nearestTokens.json"),
-      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
+      similarTokens : SimilarTokensGetter(
+        label:"Fellaz",
+        nearestTokensFileName:"DeadFellaz_nearestTokens.json",
+        propertiesJsonFileName:"DeadFellaz_attributeScores.json"
     ),
-    contract:DeadFellaz_Contract),
+    rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
+  ),
+  contract:DeadFellaz_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -250,7 +258,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Birds",nearestTokensFileName:"BirdHouse_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Birds",
+        nearestTokensFileName:"BirdHouse_nearestTokens.json",
+        propertiesJsonFileName:"BirdHouse_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:Birdhouse_Contract),
