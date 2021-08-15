@@ -185,10 +185,13 @@ struct NFTWithLazyPrice : Identifiable {
   }
 }
 
-struct SimilarTokensGetter {
+class SimilarTokensGetter {
   let label : String
   let nearestTokensFileName : String
   let propertiesJsonFileName : String?
+  
+  var nearestTokens : [ [UInt] ]? = nil
+  var properties : [ [TokenAttributePercentile] ]? = nil
   
   
   init(label:String,nearestTokensFileName:String) {
@@ -209,19 +212,13 @@ struct SimilarTokensGetter {
     let percentile : Double
   }
   
-  private var nearestTokens : [ [UInt] ] {
-    return load(nearestTokensFileName)
-  }
-  
   func get(_ tokenId:UInt) -> [UInt]? {
-    return self.nearestTokens[safe:Int(tokenId)]
+    self.nearestTokens = self.nearestTokens ?? load(nearestTokensFileName)
+    return self.nearestTokens?[safe:Int(tokenId)]
   }
-  
-  private var properties : [ [TokenAttributePercentile] ]? {
-    return propertiesJsonFileName.map { load($0) }
-  }
-  
+
   func getProperties(_ tokenId:UInt) -> [TokenAttributePercentile]? {
+    self.properties = self.properties ?? propertiesJsonFileName.map { load($0) }
     return properties?[safe:Int(tokenId)]
   }
   
