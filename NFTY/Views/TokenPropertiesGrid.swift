@@ -43,7 +43,7 @@ struct TokenPropertiesGrid: View {
         }
       }
       .padding([.leading,.trailing])
-      .padding(.top,10)
+      .padding(.top,15)
       .padding(.bottom,150)
     }
   }
