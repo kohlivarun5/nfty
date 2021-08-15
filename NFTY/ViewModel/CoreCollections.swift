@@ -260,8 +260,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Birds",
-        nearestTokensFileName:"BirdHouse_nearestTokens.json",
-        propertiesJsonFileName:"Birdhouse_attributeScores.json"
+        nearestTokensFileName:"BirdHouse_nearestTokens.json"
+       // propertiesJsonFileName:"Birdhouse_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
