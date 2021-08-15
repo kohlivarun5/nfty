@@ -32,19 +32,16 @@ struct WalletView: View {
         ConnectWalletSheet()
       case .some(let address):
         VStack(spacing:0) {
-          // https://stackoverflow.com/questions/59689342/swipe-between-two-pages-with-segmented-style-picker-in-swiftui
-          ZStack {
-            //Rectangle().fill(Color.clear)
-            switch(self.tokensPage) {
-            case .owned:
-              WalletTokensView(tokens: getOwnerTokens(address))
-            case .bids:
-              ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
-            case .sales:
-              ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
-            case .offers:
-              ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
-            }
+          
+          switch(self.tokensPage) {
+          case .owned:
+            WalletTokensView(tokens: getOwnerTokens(address))
+          case .bids:
+            ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
+          case .sales:
+            ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
+          case .offers:
+            ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
           }
           
           Picker(selection: Binding<Int>(
