@@ -217,9 +217,9 @@ let CompositeCollection = CompositeRecentTradesObject([
         nearestTokensFileName:"CoolCats_nearestTokens.json",
         propertiesJsonFileName:"CoolCats_attributeScores.json"
       ),
-    rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
-  ),
-  contract:CoolCats_Contract),
+      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
+    ),
+    contract:CoolCats_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -239,10 +239,10 @@ let CompositeCollection = CompositeRecentTradesObject([
         label:"Fellaz",
         nearestTokensFileName:"DeadFellaz_nearestTokens.json",
         propertiesJsonFileName:"DeadFellaz_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
     ),
-    rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
-  ),
-  contract:DeadFellaz_Contract),
+    contract:DeadFellaz_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -260,8 +260,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Birds",
-        nearestTokensFileName:"BirdHouse_nearestTokens.json"
-       // propertiesJsonFileName:"Birdhouse_attributeScores.json"
+        nearestTokensFileName:"BirdHouse_nearestTokens.json",
+        propertiesJsonFileName:"Birdhouse_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
