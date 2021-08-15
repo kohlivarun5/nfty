@@ -63,14 +63,3 @@ struct RoundedCorners: View {
     }
   }
 }
-
-extension UINavigationController {
-  override open func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    navigationBar.standardAppearance = appearance
-    navigationBar.compactAppearance = appearance
-    navigationBar.scrollEdgeAppearance = appearance
-  }
-}
