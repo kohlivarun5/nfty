@@ -189,7 +189,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"NFTokers",nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"NFTokers",
+        nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json",
+        propertiesJsonFileName:"CryptoCannabisClub_attributeScores.json"),
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CCB_Contract),

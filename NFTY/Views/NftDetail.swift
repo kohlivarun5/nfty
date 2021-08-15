@@ -23,7 +23,14 @@ struct NftDetail: View {
   var hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
+  enum SimilarSectionPage : Int {
+    case similar = 0
+    case attributes = 1
+  }
+  @State var similarSectionPage : SimilarSectionPage = .similar
+  
   @State var tokens : [UInt]? = nil
+  @State var properties : [SimilarTokensGetter.TokenAttributePercentile]? = nil
   
   @State var showTradeView : Bool = false
   
@@ -104,7 +111,11 @@ struct NftDetail: View {
           }
         }
       }
-      tokens.map { tokens in
+      
+      switch(tokens,properties) {
+      case (.none,.none):
+        EmptyView()
+      case (.some(let tokens),.none):
         VStack {
           ZStack {
             Divider()
@@ -116,6 +127,50 @@ struct NftDetail: View {
               .background(Color.systemBackground)
           }
           SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+        }
+      case (.none,.some(let properties)):
+        VStack {
+          ZStack {
+            Divider()
+            Text("Attributes")
+              .font(.caption).italic()
+              .foregroundColor(.secondaryLabel)
+              .padding(.trailing)
+              .padding(.leading)
+              .background(Color.systemBackground)
+          }
+          TokenPropertiesGrid(properties: properties)
+        }
+      case (.some(let tokens),.some(let properties)):
+        VStack(spacing:0) {
+          
+          ZStack {
+            
+            Picker(selection: Binding<Int>(
+                    get: { self.similarSectionPage.rawValue },
+                    set: { tag in
+                      withAnimation { // needed explicit for transitions
+                        self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                      }
+                    }),
+                   label: Text("")) {
+              Text("Similar \(similarTokens?.label ?? "Tokens")")
+                .tag(SimilarSectionPage.similar.rawValue)
+              Text("Attribures")
+                .tag(SimilarSectionPage.attributes.rawValue)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .colorMultiply(.orange)
+            .font(.caption)
+            .padding([.trailing,.leading])
+          }
+          
+          switch(self.similarSectionPage) {
+          case .similar:
+            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+          case .attributes:
+            TokenPropertiesGrid(properties: properties)
+          }
         }
       }
     }
@@ -154,12 +209,8 @@ struct NftDetail: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      _ = similarTokens.map { similarTokens in
-        Promise.value(similarTokens.get(nft.tokenId))
-          .done(on:.main) { tokens in
-            self.tokens = tokens
-          }.catch { print($0) }
-      }
+      self.tokens = similarTokens?.get(nft.tokenId)
+      self.properties = similarTokens?.getProperties(nft.tokenId)
     }
   }
 }

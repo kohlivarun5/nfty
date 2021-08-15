@@ -79,6 +79,9 @@
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
+		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
+		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
 		4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
 		4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
@@ -246,6 +249,9 @@
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
+		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
+		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
 		4FA02CC62650469900B0B9C5 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsCollectionContract.swift; sourceTree = "<group>"; };
 		4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCollectionContract.swift; sourceTree = "<group>"; };
@@ -537,6 +543,7 @@
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
+				4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -562,30 +569,32 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
+				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
+				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
+				4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */,
+				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
+				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
 				4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */,
 				4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */,
+				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
+				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
+				4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */,
+				4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */,
+				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
+				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
+				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
+				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
+				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
+				4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */,
+				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
+				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
 				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
 				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
 				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
 				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
-				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
-				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
-				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
-				4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */,
-				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
-				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
-				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
-				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
-				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
-				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
 				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
 				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
-				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
-				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
-				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
-				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
-				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
-				4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 			);
@@ -795,9 +804,11 @@
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
+				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
 				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
@@ -886,6 +897,7 @@
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F6AC07D26AD17B0000A7539 /* WalletConnectModel.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
+				4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */,
 				4F6AC08626AE1C8B000A7539 /* TokenBuyView.swift in Sources */,
 				4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */,
 				4F0A170826C616FF0025259F /* DappLink.swift in Sources */,
