@@ -221,7 +221,6 @@ let CompositeCollection = CompositeRecentTradesObject([
   ),
   contract:CoolCats_Contract),
   
-  /*
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
@@ -244,7 +243,6 @@ let CompositeCollection = CompositeRecentTradesObject([
     rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
   ),
   contract:DeadFellaz_Contract),
- */
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

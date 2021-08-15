@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct TokenPropertiesGrid: View {
-  @Environment(\.colorScheme) var colorScheme
-  
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   
   var body: some View {
@@ -30,15 +28,12 @@ struct TokenPropertiesGrid: View {
             .bold()
           }
           .padding(10)
-          .foregroundColor(colorScheme == .dark ? .orange : .label)
           .background(
             RoundedCorners(
-              color:
-                colorScheme == .dark
-                ? .tertiarySystemBackground
-                : .flatOrange,
+              color: .secondarySystemBackground,
               tl: 10, tr: 10, bl: 10, br: 10)
           )
+          .colorMultiply(.flatOrange)
           .padding(5)
         }
       }
