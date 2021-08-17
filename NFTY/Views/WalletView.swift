@@ -37,11 +37,11 @@ struct WalletView: View {
           case .owned:
             WalletTokensView(tokens: getOwnerTokens(address))
           case .bids:
-            ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy)
+            ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy,emptyMessage:"No Active Bids")
           case .sales:
-            ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell)
+            ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell,emptyMessage:"No Active Sales")
           case .offers:
-            ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy)
+            ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy,emptyMessage:"No Active Offers")
           }
           
           Picker(selection: Binding<Int>(
