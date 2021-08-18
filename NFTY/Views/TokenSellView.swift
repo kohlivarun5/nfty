@@ -16,7 +16,7 @@ struct TokenSellView: View {
   let samples:[String]
   let themeColor : Color
   let themeLabelColor : Color
-  let size : NftImage.Size
+  let size : NftImageView.Size
   let rarityRank : RarityRanking?
   let tradeActions : TokenTradeInterface
   

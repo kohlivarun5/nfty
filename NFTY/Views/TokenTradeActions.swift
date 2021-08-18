@@ -16,7 +16,7 @@ struct TokenTradeActions: View {
   let samples:[String]
   let themeColor : Color
   let themeLabelColor : Color
-  let size : NftImage.Size
+  let size : NftImageView.Size
   let rarityRank : RarityRanking?
   
   @StateObject var userSettings = UserSettings()
@@ -41,7 +41,7 @@ struct TokenTradeActions: View {
     samples:[String],
     themeColor : Color,
     themeLabelColor : Color,
-    size : NftImage.Size,
+    size : NftImageView.Size,
     rarityRank : RarityRanking?) {
     
     self.nft = nft

@@ -180,7 +180,21 @@ struct NftDetail: View {
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
                label: { BackButton() }),
-      trailing: Button(action: {
+      trailing:
+        
+        
+        SheetButton(content: {
+          Image(systemName: "arrowshape.turn.up.forward.circle")
+            .foregroundColor(Color(UIColor.darkGray))
+        },sheetContent: {
+          ExportNFTImageView(nft: nft, samples: samples, themeColor: themeColor, themeLabelColor: themeLabelColor)
+        })
+      
+        // https://stackoverflow.com/questions/42088863/excluding-instagram-share-option-from-uiactivtyviewcontroller-ios-swift
+      
+      /*
+        
+        Button(action: {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "nftygo.com"
@@ -190,9 +204,11 @@ struct NftDetail: View {
           URLQueryItem(name: "tokenId", value: String(nft.tokenId))
         ]
         guard let urlShare = components.url else { return }
+          
+          let image = ExportNFTImageView(nft: nft, samples: samples, themeColor: themeColor, themeLabelColor: themeLabelColor).snapshot()
         
         // https://stackoverflow.com/a/64962982
-        let shareActivity = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
+        let shareActivity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         if let vc = UIApplication.shared.windows.first?.rootViewController {
           shareActivity.popoverPresentationController?.sourceView = vc.view
           //Setup share activity position on screen on bottom center
@@ -204,6 +220,7 @@ struct NftDetail: View {
         Image(systemName: "arrowshape.turn.up.forward.circle")
           .foregroundColor(Color(UIColor.darkGray))
       })
+ */
     )
     
     .ignoresSafeArea(edges: .top)

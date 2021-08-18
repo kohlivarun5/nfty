@@ -96,7 +96,7 @@ struct NftIpfsImageView: View {
   }
 }
 
-struct NftImage: View {
+struct NftImageView: View {
   var nft:NFT
   var samples:[String]
   var themeColor : Color
@@ -108,6 +108,7 @@ struct NftImage: View {
     case medium
     case normal
     case large
+    case xlarge
   }
   
   var size : Size
@@ -124,6 +125,8 @@ struct NftImage: View {
       return 18
     case .large:
       return 23
+    case .xlarge:
+      return 25
     }
   }
   
@@ -138,7 +141,7 @@ struct NftImage: View {
       return 192
     case .normal:
       return 192
-    case .large:
+    case .large,.xlarge:
       return 288
     }
   }
@@ -154,7 +157,7 @@ struct NftImage: View {
       return nil
     case .normal:
       return 45
-    case .large:
+    case .large,.xlarge:
       return nil
     }
   }
@@ -170,7 +173,7 @@ struct NftImage: View {
       return nil
     case .normal:
       return 15
-    case .large:
+    case .large,.xlarge:
       return nil
     }
   }
@@ -188,8 +191,23 @@ struct NftImage: View {
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
         NftIpfsImageView(image:ipfs.image,samples:samples)
-        
       }
+    }
+  }
+}
+
+struct NftImage: View {
+  var nft:NFT
+  var samples:[String]
+  var themeColor : Color
+  var themeLabelColor : Color
+  var size : NftImageView.Size
+  
+  
+  
+  var body: some View {
+    ZStack {
+      NftImageView(nft: nft, samples: samples, themeColor: themeColor, themeLabelColor: themeLabelColor, size: size)
       HStack {
         Spacer()
         switch(size) {
@@ -198,7 +216,7 @@ struct NftImage: View {
             FavButton(nft:nft,size:.medium,color:themeLabelColor)
             Spacer()
           }
-        case .large,.medium:
+        case .xlarge,.large,.medium:
           VStack {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)

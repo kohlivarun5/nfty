@@ -52,7 +52,7 @@ struct RoundedImage: View {
     }
   }
   
-  private func mediaSize(_ width:Width) -> NftImage.Size {
+  private func mediaSize(_ width:Width) -> NftImageView.Size {
     switch(width) {
     case .normal:
       return .normal
