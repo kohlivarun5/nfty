@@ -89,7 +89,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Apes",nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json",
+        propertiesJsonFileName:"BAYC_attributeScores.json"),
       rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
     ),
     contract:baycContract),
