@@ -98,6 +98,7 @@ class FameLadySquad_Contract : ContractInterface {
       
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
       response(NFTWithPrice(
         nft:NFT(
@@ -109,14 +110,14 @@ class FameLadySquad_Contract : ContractInterface {
         indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
               .map {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     price:price,
                     blockNumber:log.blockNumber?.quantity,
-                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                    type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
         }
@@ -128,27 +129,26 @@ class FameLadySquad_Contract : ContractInterface {
     return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
-      
-      let image = Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(image)),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy {
           ObservablePromise(
             promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
               .map {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     price:price,
                     blockNumber:log.blockNumber?.quantity,
-                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                    type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
         }
@@ -173,16 +173,8 @@ class FameLadySquad_Contract : ContractInterface {
         case .some(let p):
           return p
         case .none:
-          let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
-          let transerFetcher = LogsFetcher(
-            event:self.ethContract.Transfer,
-            fromBlock:self.ethContract.initFromBlock,
-            address:self.contractAddressHex,
-            indexedTopics: [nil,nil,tokenIdTopic],
-            blockDecrements: 100000)
-          
           let p =
-            self.ethContract.getTokenHistory(tokenId,fetcher:transerFetcher)
+            self.ethContract.getTokenHistory(tokenId)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
