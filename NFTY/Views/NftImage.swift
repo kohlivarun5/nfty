@@ -23,7 +23,7 @@ struct NftImageImpl: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .padding()
-          .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+          // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
           .blur(radius:20)
       }
     ) { url in
@@ -35,7 +35,7 @@ struct NftImageImpl: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
-            .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+            // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
         .diskCacheExpiration(.never)
@@ -62,7 +62,7 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(15)
-            .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+            // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
       },
@@ -74,7 +74,7 @@ struct NftIpfsImageView: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
               .padding(15)
-              .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+              // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
               .blur(radius:20)
           }
         case .some(let uiImage):

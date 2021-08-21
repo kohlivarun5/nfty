@@ -101,7 +101,7 @@ struct FeedView: View {
                       .resizable()
                       .aspectRatio(contentMode: .fit)
                       .padding()
-                      .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+                      // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
                       .background(info.themeColor)
                       .blur(radius:20)
                     ProgressView()
