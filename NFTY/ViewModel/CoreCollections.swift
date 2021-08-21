@@ -104,7 +104,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Ladies",nearestTokensFileName:"FameLadySquad_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Ladies",
+        nearestTokensFileName:"FameLadySquad_nearestTokens.json",
+        propertiesJsonFileName:"FameLadySquad_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(FLS_rarityRanks)
     ),
     contract:fameLadyContract),
