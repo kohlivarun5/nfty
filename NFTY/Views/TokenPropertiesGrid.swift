@@ -18,12 +18,13 @@ struct TokenPropertiesGrid: View {
           GridItem(.fixed(70)),
         ]
       ) {
-        ForEach(properties.indices, id: \.self) { index in
-          let item = properties[index];
+        let sorted = properties.sorted { $0.percentile < $1.percentile }
+        ForEach(sorted.indices, id: \.self) { index in
+          let item = sorted[index];
           VStack(spacing:5) {
             Text("\(item.name.capitalized): \(item.value.capitalized)")
             Text(
-              String(format: "%.1f%%", item.percentile * 100)
+              String(format: item.percentile > 0.019 ? "%.f%%" : "%.1f%%", item.percentile * 100)
             )
             .bold()
           }

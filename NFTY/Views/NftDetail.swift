@@ -24,10 +24,10 @@ struct NftDetail: View {
   @State var rank : UInt? = nil
   
   enum SimilarSectionPage : Int {
-    case similar = 0
-    case attributes = 1
+    case attributes = 0
+    case similar = 1
   }
-  @State var similarSectionPage : SimilarSectionPage = .similar
+  @State var similarSectionPage : SimilarSectionPage = .attributes
   
   @State var tokens : [UInt]? = nil
   @State var properties : [SimilarTokensGetter.TokenAttributePercentile]? = nil
@@ -154,10 +154,10 @@ struct NftDetail: View {
                       }
                     }),
                    label: Text("")) {
-              Text("Similar \(similarTokens?.label ?? "Tokens")")
-                .tag(SimilarSectionPage.similar.rawValue)
               Text("Attributes")
                 .tag(SimilarSectionPage.attributes.rawValue)
+              Text("Similar \(similarTokens?.label ?? "Tokens")")
+                .tag(SimilarSectionPage.similar.rawValue)
             }
             .pickerStyle(SegmentedPickerStyle())
             .colorMultiply(.orange)
