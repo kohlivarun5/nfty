@@ -71,7 +71,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"AsciiPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Punks",
+        nearestTokensFileName:"AsciiPunks_nearestTokens.json",
+        propertiesJsonFileName:"AsciiPunks_attributeScores.json"),
       rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
     ),
     contract:asciiPunksContract),

@@ -15,7 +15,7 @@ struct IpfsDownloader {
   
   let ipfsHost : String? = nil//"http://127.0.0.1:8080/ipfs/"
   
-  func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
+  func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenUriData> {
     return Promise { seal in
       
       var uri = "\(baseUri)/\(tokenId)"
@@ -58,7 +58,7 @@ struct IpfsDownloader {
           seal.reject(error)
         }
       }).resume()
-    }
+    } /*
     .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:Erc721TokenUriData) -> Promise<Erc721TokenData> in
       
       return Promise { seal in
@@ -93,6 +93,6 @@ struct IpfsDownloader {
           }
         }).resume()
       }
-    }
+    } */
   }
 }
