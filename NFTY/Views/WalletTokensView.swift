@@ -88,7 +88,7 @@ struct WalletTokensView: View {
         } else {
           ScrollView {
             WalletOverview(address:tokens.ownerAddress)
-            LazyVStack {
+            LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())]) {
               ForEach(tokens.tokens,id:\.id) { nft in
                 let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
                 
@@ -100,7 +100,7 @@ struct WalletTokensView: View {
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     rarityRank: info.rarityRanking,
-                    width: .normal
+                    width:.narrow
                   )
                   .padding()
                   .onTapGesture {
