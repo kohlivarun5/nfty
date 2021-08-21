@@ -156,7 +156,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Cyphers",nearestTokensFileName:"CypherCity_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Cyphers",
+        nearestTokensFileName:"CypherCity_nearestTokens.json",
+        propertiesJsonFileName:"CypherCity_attributeScores.json"),
+      ),
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
     contract:CYPHER_CITY_Contract),
