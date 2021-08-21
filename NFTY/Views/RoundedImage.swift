@@ -66,7 +66,7 @@ struct RoundedImage: View {
     case .normal:
       return 20
     case .narrow:
-      return 10
+      return 20
     }
   }
   

@@ -61,7 +61,7 @@ struct NftIpfsImageView: View {
           Image(sample)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .padding(15)
+            .padding(10)
             // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
@@ -73,7 +73,7 @@ struct NftIpfsImageView: View {
             Image(sample)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .padding(15)
+              .padding(10)
               // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
               .blur(radius:20)
           }
@@ -82,7 +82,7 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .padding(15)
+            .padding(10)
         }
       })
   }
