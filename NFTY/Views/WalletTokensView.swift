@@ -88,38 +88,51 @@ struct WalletTokensView: View {
         } else {
           ScrollView {
             WalletOverview(address:tokens.ownerAddress)
-            LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())]) {
-              ForEach(tokens.tokens,id:\.id) { nft in
-                let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
+            
+            LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())],pinnedViews: [.sectionHeaders]) {
+              
+              ForEach(
+                Dictionary(
+                  grouping:tokens.tokens,
+                  by: { nft in nft.nft.address }).sorted(by: { $0.key > $1.key }),
+                id:\.key) { address,tokens in
                 
-                ZStack {
-                  RoundedImage(
-                    nft:nft.nft,
-                    price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    rarityRank: info.rarityRanking,
-                    width:.narrow
-                  )
-                  .padding()
-                  .onTapGesture {
-                    //perform some tasks if needed before opening Destination view
-                    self.selectedTokenId = nft.nft.tokenId
+                let info = collectionsFactory.getByAddress(address)!.info;
+                
+                
+                ForEach(tokens,id:\.id) { nft in
+                  
+                  ZStack {
+                    RoundedImage(
+                      nft:nft.nft,
+                      price:.lazy(nft.indicativePriceWei),
+                      sample:info.sample,
+                      themeColor:info.themeColor,
+                      themeLabelColor:info.themeLabelColor,
+                      rarityRank: info.rarityRanking,
+                      width:.narrow
+                    )
+                    .padding(10)
+                    .onTapGesture {
+                      //perform some tasks if needed before opening Destination view
+                      self.selectedTokenId = nft.nft.tokenId
+                    }
+                    NavigationLink(destination: NftDetail(
+                      nft:nft.nft,
+                      price:.lazy(nft.indicativePriceWei),
+                      sample:info.sample,
+                      themeColor:info.themeColor,
+                      themeLabelColor:info.themeLabelColor,
+                      similarTokens:info.similarTokens,
+                      rarityRank:info.rarityRanking,
+                      hideOwnerLink:false
+                    ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                    .hidden()
                   }
-                  NavigationLink(destination: NftDetail(
-                    nft:nft.nft,
-                    price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRanking,
-                    hideOwnerLink:false
-                  ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                  .hidden()
                 }
               }
+              
+              
             }
           }
         }
