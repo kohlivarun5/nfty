@@ -18,7 +18,9 @@ struct TokenPropertiesGrid: View {
           GridItem(.fixed(70)),
         ]
       ) {
-        let sorted = properties.sorted { $0.percentile < $1.percentile }
+        let sorted = properties
+          .sorted { $0.percentile < $1.percentile }
+          .filter { $0.percentile < 1 }
         ForEach(sorted.indices, id: \.self) { index in
           let item = sorted[index];
           VStack(spacing:5) {
