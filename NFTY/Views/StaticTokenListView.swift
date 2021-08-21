@@ -18,12 +18,12 @@ struct StaticTokenListView: View {
         ForEach(nfts.indices,id:\.self) { index in
           let nft = nfts[index];
           let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-          let samples = [info.url1,info.url2,info.url3,info.url4];
+          
           ZStack {
             RoundedImage(
               nft:nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               rarityRank:info.rarityRanking,
@@ -34,7 +34,7 @@ struct StaticTokenListView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,

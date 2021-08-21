@@ -91,13 +91,12 @@ struct FeedView: View {
             
             ForEach(sampleInfos.indices,id:\.self) { index in
               let info = sampleInfos[index]
-              let samples = [info.url1,info.url2,info.url3,info.url4];
               ZStack {
                 
                 VStack {
                   ZStack {
                     
-                    Image(samples[index % samples.count])
+                    Image(info.sample)
                       .interpolation(.none)
                       .resizable()
                       .aspectRatio(contentMode: .fit)
@@ -137,13 +136,13 @@ struct FeedView: View {
               let item = trades.recentTrades[index]
               let info = item.nft.info
               let nft = item.nft.nftWithPrice
-              let samples = [info.url1,info.url2,info.url3,info.url4];
+
               ZStack {
                                 
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   rarityRank:info.rarityRanking,
@@ -159,7 +158,7 @@ struct FeedView: View {
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,

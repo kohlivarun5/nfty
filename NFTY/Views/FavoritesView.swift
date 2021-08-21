@@ -95,12 +95,11 @@ struct FavoritesView: View {
             LazyVStack(pinnedViews:[.sectionHeaders]){
               ForEach(nfts,id:\.id) { nft in
                 let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-                let samples = [info.url1,info.url2,info.url3,info.url4];
                 ZStack {
                   RoundedImage(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    samples:samples,
+                    sample:info.sample,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     rarityRank:info.rarityRanking,
@@ -114,7 +113,7 @@ struct FavoritesView: View {
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    samples:samples,
+                    sample:info.sample,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens,

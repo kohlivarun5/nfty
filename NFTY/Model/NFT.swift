@@ -247,10 +247,7 @@ class RarityRankingImpl : RarityRanking {
 
 struct CollectionInfo {
   let address: String
-  let url1: String
-  let url2: String
-  let url3: String
-  let url4: String
+  let sample: String
   let name: String
   let webLink: URL
   let themeColor:Color

@@ -13,7 +13,7 @@ import Web3
 struct TokenSellView: View {
   let nft:NFT
   let price:TokenPriceType
-  let samples:[String]
+  let sample:String
   let themeColor : Color
   let themeLabelColor : Color
   let size : NftImage.Size
@@ -52,7 +52,7 @@ struct TokenSellView: View {
         RoundedImage(
           nft:nft,
           price:price,
-          samples:samples,
+          sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
           rarityRank: rarityRank,
@@ -191,7 +191,7 @@ struct TokenSellView_Previews: PreviewProvider {
       TokenSellView(
         nft:SampleToken,
         price:.eager(NFTPriceInfo(price:123450,blockNumber: nil,type:.ask)),
-        samples:SAMPLE_PUNKS,
+        sample:SAMPLE_PUNKS[0],
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,
         size:.normal,

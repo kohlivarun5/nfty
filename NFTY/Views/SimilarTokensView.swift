@@ -25,12 +25,11 @@ struct SimilarTokensView: View {
         LazyHStack {
           ForEach(nfts.indices,id: \.self) { index in
             let nft = nfts[index];
-            let samples = [info.url1,info.url2,info.url3,info.url4];
             ZStack {
               RoundedImage(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
-                samples:samples,
+                sample:info.sample,
                 themeColor:info.subThemeColor,
                 themeLabelColor:info.themeLabelColor,
                 rarityRank: info.rarityRanking,
@@ -45,7 +44,7 @@ struct SimilarTokensView: View {
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
-                samples:samples,
+                sample:info.sample,
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
                 similarTokens:info.similarTokens,

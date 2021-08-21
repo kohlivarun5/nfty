@@ -31,9 +31,8 @@ struct AsciiText : View {
 struct AsciiPunkView: View {
   
   @ObservedObject var asciiPunk : ObservablePromise<Media.AsciiPunk?>
-  var samples : [String] // TODO Use
-  var themeColor : Color
-  var fontSize : CGFloat
+  let themeColor : Color
+  let fontSize : CGFloat
   var body: some View {
     VStack {
       ObservedPromiseView(
@@ -59,8 +58,6 @@ struct AsciiPunkView_Previews: PreviewProvider {
   static var previews: some View {
     AsciiPunkView(asciiPunk:
                     ObservablePromise(resolved:Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │")),
-                  
-                  samples:SAMPLE_PUNKS,
                   themeColor:Color.secondary,
                   fontSize:20)
   }

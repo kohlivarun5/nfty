@@ -15,7 +15,7 @@ struct TokenTradeView: View {
   
   let nft:NFT
   let price:TokenPriceType
-  let samples:[String]
+  let sample:String
   let themeColor : Color
   let themeLabelColor : Color
   let size : NftImage.Size
@@ -32,7 +32,7 @@ struct TokenTradeView: View {
       VStack(spacing:0) {
         NftImage(
           nft:nft,
-          samples:samples,
+          sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
           size:.small
@@ -83,7 +83,7 @@ struct TokenTradeView: View {
       TokenTradeActions(
         nft: nft,
         price:price,
-        samples: samples,
+        sample: sample,
         themeColor:themeColor,
         themeLabelColor:themeLabelColor,
         size: .small,
@@ -116,7 +116,7 @@ struct TokenTradeView_Previews: PreviewProvider {
     TokenTradeView(
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-      samples:SAMPLE_PUNKS,
+      sample:SAMPLE_PUNKS[0],
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,

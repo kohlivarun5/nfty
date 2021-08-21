@@ -12,7 +12,7 @@ struct RoundedImage: View {
   
   var nft:NFT
   var price:TokenPriceType
-  var samples : [String]
+  var sample : String
   var themeColor : Color
   var themeLabelColor : Color
   var rarityRank : RarityRanking?
@@ -26,7 +26,7 @@ struct RoundedImage: View {
   
   init(nft:NFT,
        price:TokenPriceType,
-       samples : [String],
+       sample : String,
        themeColor : Color,
        themeLabelColor : Color,
        rarityRank : RarityRanking?,
@@ -35,7 +35,7 @@ struct RoundedImage: View {
     
     self.nft = nft
     self.price = price
-    self.samples = samples
+    self.sample = sample
     self.themeColor = themeColor
     self.themeLabelColor = themeLabelColor
     self.rarityRank = rarityRank
@@ -73,7 +73,7 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack(spacing:0) {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
+      NftImage(nft:nft,sample:sample,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
       
       switch(width) {
       case .narrow:
@@ -104,7 +104,7 @@ struct RoundedImage: View {
             TokenTradeView(
               nft: nft,
               price:price,
-              samples: samples,
+              sample: sample,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .xsmall,
@@ -141,7 +141,7 @@ struct RoundedImage_Previews: PreviewProvider {
       RoundedImage(
         nft:SampleToken,
         price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-        samples:SAMPLE_PUNKS,
+        sample:SAMPLE_PUNKS[0],
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,
         rarityRank: SampleCollection.info.rarityRanking,
