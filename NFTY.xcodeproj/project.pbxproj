@@ -131,6 +131,7 @@
 		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
 		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
 		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
+		4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
 		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
 		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
@@ -300,6 +301,7 @@
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
+		4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsciiPunksContract.swift; sourceTree = "<group>"; };
 		4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeRanks.json; sourceTree = "<group>"; };
 		4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeScores.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */,
 				4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */,
 				4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */,
+				4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -943,6 +946,7 @@
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
+				4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */,
 				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
@@ -1194,7 +1198,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1221,7 +1225,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
