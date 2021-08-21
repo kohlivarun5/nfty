@@ -126,7 +126,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Hodlers",nearestTokensFileName:"CryptoHodlers_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Hodlers",
+        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
+        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
     contract:CRHDL_Contract),
@@ -159,7 +163,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       similarTokens : SimilarTokensGetter(
         label:"Cyphers",
         nearestTokensFileName:"CypherCity_nearestTokens.json",
-        propertiesJsonFileName:"CypherCity_attributeScores.json"),
+        propertiesJsonFileName:"CypherCity_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
