@@ -34,9 +34,11 @@ struct SimilarTokensView: View {
                 themeLabelColor:info.themeLabelColor,
                 size:.xsmall
               )
+              .frame(maxHeight:200)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .shadow(color:.secondary,radius:5)
-              .padding(10)
+              .padding([.top,.bottom],12)
+              .padding([.leading,.trailing],8)
               //.scaleEffect(0.9)
               .onTapGesture {
                 //perform some tasks if needed before opening Destination view

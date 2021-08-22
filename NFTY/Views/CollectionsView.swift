@@ -33,8 +33,8 @@ struct CollectionsView: View {
       
       LazyVGrid(
         columns: Array(
-          repeating:GridItem(.flexible(maximum:200)),
-          count:horizontalSizeClass == .some(.compact) ? 2 : 4)
+          repeating:GridItem(.flexible(maximum:160)),
+          count:horizontalSizeClass == .some(.compact) ? 2 : 3)
       ) {
         
         ForEach(collections,id:\.info.name) { collection in
@@ -63,7 +63,8 @@ struct CollectionsView: View {
             NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}
               .hidden()
           }
-          .padding()
+          .padding([.leading,.trailing],8)
+          .padding([.top,.bottom],10)
           .onTapGesture {
             //perform some tasks if needed before opening Destination view
             self.action = collection.info.address

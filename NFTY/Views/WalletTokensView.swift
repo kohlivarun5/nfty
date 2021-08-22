@@ -92,8 +92,8 @@ struct WalletTokensView: View {
             
             LazyVGrid(
               columns: Array(
-                repeating:GridItem(.flexible(maximum:200)),
-                count:horizontalSizeClass == .some(.compact) ? 2 : 4),
+                repeating:GridItem(.flexible(maximum:160)),
+                count:horizontalSizeClass == .some(.compact) ? 2 : 3),
               pinnedViews: [.sectionHeaders])
             {
               
@@ -119,7 +119,8 @@ struct WalletTokensView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                     .shadow(color:.secondary,radius:10)
-                    .padding(10)
+                    .padding([.top,.bottom],10)
+                    .padding([.leading,.trailing],8)
                     .onTapGesture {
                       //perform some tasks if needed before opening Destination view
                       self.selectedTokenId = nft.nft.tokenId
