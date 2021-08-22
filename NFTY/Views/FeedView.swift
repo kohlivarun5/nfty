@@ -121,7 +121,7 @@ struct FeedView: View {
                 .frame(width:250)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 2))
+                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
               }
               .padding()
             }
