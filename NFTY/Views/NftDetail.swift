@@ -202,7 +202,7 @@ struct NftDetail: View {
         }
       }, label: {
         Image(systemName: "arrowshape.turn.up.forward.circle")
-          .foregroundColor(Color(UIColor.darkGray))
+          .foregroundColor(themeLabelColor)
       })
     )
     

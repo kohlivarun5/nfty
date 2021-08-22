@@ -38,7 +38,8 @@ struct TokenTradeView: View {
           size:.small
         )
         .frame(height:height)
-        .padding(.top,20)
+        .padding(.top,isSheet ? 10 : 20)
+        .padding(.bottom,10)
         .background(themeColor)
         
         HStack {
