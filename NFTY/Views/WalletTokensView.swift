@@ -118,9 +118,8 @@ struct WalletTokensView: View {
                       size:.small
                     )
                     .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                    .shadow(color:.secondary,radius:10)
-                    .padding([.top,.bottom],10)
-                    .padding([.leading,.trailing],8)
+                    .shadow(color:.secondary,radius:5)
+                    .padding(10)
                     .onTapGesture {
                       //perform some tasks if needed before opening Destination view
                       self.selectedTokenId = nft.nft.tokenId
