@@ -176,7 +176,7 @@ struct NftImage: View {
     case .small:
       return nil
     case .medium:
-      return 15
+      return 10
     case .normal:
       return 15
     case .large:
