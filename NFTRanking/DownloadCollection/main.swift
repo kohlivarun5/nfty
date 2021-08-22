@@ -12,10 +12,10 @@ import BigInt
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
 
 let downloader = IpfsDownloader(
-  name: "AsciiPunks",
-  baseUri:"https://api.asciipunks.com/punks")
-let firstIndex = 1
-let lastIndex = 2048
+  name: "CoolCats",
+  baseUri:"https://api.coolcatsnft.com/cat/")
+let firstIndex = 0
+let lastIndex = 9932
 
 let collectionName = downloader.name
 
@@ -42,8 +42,8 @@ func saveToken(_ tokenId : Int) -> Promise<Void> {
   return downloader.tokenData(BigUInt(tokenId))
     .map { data -> Void in
       print("Downloaded \(tokenId)")
-      // let filename = getImageFileName(collectionName,UInt(tokenId))
-      // try! data.image.write(to: filename)
+      let filename = getImageFileName(collectionName,UInt(tokenId))
+      try! data.image.write(to: filename)
       saveJSON(getAttributesFileName(collectionName,UInt(tokenId)),data.attributes)
     }
 }
@@ -65,10 +65,9 @@ while tokenId < (lastIndex + 1) {
       let fileName = getImageFileName(collectionName,UInt(tokenId)).path
       let attrFileName = getAttributesFileName(collectionName,UInt(tokenId)).path
       let p =
-        // fileManager.fileExists(atPath:fileName)
-        // && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
-        // &&
-        fileManager.fileExists(atPath:attrFileName)
+        fileManager.fileExists(atPath:fileName)
+        && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
+        && fileManager.fileExists(atPath:attrFileName)
         ? Promise.value(tokenId+parallelCount)
         : saveToken(tokenId).map { tokenId + parallelCount }
       return p.map { index in
@@ -87,8 +86,8 @@ print("Done downloading. Verifing now")
 var indexMissing = false
 
 for index in firstIndex...lastIndex {
-  let path = getAttributesFileName(collectionName,UInt(index)).path
-  // indexMissing = indexMissing || !fileManager.fileExists(atPath:path)
+  let path = getImageFileName(collectionName,UInt(index)).path
+  indexMissing = indexMissing || !fileManager.fileExists(atPath:path)
   
   let attr = try fileManager.attributesOfItem(atPath: path)
   if (minFileSize > attr[FileAttributeKey.size] as! UInt64) {
