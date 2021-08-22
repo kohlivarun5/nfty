@@ -190,7 +190,11 @@ struct NftImage: View {
       case .image(let image):
         NftImageImpl(url:image.url,sample:sample,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk.ascii,themeColor:themeColor,fontSize:fontSize(size))
+        AsciiPunkView(
+          asciiPunk:asciiPunk.ascii,
+          themeColor:themeColor,
+          fontSize:fontSize(size),
+          padding:imagePadding(size))
       case .autoglyph(let autoglyph):
         AutoglyphView(autoglyph:autoglyph.autoglyph,themeColor:themeColor,width:autoglyphWidth(size))
           .padding(.top,autoglypPaddingTop(size))

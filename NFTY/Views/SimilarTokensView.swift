@@ -26,15 +26,17 @@ struct SimilarTokensView: View {
           ForEach(nfts.indices,id: \.self) { index in
             let nft = nfts[index];
             ZStack {
-              RoundedImage(
+              
+              NftImage(
                 nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
                 sample:info.sample,
-                themeColor:info.subThemeColor,
+                themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
-                rarityRank: info.rarityRanking,
-                width: .narrow
+                size:.xsmall
               )
+              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              .shadow(color:.secondary,radius:5)
+              .padding(10)
               //.scaleEffect(0.9)
               .onTapGesture {
                 //perform some tasks if needed before opening Destination view
