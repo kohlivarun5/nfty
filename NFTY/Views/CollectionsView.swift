@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CollectionsView: View {
   
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+  
   var collections : [Collection]
   
   @State private var showSorted = false
@@ -30,10 +32,9 @@ struct CollectionsView: View {
     ScrollView {
       
       LazyVGrid(
-        columns:[
-          GridItem(.flexible()),
-          GridItem(.flexible()),
-        ]
+        columns: Array(
+          repeating:GridItem(.flexible(maximum:200)),
+          count:horizontalSizeClass == .some(.compact) ? 2 : 4)
       ) {
         
         ForEach(collections,id:\.info.name) { collection in

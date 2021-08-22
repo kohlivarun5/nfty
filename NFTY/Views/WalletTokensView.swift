@@ -54,6 +54,7 @@ struct WalletOverview: View {
 }
 
 struct WalletTokensView: View {
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
   
   @ObservedObject var tokens : NftOwnerTokens
   @State private var selectedTokenId: UInt? = nil
@@ -89,7 +90,12 @@ struct WalletTokensView: View {
           ScrollView {
             WalletOverview(address:tokens.ownerAddress)
             
-            LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())],pinnedViews: [.sectionHeaders]) {
+            LazyVGrid(
+              columns: Array(
+                repeating:GridItem(.flexible(maximum:200)),
+                count:horizontalSizeClass == .some(.compact) ? 2 : 4),
+              pinnedViews: [.sectionHeaders])
+            {
               
               ForEach(
                 Dictionary(
