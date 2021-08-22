@@ -87,7 +87,6 @@ struct NFTYApp: App {
         
         NavigationView {
           WalletView()
-            .navigationBarTitle("Wallet",displayMode: .inline)
         }
         .tabItem {
           Label("Wallet",systemImage:"lock.rectangle.stack.fill")

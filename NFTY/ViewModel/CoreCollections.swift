@@ -33,10 +33,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoPunksContract.contractAddressHex,
-      url1:SAMPLE_PUNKS[0],
-      url2:SAMPLE_PUNKS[1],
-      url3:SAMPLE_PUNKS[2],
-      url4:SAMPLE_PUNKS[3],
+      sample:SAMPLE_PUNKS[0],
       name:"CryptoPunks",
       webLink: URL(string:"https://www.larvalabs.com/cryptopunks")!,
       themeColor:Color.yellow,
@@ -51,10 +48,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:autoGlyphsContract.contractAddressHex,
-      url1:SAMPLE_AUTOGLYPHS[0],
-      url2:SAMPLE_AUTOGLYPHS[1],
-      url3:SAMPLE_AUTOGLYPHS[2],
-      url4:SAMPLE_AUTOGLYPHS[3],
+      sample:SAMPLE_AUTOGLYPHS[0],
       name:"Autoglyphs",
       webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
       themeColor:Color.label,
@@ -69,10 +63,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:asciiPunksContract.contractAddressHex,
-      url1:SAMPLE_ASCII_PUNKS[0],
-      url2:SAMPLE_ASCII_PUNKS[1],
-      url3:SAMPLE_ASCII_PUNKS[2],
-      url4:SAMPLE_ASCII_PUNKS[3],
+      sample:SAMPLE_ASCII_PUNKS[0],
       name:"AsciiPunks",
       webLink: URL(string:"https://asciipunks.com")!,
       themeColor:Color.label,
@@ -80,17 +71,17 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"AsciiPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Punks",
+        nearestTokensFileName:"AsciiPunks_nearestTokens.json",
+        propertiesJsonFileName:"AsciiPunks_attributeScores.json"),
       rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
     ),
     contract:asciiPunksContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:baycContract.contractAddressHex,
-      url1:SAMPLE_BAYC[0],
-      url2:SAMPLE_BAYC[1],
-      url3:SAMPLE_BAYC[2],
-      url4:SAMPLE_BAYC[3],
+      sample:SAMPLE_BAYC[0],
       name:"BAYC",
       webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
       themeColor:Color.black,
@@ -98,17 +89,17 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Apes",nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json",
+        propertiesJsonFileName:"BAYC_attributeScores.json"),
       rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
     ),
     contract:baycContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:fameLadyContract.contractAddressHex,
-      url1:SAMPLE_FLS[0],
-      url2:SAMPLE_FLS[1],
-      url3:SAMPLE_FLS[2],
-      url4:SAMPLE_FLS[3],
+      sample:SAMPLE_FLS[0],
       name:"FameLadySquad",
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.black,
@@ -116,17 +107,18 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Ladies",nearestTokensFileName:"FameLadySquad_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Ladies",
+        nearestTokensFileName:"FameLadySquad_nearestTokens.json",
+        propertiesJsonFileName:"FameLadySquad_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(FLS_rarityRanks)
     ),
     contract:fameLadyContract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:CRHDL_Contract.contractAddressHex,
-      url1:SAMPLE_CRHDL[0],
-      url2:SAMPLE_CRHDL[1],
-      url3:SAMPLE_CRHDL[2],
-      url4:SAMPLE_CRHDL[3],
+      sample:SAMPLE_CRHDL[0],
       name:CRHDL_Contract.name,
       webLink: URL(string:"https://cryptohodlers.io/")!,
       themeColor:Color.black,
@@ -134,17 +126,18 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Hodlers",nearestTokensFileName:"CryptoHodlers_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Hodlers",
+        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
+        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
     contract:CRHDL_Contract),
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:CROWNS_Contract.contractAddressHex,
-      url1:SAMPLE_CROWNS[0],
-      url2:SAMPLE_CROWNS[1],
-      url3:SAMPLE_CROWNS[2],
-      url4:SAMPLE_CROWNS[3],
+      sample:SAMPLE_CROWNS[0],
       name:CROWNS_Contract.name,
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.black,
@@ -159,10 +152,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:CYPHER_CITY_Contract.contractAddressHex,
-      url1:SAMPLE_CYPHER[0],
-      url2:SAMPLE_CYPHER[1],
-      url3:SAMPLE_CYPHER[2],
-      url4:SAMPLE_CYPHER[3],
+      sample:SAMPLE_CYPHER[0],
       name:CYPHER_CITY_Contract.name,
       webLink: URL(string:"https://cyphercity.io/home")!,
       themeColor:Color.black,
@@ -170,7 +160,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Cyphers",nearestTokensFileName:"CypherCity_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Cyphers",
+        nearestTokensFileName:"CypherCity_nearestTokens.json",
+        propertiesJsonFileName:"CypherCity_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
     ),
     contract:CYPHER_CITY_Contract),
@@ -178,10 +172,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:CCB_Contract.contractAddressHex,
-      url1:SAMPLE_CCB[0],
-      url2:SAMPLE_CCB[1],
-      url3:SAMPLE_CCB[2],
-      url4:SAMPLE_CCB[3],
+      sample:SAMPLE_CCB[0],
       name:CCB_Contract.name,
       webLink: URL(string:"https://cryptocannabisclub.com/")!,
       themeColor:Color.black,
@@ -201,10 +192,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:CoolCats_Contract.contractAddressHex,
-      url1:SAMPLE_COOL_CATS[0],
-      url2:SAMPLE_COOL_CATS[1],
-      url3:SAMPLE_COOL_CATS[2],
-      url4:SAMPLE_COOL_CATS[3],
+      sample:SAMPLE_COOL_CATS[0],
       name:CoolCats_Contract.name,
       webLink: URL(string:"https://www.coolcatsnft.com/")!,
       themeColor:Color.black,
@@ -224,10 +212,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
-      url1:SAMPLE_DEAD_FELLAZ[0],
-      url2:SAMPLE_DEAD_FELLAZ[1],
-      url3:SAMPLE_DEAD_FELLAZ[2],
-      url4:SAMPLE_DEAD_FELLAZ[3],
+      sample:SAMPLE_DEAD_FELLAZ[0],
       name:DeadFellaz_Contract.name,
       webLink: URL(string:"https://www.deadfellaz.io")!,
       themeColor:Color.black,
@@ -247,10 +232,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:Birdhouse_Contract.contractAddressHex,
-      url1:SAMPLE_TBH[0],
-      url2:SAMPLE_TBH[1],
-      url3:SAMPLE_TBH[2],
-      url4:SAMPLE_TBH[3],
+      sample:SAMPLE_TBH[0],
       name:Birdhouse_Contract.name,
       webLink: URL(string:"https://thebirdhouse.app")!,
       themeColor:Color.black,
@@ -270,10 +252,7 @@ let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
-      url1:SAMPLE_KITTIES[0],
-      url2:SAMPLE_KITTIES[1],
-      url3:SAMPLE_KITTIES[2],
-      url4:SAMPLE_KITTIES[3],
+      sample:SAMPLE_KITTIES[0],
       name:"CryptoKitties",
       webLink: URL(string:"https://www.cryptokitties.co")!,
       themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),

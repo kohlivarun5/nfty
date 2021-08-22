@@ -68,12 +68,11 @@ struct CollectionView: View {
         let data = sorted(recentTrades.recentTrades);
         ForEach(data.indices,id: \.self) { index in
           let nft = data[index];
-          let samples = [info.url1,info.url2,info.url3,info.url4];
           ZStack {
             RoundedImage(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               rarityRank: info.rarityRanking,
@@ -88,7 +87,7 @@ struct CollectionView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,

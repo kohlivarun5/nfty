@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CollectionsView: View {
   
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+  
   var collections : [Collection]
   
   @State private var showSorted = false
@@ -28,23 +30,20 @@ struct CollectionsView: View {
   
   var body: some View {
     ScrollView {
-      LazyVStack {
+      
+      LazyVGrid(
+        columns: Array(
+          repeating:GridItem(.flexible(maximum:160)),
+          count:horizontalSizeClass == .some(.compact) ? 2 : 3)
+      ) {
+        
         ForEach(collections,id:\.info.name) { collection in
           ZStack {
             
-            VStack{
-              VStack {
-                HStack {
-                  sampleImage(url:collection.info.url1,collection:collection)
-                  sampleImage(url:collection.info.url2,collection:collection)
-                }
-                HStack {
-                  sampleImage(url:collection.info.url3,collection:collection)
-                  sampleImage(url:collection.info.url4,collection:collection)
-                }
-              }
-              .padding(10)
-              .background(collection.info.collectionColor)
+            VStack {
+              sampleImage(url:collection.info.sample,collection:collection)
+                .padding(10)
+                .background(collection.info.collectionColor)
               
               
               HStack {
@@ -55,15 +54,17 @@ struct CollectionsView: View {
               
             }
             .border(Color.label)
-            .frame(width: 250.0)
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay(
-              RoundedRectangle(cornerRadius: 25, style: .continuous).stroke(Color.label, lineWidth: 4))
-            .padding()
+              RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.label, lineWidth: 2))
+            .shadow(color:.secondary,radius:5)
+            //.padding()
             
             NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}
               .hidden()
           }
+          .padding([.leading,.trailing],8)
+          .padding([.top,.bottom],10)
           .onTapGesture {
             //perform some tasks if needed before opening Destination view
             self.action = collection.info.address

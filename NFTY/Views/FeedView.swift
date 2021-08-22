@@ -91,17 +91,17 @@ struct FeedView: View {
             
             ForEach(sampleInfos.indices,id:\.self) { index in
               let info = sampleInfos[index]
-              let samples = [info.url1,info.url2,info.url3,info.url4];
               ZStack {
                 
                 VStack {
                   ZStack {
                     
-                    Image(samples[index % samples.count])
+                    Image(info.sample)
                       .interpolation(.none)
                       .resizable()
                       .aspectRatio(contentMode: .fit)
                       .padding()
+                      // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
                       .background(info.themeColor)
                       .blur(radius:20)
                     ProgressView()
@@ -121,7 +121,7 @@ struct FeedView: View {
                 .frame(width:250)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 2))
+                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
               }
               .padding()
             }
@@ -137,13 +137,13 @@ struct FeedView: View {
               let item = trades.recentTrades[index]
               let info = item.nft.info
               let nft = item.nft.nftWithPrice
-              let samples = [info.url1,info.url2,info.url3,info.url4];
+
               ZStack {
                                 
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   rarityRank:info.rarityRanking,
@@ -159,7 +159,7 @@ struct FeedView: View {
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,

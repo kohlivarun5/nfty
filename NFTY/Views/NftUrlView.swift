@@ -12,19 +12,17 @@ struct NftUrlView: View {
   let nft : NFTWithLazyPrice
   
   let info : CollectionInfo
-  let samples : [String]
   
   init(address:String, tokenId:UInt) {
     self.nft = collectionsFactory.getByAddress(address)!.data.contract.getToken(tokenId)
     self.info = collectionsFactory.getByAddress(nft.nft.address)!.info
-    self.samples = [info.url1,info.url2,info.url3,info.url4]
   }
   
   var body: some View {
     NftDetail(
       nft:nft.nft,
       price:.lazy(nft.indicativePriceWei),
-      samples:samples,
+      sample:info.sample,
       themeColor:info.themeColor,
       themeLabelColor:info.themeLabelColor,
       similarTokens:info.similarTokens,

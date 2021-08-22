@@ -13,14 +13,14 @@ struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  var nft:NFT
-  var price:TokenPriceType
-  var samples:[String]
-  var themeColor : Color
-  var themeLabelColor : Color
-  var similarTokens : SimilarTokensGetter?
-  var rarityRank : RarityRanking?
-  var hideOwnerLink : Bool
+  let nft:NFT
+  let price:TokenPriceType
+  let sample:String
+  let themeColor : Color
+  let themeLabelColor : Color
+  let similarTokens : SimilarTokensGetter?
+  let rarityRank : RarityRanking?
+  let hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
   enum SimilarSectionPage : Int {
@@ -41,7 +41,7 @@ struct NftDetail: View {
       ZStack {
         NftImage(
           nft:nft,
-          samples:samples,
+          sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
           size:.large
@@ -91,7 +91,7 @@ struct NftDetail: View {
             destination:TokenTradeView(
               nft: nft,
               price:price,
-              samples: samples,
+              sample: sample,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .small,
@@ -202,7 +202,7 @@ struct NftDetail: View {
         }
       }, label: {
         Image(systemName: "arrowshape.turn.up.forward.circle")
-          .foregroundColor(Color(UIColor.darkGray))
+          .foregroundColor(themeLabelColor)
       })
     )
     
@@ -220,7 +220,7 @@ struct NftDetail_Previews: PreviewProvider {
     NftDetail(
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-      samples:SAMPLE_PUNKS,
+      sample:SAMPLE_PUNKS[0],
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,

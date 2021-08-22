@@ -24,6 +24,19 @@ struct WalletView: View {
   
   @State private var tokensPage : TokensPage = .owned
   
+  private func title(_ tokensPage:TokensPage) -> String {
+    switch(self.tokensPage) {
+    case .owned:
+      return "Wallet"
+    case .bids:
+      return "Bids"
+    case .sales:
+      return "Sales"
+    case .offers:
+      return "Offers"
+    }
+  }
+  
   var body: some View {
     
     VStack {
@@ -67,6 +80,7 @@ struct WalletView: View {
         
       }
     }
+    .navigationBarTitle(title(self.tokensPage),displayMode: .inline)
     .navigationBarItems(
       trailing:
         Button(action: {

@@ -132,6 +132,16 @@
 		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
 		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
 		4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
+		4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
+		4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
+		4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */; };
+		4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */; };
+		4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */; };
+		4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */; };
+		4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */; };
+		4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
+		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
+		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
 		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
 		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
@@ -302,6 +312,16 @@
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
 		4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsciiPunksContract.swift; sourceTree = "<group>"; };
+		4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BAYC_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BAYC_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
+		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
 		4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeRanks.json; sourceTree = "<group>"; };
 		4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeScores.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
@@ -576,6 +596,16 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
+				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
+				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
+				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
+				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
+				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
+				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
+				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
+				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
+				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
 				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
 				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
@@ -803,27 +833,36 @@
 			files = (
 				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
+				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
 				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
+				4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */,
 				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
+				4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
 				4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */,
+				4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */,
 				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
+				4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */,
+				4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */,
 				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
 				4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */,
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
+				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
+				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
@@ -832,6 +871,7 @@
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
 				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
@@ -1198,7 +1238,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1225,7 +1265,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

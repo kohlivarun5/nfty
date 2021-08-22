@@ -11,35 +11,31 @@ import Kingfisher
 struct NftImageImpl: View {
   
   @ObservedObject var url : ObservablePromise<URL>
-  var samples : [String]
-  var themeColor : Color
+  let sample : String
+  let themeColor : Color
   var body: some View {
     
     ObservedPromiseView(
       data:url,
       progress: {
-        Image(
-          samples[
-            Int.random(in: 0..<samples.count)
-          ])
-        .interpolation(.none)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .padding()
-        .blur(radius:20)
+        Image(sample)
+          .interpolation(.none)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding()
+          // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
+          .blur(radius:20)
       }
     ) { url in
       
       KFImage.url(url)
         .placeholder {
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
+          Image(sample)
             .interpolation(.none)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
+            // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
         .diskCacheExpiration(.never)
@@ -55,20 +51,19 @@ struct NftImageImpl: View {
 struct NftIpfsImageView: View {
   
   @ObservedObject var image : ObservablePromise<Media.IpfsImage?>
-  var samples : [String]
+  var padding : CGFloat?
+  var sample : String
   var body: some View {
     
     ObservedPromiseView(
       data: image,
       progress: {
         ZStack {
-          Image(
-            samples[
-              Int.random(in: 0..<samples.count)
-            ])
+          Image(sample)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .padding(15)
+            .padding(padding ?? 0)
+            // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
       },
@@ -76,13 +71,11 @@ struct NftIpfsImageView: View {
         switch(ipfs?.image) {
         case .none:
           ZStack {
-            Image(
-              samples[
-                Int.random(in: 0..<samples.count)
-              ])
+            Image(sample)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .padding(15)
+              .padding(padding ?? 0)
+              // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
               .blur(radius:20)
           }
         case .some(let uiImage):
@@ -90,7 +83,7 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .padding(15)
+            .padding(padding ?? 0)
         }
       })
   }
@@ -98,7 +91,7 @@ struct NftIpfsImageView: View {
 
 struct NftImage: View {
   var nft:NFT
-  var samples:[String]
+  var sample:String
   var themeColor : Color
   var themeLabelColor : Color
   
@@ -133,7 +126,7 @@ struct NftImage: View {
     case .xsmall:
       return 64
     case .small:
-      return 180
+      return 120
     case .medium:
       return 192
     case .normal:
@@ -175,19 +168,39 @@ struct NftImage: View {
     }
   }
   
+  private func imagePadding(_ size:Size) -> CGFloat? {
+    // Multiples related to 64
+    switch (size) {
+    case .xsmall:
+      return nil
+    case .small:
+      return nil
+    case .medium:
+      return 10
+    case .normal:
+      return 15
+    case .large:
+      return 10
+    }
+  }
+  
   var body: some View {
     ZStack {
       switch(nft.media){
       case .image(let image):
-        NftImageImpl(url:image.url,samples:samples,themeColor:themeColor)
+        NftImageImpl(url:image.url,sample:sample,themeColor:themeColor)
       case .asciiPunk(let asciiPunk):
-        AsciiPunkView(asciiPunk:asciiPunk.ascii,samples:samples,themeColor:themeColor,fontSize:fontSize(size))
+        AsciiPunkView(
+          asciiPunk:asciiPunk.ascii,
+          themeColor:themeColor,
+          fontSize:fontSize(size),
+          padding:imagePadding(size))
       case .autoglyph(let autoglyph):
-        AutoglyphView(autoglyph:autoglyph.autoglyph,samples:samples,themeColor:themeColor,width:autoglyphWidth(size))
+        AutoglyphView(autoglyph:autoglyph.autoglyph,themeColor:themeColor,width:autoglyphWidth(size))
           .padding(.top,autoglypPaddingTop(size))
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
-        NftIpfsImageView(image:ipfs.image,samples:samples)
+        NftIpfsImageView(image:ipfs.image,padding:imagePadding(size), sample:sample)
         
       }
       HStack {
@@ -214,6 +227,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
   static var previews: some View {
-    NftImage(nft:SampleToken,samples:SAMPLE_PUNKS,themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal)
+    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal)
   }
 }
