@@ -36,7 +36,8 @@ struct AsciiPunkView: View {
   let fontSize : CGFloat
   let padding : CGFloat?
   var body: some View {
-    VStack {
+    VStack(spacing:0) {
+      Spacer()
       ObservedPromiseView(
         data:asciiPunk,
         progress: {
@@ -44,13 +45,16 @@ struct AsciiPunkView: View {
             Text(String(repeating: "\n", count: 12))
               .font(.system(size:fontSize, design: .monospaced))
               .foregroundColor(Color.systemBackground)
-              .padding(padding ?? 5)
+              .padding([.top,.bottom],padding)
+              .padding([.leading,.trailing],15 + (padding ?? 5))
             ProgressView()
               .progressViewStyle(CircularProgressViewStyle(tint: Color.tertiarySystemBackground))
               .scaleEffect(2,anchor: .center)
           }}) {
-        AsciiText(ascii:$0,fontSize: fontSize,padding:padding ?? 5)
+        AsciiText(ascii:$0,fontSize: fontSize,padding:padding ?? 0)
+          .padding([.leading,.trailing],15)
       }
+      Spacer()
     }
     .background(themeColor)
   }
