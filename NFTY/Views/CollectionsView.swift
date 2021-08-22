@@ -56,6 +56,7 @@ struct CollectionsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay(
               RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.label, lineWidth: 2))
+            .shadow(color:.secondary,radius:10)
             //.padding()
             
             NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}

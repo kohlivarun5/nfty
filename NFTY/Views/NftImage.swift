@@ -51,6 +51,7 @@ struct NftImageImpl: View {
 struct NftIpfsImageView: View {
   
   @ObservedObject var image : ObservablePromise<Media.IpfsImage?>
+  var padding : CGFloat?
   var sample : String
   var body: some View {
     
@@ -61,7 +62,7 @@ struct NftIpfsImageView: View {
           Image(sample)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .padding(10)
+            .padding(padding ?? 0)
             // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
             .blur(radius:20)
         }
@@ -73,7 +74,7 @@ struct NftIpfsImageView: View {
             Image(sample)
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .padding(10)
+              .padding(padding ?? 0)
               // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
               .blur(radius:20)
           }
@@ -82,7 +83,7 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .padding(10)
+            .padding(padding ?? 0)
         }
       })
   }
@@ -167,6 +168,22 @@ struct NftImage: View {
     }
   }
   
+  private func imagePadding(_ size:Size) -> CGFloat? {
+    // Multiples related to 64
+    switch (size) {
+    case .xsmall:
+      return nil
+    case .small:
+      return nil
+    case .medium:
+      return 15
+    case .normal:
+      return 15
+    case .large:
+      return 10
+    }
+  }
+  
   var body: some View {
     ZStack {
       switch(nft.media){
@@ -179,7 +196,7 @@ struct NftImage: View {
           .padding(.top,autoglypPaddingTop(size))
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
-        NftIpfsImageView(image:ipfs.image,sample:sample)
+        NftIpfsImageView(image:ipfs.image,padding:imagePadding(size), sample:sample)
         
       }
       HStack {

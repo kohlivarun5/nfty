@@ -103,15 +103,16 @@ struct WalletTokensView: View {
                 ForEach(tokens,id:\.id) { nft in
                   
                   ZStack {
-                    RoundedImage(
+                    
+                    NftImage(
                       nft:nft.nft,
-                      price:.lazy(nft.indicativePriceWei),
                       sample:info.sample,
                       themeColor:info.themeColor,
                       themeLabelColor:info.themeLabelColor,
-                      rarityRank: info.rarityRanking,
-                      width:.narrow
+                      size:.small
                     )
+                    .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                    .shadow(color:.secondary,radius:10)
                     .padding(10)
                     .onTapGesture {
                       //perform some tasks if needed before opening Destination view
