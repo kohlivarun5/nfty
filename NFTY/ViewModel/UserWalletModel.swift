@@ -12,6 +12,9 @@ import PromiseKit
 import SwiftUI
 
 class UserWallet: ObservableObject {
+  
+  @Environment(\.openURL) var openURL
+  
   @Published var walletAddress : EthereumAddress?
   @Published var walletConnectSession : Session?
   
@@ -35,13 +38,12 @@ class UserWallet: ObservableObject {
     }
   }
   
-  func saveWalletConnectSession(session:Session) {
+  func saveWalletConnectSession(session:Session,signature:String) {
     let sessionData = try! JSONEncoder().encode(session)
     NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
     DispatchQueue.main.async {
       self.walletConnectSession = session
     }
-    print(self.walletConnectSession)
   }
   
   func removeWalletConnectSession() {
@@ -154,32 +156,6 @@ class UserWallet: ObservableObject {
       return p
     }
     
-    func signMessage(message: String) -> Promise<EthereumData> {
-      
-      let p = Promise<EthereumData> { seal in
-        try? client.eth_signTypedData(
-          url: session.url,
-          account: self.account.hex(eip55: true),
-          message: message)
-        { res in
-          print(res)
-          seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          //seal.fulfill(Ethere
-        }
-      }
-      
-      let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
-      let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-      print("trust://wc?uri=\(uri)")
-      let url = URL(string:"trust://wc?uri=\(uri)")!
-      print(url)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
-        openURL(url)
-      }
-      
-      return p
-    }
-    
   }
   
   func walletProvider() -> WalletProvider? {
@@ -188,8 +164,6 @@ class UserWallet: ObservableObject {
       walletConnectSession.map { session in
         
         let client = Client(delegate: self, dAppInfo: session.dAppInfo)
-        //try? client.reconnect(to: session)
-        
         return WalletConnectProvider(
           account: account,
           client: client,
@@ -214,8 +188,37 @@ extension UserWallet: ClientDelegate {
     session.walletInfo?.accounts[safe:0].flatMap {
       try? EthereumAddress(hex:$0,eip55: false)
     }.map {
-      self.saveWalletConnectSession(session: session)
       self.saveWalletAddress(address: $0)
+      // Once we have the connection, sign message to keep
+      
+      try! client.personal_sign(
+        url: session.url,
+        message: CloudDefaultStorageKeys.signIn.rawValue,
+        account: $0.hex(eip55: true)
+      ) { response in
+        
+        print(response)
+        
+        var signature = try! response.result(as: String.self)
+        print(signature)
+        
+        var signatureBytes = Data(hex: signature).bytes
+        var v = signatureBytes.last!
+        if v < 27 {
+          v += 27
+          signatureBytes[signatureBytes.count - 1] = v
+          signature = "0x" + Data(signatureBytes).toHexString()
+        }
+        self.saveWalletConnectSession(session: session,signature:signature)
+      }
+      
+      let uri = "wc:\(session.url.topic)@\(session.url.version)"
+      let url = URL(string:"trust://wc?uri=\(uri)")!
+      print(url)
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+        self.openURL(url)
+      }
+      
     }
   }
   

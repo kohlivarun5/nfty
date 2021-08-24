@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Web3
+import PromiseKit
 
 struct ConnectWalletSheet: View {
   
@@ -16,6 +17,8 @@ struct ConnectWalletSheet: View {
   @State var badAddressError : String = ""
   
   @State var isConnecting = false
+  
+  @State var p : Promise<EthereumData>? = nil
   
   var body: some View {
     VStack {
@@ -109,24 +112,7 @@ struct ConnectWalletSheet: View {
                     .stroke(Color.blue, lineWidth: 1))
               }
             }
-            
-            userWallet.walletProvider().map { walletProvider in
-              
-              Button(action:{
-                UIImpactFeedbackGenerator(style: .light)
-                  .impactOccurred()
-                
-                
-                walletProvider.signMessage(message: "Address")
-                  .done { print($0) }
-                  .catch { print($0) }
-                
-              }) {
-                Text("SignIn")
-              }
-              
-            }
-            
+             
             Spacer()
           }
         }
