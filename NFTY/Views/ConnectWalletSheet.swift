@@ -11,18 +11,11 @@ import Web3
 struct ConnectWalletSheet: View {
   
   @Environment(\.presentationMode) var presentationMode
-  @EnvironmentObject var userWallet: UserWallet
+  @ObservedObject var userWallet: UserWallet
   
   @State var badAddressError : String = ""
   
-  enum ConnectionState {
-    case disconnected
-    case connecting
-    case connected
-    case failed
-  }
-  
-  @State var connection : ConnectionState = .disconnected
+  @State var isConnecting = false
   
   var body: some View {
     VStack {
@@ -30,70 +23,55 @@ struct ConnectWalletSheet: View {
       
       VStack(spacing:20) {
         
-        switch(userWallet.walletConnectSession) {
-        case .none:
-          ProgressView()
-        case .some(let session):
-          switch(connection) {
-          case .connecting:
-            VStack {
-              ProgressView()
-                .scaleEffect(2.0, anchor: .center)
-                .frame(width: 80,height:80)
-              Text("Connecting...")
-                .font(.caption)
-                .foregroundColor(.secondary)
-            }
-          case .failed,.disconnected,.connected:
-            HStack(spacing:30) {
-              Spacer()
-              
-              HStack {
-                Button(action:{
-                  UIImpactFeedbackGenerator(style: .light)
-                    .impactOccurred()
-                  
-                  let url = try! userWallet.connectToWallet(link:"trust:")
-                  // we need a delay so that WalletConnectClient can send handshake request
-                  DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-                    print("Launching=\(url)")
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                  }
-                  self.connection = .connecting
-                }) {
-                  VStack {
-                    Image("TrustWallet")
-                      .resizable()
-                      .frame(width: 60,height:60)
-                    
-                    Text("Connect using Trust Wallet")
-                      .font(.caption)
-                      .fontWeight(.bold)
-                      .multilineTextAlignment(.center)
-                      .foregroundColor(Color.blue)
-                  }
-                  .frame(minWidth: 0, maxWidth: .infinity)
-                  .padding()
-                  .border(Color.blue)
-                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                  .overlay(
-                    RoundedRectangle(cornerRadius:20, style: .continuous)
-                      .stroke(Color.blue, lineWidth: 1))
-                }
-              }
-              Spacer()
-            }
+        switch(userWallet.walletConnectSession,isConnecting) {
+        case (.none,true):
+          VStack {
+            ProgressView()
+              .scaleEffect(2.0, anchor: .center)
+              .frame(width: 80,height:80)
+            Text("Connecting...")
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
+        case (.none,false),(.some,_):
+          HStack(spacing:30) {
+            Spacer()
             
-            if (connection == .failed) {
-              VStack {
-                Text("Failed to connect")
-                  .font(.footnote)
-                  .foregroundColor(.secondary)
-                Text("Please try again")
-                  .font(.footnote)
-                  .foregroundColor(.secondary)
+            HStack {
+              Button(action:{
+                UIImpactFeedbackGenerator(style: .light)
+                  .impactOccurred()
+                self.userWallet.removeWalletConnectSession()
+                self.isConnecting = true
+                let url = try! userWallet.connectToWallet(link:"trust:")
+                // we need a delay so that WalletConnectClient can send handshake request
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                  print("Launching=\(url)")
+                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+                
+              }) {
+                VStack {
+                  Image("TrustWallet")
+                    .resizable()
+                    .frame(width: 60,height:60)
+                  
+                  Text("Connect using Trust Wallet")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.blue)
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding()
+                .border(Color.blue)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .overlay(
+                  RoundedRectangle(cornerRadius:20, style: .continuous)
+                    .stroke(Color.blue, lineWidth: 1))
               }
             }
+            Spacer()
           }
         }
       }
@@ -167,6 +145,6 @@ struct ConnectWalletSheet: View {
 class ConnectWalletSheet_Previews: PreviewProvider {
   @State static private var address : EthereumAddress? = nil
   static var previews: some View {
-    ConnectWalletSheet()
+    ConnectWalletSheet(userWallet:UserWallet())
   }
 }

@@ -24,14 +24,15 @@ class UserWallet: ObservableObject {
     }
     
     if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data {
-       self.walletConnectSession = try? JSONDecoder().decode(Session.self, from: oldSessionObject)
+      self.walletConnectSession = try? JSONDecoder().decode(Session.self, from: oldSessionObject)
     }
-    
   }
   
   func saveWalletAddress(address:EthereumAddress) {
     NSUbiquitousKeyValueStore.default.set(address.hex(eip55:true), forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
-    self.walletAddress = address
+    DispatchQueue.main.async {
+      self.walletAddress = address
+    }
   }
   
   func saveWalletConnectSession(session:Session) {
@@ -40,11 +41,14 @@ class UserWallet: ObservableObject {
     DispatchQueue.main.async {
       self.walletConnectSession = session
     }
+    print(self.walletConnectSession)
   }
   
   func removeWalletConnectSession() {
     NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
-    self.walletConnectSession = nil
+    DispatchQueue.main.async {
+      self.walletConnectSession = nil
+    }
   }
   
   func connectToWallet(link: String) throws -> URL {
@@ -180,8 +184,6 @@ extension UserWallet: ClientDelegate {
   
   func client(_ client: Client, didConnect session: Session) {
     print("didConnect session=\(session)")
-    self.saveWalletConnectSession(session: session)
-    
     session.walletInfo?.accounts[safe:0].flatMap {
       try? EthereumAddress(hex:$0,eip55: false)
     }.map {

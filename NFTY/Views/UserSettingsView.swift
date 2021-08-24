@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UserSettingsView: View {
+  @EnvironmentObject var userWallet : UserWallet
   @StateObject var userSettings = UserSettings()
   
   @State private var dappBrowserIndex = 0
@@ -15,7 +16,7 @@ struct UserSettingsView: View {
   var body: some View {
     NavigationView {
       VStack {
-        ConnectWalletSheet()
+        ConnectWalletSheet(userWallet:userWallet)
         Form {
           Section(header: Text("Preferences")) {
             Picker(selection: $dappBrowserIndex, label: Text("Dapp Browser")) {

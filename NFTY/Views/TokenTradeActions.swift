@@ -127,58 +127,73 @@ struct TokenTradeActions: View {
           EmptyView()
           
         case (.some(let actions),.some(let tradeActions)):
-          HStack {
-            switch(actions) {
-            case .buyActions:
-              /*
-               SheetButton(content: {
-               HStack {
-               Spacer()
-               Text("Trade")
-               .foregroundColor(.black)
-               .font(.title2.weight(.bold))
-               Spacer()
-               }
-               .padding(10)
-               .background(
-               RoundedCorners(
-               color: .flatOrange,
-               tl: 20, tr: 20, bl: 20, br: 20))
-               .padding([.leading,.trailing],50)
-               },sheetContent: {
-               TokenBuyView(
-               nft: nft,
-               price:price,
-               sample: sample,
-               themeColor:themeColor,
-               themeLabelColor:themeLabelColor,
-               size: .xsmall,
-               rarityRank:rarityRank,
-               tradeActions: tradeActions
-               )
-               })
-               */
-              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                HStack {
-                  Spacer()
-                  Text("Trade")
-                    .foregroundColor(.black)
-                    .font(.title2.weight(.bold))
-                  Spacer()
-                }
-                .padding(10)
-                .background(
-                  RoundedCorners(
-                    color: .flatOrange,
-                    tl: 20, tr: 20, bl: 20, br: 20))
-                .padding([.leading,.trailing],50)
+          switch(tradeActions.tradeActions.actions) {
+          case .some(let txActions):
+            HStack {
+              switch(actions) {
+              case .buyActions:
+                SheetButton(content: {
+                  HStack {
+                    Spacer()
+                    Text("Trade")
+                      .foregroundColor(.black)
+                      .font(.title2.weight(.bold))
+                    Spacer()
+                  }
+                  .padding(10)
+                  .background(
+                    RoundedCorners(
+                      color: .flatOrange,
+                      tl: 20, tr: 20, bl: 20, br: 20))
+                  .padding([.leading,.trailing],50)
+                },sheetContent: {
+                  TokenBuyView(
+                    nft: nft,
+                    price:price,
+                    sample: sample,
+                    themeColor:themeColor,
+                    themeLabelColor:themeLabelColor,
+                    size: .xsmall,
+                    rarityRank:rarityRank,
+                    tradeActions: tradeActions,
+                    actions:txActions
+                  )
+                })
+              case .sellActions:
+                SheetButton(content: {
+                  HStack {
+                    Spacer()
+                    Text("Sell")
+                      .foregroundColor(.black)
+                      .font(.title2.weight(.bold))
+                    Spacer()
+                  }
+                  .padding(10)
+                  .background(
+                    RoundedCorners(
+                      color: .flatGreen,
+                      tl: 20, tr: 20, bl: 20, br: 20))
+                  .padding([.leading,.trailing],50)
+                },sheetContent: {
+                  TokenSellView(
+                    nft: nft,
+                    price:price,
+                    sample: sample,
+                    themeColor:themeColor,
+                    themeLabelColor:themeLabelColor,
+                    size: .xsmall,
+                    rarityRank:rarityRank,
+                    tradeActions: tradeActions.tradeActions
+                  )
+                })
+                
               }
             }
           case .none:
             HStack {
               switch(actions) {
               case .buyActions:
-                Link(destination:OpenSeaLink.url(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+                Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                   HStack {
                     Spacer()
                     Text("Trade")
@@ -193,33 +208,22 @@ struct TokenTradeActions: View {
                       tl: 20, tr: 20, bl: 20, br: 20))
                   .padding([.leading,.trailing],50)
                 }
-                .padding(10)
-                .background(
-                  RoundedCorners(
-                    color: .flatGreen,
-                    tl: 20, tr: 20, bl: 20, br: 20))
-                .padding([.leading,.trailing],50)
-              },sheetContent: {
-                TokenSellView(
-                  nft: nft,
-                  price:price,
-                  sample: sample,
-                  themeColor:themeColor,
-                  themeLabelColor:themeLabelColor,
-                  size: .xsmall,
-                  rarityRank:rarityRank,
-                  tradeActions: tradeActions.tradeActions
-                )
-              })
- */
-              
-              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                HStack {
-                  Spacer()
-                  Text("Sell")
-                    .foregroundColor(.black)
-                    .font(.title2.weight(.bold))
-                  Spacer()
+                
+              case .sellActions:
+                Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+                  HStack {
+                    Spacer()
+                    Text("Sell")
+                      .foregroundColor(.black)
+                      .font(.title2.weight(.bold))
+                    Spacer()
+                  }
+                  .padding(10)
+                  .background(
+                    RoundedCorners(
+                      color: .flatGreen,
+                      tl: 20, tr: 20, bl: 20, br: 20))
+                  .padding([.leading,.trailing],50)
                 }
               }
             }
