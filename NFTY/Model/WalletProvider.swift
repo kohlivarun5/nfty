@@ -12,4 +12,5 @@ import PromiseKit
 protocol WalletProvider {
   var account : EthereumAddress { get }
   func sendTransaction(tx:EthereumTransaction) -> Promise<EthereumTransactionReceiptObject>
+  func signMessage(message: String) -> Promise<EthereumData>
 }

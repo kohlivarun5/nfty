@@ -153,6 +153,33 @@ class UserWallet: ObservableObject {
       
       return p
     }
+    
+    func signMessage(message: String) -> Promise<EthereumData> {
+      
+      let p = Promise<EthereumData> { seal in
+        try? client.eth_signTypedData(
+          url: session.url,
+          account: self.account.hex(eip55: true),
+          message: message)
+        { res in
+          print(res)
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+          //seal.fulfill(Ethere
+        }
+      }
+      
+      let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
+      let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+      print("trust://wc?uri=\(uri)")
+      let url = URL(string:"trust://wc?uri=\(uri)")!
+      print(url)
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
+        openURL(url)
+      }
+      
+      return p
+    }
+    
   }
   
   func walletProvider() -> WalletProvider? {

@@ -39,7 +39,7 @@ struct ConnectWalletSheet: View {
             
             HStack {
               
-              /* 
+              /*
               Button(action:{
                 UIImpactFeedbackGenerator(style: .light)
                   .impactOccurred()
@@ -109,6 +109,24 @@ struct ConnectWalletSheet: View {
                     .stroke(Color.blue, lineWidth: 1))
               }
             }
+            
+            userWallet.walletProvider().map { walletProvider in
+              
+              Button(action:{
+                UIImpactFeedbackGenerator(style: .light)
+                  .impactOccurred()
+                
+                
+                walletProvider.signMessage(message: "Address")
+                  .done { print($0) }
+                  .catch { print($0) }
+                
+              }) {
+                Text("SignIn")
+              }
+              
+            }
+            
             Spacer()
           }
         }
