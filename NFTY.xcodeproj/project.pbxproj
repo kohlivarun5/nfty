@@ -62,7 +62,6 @@
 		4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */; };
 		4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F673C9D2696820900CA6918 /* TokenTradeView.swift */; };
 		4F673CA02697E5F400CA6918 /* TradeEventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F673C9F2697E5F400CA6918 /* TradeEventsList.swift */; };
-		4F6AC07D26AD17B0000A7539 /* WalletConnectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC07C26AD17B0000A7539 /* WalletConnectModel.swift */; };
 		4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */; };
 		4F6AC08226AE1134000A7539 /* TokenTradeActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC08126AE1133000A7539 /* TokenTradeActions.swift */; };
 		4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC08326AE1C3C000A7539 /* TokenSellView.swift */; };
@@ -247,7 +246,6 @@
 		4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedPromiseView.swift; sourceTree = "<group>"; };
 		4F673C9D2696820900CA6918 /* TokenTradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTradeView.swift; sourceTree = "<group>"; };
 		4F673C9F2697E5F400CA6918 /* TradeEventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeEventsList.swift; sourceTree = "<group>"; };
-		4F6AC07C26AD17B0000A7539 /* WalletConnectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectModel.swift; sourceTree = "<group>"; };
 		4F6AC08126AE1133000A7539 /* TokenTradeActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTradeActions.swift; sourceTree = "<group>"; };
 		4F6AC08326AE1C3C000A7539 /* TokenSellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenSellView.swift; sourceTree = "<group>"; };
 		4F6AC08526AE1C8B000A7539 /* TokenBuyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBuyView.swift; sourceTree = "<group>"; };
@@ -418,7 +416,6 @@
 			children = (
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
-				4F6AC07C26AD17B0000A7539 /* WalletConnectModel.swift */,
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 			);
 			path = ViewModel;
@@ -949,7 +946,6 @@
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
-				4F6AC07D26AD17B0000A7539 /* WalletConnectModel.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
 				4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */,
 				4F6AC08626AE1C8B000A7539 /* TokenBuyView.swift in Sources */,

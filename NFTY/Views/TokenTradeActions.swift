@@ -128,7 +128,7 @@ struct TokenTradeActions: View {
           
         case (.some(let actions),.some(let tradeActions)):
           switch(tradeActions.tradeActions.actions) {
-          case .some(let txActions):
+          /* case .some(let txActions):
             HStack {
               switch(actions) {
               case .buyActions:
@@ -189,7 +189,8 @@ struct TokenTradeActions: View {
                 
               }
             }
-          case .none:
+          case .none: */
+          default:
             HStack {
               switch(actions) {
               case .buyActions:
