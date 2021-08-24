@@ -42,7 +42,8 @@ struct WalletView: View {
     VStack {
       switch (userWallet.walletAddress) {
       case .none:
-        ConnectWalletSheet()
+        ConnectWalletSheet(userWallet:userWallet)
+          .environmentObject(userWallet)
       case .some(let address):
         VStack(spacing:0) {
           

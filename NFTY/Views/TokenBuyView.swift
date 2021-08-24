@@ -11,6 +11,9 @@ import Web3
 
 
 struct TokenBuyView: View {
+  
+  @EnvironmentObject var userWallet: UserWallet
+  
   let nft:NFT
   let price:TokenPriceType
   let sample:String
@@ -19,6 +22,7 @@ struct TokenBuyView: View {
   let size : NftImage.Size
   let rarityRank : RarityRanking?
   let tradeActions : TradeActionInfo
+  let actions : TradeActionsInterface
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -45,10 +49,19 @@ struct TokenBuyView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
+    print( userWallet.walletProvider())
+    userWallet.walletProvider().map { wallet in
+      bidPriceInWei.map {
+        actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:wallet)
+          .done { print ($0) }
+          .catch { print($0) }
+      }
+    }
+    
     /*
-    print(eth)
-    print(bidPriceInWei)
-    print(spot)
+     print(eth)
+     print(bidPriceInWei)
+     print(spot)
      */
   }
   
@@ -316,7 +329,8 @@ struct TokenBuyView_Previews: PreviewProvider {
       tradeActions: TradeActionInfo(
         tradeActions: SampleCollection.data.contract.tradeActions!,
         bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId)
-        )
+      ),
+      actions:SampleCollection.data.contract.tradeActions!.actions!
     )
   }
 }

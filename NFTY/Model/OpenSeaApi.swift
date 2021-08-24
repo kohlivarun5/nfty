@@ -220,7 +220,7 @@ struct OpenSeaApi {
 
 
 struct OpenSeaTradeApi : TokenTradeInterface {
-  var supportsTrading : Bool = false
+  var actions: TradeActionsInterface? = nil
   
   let contract : EthereumAddress
   

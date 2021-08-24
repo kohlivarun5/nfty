@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import BigInt
+import Web3
 
 struct BidInfo {
   let wei : BigUInt
@@ -22,9 +23,11 @@ struct BidAsk {
   let ask : AskInfo?
 }
 
+protocol TradeActionsInterface {
+  func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
+}
+
 protocol TokenTradeInterface {
-  var supportsTrading : Bool { get }
   func getBidAsk(_ tokenId:UInt) -> Promise<BidAsk>
-  
-  // func withdrawAsk(_ tokenId:Uint) -> Promise<BigUInt>
+  var actions : TradeActionsInterface? { get }
 }
