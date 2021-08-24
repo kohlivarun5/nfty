@@ -38,6 +38,44 @@ struct ConnectWalletSheet: View {
             Spacer()
             
             HStack {
+              
+              /* 
+              Button(action:{
+                UIImpactFeedbackGenerator(style: .light)
+                  .impactOccurred()
+                
+                self.userWallet.removeWalletConnectSession()
+                self.isConnecting = true
+                let url = try! userWallet.connectToWallet(link:"metamask:")
+                // we need a delay so that WalletConnectClient can send handshake request
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+                  print("Launching=\(url)")
+                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+              }) {
+                VStack {
+                  Image("Metamask")
+                    .resizable()
+                    .frame(width: 60,height:60)
+                  
+                  Text("Connect using MetaMask")
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.orange)
+                }
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding()
+                .border(Color.orange)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .overlay(
+                  RoundedRectangle(cornerRadius:20, style: .continuous)
+                    .stroke(Color.orange, lineWidth: 1))
+              }
+              
+              */
+              
+              
               Button(action:{
                 UIImpactFeedbackGenerator(style: .light)
                   .impactOccurred()
