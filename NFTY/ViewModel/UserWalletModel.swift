@@ -200,7 +200,7 @@ extension UserWallet: ClientDelegate {
         print(response)
         
         var signature = try! response.result(as: String.self)
-        print(signature)
+        //print(signature)
         
         var signatureBytes = Data(hex: signature).bytes
         var v = signatureBytes.last!
@@ -209,6 +209,7 @@ extension UserWallet: ClientDelegate {
           signatureBytes[signatureBytes.count - 1] = v
           signature = "0x" + Data(signatureBytes).toHexString()
         }
+        print(signature)
         self.saveWalletConnectSession(session: session,signature:signature)
       }
       
