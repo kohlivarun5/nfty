@@ -53,11 +53,9 @@ struct FavoritesView: View {
         
         if (isFav) {
           _ = collectionsFactory.getByAddress(address).map {
-            $0.data.contract.getToken(UInt(tokenId)!)
-              .done(on:.main) { nft in
-                self.favorites[address]!.updateValue(nft,forKey:tokenId)
-                self.isLoading = false // **** Update isLoading when we add to the list
-              }.catch { print($0) }
+            let nft = $0.data.contract.getToken(UInt(tokenId)!)
+            self.favorites[address]!.updateValue(nft,forKey:tokenId)
+            self.isLoading = false // **** Update isLoading when we add to the list
           }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
@@ -97,12 +95,11 @@ struct FavoritesView: View {
             LazyVStack(pinnedViews:[.sectionHeaders]){
               ForEach(nfts,id:\.id) { nft in
                 let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-                let samples = [info.url1,info.url2,info.url3,info.url4];
                 ZStack {
                   RoundedImage(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    samples:samples,
+                    sample:info.sample,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     rarityRank:info.rarityRanking,
@@ -116,7 +113,7 @@ struct FavoritesView: View {
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    samples:samples,
+                    sample:info.sample,
                     themeColor:info.themeColor,
                     themeLabelColor:info.themeLabelColor,
                     similarTokens:info.similarTokens,

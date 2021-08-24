@@ -30,16 +30,27 @@ class ObservablePromise<T> : ObservableObject {
   }
   
   func load() {
+    loadMore { }
+  }
+  
+  func loadMore(_ onThisDone:@escaping () -> Void) {
     switch(state) {
     case .loading:
-      self.promise.done(on:.main) { val in
-        self.state = .resolved(val)
-        self.onDone.map {
-          $0(val)
+      self.promise
+        .map(on:.main) { val -> T in
+          self.state = .resolved(val)
+          return val
         }
-      }.catch { print($0) }
-    case .resolved:
-      break
+        .done(on:DispatchQueue.global(qos: .userInteractive)) { val -> Void in
+          self.onDone.map { $0(val) }
+          onThisDone()
+        }.catch { print($0) }
+    case .resolved(let val):
+      DispatchQueue.main.async {
+        self.state = .resolved(val)
+      }
+      onThisDone()
     }
   }
+  
 }

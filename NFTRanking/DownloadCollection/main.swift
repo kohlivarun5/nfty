@@ -9,24 +9,42 @@ import Foundation
 import PromiseKit
 import BigInt
 
-let contract = IpfsCollectionContract(
-  name: "CryptoHodlers",
-  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
-let collectionName = contract.name
+// var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
+
+let downloader = IpfsDownloader(
+  name: "CoolCats",
+  baseUri:"https://api.coolcatsnft.com/cat/")
 let firstIndex = 0
-let lastIndex = 9999
+let lastIndex = 9932
+
+let collectionName = downloader.name
 
 let minFileSize = 1000
-let parallelCount = 5
+let parallelCount = 1
+
+
+func image(_ tokenId:BigUInt) -> Promise<Data?> {
+  return Promise { seal in
+    var request = URLRequest(url:URL(string:"https://tbh-data.s3.amazonaws.com/final/images/\(tokenId)")!)
+    request.httpMethod = "GET"
+    URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+      // print(data,response,error)
+      seal.fulfill(data)
+    }).resume()
+  }
+}
 
 print("Started downloading collection:\(collectionName)")
 
+
+
 func saveToken(_ tokenId : Int) -> Promise<Void> {
-  return contract.ethContract.image(BigUInt(tokenId))
-    .map { image -> Void in
+  return downloader.tokenData(BigUInt(tokenId))
+    .map { data -> Void in
       print("Downloaded \(tokenId)")
       let filename = getImageFileName(collectionName,UInt(tokenId))
-      try? image?.data.write(to: filename)
+      try! data.image.write(to: filename)
+      saveJSON(getAttributesFileName(collectionName,UInt(tokenId)),data.attributes)
     }
 }
 
@@ -34,7 +52,7 @@ var tokenId = firstIndex
 var prev : [Promise<Int>] = Array(repeating:Promise.value(tokenId), count: parallelCount)
 
 for index in 0...(parallelCount-1) {
-  prev[index] = Promise.value(index)
+  prev[index] = Promise.value(firstIndex + index)
 }
 
 let fileManager = FileManager.default
@@ -45,9 +63,11 @@ while tokenId < (lastIndex + 1) {
     let next = prev[index].then { tokenId -> Promise<Int> in
       // print(tokenId,count)
       let fileName = getImageFileName(collectionName,UInt(tokenId)).path
+      let attrFileName = getAttributesFileName(collectionName,UInt(tokenId)).path
       let p =
         fileManager.fileExists(atPath:fileName)
         && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
+        && fileManager.fileExists(atPath:attrFileName)
         ? Promise.value(tokenId+parallelCount)
         : saveToken(tokenId).map { tokenId + parallelCount }
       return p.map { index in

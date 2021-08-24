@@ -30,10 +30,8 @@ struct AddFavSheet: View {
         self.state = .empty
       case (.some(let token),.some(let collection)):
         self.state = .loading(collection.info)
-        collection.data.contract.getToken(token)
-          .done { nftWithPrice in
-            self.state = .loaded(collection.info,nftWithPrice)
-          }.catch { print ($0) }
+        let nftWithPrice = collection.data.contract.getToken(token)
+        self.state = .loaded(collection.info,nftWithPrice)
       }
     }
   }
@@ -99,11 +97,9 @@ struct AddFavSheet: View {
         
         switch(nft.state) {
         case .loaded(let info,let nftWithPrice):
-          let samples = [info.url1,info.url2,info.url3,info.url4];
-          
           ZStack {
             NftImage(nft:nftWithPrice.nft,
-                     samples:samples,
+                     sample:info.sample,
                      themeColor:info.themeColor,
                      themeLabelColor:info.themeLabelColor,
                      size:.medium)
@@ -130,19 +126,17 @@ struct AddFavSheet: View {
           .padding()
           
         case .loading(let info):
-          let samples = [info.url1,info.url2,info.url3,info.url4];
+          
           VStack {
             Spacer()
             ZStack {
               
-              Image(
-                samples[
-                  Int.random(in: 0..<samples.count)
-                ])
+              Image(info.sample)
                 .interpolation(.none)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding()
+                // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
                 .background(info.themeColor)
                 .blur(radius:20)
               ProgressView()

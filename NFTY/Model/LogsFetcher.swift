@@ -65,7 +65,7 @@ class LogsFetcher {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
-    
+
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
@@ -74,21 +74,23 @@ class LogsFetcher {
         topics: self.topics
       )
     ) { result in
-      if case let logs? = result.result {
-        logs.indices.forEach { index in
-          let log = logs[index];
-          response(index,log)
-          self.updateMostRecent(log.blockNumber)
+      DispatchQueue.global(qos:.userInteractive).async {
+        if case let logs? = result.result {
+          logs.indices.forEach { index in
+            let log = logs[index];
+            response(index,log)
+            self.updateMostRecent(log.blockNumber)
+          }
+        } else {
+          print(result)
         }
-      } else {
-        print(result)
+        onDone()
       }
-      onDone()
     }
   }
   
   func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-    
+
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(self.fromBlock),
@@ -97,29 +99,31 @@ class LogsFetcher {
         topics: self.topics
       )
     ) { result in
-      if case let logs? = result.result {
-        self.toBlock = EthereumQuantityTag.block(self.fromBlock)
-        self.fromBlock = self.fromBlock - self.blockDecrements
-        
-        logs.indices.forEach { index in
-          let log = logs[index];
-          response(log)
-          self.updateMostRecent(log.blockNumber)
+      DispatchQueue.global(qos:.userInteractive).async {
+        if case let logs? = result.result {
+          self.toBlock = EthereumQuantityTag.block(self.fromBlock)
+          self.fromBlock = self.fromBlock - self.blockDecrements
+          
+          logs.indices.forEach { index in
+            let log = logs[index];
+            response(log)
+            self.updateMostRecent(log.blockNumber)
+          }
+          
+          if (logs.count == 0 && retries > 0) {
+            return self.fetch(onDone:onDone,retries:retries-1,response);
+          }
+          
+        } else {
+          print(result)
         }
-        
-        if (logs.count == 0 && retries > 0) {
-          return self.fetch(onDone:onDone,retries:retries-1,response);
-        }
-        
-      } else {
-        print(result)
+        onDone()
       }
-      onDone()
     }
   }
   
   func fetchAllLogs(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-  
+    
     web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(0),
@@ -128,17 +132,19 @@ class LogsFetcher {
         topics: self.topics
       )
     ) { result in
-      if case let logs? = result.result {
-        logs.indices.forEach { index in
-          let log = logs[index];
-          response(log)
+      DispatchQueue.global(qos:.userInteractive).async {
+        if case let logs? = result.result {
+          logs.indices.forEach { index in
+            let log = logs[index];
+            response(log)
+          }
+        } else {
+          print(result)
         }
-      } else {
-        print(result)
+        onDone()
       }
-      onDone()
     }
   }
-    
-    
+  
+  
 }

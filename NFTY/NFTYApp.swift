@@ -54,7 +54,6 @@ struct NFTYApp: App {
           Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
         
         NavigationView {
           CollectionsView(collections:COLLECTIONS)
@@ -64,7 +63,6 @@ struct NFTYApp: App {
           Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
         
         if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
@@ -76,7 +74,6 @@ struct NFTYApp: App {
             Label("Friends",systemImage:"person.2.square.stack")
           }
           .navigationViewStyle(StackNavigationViewStyle())
-          .accentColor(.secondary)
         }
         
         NavigationView {
@@ -87,20 +84,17 @@ struct NFTYApp: App {
           Label("Favorites",systemImage:"heart.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
         
         NavigationView {
           WalletView()
-            .navigationBarTitle("Wallet",displayMode: .inline)
         }
         .tabItem {
           Label("Wallet",systemImage:"lock.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.secondary)
-        
-        
-      }.onOpenURL { url in
+      }
+      .accentColor(.orange)
+      .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
         print("URL.last=\(String(describing: url.pathComponents.last))")
         print("URL.params=\(url.params())")

@@ -13,17 +13,24 @@ struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  var nft:NFT
-  var price:TokenPriceType
-  var samples:[String]
-  var themeColor : Color
-  var themeLabelColor : Color
-  var similarTokens : SimilarTokensGetter?
-  var rarityRank : RarityRanking?
-  var hideOwnerLink : Bool
+  let nft:NFT
+  let price:TokenPriceType
+  let sample:String
+  let themeColor : Color
+  let themeLabelColor : Color
+  let similarTokens : SimilarTokensGetter?
+  let rarityRank : RarityRanking?
+  let hideOwnerLink : Bool
   @State var rank : UInt? = nil
   
+  enum SimilarSectionPage : Int {
+    case attributes = 0
+    case similar = 1
+  }
+  @State var similarSectionPage : SimilarSectionPage = .attributes
+  
   @State var tokens : [UInt]? = nil
+  @State var properties : [SimilarTokensGetter.TokenAttributePercentile]? = nil
   
   @State var showTradeView : Bool = false
   
@@ -34,7 +41,7 @@ struct NftDetail: View {
       ZStack {
         NftImage(
           nft:nft,
-          samples:samples,
+          sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
           size:.large
@@ -63,7 +70,7 @@ struct NftDetail: View {
           HStack {
             Text("#\(nft.tokenId)")
               .font(.subheadline)
-            OpenSeaLink(nft:nft)
+            DappLink(destination: DappLink.openSeaPath(nft: nft))
           }
           rank.map {
             Text("RarityRank: \($0)")
@@ -84,7 +91,7 @@ struct NftDetail: View {
             destination:TokenTradeView(
               nft: nft,
               price:price,
-              samples: samples,
+              sample: sample,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .small,
@@ -104,7 +111,11 @@ struct NftDetail: View {
           }
         }
       }
-      tokens.map { tokens in
+      
+      switch(tokens,properties) {
+      case (.none,.none):
+        EmptyView()
+      case (.some(let tokens),.none):
         VStack {
           ZStack {
             Divider()
@@ -116,6 +127,50 @@ struct NftDetail: View {
               .background(Color.systemBackground)
           }
           SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+        }
+      case (.none,.some(let properties)):
+        VStack {
+          ZStack {
+            Divider()
+            Text("Attributes")
+              .font(.caption).italic()
+              .foregroundColor(.secondaryLabel)
+              .padding(.trailing)
+              .padding(.leading)
+              .background(Color.systemBackground)
+          }
+          TokenPropertiesGrid(properties: properties)
+        }
+      case (.some(let tokens),.some(let properties)):
+        VStack(spacing:0) {
+          
+          ZStack {
+            
+            Picker(selection: Binding<Int>(
+                    get: { self.similarSectionPage.rawValue },
+                    set: { tag in
+                      withAnimation { // needed explicit for transitions
+                        self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                      }
+                    }),
+                   label: Text("")) {
+              Text("Attributes")
+                .tag(SimilarSectionPage.attributes.rawValue)
+              Text("Similar \(similarTokens?.label ?? "Tokens")")
+                .tag(SimilarSectionPage.similar.rawValue)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .colorMultiply(.orange)
+            .font(.caption)
+            .padding([.trailing,.leading])
+          }
+          
+          switch(self.similarSectionPage) {
+          case .similar:
+            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+          case .attributes:
+            TokenPropertiesGrid(properties: properties)
+          }
         }
       }
     }
@@ -147,19 +202,15 @@ struct NftDetail: View {
         }
       }, label: {
         Image(systemName: "arrowshape.turn.up.forward.circle")
-          .foregroundColor(Color(UIColor.darkGray))
+          .foregroundColor(themeLabelColor)
       })
     )
     
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      _ = similarTokens.map { similarTokens in
-        Promise.value(similarTokens.get(nft.tokenId))
-          .done(on:.main) { tokens in
-            self.tokens = tokens
-          }.catch { print($0) }
-      }
+      self.tokens = similarTokens?.get(nft.tokenId)
+      self.properties = similarTokens?.getProperties(nft.tokenId)
     }
   }
 }
@@ -169,7 +220,7 @@ struct NftDetail_Previews: PreviewProvider {
     NftDetail(
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-      samples:SAMPLE_PUNKS,
+      sample:SAMPLE_PUNKS[0],
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,

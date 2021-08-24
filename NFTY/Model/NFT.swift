@@ -149,7 +149,7 @@ enum NFTPriceStatus {
 
 enum TokenPriceType {
   case eager(NFTPriceInfo)
-  case lazy(ObservablePromise<NFTPriceStatus>)
+  case lazy(() -> ObservablePromise<NFTPriceStatus>)
 }
 
 struct NFTWithPrice : Identifiable {
@@ -180,14 +180,48 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  var indicativePriceWei : ObservablePromise<NFTPriceStatus> {
+  func indicativePriceWei() -> ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
 }
 
-struct SimilarTokensGetter {
+class SimilarTokensGetter {
   let label : String
-  let get : (UInt) -> [UInt]?
+  let nearestTokensFileName : String
+  let propertiesJsonFileName : String?
+  
+  var nearestTokens : [ [UInt] ]? = nil
+  var properties : [ [TokenAttributePercentile] ]? = nil
+  
+  
+  init(label:String,nearestTokensFileName:String) {
+    self.label = label
+    self.nearestTokensFileName = nearestTokensFileName
+    self.propertiesJsonFileName = nil
+  }
+  
+  init(label:String,nearestTokensFileName:String,propertiesJsonFileName:String) {
+    self.label = label
+    self.nearestTokensFileName = nearestTokensFileName
+    self.propertiesJsonFileName = propertiesJsonFileName
+  }
+  
+  struct TokenAttributePercentile : Codable {
+    let name : String
+    let value : String
+    let percentile : Double
+  }
+  
+  func get(_ tokenId:UInt) -> [UInt]? {
+    self.nearestTokens = self.nearestTokens ?? load(nearestTokensFileName)
+    return self.nearestTokens?[safe:Int(tokenId)]
+  }
+
+  func getProperties(_ tokenId:UInt) -> [TokenAttributePercentile]? {
+    self.properties = self.properties ?? propertiesJsonFileName.map { load($0) }
+    return properties?[safe:Int(tokenId)]
+  }
+  
 }
 
 protocol RarityRanking {
@@ -213,10 +247,7 @@ class RarityRankingImpl : RarityRanking {
 
 struct CollectionInfo {
   let address: String
-  let url1: String
-  let url2: String
-  let url3: String
-  let url4: String
+  let sample: String
   let name: String
   let webLink: URL
   let themeColor:Color
@@ -314,20 +345,50 @@ let SAMPLE_CYPHER : [String] = [
   "SAMPLE_CYPHER4"
 ]
 
-let CryptoPunks_nearestTokens : [[UInt]] = load("CryptoPunks_nearestTokens.json")
+let SAMPLE_CCB : [String] = [
+  "SAMPLE_CCB1",
+  "SAMPLE_CCB2",
+  "SAMPLE_CCB3",
+  "SAMPLE_CCB4"
+]
+
+let SAMPLE_TBH : [String] = [
+  "SAMPLE_TBH1",
+  "SAMPLE_TBH2",
+  "SAMPLE_TBH3",
+  "SAMPLE_TBH4"
+]
+
+let SAMPLE_COOL_CATS : [String] = [
+  "COOL_CATS1",
+  "COOL_CATS2",
+  "COOL_CATS3",
+  "COOL_CATS4"
+]
+
+let SAMPLE_DEAD_FELLAZ : [String] = [
+  "DEAD_FELLAZ1",
+  "DEAD_FELLAZ2",
+  "DEAD_FELLAZ3",
+  "DEAD_FELLAZ4"
+]
+
 let CryptoPunks_rarityRanks : [UInt] = load("CryptoPunks_rarityRanks.json")
 
-let AsciiPunks_nearestTokens : [[UInt]] = load("AsciiPunks_nearestTokens.json")
 let AsciiPunks_rarityRanks : [UInt] = load("AsciiPunks_rarityRanks.json")
 
-let BAYC_nearestTokens : [[UInt]] = load("BoredApeYachtClub_nearestTokens.json")
 let BAYC_rarityRanks : [UInt] = load("BoredApeYachtClub_rarityRanks.json")
 
-let FLS_nearestTokens : [[UInt]] = load("FameLadySquad_nearestTokens.json")
 let FLS_rarityRanks : [UInt] = load("FameLadySquad_rarityRanks.json")
 
-let CRHDL_nearestTokens : [[UInt]] = load("CryptoHodlers_nearestTokens.json")
 let CRHDL_rarityRanks : [UInt] = load("CryptoHodlers_rarityRanks.json")
 
-let CypherCity_nearestTokens : [[UInt]] = load("CypherCity_nearestTokens.json")
+let CCD_rarityRanks : [UInt] = load("CryptoCannabisClub_rarityRanks.json")
+
 let CypherCity_rarityRanks : [UInt] = load("CypherCity_rarityRanks.json")
+
+let BirdHouse_rarityRanks : [UInt] = load("BirdHouse_rarityRanks.json")
+
+let CoolCats_rarityRanks : [UInt] = load("CoolCats_rarityRanks.json")
+
+let DeadFellaz_rarityRanks : [UInt] = load("DeadFellaz_rarityRanks.json")

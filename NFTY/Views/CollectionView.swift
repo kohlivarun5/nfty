@@ -58,7 +58,6 @@ struct CollectionView: View {
         return false;
       }
     })
-    // print(res[safe:0]);
     return res;
   }
   
@@ -69,12 +68,11 @@ struct CollectionView: View {
         let data = sorted(recentTrades.recentTrades);
         ForEach(data.indices,id: \.self) { index in
           let nft = data[index];
-          let samples = [info.url1,info.url2,info.url3,info.url4];
           ZStack {
             RoundedImage(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               rarityRank: info.rarityRanking,
@@ -89,7 +87,7 @@ struct CollectionView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              samples:samples,
+              sample:info.sample,
               themeColor:info.themeColor,
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,
@@ -111,9 +109,14 @@ struct CollectionView: View {
         NavigationLink(
           destination:
             TokenListView(
-              title:"\(info.name) Ranking",
               collection: self.collection,
               tokenIds:ranked.sortedTokenIds
+            )
+            .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(
+              leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+              trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
             )
         ) {
           Image(systemName: "list.number")

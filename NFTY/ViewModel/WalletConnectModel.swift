@@ -115,7 +115,7 @@ extension WalletConnect: ClientDelegate {
     let sessionData = try! JSONEncoder().encode(session)
     NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
     delegate.didConnect(
-      account:session.walletInfo?.accounts[safe:0].flatMap {
+      account:session.walletInfo?.accounts.first.flatMap {
         try? EthereumAddress(hex:$0,eip55: false)
       })
   }

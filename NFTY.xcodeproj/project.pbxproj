@@ -9,11 +9,26 @@
 /* Begin PBXBuildFile section */
 		4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724A2651E740002DD748 /* PrivateCollectionView.swift */; };
 		4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724C2651EAC0002DD748 /* FriendsView.swift */; };
+		4F0A170826C616FF0025259F /* DappLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A170726C616FF0025259F /* DappLink.swift */; };
 		4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB825269AA26900AD5165 /* UIKitUtils.swift */; };
 		4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
 		4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
 		4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
 		4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
+		4F1E4F2B26C83F42009D27E6 /* CalculateAttributePercentiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */; };
+		4F1E4F2D26C842D3009D27E6 /* CalculatePercentileScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */; };
+		4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */; };
+		4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */; };
+		4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */; };
+		4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */; };
+		4F1E4F3E26C850B7009D27E6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3D26C850B7009D27E6 /* main.swift */; };
+		4F1E4F4226C850FF009D27E6 /* CalculatePercentileScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */; };
+		4F1E4F4326C85107009D27E6 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
+		4F1E4F4426C85111009D27E6 /* CalculateAttributePercentiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */; };
+		4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */; };
+		4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */; };
+		4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */; };
+		4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */; };
 		4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26243026AC0BBA00B5A208 /* TokenListView.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
 		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
@@ -41,7 +56,6 @@
 		4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */; };
 		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
 		4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */; };
-		4F5F8F5C26532BE200FAD814 /* OpenSeaLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */; };
 		4F5F8F5E26532D9C00FAD814 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5D26532D9C00FAD814 /* WebView.swift */; };
 		4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */; };
 		4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
@@ -58,22 +72,28 @@
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
+		4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */; };
+		4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */; };
+		4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
-		4FA0B2A226BB5A7800821413 /* WalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A126BB5A7800821413 /* WalletProvider.swift */; };
+		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
+		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
+		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
+		4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
+		4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
+		4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
+		4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */; };
+		4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2B226C2260F00821413 /* ActivityView.swift */; };
+		4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2B426C228D500821413 /* StaticTokenListView.swift */; };
 		4FA10FF526A8E0E200719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FF426A8E0E200719D22 /* main.swift */; };
 		4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFA26A8E55A00719D22 /* Web3 */; };
 		4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA10FFC26A8E55F00719D22 /* Web3ContractABI */; };
 		4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
-		4FA1100126A8E5A700719D22 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
-		4FA1100226A8E5AA00719D22 /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
-		4FA1100426A8E5B200719D22 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
-		4FA1100526A8E5B500719D22 /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
 		4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
-		4FA1100726A8E72E00719D22 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
 		4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100926A8E7C800719D22 /* Web3PromiseKit */; };
 		4FA1100C26A8E7E000719D22 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100B26A8E7E000719D22 /* Cache */; };
 		4FA1101426A8EA6500719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101326A8EA6500719D22 /* main.swift */; };
@@ -111,6 +131,19 @@
 		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
 		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
 		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
+		4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
+		4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
+		4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
+		4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */; };
+		4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */; };
+		4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */; };
+		4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */; };
+		4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */; };
+		4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
+		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
+		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
+		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
 /* End PBXBuildFile section */
 
@@ -132,6 +165,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4F1E4F3926C850B7009D27E6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		4FA10FF026A8E0E200719D22 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,11 +198,24 @@
 		4F0872492650CB85002DD748 /* NFTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTY.entitlements; sourceTree = "<group>"; };
 		4F08724A2651E740002DD748 /* PrivateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateCollectionView.swift; sourceTree = "<group>"; };
 		4F08724C2651EAC0002DD748 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		4F0A170726C616FF0025259F /* DappLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DappLink.swift; sourceTree = "<group>"; };
 		4F0FB825269AA26900AD5165 /* UIKitUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUtils.swift; sourceTree = "<group>"; };
 		4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FameLadySquad.swift; sourceTree = "<group>"; };
 		4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_rarityRanks.json; sourceTree = "<group>"; };
 		4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_nearestTokens.json; sourceTree = "<group>"; };
 		4F0FB83626A50BF000AD5165 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateAttributePercentiles.swift; sourceTree = "<group>"; };
+		4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatePercentileScores.swift; sourceTree = "<group>"; };
+		4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_rarityRanks.json; sourceTree = "<group>"; };
+		4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_nearestTokens.json; sourceTree = "<group>"; };
+		4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_nearestTokens.json; sourceTree = "<group>"; };
+		4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_rarityRanks.json; sourceTree = "<group>"; };
+		4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CreateAttributeScores; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1E4F3D26C850B7009D27E6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeScores.json; sourceTree = "<group>"; };
+		4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeadFellaz_attributeRanks.json; sourceTree = "<group>"; };
+		4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_attributeRanks.json; sourceTree = "<group>"; };
+		4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_attributeScores.json; sourceTree = "<group>"; };
 		4F26243026AC0BBA00B5A208 /* TokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListView.swift; sourceTree = "<group>"; };
 		4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCollections.swift; sourceTree = "<group>"; };
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
@@ -185,7 +240,6 @@
 		4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTimeLabel.swift; sourceTree = "<group>"; };
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
 		4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldAlertView.swift; path = "NFTY/Preview Content/MyPlayground.playground/TextFieldAlertView.swift"; sourceTree = SOURCE_ROOT; };
-		4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaLink.swift; sourceTree = "<group>"; };
 		4F5F8F5D26532D9C00FAD814 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = SOURCE_ROOT; };
 		4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabel.swift; sourceTree = "<group>"; };
 		4F667F6D264B291000E7A214 /* ObservablePromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservablePromise.swift; sourceTree = "<group>"; };
@@ -201,12 +255,23 @@
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
 		4F6D3994262BFE4F007E79BB /* kitties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kitties.json; sourceTree = "<group>"; };
+		4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsDownloader.swift; sourceTree = "<group>"; };
+		4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_nearestTokens.json; sourceTree = "<group>"; };
+		4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_rarityRanks.json; sourceTree = "<group>"; };
 		4F856BB72632620400BB5E07 /* TokenContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenContracts.swift; sourceTree = "<group>"; };
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
+		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
+		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
 		4FA02CC62650469900B0B9C5 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
-		4FA0B2A126BB5A7800821413 /* WalletProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletProvider.swift; sourceTree = "<group>"; };
+		4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsCollectionContract.swift; sourceTree = "<group>"; };
+		4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlCollectionContract.swift; sourceTree = "<group>"; };
+		4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_nearestTokens.json; sourceTree = "<group>"; };
+		4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_rarityRanks.json; sourceTree = "<group>"; };
+		4FA0B2B226C2260F00821413 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		4FA0B2B426C228D500821413 /* StaticTokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticTokenListView.swift; sourceTree = "<group>"; };
 		4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTRankingUtils.swift; sourceTree = "<group>"; };
 		4FA10FF226A8E0E200719D22 /* DownloadCollection */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DownloadCollection; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA10FF426A8E0E200719D22 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -246,10 +311,30 @@
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
+		4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsciiPunksContract.swift; sourceTree = "<group>"; };
+		4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BAYC_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BAYC_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeScores.json; sourceTree = "<group>"; };
+		4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeRanks.json; sourceTree = "<group>"; };
+		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
+		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
+		4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeRanks.json; sourceTree = "<group>"; };
+		4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeScores.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4F1E4F3826C850B7009D27E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FA10FEF26A8E0E200719D22 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,11 +384,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
+			isa = PBXGroup;
+			children = (
+				4F1E4F3D26C850B7009D27E6 /* main.swift */,
+			);
+			path = CreateAttributeScores;
+			sourceTree = "<group>";
+		};
 		4F27A7C6267FE1EB008CCB0A /* CollectionContracts */ = {
 			isa = PBXGroup;
 			children = (
 				4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */,
+				4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */,
 				4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */,
+				4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */,
+				4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -330,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				4FA10FF426A8E0E200719D22 /* main.swift */,
+				4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */,
 			);
 			path = DownloadCollection;
 			sourceTree = "<group>";
@@ -345,13 +442,16 @@
 		4FB72E4626A8DF250083F255 /* NFTRanking */ = {
 			isa = PBXGroup;
 			children = (
+				4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */,
 				4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */,
+				4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */,
 				4FA1101F26A8F32800719D22 /* CalculateRarityRank.swift */,
-				4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */,
-				4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */,
+				4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */,
 				4FA1101226A8EA6500719D22 /* CreateRankingFiles */,
 				4FA10FF326A8E0E200719D22 /* DownloadCollection */,
-				4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */,
+				4FA1101C26A8EFC600719D22 /* NearestNeighbors.swift */,
+				4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */,
+				4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */,
 			);
 			path = NFTRanking;
 			sourceTree = "<group>";
@@ -376,6 +476,7 @@
 				4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */,
 				4FA10FF226A8E0E200719D22 /* DownloadCollection */,
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
+				4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -427,6 +528,7 @@
 		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4FA0B2B226C2260F00821413 /* ActivityView.swift */,
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
 				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
 				4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */,
@@ -437,6 +539,7 @@
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
 				4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */,
+				4F0A170726C616FF0025259F /* DappLink.swift */,
 				4F4CA8002635D806001534A6 /* FavButton.swift */,
 				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4F3601392640CD99005D7587 /* FeedView.swift */,
@@ -445,16 +548,17 @@
 				4F6D3974262BE4F3007E79BB /* NftImage.swift */,
 				4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */,
 				4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */,
-				4F5F8F5B26532BE200FAD814 /* OpenSeaLink.swift */,
 				4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */,
 				4F08724A2651E740002DD748 /* PrivateCollectionView.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F4557D026ACC0A400092AC0 /* SheetButton.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
+				4FA0B2B426C228D500821413 /* StaticTokenListView.swift */,
 				4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */,
 				4F6AC08526AE1C8B000A7539 /* TokenBuyView.swift */,
 				4F26243026AC0BBA00B5A208 /* TokenListView.swift */,
 				4F43153C2638EF7400C16872 /* TokenPrice.swift */,
+				4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */,
 				4F6AC08326AE1C3C000A7539 /* TokenSellView.swift */,
 				4F6AC08126AE1133000A7539 /* TokenTradeActions.swift */,
 				4F673C9D2696820900CA6918 /* TokenTradeView.swift */,
@@ -462,11 +566,11 @@
 				4F673C9F2697E5F400CA6918 /* TradeEventsList.swift */,
 				4F0FB825269AA26900AD5165 /* UIKitUtils.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
+				4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */,
 				4F4DD21C265DF1F400AD320D /* UserUrlView.swift */,
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
-				4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -485,7 +589,6 @@
 				4F0FB83626A50BF000AD5165 /* Extensions.swift */,
 				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
 				4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */,
-				4FA0B2A126BB5A7800821413 /* WalletProvider.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -493,18 +596,44 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
-				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
-				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
-				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
-				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
-				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
-				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
-				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
+				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
+				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
+				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
+				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
+				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
+				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
+				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
+				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
+				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
+				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
+				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
+				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
 				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
+				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
+				4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */,
+				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
+				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
+				4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */,
+				4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */,
+				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
+				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
+				4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */,
+				4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */,
+				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
+				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
+				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
+				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
 				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
 				4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */,
+				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
+				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
+				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
+				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
+				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
+				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
+				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
+				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
 			);
@@ -514,6 +643,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */;
+			buildPhases = (
+				4F1E4F3726C850B7009D27E6 /* Sources */,
+				4F1E4F3826C850B7009D27E6 /* Frameworks */,
+				4F1E4F3926C850B7009D27E6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CreateAttributeScores;
+			productName = CreateAttributeScores;
+			productReference = 4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */;
+			productType = "com.apple.product-type.tool";
+		};
 		4FA10FF126A8E0E200719D22 /* DownloadCollection */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */;
@@ -628,6 +774,9 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					4F1E4F3A26C850B7009D27E6 = {
+						CreatedOnToolsVersion = 12.5.1;
+					};
 					4FA10FF126A8E0E200719D22 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -672,6 +821,7 @@
 				4FB9A7C8262B28A400C58AF9 /* NFTYUITests */,
 				4FA10FF126A8E0E200719D22 /* DownloadCollection */,
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
+				4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */,
 			);
 		};
 /* End PBXProject section */
@@ -683,20 +833,46 @@
 			files = (
 				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
+				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
+				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
+				4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
+				4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
+				4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */,
+				4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */,
+				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
+				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
+				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
+				4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */,
+				4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */,
+				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
+				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
+				4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */,
+				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
+				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
+				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
+				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
+				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
+				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
+				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,20 +894,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F1E4F3726C850B7009D27E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1E4F4326C85107009D27E6 /* NFTRankingUtils.swift in Sources */,
+				4F1E4F4226C850FF009D27E6 /* CalculatePercentileScores.swift in Sources */,
+				4F1E4F4426C85111009D27E6 /* CalculateAttributePercentiles.swift in Sources */,
+				4F1E4F3E26C850B7009D27E6 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FA10FEE26A8E0E200719D22 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
-				4FA1100426A8E5B200719D22 /* TokenContracts.swift in Sources */,
-				4FA1100726A8E72E00719D22 /* NFT.swift in Sources */,
-				4FA1100526A8E5B500719D22 /* TokenProtocols.swift in Sources */,
-				4FA1100226A8E5AA00719D22 /* LogsFetcher.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
-				4FA1100126A8E5A700719D22 /* Erc721Contract.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,12 +922,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1E4F2D26C842D3009D27E6 /* CalculatePercentileScores.swift in Sources */,
 				4FA1102126A8F32800719D22 /* CalculateRarityRank.swift in Sources */,
 				4FA1102726A9102500719D22 /* Extensions.swift in Sources */,
 				4FA1101E26A8EFC600719D22 /* NearestNeighbors.swift in Sources */,
 				4FA1101B26A8EB0300719D22 /* NFTRankingUtils.swift in Sources */,
 				4FA1101426A8EA6500719D22 /* main.swift in Sources */,
 				4FA1102926AA27D400719D22 /* CalculateImageFeaturePrints.swift in Sources */,
+				4F1E4F2B26C83F42009D27E6 /* CalculateAttributePercentiles.swift in Sources */,
 				4FA1101A26A8EAF800719D22 /* CalculateImageDistances.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -758,12 +943,15 @@
 				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
 				4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F6AC07D26AD17B0000A7539 /* WalletConnectModel.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
+				4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */,
 				4F6AC08626AE1C8B000A7539 /* TokenBuyView.swift in Sources */,
 				4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */,
+				4F0A170826C616FF0025259F /* DappLink.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
 				4FAA1E2226BA26E900102174 /* UserSettingsModel.swift in Sources */,
 				4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */,
@@ -775,18 +963,17 @@
 				4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */,
 				4F5F8F5E26532D9C00FAD814 /* WebView.swift in Sources */,
 				4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */,
+				4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */,
 				4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */,
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
-				4F5F8F5C26532BE200FAD814 /* OpenSeaLink.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
-				4FA0B2A226BB5A7800821413 /* WalletProvider.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
@@ -795,9 +982,11 @@
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
 				4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */,
 				4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */,
+				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
+				4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */,
 				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
@@ -805,6 +994,7 @@
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
 				4F673CA02697E5F400CA6918 /* TradeEventsList.swift in Sources */,
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
+				4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */,
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
@@ -846,6 +1036,32 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4F1E4F4026C850B7009D27E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F1E4F4126C850B7009D27E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T6H8PH94HE;
+				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		4FA10FF726A8E0E200719D22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1032,7 +1248,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1059,7 +1275,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1155,6 +1371,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1E4F4026C850B7009D27E6 /* Debug */,
+				4F1E4F4126C850B7009D27E6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4FA10FF626A8E0E200719D22 /* Build configuration list for PBXNativeTarget "DownloadCollection" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

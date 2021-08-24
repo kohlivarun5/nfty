@@ -9,32 +9,26 @@ import SwiftUI
 
 struct NftUrlView: View {
   
-  @ObservedObject private var nft : ObservablePromise<NFTWithLazyPrice>
+  let nft : NFTWithLazyPrice
+  
+  let info : CollectionInfo
   
   init(address:String, tokenId:UInt) {
-    print(address,tokenId)
-    self.nft = ObservablePromise(promise: collectionsFactory.getByAddress(address)!.data.contract.getToken(tokenId))
+    self.nft = collectionsFactory.getByAddress(address)!.data.contract.getToken(tokenId)
+    self.info = collectionsFactory.getByAddress(nft.nft.address)!.info
   }
   
   var body: some View {
-    
-    ObservedPromiseView(
-      data: nft,
-      progress: {ProgressView()}) { nft in
-      // print(nft)
-      let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
-      let samples = [info.url1,info.url2,info.url3,info.url4];
-      NftDetail(
-        nft:nft.nft,
-        price:.lazy(nft.indicativePriceWei),
-        samples:samples,
-        themeColor:info.themeColor,
-        themeLabelColor:info.themeLabelColor,
-        similarTokens:info.similarTokens,
-        rarityRank:info.rarityRanking,
-        hideOwnerLink:true
-      )
-    }
+    NftDetail(
+      nft:nft.nft,
+      price:.lazy(nft.indicativePriceWei),
+      sample:info.sample,
+      themeColor:info.themeColor,
+      themeLabelColor:info.themeLabelColor,
+      similarTokens:info.similarTokens,
+      rarityRank:info.rarityRanking,
+      hideOwnerLink:true
+    )
   }
 }
 

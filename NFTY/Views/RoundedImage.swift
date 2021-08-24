@@ -12,7 +12,7 @@ struct RoundedImage: View {
   
   var nft:NFT
   var price:TokenPriceType
-  var samples : [String]
+  var sample : String
   var themeColor : Color
   var themeLabelColor : Color
   var rarityRank : RarityRanking?
@@ -26,7 +26,7 @@ struct RoundedImage: View {
   
   init(nft:NFT,
        price:TokenPriceType,
-       samples : [String],
+       sample : String,
        themeColor : Color,
        themeLabelColor : Color,
        rarityRank : RarityRanking?,
@@ -35,7 +35,7 @@ struct RoundedImage: View {
     
     self.nft = nft
     self.price = price
-    self.samples = samples
+    self.sample = sample
     self.themeColor = themeColor
     self.themeLabelColor = themeLabelColor
     self.rarityRank = rarityRank
@@ -66,33 +66,34 @@ struct RoundedImage: View {
     case .normal:
       return 20
     case .narrow:
-      return 10
+      return 20
     }
   }
   
   var body: some View {
     
-    VStack {
-      NftImage(nft:nft,samples:samples,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
+    VStack(spacing:0) {
+      NftImage(nft:nft,sample:sample,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
       
       switch(width) {
       case .narrow:
         HStack {}
       case .normal:
-        HStack {
+        HStack(alignment:.center) {
           VStack(alignment:.leading) {
             Text(nft.name)
             HStack {
               Text("#\(nft.tokenId)")
-              OpenSeaLink(nft:nft)
+              DappLink(destination: DappLink.openSeaPath(nft: nft))
             }
             .font(.footnote)
             
             rank.map {
-              Text("RarityRank: \($0)")
+              Text( "RarityRank: \($0)")
                 .font(.caption2)
                 .foregroundColor(.secondaryLabel)
             }
+            
           }
           .padding(.leading)
           
@@ -103,7 +104,7 @@ struct RoundedImage: View {
             TokenTradeView(
               nft: nft,
               price:price,
-              samples: samples,
+              sample: sample,
               themeColor:themeColor,
               themeLabelColor:themeLabelColor,
               size: .xsmall,
@@ -115,21 +116,22 @@ struct RoundedImage: View {
           .padding(.trailing,5)
           .padding([.top,.bottom],5)
           .background(RoundedCorners(color: .secondarySystemBackground, tl: 10, tr: 10, bl: 10, br: 10))
-          .padding(.bottom,5)
           .padding(.trailing,10)
         }
         .font(.subheadline)
-        .padding(.bottom,10)
-        .padding(.top,5)
+        .padding([.top,.bottom],10)
+        .background(Color.systemBackground)
         
       }
     }
+    
+    .animation(.default)
     
     .border(Color.secondary)
     .frame(width:frameWidth(width))
     .clipShape(RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous))
     .overlay(
-      RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.gray, lineWidth: 2))
+      RoundedRectangle(cornerRadius:cornerRadius(width), style: .continuous).stroke(Color.secondary, lineWidth: 2))
   }
 }
 
@@ -139,7 +141,7 @@ struct RoundedImage_Previews: PreviewProvider {
       RoundedImage(
         nft:SampleToken,
         price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-        samples:SAMPLE_PUNKS,
+        sample:SAMPLE_PUNKS[0],
         themeColor:SampleCollection.info.themeColor,
         themeLabelColor:SampleCollection.info.themeLabelColor,
         rarityRank: SampleCollection.info.rarityRanking,

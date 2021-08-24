@@ -36,23 +36,35 @@ struct TokenPriceKnown : View {
   }
   
   var body: some View {
-    VStack {
-      switch(info.price) {
-      case .some(let wei):
+    switch(info.price,info.blockNumber) {
+    case (.some(let wei),.some(let blockNumber)):
+      VStack {
+        
         HStack {
           UsdText(wei:wei,fontWeight:.semibold)
             .foregroundColor(color(self.color))
           Image(systemName: TradeEventIcon.systemName(info.type))
             .font(.caption2)
         }
-      case .none:
-        EmptyView()
+        
+        BlockTimeLabel(blockNumber:blockNumber)
+          .font(.caption2)
+          .foregroundColor(subtleColor(self.color))
       }
-      BlockTimeLabel(blockNumber:info.blockNumber)
+    case (.none,.some(let blockNumber)):
+      BlockTimeLabel(blockNumber:blockNumber)
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
-        .padding([.top,.bottom],info.price == nil ? 2 : 0)
-        .padding([.leading,.trailing],2)
+        .padding([.top,.bottom],2)
+    case (.some(let wei),.none):
+      HStack {
+        UsdText(wei:wei,fontWeight:.semibold)
+          .foregroundColor(color(self.color))
+        Image(systemName: TradeEventIcon.systemName(info.type))
+          .font(.caption2)
+      }
+    case (.none,.none):
+      EmptyView()
     }
   }
 }
@@ -118,7 +130,7 @@ struct TokenPriceLazy : View {
       data: status,
       progress: {
         Text(" ··· ")
-          .padding([.leading,.trailing])
+          .padding([.leading,.trailing],5)
       }) {
       TokenPriceStatus(status:$0,color:color)
     }
@@ -135,9 +147,9 @@ struct TokenPrice: View {
       case .eager(let info):
         TokenPriceKnown(info:info,color:color)
       case .lazy(let status):
-        TokenPriceLazy(status: status,color:color)
+        TokenPriceLazy(status: status(),color:color)
       }
-    }
+    }.padding([.leading,.trailing],5)
   }
 }
 

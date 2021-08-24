@@ -66,23 +66,6 @@ struct FeedView: View {
     self.trades = trades;
   }
   
-  private func sorted(_ l:[NFTWithPriceAndInfo]) -> [NFTWithPriceAndInfo] {
-    let res = l.sorted(by:{ left,right in
-      switch(left.nftWithPrice.blockNumber,right.nftWithPrice.blockNumber) {
-      case (.none,.none):
-        return true
-      case (.some(let l),.some(let r)):
-        return l > r;
-      case (.none,.some):
-        return true;
-      case (.some,.none):
-        return false;
-      }
-    })
-    // print(res[safe:0]);
-    return res;
-  }
-  
   private func triggerRefresh() {
     self.refreshButton = .loading
     self.trades.loadLatest() {
@@ -101,24 +84,24 @@ struct FeedView: View {
           LazyVStack {
             let sampleInfos = [
               CompositeCollection.collections[0].info,
-              CompositeCollection.collections[1].info,
-              CompositeCollection.collections[2].info,
-              CompositeCollection.collections[0].info
+              CompositeCollection.collections[3].info,
+              CompositeCollection.collections[4].info,
+              CompositeCollection.collections[5].info
             ]
             
             ForEach(sampleInfos.indices,id:\.self) { index in
               let info = sampleInfos[index]
-              let samples = [info.url1,info.url2,info.url3,info.url4];
               ZStack {
                 
                 VStack {
                   ZStack {
                     
-                    Image(samples[index % samples.count])
+                    Image(info.sample)
                       .interpolation(.none)
                       .resizable()
                       .aspectRatio(contentMode: .fit)
                       .padding()
+                      // .colorMultiply([.blue,.green,.orange,.red][Int.random(in: 0..<4)])
                       .background(info.themeColor)
                       .blur(radius:20)
                     ProgressView()
@@ -138,7 +121,7 @@ struct FeedView: View {
                 .frame(width:250)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.gray, lineWidth: 2))
+                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
               }
               .padding()
             }
@@ -150,21 +133,23 @@ struct FeedView: View {
             self.triggerRefresh()
           }
           LazyVStack {
-            let sorted : [NFTWithPriceAndInfo] = sorted(trades.recentTrades);
-            ForEach(sorted.indices,id:\.self) { index in
-              let info = sorted[index].info
-              let nft = sorted[index].nftWithPrice
-              let samples = [info.url1,info.url2,info.url3,info.url4];
+            ForEach(trades.recentTrades.indices,id:\.self) { index in
+              let item = trades.recentTrades[index]
+              let info = item.nft.info
+              let nft = item.nft.nftWithPrice
+
               ZStack {
+                                
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   rarityRank:info.rarityRanking,
                   width: .normal
                 )
+                .shadow(color:.orange,radius:item.isNew ? 10 : 0)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
@@ -174,7 +159,7 @@ struct FeedView: View {
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  samples:samples,
+                  sample:info.sample,
                   themeColor:info.themeColor,
                   themeLabelColor:info.themeLabelColor,
                   similarTokens:info.similarTokens,
@@ -211,10 +196,12 @@ struct FeedView: View {
         }
     )
     .onAppear {
-      self.trades.loadMore() {
-        DispatchQueue.main.async {
-          self.isLoading = false
-          self.refreshButton = .loaded
+      if (self.isLoading) {
+        self.trades.loadMore() {
+          DispatchQueue.main.async {
+            self.isLoading = false
+            self.refreshButton = .loaded
+          }
         }
       }
     }
