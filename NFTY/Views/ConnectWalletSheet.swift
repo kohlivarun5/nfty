@@ -58,7 +58,7 @@ struct ConnectWalletSheet: View {
                     .resizable()
                     .frame(width: 60,height:60)
                   
-                  Text("Connect using MetaMask")
+                  Text("Sign-In with MetaMask")
                     .font(.caption)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
@@ -94,7 +94,7 @@ struct ConnectWalletSheet: View {
                     .resizable()
                     .frame(width: 60,height:60)
                   
-                  Text("Connect using Trust Wallet")
+                  Text("Sign-In with Trust Wallet")
                     .font(.caption)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
