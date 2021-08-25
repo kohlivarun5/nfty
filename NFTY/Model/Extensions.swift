@@ -61,6 +61,14 @@ extension String {
     return self
   }
   
+  func stripHexPrefix() -> String {
+    if self.hasPrefix("0x") {
+      let indexStart = self.index(self.startIndex, offsetBy: 2)
+      return String(self[indexStart...])
+    }
+    return self
+  }
+  
 }
 
 extension URL {
@@ -77,5 +85,23 @@ extension URL {
     } else {
       return [:]
     }
+  }
+}
+
+
+extension Data {
+  static func fromHex(_ hex: String) -> Data? {
+    let string = hex.lowercased().stripHexPrefix()
+    print(string)
+    let array = Array<UInt8>(hex: string)
+    print(array)
+    if (array.count == 0) {
+      if (hex == "0x" || hex == "") {
+        return Data()
+      } else {
+        return nil
+      }
+    }
+    return Data(array)
   }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserSettingsView: View {
-  @EnvironmentObject var userWallet : UserWallet
+  @ObservedObject var userWallet : UserWallet
   @StateObject var userSettings = UserSettings()
   
   @State private var dappBrowserIndex = 0
@@ -43,6 +43,6 @@ struct UserSettingsView: View {
 
 struct UserSettingsView_Previews: PreviewProvider {
   static var previews: some View {
-    UserSettingsView()
+    UserSettingsView(userWallet:UserWallet())
   }
 }

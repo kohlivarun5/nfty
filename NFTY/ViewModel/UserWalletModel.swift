@@ -19,6 +19,8 @@ class UserWallet: ObservableObject {
   @Published var walletConnectSession : Session?
   @Published var walletSignature : String?
   
+  @Published var signedIn : Bool = false // SIgned in if walletSignure matches walletAddress
+  
   init() {
     if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
                                                             .walletAddress.rawValue) {
@@ -32,12 +34,14 @@ class UserWallet: ObservableObject {
     }
     
     self.walletSignature = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
+    signIn()
   }
   
   func saveWalletAddress(address:EthereumAddress) {
     NSUbiquitousKeyValueStore.default.set(address.hex(eip55:true), forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
     DispatchQueue.main.async {
       self.walletAddress = address
+      self.signIn()
     }
   }
   
@@ -48,6 +52,7 @@ class UserWallet: ObservableObject {
     DispatchQueue.main.async {
       self.walletConnectSession = session
       self.walletSignature = signature
+      self.signIn()
     }
   }
   
@@ -57,14 +62,22 @@ class UserWallet: ObservableObject {
     DispatchQueue.main.async {
       self.walletConnectSession = nil
       self.walletSignature = nil
+      self.signIn()
     }
   }
   
-  func verifySignature(address:EthereumAddress) -> Bool {
-    guard let signature = walletSignature else {
-      return false
+  private func signIn() {
+    let signedAddress = recoverSignedAddress()
+    DispatchQueue.main.async {
+      self.signedIn = signedAddress != nil && signedAddress == self.walletAddress
     }
-    return false
+  }
+  
+  func recoverSignedAddress() -> EthereumAddress? {
+    print(walletSignature);
+    return walletSignature.flatMap {
+      Web3Utils.personalECRecover(CloudDefaultStorageKeys.walletSignature.rawValue,signature: $0)
+    }
   }
   
   func connectToWallet(link: String) throws -> URL {

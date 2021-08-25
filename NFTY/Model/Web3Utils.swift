@@ -11,28 +11,10 @@ import Web3
 
 struct Web3Utils {
   
-  struct UnmarshaledSignature {
-    let v : UInt8
-    let r : Data
-    let s : Data
-    
-    init(signature:Data) {
-      
-      self.r = signature[0..<32]
-      self.s = signature[32..<64]
-      
-      var v = try! UInt8(signature[64])
-      if v < 27 {
-        v = v + 27
-      }
-      self.v = v
-    }
-  }
-  
   /// Hashes a personal message by first padding it with the "\u{19}Ethereum Signed Message:\n" string and message length string.
   /// Should be used if some arbitrary information should be hashed and signed to prevent signing an Ethereum transaction
   /// by accident.
-  static func hashPersonalMessage(_ personalMessage: Data) -> Data? {
+  private static func hashPersonalMessage(_ personalMessage: Data) -> Data? {
     var prefix = "\u{19}Ethereum Signed Message:\n"
     prefix += String(personalMessage.count)
     guard let prefixData = prefix.data(using: .ascii) else {return nil}
@@ -47,7 +29,7 @@ struct Web3Utils {
     return hash
   }
   
-  static func publicToAddressData(_ publicKey: Data) -> Data? {
+  private static func publicToAddressData(_ publicKey: Data) -> Data? {
     if publicKey.count == 33 {
       guard let decompressedKey = SECP256K1.combineSerializedPublicKeys(keys: [publicKey], outputCompressed: false) else {return nil}
       return publicToAddressData(decompressedKey)
@@ -67,17 +49,18 @@ struct Web3Utils {
     return addressData
   }
   
-  static func publicToAddress(_ publicKey: Data) -> EthereumAddress? {
-    guard let addressData = Web3Utils.publicToAddressData(publicKey) else {return nil}
+  private static func publicToAddress(_ publicKey: Data) -> EthereumAddress? {
+    guard let addressData = Web3Utils.publicToAddressData(publicKey) else { return nil }
     let address = addressData.toHexString().addHexPrefix().lowercased()
-    return try? EthereumAddress(address)
+    return try? EthereumAddress(hex:address,eip55: false)
   }
   
-  static func personalECRecover(_ personalMessage: Data, signature: Data) -> EthereumAddress? {
+  private static func personalECRecover(_ personalMessage: Data, signature: Data) -> EthereumAddress? {
     if signature.count != 65 { return nil}
     let rData = signature[0..<32].bytes
     let sData = signature[32..<64].bytes
     var vData = signature[64]
+    
     if vData >= 27 && vData <= 30 {
       vData -= 27
     } else if vData >= 31 && vData <= 34 {
@@ -87,23 +70,24 @@ struct Web3Utils {
     }
     
     guard let signatureData = SECP256K1.marshalSignature(v: vData, r: rData, s: sData) else {return nil}
+    print(signatureData)
     guard let hash = Web3Utils.hashPersonalMessage(personalMessage) else {return nil}
+    print(hash)
     guard let publicKey = SECP256K1.recoverPublicKey(hash: hash, signature: signatureData) else {return nil}
-    return Web3Utils.publicToAddress(publicKey)
+    print(publicKey)
+    let addr =  Web3Utils.publicToAddress(publicKey)
+    print(addr)
+    return addr
   }
   
-  static func recoverPublicKey(message: String, signature:String) -> EthereumAddress? {
-    let sig = Data(hex:signature)
-    guard sig.count == 65 else {return nil}
-    
-    //
-    
-    /*
-     guard var recoverableSignature = parseSignature(signature: signature) else {return nil}
-     guard var publicKey = SECP256K1.recoverPublicKey(hash: hash, recoverableSignature: &recoverableSignature) else {return nil}
-     guard let serializedKey = SECP256K1.serializePublicKey(publicKey: &publicKey, compressed: compressed) else {return nil}
-     return serializedKey
-     */
-    return nil
+  static func personalECRecover(_ personalMessage: String, signature: String) -> EthereumAddress? {
+    let data = Data(personalMessage.utf8)
+    guard let sig = Data.fromHex(signature) else {
+      print("No sig")
+      return nil
+      
+    }
+    return Web3Utils.personalECRecover(data, signature:sig)
   }
+  
 }

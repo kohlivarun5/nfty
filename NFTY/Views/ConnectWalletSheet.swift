@@ -75,7 +75,6 @@ struct ConnectWalletSheet: View {
               
               */
               
-              
               Button(action:{
                 UIImpactFeedbackGenerator(style: .light)
                   .impactOccurred()
@@ -111,6 +110,17 @@ struct ConnectWalletSheet: View {
             }
             Spacer()
           }
+          
+          switch(userWallet.signedIn) {
+          case false:
+            EmptyView()
+          case true:
+            Text("Currently signed-in using Trust Wallet")
+              .foregroundColor(.secondary)
+              .font(.caption)
+              .italic()
+          }
+          
         }
       }
       .padding()

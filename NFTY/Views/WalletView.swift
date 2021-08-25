@@ -94,7 +94,10 @@ struct WalletView: View {
         }
     )
     .sheet(isPresented: $showSettings) {
-      UserSettingsView()
+      UserSettingsView(userWallet: userWallet)
+    }
+    .onAppear {
+      print("Recovered address:\(userWallet.recoverSignedAddress()?.hex(eip55: true))")
     }
   }
 }
