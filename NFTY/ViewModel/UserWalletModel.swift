@@ -17,6 +17,7 @@ class UserWallet: ObservableObject {
   
   @Published var walletAddress : EthereumAddress?
   @Published var walletConnectSession : Session?
+  @Published var walletSignature : String?
   
   init() {
     if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
@@ -29,6 +30,8 @@ class UserWallet: ObservableObject {
     if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data {
       self.walletConnectSession = try? JSONDecoder().decode(Session.self, from: oldSessionObject)
     }
+    
+    self.walletSignature = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
   }
   
   func saveWalletAddress(address:EthereumAddress) {
@@ -41,16 +44,27 @@ class UserWallet: ObservableObject {
   func saveWalletConnectSession(session:Session,signature:String) {
     let sessionData = try! JSONEncoder().encode(session)
     NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
+    NSUbiquitousKeyValueStore.default.set(signature, forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
     DispatchQueue.main.async {
       self.walletConnectSession = session
+      self.walletSignature = signature
     }
   }
   
   func removeWalletConnectSession() {
     NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
+    NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
     DispatchQueue.main.async {
       self.walletConnectSession = nil
+      self.walletSignature = nil
     }
+  }
+  
+  func verifySignature(address:EthereumAddress) -> Bool {
+    guard let signature = walletSignature else {
+      return false
+    }
+    return false
   }
   
   func connectToWallet(link: String) throws -> URL {
@@ -62,7 +76,9 @@ class UserWallet: ObservableObject {
     } else {
       delimiter = "//"
     }
-    let urlStr = "\(link)\(delimiter)wc?uri=\(uri)"
+    let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+    let urlStr = "\(link)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
+    print(urlStr)
     return URL(string: urlStr)!
   }
   
@@ -147,7 +163,10 @@ class UserWallet: ObservableObject {
       let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
       let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
       print("trust://wc?uri=\(uri)")
-      let url = URL(string:"trust://wc?uri=\(uri)")!
+      
+      let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+      
+      let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
       print(url)
       DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
         openURL(url)
@@ -193,32 +212,20 @@ extension UserWallet: ClientDelegate {
       
       try! client.personal_sign(
         url: session.url,
-        message: CloudDefaultStorageKeys.signIn.rawValue,
+        message: CloudDefaultStorageKeys.walletSignature.rawValue,
         account: $0.hex(eip55: true)
       ) { response in
-        
-        print(response)
-        
-        var signature = try! response.result(as: String.self)
-        //print(signature)
-        
-        var signatureBytes = Data(hex: signature).bytes
-        var v = signatureBytes.last!
-        if v < 27 {
-          v += 27
-          signatureBytes[signatureBytes.count - 1] = v
-          signature = "0x" + Data(signatureBytes).toHexString()
-        }
-        print(signature)
-        self.saveWalletConnectSession(session: session,signature:signature)
+        self.saveWalletConnectSession(session: session,signature:try! response.result(as: String.self))
       }
       
       let uri = "wc:\(session.url.topic)@\(session.url.version)"
-      let url = URL(string:"trust://wc?uri=\(uri)")!
+      
+      let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+      
+      let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
+      
       print(url)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-        self.openURL(url)
-      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { self.openURL(url) }
       
     }
   }
