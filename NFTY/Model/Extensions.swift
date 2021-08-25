@@ -54,6 +54,13 @@ extension String {
     return self.addingPercentEncoding(withAllowedCharacters: characterSet)
   }
   
+  func addHexPrefix() -> String {
+    if !self.hasPrefix("0x") {
+      return "0x" + self
+    }
+    return self
+  }
+  
 }
 
 extension URL {
