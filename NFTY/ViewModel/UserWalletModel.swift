@@ -15,6 +15,9 @@ class UserWallet: ObservableObject {
   
   @Environment(\.openURL) var openURL
   
+  private let walletConnectKey = "walletConnect"
+  private let walletSignatureKey = "Sign-In" // This key is important as it is also the signed message
+  
   @Published var walletAddress : EthereumAddress?
   @Published var walletConnectSession : Session?
   @Published var walletSignature : String?
@@ -31,11 +34,11 @@ class UserWallet: ObservableObject {
       self.walletAddress = nil
     }
     
-    if let oldSessionObject = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.walletConnect.rawValue) as? Data {
+    if let oldSessionObject = UserDefaults.standard.object(forKey: walletConnectKey) as? Data {
       self.walletConnectSession = try? JSONDecoder().decode(Session.self, from: oldSessionObject)
     }
     
-    self.walletSignature = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
+    self.walletSignature = UserDefaults.standard.string(forKey:walletSignatureKey)
     signIn()
   }
   
@@ -49,8 +52,8 @@ class UserWallet: ObservableObject {
   
   func saveWalletConnectSession(session:Session,signature:String) {
     let sessionData = try! JSONEncoder().encode(session)
-    NSUbiquitousKeyValueStore.default.set(sessionData, forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
-    NSUbiquitousKeyValueStore.default.set(signature, forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
+    UserDefaults.standard.set(sessionData, forKey:walletConnectKey)
+    UserDefaults.standard.set(signature, forKey:walletSignatureKey)
     DispatchQueue.main.async {
       self.walletConnectSession = session
       self.walletSignature = signature
@@ -59,8 +62,8 @@ class UserWallet: ObservableObject {
   }
   
   func removeWalletConnectSession() {
-    NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletConnect.rawValue)
-    NSUbiquitousKeyValueStore.default.removeObject(forKey: CloudDefaultStorageKeys.walletSignature.rawValue)
+    UserDefaults.standard.removeObject(forKey:walletConnectKey)
+    UserDefaults.standard.removeObject(forKey:walletSignatureKey)
     DispatchQueue.main.async {
       self.walletConnectSession = nil
       self.walletSignature = nil
@@ -77,7 +80,7 @@ class UserWallet: ObservableObject {
   
   func recoverSignedAddress() -> EthereumAddress? {
     return walletSignature.flatMap {
-      Web3Utils.personalECRecover(CloudDefaultStorageKeys.walletSignature.rawValue,signature: $0)
+      Web3Utils.personalECRecover(walletSignatureKey,signature: $0)
     }
   }
   
@@ -234,7 +237,7 @@ extension UserWallet: ClientDelegate {
         
         try! client.personal_sign(
           url: session.url,
-          message: CloudDefaultStorageKeys.walletSignature.rawValue,
+          message: self.walletSignatureKey,
           account: address.hex(eip55: true)
         ) { response in
           (try? response.result(as: String.self)).map {

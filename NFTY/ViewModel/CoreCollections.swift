@@ -296,8 +296,6 @@ enum CloudDefaultStorageKeys : String {
   case walletAddress = "walletAddress"
   case favoritesDict = "favoritesDict"
   case friendsDict = "friendsDict"
-  case walletConnect = "walletConnect"
-  case walletSignature = "Sign-In" // This key is important as it is also the signed message
 }
 
 class NftOwnerTokens : ObservableObject {
