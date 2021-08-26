@@ -161,28 +161,35 @@ class UserWallet: ObservableObject {
         value:tx.value?.hex(),
         nonce: tx.nonce?.hex()
       )
-      // try? client.reconnect(to: session)
+      try! client.reconnect(to: session)
+      
+      
       let p = Promise<EthereumTransactionReceiptObject> { seal in
-        try? client.eth_sendTransaction(
-          url: session.url,
-          transaction: transaction)
-        { res in
-          print(res)
-          seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          //seal.fulfill(Ethere
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+          
+          try! client.eth_sendTransaction(
+            url: session.url,
+            transaction: transaction)
+          { res in
+            print(res)
+            seal.reject(NSError(domain:"", code:404, userInfo:nil))
+            //seal.fulfill(Ethere
+          }
         }
-      }
-      
-      let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
-      let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-      print("trust://wc?uri=\(uri)")
-      
-      let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-      
-      let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
-      print(url)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000)) {
-        openURL(url)
+        
+        let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
+        let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+        print("trust://wc?uri=\(uri)")
+        
+        let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+        
+        let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
+        print(url)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+          openURL(url)
+        }
       }
       
       return p

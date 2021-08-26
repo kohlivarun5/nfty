@@ -128,7 +128,7 @@ struct TokenTradeActions: View {
           
         case (.some(let actions),.some(let tradeActions)):
           switch(tradeActions.tradeActions.actions) {
-          /* case .some(let txActions):
+          case .some(let txActions):
             HStack {
               switch(actions) {
               case .buyActions:
@@ -189,8 +189,9 @@ struct TokenTradeActions: View {
                 
               }
             }
-          case .none: */
-          default:
+            .padding(.bottom,10)
+            .padding(.top,currentBidPriceInWei == nil && currentAskPriceInWei == nil ? 10 : 0)
+          case .none:
             HStack {
               switch(actions) {
               case .buyActions:
