@@ -112,66 +112,75 @@ struct NftDetail: View {
         }
       }
       
-      switch(tokens,properties) {
-      case (.none,.none):
-        EmptyView()
-      case (.some(let tokens),.none):
-        VStack {
-          ZStack {
-            Divider()
-            Text("Similar \(similarTokens?.label ?? "Tokens")")
-              .font(.caption).italic()
-              .foregroundColor(.secondaryLabel)
-              .padding(.trailing)
-              .padding(.leading)
-              .background(Color.systemBackground)
-          }
-          SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
-        }
-      case (.none,.some(let properties)):
-        VStack {
-          ZStack {
-            Divider()
-            Text("Attributes")
-              .font(.caption).italic()
-              .foregroundColor(.secondaryLabel)
-              .padding(.trailing)
-              .padding(.leading)
-              .background(Color.systemBackground)
-          }
-          TokenPropertiesGrid(properties: properties)
-        }
-      case (.some(let tokens),.some(let properties)):
-        VStack(spacing:0) {
-          
-          ZStack {
-            
-            Picker(selection: Binding<Int>(
-                    get: { self.similarSectionPage.rawValue },
-                    set: { tag in
-                      withAnimation { // needed explicit for transitions
-                        self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
-                      }
-                    }),
-                   label: Text("")) {
-              Text("Attributes")
-                .tag(SimilarSectionPage.attributes.rawValue)
+      HStack {
+        Spacer()
+          .frame(maxWidth:20)
+        
+        
+        switch(tokens,properties) {
+        case (.none,.none):
+          EmptyView()
+        case (.some(let tokens),.none):
+          VStack {
+            ZStack {
+              Divider()
               Text("Similar \(similarTokens?.label ?? "Tokens")")
-                .tag(SimilarSectionPage.similar.rawValue)
+                .font(.caption).italic()
+                .foregroundColor(.secondaryLabel)
+                .padding(.trailing)
+                .padding(.leading)
+                .background(Color.systemBackground)
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .colorMultiply(.orange)
-            .font(.caption)
-            .padding([.trailing,.leading])
-          }
-          
-          switch(self.similarSectionPage) {
-          case .similar:
             SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
-          case .attributes:
+          }
+        case (.none,.some(let properties)):
+          VStack {
+            ZStack {
+              Divider()
+              Text("Attributes")
+                .font(.caption).italic()
+                .foregroundColor(.secondaryLabel)
+                .padding(.trailing)
+                .padding(.leading)
+                .background(Color.systemBackground)
+            }
             TokenPropertiesGrid(properties: properties)
           }
+        case (.some(let tokens),.some(let properties)):
+          VStack(spacing:0) {
+            
+            ZStack {
+              
+              Picker(selection: Binding<Int>(
+                      get: { self.similarSectionPage.rawValue },
+                      set: { tag in
+                        withAnimation { // needed explicit for transitions
+                          self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                        }
+                      }),
+                     label: Text("")) {
+                Text("Attributes")
+                  .tag(SimilarSectionPage.attributes.rawValue)
+                Text("Similar \(similarTokens?.label ?? "Tokens")")
+                  .tag(SimilarSectionPage.similar.rawValue)
+              }
+              .pickerStyle(SegmentedPickerStyle())
+              .colorMultiply(.orange)
+              .font(.caption)
+              .padding([.trailing,.leading])
+            }
+            
+            switch(self.similarSectionPage) {
+            case .similar:
+              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+            case .attributes:
+              TokenPropertiesGrid(properties: properties)
+            }
+          }
         }
+        
+        Spacer()
+          .frame(maxWidth:20)
       }
     }
     .navigationBarTitle("",displayMode:.large)
