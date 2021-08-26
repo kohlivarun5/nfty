@@ -70,23 +70,15 @@ struct Web3Utils {
     }
     
     guard let signatureData = SECP256K1.marshalSignature(v: vData, r: rData, s: sData) else {return nil}
-    print(signatureData)
     guard let hash = Web3Utils.hashPersonalMessage(personalMessage) else {return nil}
-    print(hash)
     guard let publicKey = SECP256K1.recoverPublicKey(hash: hash, signature: signatureData) else {return nil}
-    print(publicKey)
     let addr =  Web3Utils.publicToAddress(publicKey)
-    print(addr)
     return addr
   }
   
   static func personalECRecover(_ personalMessage: String, signature: String) -> EthereumAddress? {
     let data = Data(personalMessage.utf8)
-    guard let sig = Data.fromHex(signature) else {
-      print("No sig")
-      return nil
-      
-    }
+    guard let sig = Data.fromHex(signature) else { return nil }
     return Web3Utils.personalECRecover(data, signature:sig)
   }
   

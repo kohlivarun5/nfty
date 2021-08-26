@@ -19,6 +19,8 @@ class UserWallet: ObservableObject {
   @Published var walletConnectSession : Session?
   @Published var walletSignature : String?
   
+  @Published var walletConnectScheme : String?
+  
   @Published var signedIn : Bool = false // SIgned in if walletSignure matches walletAddress
   
   init() {
@@ -74,13 +76,12 @@ class UserWallet: ObservableObject {
   }
   
   func recoverSignedAddress() -> EthereumAddress? {
-    print(walletSignature);
     return walletSignature.flatMap {
       Web3Utils.personalECRecover(CloudDefaultStorageKeys.walletSignature.rawValue,signature: $0)
     }
   }
   
-  func connectToWallet(link: String) throws -> URL {
+  func connectToWallet(link: String) throws -> Void {
     let wcUrl = connect()
     let uri = wcUrl.fullyPercentEncodedStr
     var delimiter: String
@@ -91,8 +92,13 @@ class UserWallet: ObservableObject {
     }
     let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
     let urlStr = "\(link)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
-    print(urlStr)
-    return URL(string: urlStr)!
+    let url = URL(string: urlStr)!
+    // we need a delay so that WalletConnectClient can send handshake request
+    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
+      self.walletConnectScheme = link
+      print("Launching=\(url)")
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
   }
   
   private func connect() -> WCURL {
@@ -119,9 +125,6 @@ class UserWallet: ObservableObject {
                                         url: URL(string: "www.nftygo.com")!)
     let dAppInfo = Session.DAppInfo(peerId: UUID().uuidString, peerMeta: clientMeta)
     let client = Client(delegate: self, dAppInfo: dAppInfo)
-    
-    print("WalletConnect URL: \(wcUrl.absoluteString)")
-    
     try! client.connect(to: wcUrl)
     return wcUrl
   }
@@ -149,8 +152,6 @@ class UserWallet: ObservableObject {
     let session : Session
     
     func sendTransaction(tx: EthereumTransaction) -> Promise<EthereumTransactionReceiptObject> {
-      print("submitting")
-      
       let transaction = Client.Transaction(
         from:tx.from!.hex(eip55: true),
         to:tx.to?.hex(eip55: true),
@@ -160,7 +161,6 @@ class UserWallet: ObservableObject {
         value:tx.value?.hex(),
         nonce: tx.nonce?.hex()
       )
-      print(transaction)
       // try? client.reconnect(to: session)
       let p = Promise<EthereumTransactionReceiptObject> { seal in
         try? client.eth_sendTransaction(
@@ -208,48 +208,51 @@ class UserWallet: ObservableObject {
 
 extension UserWallet: ClientDelegate {
   func client(_ client: Client, didFailToConnect url: WCURL) {
-    print("client\(client), url=\(url)")
+    print("WalletConnect client\(client), url=\(url)")
   }
   
   func client(_ client: Client, didConnect url: WCURL) {
-    print("didConnect url client\(client), url=\(url)")
+    print("WalletConnect didConnect url client\(client), url=\(url)")
   }
   
   func client(_ client: Client, didConnect session: Session) {
-    print("didConnect session=\(session)")
+    print("WalletConnect didConnect session=\(session)")
     session.walletInfo?.accounts[safe:0].flatMap {
       try? EthereumAddress(hex:$0,eip55: false)
-    }.map {
-      self.saveWalletAddress(address: $0)
+    }.map { address in
+      self.saveWalletAddress(address:address)
       // Once we have the connection, sign message to keep
       
-      try! client.personal_sign(
-        url: session.url,
-        message: CloudDefaultStorageKeys.walletSignature.rawValue,
-        account: $0.hex(eip55: true)
-      ) { response in
-        self.saveWalletConnectSession(session: session,signature:try! response.result(as: String.self))
+      self.walletConnectScheme.map { scheme in
+        
+        try! client.personal_sign(
+          url: session.url,
+          message: CloudDefaultStorageKeys.walletSignature.rawValue,
+          account: address.hex(eip55: true)
+        ) { response in
+          self.saveWalletConnectSession(session: session,signature:try! response.result(as: String.self))
+        }
+        
+        let uri = "wc:\(session.url.topic)@\(session.url.version)"
+        
+        let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+        
+        let url = URL(string:"\(scheme)//wc?uri=\(uri)&redirectUrl=\(redirect)")!
+        
+        print(url)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { self.openURL(url) }
       }
-      
-      let uri = "wc:\(session.url.topic)@\(session.url.version)"
-      
-      let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-      
-      let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
-      
-      print(url)
-      DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { self.openURL(url) }
       
     }
   }
   
   func client(_ client: Client, didDisconnect session: Session) {
-    print("client didDisconnect")
+    print("WalletConnect client didDisconnect")
     self.removeWalletConnectSession()
   }
   
   func client(_ client: Client, didUpdate session: Session) {
-    print("client didUpdate, session=\(session)")
+    print("WalletConnect client didUpdate, session=\(session)")
   }
 }
 

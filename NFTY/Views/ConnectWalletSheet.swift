@@ -80,13 +80,7 @@ struct ConnectWalletSheet: View {
                   .impactOccurred()
                 self.userWallet.removeWalletConnectSession()
                 self.isConnecting = true
-                let url = try! userWallet.connectToWallet(link:"trust:")
-                // we need a delay so that WalletConnectClient can send handshake request
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-                  print("Launching=\(url)")
-                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-                
+                try! userWallet.connectToWallet(link:"trust:")
               }) {
                 VStack {
                   Image("TrustWallet")
@@ -147,7 +141,6 @@ struct ConnectWalletSheet: View {
         Button(action: {
           if let string = UIPasteboard.general.string {
             // text was found and placed in the "string" constant
-            print(string)
             switch(try? EthereumAddress(hex:string,eip55: false)) {
             case .none:
               self.badAddressError = "Invalid Address Pasted"

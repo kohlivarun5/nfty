@@ -49,7 +49,6 @@ struct TokenBuyView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
-    print( userWallet.walletProvider())
     userWallet.walletProvider().map { wallet in
       bidPriceInWei.map {
         actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:wallet)
