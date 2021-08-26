@@ -108,7 +108,7 @@ class CryptoPunksContract : ContractInterface {
         nonce: nil,
         from: from,
         value:EthereumQuantity(quantity: wei),
-        gas: 90000,
+        gas: 200000,
         gasPrice: nil)!
     }
     
@@ -124,7 +124,7 @@ class CryptoPunksContract : ContractInterface {
         nonce: nil,
         from: from,
         value:EthereumQuantity(quantity: wei),
-        gas: 90000,
+        gas: 200000,
         gasPrice: nil)!
     }
   }
