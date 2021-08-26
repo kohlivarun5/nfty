@@ -12,6 +12,7 @@ import PromiseKit
 struct NftDetail: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  @EnvironmentObject var userWallet: UserWallet
   
   let nft:NFT
   let price:TokenPriceType
@@ -96,6 +97,7 @@ struct NftDetail: View {
               themeLabelColor:themeLabelColor,
               size: .small,
               rarityRank:rarityRank,
+              userWallet:userWallet,
               isSheet:false),
             isActive:$showTradeView
           ) {

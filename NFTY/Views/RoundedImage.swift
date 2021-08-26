@@ -9,6 +9,7 @@ import SwiftUI
 import BigInt
 
 struct RoundedImage: View {
+  @EnvironmentObject var userWallet: UserWallet
   
   var nft:NFT
   var price:TokenPriceType
@@ -109,6 +110,7 @@ struct RoundedImage: View {
               themeLabelColor:themeLabelColor,
               size: .xsmall,
               rarityRank:rarityRank,
+              userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)
           })
