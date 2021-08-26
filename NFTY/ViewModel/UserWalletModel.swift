@@ -237,7 +237,9 @@ extension UserWallet: ClientDelegate {
           message: CloudDefaultStorageKeys.walletSignature.rawValue,
           account: address.hex(eip55: true)
         ) { response in
-          self.saveWalletConnectSession(session: session,signature:try! response.result(as: String.self))
+          (try? response.result(as: String.self)).map {
+            self.saveWalletConnectSession(session: session,signature:$0)
+          }
         }
         
         let uri = "wc:\(session.url.topic)@\(session.url.version)"

@@ -109,10 +109,10 @@ struct TokenBuyView: View {
           
           HStack {
             Spacer()
-            TokenPrice(price:price,color:.label)
+            TokenPriceWithEth(price:price,color:.label)
               .font(.title2)
           }
-          .padding(.top,20)
+          .padding(.top,2)
           
         }
         .padding(10)
