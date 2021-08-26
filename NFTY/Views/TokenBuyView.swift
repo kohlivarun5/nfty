@@ -56,12 +56,14 @@ struct TokenBuyView: View {
           .catch { print($0) }
       }
     }
-    
-    /*
-     print(eth)
-     print(bidPriceInWei)
-     print(spot)
-     */
+  }
+  
+  private func onBuyNow(_ ask : BigUInt) {
+    userWallet.walletProvider().map { wallet in
+      actions.submitBid(tokenId: nft.tokenId, wei: ask, wallet:wallet)
+        .done { print ($0) }
+        .catch { print($0) }
+    }
   }
   
   var body: some View {
@@ -202,12 +204,12 @@ struct TokenBuyView: View {
           header: Text(""),
           footer: HStack {
             switch (currentAskPriceInWei) {
-            case .some:
+            case .some(let ask):
               HStack {
                 Button(action: {
                   UIImpactFeedbackGenerator(style:.soft)
                     .impactOccurred()
-                  self.onSubmit()
+                  self.onBuyNow(ask)
                 }) {
                   HStack {
                     Spacer()
