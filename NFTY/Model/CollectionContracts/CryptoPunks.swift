@@ -108,7 +108,23 @@ class CryptoPunksContract : ContractInterface {
         nonce: nil,
         from: from,
         value:EthereumQuantity(quantity: wei),
-        gas: 21000,
+        gas: 90000,
+        gasPrice: nil)!
+    }
+    
+    //  function buyPunk(uint punkIndex) payable {
+    
+    func buyPunk(tokenId: BigUInt,wei:BigUInt,from:EthereumAddress) -> EthereumTransaction {
+      // function enterBidForPunk(uint punkIndex) payable {
+      
+      let inputs = [SolidityFunctionParameter(name: "punkIndex", type: .uint256)]
+      let method = SolidityPayableFunction(name: "buyPunk", inputs: inputs, outputs: [], handler: self)
+      
+      return method.invoke(tokenId).createTransaction(
+        nonce: nil,
+        from: from,
+        value:EthereumQuantity(quantity: wei),
+        gas: 90000,
         gasPrice: nil)!
     }
   }
@@ -118,9 +134,15 @@ class CryptoPunksContract : ContractInterface {
   struct TradeActions : TradeActionsInterface {
     let ethContract : EthContract
     func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
-      print("submitting")
+      print("submitting enterBidForPunk")
       return wallet.sendTransaction(tx:
                                       ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+    }
+    
+    func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+      print("submitting buyPunk")
+      return wallet.sendTransaction(tx:
+                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
     }
   }
   

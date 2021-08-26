@@ -60,7 +60,7 @@ struct TokenBuyView: View {
   
   private func onBuyNow(_ ask : BigUInt) {
     userWallet.walletProvider().map { wallet in
-      actions.submitBid(tokenId: nft.tokenId, wei: ask, wallet:wallet)
+      actions.acceptOffer(tokenId: nft.tokenId, wei: ask, wallet:wallet)
         .done { print ($0) }
         .catch { print($0) }
     }
