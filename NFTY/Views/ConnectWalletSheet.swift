@@ -58,7 +58,7 @@ struct ConnectWalletSheet: View {
                     .resizable()
                     .frame(width: 60,height:60)
                   
-                  Text("Connect using MetaMask")
+                  Text("Sign-In with MetaMask")
                     .font(.caption)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
@@ -75,26 +75,19 @@ struct ConnectWalletSheet: View {
               
               */
               
-              
               Button(action:{
                 UIImpactFeedbackGenerator(style: .light)
                   .impactOccurred()
                 self.userWallet.removeWalletConnectSession()
                 self.isConnecting = true
-                let url = try! userWallet.connectToWallet(link:"trust:")
-                // we need a delay so that WalletConnectClient can send handshake request
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-                  print("Launching=\(url)")
-                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-                
+                try! userWallet.connectToWallet(link:"trust:")
               }) {
                 VStack {
                   Image("TrustWallet")
                     .resizable()
                     .frame(width: 60,height:60)
                   
-                  Text("Connect using Trust Wallet")
+                  Text("Sign-In with Trust Wallet")
                     .font(.caption)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
@@ -111,6 +104,17 @@ struct ConnectWalletSheet: View {
             }
             Spacer()
           }
+          
+          switch(userWallet.signedIn) {
+          case false:
+            EmptyView()
+          case true:
+            Text("Currently signed-in using Trust Wallet")
+              .foregroundColor(.secondary)
+              .font(.caption)
+              .italic()
+          }
+          
         }
       }
       .padding()
@@ -137,7 +141,6 @@ struct ConnectWalletSheet: View {
         Button(action: {
           if let string = UIPasteboard.general.string {
             // text was found and placed in the "string" constant
-            print(string)
             switch(try? EthereumAddress(hex:string,eip55: false)) {
             case .none:
               self.badAddressError = "Invalid Address Pasted"

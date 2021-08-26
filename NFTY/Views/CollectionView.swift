@@ -104,7 +104,10 @@ struct CollectionView: View {
       }
     }
     .toolbar {
-      switch(self.info.rarityRanking,userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
+      switch(
+        self.info.rarityRanking,
+        userWallet.signedIn
+          && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
        case (.some(let ranked),true):
         NavigationLink(
           destination:

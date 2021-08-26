@@ -94,7 +94,7 @@ struct WalletView: View {
         }
     )
     .sheet(isPresented: $showSettings) {
-      UserSettingsView()
+      UserSettingsView(userWallet: userWallet)
     }
   }
 }

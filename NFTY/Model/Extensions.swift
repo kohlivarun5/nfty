@@ -54,6 +54,21 @@ extension String {
     return self.addingPercentEncoding(withAllowedCharacters: characterSet)
   }
   
+  func addHexPrefix() -> String {
+    if !self.hasPrefix("0x") {
+      return "0x" + self
+    }
+    return self
+  }
+  
+  func stripHexPrefix() -> String {
+    if self.hasPrefix("0x") {
+      let indexStart = self.index(self.startIndex, offsetBy: 2)
+      return String(self[indexStart...])
+    }
+    return self
+  }
+  
 }
 
 extension URL {
@@ -70,5 +85,21 @@ extension URL {
     } else {
       return [:]
     }
+  }
+}
+
+
+extension Data {
+  static func fromHex(_ hex: String) -> Data? {
+    let string = hex.lowercased().stripHexPrefix()
+    let array = Array<UInt8>(hex: string)
+    if (array.count == 0) {
+      if (hex == "0x" || hex == "") {
+        return Data()
+      } else {
+        return nil
+      }
+    }
+    return Data(array)
   }
 }
