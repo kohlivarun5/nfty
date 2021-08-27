@@ -41,7 +41,7 @@ struct TokenPriceKnown : View {
     case (.some(let wei),.some(let blockNumber)):
       VStack {
         
-        HStack {
+        HStack(spacing:4) {
           UsdText(wei:wei,fontWeight:.semibold)
             .foregroundColor(color(self.color))
           Image(systemName: TradeEventIcon.systemName(info.type))

@@ -26,6 +26,8 @@ class UserWallet: ObservableObject {
   
   @Published var signedIn : Bool = false // SIgned in if walletSignure matches walletAddress
   
+  @Published var walletProvider : WalletProvider?
+  
   init() {
     if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
                                                             .walletAddress.rawValue) {
@@ -75,6 +77,7 @@ class UserWallet: ObservableObject {
     let signedAddress = recoverSignedAddress()
     DispatchQueue.main.async {
       self.signedIn = signedAddress != nil && signedAddress == self.walletAddress
+      self.walletProvider = self.makeWalletProvider()
     }
   }
   
@@ -200,7 +203,7 @@ class UserWallet: ObservableObject {
     
   }
   
-  func walletProvider() -> WalletProvider? {
+  private func makeWalletProvider() -> WalletProvider? {
     
     walletAddress.flatMap { account in
       walletConnectSession.map { session in

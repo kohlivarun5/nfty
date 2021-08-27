@@ -134,61 +134,65 @@ struct TokenTradeActions: View {
             HStack {
               switch(actions) {
               case .buyActions:
-                SheetButton(content: {
-                  HStack {
-                    Spacer()
-                    Text("Trade")
-                      .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
-                    Spacer()
-                  }
-                  .padding(10)
-                  .background(
-                    RoundedCorners(
-                      color: .flatOrange,
-                      tl: 20, tr: 20, bl: 20, br: 20))
-                  .padding([.leading,.trailing],50)
-                },sheetContent: {
-                  TokenBuyView(
-                    nft: nft,
-                    price:price,
-                    sample: sample,
-                    themeColor:themeColor,
-                    themeLabelColor:themeLabelColor,
-                    size: .xsmall,
-                    rarityRank:rarityRank,
-                    tradeActions: tradeActions,
-                    actions:txActions
-                  )
-                })
+                WithWalletProviderView(
+                  userWallet:userWallet,
+                  label: {
+                    HStack {
+                      Spacer()
+                      Text("Trade")
+                        .foregroundColor(.black)
+                        .font(.title2.weight(.bold))
+                      Spacer()
+                    }
+                    .padding(10)
+                    .background(
+                      RoundedCorners(
+                        color: .flatOrange,
+                        tl: 20, tr: 20, bl: 20, br: 20))
+                    .padding([.leading,.trailing],50)
+                  },content: { walletProvider in
+                    TokenBuyView(
+                      nft: nft,
+                      price:price,
+                      sample: sample,
+                      themeColor:themeColor,
+                      themeLabelColor:themeLabelColor,
+                      size: .xsmall,
+                      rarityRank:rarityRank,
+                      tradeActions: tradeActions,
+                      actions:txActions,
+                      walletProvider:walletProvider
+                    )
+                  })
               case .sellActions:
-                SheetButton(content: {
-                  HStack {
-                    Spacer()
-                    Text("Sell")
-                      .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
-                    Spacer()
-                  }
-                  .padding(10)
-                  .background(
-                    RoundedCorners(
-                      color: .flatGreen,
-                      tl: 20, tr: 20, bl: 20, br: 20))
-                  .padding([.leading,.trailing],50)
-                },sheetContent: {
-                  TokenSellView(
-                    nft: nft,
-                    price:price,
-                    sample: sample,
-                    themeColor:themeColor,
-                    themeLabelColor:themeLabelColor,
-                    size: .xsmall,
-                    rarityRank:rarityRank,
-                    tradeActions: tradeActions.tradeActions
-                  )
-                })
-                
+                WithWalletProviderView(
+                  userWallet:userWallet,
+                  label: {
+                    HStack {
+                      Spacer()
+                      Text("Sell")
+                        .foregroundColor(.black)
+                        .font(.title2.weight(.bold))
+                      Spacer()
+                    }
+                    .padding(10)
+                    .background(
+                      RoundedCorners(
+                        color: .flatGreen,
+                        tl: 20, tr: 20, bl: 20, br: 20))
+                    .padding([.leading,.trailing],50)
+                  },content: { _ in
+                    TokenSellView(
+                      nft: nft,
+                      price:price,
+                      sample: sample,
+                      themeColor:themeColor,
+                      themeLabelColor:themeLabelColor,
+                      size: .xsmall,
+                      rarityRank:rarityRank,
+                      tradeActions: tradeActions.tradeActions
+                    )
+                  })
               }
             }
             .padding(.bottom,10)
