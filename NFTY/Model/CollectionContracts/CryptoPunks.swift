@@ -290,7 +290,7 @@ class CryptoPunksContract : ContractInterface {
       fetchers-=1
       if (fetchers < 1) { onDone() }
     }) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log)
+      let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log)
       self.onTradeLog(
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["minValue"] as? BigUInt),
