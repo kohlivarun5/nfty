@@ -33,7 +33,7 @@ struct TokenTradeActions: View {
     case sellActions
   }
   @State private var actionsState : ActionsState? = nil
-  
+  @ObservedObject var userWallet: UserWallet
   
   init(
     nft:NFT,
@@ -42,7 +42,8 @@ struct TokenTradeActions: View {
     themeColor : Color,
     themeLabelColor : Color,
     size : NftImage.Size,
-    rarityRank : RarityRanking?) {
+    rarityRank : RarityRanking?,
+    userWallet: UserWallet) {
     
     self.nft = nft
     self.price = price
@@ -51,6 +52,7 @@ struct TokenTradeActions: View {
     self.themeLabelColor = themeLabelColor
     self.size = size
     self.rarityRank = rarityRank
+    self.userWallet = userWallet
   }
   
   var body: some View {
@@ -127,12 +129,13 @@ struct TokenTradeActions: View {
           EmptyView()
           
         case (.some(let actions),.some(let tradeActions)):
-          switch(tradeActions.tradeActions.actions) {
-          /* case .some(let txActions):
-            HStack {
-              switch(actions) {
-              case .buyActions:
-                SheetButton(content: {
+          HStack {
+            switch(actions,tradeActions.tradeActions.actions) {
+            case (.buyActions,.some(let txActions)):
+              WithWalletProviderView(
+                userWallet:userWallet,
+                instruction:"Sign-In to activate trading",
+                label: {
                   HStack {
                     Spacer()
                     Text("Trade")
@@ -146,7 +149,7 @@ struct TokenTradeActions: View {
                       color: .flatOrange,
                       tl: 20, tr: 20, bl: 20, br: 20))
                   .padding([.leading,.trailing],50)
-                },sheetContent: {
+                },content: { walletProvider in
                   TokenBuyView(
                     nft: nft,
                     price:price,
@@ -156,83 +159,49 @@ struct TokenTradeActions: View {
                     size: .xsmall,
                     rarityRank:rarityRank,
                     tradeActions: tradeActions,
-                    actions:txActions
+                    actions:txActions,
+                    walletProvider:walletProvider
                   )
                 })
-              case .sellActions:
-                SheetButton(content: {
-                  HStack {
-                    Spacer()
-                    Text("Sell")
-                      .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
-                    Spacer()
-                  }
-                  .padding(10)
-                  .background(
-                    RoundedCorners(
-                      color: .flatGreen,
-                      tl: 20, tr: 20, bl: 20, br: 20))
-                  .padding([.leading,.trailing],50)
-                },sheetContent: {
-                  TokenSellView(
-                    nft: nft,
-                    price:price,
-                    sample: sample,
-                    themeColor:themeColor,
-                    themeLabelColor:themeLabelColor,
-                    size: .xsmall,
-                    rarityRank:rarityRank,
-                    tradeActions: tradeActions.tradeActions
-                  )
-                })
-                
+            case (.buyActions,.none):
+              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+                HStack {
+                  Spacer()
+                  Text("Trade")
+                    .foregroundColor(.black)
+                    .font(.title2.weight(.bold))
+                  Spacer()
+                }
+                .padding(10)
+                .background(
+                  RoundedCorners(
+                    color: .flatOrange,
+                    tl: 20, tr: 20, bl: 20, br: 20))
+                .padding([.leading,.trailing],50)
+              }
+            case (.sellActions,.some),(.sellActions,.none):
+              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
+                HStack {
+                  Spacer()
+                  Text("Sell")
+                    .foregroundColor(.black)
+                    .font(.title2.weight(.bold))
+                  Spacer()
+                }
+                .padding(10)
+                .background(
+                  RoundedCorners(
+                    color: .flatGreen,
+                    tl: 20, tr: 20, bl: 20, br: 20))
+                .padding([.leading,.trailing],50)
               }
             }
-          case .none: */
-          default:
-            HStack {
-              switch(actions) {
-              case .buyActions:
-                Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                  HStack {
-                    Spacer()
-                    Text("Trade")
-                      .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
-                    Spacer()
-                  }
-                  .padding(10)
-                  .background(
-                    RoundedCorners(
-                      color: .flatOrange,
-                      tl: 20, tr: 20, bl: 20, br: 20))
-                  .padding([.leading,.trailing],50)
-                }
-                
-              case .sellActions:
-                Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                  HStack {
-                    Spacer()
-                    Text("Sell")
-                      .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
-                    Spacer()
-                  }
-                  .padding(10)
-                  .background(
-                    RoundedCorners(
-                      color: .flatGreen,
-                      tl: 20, tr: 20, bl: 20, br: 20))
-                  .padding([.leading,.trailing],50)
-                }
-              }
-            }
-            .padding(.bottom,10)
-            .padding(.top,currentBidPriceInWei == nil && currentAskPriceInWei == nil ? 10 : 0)
           }
+          .padding(.bottom,10)
+          .padding(.top,currentBidPriceInWei == nil && currentAskPriceInWei == nil ? 10 : 0)
         }
       }
+      
     }
     .onAppear {
       if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
@@ -274,7 +243,8 @@ struct TokenTradeActions_Previews: PreviewProvider {
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking)
+      rarityRank:SampleCollection.info.rarityRanking,
+      userWallet: UserWallet())
       .background(
         RoundedCorners(
           color: .secondarySystemBackground,

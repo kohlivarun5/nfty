@@ -182,7 +182,7 @@ class CompositeRecentTradesObject : ObservableObject {
           recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.loadedItems.append(
+                selfWorkaround?.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: false)
                 )
               }
@@ -190,7 +190,7 @@ class CompositeRecentTradesObject : ObservableObject {
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!initializer.info.disableRecentTrades) {
-                selfWorkaround!.loadedItems.append(
+                selfWorkaround?.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: true)
                 )
               }

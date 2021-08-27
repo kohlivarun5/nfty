@@ -12,8 +12,6 @@ import Web3
 
 struct TokenBuyView: View {
   
-  @EnvironmentObject var userWallet: UserWallet
-  
   let nft:NFT
   let price:TokenPriceType
   let sample:String
@@ -23,6 +21,7 @@ struct TokenBuyView: View {
   let rarityRank : RarityRanking?
   let tradeActions : TradeActionInfo
   let actions : TradeActionsInterface
+  let walletProvider : WalletProvider
   
   let cornerRadius : CGFloat = 20
   let height : CGFloat = 100
@@ -49,19 +48,17 @@ struct TokenBuyView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
-    userWallet.walletProvider().map { wallet in
-      bidPriceInWei.map {
-        actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:wallet)
-          .done { print ($0) }
-          .catch { print($0) }
-      }
+    bidPriceInWei.map {
+      actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:walletProvider)
+        .done { print ($0) }
+        .catch { print($0) }
     }
-    
-    /*
-     print(eth)
-     print(bidPriceInWei)
-     print(spot)
-     */
+  }
+  
+  private func onBuyNow(_ ask : BigUInt) {
+    actions.acceptOffer(tokenId: nft.tokenId, wei: ask, wallet:walletProvider)
+      .done { print ($0) }
+      .catch { print($0) }
   }
   
   var body: some View {
@@ -107,10 +104,10 @@ struct TokenBuyView: View {
           
           HStack {
             Spacer()
-            TokenPrice(price:price,color:.label)
+            TokenPriceWithEth(price:price,color:.label)
               .font(.title2)
           }
-          .padding(.top,20)
+          .padding(.top,2)
           
         }
         .padding(10)
@@ -125,27 +122,6 @@ struct TokenBuyView: View {
       Form {
         Section(
           header: Text(""),
-          footer: HStack {
-            Button(action: {
-              UIImpactFeedbackGenerator(style:.soft)
-                .impactOccurred()
-              self.onSubmit()
-            }) {
-              HStack {
-                Spacer()
-                Text("Submit Bid")
-                  .font(.callout)
-                  .fontWeight(.bold)
-                Spacer()
-              }
-            }
-            .padding(10)
-            .foregroundColor(bidPriceInWei == nil ? .white : .black)
-            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
-            .cornerRadius(40)
-            .padding(10)
-            .disabled(bidPriceInWei == nil)
-          },
           content: {
             
             HStack {
@@ -195,38 +171,33 @@ struct TokenBuyView: View {
                 Text(" ")
               }
             }
+            
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.onSubmit()
+            }) {
+              HStack {
+                Spacer()
+                Text("Submit Bid")
+                  .font(.callout)
+                  .fontWeight(.bold)
+                Spacer()
+              }
+            }
+            .padding(10)
+            .foregroundColor(bidPriceInWei == nil ? .white : .black)
+            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
+            .cornerRadius(40)
+            .padding(10)
+            .disabled(bidPriceInWei == nil)
+            
+            
           }
         )
         
         Section(
           header: Text(""),
-          footer: HStack {
-            switch (currentAskPriceInWei) {
-            case .some:
-              HStack {
-                Button(action: {
-                  UIImpactFeedbackGenerator(style:.soft)
-                    .impactOccurred()
-                  self.onSubmit()
-                }) {
-                  HStack {
-                    Spacer()
-                    Text("Buy Now")
-                      .font(.callout)
-                      .fontWeight(.bold)
-                    Spacer()
-                  }
-                }
-                .padding(10)
-                .foregroundColor(.black)
-                .background(Color.flatGreen)
-                .cornerRadius(40)
-                .padding(10)
-              }
-            case .none:
-              EmptyView()
-            }
-          },
           content: {
             
             HStack {
@@ -281,6 +252,32 @@ struct TokenBuyView: View {
                 }
               }
             }
+            
+            switch (currentAskPriceInWei) {
+            case .some(let ask):
+              HStack {
+                Button(action: {
+                  UIImpactFeedbackGenerator(style:.soft)
+                    .impactOccurred()
+                  self.onBuyNow(ask)
+                }) {
+                  HStack {
+                    Spacer()
+                    Text("Buy Now")
+                      .font(.title3)
+                      .fontWeight(.bold)
+                    Spacer()
+                  }
+                }
+                .padding(10)
+                .foregroundColor(.black)
+                .background(Color.flatGreen)
+                .cornerRadius(40)
+                .padding(10)
+              }
+            case .none:
+              EmptyView()
+            }
           }
         )
       }
@@ -329,7 +326,8 @@ struct TokenBuyView_Previews: PreviewProvider {
         tradeActions: SampleCollection.data.contract.tradeActions!,
         bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId)
       ),
-      actions:SampleCollection.data.contract.tradeActions!.actions!
+      actions:SampleCollection.data.contract.tradeActions!.actions!,
+      walletProvider:UserWallet().walletProvider!
     )
   }
 }
