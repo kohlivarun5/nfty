@@ -113,10 +113,8 @@ class CryptoPunksContract : ContractInterface {
         gasPrice: nil)!
     }
     
-    //  function buyPunk(uint punkIndex) payable {
-    
     func buyPunk(tokenId: BigUInt,wei:BigUInt,from:EthereumAddress) -> EthereumTransaction {
-      // function enterBidForPunk(uint punkIndex) payable {
+      //  function buyPunk(uint punkIndex) payable {
       
       let inputs = [SolidityFunctionParameter(name: "punkIndex", type: .uint256)]
       let method = SolidityPayableFunction(name: "buyPunk", inputs: inputs, outputs: [], handler: self)
