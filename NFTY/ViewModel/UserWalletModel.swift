@@ -249,28 +249,30 @@ extension UserWallet: ClientDelegate {
       self.saveWalletAddress(address:address)
       // Once we have the connection, sign message to keep
       
-      self.walletConnectScheme.map { scheme in
-        
-        try! client.personal_sign(
-          url: session.url,
-          message: self.walletSignatureKey,
-          account: address.hex(eip55: true)
-        ) { response in
-          (try? response.result(as: String.self)).map {
-            self.saveWalletConnectSession(session: session,signature:$0)
+      if (self.recoverSignedAddress() != address) {
+        self.walletConnectScheme.map { scheme in
+          
+          try! client.personal_sign(
+            url: session.url,
+            message: self.walletSignatureKey,
+            account: address.hex(eip55: true)
+          ) { response in
+            (try? response.result(as: String.self)).map {
+              self.saveWalletConnectSession(session: session,signature:$0)
+            }
           }
+          
+          let uri = "wc:\(session.url.topic)@\(session.url.version)"
+          
+          let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+          
+          let url = URL(string:"\(scheme)//wc?uri=\(uri)&redirectUrl=\(redirect)")!
+          
+          print(url)
+          DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { self.openURL(url) }
         }
-        
-        let uri = "wc:\(session.url.topic)@\(session.url.version)"
-        
-        let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-        
-        let url = URL(string:"\(scheme)//wc?uri=\(uri)&redirectUrl=\(redirect)")!
-        
-        print(url)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) { self.openURL(url) }
       }
-      
+        
     }
   }
   
