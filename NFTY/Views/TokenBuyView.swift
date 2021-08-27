@@ -122,27 +122,6 @@ struct TokenBuyView: View {
       Form {
         Section(
           header: Text(""),
-          footer: HStack {
-            Button(action: {
-              UIImpactFeedbackGenerator(style:.soft)
-                .impactOccurred()
-              self.onSubmit()
-            }) {
-              HStack {
-                Spacer()
-                Text("Submit Bid")
-                  .font(.callout)
-                  .fontWeight(.bold)
-                Spacer()
-              }
-            }
-            .padding(10)
-            .foregroundColor(bidPriceInWei == nil ? .white : .black)
-            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
-            .cornerRadius(40)
-            .padding(10)
-            .disabled(bidPriceInWei == nil)
-          },
           content: {
             
             HStack {
@@ -192,38 +171,33 @@ struct TokenBuyView: View {
                 Text(" ")
               }
             }
+            
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.onSubmit()
+            }) {
+              HStack {
+                Spacer()
+                Text("Submit Bid")
+                  .font(.callout)
+                  .fontWeight(.bold)
+                Spacer()
+              }
+            }
+            .padding(10)
+            .foregroundColor(bidPriceInWei == nil ? .white : .black)
+            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
+            .cornerRadius(40)
+            .padding(10)
+            .disabled(bidPriceInWei == nil)
+            
+            
           }
         )
         
         Section(
           header: Text(""),
-          footer: HStack {
-            switch (currentAskPriceInWei) {
-            case .some(let ask):
-              HStack {
-                Button(action: {
-                  UIImpactFeedbackGenerator(style:.soft)
-                    .impactOccurred()
-                  self.onBuyNow(ask)
-                }) {
-                  HStack {
-                    Spacer()
-                    Text("Buy Now")
-                      .font(.callout)
-                      .fontWeight(.bold)
-                    Spacer()
-                  }
-                }
-                .padding(10)
-                .foregroundColor(.black)
-                .background(Color.flatGreen)
-                .cornerRadius(40)
-                .padding(10)
-              }
-            case .none:
-              EmptyView()
-            }
-          },
           content: {
             
             HStack {
@@ -277,6 +251,32 @@ struct TokenBuyView: View {
                     .fontWeight(.semibold)
                 }
               }
+            }
+            
+            switch (currentAskPriceInWei) {
+            case .some(let ask):
+              HStack {
+                Button(action: {
+                  UIImpactFeedbackGenerator(style:.soft)
+                    .impactOccurred()
+                  self.onBuyNow(ask)
+                }) {
+                  HStack {
+                    Spacer()
+                    Text("Buy Now")
+                      .font(.title3)
+                      .fontWeight(.bold)
+                    Spacer()
+                  }
+                }
+                .padding(10)
+                .foregroundColor(.black)
+                .background(Color.flatGreen)
+                .cornerRadius(40)
+                .padding(10)
+              }
+            case .none:
+              EmptyView()
             }
           }
         )
