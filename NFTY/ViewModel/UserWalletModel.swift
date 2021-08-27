@@ -16,6 +16,7 @@ class UserWallet: ObservableObject {
   @Environment(\.openURL) var openURL
   
   private let walletConnectKey = "walletConnect"
+  private let walletConnectSchemeKey = "walletConnectScheme"
   private let walletSignatureKey = "Sign-In" // This key is important as it is also the signed message
   
   @Published var walletAddress : EthereumAddress?
@@ -41,6 +42,7 @@ class UserWallet: ObservableObject {
     }
     
     self.walletSignature = UserDefaults.standard.string(forKey:walletSignatureKey)
+    self.walletConnectScheme = UserDefaults.standard.string(forKey:walletConnectSchemeKey)
     signIn()
   }
   
@@ -87,21 +89,22 @@ class UserWallet: ObservableObject {
     }
   }
   
-  func connectToWallet(link: String) throws -> Void {
+  func connectToWallet(scheme: String) throws -> Void {
     let wcUrl = connect()
     let uri = wcUrl.fullyPercentEncodedStr
     var delimiter: String
-    if link.contains("http") {
+    if scheme.contains("http") {
       delimiter = "/"
     } else {
       delimiter = "//"
     }
     let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-    let urlStr = "\(link)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
+    let urlStr = "\(scheme)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
     let url = URL(string: urlStr)!
     // we need a delay so that WalletConnectClient can send handshake request
     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-      self.walletConnectScheme = link
+      UserDefaults.standard.set(scheme,forKey:self.walletConnectSchemeKey)
+      self.walletConnectScheme = scheme
       print("Launching=\(url)")
       UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
@@ -156,6 +159,7 @@ class UserWallet: ObservableObject {
     let account : EthereumAddress
     let client : Client
     let session : Session
+    let scheme : String
     
     func sendTransaction(tx: EthereumTransaction) -> Promise<EthereumTransactionReceiptObject> {
       let transaction = Client.Transaction(
@@ -186,11 +190,17 @@ class UserWallet: ObservableObject {
         
         let wcUrl = "wc:\(session.url.topic)@\(session.url.version)"
         let uri = wcUrl.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-        print("trust://wc?uri=\(uri)")
         
+        var delimiter: String
+        if scheme.contains("http") {
+          delimiter = "/"
+        } else {
+          delimiter = "//"
+        }
+               
         let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
         
-        let url = URL(string:"trust://wc?uri=\(uri)&redirectUrl=\(redirect)")!
+        let url = URL(string:"\(scheme)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)")!
         print(url)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
@@ -206,13 +216,16 @@ class UserWallet: ObservableObject {
   private func makeWalletProvider() -> WalletProvider? {
     
     walletAddress.flatMap { account in
-      walletConnectSession.map { session in
-        
-        let client = Client(delegate: self, dAppInfo: session.dAppInfo)
-        return WalletConnectProvider(
-          account: account,
-          client: client,
-          session: session)
+      self.walletConnectScheme.flatMap { scheme in
+        walletConnectSession.map { session in
+          
+          let client = Client(delegate: self, dAppInfo: session.dAppInfo)
+          return WalletConnectProvider(
+            account: account,
+            client: client,
+            session: session,
+            scheme:scheme)
+        }
       }
     }
   }

@@ -80,7 +80,7 @@ struct ConnectWalletSheet: View {
                   .impactOccurred()
                 self.userWallet.removeWalletConnectSession()
                 self.isConnecting = true
-                try! userWallet.connectToWallet(link:"trust:")
+                try! userWallet.connectToWallet(scheme:"trust:")
               }) {
                 VStack {
                   Image("TrustWallet")
