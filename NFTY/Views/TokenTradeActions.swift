@@ -134,9 +134,7 @@ struct TokenTradeActions: View {
             HStack {
               switch(actions) {
               case .buyActions:
-                WithWalletProviderView(
-                  iff -w
-                  label: {
+                SheetButton(content: {
                   HStack {
                     Spacer()
                     Text("Trade")
@@ -150,7 +148,7 @@ struct TokenTradeActions: View {
                       color: .flatOrange,
                       tl: 20, tr: 20, bl: 20, br: 20))
                   .padding([.leading,.trailing],50)
-                },content: {
+                },sheetContent: {
                   TokenBuyView(
                     nft: nft,
                     price:price,
