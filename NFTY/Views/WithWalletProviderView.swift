@@ -12,15 +12,17 @@ struct WithWalletProviderView<ButtonView,ProtectedView> : View where ButtonView:
   @State private var showSheet = false
   @ObservedObject var userWallet: UserWallet
   
-  
+  private let instruction : String
   private let label : () -> ButtonView
   private let content : (WalletProvider) -> ProtectedView
   
   init(
     userWallet: UserWallet,
+    instruction : String,
     @ViewBuilder label:@escaping () -> ButtonView,
     @ViewBuilder content: @escaping (WalletProvider) -> ProtectedView) {
     self.userWallet = userWallet
+    self.instruction = instruction
     self.label = label
     self.content = content
   }
@@ -32,10 +34,14 @@ struct WithWalletProviderView<ButtonView,ProtectedView> : View where ButtonView:
         switch(self.userWallet.walletProvider) {
         case .some(let walletProvider):
           content(walletProvider)
-        case .none:
+         case .none:
           VStack {
-            Text("Please sign in")
-            ConnectWalletSheet(userWallet:userWallet)
+            Spacer()
+            Text(instruction)
+              .font(.title2)
+              .foregroundColor(.secondary)
+            UserWalletConnectorView(userWallet:userWallet)
+            Spacer()
           }
         }
       }
@@ -47,6 +53,7 @@ struct WithWalletProviderView_Previews: PreviewProvider {
   static var previews: some View {
     WithWalletProviderView(
       userWallet:UserWallet(),
+      instruction:"Sign-In",
       label: { Text("") },
       content: { _ in EmptyView() }
     )
