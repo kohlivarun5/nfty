@@ -202,7 +202,7 @@ struct FeedView: View {
             self.isLoading = false
             self.refreshButton = .loaded
           }
-        }
+        } 
       }
     }
     
