@@ -9,11 +9,11 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "DeadFellaz"
+let collectionName = "DJENERATES"
 
 let isFull = true
 let firstIndex = 1
-let lastIndex = isFull ? 10000 : 100
+let lastIndex = isFull ? 7699 : 100
 
 // STAGES
 let doCalculateFeatures = true

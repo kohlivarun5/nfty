@@ -25,19 +25,19 @@ let downloaders = [
     firstIndex:1,
     lastIndex:7777
   ),
+   Downloader(
+   collection:IpfsDownloader(
+   name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
+   firstIndex:1,
+   lastIndex:7699
+   ),
+   Downloader(
+   collection:IpfsDownloader(
+   name:"Craniums",baseUri:"https://raw.githubusercontent.com/recklesslabs/wickedcraniums/main"),
+   firstIndex:0,
+   lastIndex:10761
+   ),
  */
-  Downloader(
-    collection:IpfsDownloader(
-      name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
-    firstIndex:1,
-    lastIndex:7699
-  ),
-  Downloader(
-    collection:IpfsDownloader(
-      name:"Craniums",baseUri:"https://raw.githubusercontent.com/recklesslabs/wickedcraniums/main"),
-    firstIndex:0,
-    lastIndex:10761
-  ),
   Downloader(
     collection:IpfsDownloader(
       name:"WickedApes",baseUri:"https://us-central1-wicked-apes.cloudfunctions.net/app/v1"),

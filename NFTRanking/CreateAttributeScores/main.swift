@@ -7,11 +7,11 @@
 
 import Foundation
 
-let collectionName = "AsciiPunks"
+let collectionName = "Craniums"
 
 let isFull = true
-let firstIndex = 1
-let lastIndex = isFull ? 2048 : 100
+let firstIndex = 0
+let lastIndex = isFull ? 10761 : 100
 
 // STAGES
 let doCalculatePercentiles = true

@@ -109,7 +109,6 @@ func getAttributesDirectory(_ collectionName:String) -> URL {
 func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
   return getAttributesDirectory(collectionName)
     .appendingPathComponent("\(tokenId).json")
-  
 }
 
 func loadImageData(_ collectionName:String,_ tokenId:UInt) -> Data {
