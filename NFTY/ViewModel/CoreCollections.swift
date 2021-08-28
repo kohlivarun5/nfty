@@ -33,6 +33,10 @@ let DJs_Contract = IpfsWithOpenSea(name: "DJENERATES",address: "0x7d05c8D8cC1baC
 
 let ON1_Force_Contract = IpfsWithOpenSea(name: "0N1 Force",address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D")
 
+let Craniums_Contract = IpfsWithOpenSea(name: "WickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
+
+let WABC_Contract = IpfsWithOpenSea(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -292,6 +296,46 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:DJs_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:WABC_Contract.contractAddressHex,
+      sample:"SAMPLE_WABC",
+      name:WABC_Contract.name,
+      webLink: URL(string:"https://wickedapes.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil/*SimilarTokensGetter(
+       label:"Birds",
+       nearestTokensFileName:"BirdHouse_nearestTokens.json",
+       propertiesJsonFileName:"BirdHouse_attributeScores.json"
+       )*/,
+      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+    ),
+    contract:WABC_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:Craniums_Contract.contractAddressHex,
+      sample:"SAMPLE_WICKED_CRANIUM",
+      name:Craniums_Contract.name,
+      webLink: URL(string:"https://wickedcranium.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil/*SimilarTokensGetter(
+       label:"Birds",
+       nearestTokensFileName:"BirdHouse_nearestTokens.json",
+       propertiesJsonFileName:"BirdHouse_attributeScores.json"
+       )*/,
+      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+    ),
+    contract:Craniums_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

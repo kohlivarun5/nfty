@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "bafkreibsvyvsjwnrzmslfnfyqypveu7e4igzlelbg7fyxfnwg3hjsgeisu.ipfs.dweb.link.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
