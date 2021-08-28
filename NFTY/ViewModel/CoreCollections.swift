@@ -33,7 +33,7 @@ let DJs_Contract = IpfsWithOpenSea(name: "DJENERATES",address: "0x7d05c8D8cC1baC
 
 let ON1_Force_Contract = IpfsWithOpenSea(name: "0N1 Force",address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D")
 
-let Craniums_Contract = IpfsWithOpenSea(name: "TheWickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
+let Craniums_Contract = IpfsWithOpenSea(name: "WickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
 
 let WABC_Contract = IpfsWithOpenSea(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
 
