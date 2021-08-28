@@ -9,11 +9,11 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "DJENERATES"
+let collectionName = "Craniums"
 
 let isFull = true
-let firstIndex = 1
-let lastIndex = isFull ? 7699 : 100
+let firstIndex = 0
+let lastIndex = isFull ? 10761 : 100
 
 // STAGES
 let doCalculateFeatures = true
