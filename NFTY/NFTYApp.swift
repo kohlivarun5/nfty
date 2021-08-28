@@ -94,6 +94,16 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
       }
       .accentColor(.orange)
+      .onAppear {
+        
+        // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
+        DispatchQueue.global(qos:.utility).async {
+          CompositeCollection.collections.forEach { collection in
+            print(collection.info.name,collection.info.similarTokens?.get(1)?.count,collection.info.similarTokens?.getProperties(1)?.count)
+          }
+          
+        }
+      }
       .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
         print("URL.last=\(String(describing: url.pathComponents.last))")
