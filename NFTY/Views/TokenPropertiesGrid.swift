@@ -10,20 +10,37 @@ import SwiftUI
 struct TokenPropertiesGrid: View {
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
+  let selectedProperties : [(name:String,value:String)]
+  
+  @State private var action : Int? = nil
+  
+  private func isSelected(item:SimilarTokensGetter.TokenAttributePercentile) -> Bool {
+    return selectedProperties.contains { $0.name == item.name && $0.value == item.value }
+  }
   
   var body: some View {
     ScrollView(.horizontal) {
       LazyHGrid(
         rows:[
-          GridItem(.fixed(70)),
-          GridItem(.fixed(70)),
+          GridItem(.fixed(60)),
+          GridItem(.fixed(60)),
         ]
       ) {
         let sorted = properties
-          .sorted { $0.percentile < $1.percentile }
           .filter { $0.percentile < 1 }
+          .sorted {
+            switch(isSelected(item:$0),isSelected(item:$1)) {
+            case (true,false):
+              return true
+            case (false,true):
+              return false
+            case (true,true),(false,false):
+              return $0.percentile < $1.percentile
+            }
+          }
         ForEach(sorted.indices, id: \.self) { index in
           let item = sorted[index];
+          let isSelected = isSelected(item:item);
           
           let view =
             VStack(spacing:5) {
@@ -33,38 +50,38 @@ struct TokenPropertiesGrid: View {
               )
               .bold()
             }
+            .font(.system(size: 13))
             .padding(10)
             .background(
               RoundedCorners(
                 color: .secondarySystemBackground,
                 tl: 10, tr: 10, bl: 10, br: 10)
             )
-            .colorMultiply(.flatOrange)
-            .padding(5);
+            .colorMultiply(isSelected ? .flatGreen : .flatOrange);
           
-          switch(collection.info.similarTokens?.properties) {
-          case .none:
+          switch(isSelected,collection.info.similarTokens?.properties) {
+          case (true,_),(false,.none):
             view
-          case .some(let properties):
-            NavigationLink(
-              destination:TokensByPropertiesList(
-                collection: collection,
-                nfts: TokensByPropertiesObject(
-                  contract: collection.data.contract,
-                  properties: properties,
-                  selectedProperties: [(name:item.name,value:item.value)]
-                ),
-                title:"\(item.name.capitalized): \(item.value.capitalized)"
-              )
-            ) {
+          case (false,.some(let properties)):
+            ZStack {
               view
+                .onTapGesture { self.action = index }
+              NavigationLink(
+                destination:TokensByPropertiesList(
+                  properties:self.properties,
+                  collection: collection,
+                  nfts: TokensByPropertiesObject(
+                    contract: collection.data.contract,
+                    properties: properties,
+                    selectedProperties: selectedProperties + [(name:item.name,value:item.value)]
+                  )
+                ), tag:index,selection:$action
+              ) {}
+              .hidden()
             }
           }
         }
       }
-      .padding([.leading,.trailing])
-      .padding(.top,15)
-      .padding(.bottom,150)
     }
   }
 }
@@ -78,7 +95,8 @@ struct TokenPropertiesGrid_Previews: PreviewProvider {
         SimilarTokensGetter.TokenAttributePercentile(name: "sdas", value: "Ssadsa", percentile: 0.2),
         SimilarTokensGetter.TokenAttributePercentile(name: "sdas", value: "Ssadsa", percentile: 0.2),
       ],
-      collection: SampleCollection
+      collection: SampleCollection,
+      selectedProperties: []
     )
   }
 }

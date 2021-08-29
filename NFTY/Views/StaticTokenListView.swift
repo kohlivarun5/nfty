@@ -39,7 +39,8 @@ struct StaticTokenListView: View {
               themeLabelColor:info.themeLabelColor,
               similarTokens:info.similarTokens,
               rarityRank:info.rarityRanking,
-              hideOwnerLink:false
+              hideOwnerLink:false,
+              selectedProperties:[]
             ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
             .hidden()
           }
