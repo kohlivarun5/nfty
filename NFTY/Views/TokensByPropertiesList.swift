@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TokensByPropertiesList: View {
   
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  
   @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
   
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
@@ -94,5 +96,11 @@ struct TokensByPropertiesList: View {
       }
     }
     .navigationBarTitle(collection.info.name,displayMode: .inline)
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(
+      leading:
+        Button(action: {presentationMode.wrappedValue.dismiss()},
+               label: { BackButton() })
+    )
   }
 }
