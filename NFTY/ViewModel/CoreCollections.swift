@@ -288,12 +288,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil/*SimilarTokensGetter(
-        label:"Birds",
-        nearestTokensFileName:"BirdHouse_nearestTokens.json",
-        propertiesJsonFileName:"BirdHouse_attributeScores.json"
-      )*/,
-      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+      similarTokens : SimilarTokensGetter(
+        label:"DJENERATES",
+        nearestTokensFileName:"DJENERATES_nearestTokens.json",
+        propertiesJsonFileName:"DJENERATES_attributeScores.json"),
+      rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json")) //TODO : Update on full mint
     ),
     contract:DJs_Contract),
   
@@ -328,12 +327,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil/*SimilarTokensGetter(
-       label:"Birds",
-       nearestTokensFileName:"BirdHouse_nearestTokens.json",
-       propertiesJsonFileName:"BirdHouse_attributeScores.json"
-       )*/,
-      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+      similarTokens : SimilarTokensGetter(
+        label:"Craniums",
+        nearestTokensFileName:"Craniums_nearestTokens.json",
+        propertiesJsonFileName:"Craniums_attributeScores.json"),
+      rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
     ),
     contract:Craniums_Contract),
   

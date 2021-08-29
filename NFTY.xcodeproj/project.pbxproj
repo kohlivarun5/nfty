@@ -114,6 +114,10 @@
 		4FAB56C926DADF4B007076BE /* DJENERATES_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */; };
 		4FAB56CC26DADF71007076BE /* Craniums_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */; };
 		4FAB56CD26DADF71007076BE /* Craniums_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */; };
+		4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */; };
+		4FAB56D326DB49E6007076BE /* DJENERATES_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */; };
+		4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */; };
+		4FAB56D526DB49E6007076BE /* Craniums_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */; };
 		4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
@@ -298,6 +302,10 @@
 		4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_attributeRanks.json; sourceTree = "<group>"; };
 		4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_attributeRanks.json; sourceTree = "<group>"; };
 		4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_attributeScores.json; sourceTree = "<group>"; };
+		4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_nearestTokens.json; sourceTree = "<group>"; };
+		4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_nearestTokens.json; sourceTree = "<group>"; };
+		4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_rarityRanks.json; sourceTree = "<group>"; };
+		4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_rarityRanks.json; sourceTree = "<group>"; };
 		4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunks.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
@@ -613,6 +621,10 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
+				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
+				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
+				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
 				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
 				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
 				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
@@ -852,6 +864,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FAB56D526DB49E6007076BE /* Craniums_rarityRanks.json in Resources */,
 				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
 				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
@@ -870,6 +883,7 @@
 				4FAB56C926DADF4B007076BE /* DJENERATES_attributeRanks.json in Resources */,
 				4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */,
 				4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */,
+				4FAB56D326DB49E6007076BE /* DJENERATES_nearestTokens.json in Resources */,
 				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
@@ -894,7 +908,9 @@
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
 				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
+				4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */,
 				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
 				4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */,
