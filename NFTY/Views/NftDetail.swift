@@ -134,7 +134,7 @@ struct NftDetail: View {
                 .padding(.leading)
                 .background(Color.systemBackground)
             }
-            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens,selectedProperties:selectedProperties)
+            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
           }
         case (.none,.some(let properties)):
           VStack(spacing:0) {
@@ -177,7 +177,7 @@ struct NftDetail: View {
             
             switch(self.similarSectionPage) {
             case .similar:
-              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens,selectedProperties:selectedProperties)
+              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
             case .attributes:
               TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
                 .padding(.top,5)

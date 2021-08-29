@@ -14,8 +14,6 @@ struct SimilarTokensView: View {
   
   var info : CollectionInfo
   var tokens : [UInt]
-  let selectedProperties : [(name:String,value:String)]
-  
   
   var body: some View {
     ScrollView(.horizontal) {
@@ -51,7 +49,7 @@ struct SimilarTokensView: View {
               similarTokens:info.similarTokens,
               rarityRank:info.rarityRanking,
               hideOwnerLink:false,
-              selectedProperties:selectedProperties
+              selectedProperties:[]
             ),tag:String(nft.nft.tokenId),selection:$action) {}
             .hidden()
           }
@@ -71,6 +69,6 @@ struct SimilarTokensView: View {
 
 struct SimilarTokensView_Previews: PreviewProvider {
   static var previews: some View {
-    SimilarTokensView(info:SampleCollection.info,tokens:[],selectedProperties:[])
+    SimilarTokensView(info:SampleCollection.info,tokens:[])
   }
 }
