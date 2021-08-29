@@ -99,7 +99,12 @@ struct NFTYApp: App {
         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
         DispatchQueue.global(qos:.utility).async {
           CompositeCollection.collections.forEach { collection in
-            print(collection.info.name,collection.info.similarTokens?.get(1)?.count,collection.info.similarTokens?.getProperties(1)?.count)
+            print(
+              collection.info.name,
+              collection.info.similarTokens?.get(1)?.count,
+              collection.info.similarTokens?.getProperties(1)?.count,
+              collection.info.similarTokens?.availableProperties?.count
+            )
           }
           
         }

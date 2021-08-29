@@ -191,8 +191,6 @@ class SimilarTokensGetter {
   let propertiesJsonFileName : String?
   
   var nearestTokens : [ [UInt] ]? = nil
-  var properties : [ [TokenAttributePercentile] ]? = nil
-  
   
   init(label:String,nearestTokensFileName:String) {
     self.label = label
@@ -218,9 +216,31 @@ class SimilarTokensGetter {
   }
 
   func getProperties(_ tokenId:UInt) -> [TokenAttributePercentile]? {
-    self.properties = self.properties ?? propertiesJsonFileName.map { load($0) }
-    return properties?[safe:Int(tokenId)]
+    return self.properties?[safe:Int(tokenId)]
   }
+  
+  
+  lazy var properties : [ [TokenAttributePercentile] ]? = {
+    print("eval properties")
+    return propertiesJsonFileName.map { load($0) }
+  }()
+  
+  lazy var availableProperties : [String:[String:Double]]? = {
+    print("eval availableProperties")
+    var availableProperties : [String:[String:Double]]? = nil
+    self.properties?.forEach { props in
+      availableProperties = [:]
+      props.forEach { item in
+        
+        if (item.percentile >= 1) { return }
+        
+        availableProperties![item.name] = availableProperties![item.name] ?? [:]
+        availableProperties![item.name]![item.value] = item.percentile
+      }
+    }
+    return availableProperties
+  }()
+  
   
 }
 

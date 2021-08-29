@@ -81,6 +81,7 @@ struct TokenPropertiesGrid: View {
                   nfts: TokensByPropertiesObject(
                     contract: collection.data.contract,
                     properties: properties,
+                    availableProperties: (collection.info.similarTokens?.availableProperties)!,
                     selectedProperties: itemTapped(item:item,isSelected:isSelected)
                   )
                 ), tag:index,selection:$action

@@ -9,6 +9,12 @@ import Foundation
 
 
 class TokensByPropertiesObject : ObservableObject {
+  
+  let tokenProperties : [[SimilarTokensGetter.TokenAttributePercentile]]
+  
+  let availableProperties : [String:[String:Double]]
+  @Published var selectedProperties : [(name:String,value:String)]
+  
   @Published var tokens: [NFTWithLazyPrice] = []
   var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
   var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
@@ -17,15 +23,15 @@ class TokensByPropertiesObject : ObservableObject {
   private var isLoading = false
   private var lastIndex = -1
   let contract : ContractInterface
-  let properties : [[SimilarTokensGetter.TokenAttributePercentile]]
-  let selectedProperties : [(name:String,value:String)]
   
   init(contract : ContractInterface,
        properties : [[SimilarTokensGetter.TokenAttributePercentile]],
+       availableProperties : [String:[String:Double]],
        selectedProperties : [(name:String,value:String)])
   {
     self.contract = contract
-    self.properties = properties
+    self.tokenProperties = properties
+    self.availableProperties = availableProperties
     self.selectedProperties = selectedProperties
   }
   
@@ -33,13 +39,13 @@ class TokensByPropertiesObject : ObservableObject {
     guard !isLoading else { return }
     
     lastIndex = lastIndex + 1
-    if (lastIndex >= properties.count) { return }
+    if (lastIndex >= tokenProperties.count) { return }
     
     self.isLoading = true
     var filtered : [NFTWithLazyPrice] = []
-    while(lastIndex < properties.count && filtered.count < loadingChunk) {
+    while(lastIndex < tokenProperties.count && filtered.count < loadingChunk) {
       
-      let matched = properties[safe:lastIndex]?.filter { property in
+      let matched = tokenProperties[safe:lastIndex]?.filter { property in
         selectedProperties.contains { selection in
           selection.name == property.name && selection.value == property.value
         }
@@ -70,4 +76,18 @@ class TokensByPropertiesObject : ObservableObject {
       loadMore() {}
     }
   }
+  
+  func onSelection(name:String,value:String,isSelected:Bool) {
+    if (isSelected) {
+      self.selectedProperties = selectedProperties.filter { $0.name != name || $0.value != value }
+    } else {
+      self.selectedProperties = selectedProperties + [(name:name,value:value)]
+    }
+    
+    self.tokens = []
+    self.lastIndex = -1
+    loadMore() {}
+    
+  }
+  
 }
