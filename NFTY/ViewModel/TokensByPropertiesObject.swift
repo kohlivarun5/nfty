@@ -36,6 +36,9 @@ class TokensByPropertiesObject : ObservableObject {
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
+    
+    print(self.selectedProperties)
+    
     guard !isLoading else { return }
     
     lastIndex = lastIndex + 1
@@ -84,6 +87,7 @@ class TokensByPropertiesObject : ObservableObject {
       self.selectedProperties = selectedProperties + [(name:name,value:value)]
     }
     
+    print(self.selectedProperties)
     self.tokens = []
     self.lastIndex = -1
     loadMore() {}

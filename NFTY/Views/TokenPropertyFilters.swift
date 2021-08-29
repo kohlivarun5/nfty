@@ -28,7 +28,11 @@ struct TokenPropertyFilters: View {
   }
   
   private func propsToList(_ nfts:TokensByPropertiesObject) -> [ListItem] {
-    nfts.availableProperties
+    
+    print(nfts.selectedProperties);
+    print(nfts.availableProperties);
+    
+    let res = nfts.availableProperties
       .map {
         return ListItem(name:$0.key,values:$0.value,selectedValue:selectedValue(name: $0.key))
       }
@@ -44,6 +48,8 @@ struct TokenPropertyFilters: View {
           return first.percentile < second.percentile
         }
       }
+    print(res);
+    return res
   }
   
   var body: some View {
@@ -83,6 +89,7 @@ struct TokenPropertyFilters: View {
             )
             .pickerStyle(MenuPickerStyle())
             .onChange(of: selectedValue) {
+              print($0)
               self.nfts.onSelection(name: item.name, value: $0, isSelected:false)
             }
           case .some(let val):

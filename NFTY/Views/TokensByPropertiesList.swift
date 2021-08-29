@@ -19,16 +19,6 @@ struct TokensByPropertiesList: View {
   @ObservedObject var nfts : TokensByPropertiesObject
   @State private var selectedTokenId: UInt? = nil
   
-  private func title(_ selectedProperties : [(name:String,value:String)]) -> String {
-    switch(nfts.selectedProperties.count) {
-    case 1:
-      return "\(nfts.selectedProperties[0].name.capitalized): \(nfts.selectedProperties[0].value.capitalized)"
-    default:
-      return ""//Filtered"//\((collection.info.similarTokens?.label.map { " \($0)" }) ?? "")"
-    }
-    
-  }
-  
   var body: some View {
     VStack(spacing:0) {
       ScrollView {

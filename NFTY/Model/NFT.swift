@@ -228,14 +228,14 @@ class SimilarTokensGetter {
   lazy var availableProperties : [String:[String:Double]]? = {
     print("eval availableProperties")
     var availableProperties : [String:[String:Double]]? = nil
-    self.properties?.forEach { props in
-      availableProperties = [:]
-      props.forEach { item in
+    self.properties?.forEach { itemProps in
+      availableProperties = availableProperties ?? [:]
+      itemProps.forEach { prop in
+        if (prop.percentile >= 1) { return }
         
-        if (item.percentile >= 1) { return }
-        
-        availableProperties![item.name] = availableProperties![item.name] ?? [:]
-        availableProperties![item.name]![item.value] = item.percentile
+        var values = availableProperties![prop.name] ?? [:]
+        values[prop.value] = prop.percentile
+        availableProperties![prop.name] = values
       }
     }
     return availableProperties
