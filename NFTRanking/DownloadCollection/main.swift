@@ -40,9 +40,9 @@ let downloaders = [
  */
   Downloader(
     collection:IpfsDownloader(
-      name:"WickedApes",baseUri:"https://us-central1-wicked-apes.cloudfunctions.net/app/v1"),
-    firstIndex:1,
-    lastIndex:10000
+      name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
+    firstIndex:0,
+    lastIndex:12000
   )
 ]
 
@@ -54,7 +54,7 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 5 //downloader.collection.baseUri.contains("ipfs") ? 5 : 2
+  let parallelCount = 2 //downloader.collection.baseUri.contains("ipfs") ? 5 : 2
   
   print("Started downloading collection:\(collectionName)")
   
