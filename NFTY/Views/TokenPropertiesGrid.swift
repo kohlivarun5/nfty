@@ -20,7 +20,7 @@ struct TokenPropertiesGrid: View {
   
   private func itemTapped(item:SimilarTokensGetter.TokenAttributePercentile,isSelected:Bool) -> [(name:String,value:String)] {
     if (isSelected) {
-      return selectedProperties.filter { $0.name == item.name && $0.value == item.value }
+      return selectedProperties.filter { $0.name != item.name || $0.value != item.value }
     } else {
       return selectedProperties + [(name:item.name,value:item.value)]
     }
