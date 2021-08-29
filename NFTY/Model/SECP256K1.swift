@@ -10,6 +10,21 @@ import secp256k1
 
 // https://github.com/matter-labs/web3swift
 
+extension Data {
+  static func fromHex(_ hex: String) -> Data? {
+    let string = hex.lowercased().stripHexPrefix()
+    let array = Array<UInt8>(hex: string)
+    if (array.count == 0) {
+      if (hex == "0x" || hex == "") {
+        return Data()
+      } else {
+        return nil
+      }
+    }
+    return Data(array)
+  }
+}
+
 public struct SECP256K1 {
   public struct UnmarshaledSignature{
     public var v: UInt8 = 0

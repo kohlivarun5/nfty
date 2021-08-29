@@ -37,6 +37,8 @@ let Craniums_Contract = IpfsWithOpenSea(name: "WickedCraniums",address: "0x85f74
 
 let WABC_Contract = IpfsWithOpenSea(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
 
+let MAYC_Contract = IpfsWithOpenSea(name: "MAYC",address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -104,6 +106,27 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(BAYC_rarityRanks)
     ),
     contract:baycContract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:MAYC_Contract.contractAddressHex,
+      sample:"SAMPLE_MAYC",
+      name:MAYC_Contract.name,
+      webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil/* SimilarTokensGetter(
+        label:"Mutants",
+        nearestTokensFileName:"BoredApeYachtClub_nearestTokens.json",
+        propertiesJsonFileName:"BAYC_attributeScores.json")*/,
+      rarityRanking : nil//RarityRankingImpl(BAYC_rarityRanks)
+    ),
+    contract:MAYC_Contract),
+  
+  
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
       address:fameLadyContract.contractAddressHex,
