@@ -22,6 +22,7 @@ struct NftDetail: View {
   let similarTokens : SimilarTokensGetter?
   let rarityRank : RarityRanking?
   let hideOwnerLink : Bool
+  let selectedProperties : [(name:String,value:String)]
   @State var rank : UInt? = nil
   
   enum SimilarSectionPage : Int {
@@ -123,7 +124,7 @@ struct NftDetail: View {
         case (.none,.none):
           EmptyView()
         case (.some(let tokens),.none):
-          VStack {
+          VStack(spacing:0) {
             ZStack {
               Divider()
               Text("Similar \(similarTokens?.label ?? "Tokens")")
@@ -133,10 +134,10 @@ struct NftDetail: View {
                 .padding(.leading)
                 .background(Color.systemBackground)
             }
-            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens,selectedProperties:selectedProperties)
           }
         case (.none,.some(let properties)):
-          VStack {
+          VStack(spacing:0) {
             ZStack {
               Divider()
               Text("Attributes")
@@ -146,7 +147,9 @@ struct NftDetail: View {
                 .padding(.leading)
                 .background(Color.systemBackground)
             }
-            TokenPropertiesGrid(properties: properties)
+            TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
+              .padding(.top,5)
+              .padding(.bottom,110)
           }
         case (.some(let tokens),.some(let properties)):
           VStack(spacing:0) {
@@ -174,9 +177,11 @@ struct NftDetail: View {
             
             switch(self.similarSectionPage) {
             case .similar:
-              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens,selectedProperties:selectedProperties)
             case .attributes:
-              TokenPropertiesGrid(properties: properties)
+              TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
+                .padding(.top,5)
+                .padding(.bottom,110)
             }
           }
         }
@@ -236,6 +241,7 @@ struct NftDetail_Previews: PreviewProvider {
       themeLabelColor:SampleCollection.info.themeLabelColor,
       similarTokens:SampleCollection.info.similarTokens,
       rarityRank:SampleCollection.info.rarityRanking,
-      hideOwnerLink:false)
+      hideOwnerLink:false,
+      selectedProperties:[])
   }
 }

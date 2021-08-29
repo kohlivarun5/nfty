@@ -75,7 +75,7 @@ func getRarityRankFilename(_ collectionName:String) -> URL {
     .appendingPathComponent("\(collectionName)_rarityRanks.json")
 }
 
-func getImageFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
+func getImageDirectory(_ collectionName:String) -> URL {
   return
     getDocumentsDirectory()
     .appendingPathComponent("../")
@@ -85,11 +85,15 @@ func getImageFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
     .appendingPathComponent("Images")
     .appendingPathComponent(collectionName)
     .appendingPathComponent("png")
+}
+
+func getImageFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
+  return getImageDirectory(collectionName)
     .appendingPathComponent("\(tokenId).png")
   
 }
 
-func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
+func getAttributesDirectory(_ collectionName:String) -> URL {
   return
     getDocumentsDirectory()
     .appendingPathComponent("../")
@@ -99,8 +103,12 @@ func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
     .appendingPathComponent("Images")
     .appendingPathComponent(collectionName)
     .appendingPathComponent("attributes")
-    .appendingPathComponent("\(tokenId).json")
   
+}
+
+func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
+  return getAttributesDirectory(collectionName)
+    .appendingPathComponent("\(tokenId).json")
 }
 
 func loadImageData(_ collectionName:String,_ tokenId:UInt) -> Data {

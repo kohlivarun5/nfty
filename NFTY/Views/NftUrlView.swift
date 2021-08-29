@@ -27,7 +27,7 @@ struct NftUrlView: View {
       themeLabelColor:info.themeLabelColor,
       similarTokens:info.similarTokens,
       rarityRank:info.rarityRanking,
-      hideOwnerLink:true
+      hideOwnerLink:true,selectedProperties:[]
     )
   }
 }

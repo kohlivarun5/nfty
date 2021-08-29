@@ -19,8 +19,12 @@ struct SheetButton<ButtonView,SheetView> : View where ButtonView:View, SheetView
   }
   
   var body: some View {
-    Button(action: { self.showSheet = true },label:content)
-      .sheet(isPresented: $showSheet,content:sheetContent)
+    content()
+      .onTapGesture { self.showSheet = true }
+      .sheet(isPresented: $showSheet) {
+        sheetContent()
+          .accentColor(.orange)
+      }
   }
 }
 

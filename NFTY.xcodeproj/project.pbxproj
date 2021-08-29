@@ -110,6 +110,20 @@
 		4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1D26B7628700102174 /* UserWalletModel.swift */; };
 		4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */; };
 		4FAA1E2226BA26E900102174 /* UserSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */; };
+		4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */; };
+		4FAB56C926DADF4B007076BE /* DJENERATES_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */; };
+		4FAB56CC26DADF71007076BE /* Craniums_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */; };
+		4FAB56CD26DADF71007076BE /* Craniums_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */; };
+		4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */; };
+		4FAB56D326DB49E6007076BE /* DJENERATES_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */; };
+		4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */; };
+		4FAB56D526DB49E6007076BE /* Craniums_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */; };
+		4FAB56D826DB4C90007076BE /* WickedApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */; };
+		4FAB56D926DB4C90007076BE /* WickedApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */; };
+		4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */; };
+		4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */; };
+		4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
+		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
 		4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
@@ -290,6 +304,20 @@
 		4FAA1E1D26B7628700102174 /* UserWalletModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserWalletModel.swift; sourceTree = "<group>"; };
 		4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsModel.swift; sourceTree = "<group>"; };
+		4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_attributeScores.json; sourceTree = "<group>"; };
+		4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_attributeRanks.json; sourceTree = "<group>"; };
+		4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_attributeRanks.json; sourceTree = "<group>"; };
+		4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_attributeScores.json; sourceTree = "<group>"; };
+		4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_nearestTokens.json; sourceTree = "<group>"; };
+		4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_nearestTokens.json; sourceTree = "<group>"; };
+		4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DJENERATES_rarityRanks.json; sourceTree = "<group>"; };
+		4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Craniums_rarityRanks.json; sourceTree = "<group>"; };
+		4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_attributeRanks.json; sourceTree = "<group>"; };
+		4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_attributeScores.json; sourceTree = "<group>"; };
+		4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensByPropertiesObject.swift; sourceTree = "<group>"; };
+		4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensByPropertiesList.swift; sourceTree = "<group>"; };
+		4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_rarityRanks.json; sourceTree = "<group>"; };
+		4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_nearestTokens.json; sourceTree = "<group>"; };
 		4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunks.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
@@ -423,6 +451,7 @@
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
+				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -577,6 +606,7 @@
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
+				4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -605,6 +635,18 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
+				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
+				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
+				4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */,
+				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
+				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
+				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
+				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
+				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
+				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
+				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
+				4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */,
 				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
 				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
 				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
@@ -840,13 +882,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FAB56D526DB49E6007076BE /* Craniums_rarityRanks.json in Resources */,
 				4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */,
+				4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
 				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
 				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4FAB56D826DB4C90007076BE /* WickedApes_attributeRanks.json in Resources */,
 				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
@@ -855,19 +900,24 @@
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
+				4FAB56C926DADF4B007076BE /* DJENERATES_attributeRanks.json in Resources */,
 				4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */,
 				4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */,
+				4FAB56D326DB49E6007076BE /* DJENERATES_nearestTokens.json in Resources */,
 				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
 				4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */,
+				4FAB56CD26DADF71007076BE /* Craniums_attributeScores.json in Resources */,
 				4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */,
 				4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FAB56CC26DADF71007076BE /* Craniums_attributeRanks.json in Resources */,
 				4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */,
 				4F1E4F3526C84F82009D27E6 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */,
+				4FAB56D926DB4C90007076BE /* WickedApes_attributeScores.json in Resources */,
 				4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */,
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
 				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
@@ -879,9 +929,13 @@
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
 				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
+				4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */,
 				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
+				4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
+				4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -983,6 +1037,7 @@
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
+				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
 				4FED1E4126D4757C006274CE /* WalletProvider.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
@@ -1001,6 +1056,7 @@
 				4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */,
 				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
+				4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
@@ -1250,7 +1306,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1277,7 +1333,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
