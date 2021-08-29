@@ -18,6 +18,14 @@ struct TokenPropertiesGrid: View {
     return selectedProperties.contains { $0.name == item.name && $0.value == item.value }
   }
   
+  private func itemTapped(item:SimilarTokensGetter.TokenAttributePercentile,isSelected:Bool) -> [(name:String,value:String)] {
+    if (isSelected) {
+      return selectedProperties.filter { $0.name == item.name && $0.value == item.value }
+    } else {
+      return selectedProperties + [(name:item.name,value:item.value)]
+    }
+  }
+  
   var body: some View {
     ScrollView(.horizontal) {
       LazyHGrid(
@@ -59,10 +67,10 @@ struct TokenPropertiesGrid: View {
             )
             .colorMultiply(isSelected ? .flatGreen : .flatOrange);
           
-          switch(isSelected,collection.info.similarTokens?.properties) {
-          case (true,_),(false,.none):
+          switch(collection.info.similarTokens?.properties) {
+          case .none:
             view
-          case (false,.some(let properties)):
+          case .some(let properties):
             ZStack {
               view
                 .onTapGesture { self.action = index }
@@ -73,7 +81,7 @@ struct TokenPropertiesGrid: View {
                   nfts: TokensByPropertiesObject(
                     contract: collection.data.contract,
                     properties: properties,
-                    selectedProperties: selectedProperties + [(name:item.name,value:item.value)]
+                    selectedProperties: itemTapped(item:item,isSelected:isSelected)
                   )
                 ), tag:index,selection:$action
               ) {}
