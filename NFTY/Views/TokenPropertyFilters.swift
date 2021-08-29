@@ -7,6 +7,46 @@
 
 import SwiftUI
 
+struct TokenPropertyPicker: View {
+  @ObservedObject var nfts : TokensByPropertiesObject
+  
+  struct ListItem {
+    let name:String
+    let values:[String:Double]
+    let selectedValue:(value:String,percentile:Double)?
+  }
+  let item : ListItem
+  @State private var selectedValue : String = ""
+  
+  var body: some View {
+    Picker(
+      selection:$selectedValue,
+      label:
+        VStack {
+          Text("\(item.name.capitalized)")
+            .padding()
+            .background(
+              RoundedCorners(
+                color: .secondarySystemBackground,
+                tl: 10, tr: 10, bl: 10, br: 10)
+            )
+            .colorMultiply(.flatOrange)
+        }
+      ,
+      content: {
+        ForEach(item.values.sorted(by:<),id:\.self.key, content: {
+          Text("\($0.key.capitalized) : \(String(format: $0.value > 0.019 ? "%.f%%" : "%.1f%%", $0.value * 100))")
+            .onChange(of: selectedValue) {
+              print($0)
+              self.nfts.onSelection(name: item.name, value: $0, isSelected:false)
+            }
+        })
+      }
+    )
+    .pickerStyle(MenuPickerStyle())
+  }
+}
+
 struct TokenPropertyFilters: View {
   
   @ObservedObject var nfts : TokensByPropertiesObject
@@ -21,20 +61,12 @@ struct TokenPropertyFilters: View {
   
   @State private var selectedValue : String = ""
   
-  struct ListItem {
-    let name:String
-    let values:[String:Double]
-    let selectedValue:(value:String,percentile:Double)?
-  }
   
-  private func propsToList(_ nfts:TokensByPropertiesObject) -> [ListItem] {
-    
-    print(nfts.selectedProperties);
-    print(nfts.availableProperties);
-    
-    let res = nfts.availableProperties
+  
+  private func propsToList(_ nfts:TokensByPropertiesObject) -> [TokenPropertyPicker.ListItem] {
+    return nfts.availableProperties
       .map {
-        return ListItem(name:$0.key,values:$0.value,selectedValue:selectedValue(name: $0.key))
+        return TokenPropertyPicker.ListItem(name:$0.key,values:$0.value,selectedValue:selectedValue(name: $0.key))
       }
       .sorted {
         switch($0.selectedValue,$1.selectedValue) {
@@ -48,50 +80,18 @@ struct TokenPropertyFilters: View {
           return first.percentile < second.percentile
         }
       }
-    print(res);
-    return res
   }
   
   var body: some View {
     ScrollView(.horizontal) {
-      LazyHGrid(
-        rows:[
-          GridItem(.fixed(60)),
-          GridItem(.fixed(60)),
-        ]
-      ) {
-        
+      LazyHStack {
         let sorted = propsToList(nfts)
         ForEach(sorted.indices, id: \.self) { index in
           let item = sorted[index];
           
           switch(item.selectedValue) {
           case .none:
-            Picker(
-              selection:$selectedValue,
-              label:
-                VStack {
-                  Text("\(item.name.capitalized)")
-                    .padding()
-                    .background(
-                      RoundedCorners(
-                        color: .secondarySystemBackground,
-                        tl: 10, tr: 10, bl: 10, br: 10)
-                    )
-                    .colorMultiply(.flatOrange)
-                }
-              ,
-              content: {
-                ForEach(item.values.sorted(by:<),id:\.self.key, content: {
-                  Text("\($0.key.capitalized) : \(String(format: $0.value > 0.019 ? "%.f%%" : "%.1f%%", $0.value * 100))")
-                })
-              }
-            )
-            .pickerStyle(MenuPickerStyle())
-            .onChange(of: selectedValue) {
-              print($0)
-              self.nfts.onSelection(name: item.name, value: $0, isSelected:false)
-            }
+            TokenPropertyPicker(nfts: nfts, item:item)
           case .some(let val):
             VStack(spacing:5) {
               Text("\(item.name.capitalized): \(val.value.capitalized)")
@@ -109,7 +109,6 @@ struct TokenPropertyFilters: View {
             )
             .colorMultiply(.flatGreen)
             .onTapGesture {
-              self.selectedValue = ""
               self.nfts.onSelection(name: item.name, value: val.value, isSelected:true)
             }
           }

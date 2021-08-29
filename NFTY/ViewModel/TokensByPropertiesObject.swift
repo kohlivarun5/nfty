@@ -36,9 +36,6 @@ class TokensByPropertiesObject : ObservableObject {
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
-    
-    print(self.selectedProperties)
-    
     guard !isLoading else { return }
     
     lastIndex = lastIndex + 1
@@ -81,15 +78,18 @@ class TokensByPropertiesObject : ObservableObject {
   }
   
   func onSelection(name:String,value:String,isSelected:Bool) {
-    if (isSelected) {
-      self.selectedProperties = selectedProperties.filter { $0.name != name || $0.value != value }
-    } else {
+    print(self.selectedProperties)
+    // first remove if already, then add if needed
+    self.selectedProperties = selectedProperties.filter { $0.name != name || $0.value != value }
+    if (!isSelected) {
       self.selectedProperties = selectedProperties + [(name:name,value:value)]
     }
     
     print(self.selectedProperties)
+    
     self.tokens = []
     self.lastIndex = -1
+    self.isLoading = false
     loadMore() {}
     
   }

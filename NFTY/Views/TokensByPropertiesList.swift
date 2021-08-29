@@ -81,7 +81,7 @@ struct TokensByPropertiesList: View {
         .background(RoundedCorners(color: .secondarySystemBackground, tl: 0, tr: 0, bl: 20, br: 20))
         
         TokenPropertyFilters(nfts: nfts)
-          .frame(maxHeight:135)
+          .frame(maxHeight:70)
           .padding([.leading,.trailing])
       }
     }

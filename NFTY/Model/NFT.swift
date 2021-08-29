@@ -221,12 +221,10 @@ class SimilarTokensGetter {
   
   
   lazy var properties : [ [TokenAttributePercentile] ]? = {
-    print("eval properties")
     return propertiesJsonFileName.map { load($0) }
   }()
   
   lazy var availableProperties : [String:[String:Double]]? = {
-    print("eval availableProperties")
     var availableProperties : [String:[String:Double]]? = nil
     self.properties?.forEach { itemProps in
       availableProperties = availableProperties ?? [:]
