@@ -307,12 +307,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       subThemeColor:Color.label,
       collectionColor:Color.black,
       disableRecentTrades:false,
-      similarTokens : nil/*SimilarTokensGetter(
-       label:"Birds",
-       nearestTokensFileName:"BirdHouse_nearestTokens.json",
-       propertiesJsonFileName:"BirdHouse_attributeScores.json"
-       )*/,
-      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+      similarTokens : SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"WickedApes_nearestTokens.json",
+        propertiesJsonFileName:"WickedApes_attributeScores.json"),
+      rarityRanking : RarityRankingImpl(load("WickedApes_rarityRanks.json"))
     ),
     contract:WABC_Contract),
   

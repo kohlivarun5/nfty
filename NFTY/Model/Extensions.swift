@@ -88,7 +88,6 @@ extension URL {
   }
 }
 
-/*
 extension Data {
   static func fromHex(_ hex: String) -> Data? {
     let string = hex.lowercased().stripHexPrefix()
@@ -103,4 +102,3 @@ extension Data {
     return Data(array)
   }
 }
-*/

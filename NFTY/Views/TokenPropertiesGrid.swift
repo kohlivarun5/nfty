@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TokenPropertiesGrid: View {
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
+  let collection : Collection
   
   var body: some View {
     ScrollView(.horizontal) {
@@ -23,21 +24,42 @@ struct TokenPropertiesGrid: View {
           .filter { $0.percentile < 1 }
         ForEach(sorted.indices, id: \.self) { index in
           let item = sorted[index];
-          VStack(spacing:5) {
-            Text("\(item.name.capitalized): \(item.value.capitalized)")
-            Text(
-              String(format: item.percentile > 0.019 ? "%.f%%" : "%.1f%%", item.percentile * 100)
+          
+          let view =
+            VStack(spacing:5) {
+              Text("\(item.name.capitalized): \(item.value.capitalized)")
+              Text(
+                String(format: item.percentile > 0.019 ? "%.f%%" : "%.1f%%", item.percentile * 100)
+              )
+              .bold()
+            }
+            .padding(10)
+            .background(
+              RoundedCorners(
+                color: .secondarySystemBackground,
+                tl: 10, tr: 10, bl: 10, br: 10)
             )
-            .bold()
+            .colorMultiply(.flatOrange)
+            .padding(5);
+          
+          switch(collection.info.similarTokens?.properties) {
+          case .none:
+            view
+          case .some(let properties):
+            NavigationLink(
+              destination:TokensByPropertiesList(
+                collection: collection,
+                nfts: TokensByPropertiesObject(
+                  contract: collection.data.contract,
+                  properties: properties,
+                  selectedProperties: [(name:item.name,value:item.value)]
+                ),
+                title:"\(item.name.capitalized): \(item.value.capitalized)"
+              )
+            ) {
+              view
+            }
           }
-          .padding(10)
-          .background(
-            RoundedCorners(
-              color: .secondarySystemBackground,
-              tl: 10, tr: 10, bl: 10, br: 10)
-          )
-          .colorMultiply(.flatOrange)
-          .padding(5)
         }
       }
       .padding([.leading,.trailing])
@@ -55,7 +77,8 @@ struct TokenPropertiesGrid_Previews: PreviewProvider {
         SimilarTokensGetter.TokenAttributePercentile(name: "sdas", value: "Ssadsa", percentile: 0.2),
         SimilarTokensGetter.TokenAttributePercentile(name: "sdas", value: "Ssadsa", percentile: 0.2),
         SimilarTokensGetter.TokenAttributePercentile(name: "sdas", value: "Ssadsa", percentile: 0.2),
-      ]
+      ],
+      collection: SampleCollection
     )
   }
 }
