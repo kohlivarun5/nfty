@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TokensByPropertiesList: View {
   
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+  
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
   
@@ -28,23 +30,29 @@ struct TokensByPropertiesList: View {
   var body: some View {
     VStack(spacing:0) {
       ScrollView {
-        LazyVStack {
+        LazyVGrid(
+          columns: Array(
+            repeating:GridItem(.flexible(maximum:160)),
+            count:horizontalSizeClass == .some(.compact) ? 2 : 3)) {
           ForEach(nfts.tokens.indices,id:\.self) { index in
             let nft = nfts.tokens[index];
             let info = collection.info
             
             ZStack {
-              RoundedImage(
+              NftImage(
                 nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
                 sample:info.sample,
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
-                rarityRank:info.rarityRanking,
-                width: .normal
+                size:.small
               )
-              .padding()
-              .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
+              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              .shadow(color:.secondary,radius:5)
+              .padding(10)
+              .onTapGesture {
+                //perform some tasks if needed before opening Destination view
+                self.selectedTokenId = nft.nft.tokenId
+              }
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
