@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AsciiText : View {
+  
+  @Environment(\.colorScheme) var colorScheme
+  
   let ascii : Media.AsciiPunk?
   var fontSize : CGFloat
   let padding : CGFloat
@@ -24,6 +27,7 @@ struct AsciiText : View {
         .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
         .foregroundColor(Color.systemBackground)
         .padding(padding)
+        // .shadow(color: colorScheme == .dark ? Color.secondarySystemBackground : Color.systemBackground ,radius:2)
     }
   }
   
