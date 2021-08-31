@@ -37,14 +37,13 @@ let downloaders = [
    firstIndex:0,
    lastIndex:10761
    ),
- 
+ */
   Downloader(
     collection:IpfsDownloader(
       name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
     firstIndex:1,
     lastIndex:10000
   ),
-   */
   Downloader(
     collection:IpfsDownloader(
       name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
@@ -61,7 +60,7 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 5 //downloader.collection.baseUri.contains("ipfs") ? 5 : 2
+  let parallelCount = 1 //downloader.collection.baseUri.contains("ipfs") ? 5 : 2
   
   print("Started downloading collection:\(collectionName)")
   
