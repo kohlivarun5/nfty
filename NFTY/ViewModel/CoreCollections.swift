@@ -31,13 +31,15 @@ let DeadFellaz_Contract = IpfsCollectionContract(name: "DeadFellaz",address: "0x
 
 let DJs_Contract = IpfsWithOpenSea(name: "DJENERATES",address: "0x7d05c8D8cC1baC936eA09308a9E94823986f8321")
 
-let ON1_Force_Contract = IpfsWithOpenSea(name: "0N1 Force",address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D")
+let ON1_Force_Contract = IpfsCollectionContract(name: "0N1 Force",address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D")
 
-let Craniums_Contract = IpfsWithOpenSea(name: "WickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
+let Craniums_Contract = IpfsCollectionContract(name: "WickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
 
-let WABC_Contract = IpfsWithOpenSea(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
+let WABC_Contract = IpfsCollectionContract(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
 
-let MAYC_Contract = IpfsWithOpenSea(name: "MAYC",address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
+let MAYC_Contract = IpfsCollectionContract(name: "MAYC",address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
+
+let KILLAZ_Contract = UrlCollectionContract(name: "KILLAz",address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",baseUri: "https://killaznft.com/api/images/")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -356,6 +358,25 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
     ),
     contract:Craniums_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:KILLAZ_Contract.contractAddressHex,
+      sample:"SAMPLE_KILLAZ",
+      name:KILLAZ_Contract.name,
+      webLink: URL(string:"https://crashcitykillaz.com")!,
+      themeColor:Color.black,
+      themeLabelColor:Color.white,
+      subThemeColor:Color.label,
+      collectionColor:Color.black,
+      disableRecentTrades:false,
+      similarTokens : nil/*SimilarTokensGetter(
+        label:"Craniums",
+        nearestTokensFileName:"Craniums_nearestTokens.json",
+        propertiesJsonFileName:"Craniums_attributeScores.json")*/,
+      rarityRanking : nil//RarityRankingImpl(load("Craniums_rarityRanks.json"))
+    ),
+    contract:KILLAZ_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

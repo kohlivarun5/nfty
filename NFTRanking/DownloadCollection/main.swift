@@ -60,7 +60,7 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 1 //downloader.collection.baseUri.contains("ipfs") ? 5 : 2
+  let parallelCount = 1//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
   
   print("Started downloading collection:\(collectionName)")
   
