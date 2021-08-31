@@ -31,11 +31,11 @@ struct TokenPropertiesGrid: View {
   }
   
   private func selectedItems(_ item:Item) -> [(name:String,value:String)] {
-    if (item.isSelected) {
-      return selectedProperties.filter { $0.name != item.name }
+    let props = selectedProperties.filter { $0.name != item.name }
+    if (!item.isSelected) {
+      return props + [(name:item.name,value:item.value)]
     } else {
-      
-      return selectedProperties + [(name:item.name,value:item.value)]
+      return props
     }
   }
   
