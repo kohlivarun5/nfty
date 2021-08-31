@@ -12,17 +12,30 @@ struct TokenPropertiesGrid: View {
   let collection : Collection
   let selectedProperties : [(name:String,value:String)]
   
+  struct Item {
+    let name:String
+    let value:String
+    let percentile:Double
+    let isSelected : Bool
+  }
+  
   @State private var action : Int? = nil
+  @State private var selectedItem : Item?
   
   private func isSelected(item:SimilarTokensGetter.TokenAttributePercentile) -> Bool {
     return selectedProperties.contains { $0.name == item.name && $0.value == item.value }
   }
   
-  private func itemTapped(item:SimilarTokensGetter.TokenAttributePercentile,isSelected:Bool) -> [(name:String,value:String)] {
-    if (isSelected) {
-      return selectedProperties.filter { $0.name != item.name || $0.value != item.value }
+  private func selectedProperties(_ item:Item) -> [SimilarTokensGetter.TokenAttributePercentile] {
+    return self.properties.filter { $0.name != item.name} + [SimilarTokensGetter.TokenAttributePercentile(name: item.name, value: item.value, percentile: item.percentile)]
+  }
+  
+  private func selectedItems(_ item:Item) -> [(name:String,value:String)] {
+    let props = selectedProperties.filter { $0.name != item.name }
+    if (!item.isSelected) {
+      return props + [(name:item.name,value:item.value)]
     } else {
-      return selectedProperties + [(name:item.name,value:item.value)]
+      return props
     }
   }
   
@@ -74,14 +87,24 @@ struct TokenPropertiesGrid: View {
             ZStack {
               view
                 .onTapGesture { self.action = index }
+                .contextMenu {
+                  
+                  ForEach(collection.info.similarTokens!.availableProperties![item.name]!.sorted(by:<),id:\.key) { val in
+                    Button("\(val.key.capitalized) - \(String(format:  val.value > 0.019 ? "%.f%%" : "%.1f%%", val.value * 100))",
+                           action: {
+                            self.selectedItem = Item(name:item.name,value:val.key,percentile:val.value,isSelected: isSelected && item.value == val.key);
+                            self.action = index;
+                           })
+                  }
+                }
               NavigationLink(
                 destination:TokensByPropertiesList(
-                  properties:self.properties,
+                  properties:selectedProperties(selectedItem ?? Item(name:item.name,value:item.value,percentile:item.percentile,isSelected:isSelected)),
                   collection: collection,
                   nfts: TokensByPropertiesObject(
                     contract: collection.data.contract,
                     properties: properties,
-                    selectedProperties: itemTapped(item:item,isSelected:isSelected)
+                    selectedProperties: selectedItems( selectedItem ?? Item(name:item.name,value:item.value,percentile:item.percentile,isSelected:isSelected))
                   )
                 ), tag:index,selection:$action
               ) {}
