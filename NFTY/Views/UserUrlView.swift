@@ -59,7 +59,6 @@ struct UserUrlView: View {
           }, label: {
             Image(systemName: isFav ? "person.crop.circle.badge.minus" : "person.crop.circle.badge.plus")
               .renderingMode(.original)
-              .accentColor(.secondary)
           }).padding(.trailing)
         }
       }.padding(.top)

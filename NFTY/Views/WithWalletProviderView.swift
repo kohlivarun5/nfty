@@ -34,6 +34,8 @@ struct WithWalletProviderView<ButtonView,ProtectedView> : View where ButtonView:
         switch(self.userWallet.walletProvider) {
         case .some(let walletProvider):
           content(walletProvider)
+            .preferredColorScheme(.dark)
+            .accentColor(.orange)
          case .none:
           VStack {
             Spacer()
@@ -43,6 +45,8 @@ struct WithWalletProviderView<ButtonView,ProtectedView> : View where ButtonView:
             UserWalletConnectorView(userWallet:userWallet)
             Spacer()
           }
+          .preferredColorScheme(.dark)
+          .accentColor(.orange)
         }
       }
       )

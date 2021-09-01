@@ -87,13 +87,14 @@ struct WalletView: View {
           self.showSettings = true
         }) {
           Image(systemName:"gearshape")
-            .accentColor(.orange)
             .font(.title3)
             .padding(10)
         }
     )
     .sheet(isPresented: $showSettings) {
       UserSettingsView(userWallet: userWallet)
+        .preferredColorScheme(.dark)
+        .accentColor(.orange)
     }
   }
 }

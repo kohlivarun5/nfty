@@ -83,7 +83,10 @@ struct CollectionsView: View {
             .padding(10)
         }
     )
-    .sheet(isPresented: $showAddFavSheet) { AddFavSheet() }
+    .sheet(isPresented: $showAddFavSheet) {
+      AddFavSheet()
+        .accentColor(.orange) .preferredColorScheme(.dark)
+    }
   }
 }
 
