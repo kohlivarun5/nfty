@@ -25,6 +25,7 @@ public extension Color {
   static let flatGreen = Color(red: 85/255, green: 239/255, blue: 196/255)
   static let flatOrange = Color(red: 253/255, green: 203/255, blue: 110/255)
   static let flatRed = Color(red: 225/255, green: 112/255, blue: 85/255)
+  static let gunmetal = Color(red:14/255, green:16/255, blue:16/255)
   
   // There are more..
 }

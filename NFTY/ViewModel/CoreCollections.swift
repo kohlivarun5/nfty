@@ -78,9 +78,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       sample:SAMPLE_ASCII_PUNKS[0],
       name:"AsciiPunks",
       webLink: URL(string:"https://asciipunks.com")!,
-      themeColor:Color.label,
-      themeLabelColor:Color.systemBackground,
-      subThemeColor:Color.label,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.label,
+      subThemeColor:Color.gunmetal,
       collectionColor:Color.black,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(

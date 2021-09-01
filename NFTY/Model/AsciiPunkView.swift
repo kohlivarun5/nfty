@@ -25,7 +25,7 @@ struct AsciiText : View {
     case .some(let text):
       Text(text.unicode)
         .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
-        .foregroundColor(Color.systemBackground)
+        .foregroundColor(Color.label)
         .padding(padding)
         // .shadow(color: colorScheme == .dark ? Color.secondarySystemBackground : Color.systemBackground ,radius:2)
     }
