@@ -15,10 +15,13 @@ struct NFTExportView: View {
   
   var image : NftImage
   
+  @State private var rect: CGRect = .zero
+  
   private func onSave() {
     // https://stackoverflow.com/a/64962982
     // https://www.hackingwithswift.com/books/ios-swiftui/how-to-save-images-to-the-users-photo-library
-    ImageSaver().writeToPhotoAlbum(image: self.image.snapshot())
+    let image = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: self.rect)
+    image.map { ImageSaver().writeToPhotoAlbum(image: $0) }
   }
   
   init(nft:NFT,sample:String,themeColor:Color,themeLabelColor:Color) {
@@ -47,6 +50,7 @@ struct NFTExportView: View {
       }
       .frame(maxWidth:.infinity,maxHeight:.infinity)
       .background(themeColor)
+      .background(RectGetter(rect: $rect))
       
       /*
       VStack {
@@ -73,7 +77,8 @@ struct NFTExportView: View {
           Spacer()
         }
       }
- */
+       */
+ 
     }
     
   }

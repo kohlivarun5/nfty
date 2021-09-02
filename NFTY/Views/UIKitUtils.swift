@@ -83,6 +83,34 @@ extension View {
   }
 }
 
+extension UIView {
+  func asImage(rect: CGRect) -> UIImage {
+    let renderer = UIGraphicsImageRenderer(bounds: rect)
+    return renderer.image { rendererContext in
+      layer.render(in: rendererContext.cgContext)
+    }
+  }
+}
+
+
+struct RectGetter: View {
+  @Binding var rect: CGRect
+  
+  var body: some View {
+    GeometryReader { proxy in
+      self.createView(proxy: proxy)
+    }
+  }
+  
+  func createView(proxy: GeometryProxy) -> some View {
+    DispatchQueue.main.async {
+      self.rect = proxy.frame(in: .global)
+    }
+    
+    return Rectangle().fill(Color.clear)
+  }
+}
+
 
 class ImageSaver: NSObject {
   func writeToPhotoAlbum(image: UIImage) {
@@ -90,6 +118,6 @@ class ImageSaver: NSObject {
   }
   
   @objc func saveError(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-    print("Save finished!")
+    print("Save finished with error=\(error)")
   }
 }
