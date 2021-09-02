@@ -44,8 +44,19 @@ struct NFTExportView: View {
       
       VStack {
         Spacer()
-        image
-          .frame(maxWidth:300)
+        VStack {
+          image
+            .frame(maxWidth:300)
+          /* VStack {
+            Text(nft.name)
+              .font(.headline)
+            Text("#\(nft.tokenId)")
+              .font(.subheadline)
+          }
+          .foregroundColor(themeLabelColor)
+ */
+        }
+        
         Spacer()
       }
       .frame(maxWidth:.infinity,maxHeight:.infinity)
@@ -53,32 +64,32 @@ struct NFTExportView: View {
       .background(RectGetter(rect: $rect))
       
       /*
-      VStack {
-        Spacer()
-        HStack {
-          Spacer()
-          
-          Button(action: {
-            UIImpactFeedbackGenerator(style:.soft)
-              .impactOccurred()
-            onSave()
-          }) {
-            Text("Save")
-              .font(.title3)
-              .fontWeight(.bold)
-              .padding()
-          }
-          .foregroundColor(themeColor)
-          .background(themeLabelColor)
-          .shadow(color:.gray,radius: 5)
-          .cornerRadius(40)
-          .padding()
-          
-          Spacer()
-        }
-      }
+       VStack {
+       Spacer()
+       HStack {
+       Spacer()
+       
+       Button(action: {
+       UIImpactFeedbackGenerator(style:.soft)
+       .impactOccurred()
+       onSave()
+       }) {
+       Text("Save")
+       .font(.title3)
+       .fontWeight(.bold)
+       .padding()
+       }
+       .foregroundColor(themeColor)
+       .background(themeLabelColor)
+       .shadow(color:.gray,radius: 5)
+       .cornerRadius(40)
+       .padding()
+       
+       Spacer()
+       }
+       }
        */
- 
+      
     }
     
   }
