@@ -65,7 +65,6 @@ struct RoundedCorners: View {
   }
 }
 
-
 extension View {
   func snapshot() -> UIImage {
     let controller = UIHostingController(rootView: self)
