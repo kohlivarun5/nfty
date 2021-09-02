@@ -34,6 +34,6 @@ struct NFTExportView: View {
 
 struct NFTExportView_Previews: PreviewProvider {
     static var previews: some View {
-        NFTExportView(nft: SampleToken, sample: SAMPLE_CCB[0], themeColor: .black, themeLabelColor: .white)
+        NFTExportView(nft: SampleToken, sample: SAMPLE_CCB[0], themeColor: .yellow, themeLabelColor: .black)
     }
 }

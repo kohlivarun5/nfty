@@ -36,13 +36,14 @@ struct NftDetail: View {
   
   @State var showTradeView : Bool = false
   
-  enum SharePicker {
+  enum ShareSheetPicker : Int,Identifiable {
+    var id: Int { self.rawValue }
+    
     case post
     case wallpaper
-    case share
   }
   
-  @State var sharePicker : SharePicker? = nil
+  @State var sharePicker : ShareSheetPicker? = nil
   
   private func onShareLink() {
     var components = URLComponents()
@@ -226,20 +227,25 @@ struct NftDetail: View {
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
                label: { BackButton() }),
-      trailing: Picker(
-        selection:$sharePicker,
-        label:
-          Image(systemName: "arrowshape.turn.up.forward.circle")
-          .foregroundColor(themeLabelColor)
-          .font(.title)
-        ,
+      trailing: Menu(
         content: {
-          Button("Create Post",action : {})
-          Button("Create Wallpaper",action : {})
+          Button("Create Post", action: { self.sharePicker = .post })
+          Button("Create Wallpaper", action: { self.sharePicker = .wallpaper })
           Button("Share Link",action:onShareLink)
+        },
+        label: {
+          Image(systemName: "arrowshape.turn.up.forward.circle")
+            .foregroundColor(themeLabelColor)
+            .font(.title)
         }
       )
       .pickerStyle(MenuPickerStyle())
+    )
+    .sheet(item: $sharePicker,
+           onDismiss: { self.sharePicker = nil},
+           content: { sharePicker in
+            NFTExportView(nft: nft, sample: sample, themeColor: themeColor, themeLabelColor: themeLabelColor)
+           }
     )
     
     .ignoresSafeArea(edges: .top)
