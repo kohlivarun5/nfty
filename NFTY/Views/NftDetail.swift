@@ -229,9 +229,9 @@ struct NftDetail: View {
                label: { BackButton() }),
       trailing: Menu(
         content: {
-          Button("Create Post", action: { self.sharePicker = .post })
-          Button("Create Wallpaper", action: { self.sharePicker = .wallpaper })
-          Button("Share Link",action:onShareLink)
+          Button("Export", action: { self.sharePicker = .post })
+          // Button("Create Wallpaper", action: { self.sharePicker = .wallpaper })
+          Button("Share Via",action:onShareLink)
         },
         label: {
           Image(systemName: "arrowshape.turn.up.forward.circle")
@@ -244,7 +244,13 @@ struct NftDetail: View {
     .sheet(item: $sharePicker,
            onDismiss: { self.sharePicker = nil},
            content: { sharePicker in
-            NFTExportView(nft: nft, sample: sample, themeColor: themeColor, themeLabelColor: themeLabelColor)
+            NFTExportView(
+              nft: nft,
+              sample: sample,
+              themeColor: themeColor,
+              themeLabelColor: themeLabelColor)
+              // .preferredColorScheme(.dark)
+              .accentColor(.orange)
            }
     )
     

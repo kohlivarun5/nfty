@@ -19,10 +19,7 @@ struct SheetButton<ButtonView,SheetView> : View where ButtonView:View, SheetView
   }
   
   var body: some View {
-    Button(action: {
-            self.showSheet = true
-      print("presented")
-    },label:content)
+    Button(action: { self.showSheet = true },label:content)
       .sheet(isPresented: $showSheet,
              content: {
               sheetContent()

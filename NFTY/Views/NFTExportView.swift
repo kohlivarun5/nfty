@@ -13,27 +13,74 @@ struct NFTExportView: View {
   var themeColor : Color
   var themeLabelColor : Color
   
+  var image : NftImage
+  
+  private func onSave() {
+    // https://stackoverflow.com/a/64962982
+    // https://www.hackingwithswift.com/books/ios-swiftui/how-to-save-images-to-the-users-photo-library
+    ImageSaver().writeToPhotoAlbum(image: self.image.snapshot())
+  }
+  
+  init(nft:NFT,sample:String,themeColor:Color,themeLabelColor:Color) {
+    self.nft = nft
+    self.sample = sample
+    self.themeColor = themeColor
+    self.themeLabelColor = themeLabelColor
+    self.image = NftImage(
+      nft:nft,
+      sample:sample,
+      themeColor:themeColor,
+      themeLabelColor:themeLabelColor,
+      size:.xlarge
+    )
+  }
+  
   var body: some View {
-    VStack {
-      Spacer()
+    
+    ZStack {
       
-      NftImage(
-        nft:nft,
-        sample:sample,
-        themeColor:themeColor,
-        themeLabelColor:themeLabelColor,
-        size:.xlarge
-      )
-      Spacer()
+      VStack {
+        Spacer()
+        image
+          .frame(maxWidth:300)
+        Spacer()
+      }
+      .frame(maxWidth:.infinity,maxHeight:.infinity)
+      .background(themeColor)
+      
+      /*
+      VStack {
+        Spacer()
+        HStack {
+          Spacer()
+          
+          Button(action: {
+            UIImpactFeedbackGenerator(style:.soft)
+              .impactOccurred()
+            onSave()
+          }) {
+            Text("Save")
+              .font(.title3)
+              .fontWeight(.bold)
+              .padding()
+          }
+          .foregroundColor(themeColor)
+          .background(themeLabelColor)
+          .shadow(color:.gray,radius: 5)
+          .cornerRadius(40)
+          .padding()
+          
+          Spacer()
+        }
+      }
+ */
     }
-    .frame(maxWidth:.infinity,maxHeight:.infinity)
-    .background(themeColor)
     
   }
 }
 
 struct NFTExportView_Previews: PreviewProvider {
-    static var previews: some View {
-        NFTExportView(nft: SampleToken, sample: SAMPLE_CCB[0], themeColor: .yellow, themeLabelColor: .black)
-    }
+  static var previews: some View {
+    NFTExportView(nft: SampleToken, sample: SAMPLE_CCB[0], themeColor: .yellow, themeLabelColor: .black)
+  }
 }
