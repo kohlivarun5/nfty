@@ -78,7 +78,7 @@ struct TokenPropertiesGrid: View {
                 color: .secondarySystemBackground,
                 tl: 10, tr: 10, bl: 10, br: 10)
             )
-            .colorMultiply(isSelected ? .flatGreen : .flatOrange);
+            .colorMultiply(isSelected ? .green : .yellow);
           
           switch(collection.info.similarTokens?.properties) {
           case .none:

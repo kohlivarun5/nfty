@@ -187,7 +187,7 @@ struct TokenBuyView: View {
             }
             .padding(10)
             .foregroundColor(bidPriceInWei == nil ? .white : .black)
-            .background(bidPriceInWei == nil ? Color.gray : Color.flatOrange)
+            .background(bidPriceInWei == nil ? Color.gray : Color.accentColor)
             .cornerRadius(40)
             .padding(10)
             .disabled(bidPriceInWei == nil)
@@ -271,7 +271,7 @@ struct TokenBuyView: View {
                 }
                 .padding(10)
                 .foregroundColor(.black)
-                .background(Color.flatGreen)
+                .background(Color.green)
                 .cornerRadius(40)
                 .padding(10)
               }

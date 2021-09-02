@@ -158,7 +158,7 @@ struct TokenSellView: View {
             }
             .padding()
             .foregroundColor(priceInWei == nil ? .white : .black)
-            .background(priceInWei == nil ? Color.gray : Color.flatGreen)
+            .background(priceInWei == nil ? Color.gray : Color.green)
             .cornerRadius(40)
             .padding(.leading)
             .padding(.trailing)

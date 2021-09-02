@@ -18,6 +18,7 @@ struct TokenTradeActions: View {
   let themeLabelColor : Color
   let size : NftImage.Size
   let rarityRank : RarityRanking?
+  @ObservedObject var userWallet: UserWallet
   
   @StateObject var userSettings = UserSettings()
   
@@ -33,7 +34,7 @@ struct TokenTradeActions: View {
     case sellActions
   }
   @State private var actionsState : ActionsState? = nil
-  @ObservedObject var userWallet: UserWallet
+
   
   init(
     nft:NFT,
@@ -138,15 +139,16 @@ struct TokenTradeActions: View {
                 label: {
                   HStack {
                     Spacer()
-                    Text("Trade")
+                    Text("Buy")
                       .foregroundColor(.black)
-                      .font(.title2.weight(.bold))
+                      .font(.title3)
+                      .bold()
                     Spacer()
                   }
                   .padding(10)
                   .background(
                     RoundedCorners(
-                      color: .flatOrange,
+                      color: .accentColor,
                       tl: 20, tr: 20, bl: 20, br: 20))
                   .padding([.leading,.trailing],50)
                 },content: { walletProvider in
@@ -167,15 +169,16 @@ struct TokenTradeActions: View {
               Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
-                  Text("Trade")
+                  Text("Buy")
                     .foregroundColor(.black)
-                    .font(.title2.weight(.bold))
+                    .font(.title3)
+                    .bold()
                   Spacer()
                 }
                 .padding(10)
                 .background(
                   RoundedCorners(
-                    color: .flatOrange,
+                    color: .accentColor,
                     tl: 20, tr: 20, bl: 20, br: 20))
                 .padding([.leading,.trailing],50)
               }
@@ -185,13 +188,14 @@ struct TokenTradeActions: View {
                   Spacer()
                   Text("Sell")
                     .foregroundColor(.black)
-                    .font(.title2.weight(.bold))
+                    .font(.title3)
+                    .bold()
                   Spacer()
                 }
                 .padding(10)
                 .background(
                   RoundedCorners(
-                    color: .flatGreen,
+                    color: .accentColor,
                     tl: 20, tr: 20, bl: 20, br: 20))
                 .padding([.leading,.trailing],50)
               }
