@@ -219,26 +219,22 @@ struct NftImage: View {
         
       }
       
-      switch(size) {
-      case .normal:
-        HStack {
-          Spacer()
+      HStack {
+        Spacer()
+        switch(size) {
+        case .normal:
           VStack(spacing:0) {
             FavButton(nft:nft,size:.medium,color:themeLabelColor)
             Spacer()
           }
-        }
-      case .large,.medium:
-        HStack {
-          Spacer()
+        case .large,.medium:
           VStack(spacing:0) {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
+        case .xsmall,.small,.xlarge:
+          EmptyView()
         }
-      case .xsmall,.small,.xlarge:
-        EmptyView()
-        
       }
     }
     .background(themeColor)

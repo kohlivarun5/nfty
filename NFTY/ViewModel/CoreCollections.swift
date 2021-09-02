@@ -50,7 +50,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.larvalabs.com/cryptopunks")!,
       themeColor:Color.yellow,
       themeLabelColor:Color.systemBackground,
-      subThemeColor: /* FFB61E */ Color(red: 255/255, green: 182/255, blue: 30/255),
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
@@ -64,7 +63,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.larvalabs.com/autoglyphs")!,
       themeColor:Color.label,
       themeLabelColor:Color.gray,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens: nil,
       rarityRanking: nil
@@ -77,8 +75,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       name:"AsciiPunks",
       webLink: URL(string:"https://asciipunks.com")!,
       themeColor:Color.gunmetal,
-      themeLabelColor:Color.label,
-      subThemeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Punks",
@@ -95,7 +92,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Apes",
@@ -113,7 +109,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://boredapeyachtclub.com/#/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : nil/* SimilarTokensGetter(
         label:"Mutants",
@@ -132,7 +127,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Ladies",
@@ -150,7 +144,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cryptohodlers.io/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Hodlers",
@@ -168,7 +161,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens: nil,
       rarityRanking: nil
@@ -182,7 +174,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cyphercity.io/home")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Cyphers",
@@ -201,7 +192,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cryptocannabisclub.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"NFTokers",
@@ -220,7 +210,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.coolcatsnft.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Cats",
@@ -239,7 +228,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.deadfellaz.io")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Fellaz",
@@ -258,7 +246,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://thebirdhouse.app")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Birds",
@@ -277,7 +264,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.0n1force.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : nil/*SimilarTokensGetter(
        label:"Birds",
@@ -296,7 +282,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://djenerates.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"DJENERATES",
@@ -314,7 +299,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://wickedapes.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Apes",
@@ -332,7 +316,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://wickedcranium.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Craniums",
@@ -350,7 +333,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://crashcitykillaz.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      subThemeColor:Color.label,
       disableRecentTrades:false,
       similarTokens : nil/*SimilarTokensGetter(
         label:"Craniums",
@@ -368,7 +350,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.cryptokitties.co")!,
       themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       themeLabelColor:Color.systemBackground,
-      subThemeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
       disableRecentTrades:true,
       similarTokens: nil,
       rarityRanking: nil

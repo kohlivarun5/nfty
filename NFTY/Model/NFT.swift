@@ -270,7 +270,6 @@ struct CollectionInfo {
   let webLink: URL
   let themeColor:Color
   let themeLabelColor:Color
-  let subThemeColor:Color
   let disableRecentTrades : Bool
   let similarTokens : SimilarTokensGetter?
   let rarityRanking : RarityRanking?
