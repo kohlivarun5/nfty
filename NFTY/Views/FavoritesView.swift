@@ -144,7 +144,8 @@ struct FavoritesView: View {
       updateFavorites(favorites ?? [:])
     }) {
       AddFavSheet()
-        .accentColor(.orange) .preferredColorScheme(.dark)
+        .accentColor(.orange)
+        // .preferredColorScheme(.dark)
     }
     .onAppear {
       let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]

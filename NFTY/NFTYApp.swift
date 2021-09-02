@@ -93,7 +93,7 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
       }
-      .preferredColorScheme(.dark)
+      // .preferredColorScheme(.dark)
       .accentColor(.orange)
       .onAppear {
         
@@ -139,16 +139,16 @@ struct NFTYApp: App {
         switch item.state {
         case .nft(let address,let tokenId):
           NftUrlView(address: address, tokenId: tokenId)
-            .preferredColorScheme(.dark)
+            // .preferredColorScheme(.dark)
             .accentColor(Color.orange)
         case .user(let address,let friendName):
           UserUrlView(address: address,friendName:friendName)
-            .preferredColorScheme(.dark)
+            // .preferredColorScheme(.dark)
             .accentColor(Color.orange)
         }
       }
       .animation(.none)
-      .preferredColorScheme(.dark)
+      // .preferredColorScheme(.dark)
       .accentColor(Color.orange)
       
       .environmentObject(userWallet)

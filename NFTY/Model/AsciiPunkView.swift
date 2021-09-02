@@ -20,13 +20,13 @@ struct AsciiText : View {
     case .none:
       Text(String(repeating: "\n", count: 12))
         .font(.system(size:fontSize, design: .monospaced))
-        .foregroundColor(Color.label)
+        .foregroundColor(Color.white)
         .padding(padding)
     case .some(let text):
       Text(text.unicode)
         .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
-        .foregroundColor(Color.label)
-        .shadow(color:.secondary,radius:3)
+        .foregroundColor(Color.white)
+        .shadow(color:.gray,radius:3)
         .padding(padding)
     }
   }
