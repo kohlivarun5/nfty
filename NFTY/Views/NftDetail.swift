@@ -36,6 +36,37 @@ struct NftDetail: View {
   
   @State var showTradeView : Bool = false
   
+  enum ShareSheetPicker : Int,Identifiable {
+    var id: Int { self.rawValue }
+    
+    case post
+    case wallpaper
+  }
+  
+  @State var sharePicker : ShareSheetPicker? = nil
+  
+  private func onShareLink() {
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "nftygo.com"
+    components.path = "/nft"
+    components.queryItems = [
+      URLQueryItem(name: "address", value: nft.address),
+      URLQueryItem(name: "tokenId", value: String(nft.tokenId))
+    ]
+    guard let urlShare = components.url else { return }
+    
+    // https://stackoverflow.com/a/64962982
+    let shareActivity = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
+    if let vc = UIApplication.shared.windows.first?.rootViewController {
+      shareActivity.popoverPresentationController?.sourceView = vc.view
+      //Setup share activity position on screen on bottom center
+      shareActivity.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height, width: 0, height: 0)
+      shareActivity.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
+      vc.present(shareActivity, animated: true, completion: nil)
+    }
+  }
+  
   var body: some View {
     
     VStack {
@@ -196,30 +227,30 @@ struct NftDetail: View {
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
                label: { BackButton() }),
-      trailing: Button(action: {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "nftygo.com"
-        components.path = "/nft"
-        components.queryItems = [
-          URLQueryItem(name: "address", value: nft.address),
-          URLQueryItem(name: "tokenId", value: String(nft.tokenId))
-        ]
-        guard let urlShare = components.url else { return }
-        
-        // https://stackoverflow.com/a/64962982
-        let shareActivity = UIActivityViewController(activityItems: [urlShare], applicationActivities: nil)
-        if let vc = UIApplication.shared.windows.first?.rootViewController {
-          shareActivity.popoverPresentationController?.sourceView = vc.view
-          //Setup share activity position on screen on bottom center
-          shareActivity.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height, width: 0, height: 0)
-          shareActivity.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
-          vc.present(shareActivity, animated: true, completion: nil)
+      trailing: Menu(
+        content: {
+          Button("Export", action: { self.sharePicker = .post })
+          // Button("Create Wallpaper", action: { self.sharePicker = .wallpaper })
+          Button("Share Via",action:onShareLink)
+        },
+        label: {
+          Image(systemName: "arrowshape.turn.up.forward.circle")
+            .foregroundColor(themeLabelColor)
+            .font(.title)
         }
-      }, label: {
-        Image(systemName: "arrowshape.turn.up.forward.circle")
-          .foregroundColor(themeLabelColor)
-      })
+      )
+    )
+    .sheet(item: $sharePicker,
+           onDismiss: { self.sharePicker = nil},
+           content: { sharePicker in
+            NFTExportView(
+              nft: nft,
+              sample: sample,
+              themeColor: themeColor,
+              themeLabelColor: themeLabelColor)
+              // .preferredColorScheme(.dark)
+              .accentColor(.orange)
+           }
     )
     
     .ignoresSafeArea(edges: .top)

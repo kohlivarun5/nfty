@@ -101,6 +101,7 @@ struct NftImage: View {
     case medium
     case normal
     case large
+    case xlarge
   }
   
   var size : Size
@@ -117,6 +118,8 @@ struct NftImage: View {
       return 18
     case .large:
       return 23
+    case .xlarge:
+      return 25
     }
   }
   
@@ -131,7 +134,7 @@ struct NftImage: View {
       return 192
     case .normal:
       return 192
-    case .large:
+    case .large,.xlarge:
       return 288
     }
   }
@@ -147,7 +150,7 @@ struct NftImage: View {
       return nil
     case .normal:
       return 45
-    case .large:
+    case .large,.xlarge:
       return nil
     }
   }
@@ -163,7 +166,7 @@ struct NftImage: View {
       return nil
     case .normal:
       return 15
-    case .large:
+    case .large,.xlarge:
       return nil
     }
   }
@@ -181,13 +184,15 @@ struct NftImage: View {
       return 15
     case .large:
       return 10
+    case .xlarge:
+      return 20
     }
   }
   
   private func asciiPunkPadding(_ size:Size) -> CGFloat? {
     // Multiples related to 64
     switch (size) {
-    case .xsmall,.small,.medium,.normal:
+    case .xsmall,.small,.medium,.normal,.xlarge:
       return nil
     case .large:
       return 10
@@ -214,26 +219,22 @@ struct NftImage: View {
         
       }
       
-      switch(size) {
-      case .normal:
-        HStack {
-          Spacer()
+      HStack {
+        Spacer()
+        switch(size) {
+        case .normal:
           VStack(spacing:0) {
             FavButton(nft:nft,size:.medium,color:themeLabelColor)
             Spacer()
           }
-        }
-      case .large,.medium:
-        HStack {
-          Spacer()
+        case .large,.medium:
           VStack(spacing:0) {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
+        case .xsmall,.small,.xlarge:
+          EmptyView()
         }
-      case .xsmall,.small:
-        EmptyView()
-        
       }
     }
     .background(themeColor)
