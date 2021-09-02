@@ -239,7 +239,6 @@ struct NftDetail: View {
             .font(.title)
         }
       )
-      .pickerStyle(MenuPickerStyle())
     )
     .sheet(item: $sharePicker,
            onDismiss: { self.sharePicker = nil},
