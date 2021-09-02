@@ -148,7 +148,7 @@ struct TokenTradeActions: View {
                   .padding(10)
                   .background(
                     RoundedCorners(
-                      color: .accentColor,
+                      color: .green,
                       tl: 20, tr: 20, bl: 20, br: 20))
                   .padding([.leading,.trailing],50)
                 },content: { walletProvider in
@@ -178,7 +178,7 @@ struct TokenTradeActions: View {
                 .padding(10)
                 .background(
                   RoundedCorners(
-                    color: .accentColor,
+                    color: .green,
                     tl: 20, tr: 20, bl: 20, br: 20))
                 .padding([.leading,.trailing],50)
               }
@@ -195,7 +195,7 @@ struct TokenTradeActions: View {
                 .padding(10)
                 .background(
                   RoundedCorners(
-                    color: .accentColor,
+                    color: .red,
                     tl: 20, tr: 20, bl: 20, br: 20))
                 .padding([.leading,.trailing],50)
               }
