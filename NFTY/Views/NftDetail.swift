@@ -227,19 +227,10 @@ struct NftDetail: View {
       leading:
         Button(action: {presentationMode.wrappedValue.dismiss()},
                label: { BackButton() }),
-      trailing: Menu(
-        content: {
-          Button("Export", action: { self.sharePicker = .post })
-          // Button("Create Wallpaper", action: { self.sharePicker = .wallpaper })
-          Button("Share Via",action:onShareLink)
-        },
-        label: {
-          Image(systemName: "arrowshape.turn.up.forward.circle")
-            .foregroundColor(themeLabelColor)
-            .font(.title)
-        }
-      )
-      .pickerStyle(MenuPickerStyle())
+      trailing: VStack {
+        Button("Export", action: { self.sharePicker = .post })
+        Button("Share Link",action:onShareLink)
+      }
     )
     .sheet(item: $sharePicker,
            onDismiss: { self.sharePicker = nil},
