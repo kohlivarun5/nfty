@@ -43,7 +43,7 @@ struct CollectionsView: View {
             VStack {
               sampleImage(url:collection.info.sample,collection:collection)
                 .padding(10)
-                .background(collection.info.collectionColor)
+                .background(collection.info.themeColor)
               
               
               HStack {
@@ -83,7 +83,11 @@ struct CollectionsView: View {
             .padding(10)
         }
     )
-    .sheet(isPresented: $showAddFavSheet) { AddFavSheet() }
+    .sheet(isPresented: $showAddFavSheet) {
+      AddFavSheet()
+        .accentColor(.orange)
+        // .preferredColorScheme(.dark)
+    }
   }
 }
 

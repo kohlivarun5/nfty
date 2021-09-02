@@ -20,7 +20,13 @@ struct SheetButton<ButtonView,SheetView> : View where ButtonView:View, SheetView
   
   var body: some View {
     Button(action: { self.showSheet = true },label:content)
-      .sheet(isPresented: $showSheet,content:sheetContent)
+      .sheet(isPresented: $showSheet,
+             content: {
+              sheetContent()
+                // .preferredColorScheme(.dark)
+                .accentColor(.orange)
+             }
+      )
   }
 }
 

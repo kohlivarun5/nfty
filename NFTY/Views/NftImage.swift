@@ -184,6 +184,16 @@ struct NftImage: View {
     }
   }
   
+  private func asciiPunkPadding(_ size:Size) -> CGFloat? {
+    // Multiples related to 64
+    switch (size) {
+    case .xsmall,.small,.medium,.normal:
+      return nil
+    case .large:
+      return 10
+    }
+  }
+  
   var body: some View {
     ZStack {
       switch(nft.media){
@@ -194,7 +204,7 @@ struct NftImage: View {
           asciiPunk:asciiPunk.ascii,
           themeColor:themeColor,
           fontSize:fontSize(size),
-          padding:imagePadding(size))
+          padding:asciiPunkPadding(size))
       case .autoglyph(let autoglyph):
         AutoglyphView(autoglyph:autoglyph.autoglyph,themeColor:themeColor,width:autoglyphWidth(size))
           .padding(.top,autoglypPaddingTop(size))
@@ -203,22 +213,27 @@ struct NftImage: View {
         NftIpfsImageView(image:ipfs.image,padding:imagePadding(size), sample:sample)
         
       }
-      HStack {
-        Spacer()
-        switch(size) {
-        case .normal:
-          VStack {
+      
+      switch(size) {
+      case .normal:
+        HStack {
+          Spacer()
+          VStack(spacing:0) {
             FavButton(nft:nft,size:.medium,color:themeLabelColor)
             Spacer()
           }
-        case .large,.medium:
-          VStack {
+        }
+      case .large,.medium:
+        HStack {
+          Spacer()
+          VStack(spacing:0) {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
-        case .xsmall,.small:
-          EmptyView()
         }
+      case .xsmall,.small:
+        EmptyView()
+        
       }
     }
     .background(themeColor)

@@ -271,7 +271,6 @@ struct CollectionInfo {
   let themeColor:Color
   let themeLabelColor:Color
   let subThemeColor:Color
-  let collectionColor:Color
   let disableRecentTrades : Bool
   let similarTokens : SimilarTokensGetter?
   let rarityRanking : RarityRanking?
