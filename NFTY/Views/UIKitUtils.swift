@@ -22,9 +22,9 @@ public extension Color {
   static let secondarySystemBackground = Color(UIColor.secondarySystemBackground)
   static let tertiarySystemBackground = Color(UIColor.tertiarySystemBackground)
   
-  static let flatGreen = Color(red: 85/255, green: 239/255, blue: 196/255)
-  static let flatOrange = Color(red: 253/255, green: 203/255, blue: 110/255)
-  static let flatRed = Color(red: 225/255, green: 112/255, blue: 85/255)
+  // static let flatGreen = Color(red: 85/255, green: 239/255, blue: 196/255)
+  // static let flatOrange = Color(red: 253/255, green: 203/255, blue: 110/255)
+  // static let flatRed = Color(red: 225/255, green: 112/255, blue: 85/255)
   static let gunmetal = Color(red:12/255, green:13/255, blue:14/255)
   
   // There are more..
