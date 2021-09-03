@@ -37,18 +37,19 @@ let downloaders = [
    firstIndex:0,
    lastIndex:10761
    ),
- */
+
   Downloader(
     collection:IpfsDownloader(
       name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
     firstIndex:1,
     lastIndex:10000
   ),
+   */
   Downloader(
     collection:IpfsDownloader(
       name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
     firstIndex:0,
-    lastIndex:12000
+    lastIndex:10000
   )
 ]
 
@@ -128,7 +129,7 @@ try? downloaders.forEach { downloader in
     let attr = try fileManager.attributesOfItem(atPath: path)
     if (minFileSize > attr[FileAttributeKey.size] as! UInt64) {
       print("Token=\(index) is empty")
-      // try fileManager.removeItem(atPath: path)
+      try fileManager.removeItem(atPath: path)
     }
     
   }

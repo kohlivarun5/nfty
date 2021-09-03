@@ -145,6 +145,8 @@
 		4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744722630FD7D0060FC6D /* Web3PromiseKit */; };
 		4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744742630FD7D0060FC6D /* Web3ContractABI */; };
 		4FC744772630FD7D0060FC6D /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC744762630FD7D0060FC6D /* Web3 */; };
+		4FCB358F26E1A7390044BD84 /* MutantApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */; };
+		4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */; };
 		4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
 		4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
 		4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
@@ -343,6 +345,8 @@
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Erc721Contract.swift; sourceTree = "<group>"; };
 		4FC744692630F9130060FC6D /* TokenProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProtocols.swift; sourceTree = "<group>"; };
+		4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MutantApes_attributeScores.json; sourceTree = "<group>"; };
+		4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MutantApes_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsciiPunksContract.swift; sourceTree = "<group>"; };
 		4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeScores.json; sourceTree = "<group>"; };
@@ -638,6 +642,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */,
+				4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */,
 				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
 				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
 				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
@@ -912,6 +918,7 @@
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
+				4FCB358F26E1A7390044BD84 /* MutantApes_attributeScores.json in Resources */,
 				4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */,
 				4FAB56CD26DADF71007076BE /* Craniums_attributeScores.json in Resources */,
 				4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */,
@@ -925,6 +932,7 @@
 				4F1E4F3126C8458F009D27E6 /* CoolCats_nearestTokens.json in Resources */,
 				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
 				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
+				4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
@@ -1310,7 +1318,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1337,7 +1345,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
