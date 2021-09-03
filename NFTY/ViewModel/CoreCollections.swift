@@ -287,7 +287,7 @@ let CompositeCollection = CompositeRecentTradesObject([
         label:"DJENERATES",
         nearestTokensFileName:"DJENERATES_nearestTokens.json",
         propertiesJsonFileName:"DJENERATES_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json")) //TODO : Update on full mint
+      rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json"))
     ),
     contract:DJs_Contract),
   
