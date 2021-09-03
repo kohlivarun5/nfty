@@ -172,8 +172,8 @@ struct ConnectWalletSheet: View {
             }
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding()
-            .foregroundColor(.white)
-            .background(Color.green)
+            .foregroundColor(.black)
+            .background(Color.accentColor)
             .cornerRadius(40)
             
             Spacer()
