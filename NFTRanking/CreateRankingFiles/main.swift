@@ -9,10 +9,10 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "DJENERATES"
+let collectionName = "MutantApes"
 
 let isFull = true
-let firstIndex = 1
+let firstIndex = 0
 let lastIndex = isFull ? 10000 : 100
 
 // STAGES
