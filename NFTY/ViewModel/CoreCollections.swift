@@ -336,9 +336,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Killaz",
-        nearestTokensFileName:"Killaz_nearestTokens.json",
+        nearestTokensFileName:nil,//"Killaz_nearestTokens.json",
         propertiesJsonFileName:"Killaz_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("Killaz_rarityRanks.json"))
+      rarityRanking : RarityRankingImpl(load("Killaz_attributeRanks.json"))
     ),
     contract:KILLAZ_Contract),
   
