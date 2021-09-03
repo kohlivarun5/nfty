@@ -151,6 +151,8 @@
 		4FCB359626E1BB1C0044BD84 /* Killaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */; };
 		4FCB359726E1BB1C0044BD84 /* Killaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */; };
 		4FCB359826E1BB1C0044BD84 /* MutantApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */; };
+		4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */; };
+		4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */; };
 		4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
 		4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
 		4FCB496426D1892A00696F91 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
@@ -355,6 +357,8 @@
 		4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Killaz_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Killaz_attributeScores.json; sourceTree = "<group>"; };
 		4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MutantApes_nearestTokens.json; sourceTree = "<group>"; };
+		4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Killaz_rarityRanks.json; sourceTree = "<group>"; };
+		4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Killaz_nearestTokens.json; sourceTree = "<group>"; };
 		4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsciiPunksContract.swift; sourceTree = "<group>"; };
 		4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_attributeScores.json; sourceTree = "<group>"; };
@@ -650,6 +654,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
+				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
 				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
 				4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */,
 				4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */,
@@ -951,6 +957,7 @@
 				4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
 				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
@@ -960,6 +967,7 @@
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
 				4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */,
 				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
+				4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */,
 				4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
 				4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */,
