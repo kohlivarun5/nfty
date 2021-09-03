@@ -112,9 +112,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Mutants",
-        nearestTokensFileName:"MutantApes_nearestTokens.json",
+        nearestTokensFileName:nil,
         propertiesJsonFileName:"MutantApes_attributeScores.json"),
-      rarityRanking : nil//RarityRankingImpl(BAYC_rarityRanks)
+      rarityRanking : RarityRankingImpl(load("MutantApes_attributeRanks.json"))
     ),
     contract:MAYC_Contract),
   
@@ -287,7 +287,7 @@ let CompositeCollection = CompositeRecentTradesObject([
         label:"DJENERATES",
         nearestTokensFileName:"DJENERATES_nearestTokens.json",
         propertiesJsonFileName:"DJENERATES_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json")) //TODO : Update on full mint
+      rarityRanking : RarityRankingImpl(load("DJENERATES_attributeRanks.json")) //TODO : Update on full mint
     ),
     contract:DJs_Contract),
   
