@@ -112,9 +112,9 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Mutants",
-        nearestTokensFileName:nil,
+        nearestTokensFileName:"MutantApes_nearestTokens.json",
         propertiesJsonFileName:"MutantApes_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("MutantApes_attributeRanks.json"))
+      rarityRanking : RarityRankingImpl(load("MutantApes_rarityRanks.json"))
     ),
     contract:MAYC_Contract),
   
@@ -334,11 +334,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil/*SimilarTokensGetter(
-        label:"Craniums",
-        nearestTokensFileName:"Craniums_nearestTokens.json",
-        propertiesJsonFileName:"Craniums_attributeScores.json")*/,
-      rarityRanking : nil//RarityRankingImpl(load("Craniums_rarityRanks.json"))
+      similarTokens : SimilarTokensGetter(
+        label:"Killaz",
+        nearestTokensFileName:"Killaz_nearestTokens.json",
+        propertiesJsonFileName:"Killaz_attributeScores.json"),
+      rarityRanking : RarityRankingImpl(load("Killaz_rarityRanks.json"))
     ),
     contract:KILLAZ_Contract),
   

@@ -44,12 +44,25 @@ let downloaders = [
     firstIndex:1,
     lastIndex:10000
   ),
-   */
+   Downloader(
+   collection:IpfsDownloader(
+   name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
+   firstIndex:0,
+   lastIndex:10000
+   )
+   
   Downloader(
     collection:IpfsDownloader(
       name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
     firstIndex:0,
     lastIndex:10000
+  ),
+   */
+  Downloader(
+    collection:IpfsDownloader(
+      name:"Killaz",baseUri:"https://killaznft.com/api"),
+    firstIndex:0,
+    lastIndex:9999
   )
 ]
 

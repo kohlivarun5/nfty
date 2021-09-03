@@ -9,11 +9,11 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "MutantApes"
+let collectionName = "Killaz"
 
 let isFull = true
 let firstIndex = 0
-let lastIndex = isFull ? 10000 : 100
+let lastIndex = isFull ? 9970 : 100
 
 // STAGES
 let doCalculateFeatures = true
@@ -25,7 +25,7 @@ let doCalculateRarityRank = true
 // PIPELINE
 
 let features = CalculateImageFeaturePrints(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName)
-// features.loadFeaturesFromFile()
+//features.loadFeaturesFromFile()
 if (doCalculateFeatures) {
   features.calculateFeatures()
 }
