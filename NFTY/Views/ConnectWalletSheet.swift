@@ -126,7 +126,7 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      
+      /* // TODO Enable WC
       UserWalletConnectorView(userWallet:userWallet)
       
       ZStack {
@@ -138,6 +138,7 @@ struct ConnectWalletSheet: View {
           .padding(.leading)
           .background(Color.systemBackground)
       }
+ */
       
       VStack {
         Text("Add Wallet using Address")
