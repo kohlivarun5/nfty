@@ -34,7 +34,8 @@ struct NFTExportView: View {
       sample:sample,
       themeColor:themeColor,
       themeLabelColor:themeLabelColor,
-      size:.xlarge
+      size:.xlarge,
+      favButton:.none
     )
   }
   

@@ -77,7 +77,8 @@ struct NftDetail: View {
             sample:sample,
             themeColor:themeColor,
             themeLabelColor:themeLabelColor,
-            size:metrics.size.height < 700 ? .normal : .large
+            size:metrics.size.height < 700 ? .normal : .large,
+            favButton:.bottomRight
           )
           .frame(minHeight: min(metrics.size.height-260,450))
           

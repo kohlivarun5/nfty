@@ -98,13 +98,16 @@ struct AddFavSheet: View {
         switch(nft.state) {
         case .loaded(let info,let nftWithPrice):
           ZStack {
+            GeometryReader { metrics in
             NftImage(nft:nftWithPrice.nft,
                      sample:info.sample,
                      themeColor:info.themeColor,
                      themeLabelColor:info.themeLabelColor,
-                     size:.medium)
+                     size:metrics.size.height < 700 ? .small : .medium,
+                     favButton:.bottomRight)
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+            }
             VStack {
               HStack {
                 VStack {

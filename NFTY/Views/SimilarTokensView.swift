@@ -27,7 +27,8 @@ struct SimilarTokensView: View {
                 sample:info.sample,
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
-                size:metrics.size.height < 700 ? .xxsmall : .xsmall
+                size:metrics.size.height < 700 ? .xxsmall : .xsmall,
+                favButton:.none
               )
               .frame(maxHeight:200)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

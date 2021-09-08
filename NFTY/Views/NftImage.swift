@@ -86,10 +86,10 @@ struct NftIpfsImageView: View {
 }
 
 struct NftImage: View {
-  var nft:NFT
-  var sample:String
-  var themeColor : Color
-  var themeLabelColor : Color
+  let nft:NFT
+  let sample:String
+  let themeColor : Color
+  let themeLabelColor : Color
   
   enum Size {
     case xxsmall
@@ -101,7 +101,14 @@ struct NftImage: View {
     case xlarge
   }
   
-  var size : Size
+  enum FavButtonLocation {
+    case topRight
+    case bottomRight
+    case none
+  }
+  
+  let size : Size
+  let favButton : FavButtonLocation
   
   private func fontSize(_ size:Size) -> CGFloat {
     switch (size) {
@@ -220,18 +227,18 @@ struct NftImage: View {
       
       HStack {
         Spacer()
-        switch(size) {
-        case .normal:
+        switch(favButton) {
+        case .topRight:
           VStack(spacing:0) {
-            FavButton(nft:nft,size:.medium,color:themeLabelColor)
+            FavButton(nft:nft,size:.large,color:themeLabelColor)
             Spacer()
           }
-        case .large,.medium:
+        case .bottomRight:
           VStack(spacing:0) {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
-        case .xxsmall,.xsmall,.small,.xlarge:
+        case .none:
           EmptyView()
         }
       }
@@ -242,6 +249,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
   static var previews: some View {
-    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal)
+    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal,favButton:.topRight)
   }
 }
