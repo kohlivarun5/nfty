@@ -86,12 +86,13 @@ struct NftIpfsImageView: View {
 }
 
 struct NftImage: View {
-  var nft:NFT
-  var sample:String
-  var themeColor : Color
-  var themeLabelColor : Color
+  let nft:NFT
+  let sample:String
+  let themeColor : Color
+  let themeLabelColor : Color
   
   enum Size {
+    case xxsmall
     case xsmall
     case small
     case medium
@@ -100,10 +101,19 @@ struct NftImage: View {
     case xlarge
   }
   
-  var size : Size
+  enum FavButtonLocation {
+    case topRight
+    case bottomRight
+    case none
+  }
+  
+  let size : Size
+  let favButton : FavButtonLocation
   
   private func fontSize(_ size:Size) -> CGFloat {
     switch (size) {
+    case .xxsmall:
+      return 6
     case .xsmall:
       return 8
     case .small:
@@ -122,7 +132,7 @@ struct NftImage: View {
   private func autoglyphWidth(_ size:Size) -> CGFloat {
     // Multiples related to 64
     switch (size) {
-    case .xsmall:
+    case .xxsmall,.xsmall:
       return 64
     case .small:
       return 120
@@ -138,7 +148,7 @@ struct NftImage: View {
   private func autoglypPaddingTop(_ size:Size) -> CGFloat? {
     // Multiples related to 64
     switch (size) {
-    case .xsmall:
+    case .xxsmall,.xsmall:
       return nil
     case .small:
       return nil
@@ -154,7 +164,7 @@ struct NftImage: View {
   private func autoglypPaddingBottom(_ size:Size) -> CGFloat? {
     // Multiples related to 64
     switch (size) {
-    case .xsmall:
+    case .xxsmall,.xsmall:
       return nil
     case .small:
       return nil
@@ -170,7 +180,7 @@ struct NftImage: View {
   private func imagePadding(_ size:Size) -> CGFloat? {
     // Multiples related to 64
     switch (size) {
-    case .xsmall:
+    case .xxsmall,.xsmall:
       return nil
     case .small:
       return nil
@@ -188,7 +198,7 @@ struct NftImage: View {
   private func asciiPunkPadding(_ size:Size) -> CGFloat? {
     // Multiples related to 64
     switch (size) {
-    case .xsmall,.small,.medium,.normal,.xlarge:
+    case .xxsmall,.xsmall,.small,.medium,.normal,.xlarge:
       return nil
     case .large:
       return 10
@@ -217,18 +227,18 @@ struct NftImage: View {
       
       HStack {
         Spacer()
-        switch(size) {
-        case .normal:
+        switch(favButton) {
+        case .topRight:
           VStack(spacing:0) {
-            FavButton(nft:nft,size:.medium,color:themeLabelColor)
+            FavButton(nft:nft,size:.large,color:themeLabelColor)
             Spacer()
           }
-        case .large,.medium:
+        case .bottomRight:
           VStack(spacing:0) {
             Spacer()
             FavButton(nft:nft,size:.large,color:themeLabelColor)
           }
-        case .xsmall,.small,.xlarge:
+        case .none:
           EmptyView()
         }
       }
@@ -239,6 +249,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
   static var previews: some View {
-    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal)
+    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal,favButton:.topRight)
   }
 }

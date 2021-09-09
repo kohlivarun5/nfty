@@ -68,157 +68,157 @@ struct NftDetail: View {
   }
   
   var body: some View {
-    
-    VStack {
-      
-      ZStack {
-        NftImage(
-          nft:nft,
-          sample:sample,
-          themeColor:themeColor,
-          themeLabelColor:themeLabelColor,
-          size:.large
-        )
-        .frame(minHeight: 450)
+    GeometryReader { metrics in
+      VStack {
         
-        VStack(alignment: .leading) {
-          Spacer()
-          switch hideOwnerLink {
-          case true:
-            EmptyView()
-          case false:
-            HStack {
-              OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
-              Spacer()
-            }
-          }
-        }
-        .padding()
-      }
-      
-      HStack() {
-        VStack(alignment:.leading) {
-          Text(nft.name)
-            .font(.headline)
-          HStack {
-            Text("#\(nft.tokenId)")
-              .font(.subheadline)
-            DappLink(destination: DappLink.openSeaPath(nft: nft))
-          }
-          rank.map {
-            Text("RarityRank: \($0)")
-              .font(.footnote)
-              .foregroundColor(.secondaryLabel)
-          }
-        }
-        .padding(.leading)
-        Spacer()
-        
-        switch(tokens) {
-        case .none:
-          TokenPrice(price:price,color:.label)
-            .font(.title2)
-            .padding()
-        case .some:
-          NavigationLink(
-            destination:TokenTradeView(
-              nft: nft,
-              price:price,
-              sample: sample,
-              themeColor:themeColor,
-              themeLabelColor:themeLabelColor,
-              size: .small,
-              rarityRank:rarityRank,
-              userWallet:userWallet,
-              isSheet:false),
-            isActive:$showTradeView
-          ) {
-            Button(action: {
-              UIImpactFeedbackGenerator(style:.soft)
-                .impactOccurred()
-              self.showTradeView = true
-            }) {
-              TradableTokenPrice(price:price,color:.label)
-                .font(.title2)
-                .padding(.top,8)
-            }
-          }
-        }
-      }
-      
-      HStack {
-        Spacer()
-          .frame(maxWidth:20)
-        
-        
-        switch(tokens,properties) {
-        case (.none,.none):
-          EmptyView()
-        case (.some(let tokens),.none):
-          VStack(spacing:0) {
-            ZStack {
-              Divider()
-              Text("Similar \(similarTokens?.label ?? "Tokens")")
-                .font(.caption).italic()
-                .foregroundColor(.secondaryLabel)
-                .padding(.trailing)
-                .padding(.leading)
-                .background(Color.systemBackground)
-            }
-            SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
-          }
-        case (.none,.some(let properties)):
-          VStack(spacing:0) {
-            ZStack {
-              Divider()
-              Text("Attributes")
-                .font(.caption).italic()
-                .foregroundColor(.secondaryLabel)
-                .padding(.trailing)
-                .padding(.leading)
-                .background(Color.systemBackground)
-            }
-            TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
-              .padding(.top,5)
-              .padding(.bottom,110)
-          }
-        case (.some(let tokens),.some(let properties)):
-          VStack(spacing:0) {
-            
-            ZStack {
-              
-              Picker(selection: Binding<Int>(
-                      get: { self.similarSectionPage.rawValue },
-                      set: { tag in
-                        withAnimation { // needed explicit for transitions
-                          self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
-                        }
-                      }),
-                     label: Text("")) {
-                Text("Attributes")
-                  .tag(SimilarSectionPage.attributes.rawValue)
-                Text("Similar \(similarTokens?.label ?? "Tokens")")
-                  .tag(SimilarSectionPage.similar.rawValue)
+        ZStack {
+          NftImage(
+            nft:nft,
+            sample:sample,
+            themeColor:themeColor,
+            themeLabelColor:themeLabelColor,
+            size:metrics.size.height < 700 ? .normal : .large,
+            favButton:.bottomRight
+          )
+          .frame(minHeight: min(metrics.size.height-260,450))
+          
+          VStack(alignment: .leading) {
+            Spacer()
+            switch hideOwnerLink {
+            case true:
+              EmptyView()
+            case false:
+              HStack {
+                OwnerProfileLinkButton(nft:nft,color:themeLabelColor)
+                Spacer()
               }
-              .pickerStyle(SegmentedPickerStyle())
-              .colorMultiply(.orange)
-              .font(.caption)
-              .padding([.trailing,.leading])
             }
-            
-            switch(self.similarSectionPage) {
-            case .similar:
-              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
-            case .attributes:
-              TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
-                .padding(.top,5)
-                .padding(.bottom,110)
+          }
+          .padding()
+        }
+        
+        HStack() {
+          VStack(alignment:.leading) {
+            Text(nft.name)
+              .font(.headline)
+            HStack {
+              Text("#\(nft.tokenId)")
+                .font(.subheadline)
+              DappLink(destination: DappLink.openSeaPath(nft: nft))
+            }
+            rank.map {
+              Text("RarityRank: \($0)")
+                .font(.footnote)
+                .foregroundColor(.secondaryLabel)
+            }
+          }
+          .padding(.leading)
+          Spacer()
+          
+          switch(tokens) {
+          case .none:
+            TokenPrice(price:price,color:.label)
+              .font(.title2)
+              .padding()
+          case .some:
+            NavigationLink(
+              destination:TokenTradeView(
+                nft: nft,
+                price:price,
+                sample: sample,
+                themeColor:themeColor,
+                themeLabelColor:themeLabelColor,
+                size: .small,
+                rarityRank:rarityRank,
+                userWallet:userWallet,
+                isSheet:false),
+              isActive:$showTradeView
+            ) {
+              Button(action: {
+                UIImpactFeedbackGenerator(style:.soft)
+                  .impactOccurred()
+                self.showTradeView = true
+              }) {
+                TradableTokenPrice(price:price,color:.label)
+                  .font(.title2)
+                  .padding(.top,8)
+              }
             }
           }
         }
         
-        Spacer()
-          .frame(maxWidth:20)
+        HStack {
+          Spacer()
+            .frame(maxWidth:20)
+          
+          
+          switch(tokens,properties) {
+          case (.none,.none):
+            EmptyView()
+          case (.some(let tokens),.none):
+            VStack(spacing:0) {
+              ZStack {
+                Divider()
+                Text("Similar \(similarTokens?.label ?? "Tokens")")
+                  .font(.caption).italic()
+                  .foregroundColor(.secondaryLabel)
+                  .padding(.trailing)
+                  .padding(.leading)
+                  .background(Color.systemBackground)
+              }
+              SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+            }
+          case (.none,.some(let properties)):
+            VStack(spacing:0) {
+              ZStack {
+                Divider()
+                Text("Attributes")
+                  .font(.caption).italic()
+                  .foregroundColor(.secondaryLabel)
+                  .padding(.trailing)
+                  .padding(.leading)
+                  .background(Color.systemBackground)
+              }
+              TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
+                .padding([.top,.bottom],5)
+            }
+          case (.some(let tokens),.some(let properties)):
+            VStack(spacing:0) {
+              
+              ZStack {
+                
+                Picker(selection: Binding<Int>(
+                        get: { self.similarSectionPage.rawValue },
+                        set: { tag in
+                          withAnimation { // needed explicit for transitions
+                            self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                          }
+                        }),
+                       label: Text("")) {
+                  Text("Attributes")
+                    .tag(SimilarSectionPage.attributes.rawValue)
+                  Text("Similar \(similarTokens?.label ?? "Tokens")")
+                    .tag(SimilarSectionPage.similar.rawValue)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .colorMultiply(.orange)
+                .font(.caption)
+                .padding([.trailing,.leading])
+              }
+              
+              switch(self.similarSectionPage) {
+              case .similar:
+                SimilarTokensView(info:collectionsFactory.getByAddress(nft.address)!.info,tokens:tokens)
+              case .attributes:
+                TokenPropertiesGrid(properties: properties,collection:collectionsFactory.getByAddress(nft.address)!,selectedProperties:selectedProperties)
+                  .padding([.top,.bottom],5)
+              }
+            }
+          }
+          
+          Spacer()
+            .frame(maxWidth:20)
+        }
       }
     }
     .navigationBarTitle("",displayMode:.large)

@@ -74,7 +74,7 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack(spacing:0) {
-      NftImage(nft:nft,sample:sample,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width))
+      NftImage(nft:nft,sample:sample,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width),favButton:.topRight)
       
       switch(width) {
       case .narrow:

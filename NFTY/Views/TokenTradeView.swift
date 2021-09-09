@@ -36,7 +36,8 @@ struct TokenTradeView: View {
           sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
-          size:.small
+          size:.small,
+          favButton:.none
         )
         .frame(height:height)
         .padding(.top,isSheet ? 10 : 30)
