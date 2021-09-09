@@ -15,6 +15,7 @@ struct DappLink: View {
     var components = URLComponents()
     components.host = "opensea.io"
     components.path = "/assets/\(nft.address)/\(nft.tokenId)"
+    components.queryItems = [URLQueryItem(name: "ref", value: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4")]
     return components
   }
   
