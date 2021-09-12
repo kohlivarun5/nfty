@@ -235,8 +235,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Bombs",
-        nearestTokensFileName:"Bombs_nearestTokens.json",
-        propertiesJsonFileName:"Bombs_attributeScores.json"
+        nearestTokensFileName:"Bombs_nearestTokens.json"
+        //,propertiesJsonFileName:"Bombs_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
     ),
