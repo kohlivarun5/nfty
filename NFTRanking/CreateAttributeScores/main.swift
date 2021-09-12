@@ -7,11 +7,11 @@
 
 import Foundation
 
-let collectionName = "Killaz"
+let collectionName = "Dads"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 9970 : 100
+let firstIndex = 1
+let lastIndex = isFull ? 10000 : 100
 
 // STAGES
 let doCalculatePercentiles = true

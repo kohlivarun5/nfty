@@ -115,34 +115,27 @@ struct NftDetail: View {
           .padding(.leading)
           Spacer()
           
-          switch(tokens) {
-          case .none:
-            TokenPrice(price:price,color:.label)
-              .font(.title2)
-              .padding()
-          case .some:
-            NavigationLink(
-              destination:TokenTradeView(
-                nft: nft,
-                price:price,
-                sample: sample,
-                themeColor:themeColor,
-                themeLabelColor:themeLabelColor,
-                size: .small,
-                rarityRank:rarityRank,
-                userWallet:userWallet,
-                isSheet:false),
-              isActive:$showTradeView
-            ) {
-              Button(action: {
-                UIImpactFeedbackGenerator(style:.soft)
-                  .impactOccurred()
-                self.showTradeView = true
-              }) {
-                TradableTokenPrice(price:price,color:.label)
-                  .font(.title2)
-                  .padding(.top,8)
-              }
+          NavigationLink(
+            destination:TokenTradeView(
+              nft: nft,
+              price:price,
+              sample: sample,
+              themeColor:themeColor,
+              themeLabelColor:themeLabelColor,
+              size: .small,
+              rarityRank:rarityRank,
+              userWallet:userWallet,
+              isSheet:false),
+            isActive:$showTradeView
+          ) {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.showTradeView = true
+            }) {
+              TradableTokenPrice(price:price,color:.label)
+                .font(.title2)
+                .padding(.top,8)
             }
           }
         }

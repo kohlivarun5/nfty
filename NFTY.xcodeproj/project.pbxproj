@@ -16,6 +16,10 @@
 		4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
 		4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
 		4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
+		4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */; };
+		4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */; };
+		4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */; };
+		4F12715926EDB522007E6A7B /* Dads_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */; };
 		4F1E4F2B26C83F42009D27E6 /* CalculateAttributePercentiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */; };
 		4F1E4F2D26C842D3009D27E6 /* CalculatePercentileScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */; };
 		4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */; };
@@ -231,6 +235,10 @@
 		4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_rarityRanks.json; sourceTree = "<group>"; };
 		4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_nearestTokens.json; sourceTree = "<group>"; };
 		4F0FB83626A50BF000AD5165 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeRanks.json; sourceTree = "<group>"; };
+		4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeScores.json; sourceTree = "<group>"; };
+		4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_rarityRanks.json; sourceTree = "<group>"; };
+		4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_nearestTokens.json; sourceTree = "<group>"; };
 		4F1E4F2A26C83F42009D27E6 /* CalculateAttributePercentiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateAttributePercentiles.swift; sourceTree = "<group>"; };
 		4F1E4F2C26C842D3009D27E6 /* CalculatePercentileScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatePercentileScores.swift; sourceTree = "<group>"; };
 		4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CoolCats_rarityRanks.json; sourceTree = "<group>"; };
@@ -654,6 +662,10 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */,
+				4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */,
+				4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */,
+				4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */,
 				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
 				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
 				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
@@ -920,6 +932,7 @@
 				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4F12715926EDB522007E6A7B /* Dads_nearestTokens.json in Resources */,
 				4FAB56D826DB4C90007076BE /* WickedApes_attributeRanks.json in Resources */,
 				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
@@ -955,8 +968,11 @@
 				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
 				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
 				4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */,
+				4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
+				4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */,
+				4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */,
 				4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
 				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
