@@ -28,11 +28,12 @@ class Erc721Contract {
   let initFromBlock : BigUInt
   
   class EthContract : EthereumContract {
-    let eth = web3.eth
+    let eth : Web3.Eth
     let events : [SolidityEvent] = []
     var address : EthereumAddress?
-    init(_ addressHex:String) {
+    init(web3:Web3,_ addressHex:String) {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
+      self.eth = web3.eth
     }
     
     func balanceOf(address:EthereumAddress) -> Promise<BigUInt> {
@@ -89,9 +90,9 @@ class Erc721Contract {
   
   var ethContract : EthContract
   
-  init (address:String) {
+  init (web3:Web3,address:String) {
     self.contractAddressHex = address
-    ethContract = EthContract(address)
+    ethContract = EthContract(web3:web3,address)
     initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
   }
@@ -141,7 +142,7 @@ class Erc721Contract {
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
           }.catch { print ($0) }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
+        let res = try! Web3ABI.decodeLog(event:self.Transfer,from:log)
         let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought))
       }
@@ -192,7 +193,7 @@ class Erc721Contract {
       return transferFetcher.fetchAllLogs(onDone: {
         if (reachedMint) { onDone() }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
+        let res = try! Web3ABI.decodeLog(event:self.Transfer,from:log)
         let from = res["from"] as! EthereumAddress
         
         var type : TradeEventType? = nil

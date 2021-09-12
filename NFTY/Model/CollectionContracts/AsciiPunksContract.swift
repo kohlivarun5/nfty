@@ -148,7 +148,7 @@ class AsciiPunksContract : ContractInterface {
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.fetch(onDone:onDone,retries:10) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
@@ -179,7 +179,7 @@ class AsciiPunksContract : ContractInterface {
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       response(NFTWithPrice(
@@ -229,7 +229,7 @@ class AsciiPunksContract : ContractInterface {
             seal.fulfill([])
           }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.Transfer,from:log);
         let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought))
       }
