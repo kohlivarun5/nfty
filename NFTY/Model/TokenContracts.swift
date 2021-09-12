@@ -46,7 +46,9 @@ func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   }
 }
 
-class TxFetcher {
+struct TxFetcher {
+  
+  let web3 : Web3
   
   struct TxInfo : Codable {
     var value : BigUInt
@@ -101,7 +103,7 @@ class TxFetcher {
   }
 }
 
-var txFetcher = TxFetcher()
+var txFetcher = TxFetcher(web3:ETHEREUM_WEB3) // TODO
 
 class WETHFetcher {
   
@@ -135,7 +137,7 @@ class WETHFetcher {
                 return nil
               }
               
-              return try! web3.eth.abi.decodeParameter(type:SolidityType.uint256,from:log.data.hex()) as! BigUInt
+              return try! Web3ABI.decodeParameter(type:SolidityType.uint256,from:log.data.hex()) as! BigUInt
               
               // Get data for the log
             }
@@ -175,8 +177,12 @@ class WETHFetcher {
 var wethFetcher = WETHFetcher()
 
 
-var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-var INIT_BLOCK = BigUInt(13120072 - (Date.from(year:2021,month:8,day:29)!.timeIntervalSinceNow / 15))
+let ETHEREUM_WEB3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+let Web3ABI = ETHEREUM_WEB3.eth.abi
+
+let POLYGON_WEB3 =  Web3(rpcURL: "https://polygon-mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+
+let INIT_BLOCK = BigUInt(13120072 - (Date.from(year:2021,month:8,day:29)!.timeIntervalSinceNow / 15))
 
 protocol TokenEventsFetcher {
   func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void)
@@ -229,7 +235,7 @@ class CryptoKittiesAuction : ContractInterface {
   }
   
   class SaleAuctionContract : EthereumContract {
-    let eth = web3.eth
+    let eth = ETHEREUM_WEB3.eth
     let events : [SolidityEvent] = []
     let addressHex = "0xb1690C08E213a35Ed9bAb7B318DE14420FB57d8C"
     var address : EthereumAddress?
@@ -352,7 +358,7 @@ class CryptoKittiesAuction : ContractInterface {
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return auctionSuccessfulFetcher.fetch(onDone:onDone) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
       response(NFTWithPrice(
         nft:NFT(
@@ -371,7 +377,7 @@ class CryptoKittiesAuction : ContractInterface {
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return auctionSuccessfulFetcher.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.AuctionSuccessful,from:log);
       let tokenId = res["tokenId"] as! BigUInt;
       response(NFTWithPrice(
         nft:NFT(
@@ -392,7 +398,7 @@ class CryptoKittiesAuction : ContractInterface {
     var events : [TradeEvent] = []
     return Promise { seal in
       fetcher.fetch(onDone:{seal.fulfill(events)}) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.AuctionSuccessful,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.AuctionSuccessful,from:log);
         log.blockNumber.map { blockNumber in
           // CryptoKitties does not index logs, so we filter here
           if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
@@ -496,7 +502,7 @@ class AutoglyphsContract : ContractInterface {
                                                             EthereumAddress(hex: "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782", eip55: false))
   
   class DrawEthContract : EthereumContract {
-    let eth = web3.eth
+    let eth = ETHEREUM_WEB3.eth
     let events : [SolidityEvent] = []
     var address : EthereumAddress?
     init(_ addressHex:String) {
@@ -550,7 +556,7 @@ class AutoglyphsContract : ContractInterface {
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.fetch(onDone:onDone,retries:10) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       response(NFTWithPrice(
@@ -580,7 +586,7 @@ class AutoglyphsContract : ContractInterface {
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       
       response(NFTWithPrice(

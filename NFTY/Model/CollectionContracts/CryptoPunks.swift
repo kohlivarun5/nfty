@@ -42,7 +42,7 @@ class CryptoPunksContract : ContractInterface {
   
   
   class EthContract : EthereumContract {
-    let eth = web3.eth
+    let eth = ETHEREUM_WEB3.eth
     let events : [SolidityEvent] = []
     let addressHex = "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb"
     var address : EthereumAddress?
@@ -244,7 +244,7 @@ class CryptoPunksContract : ContractInterface {
       fetchers-=1
       if (fetchers < 1) { onDone() }
     }) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log)
+      let res = try! Web3ABI.decodeLog(event:self.PunkBought,from:log)
       self.onTradeLog(
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["value"] as? BigUInt),
@@ -257,7 +257,7 @@ class CryptoPunksContract : ContractInterface {
       fetchers-=1
       if (fetchers < 1) { onDone() }
     }) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log)
+      let res = try! Web3ABI.decodeLog(event:self.PunkOffered,from:log)
       self.onTradeLog(
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["minValue"] as? BigUInt),
@@ -276,7 +276,7 @@ class CryptoPunksContract : ContractInterface {
       fetchers-=1
       if (fetchers < 1) { onDone() }
     }) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log)
+      let res = try! Web3ABI.decodeLog(event:self.PunkBought,from:log)
       self.onTradeLog(
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["value"] as? BigUInt),
@@ -290,7 +290,7 @@ class CryptoPunksContract : ContractInterface {
       fetchers-=1
       if (fetchers < 1) { onDone() }
     }) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log)
+      let res = try! Web3ABI.decodeLog(event:self.PunkOffered,from:log)
       self.onTradeLog(
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["minValue"] as? BigUInt),
@@ -306,7 +306,7 @@ class CryptoPunksContract : ContractInterface {
     var events : [TradeEvent] = []
     return Promise { seal in
       punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.PunkBought,from:log);
         log.blockNumber.map { blockNumber in
           events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
         }
@@ -316,7 +316,7 @@ class CryptoPunksContract : ContractInterface {
       return Promise { seal in
         punkOfferedFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
           //print(log);
-          let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
+          let res = try! Web3ABI.decodeLog(event:self.PunkOffered,from:log);
           log.blockNumber.map { blockNumber in
             events.append(TradeEvent(type: .ask, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
           }
@@ -435,7 +435,7 @@ class CryptoPunksContract : ContractInterface {
         counter+=1
         if (counter >= 3) { onDone() }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.PunkBought,from:log);
         
         let from = res["fromAddress"] as! EthereumAddress
         var type : TradeEventType = .bought
@@ -450,7 +450,7 @@ class CryptoPunksContract : ContractInterface {
         counter+=1
         if (counter >= 3) { onDone() }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.PunkOffered,from:log);
         response(TradeEvent(type:.ask, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
       }
       
@@ -458,7 +458,7 @@ class CryptoPunksContract : ContractInterface {
         counter+=1
         if (counter >= 3) { onDone() }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.PunkBidEntered,from:log);
+        let res = try! Web3ABI.decodeLog(event:self.PunkBidEntered,from:log);
         response(TradeEvent(type:.bid, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
       }
     }

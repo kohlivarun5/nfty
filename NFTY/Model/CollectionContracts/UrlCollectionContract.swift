@@ -18,6 +18,7 @@ class UrlCollectionContract : ContractInterface {
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
+  let web3 : Web3
   let name : String
   let contractAddressHex : String
   let baseUri : String
@@ -90,7 +91,7 @@ class UrlCollectionContract : ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.fetch(onDone:onDone) { log in
       
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
@@ -121,7 +122,7 @@ class UrlCollectionContract : ContractInterface {
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let res = try! Web3ABI.decodeLog(event:self.ethContract.Transfer,from:log);
       let tokenId = UInt(res["tokenId"] as! BigUInt);
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       

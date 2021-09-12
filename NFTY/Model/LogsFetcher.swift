@@ -16,6 +16,7 @@ class LogsFetcher {
   private var toBlock = EthereumQuantityTag.latest
   private var mostRecentBlock = EthereumQuantityTag.latest
   
+  let web3 : Web3
   let event : SolidityEvent
   var fromBlock : BigUInt
   var address : String
@@ -26,7 +27,7 @@ class LogsFetcher {
     self.fromBlock = fromBlock;
     self.address = address
     self.topics = [
-      web3.eth.abi.encodeEventSignature(self.event)
+      Web3ABI.encodeEventSignature(self.event)
     ]
     self.topics.append(contentsOf: indexedTopics)
     self.searchBlocks = 500

@@ -60,9 +60,9 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"Killaz",baseUri:"https://killaznft.com/api"),
-    firstIndex:0,
-    lastIndex:9999
+      name:"Dads",baseUri:"ipfs://QmeREDznqCuYGELWkX3RHPktZiQqpTxdNVx94QrywRcVZf"),
+    firstIndex:1,
+    lastIndex:10000
   )
 ]
 
@@ -74,7 +74,7 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 1//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
+  let parallelCount = 5//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
   
   print("Started downloading collection:\(collectionName)")
   
