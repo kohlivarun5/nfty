@@ -7,10 +7,10 @@
 
 import Foundation
 
-let collectionName = "Dads"
+let collectionName = "Bombs"
 
 let isFull = true
-let firstIndex = 1
+let firstIndex = 0
 let lastIndex = isFull ? 10000 : 100
 
 // STAGES
