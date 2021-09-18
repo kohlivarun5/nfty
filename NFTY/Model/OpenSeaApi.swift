@@ -147,8 +147,6 @@ struct OpenSeaApi {
   static func getBidAsk(contract:EthereumAddress,tokenId:UInt) -> Promise<BidAsk> {
     OpenSeaApi.getOrders(contract: contract, tokenId: tokenId, user: nil, side: nil)
       .map {
-        print($0)
-        
         let ask = $0.first { $0.side == .sell }.flatMap { (order:AssetOrder) -> AskInfo? in
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),

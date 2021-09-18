@@ -16,8 +16,15 @@ struct TokensByPropertiesList: View {
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
   
+  @EnvironmentObject var userWallet: UserWallet
+  
   @ObservedObject var nfts : TokensByPropertiesObject
   @State private var selectedTokenId: UInt? = nil
+  
+  struct SheetSelection : Identifiable {
+    let id : Int
+  }
+  @State private var sheetSelectedIndex: SheetSelection? = nil
   
   private func title(_ selectedProperties : [(name:String,value:String)]) -> String {
     switch(nfts.selectedProperties.count) {
@@ -56,6 +63,11 @@ struct TokensByPropertiesList: View {
                 //perform some tasks if needed before opening Destination view
                 self.selectedTokenId = nft.nft.tokenId
               }
+              .onLongPressGesture(minimumDuration: 0.01) {
+                UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                self.sheetSelectedIndex = SheetSelection(id:index)
+              }
+              
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
@@ -96,6 +108,23 @@ struct TokensByPropertiesList: View {
           .padding([.leading,.trailing])
       }
     }
+    .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) {
+      let nft = nfts.tokens[$0.id]
+      let info = collection.info
+      TokenTradeView(
+        nft: nft.nft,
+        price:.lazy(nft.indicativePriceWei),
+        sample:info.sample,
+        themeColor:info.themeColor,
+        themeLabelColor:info.themeLabelColor,
+        size: .xsmall,
+        rarityRank:info.rarityRanking,
+        userWallet:userWallet,
+        isSheet:true)
+        .ignoresSafeArea(edges:.bottom)
+        // .preferredColorScheme(.dark)
+        .accentColor(.orange)
+    }
     .navigationBarTitle(collection.info.name,displayMode: .inline)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
@@ -104,4 +133,5 @@ struct TokensByPropertiesList: View {
                label: { BackButton() })
     )
   }
+  
 }
