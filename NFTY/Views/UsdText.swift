@@ -57,7 +57,6 @@ struct UsdText: View {
             .fontWeight(fontWeight)
         }
       })
-      .animation(.default)
   }
 }
 
