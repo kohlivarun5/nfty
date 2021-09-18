@@ -87,11 +87,12 @@ class IpfsCollectionContract : ContractInterface {
   
   let name : String
   let contractAddressHex : String
+  let disableCaching : Bool
   var ethContract : IpfsImageEthContract
   
   var tradeActions: TokenTradeInterface?
   
-  init(name:String,address:String) {
+  init(name:String,address:String,disableCaching:Bool = false) {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
@@ -99,6 +100,7 @@ class IpfsCollectionContract : ContractInterface {
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
+    self.disableCaching = disableCaching
   }
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
@@ -108,10 +110,10 @@ class IpfsCollectionContract : ContractInterface {
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     return ObservablePromise(promise: Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId)) {
-        case .some(let image):
+        switch(self.disableCaching,try? self.imageCache.object(forKey:tokenId)) {
+        case (false,.some(let image)):
           seal.fulfill(Media.IpfsImage(image: image))
-        case .none:
+        case (true,_),(false,.none):
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = IpfsImageEthContract.imageOfData($0)
