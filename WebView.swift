@@ -1,6 +1,5 @@
 //
 //  WebView.swift
-//  Todos
 //
 //  Created by Bradley Hilton on 6/5/19.
 //  Copyright © 2019 Brad Hilton. All rights reserved.

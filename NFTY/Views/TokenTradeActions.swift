@@ -132,7 +132,7 @@ struct TokenTradeActions: View {
         case (.some(let actions),.some(let tradeActions)):
           HStack {
             switch(actions,tradeActions.tradeActions.actions) {
-            /*case (.buyActions,.some(let txActions)):
+            case (.buyActions,.some(let txActions)):
               WithWalletProviderView(
                 userWallet:userWallet,
                 instruction:"Sign-In to activate trading",
@@ -165,8 +165,7 @@ struct TokenTradeActions: View {
                     walletProvider:walletProvider
                   )
                 })
- */
-            case (.buyActions,.none),(.buyActions,.some):
+            case (.buyActions,.none):
               Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
                 HStack {
                   Spacer()
