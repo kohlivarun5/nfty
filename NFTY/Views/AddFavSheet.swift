@@ -65,7 +65,7 @@ struct AddFavSheet: View {
             label:
               HStack {
                 Text("Select Collection")
-                  .foregroundColor(.orange)
+                  .foregroundColor(.accentColor)
                 Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
                   .foregroundColor(.secondary)
               }

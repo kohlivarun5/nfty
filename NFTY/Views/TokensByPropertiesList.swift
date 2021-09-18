@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Web3
 
 struct TokensByPropertiesList: View {
   
@@ -19,6 +20,7 @@ struct TokensByPropertiesList: View {
   @EnvironmentObject var userWallet: UserWallet
   
   @ObservedObject var nfts : TokensByPropertiesObject
+  
   @State private var selectedTokenId: UInt? = nil
   
   struct SheetSelection : Identifiable {
@@ -48,6 +50,7 @@ struct TokensByPropertiesList: View {
             let info = collection.info
             
             ZStack {
+              
               NftImage(
                 nft:nft.nft,
                 sample:info.sample,
@@ -63,10 +66,32 @@ struct TokensByPropertiesList: View {
                 //perform some tasks if needed before opening Destination view
                 self.selectedTokenId = nft.nft.tokenId
               }
-              .onLongPressGesture(minimumDuration: 0.01) {
+              .onLongPressGesture(minimumDuration: 0.1) {
                 UIImpactFeedbackGenerator(style:.medium).impactOccurred()
                 self.sheetSelectedIndex = SheetSelection(id:index)
               }
+              
+              switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+              case .none:
+                EmptyView()
+              case .some(let ask):
+                VStack {
+                  Spacer()
+                  HStack {
+                    Text("Ask")
+                    UsdText(wei: ask, fontWeight: nil)
+                  }
+                  .padding([.top,.bottom],2)
+                  .padding([.leading,.trailing],10)
+                  .font(.caption2)
+                  .foregroundColor(.systemBackground)
+                  .background(RoundedCorners(color: .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                  .shadow(radius: 5)
+                }
+                .padding(.bottom,10)
+              }
+              
+              
               
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,

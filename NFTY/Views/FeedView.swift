@@ -148,7 +148,7 @@ struct FeedView: View {
                   rarityRank:info.rarityRanking,
                   width: .normal
                 )
-                .shadow(color:.orange,radius:item.isNew ? 10 : 0)
+                .shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
@@ -188,7 +188,7 @@ struct FeedView: View {
             Button(action: self.triggerRefresh) {
               Image(systemName:"arrow.clockwise.circle.fill")
                 .font(.title3)
-                .foregroundColor(.orange)
+                .foregroundColor(.accentColor)
                 .padding(10)
             }
           }

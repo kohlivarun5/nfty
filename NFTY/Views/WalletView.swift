@@ -71,7 +71,7 @@ struct WalletView: View {
             Text("Offers").tag(TokensPage.offers.rawValue)
           }
           .pickerStyle(SegmentedPickerStyle())
-          .colorMultiply(.orange)
+          .colorMultiply(.accentColor)
           .padding([.trailing,.leading])
           .padding(.top,5)
           .padding(.bottom,7)

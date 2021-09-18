@@ -79,7 +79,7 @@ struct CollectionsView: View {
         }) {
           Image(systemName:"magnifyingglass.circle.fill")
             .font(.title3)
-            .foregroundColor(.orange)
+            .foregroundColor(.accentColor)
             .padding(10)
         }
     )

@@ -194,7 +194,7 @@ struct NftDetail: View {
                     .tag(SimilarSectionPage.similar.rawValue)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .colorMultiply(.orange)
+                .colorMultiply(.accentColor)
                 .font(.caption)
                 .padding([.trailing,.leading])
               }

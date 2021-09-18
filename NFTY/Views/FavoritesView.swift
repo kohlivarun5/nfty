@@ -106,6 +106,7 @@ struct FavoritesView: View {
                     rarityRank:info.rarityRanking,
                     width: .normal
                   )
+                  .shadow(color:.accentColor,radius:0)
                   .padding()
                   .onTapGesture {
                     //perform some tasks if needed before opening Destination view
@@ -113,7 +114,7 @@ struct FavoritesView: View {
                   }
                   .onAppear {
                     DispatchQueue.global(qos:.userInteractive).async {
-                      OpenSeaApi.getBidAsk(contract: try! EthereumAddress(hex:nft.id.address,eip55:true), tokenId:nft.id.tokenId)
+                      OpenSeaApi.getBidAsk(contract: nft.id.address, tokenId:nft.id.tokenId)
                         .done {
                           $0.ask.map { ask in
                             DispatchQueue.main.async {
@@ -158,7 +159,7 @@ struct FavoritesView: View {
         }) {
           Image(systemName:"magnifyingglass.circle.fill")
             .font(.title3)
-            .foregroundColor(.orange)
+            .foregroundColor(.accentColor)
             .padding(10)
         }
     )

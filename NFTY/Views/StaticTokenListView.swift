@@ -29,6 +29,7 @@ struct StaticTokenListView: View {
               rarityRank:info.rarityRanking,
               width: .normal
             )
+            .shadow(color:.accentColor,radius:0)
             .padding()
             .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
             NavigationLink(destination: NftDetail(
