@@ -145,6 +145,7 @@
 		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
+		4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
 		4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
 		4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
 		4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
@@ -362,6 +363,7 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
+		4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisBlockContract.swift; sourceTree = "<group>"; };
 		4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaApi.swift; sourceTree = "<group>"; };
 		4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */,
 				4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */,
 				4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */,
+				4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -1088,6 +1091,7 @@
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
+				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
@@ -1374,7 +1378,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1401,7 +1405,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

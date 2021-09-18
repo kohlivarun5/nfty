@@ -45,6 +45,10 @@ let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2
 
 let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461")
 
+let GBLOCKS_Contract = GenesisBlockContract(
+  name: "GenesisBlocks",
+  address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -259,6 +263,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:GBLOCKS_Contract.contractAddressHex,
+      sample:"SAMPLE_GBLOCK",
+      name:GBLOCKS_Contract.name,
+      webLink: URL(string:"https://genesisblocks.art")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil, /* SimilarTokensGetter(
+        label:"Blocks",
+        nearestTokensFileName:"Dads_nearestTokens.json",
+        propertiesJsonFileName:"Dads_attributeScores.json"
+      ), */
+      rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
+    ),
+    contract:GBLOCKS_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
