@@ -41,6 +41,10 @@ let MAYC_Contract = IpfsCollectionContract(name: "MAYC",address: "0x60E4d786628F
 
 let KILLAZ_Contract = UrlCollectionContract(name: "KILLAz",address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",baseUri: "https://killaznft.com/api/images/")
 
+let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2352b1D2e185560494D5e577F9D3c238b78C5")
+
+let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461")
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -219,6 +223,42 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
     ),
     contract:CoolCats_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:ABS_Contract.contractAddressHex,
+      sample:"SAMPLE_ABS",
+      name:ABS_Contract.name,
+      webLink: URL(string:"https://abs.thehundreds.com/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : SimilarTokensGetter(
+        label:"Bombs",
+        nearestTokensFileName:"Bombs_nearestTokens.json"
+        //,propertiesJsonFileName:"Bombs_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
+    ),
+    contract:ABS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:DADS_Contract.contractAddressHex,
+      sample:"SAMPLE_DAD",
+      name:DADS_Contract.name,
+      webLink: URL(string:"https://www.cryptodadsnft.com/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : SimilarTokensGetter(
+       label:"Dads",
+       nearestTokensFileName:"Dads_nearestTokens.json",
+       propertiesJsonFileName:"Dads_attributeScores.json"
+       ),
+      rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
+    ),
+    contract:DADS_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

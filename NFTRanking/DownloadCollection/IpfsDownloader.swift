@@ -9,11 +9,32 @@ import Foundation
 import BigInt
 import PromiseKit
 
+
+import Cocoa
+
+extension NSImage {
+  
+  private func compressedJPEG(with factor: Double) -> Data? {
+    guard let tiff = tiffRepresentation else { return nil }
+    guard let imageRep = NSBitmapImageRep(data: tiff) else { return nil }
+    
+    let options: [NSBitmapImageRep.PropertyKey: Any] = [
+      .compressionFactor: factor
+    ]
+    
+    return imageRep.representation(using: .jpeg, properties: options)
+  }
+  
+  var compressedJPEGRepresentation: Data? {
+    return compressedJPEG(with: 0.01)
+  }
+  
+}
 struct IpfsDownloader {
   let name : String
   let baseUri : String
    
-  let ipfsHost : String? = "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
+  let ipfsHost : String? = "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
   
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in
@@ -86,7 +107,8 @@ struct IpfsDownloader {
           // print(data,response,error)
           switch(data) {
           case .some(let data):
-            seal.fulfill(Erc721TokenData(image:data,attributes:uriData.attributes))
+            let compressed = NSImage(data:data)!.compressedJPEGRepresentation!
+            seal.fulfill(Erc721TokenData(image:compressed,attributes:uriData.attributes))
           case .none:
             print(data,response,error)
             seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
