@@ -1,4 +1,13 @@
 //
+//  GenesisBlockContract.swift
+//  NFTY
+//
+//  Created by Varun Kohli on 9/18/21.
+//
+
+import Foundation
+
+//
 //  IpfsCollectionContract.swift
 //  NFTY
 //
@@ -13,9 +22,9 @@ import Cache
 import UIKit
 
 
-class IpfsCollectionContract : ContractInterface {
+class GenesisBlockContract : ContractInterface {
   
-  class IpfsImageEthContract : Erc721Contract {
+  class EthContract : Erc721Contract {
     
     struct TokenUriData : Codable {
       let image : String
@@ -24,80 +33,70 @@ class IpfsCollectionContract : ContractInterface {
     static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
       return data
         .flatMap { UIImage(data:$0) }
-        .flatMap { $0.jpegData(compressionQuality: 0.1) }
+        .flatMap { $0.jpegData(compressionQuality: 0.5) }
         .flatMap { UIImage(data:$0) }
         .map { Media.IpfsImage(image:$0) }
     }
     
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
-      return ethContract.tokenURI(tokenId:tokenId)
-        .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
-          
-          return Promise { seal in
-            
-            var request = URLRequest(
-              url:URL(string: uri.replacingOccurrences(
-                        of: "ipfs://",
-                        with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
-            
-            print("calling \(request.url!)")
-            URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-              // print(data,response,error)
-              do {
-                switch(data) {
-                case .some(let data):
-                  if (data.isEmpty) {
-                    // print(data,response,error)
-                    seal.reject(NSError(domain:"", code:404, userInfo:nil))
-                  } else {
-                    seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
-                  }
-                case .none:
-                  // print(data,response,error)
-                  seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
-                }
-              } catch {
+      return Promise { seal in
+        
+        var request = URLRequest(
+          url:URL(string: "https://genesisblocks.art/api/tokens/\(tokenId)")!)
+        request.httpMethod = "GET"
+        
+        print("calling \(request.url!)")
+        URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+          // print(data,response,error)
+          do {
+            switch(data) {
+            case .some(let data):
+              if (data.isEmpty) {
                 // print(data,response,error)
-                seal.reject(error)
+                seal.reject(NSError(domain:"", code:404, userInfo:nil))
+              } else {
+                let url = URL(string:try JSONDecoder().decode(TokenUriData.self, from: data).image)!
+                print(url)
+                seal.fulfill(url)
               }
-            }).resume()
-          }
-          
-        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
-          
-          return Promise { seal in
-            
-            var request = URLRequest(
-              url:URL(string:uriData.image.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
-            
-            print("calling \(request.url!)")
-            URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+            case .none:
               // print(data,response,error)
-              seal.fulfill(data)
-            }).resume()
+              seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+            }
+          } catch {
+            // print(data,response,error)
+            seal.reject(error)
           }
+        }).resume()
+      }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:URL) -> Promise<Data?> in
+        
+        return Promise { seal in
+          
+          var request = URLRequest(url:uriData)
+          request.httpMethod = "GET"
+          
+          print("calling \(request.url!)")
+          URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+            // print(data,response,error)
+            seal.fulfill(data)
+          }).resume()
         }
+      }
     }
+    
   }
-  
-  private var imageCache : DiskStorage<BigUInt,UIImage>
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
   let contractAddressHex : String
-  var ethContract : IpfsImageEthContract
+  var ethContract : EthContract
   
   var tradeActions: TokenTradeInterface?
   
   init(name:String,address:String) {
-    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
-      config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
-      transformer: TransformerFactory.forImage())
     self.name = name
     self.contractAddressHex = address
-    self.ethContract = IpfsImageEthContract(address:address)
+    self.ethContract = EthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
   }
   
@@ -106,27 +105,11 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    return ObservablePromise(promise: Promise { seal in
-      DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId)) {
-        case .some(let image):
-          seal.fulfill(Media.IpfsImage(image: image))
-        case .none:
-          self.ethContract.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .background)) {
-              let image = IpfsImageEthContract.imageOfData($0)
-              image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-              }
-              seal.fulfill(image)
-            }
-            .catch {
-              print($0)
-              seal.fulfill(nil)
-            }
-        }
-      }
-    })
+    return ObservablePromise(
+      promise:
+        self.ethContract.image(tokenId)
+        .map(on: .global(qos:.userInteractive)) { EthContract.imageOfData($0) }
+      )
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
@@ -141,7 +124,8 @@ class IpfsCollectionContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))
+        ),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy {
           ObservablePromise(
@@ -172,7 +156,8 @@ class IpfsCollectionContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))
+        ),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.lazy {
           ObservablePromise(
@@ -197,7 +182,8 @@ class IpfsCollectionContract : ContractInterface {
       address:self.contractAddressHex,
       tokenId:tokenId,
       name:self.name,
-      media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)))
+      media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))
+    )
   }
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
@@ -260,49 +246,4 @@ class IpfsCollectionContract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
-}
-
-
-class IpfsWithOpenSea : IpfsCollectionContract {
-  
-  struct Asset: Codable {
-    var token_id : String
-  }
-  
-  struct OwnerAssets: Codable {
-    var assets: [Asset]
-  }
-  
-  
-  private func getOwnerTokensFromOpenSea(address:EthereumAddress) -> Promise<[UInt]> {
-    return Promise { seal in
-      var request = URLRequest(url: URL(string: "https://api.opensea.io/api/v1/assets?owner=\(address.hex(eip55: false))&asset_contract_address=\(contractAddressHex)")!)
-      request.httpMethod = "GET"
-      
-      print("calling \(request.url!)")
-      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-        do {
-          let jsonDecoder = JSONDecoder()
-          let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
-          seal.fulfill(assets.assets.map { UInt($0.token_id)! })
-        } catch {
-          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          seal.fulfill([])
-        }
-      }).resume()
-    }
-  }
-  
-  
-  override func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
-    getOwnerTokensFromOpenSea(address:address)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> [Void] in
-        return tokenIds.map { response(self.getToken($0)) }
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:[Void]) -> Void in
-        onDone()
-      }.catch {
-        print ($0)
-        onDone()
-      }
-  }
 }

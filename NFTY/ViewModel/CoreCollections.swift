@@ -45,10 +45,9 @@ let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2
 
 let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461")
 
-let GBLOCKS_Contract = IpfsCollectionContract(
+let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
-  address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA",
-  disableCaching:true)
+  address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
