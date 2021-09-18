@@ -126,8 +126,6 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      
-      /*
       UserWalletConnectorView(userWallet:userWallet)
       
       ZStack {
@@ -139,7 +137,6 @@ struct ConnectWalletSheet: View {
           .padding(.leading)
           .background(Color.systemBackground)
       }
-      */
       
       VStack {
         Text("Add Wallet using Address")

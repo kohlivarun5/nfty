@@ -7,6 +7,7 @@
 
 import SwiftUI
 import BigInt
+import Web3
 
 struct FavoritesView: View {
   @State private var showAddFavSheet = false
@@ -105,10 +106,33 @@ struct FavoritesView: View {
                     rarityRank:info.rarityRanking,
                     width: .normal
                   )
+                  .shadow(color:.accentColor,radius:0)
                   .padding()
                   .onTapGesture {
                     //perform some tasks if needed before opening Destination view
                     self.selectedTokenId = nft.nft.tokenId
+                  }
+                  .onAppear {
+                    DispatchQueue.global(qos:.userInteractive).async {
+                      OpenSeaApi.getBidAsk(contract: nft.id.address, tokenId:nft.id.tokenId)
+                        .done {
+                          $0.ask.map { ask in
+                            DispatchQueue.main.async {
+                              self.favorites[nft.id.address]!.updateValue(
+                                NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                  return ObservablePromise<NFTPriceStatus>(
+                                    resolved: NFTPriceStatus.known(
+                                      NFTPriceInfo(
+                                        price: ask.wei,
+                                        blockNumber: nil,
+                                        type: TradeEventType.ask))
+                                  )
+                                }),forKey:String(nft.id.tokenId))
+                            }
+                          }
+                        }
+                        .catch { print($0) }
+                    }
                   }
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
@@ -135,7 +159,7 @@ struct FavoritesView: View {
         }) {
           Image(systemName:"magnifyingglass.circle.fill")
             .font(.title3)
-            .foregroundColor(.orange)
+            .foregroundColor(.accentColor)
             .padding(10)
         }
     )

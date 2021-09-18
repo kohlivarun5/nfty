@@ -13,7 +13,9 @@ class TokensByPropertiesObject : ObservableObject {
   var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
   var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
   
-  private let loadingChunk = 50
+  @Published var tokenAsks : [UInt : BidAsk] = [:]
+  
+  private let loadingChunk = 20
   private var isLoading = false
   private var lastIndex = -1
   let contract : ContractInterface
@@ -56,6 +58,17 @@ class TokensByPropertiesObject : ObservableObject {
     DispatchQueue.main.async {
       self.tokens.append(contentsOf: filtered)
     }
+    
+    OpenSeaApi.getBidAsk(
+      contract: contract.contractAddressHex,
+      tokenIds:filtered.map { $0.id.tokenId },
+      side:OpenSeaApi.Side.sell
+    )
+    .done(on:.main) {
+      $0.forEach { (tokenId,quote) in self.tokenAsks[tokenId] = quote }
+    }
+    .catch { print($0) }
+    
     
     self.isLoading = false
   }

@@ -78,6 +78,7 @@ struct CollectionView: View {
               rarityRank: info.rarityRanking,
               width: .normal
             )
+            .shadow(color:.accentColor,radius:0)
             .padding()
             .onTapGesture {
               //perform some tasks if needed before opening Destination view
@@ -125,7 +126,7 @@ struct CollectionView: View {
         ) {
           Image(systemName: "list.number")
             .font(.title3)
-            .foregroundColor(.orange)
+            .foregroundColor(.accentColor)
             .padding(10)
         }
       default:

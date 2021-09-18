@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Web3
 
 struct TokensByPropertiesList: View {
+  
+  @Environment(\.colorScheme) var colorScheme
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
@@ -16,8 +19,16 @@ struct TokensByPropertiesList: View {
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
   
+  @EnvironmentObject var userWallet: UserWallet
+  
   @ObservedObject var nfts : TokensByPropertiesObject
+  
   @State private var selectedTokenId: UInt? = nil
+  
+  struct SheetSelection : Identifiable {
+    let id : Int
+  }
+  @State private var sheetSelectedIndex: SheetSelection? = nil
   
   private func title(_ selectedProperties : [(name:String,value:String)]) -> String {
     switch(nfts.selectedProperties.count) {
@@ -41,6 +52,7 @@ struct TokensByPropertiesList: View {
             let info = collection.info
             
             ZStack {
+              
               NftImage(
                 nft:nft.nft,
                 sample:info.sample,
@@ -56,6 +68,31 @@ struct TokensByPropertiesList: View {
                 //perform some tasks if needed before opening Destination view
                 self.selectedTokenId = nft.nft.tokenId
               }
+              .onLongPressGesture(minimumDuration: 0.1) {
+                UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                self.sheetSelectedIndex = SheetSelection(id:index)
+              }
+              
+              switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+              case .none:
+                EmptyView()
+              case .some(let ask):
+                VStack {
+                  Spacer()
+                  UsdText(wei: ask, fontWeight: .semibold)
+                    .padding([.top,.bottom],2)
+                    .padding([.leading,.trailing],10)
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                    .colorMultiply(.accentColor)
+                    .shadow(radius: 5)
+                }
+                .padding(.bottom,10)
+              }
+              
+              
+              
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
@@ -89,12 +126,29 @@ struct TokensByPropertiesList: View {
           Spacer()
         }
         .padding([.top,.bottom],5)
-        .background(RoundedCorners(color: .secondarySystemBackground, tl: 0, tr: 0, bl: 20, br: 20))
+        .background(RoundedCorners(color:.secondarySystemBackground, tl: 0, tr: 0, bl: 20, br: 20))
         
         TokenPropertiesGrid(properties: properties,collection:collection,selectedProperties:self.nfts.selectedProperties)
           .frame(maxHeight:135)
           .padding([.leading,.trailing])
       }
+    }
+    .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) {
+      let nft = nfts.tokens[$0.id]
+      let info = collection.info
+      TokenTradeView(
+        nft: nft.nft,
+        price:.lazy(nft.indicativePriceWei),
+        sample:info.sample,
+        themeColor:info.themeColor,
+        themeLabelColor:info.themeLabelColor,
+        size: .xsmall,
+        rarityRank:info.rarityRanking,
+        userWallet:userWallet,
+        isSheet:true)
+        .ignoresSafeArea(edges:.bottom)
+        // .preferredColorScheme(.dark)
+        .accentColor(.orange)
     }
     .navigationBarTitle(collection.info.name,displayMode: .inline)
     .navigationBarBackButtonHidden(true)
@@ -104,4 +158,5 @@ struct TokensByPropertiesList: View {
                label: { BackButton() })
     )
   }
+  
 }
