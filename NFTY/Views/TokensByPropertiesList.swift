@@ -10,6 +10,8 @@ import Web3
 
 struct TokensByPropertiesList: View {
   
+  @Environment(\.colorScheme) var colorScheme
+  
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
@@ -77,17 +79,14 @@ struct TokensByPropertiesList: View {
               case .some(let ask):
                 VStack {
                   Spacer()
-                  HStack {
-                    Text("Ask")
-                    UsdText(wei: ask, fontWeight: nil)
-                  }
-                  .padding([.top,.bottom],2)
-                  .padding([.leading,.trailing],10)
-                  .font(.caption2)
-                  .foregroundColor(.secondarySystemBackground)
-                  .background(RoundedCorners(color: .secondary, tl: 5, tr: 5, bl: 5, br: 5))
-                  .colorMultiply(.accentColor)
-                  .shadow(radius: 5)
+                  UsdText(wei: ask, fontWeight: .semibold)
+                    .padding([.top,.bottom],2)
+                    .padding([.leading,.trailing],10)
+                    .font(.caption2)
+                    .foregroundColor(.white)
+                    .background(RoundedCorners(color:colorScheme == .dark ? .quaternaryLabel : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                    .colorMultiply(.accentColor)
+                    .shadow(radius: 5)
                 }
                 .padding(.bottom,10)
               }
@@ -127,7 +126,7 @@ struct TokensByPropertiesList: View {
           Spacer()
         }
         .padding([.top,.bottom],5)
-        .background(RoundedCorners(color: .secondarySystemBackground, tl: 0, tr: 0, bl: 20, br: 20))
+        .background(RoundedCorners(color:.secondarySystemBackground, tl: 0, tr: 0, bl: 20, br: 20))
         
         TokenPropertiesGrid(properties: properties,collection:collection,selectedProperties:self.nfts.selectedProperties)
           .frame(maxHeight:135)
