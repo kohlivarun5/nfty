@@ -84,8 +84,9 @@ struct TokensByPropertiesList: View {
                   .padding([.top,.bottom],2)
                   .padding([.leading,.trailing],10)
                   .font(.caption2)
-                  .foregroundColor(.systemBackground)
+                  .foregroundColor(.secondarySystemBackground)
                   .background(RoundedCorners(color: .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                  .colorMultiply(.accentColor)
                   .shadow(radius: 5)
                 }
                 .padding(.bottom,10)
