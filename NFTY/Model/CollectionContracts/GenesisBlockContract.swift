@@ -86,6 +86,7 @@ class GenesisBlockContract : ContractInterface {
     
   }
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
+  private var imageCache : DiskStorage<BigUInt,UIImage>
   
   let name : String
   let contractAddressHex : String
@@ -94,6 +95,9 @@ class GenesisBlockContract : ContractInterface {
   var tradeActions: TokenTradeInterface?
   
   init(name:String,address:String) {
+    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
+      config: DiskConfig(name: "\(name).ImageCache",expiry: .seconds(60)),
+      transformer: TransformerFactory.forImage())
     self.name = name
     self.contractAddressHex = address
     self.ethContract = EthContract(address:address)
@@ -105,11 +109,28 @@ class GenesisBlockContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    return ObservablePromise(
-      promise:
-        self.ethContract.image(tokenId)
-        .map(on: .global(qos:.userInteractive)) { EthContract.imageOfData($0) }
-      )
+    
+    return ObservablePromise(promise: Promise { seal in
+      DispatchQueue.global(qos:.userInteractive).async {
+        switch(try? self.imageCache.object(forKey:tokenId)) {
+        case .some(let image):
+          seal.fulfill(Media.IpfsImage(image: image))
+        case .none:
+          self.ethContract.image(tokenId)
+            .done(on:DispatchQueue.global(qos: .background)) {
+              let image = EthContract.imageOfData($0)
+              image.flatMap {
+                try? self.imageCache.setObject($0.image, forKey: tokenId)
+              }
+              seal.fulfill(image)
+            }
+            .catch {
+              print($0)
+              seal.fulfill(nil)
+            }
+        }
+      }
+    })
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
