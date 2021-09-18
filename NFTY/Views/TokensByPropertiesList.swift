@@ -82,9 +82,9 @@ struct TokensByPropertiesList: View {
                   UsdText(wei: ask, fontWeight: .semibold)
                     .padding([.top,.bottom],2)
                     .padding([.leading,.trailing],10)
-                    .font(.caption2)
+                    .font(.caption)
                     .foregroundColor(.white)
-                    .background(RoundedCorners(color:colorScheme == .dark ? .quaternaryLabel : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                    .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
                     .colorMultiply(.accentColor)
                     .shadow(radius: 5)
                 }
