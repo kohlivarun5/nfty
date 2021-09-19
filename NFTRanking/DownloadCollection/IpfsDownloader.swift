@@ -83,37 +83,7 @@ struct IpfsDownloader {
     .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:Erc721TokenUriData) -> Promise<Erc721TokenData> in
       
       return Promise { seal in
-        
-        var uri = uriData.image
-        uri =
-          ipfsHost.map {
-            uri
-              .replacingOccurrences(
-                of: "ipfs://",
-                with: $0)
-              .replacingOccurrences(
-                of: "https://ipfs.io/ipfs/",
-                with: $0)
-              .replacingOccurrences(
-                of: "https://gateway.pinata.cloud/ipfs/",
-                with: $0)
-          } ?? uri
-        
-        var request = URLRequest(url:URL(string:uri)!)
-        request.httpMethod = "GET"
-        
-        print("calling \(request.url!)")
-        URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-          // print(data,response,error)
-          switch(data) {
-          case .some(let data):
-            let compressed = NSImage(data:data)!.compressedJPEGRepresentation!
-            seal.fulfill(Erc721TokenData(image:compressed,attributes:uriData.attributes))
-          case .none:
-            print(data,response,error)
-            seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
-          }
-        }).resume()
+        seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
       }
     }
   }

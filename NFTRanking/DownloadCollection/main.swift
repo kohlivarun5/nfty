@@ -60,9 +60,9 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"Bombs",baseUri:"ipfs://QmZXtTrxAzs8cnKi39hATCk9Czy7xshWQPUkoTAzoRbocr"),
-    firstIndex:0,
-    lastIndex:24998
+      name:"GenesisBlocks",baseUri:"https://genesisblocks.art/api/tokens/"),
+    firstIndex:1,
+    lastIndex:2500
   )
 ]
 
