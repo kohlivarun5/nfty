@@ -29,7 +29,7 @@ class CalculateAttributePercentiles {
       
       let attributes : [Erc721TokenAttribute] = loadJSON(getAttributesFileName(collectionName,UInt(tokenId)))
       
-      attributes.filter { $0.trait_type != "Base score" }.forEach { attr in
+      attributes.forEach { attr in
         var traitDict = self.attributes[attr.trait_type] ?? [:]
         traitDict[attr.value] = (traitDict[attr.value] ?? 0) + 1
         self.attributes[attr.trait_type] = traitDict
