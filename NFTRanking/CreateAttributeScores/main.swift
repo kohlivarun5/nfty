@@ -7,11 +7,11 @@
 
 import Foundation
 
-let collectionName = "Bombs"
+let collectionName = "GenesisBlocks"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 10000 : 100
+let firstIndex = 1
+let lastIndex = isFull ? 2500 : 100
 
 // STAGES
 let doCalculatePercentiles = true

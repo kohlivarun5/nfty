@@ -113,9 +113,9 @@ class GenesisBlockContract : ContractInterface {
     return ObservablePromise(promise: Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
         switch(try? self.imageCache.object(forKey:tokenId)) {
-        case .some(let image):
+        /* case .some(let image):
           seal.fulfill(Media.IpfsImage(image: image))
-        case .none:
+         case .none: */ default:
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = EthContract.imageOfData($0)

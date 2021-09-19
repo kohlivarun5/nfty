@@ -12,6 +12,21 @@ typealias TokenDistance = [Float]
 struct Erc721TokenAttribute : Codable {
   let trait_type : String
   let value : String
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    trait_type = try container.decode(String.self, forKey: .trait_type)
+    do {
+      value = try String(container.decode(Int.self, forKey: .value))
+    } catch {
+      do {
+        value = try String(container.decode(Double.self, forKey: .value))
+      } catch {
+        value = try container.decode(String.self, forKey: .value)
+      }
+    }
+    
+  }
 }
 
 struct Erc721TokenUriData : Codable {

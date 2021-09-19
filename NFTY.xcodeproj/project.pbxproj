@@ -146,6 +146,8 @@
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
 		4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
+		4FBD029926F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */; };
+		4FBD029A26F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */; };
 		4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
 		4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
 		4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
@@ -364,6 +366,8 @@
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
 		4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisBlockContract.swift; sourceTree = "<group>"; };
+		4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeScores.json; sourceTree = "<group>"; };
+		4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeRanks.json; sourceTree = "<group>"; };
 		4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaApi.swift; sourceTree = "<group>"; };
 		4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_rarityRanks.json; sourceTree = "<group>"; };
 		4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_rarityRanks.json; sourceTree = "<group>"; };
@@ -673,6 +677,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */,
+				4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */,
 				4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */,
 				4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */,
 				4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */,
@@ -968,6 +974,7 @@
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
 				4FCB358F26E1A7390044BD84 /* MutantApes_attributeScores.json in Resources */,
+				4FBD029A26F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json in Resources */,
 				4FCB496826D1900E00696F91 /* FameLadySquad_attributeRanks.json in Resources */,
 				4FAB56CD26DADF71007076BE /* Craniums_attributeScores.json in Resources */,
 				4FCB496326D1892A00696F91 /* AsciiPunks_attributeRanks.json in Resources */,
@@ -1000,6 +1007,7 @@
 				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
 				4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FBD029926F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json in Resources */,
 				4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */,
 				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
 				4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */,
@@ -1378,7 +1386,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1405,7 +1413,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

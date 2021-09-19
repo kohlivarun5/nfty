@@ -273,11 +273,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil, /* SimilarTokensGetter(
+      similarTokens : SimilarTokensGetter(
         label:"Blocks",
-        nearestTokensFileName:"Dads_nearestTokens.json",
-        propertiesJsonFileName:"Dads_attributeScores.json"
-      ), */
+        nearestTokensFileName:nil,
+        propertiesJsonFileName:"GenesisBlocks_attributeScores.json"
+      ),
       rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:GBLOCKS_Contract),
