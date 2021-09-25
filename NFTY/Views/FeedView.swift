@@ -70,9 +70,10 @@ struct FeedView: View {
     self.refreshButton = .loading
     self.trades.loadLatest() {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+      
+      // trigger refresh again after 30 seconds
+      DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
     }
-    let impactMed = UIImpactFeedbackGenerator(style: .light)
-    impactMed.impactOccurred()
   }
   
   var body: some View {
@@ -130,6 +131,8 @@ struct FeedView: View {
         ScrollView {
           PullToRefresh(coordinateSpaceName: "RefreshControl") {
             self.triggerRefresh()
+            let impactMed = UIImpactFeedbackGenerator(style: .light)
+            impactMed.impactOccurred()
           }
           LazyVStack {
             ForEach(trades.recentTrades.indices,id:\.self) { index in
@@ -171,7 +174,8 @@ struct FeedView: View {
                   self.trades.getRecentTrades(currentIndex:index)
                 }
               }
-            }.textCase(nil)
+            }
+            .textCase(nil)
           }
         }.coordinateSpace(name: "RefreshControl")
       }
@@ -185,7 +189,11 @@ struct FeedView: View {
           case .loading:
             ProgressView()
           case .loaded:
-            Button(action: self.triggerRefresh) {
+            Button(action: {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }) {
               Image(systemName:"arrow.clockwise.circle.fill")
                 .font(.title3)
                 .foregroundColor(.accentColor)
@@ -200,6 +208,7 @@ struct FeedView: View {
           DispatchQueue.main.async {
             self.isLoading = false
             self.refreshButton = .loaded
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
           }
         } 
       }
