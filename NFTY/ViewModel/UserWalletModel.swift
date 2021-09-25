@@ -169,7 +169,13 @@ class UserWallet: ObservableObject {
         gas:tx.gas?.hex(),
         gasPrice:tx.gasPrice?.hex(),
         value:tx.value?.hex(),
-        nonce: tx.nonce?.hex()
+        nonce: tx.nonce?.hex(),
+        type: nil,
+        accessList: nil,
+        chainId: nil,
+        maxPriorityFeePerGas: nil,
+        maxFeePerGas: nil
+
       )
       try! client.reconnect(to: session)
       
