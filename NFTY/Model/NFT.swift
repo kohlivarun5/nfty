@@ -137,8 +137,38 @@ struct NFT: Identifiable {
 
 struct NFTPriceInfo {
   let price : BigUInt?
-  let blockNumber : BigUInt?
+  
+  enum BlockTimeStamp {
+    case none
+    case some(BigUInt)
+    case date(Date)
+  }
+  
+  let blockNumber : BlockTimeStamp
   let type : TradeEventType
+  
+  init(price:BigUInt?, blockNumber:BigUInt?,type:TradeEventType) {
+    self.price = price
+    self.type = type
+    switch(blockNumber) {
+    case .some(let x):
+      self.blockNumber = BlockTimeStamp.some(x)
+    case .none:
+      self.blockNumber = BlockTimeStamp.none
+    }
+  }
+  
+  init(price:BigUInt?, date:Date?,type:TradeEventType) {
+    self.price = price
+    self.type = type
+    switch(date) {
+    case .some(let x):
+      self.blockNumber = .date(x)
+    case .none:
+      self.blockNumber = .none
+    }
+    
+  }
 }
 
 enum NFTPriceStatus {

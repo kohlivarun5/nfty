@@ -196,7 +196,19 @@ struct OpenSeaApi {
   static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { orders in
-        orders
+        
+        var dict : [String:AssetOrder] = [:]
+        orders.forEach { order in
+          dict[order.asset.token_id] =
+            dict[order.asset.token_id] ??
+            orders.filter {
+              $0.asset.token_id == order.asset.token_id
+            }.sorted {
+              $0.payment_token == $1.payment_token && $0.current_price < $1.current_price
+            }.first!
+        }
+        return dict
+          .map { (key,value) in value }
           .sorted {
             switch($0.expiration_time,$1.expiration_time) {
             case (0,0):
@@ -231,7 +243,7 @@ struct OpenSeaApi {
                         resolved: NFTPriceStatus.known(
                           NFTPriceInfo(
                             price: wei,
-                            blockNumber: nil,
+                            date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
                             type:AssetOrder.sideToEvent(order.side))
                         )
                       )

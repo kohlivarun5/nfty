@@ -229,7 +229,7 @@ struct NftDetail: View {
         label: {
           Image(systemName: "arrowshape.turn.up.forward.circle")
             .foregroundColor(themeLabelColor)
-            .font(.title)
+            .font(.title3)
         }
       )
     )
