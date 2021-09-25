@@ -20,11 +20,7 @@ struct TokenListView: View {
   init(collection:Collection,tokenIds:[UInt]) {
     self.collection = collection
     self.nfts = NftTokenList(contract:collection.data.contract,tokenIds:tokenIds)
-  }
-  
-  init(collection:Collection,nfts:NftTokenList) {
-    self.collection = collection
-    self.nfts = nfts
+    self.nfts.loadMore { }
   }
   
   var body: some View {
@@ -66,8 +62,6 @@ struct TokenListView: View {
             }
           }
         }
-      }.onAppear {
-        nfts.loadMore {} // TODO
       }
     }
   }

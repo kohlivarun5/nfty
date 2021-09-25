@@ -111,7 +111,6 @@ struct UserWalletConnectorView : View {
       }
     }
     .padding()
-    .animation(.easeIn)
   }
   
 }
@@ -182,9 +181,9 @@ struct ConnectWalletSheet: View {
         Text(badAddressError)
           .font(.footnote)
           .foregroundColor(.secondary)
+          .animation(.easeIn)
       }
       .padding()
-      .animation(.easeIn)
       
       Spacer()
     }

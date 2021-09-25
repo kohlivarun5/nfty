@@ -35,8 +35,6 @@ struct FriendsView: View {
             HStack() {
               Text(name)
                 .font(.title3)
-              Spacer()
-              AddressLabel(address:address,maxLen:15)
             }
             .padding()
           }

@@ -58,8 +58,35 @@ struct TokenPriceKnown : View {
           .font(.caption2)
           .foregroundColor(subtleColor(self.color))
       }
+      
+    case (.some(let wei),.date(let date)):
+      VStack {
+        
+        HStack(spacing:4) {
+          UsdText(wei:wei,fontWeight:.semibold)
+            .foregroundColor(color(self.color))
+          Image(systemName: TradeEventIcon.systemName(info.type))
+            .font(.caption2)
+        }
+        
+        if (showEth) {
+          Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+            .font(.body)
+            .italic()
+        }
+        
+        Text(date.timeAgoDisplay())
+          .font(.caption2)
+          .foregroundColor(subtleColor(self.color))
+      }
+      
     case (.none,.some(let blockNumber)):
       BlockTimeLabel(blockNumber:blockNumber)
+        .font(.caption2)
+        .foregroundColor(subtleColor(self.color))
+        .padding([.top,.bottom],2)
+    case (.none,.date(let date)):
+      Text(date.timeAgoDisplay())
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
         .padding([.top,.bottom],2)

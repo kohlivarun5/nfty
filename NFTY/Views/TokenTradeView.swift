@@ -76,8 +76,7 @@ struct TokenTradeView: View {
         Text("History")
           .font(.caption).italic()
           .foregroundColor(.secondaryLabel)
-          .padding(.trailing)
-          .padding(.leading)
+          .padding([.trailing,.leading])
           .background(Color.systemBackground)
       }
       
