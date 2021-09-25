@@ -127,7 +127,7 @@ struct RoundedImage: View {
       }
     }
     
-    .animation(.default)
+    //.animation(.default)
     
     .border(Color.secondary)
     .frame(width:frameWidth(width))
