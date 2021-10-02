@@ -60,9 +60,9 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"GenesisBlocks",baseUri:"https://genesisblocks.art/api/tokens"),
-    firstIndex:1,
-    lastIndex:2500
+      name:"LazyLions",baseUri:"https://www.lazylionsnft.com/api"),
+    firstIndex:0,
+    lastIndex:10079
   )
 ]
 
