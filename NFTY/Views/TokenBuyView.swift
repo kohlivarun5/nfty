@@ -66,15 +66,18 @@ struct TokenBuyView: View {
       
       HStack(alignment: .bottom) {
         
-        RoundedImage(
+        NftImage(
           nft:nft,
-          price:price,
           sample:sample,
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
-          rarityRank: rarityRank,
-          width: .narrow
-        )
+          size:.xsmall,
+          favButton:.none)
+          .border(Color.secondary)
+          .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+          .overlay(
+            RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
+          .shadow(color:.accentColor,radius:0)
         
         Spacer()
         
