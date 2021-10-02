@@ -62,7 +62,7 @@ let downloaders = [
     collection:IpfsDownloader(
       name:"LazyLions",baseUri:"https://www.lazylionsnft.com/api"),
     firstIndex:0,
-    lastIndex:10079
+    lastIndex:9999
   )
 ]
 
@@ -74,7 +74,7 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 5//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
+  let parallelCount = 1//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
   
   print("Started downloading collection:\(collectionName)")
   
@@ -142,7 +142,7 @@ try? downloaders.forEach { downloader in
     let attr = try fileManager.attributesOfItem(atPath: path)
     if (minFileSize > attr[FileAttributeKey.size] as! UInt64) {
       print("Token=\(index) is empty")
-      // try fileManager.removeItem(atPath: path)
+      try fileManager.removeItem(atPath: path)
     }
     
   }

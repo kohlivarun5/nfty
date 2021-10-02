@@ -7,11 +7,11 @@
 
 import Foundation
 
-let collectionName = "GenesisBlocks"
+let collectionName = "LazyLions"
 
 let isFull = true
-let firstIndex = 1
-let lastIndex = isFull ? 2500 : 100
+let firstIndex = 0
+let lastIndex = isFull ? 9999 : 100
 
 // STAGES
 let doCalculatePercentiles = true
