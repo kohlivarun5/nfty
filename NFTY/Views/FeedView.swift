@@ -155,7 +155,7 @@ struct FeedView: View {
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
-                  self.action = String(nft.nft.tokenId)
+                  self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
                 }
                 
                 NavigationLink(destination: NftDetail(
@@ -167,7 +167,7 @@ struct FeedView: View {
                   similarTokens:info.similarTokens,
                   rarityRank:info.rarityRanking,
                   hideOwnerLink:false,selectedProperties:[]
-                ),tag:String(nft.nft.tokenId),selection:$action) {}
+                ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}
                 .hidden()
               }.onAppear {
                 DispatchQueue.global(qos:.userInitiated).async {
