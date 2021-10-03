@@ -45,6 +45,8 @@ let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2
 
 let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461")
 
+let LIONS_Contract = IpfsCollectionContract(name: "LazyLions",address: "0x8943C7bAC1914C9A7ABa750Bf2B6B09Fd21037E0")
+
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
@@ -245,6 +247,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
     ),
     contract:ABS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:LIONS_Contract.contractAddressHex,
+      sample:"SAMPLE_LAZY_LION",
+      name:LIONS_Contract.name,
+      webLink: URL(string:"https://www.lazylionsnft.com")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : SimilarTokensGetter(
+        label:"Lions",
+        nearestTokensFileName:"LazyLions_nearestTokens.json",
+        propertiesJsonFileName:"LazyLions_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("LazyLions_rarityRanks.json"))
+    ),
+    contract:LIONS_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

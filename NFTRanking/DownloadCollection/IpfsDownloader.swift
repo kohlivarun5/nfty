@@ -34,7 +34,7 @@ struct IpfsDownloader {
   let name : String
   let baseUri : String
    
-  let ipfsHost : String? = "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
+  let ipfsHost : String? = "http://ipfs.io/ipfs/" // "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
   
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in
@@ -107,11 +107,11 @@ struct IpfsDownloader {
           // print(data,response,error)
           switch(data) {
           case .some(let data):
-            let compressed = NSImage(data:data)!.compressedJPEGRepresentation!
+            let compressed = NSImage(data:data)?.compressedJPEGRepresentation ?? Data()
             seal.fulfill(Erc721TokenData(image:compressed,attributes:uriData.attributes))
           case .none:
             print(data,response,error)
-            seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+            seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
           }
         }).resume()
       }

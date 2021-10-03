@@ -17,6 +17,13 @@ struct PrivateCollectionView: View {
   
   let address : EthereumAddress
   
+  enum TokensPage : Int {
+    case owned
+    case sales
+  }
+  
+  @State private var tokensPage : TokensPage = .owned
+  
   private func setFriend(_ name:String?) {
     self.friendName = name
     switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
@@ -41,33 +48,60 @@ struct PrivateCollectionView: View {
   }
   
   var body: some View {
-    WalletTokensView(tokens: getOwnerTokens(address))
-      .onAppear {
-        let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-        self.friendName = friends?[address.hex(eip55: true)]
+    
+    VStack(spacing:0) {
+      
+      switch(self.tokensPage) {
+      case .owned:
+        WalletTokensView(tokens: getOwnerTokens(address))
+      case .sales:
+        ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell,emptyMessage:"No Active Sales")
       }
-      .alert(isPresented: $showDialog,
-             TextAlert(title: "Enter friend name",message:"") { result in
-              if let text = result {
-                self.setFriend(text)
-              }
-             })
-      .navigationBarTitle(friendName ?? "Private Collection",displayMode: .inline)
-      .navigationBarBackButtonHidden(true)
-      .navigationBarItems(
-        leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
-        trailing: Button(action: {
-          switch (self.friendName) {
-          case .none:
-            self.showDialog = true
-          case .some:
-            self.setFriend(nil)
+      
+      Picker(selection: Binding<Int>(
+        get: { self.tokensPage.rawValue },
+        set: { tag in
+          withAnimation { // needed explicit for transitions
+            self.tokensPage = TokensPage(rawValue: tag)!
           }
-        }, label: {
-          Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
-            .renderingMode(.original)
-        })
-      )
+        }),
+             label: Text("")) {
+        Text("Owned").tag(TokensPage.owned.rawValue)
+        Text("Sales").tag(TokensPage.sales.rawValue)
+      }
+             .pickerStyle(SegmentedPickerStyle())
+             .colorMultiply(.accentColor)
+             .padding([.trailing,.leading])
+             .padding(.top,5)
+             .padding(.bottom,7)
+      
+    }
+    .onAppear {
+      let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+      self.friendName = friends?[address.hex(eip55: true)]
+    }
+    .alert(isPresented: $showDialog,
+           TextAlert(title: "Enter friend name",message:"") { result in
+      if let text = result {
+        self.setFriend(text)
+      }
+    })
+    .navigationBarTitle(friendName ?? "Private Collection",displayMode: .inline)
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(
+      leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+      trailing: Button(action: {
+        switch (self.friendName) {
+        case .none:
+          self.showDialog = true
+        case .some:
+          self.setFriend(nil)
+        }
+      }, label: {
+        Image(systemName: friendName == .none ? "person.crop.circle.badge.plus" : "person.crop.circle.badge.minus")
+          .renderingMode(.original)
+      })
+    )
   }
 }
 
