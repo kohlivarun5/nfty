@@ -259,10 +259,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Lions",
-        nearestTokensFileName:nil,"Bombs_nearestTokens.json"
-        ,propertiesJsonFileName:"LazyLions_attributeScores.json"
+        nearestTokensFileName:"LazyLions_nearestTokens.json",
+        propertiesJsonFileName:"LazyLions_attributeScores.json"
       ),
-      rarityRanking : nil//RarityRankingImpl(load("Bombs_rarityRanks.json"))
+      rarityRanking : RarityRankingImpl(load("LazyLions_rarityRanks.json"))
     ),
     contract:LIONS_Contract),
   
