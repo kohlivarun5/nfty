@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */; };
 		4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724A2651E740002DD748 /* PrivateCollectionView.swift */; };
 		4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08724C2651EAC0002DD748 /* FriendsView.swift */; };
 		4F0A170826C616FF0025259F /* DappLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0A170726C616FF0025259F /* DappLink.swift */; };
@@ -236,6 +237,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundFetcher.swift; sourceTree = "<group>"; };
 		4F0872492650CB85002DD748 /* NFTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTY.entitlements; sourceTree = "<group>"; };
 		4F08724A2651E740002DD748 /* PrivateCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateCollectionView.swift; sourceTree = "<group>"; };
 		4F08724C2651EAC0002DD748 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
+				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1114,6 +1117,7 @@
 				4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
+				4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
@@ -1402,7 +1406,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1429,7 +1433,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
