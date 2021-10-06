@@ -28,7 +28,7 @@ class AppDelegate: NSObject,UIApplicationDelegate {
     UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     
     // Period: 3600s = 1 hour
-    UIApplication.shared.setMinimumBackgroundFetchInterval(3600)
+    UIApplication.shared.setMinimumBackgroundFetchInterval(600)
     
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { success, error in
       if success {

@@ -65,8 +65,8 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   return Promise.chain(orders)
     .map { results in
       
-      var salesCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
-        config: DiskConfig(name: "FavSales.cache",expiry: .never),
+      let salesCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
+        config: DiskConfig(name: "FavoriteSales.cache",expiry: .never),
         transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
       
       // called when 'promises.last' is invoked and fulfilled.
@@ -84,28 +84,34 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               
               let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
               
-              switch(try? salesCache.object(forKey: key)) {
-              case .some:
-                break
-              case .none:
-                
-                try! salesCache.setObject(order, forKey: key,expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
-                
-                let content = UNMutableNotificationContent()
-                content.title = "Favorite for Sale"
-                content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-                content.body = "On sale for \(spot.map { UsdString(wei: BigUInt(order.current_price)!, rate: $0) } ?? EthString(wei: BigUInt(order.current_price)!) )"
-                // content.sound = UNNotificationSound.default
-                
-                // show this notification five seconds from now
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                
-                // choose a random identifier
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                
-                // add our notification request
-                UNUserNotificationCenter.current().add(request)
+              if let entry = try? salesCache.object(forKey: key) {
+                // Entry in cache, lets compare and clean if needed
+                if (entry.current_price == order.current_price) {
+                  return
+                }
               }
+              
+              try! salesCache.setObject(
+                order,
+                forKey: key,
+                expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+              
+              let content = UNMutableNotificationContent()
+              content.title = "Favorite for Sale"
+              content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+              let wei = Double(order.current_price).map { BigUInt($0) }
+              content.body = "On sale for \(spot.map { UsdString(wei: wei!, rate: $0) } ?? EthString(wei: wei!) )"
+              // content.sound = UNNotificationSound.default
+              
+              // show this notification five seconds from now
+              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+              
+              // choose a random identifier
+              let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+              
+              // add our notification request
+              UNUserNotificationCenter.current().add(request)
+              
             }
         }
       
@@ -126,8 +132,8 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
     .map { orders in
       
       // TODO : Better cache checks
-      var offersCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
-        config: DiskConfig(name: "Offers.cache",expiry: .never),
+      let offersCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
+        config: DiskConfig(name: "OwnerBuyOffers.cache",expiry: .never),
         transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
       
       orders
@@ -135,34 +141,39 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
           
           let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
           
-          switch(try? offersCache.object(forKey: key)) {
-          case .some:
-            break
-          case .none:
-            
-            try! offersCache.setObject(order, forKey: key,expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
-            
-            let content = UNMutableNotificationContent()
-            content.title = "New Offer"
-            //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-            print(order)
-            let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
-            let collection = collectionsFactory.getByAddress(collectionAddress)!
-            
-            // TODO : Handle currency tokens
-            let wei = Double(order.current_price).map { BigUInt($0) }
-            content.body = "\(collection.info.name) #\(order.asset.token_id) : \(spot.map { UsdString(wei: wei!, rate: $0) } ?? EthString(wei: wei!) )"
-            // content.sound = UNNotificationSound.default
-            
-            // show this notification five seconds from now
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            
-            // choose a random identifier
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-            
-            // add our notification request
-            UNUserNotificationCenter.current().add(request)
+          if let entry = try? offersCache.object(forKey: key) {
+            // Entry in cache, lets compare and clean if needed
+            if (entry.current_price <= order.current_price) {
+              return
+            }
           }
+          
+          try! offersCache.setObject(
+            order,
+            forKey: key,
+            expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+          
+          let content = UNMutableNotificationContent()
+          content.title = "New Offer"
+          //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+          print(order)
+          let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
+          let collection = collectionsFactory.getByAddress(collectionAddress)!
+          
+          // TODO : Handle currency tokens
+          let wei = Double(order.current_price).map { BigUInt($0) }
+          content.body = "\(collection.info.name) #\(order.asset.token_id) : \(spot.map { UsdString(wei: wei!, rate: $0) } ?? EthString(wei: wei!) )"
+          // content.sound = UNNotificationSound.default
+          
+          // show this notification five seconds from now
+          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+          
+          // choose a random identifier
+          let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+          
+          // add our notification request
+          UNUserNotificationCenter.current().add(request)
+          
         }
       return !orders.isEmpty
     }
