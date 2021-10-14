@@ -13,6 +13,7 @@ struct BackButton: View {
       HStack {
         Image(systemName: "chevron.backward.circle.fill")
           .foregroundColor(Color(UIColor.darkGray))
+          .font(.title3)
       }
     }
 }
