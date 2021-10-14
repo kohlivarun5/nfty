@@ -19,8 +19,47 @@ extension UINavigationController: UIGestureRecognizerDelegate {
   }
 }
 
+
+
+class AppDelegate: NSObject,UIApplicationDelegate {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // UIApplication.backgroundFetchIntervalMinimum = 0s
+    UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+    
+    // Period: 3600s = 1 hour
+    UIApplication.shared.setMinimumBackgroundFetchInterval(600)
+    
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { success, error in
+      if success {
+        print("All set!")
+      } else if let error = error {
+        print(error.localizedDescription)
+      }
+    }
+    
+    return true
+  }
+  
+  func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    print("Background fetch called")
+    
+    performBackgroundFetch()
+      .done {
+        completionHandler($0 ? .newData : .noData)
+      }
+      .catch {
+        // called when any promises throw an error
+        print($0)
+        completionHandler(.failed)
+      }
+  }
+}
+
+
 @main
 struct NFTYApp: App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  
   enum SheetStateEnum {
     case nft(String,UInt)
     case user(EthereumAddress,friendName:String?)
@@ -157,4 +196,8 @@ struct NFTYApp: App {
       .environmentObject(userWallet)
     }
   }
+  
+ 
+  
 }
+
