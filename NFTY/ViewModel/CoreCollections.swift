@@ -47,6 +47,8 @@ let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F
 
 let LIONS_Contract = IpfsCollectionContract(name: "LazyLions",address: "0x8943C7bAC1914C9A7ABa750Bf2B6B09Fd21037E0")
 
+let MORIES_Contract = IpfsCollectionContract(name: "CryptoMories",address: "0x1a2F71468F656E97c2F86541E57189F59951efe7")
+
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
@@ -423,6 +425,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Killaz_rarityRanks.json"))
     ),
     contract:KILLAZ_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:MORIES_Contract.contractAddressHex,
+      sample:"SAMPLE_MORIES",
+      name:MORIES_Contract.name,
+      webLink: URL(string:"https://cryptomories.iwwon.com/home")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil /* SimilarTokensGetter(
+        label:"Hodlers",
+        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
+        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
+      ) */,
+      rarityRanking : nil//RarityRankingImpl(CRHDL_rarityRanks)
+    ),
+    contract:MORIES_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
