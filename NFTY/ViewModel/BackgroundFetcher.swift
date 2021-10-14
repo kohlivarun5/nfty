@@ -69,6 +69,8 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
         config: DiskConfig(name: "FavoriteSales.cache",expiry: .never),
         transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
       
+      try? salesCache.removeExpiredObjects()
+      
       // called when 'promises.last' is invoked and fulfilled.
       // Remember last time we ran
       // If we don't know last time, skip notifying, rather than over notifying
@@ -86,7 +88,9 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               
               if let entry = try? salesCache.object(forKey: key) {
                 // Entry in cache, lets compare and clean if needed
-                if (entry.current_price == order.current_price) {
+                if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
+                  try? salesCache.removeObject(forKey: key)
+                } else if (entry.current_price == order.current_price) {
                   return
                 }
               }
@@ -100,7 +104,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               content.title = "Favorite for Sale"
               content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
               let wei = Double(order.current_price).map { BigUInt($0) }
-              content.body = "On sale for \(spot.map { UsdString(wei: wei!, rate: $0) } ?? EthString(wei: wei!) )"
+              content.body = "On sale for \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
               // content.sound = UNNotificationSound.default
               
               // show this notification five seconds from now
@@ -136,6 +140,8 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
         config: DiskConfig(name: "OwnerBuyOffers.cache",expiry: .never),
         transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
       
+      try? offersCache.removeExpiredObjects()
+      
       orders
         .forEach { order in
           
@@ -143,9 +149,12 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
           
           if let entry = try? offersCache.object(forKey: key) {
             // Entry in cache, lets compare and clean if needed
-            if (entry.current_price <= order.current_price) {
+            if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
+              try? offersCache.removeObject(forKey: key)
+            } else if (entry.current_price >= order.current_price) {
               return
             }
+            
           }
           
           try! offersCache.setObject(
@@ -162,7 +171,8 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
           
           // TODO : Handle currency tokens
           let wei = Double(order.current_price).map { BigUInt($0) }
-          content.body = "\(collection.info.name) #\(order.asset.token_id) : \(spot.map { UsdString(wei: wei!, rate: $0) } ?? EthString(wei: wei!) )"
+          content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+          content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
           // content.sound = UNNotificationSound.default
           
           // show this notification five seconds from now
