@@ -60,7 +60,7 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"LazyLions",baseUri:"https://www.lazylionsnft.com/api"),
+      name:"CryptoMories",baseUri:"https://ipfs.io/ipfs/QmWJvWd3y2HPKhqoVLPRR84HDRSBy5Z85pSVuYeSQRZXrZ"),
     firstIndex:0,
     lastIndex:9999
   )
