@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Web3
-import UserNotifications
 
 extension UINavigationController: UIGestureRecognizerDelegate {
   override open func viewDidLoad() {
