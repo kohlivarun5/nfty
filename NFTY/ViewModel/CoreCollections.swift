@@ -435,12 +435,12 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil /* SimilarTokensGetter(
-        label:"Hodlers",
-        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
-        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
-      ) */,
-      rarityRanking : nil//RarityRankingImpl(CRHDL_rarityRanks)
+      similarTokens : SimilarTokensGetter(
+        label:"Mories",
+        nearestTokensFileName:"CryptoMories_nearestTokens.json",
+        propertiesJsonFileName:"CryptoMories_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
     ),
     contract:MORIES_Contract),
   

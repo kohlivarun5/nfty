@@ -34,7 +34,7 @@ struct IpfsDownloader {
   let name : String
   let baseUri : String
    
-  let ipfsHost : String? = "https://cloudflare-ipfs.com/ipfs/"// "http://ipfs.io/ipfs/" // "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
+  let ipfsHost : String? = "http://ipfs.io/ipfs/" // "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
   
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in

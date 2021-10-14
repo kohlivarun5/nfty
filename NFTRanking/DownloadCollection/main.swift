@@ -60,7 +60,7 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"CryptoMories",baseUri:"https://cloudflare-ipfs.com/ipfs/QmWJvWd3y2HPKhqoVLPRR84HDRSBy5Z85pSVuYeSQRZXrZ"),
+      name:"CryptoMories",baseUri:"https://ipfs.io/ipfs/QmWJvWd3y2HPKhqoVLPRR84HDRSBy5Z85pSVuYeSQRZXrZ"),
     firstIndex:0,
     lastIndex:9999
   )
