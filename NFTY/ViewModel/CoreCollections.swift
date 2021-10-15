@@ -49,6 +49,8 @@ let LIONS_Contract = IpfsCollectionContract(name: "LazyLions",address: "0x8943C7
 
 let MORIES_Contract = IpfsCollectionContract(name: "CryptoMories",address: "0x1a2F71468F656E97c2F86541E57189F59951efe7")
 
+let JUNGLE_FREAKS_Contract = IpfsCollectionContract(name: "JungleFreaks",address: "0x7E6Bc952d4b4bD814853301bEe48E99891424de0")
+
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
@@ -443,6 +445,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
     ),
     contract:MORIES_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:JUNGLE_FREAKS_Contract.contractAddressHex,
+      sample:"SAMPLE_JUNGLE_FREAK",
+      name:JUNGLE_FREAKS_Contract.name,
+      webLink: URL(string:"https://junglefreaks.io/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil /* SimilarTokensGetter(
+        label:"Freaks",
+        nearestTokensFileName:"CryptoMories_nearestTokens.json",
+        propertiesJsonFileName:"CryptoMories_attributeScores.json"
+      )*/,
+      rarityRanking : nil //RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
+    ),
+    contract:JUNGLE_FREAKS_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
