@@ -10,38 +10,46 @@ import PromiseKit
 import UserNotifications
 import BigInt
 import Web3
+import Cache
+import UIKit
 
-extension Promise {
-  
-  /**
-   * Create a final Promise that chain all delayed promise callback all together.
-   */
-  static func chain(_ promises:[() -> Promise<T>]) -> Promise<[T]> {
-    return Promise<[T]> { seal in
-      var out = [T]()
-      
-      let fp:Promise<T>? = promises.reduce(nil) { (r, o) in
-        return r?.then { c -> Promise<T> in
-          out.append(c)
-          return o()
-        } ?? o()
-      }
-      
-      fp?.map { c -> Void in
-        out.append(c)
-        seal.fulfill(out)
-      }
-      .catch(seal.reject)
-    }
+func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UIImage) -> URL? {
+  let fileManager = FileManager.default
+  let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
+    .appendingPathComponent(folder, isDirectory: true)
+    .appendingPathComponent(collection.info.address, isDirectory: true)
+  do {
+    try fileManager.createDirectory(at: tmpSubFolderURL, withIntermediateDirectories: true, attributes: nil)
+    let imageFileIdentifier = String(tokenId)+".png"
+    let fileURL = tmpSubFolderURL.appendingPathComponent(imageFileIdentifier)
+    let imageData = UIImage.pngData(image)
+    try imageData()?.write(to: fileURL)
+    return fileURL
+  } catch {
+    print("error " + error.localizedDescription)
   }
+  return nil
 }
 
-import Cache
+func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL?> {
+  let notificationImagesFolder = "NotificationImages"
+  switch(collection.data.contract.getNFT(tokenId).media) {
+  case .ipfsImage(let image):
+    return image.image.promise.map { uiImage in
+      uiImage.flatMap {
+        createLocalFile(folder: notificationImagesFolder, collection: collection, tokenId: tokenId, image: $0.image)
+      }
+    }
+  case .image,.asciiPunk,.autoglyph:
+    return Promise.value(nil)
+    
+  }
+}
 
 func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
   
-  var orders : [() -> Promise<(Collection,[OpenSeaApi.AssetOrder])>] = []
+  var orders : [Promise<(Collection,[OpenSeaApi.AssetOrder])>] = []
   
   favorites?.forEach { (address,tokens) in
     collectionsFactory.getByAddress(address).map { collection in
@@ -54,35 +62,28 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       }
       
       if (!tokenIds.isEmpty) {
-        orders.append({
+        orders.append(
           OpenSeaApi.getOrders(contract:address,tokenIds:tokenIds,user:nil,side:OpenSeaApi.Side.sell)
             .map { (collection,$0) }
-        })
+        )
       }
     }
   }
   
-  return Promise.chain(orders)
-    .map { results in
-      
-      let salesCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
-        config: DiskConfig(name: "FavoriteSales.cache",expiry: .never),
-        transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
-      
-      try? salesCache.removeExpiredObjects()
-      
-      // called when 'promises.last' is invoked and fulfilled.
-      // Remember last time we ran
-      // If we don't know last time, skip notifying, rather than over notifying
-      // Check new offers
-      // Check expiring offers, even if not new
-      results
-        .forEach {
-          let (collection,orders) = $0
+  let salesCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
+    config: DiskConfig(name: "FavoriteSales.cache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
+  
+  try? salesCache.removeExpiredObjects()
+  
+  return when(fulfilled:orders)
+    .then { results -> Promise<Bool> in
+      let promises = results
+        .map { result -> Promise<Bool> in
+          let (collection,orders) = result
           print(orders)
-          orders
-            .compactMap { $0 }
-            .forEach { order in
+          let promises = orders
+            .compactMap { (order:OpenSeaApi.AssetOrder) -> OpenSeaApi.AssetOrder? in
               
               let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
               
@@ -90,9 +91,8 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                 // Entry in cache, lets compare and clean if needed
                 if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
                   try? salesCache.removeObject(forKey: key)
-                } else if (entry.current_price == order.current_price) {
-                  return
                 }
+                else if (entry.current_price == order.current_price) { return nil }
               }
               
               try! salesCache.setObject(
@@ -100,26 +100,39 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                 forKey: key,
                 expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
               
-              let content = UNMutableNotificationContent()
-              content.title = "Favorite for Sale"
-              content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-              let wei = Double(order.current_price).map { BigUInt($0) }
-              content.body = "On sale for \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
-              // content.sound = UNNotificationSound.default
-              
-              // show this notification five seconds from now
-              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-              
-              // choose a random identifier
-              let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-              
-              // add our notification request
-              UNUserNotificationCenter.current().add(request)
-              
+              return order
             }
+            .map { order -> Promise<Void> in
+              
+              return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+                .map { imageUrl in
+                  let content = UNMutableNotificationContent()
+                  content.title = "Favorite for Sale"
+                  content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                  let wei = Double(order.current_price).map { BigUInt($0) }
+                  content.body = "On sale for \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+                  // content.sound = UNNotificationSound.default
+                  
+                  print("ImageUrl=\(String(describing:imageUrl))")
+                  
+                  imageUrl.map {
+                    content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+                  }
+                  
+                  // show this notification five seconds from now
+                  let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                  
+                  let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                  
+                  // add our notification request
+                  UNUserNotificationCenter.current().add(request)
+                }
+            }
+          
+          return when(fulfilled: promises).map { !$0.isEmpty }
         }
       
-      return !orders.isEmpty
+      return when(fulfilled: promises).map { $0.allSatisfy({$0}) }
     }
 }
 
@@ -133,7 +146,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   
   let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
   return orders
-    .map { orders in
+    .then { orders -> Promise<Bool> in
       
       // TODO : Better cache checks
       let offersCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
@@ -142,8 +155,15 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
       
       try? offersCache.removeExpiredObjects()
       
-      orders
-        .forEach { order in
+      let promises = orders
+        .compactMap { order -> (Collection,OpenSeaApi.AssetOrder)? in
+          
+          let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
+          
+          guard let collection = collectionsFactory.getByAddress(collectionAddress) else {
+            print("Collection \(collectionAddress) not supported")
+            return nil
+          }
           
           let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
           
@@ -151,9 +171,8 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             // Entry in cache, lets compare and clean if needed
             if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
               try? offersCache.removeObject(forKey: key)
-            } else if (entry.current_price >= order.current_price) {
-              return
             }
+            else if (entry.current_price >= order.current_price) { return nil }
             
           }
           
@@ -161,33 +180,42 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             order,
             forKey: key,
             expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+          return (collection,order)
           
-          let content = UNMutableNotificationContent()
-          content.title = "New Offer"
-          //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-          print(order)
-          let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
-          let collection = collectionsFactory.getByAddress(collectionAddress)!
-          
-          // TODO : Handle currency tokens
-          let wei = Double(order.current_price).map { BigUInt($0) }
-          content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-          content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
-          // content.sound = UNNotificationSound.default
-          
-          // show this notification five seconds from now
-          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-          
-          // choose a random identifier
-          let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-          
-          // add our notification request
-          UNUserNotificationCenter.current().add(request)
-          
+        }.map { result -> Promise<Void> in
+          let (collection,order) = result
+          return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+            .map { imageUrl in
+              
+              let content = UNMutableNotificationContent()
+              content.title = "New Offer"
+              //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+              print(order)
+              
+              // TODO : Handle currency tokens
+              let wei = Double(order.current_price).map { BigUInt($0) }
+              content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+              content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+              
+              print("ImageUrl=\(String(describing:imageUrl))")
+              
+              imageUrl.map {
+                content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+              }
+              
+              // show this notification five seconds from now
+              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+              
+              // choose a random identifier
+              let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+              
+              // add our notification request
+              UNUserNotificationCenter.current().add(request)
+            }
         }
-      return !orders.isEmpty
+      
+      return when(fulfilled: promises).map { !$0.isEmpty }
     }
-  
 }
 
 

@@ -16,7 +16,7 @@ class ObservablePromise<T> : ObservableObject {
   }
   
   @Published var state : State = .loading
-  private let promise : Promise<T>
+  public let promise : Promise<T>
   private var onDone : ((T) -> Void)? = nil
   
   init(promise:Promise<T>) { self.promise = promise }
