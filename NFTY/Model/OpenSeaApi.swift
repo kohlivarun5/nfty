@@ -121,7 +121,12 @@ struct OpenSeaApi {
             orders.orders.filter {
               "\($0.asset.asset_contract.address):\($0.asset.token_id):\($0.side)" == key
             }.sorted {
-              $0.payment_token == $1.payment_token && $0.current_price > $1.current_price
+              switch($0.side) {
+              case .buy:
+                return $0.payment_token == $1.payment_token && $0.current_price > $1.current_price
+              case .sell:
+                return $0.payment_token == $1.payment_token && $0.current_price < $1.current_price
+              }
             }.first!
           }
           
