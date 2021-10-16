@@ -114,7 +114,7 @@ struct FavoritesView: View {
                   }
                   .onAppear {
                     DispatchQueue.global(qos:.userInteractive).async {
-                      OpenSeaApi.getBidAsk(contract: nft.id.address, tokenId:nft.id.tokenId)
+                      OpenSeaApi.getBidAsk(contract: nft.id.address, tokenId:nft.id.tokenId,side:OpenSeaApi.Side.sell)
                         .done {
                           $0.ask.map { ask in
                             DispatchQueue.main.async {

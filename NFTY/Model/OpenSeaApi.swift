@@ -121,7 +121,12 @@ struct OpenSeaApi {
             orders.orders.filter {
               "\($0.asset.asset_contract.address):\($0.asset.token_id):\($0.side)" == key
             }.sorted {
-              $0.payment_token == $1.payment_token && $0.current_price > $1.current_price
+              switch(side) {
+              case .none,.some(.buy):
+                return $0.payment_token == $1.payment_token && $0.current_price > $1.current_price
+              case .some(.sell):
+                return $0.payment_token == $1.payment_token && $0.current_price < $1.current_price
+              }
             }.first!
           }
           
@@ -172,8 +177,8 @@ struct OpenSeaApi {
       }
   }
   
-  static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
-    OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
+  static func getBidAsk(contract:String,tokenId:UInt,side:Side?) -> Promise<BidAsk> {
+    OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
         let ask = $0.first { $0.side == .sell }.flatMap { (order:AssetOrder) -> AskInfo? in
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
@@ -261,6 +266,6 @@ struct OpenSeaTradeApi : TokenTradeInterface {
   let contract : EthereumAddress
   
   func getBidAsk(_ tokenId: UInt) -> Promise<BidAsk> {
-    return OpenSeaApi.getBidAsk(contract: contract.hex(eip55: true),tokenId: tokenId)
+    return OpenSeaApi.getBidAsk(contract: contract.hex(eip55: true),tokenId: tokenId,side:nil)
   }
 }
