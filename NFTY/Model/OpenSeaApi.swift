@@ -178,7 +178,7 @@ struct OpenSeaApi {
   }
   
   static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
-    OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side:nil)
+    OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
         let ask = $0.first { $0.side == .sell }.flatMap { (order:AssetOrder) -> AskInfo? in
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
