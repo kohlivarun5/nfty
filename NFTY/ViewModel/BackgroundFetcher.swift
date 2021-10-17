@@ -172,7 +172,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
               try? offersCache.removeObject(forKey: key)
             }
-            else if (entry.current_price >= order.current_price) { return nil }
+            else if (Double(entry.current_price)! >= Double(order.current_price)!) { return nil }
             
           }
           
