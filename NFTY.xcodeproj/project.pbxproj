@@ -96,6 +96,10 @@
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4F92144E271BA54C0085D238 /* JungleFreaks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */; };
+		4F92144F271BA54C0085D238 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
+		4F921452271C62E30085D238 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
+		4F921453271C62E30085D238 /* JungleFreaks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
@@ -325,6 +329,10 @@
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeScores.json; sourceTree = "<group>"; };
+		4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeRanks.json; sourceTree = "<group>"; };
+		4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_rarityRanks.json; sourceTree = "<group>"; };
+		4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_nearestTokens.json; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
 		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
@@ -696,6 +704,10 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
+				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
+				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
+				4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */,
 				4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */,
 				4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */,
 				4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */,
@@ -980,6 +992,7 @@
 				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FB9A7B8262B28A400C58AF9 /* Preview Assets.xcassets in Resources */,
 				4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4F921452271C62E30085D238 /* JungleFreaks_rarityRanks.json in Resources */,
 				4F12715926EDB522007E6A7B /* Dads_nearestTokens.json in Resources */,
 				4FAB56D826DB4C90007076BE /* WickedApes_attributeRanks.json in Resources */,
 				4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */,
@@ -1033,10 +1046,13 @@
 				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
 				4F12716126EDDD5D007E6A7B /* Bombs_rarityRanks.json in Resources */,
 				4F12FAA32718EC9E004C3E16 /* CryptoMories_attributeRanks.json in Resources */,
+				4F92144E271BA54C0085D238 /* JungleFreaks_attributeScores.json in Resources */,
 				4FA1102426A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json in Resources */,
 				4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */,
 				4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */,
+				4F92144F271BA54C0085D238 /* JungleFreaks_attributeRanks.json in Resources */,
 				4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */,
+				4F921453271C62E30085D238 /* JungleFreaks_nearestTokens.json in Resources */,
 				4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */,
 				4FAB56D226DB49E6007076BE /* Craniums_nearestTokens.json in Resources */,
 				4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */,
@@ -1422,7 +1438,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1449,7 +1465,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

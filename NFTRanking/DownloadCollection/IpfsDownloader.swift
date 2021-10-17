@@ -39,7 +39,7 @@ struct IpfsDownloader {
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in
       
-      var uri = "\(baseUri)/\(tokenId)"
+      var uri = "\(baseUri)\(tokenId)"
       
       uri =
         ipfsHost.map {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-let collectionName = "CryptoMories"
+let collectionName = "JungleFreaks"
 
 let isFull = true
 let firstIndex = 0
