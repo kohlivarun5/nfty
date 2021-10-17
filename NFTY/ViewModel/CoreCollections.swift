@@ -51,6 +51,8 @@ let MORIES_Contract = IpfsCollectionContract(name: "CryptoMories",address: "0x1a
 
 let JUNGLE_FREAKS_Contract = IpfsCollectionContract(name: "JungleFreaks",address: "0x7E6Bc952d4b4bD814853301bEe48E99891424de0")
 
+let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
+
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
@@ -463,6 +465,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("JungleFreaks_rarityRanks.json"))
     ),
     contract:JUNGLE_FREAKS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:DOODLES_Contract.contractAddressHex,
+      sample:"SAMPLE_DOODLE",
+      name:DOODLES_Contract.name,
+      webLink: URL(string:"https://doodles.app")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil /* SimilarTokensGetter(
+        label:"Doodles",
+        nearestTokensFileName:"Doodles_nearestTokens.json",
+        propertiesJsonFileName:"Doodles_attributeScores.json"
+      )*/ ,
+      rarityRanking : nil, // RarityRankingImpl(load("Doodles_rarityRanks.json"))
+    ),
+    contract:DOODLES_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

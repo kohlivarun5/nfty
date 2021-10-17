@@ -60,7 +60,7 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"JungleFreaks",baseUri:"ipfs://QmZCsdZ616bmjqrGM44MggF4CjVaTmVMa7baLG55WgGHCR/0000"), // TODO
+      name:"Doodles",baseUri:"ipfs://QmZCsdZ616bmjqrGM44MggF4CjVaTmVMa7baLG55WgGHCR/0000"), // TODO
     firstIndex:0,
     lastIndex:9999
   )

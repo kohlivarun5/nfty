@@ -9,7 +9,7 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "JungleFreaks"
+let collectionName = "Doodles"
 
 let isFull = true
 let firstIndex = 0
