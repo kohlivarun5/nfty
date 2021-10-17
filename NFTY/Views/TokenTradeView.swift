@@ -100,6 +100,7 @@ struct TokenTradeView: View {
       
       
     }
+    .font(.subheadline)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(

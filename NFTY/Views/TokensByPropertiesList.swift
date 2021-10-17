@@ -79,7 +79,7 @@ struct TokensByPropertiesList: View {
               case .some(let ask):
                 VStack {
                   Spacer()
-                  UsdEthText(wei: ask, fontWeight: .semibold)
+                  UsdEthVText(wei: ask, fontWeight: .semibold)
                     .padding([.top,.bottom],2)
                     .padding([.leading,.trailing],20)
                     .font(.caption)

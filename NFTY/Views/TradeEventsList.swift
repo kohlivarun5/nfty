@@ -129,7 +129,7 @@ struct TradeEventsList: View {
                 .foregroundColor(event.type == .bought || event.type == .minted ? .label : .secondary)
               default:
                 HStack {
-                  UsdText(wei:event.value,fontWeight: event.type == .bought ? .semibold : nil)
+                  UsdEthVText(wei:event.value,fontWeight: event.type == .bought ? .semibold : nil)
                     .frame(width:120,alignment: .trailing)
                   Spacer()
                   TradeEventIconView(type:event.type)

@@ -60,7 +60,7 @@ struct UsdText: View {
   }
 }
 
-struct UsdEthText: View {
+struct UsdEthVText: View {
   
   @ObservedObject private var spot = EthSpot.get()
   
@@ -76,11 +76,38 @@ struct UsdEthText: View {
           Text(EthString(wei: wei))
             .fontWeight(fontWeight)
         case .some(let rate):
-          VStack {
+          VStack(alignment:.trailing) {
             Text(UsdString(wei: wei, rate:rate))
               .fontWeight(fontWeight)
             Text(EthString(wei: wei))
+              .fontWeight(Font.Weight.light)
+          }
+        }
+      })
+  }
+}
+
+struct UsdEthHText: View {
+  
+  @ObservedObject private var spot = EthSpot.get()
+  
+  let wei:BigUInt
+  let fontWeight : Font.Weight?
+  var body: some View {
+    ObservedPromiseView(
+      data: spot,
+      progress: { Text("") },
+      view: { spot in
+        switch(spot) {
+        case .none:
+          Text(EthString(wei: wei))
+            .fontWeight(fontWeight)
+        case .some(let rate):
+          HStack {
+            Text(UsdString(wei: wei, rate:rate))
               .fontWeight(fontWeight)
+            Text("(\(EthString(wei: wei)))")
+              .fontWeight(Font.Weight.light)
           }
         }
       })
