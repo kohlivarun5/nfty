@@ -123,9 +123,9 @@ struct OpenSeaApi {
             }.sorted {
               switch($0.side) {
               case .buy:
-                return $0.payment_token == $1.payment_token && $0.current_price > $1.current_price
+                return $0.payment_token == $1.payment_token && Double($0.current_price)! > Double($1.current_price)!
               case .sell:
-                return $0.payment_token == $1.payment_token && $0.current_price < $1.current_price
+                return $0.payment_token == $1.payment_token && Double($0.current_price)! < Double($1.current_price)!
               }
             }.first!
           }
@@ -180,6 +180,7 @@ struct OpenSeaApi {
   static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
     OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
+        
         let ask = $0.first { $0.side == .sell }.flatMap { (order:AssetOrder) -> AskInfo? in
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),

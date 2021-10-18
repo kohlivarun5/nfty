@@ -119,6 +119,12 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                     content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
                   }
                   
+                  content.userInfo = [
+                    "sheetState": "nftTrade",
+                    "address" : collection.info.address,
+                    "tokenId" : UInt(order.asset.token_id)!
+                  ]
+                  
                   // show this notification five seconds from now
                   let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                   
@@ -172,7 +178,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
               try? offersCache.removeObject(forKey: key)
             }
-            else if (entry.current_price >= order.current_price) { return nil }
+            else if (Double(entry.current_price)! >= Double(order.current_price)!) { return nil }
             
           }
           
@@ -202,6 +208,12 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
               imageUrl.map {
                 content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
               }
+              
+              content.userInfo = [
+                "sheetState": "nftTrade",
+                "address" : collection.info.address,
+                "tokenId" : UInt(order.asset.token_id)!
+              ]
               
               // show this notification five seconds from now
               let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)

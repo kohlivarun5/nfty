@@ -19,9 +19,33 @@ extension UINavigationController: UIGestureRecognizerDelegate {
   }
 }
 
+class AppDelegateState: ObservableObject {
+  static let shared = AppDelegateState()
+  
+  enum SheetStateEnum {
+    case nft(String,UInt)
+    case nftTrade(String,UInt)
+    case user(EthereumAddress,friendName:String?)
+  }
+  struct SheetState : Identifiable {
+    let state : SheetStateEnum
+    
+    var id : String {
+      switch state {
+      case .nft(let address,let tokenId):
+        return "nft(\(address),\(tokenId))"
+      case .nftTrade(let address,let tokenId):
+        return "nftTrade(\(address),\(tokenId))"
+      case .user(let address,let friendName):
+        return "user(\(address.hex(eip55:true)),\(friendName ?? ""))"
+      }
+    }
+  }
+  
+  @Published var sheetState : SheetState? = nil
+}
 
-
-class AppDelegate: NSObject,UIApplicationDelegate {
+class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // UIApplication.backgroundFetchIntervalMinimum = 0s
     UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
@@ -36,6 +60,8 @@ class AppDelegate: NSObject,UIApplicationDelegate {
         print(error.localizedDescription)
       }
     }
+    
+    UNUserNotificationCenter.current().delegate = self
     
     return true
   }
@@ -53,6 +79,29 @@ class AppDelegate: NSObject,UIApplicationDelegate {
         completionHandler(.failed)
       }
   }
+  
+  // This function will be called right after user tap on the notification
+  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    print("app opened from PushNotification tap")
+    print(response)
+    print(response.notification.request.content.userInfo)
+    
+    let userInfo = response.notification.request.content.userInfo
+    
+    if let sheetState = userInfo["sheetState"] as? String {
+      switch(sheetState) {
+      case "nft":
+        AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nft(userInfo["address"] as! String,userInfo["tokenId"] as! UInt))
+      case "nftTrade":
+        AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nftTrade(userInfo["address"] as! String,userInfo["tokenId"] as! UInt))
+      default:
+        print("Do not know how to display sheetState=\(sheetState)")
+      }
+    }
+    
+    completionHandler()
+  }
+  
 }
 
 
@@ -60,24 +109,8 @@ class AppDelegate: NSObject,UIApplicationDelegate {
 struct NFTYApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
-  enum SheetStateEnum {
-    case nft(String,UInt)
-    case user(EthereumAddress,friendName:String?)
-  }
-  struct SheetState : Identifiable {
-    let state : SheetStateEnum
-    
-    var id : String {
-      switch state {
-      case .nft(let address,let tokenId):
-        return "nft(\(address),\(tokenId))"
-      case .user(let address,let friendName):
-        return "user(\(address.hex(eip55:true)),\(friendName ?? ""))"
-      }
-    }
-  }
-  
-  @State private var sheetState : SheetState? = nil
+
+  @ObservedObject var appDelegateState = AppDelegateState.shared
   
   @StateObject var userWallet = UserWallet()
   
@@ -162,7 +195,7 @@ struct NFTYApp: App {
           let params = url.params()
           switch (params["address"] as? String,(params["tokenId"] as? String).flatMap { UInt($0) }) {
           case (.some(let address),.some(let tokenId)):
-            self.sheetState = SheetState(state: .nft(address,tokenId))
+            self.appDelegateState.sheetState = AppDelegateState.SheetState(state: .nft(address,tokenId))
           default:
             break
           }
@@ -170,19 +203,25 @@ struct NFTYApp: App {
           let params = url.params()
           switch (params["address"] as? String).flatMap({ try? EthereumAddress(hex:$0,eip55:false) }) {
           case .some(let address):
-            self.sheetState = SheetState(state: .user(address,friendName:params["name"] as? String))
+            self.appDelegateState.sheetState = AppDelegateState.SheetState(state: .user(address,friendName:params["name"] as? String))
           case .none:
             break
           }
         default:
           break
         }
-      }.sheet(item: $sheetState, onDismiss: { self.sheetState = nil }) { (item:SheetState) in
+      }.sheet(item: $appDelegateState.sheetState, onDismiss: { self.appDelegateState.sheetState = nil }) { (item:AppDelegateState.SheetState) in
         switch item.state {
         case .nft(let address,let tokenId):
-          NftUrlView(address: address, tokenId: tokenId)
-            // .preferredColorScheme(.dark)
-            .accentColor(Color.orange)
+          NavigationView {
+            NftUrlView(address: address, tokenId: tokenId)
+          }
+          // .preferredColorScheme(.dark)
+          .accentColor(Color.orange)
+        case .nftTrade(let address,let tokenId):
+          NftTradeUrlView(address: address, tokenId: tokenId, userWallet: userWallet)
+            .accentColor(.orange)
+            .ignoresSafeArea(edges: .bottom)
         case .user(let address,let friendName):
           UserUrlView(address: address,friendName:friendName)
             // .preferredColorScheme(.dark)

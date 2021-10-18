@@ -100,6 +100,7 @@
 		4F92144F271BA54C0085D238 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
 		4F921452271C62E30085D238 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
 		4F921453271C62E30085D238 /* JungleFreaks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */; };
+		4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F961F79271CC12600639E85 /* NftTradeUrlView.swift */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
@@ -194,6 +195,8 @@
 		4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */; };
 		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
 		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
+		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
+		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
 /* End PBXBuildFile section */
 
@@ -333,6 +336,7 @@
 		4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeRanks.json; sourceTree = "<group>"; };
 		4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_rarityRanks.json; sourceTree = "<group>"; };
 		4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_nearestTokens.json; sourceTree = "<group>"; };
+		4F961F79271CC12600639E85 /* NftTradeUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftTradeUrlView.swift; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
 		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
@@ -424,6 +428,8 @@
 		4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithWalletProviderView.swift; sourceTree = "<group>"; };
 		4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeRanks.json; sourceTree = "<group>"; };
 		4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_attributeScores.json; sourceTree = "<group>"; };
+		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
+		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -676,6 +682,7 @@
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
 				4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */,
 				4F0E797F26E0777F009EC174 /* NFTExportView.swift */,
+				4F961F79271CC12600639E85 /* NftTradeUrlView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -704,6 +711,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
+				4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */,
 				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
 				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
 				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
@@ -1042,6 +1051,7 @@
 				4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */,
 				4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */,
 				4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */,
+				4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
 				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
 				4F12716126EDDD5D007E6A7B /* Bombs_rarityRanks.json in Resources */,
@@ -1063,6 +1073,7 @@
 				4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */,
 				4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
+				4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */,
 				4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */,
 				4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */,
 				4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */,
@@ -1136,6 +1147,7 @@
 				4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */,
 				4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
@@ -1438,7 +1450,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1465,7 +1477,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

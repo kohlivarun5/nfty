@@ -60,7 +60,7 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"Doodles",baseUri:"ipfs://QmZCsdZ616bmjqrGM44MggF4CjVaTmVMa7baLG55WgGHCR/0000"), // TODO
+      name:"Doodles",baseUri:"ipfs://QmPMc4tcBsMqLRuCQtPmPe84bpSjrC3Ky7t3JWuHXYB4aS/"), // TODO
     firstIndex:0,
     lastIndex:9999
   )
@@ -115,9 +115,10 @@ try? downloaders.forEach { downloader in
         let fileName = getImageFileName(collectionName,UInt(tokenId)).path
         let attrFileName = getAttributesFileName(collectionName,UInt(tokenId)).path
         let p =
-          fileManager.fileExists(atPath:fileName)
-          && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
-          && fileManager.fileExists(atPath:attrFileName)
+          // fileManager.fileExists(atPath:fileName)
+          // && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
+        //  &&
+        fileManager.fileExists(atPath:attrFileName)
           ? Promise.value(tokenId+parallelCount)
           : saveToken(tokenId).map { tokenId + parallelCount }
         return p.map { index in
