@@ -71,7 +71,7 @@ struct TokenTradeActions: View {
             .foregroundColor(.secondary)
             .italic()
           Spacer()
-          UsdText(wei: bidPrice,fontWeight:.semibold)
+          UsdEthHText(wei: bidPrice,fontWeight:.semibold)
           Spacer()
         }
         .font(.title3)
@@ -85,7 +85,7 @@ struct TokenTradeActions: View {
             .foregroundColor(.secondary)
             .italic()
           Spacer()
-          UsdText(wei: askPrice,fontWeight:.semibold)
+          UsdEthHText(wei: askPrice,fontWeight:.semibold)
           Spacer()
         }
         .font(.title3)
@@ -102,7 +102,7 @@ struct TokenTradeActions: View {
                 .italic()
                 .foregroundColor(.secondary)
                 .padding(.bottom,1)
-              UsdText(wei: bidPrice,fontWeight:.semibold)
+              UsdEthHText(wei: bidPrice,fontWeight:.semibold)
             }
             Spacer()
           }
@@ -114,7 +114,7 @@ struct TokenTradeActions: View {
                 .italic()
                 .foregroundColor(.secondary)
                 .padding(.bottom,1)
-              UsdText(wei: askPrice,fontWeight:.semibold)
+              UsdEthHText(wei: askPrice,fontWeight:.semibold)
             }
             Spacer()
           }

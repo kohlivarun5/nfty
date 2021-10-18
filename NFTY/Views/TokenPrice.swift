@@ -92,7 +92,7 @@ struct TokenPriceKnown : View {
         .padding([.top,.bottom],2)
     case (.some(let wei),.none):
       HStack {
-        UsdText(wei:wei,fontWeight:.semibold)
+        UsdEthVText(wei:wei,fontWeight:.semibold)
           .foregroundColor(color(self.color))
         Image(systemName: TradeEventIcon.systemName(info.type))
           .font(.caption2)
