@@ -241,7 +241,7 @@ struct NftDetail: View {
               sample: sample,
               themeColor: themeColor,
               themeLabelColor: themeLabelColor)
-              // .preferredColorScheme(.dark)
+              .preferredColorScheme(.dark)
               .accentColor(.orange)
            }
     )

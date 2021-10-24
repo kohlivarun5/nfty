@@ -42,7 +42,7 @@ struct WalletOverview: View {
                   }.catch { print($0) }
               }
           case .some(let wei):
-            UsdText(wei:wei.quantity,fontWeight: .semibold)
+            UsdEthHText(wei:wei.quantity,fontWeight: .semibold)
               .font(.title3)
               .foregroundColor(.secondary)
           }
@@ -163,7 +163,7 @@ struct WalletTokensView: View {
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)
-            // .preferredColorScheme(.dark)
+              .preferredColorScheme(.dark)
               .accentColor(.orange)
           }
         }

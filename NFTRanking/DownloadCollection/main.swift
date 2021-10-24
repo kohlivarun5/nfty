@@ -19,12 +19,12 @@ struct Downloader {
 
 let downloaders = [
   /*
-  Downloader(
-    collection:IpfsDownloader(
-      name:"0N1 Force",baseUri:"ipfs://QmXgSuLPGuxxRuAana7JdoWmaS25oAcXv3x2pYMN9kVfg3"),
-    firstIndex:1,
-    lastIndex:7777
-  ),
+   Downloader(
+   collection:IpfsDownloader(
+   name:"0N1 Force",baseUri:"ipfs://QmXgSuLPGuxxRuAana7JdoWmaS25oAcXv3x2pYMN9kVfg3"),
+   firstIndex:1,
+   lastIndex:7777
+   ),
    Downloader(
    collection:IpfsDownloader(
    name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
@@ -37,13 +37,13 @@ let downloaders = [
    firstIndex:0,
    lastIndex:10761
    ),
-
-  Downloader(
-    collection:IpfsDownloader(
-      name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
-    firstIndex:1,
-    lastIndex:10000
-  ),
+   
+   Downloader(
+   collection:IpfsDownloader(
+   name:"DJENERATES",baseUri:"https://ipfs.io/ipfs/QmRPGJWkqdF9hhqrNjwGW7tuFHduSrtoeDA2PtnU65HYjX"),
+   firstIndex:1,
+   lastIndex:10000
+   ),
    Downloader(
    collection:IpfsDownloader(
    name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
@@ -51,16 +51,16 @@ let downloaders = [
    lastIndex:10000
    )
    
-  Downloader(
-    collection:IpfsDownloader(
-      name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
-    firstIndex:0,
-    lastIndex:10000
-  ),
+   Downloader(
+   collection:IpfsDownloader(
+   name:"MutantApes",baseUri:"https://boredapeyachtclub.com/api/mutants"),
+   firstIndex:0,
+   lastIndex:10000
+   ),
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"JungleFreaks",baseUri:"ipfs://QmZCsdZ616bmjqrGM44MggF4CjVaTmVMa7baLG55WgGHCR/0000"), // TODO
+      name:"FRWC",baseUri:"ipfs://QmfUgAKioFE8taS41a2XEjYFrkbfpVyXYRt7c6iqTZVy9G/"), // TODO
     firstIndex:0,
     lastIndex:9999
   )
@@ -115,11 +115,12 @@ try? downloaders.forEach { downloader in
         let fileName = getImageFileName(collectionName,UInt(tokenId)).path
         let attrFileName = getAttributesFileName(collectionName,UInt(tokenId)).path
         let p =
-          fileManager.fileExists(atPath:fileName)
-          && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
-          && fileManager.fileExists(atPath:attrFileName)
-          ? Promise.value(tokenId+parallelCount)
-          : saveToken(tokenId).map { tokenId + parallelCount }
+        // fileManager.fileExists(atPath:fileName)
+        //&& (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
+        // &&
+        fileManager.fileExists(atPath:attrFileName)
+        ? Promise.value(tokenId+parallelCount)
+        : saveToken(tokenId).map { tokenId + parallelCount }
         return p.map { index in
           print("Done \(index)")
           return index

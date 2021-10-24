@@ -66,6 +66,7 @@ struct UsdEthVText: View {
   
   let wei:BigUInt
   let fontWeight : Font.Weight?
+  let alignment : HorizontalAlignment
   var body: some View {
     ObservedPromiseView(
       data: spot,
@@ -76,7 +77,7 @@ struct UsdEthVText: View {
           Text(EthString(wei: wei))
             .fontWeight(fontWeight)
         case .some(let rate):
-          VStack(alignment:.trailing) {
+          VStack(alignment:alignment) {
             Text(UsdString(wei: wei, rate:rate))
               .fontWeight(fontWeight)
             Text(EthString(wei: wei))
