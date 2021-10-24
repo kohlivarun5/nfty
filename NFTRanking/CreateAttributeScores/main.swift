@@ -7,7 +7,7 @@
 
 import Foundation
 
-let collectionName = "Doodles"
+let collectionName = "FRWC"
 
 let isFull = true
 let firstIndex = 0

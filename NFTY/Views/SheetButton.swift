@@ -23,7 +23,7 @@ struct SheetButton<ButtonView,SheetView> : View where ButtonView:View, SheetView
       .sheet(isPresented: $showSheet,
              content: {
               sheetContent()
-                // .preferredColorScheme(.dark)
+                .preferredColorScheme(.dark)
                 .accentColor(.orange)
              }
       )

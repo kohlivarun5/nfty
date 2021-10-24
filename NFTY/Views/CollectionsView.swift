@@ -86,7 +86,7 @@ struct CollectionsView: View {
     .sheet(isPresented: $showAddFavSheet) {
       AddFavSheet()
         .accentColor(.orange)
-        // .preferredColorScheme(.dark)
+        .preferredColorScheme(.dark)
     }
   }
 }

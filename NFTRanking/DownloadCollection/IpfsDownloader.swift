@@ -84,6 +84,10 @@ struct IpfsDownloader {
       
       return Promise { seal in
         
+        seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
+        
+        /*
+        
         var uri = uriData.image
         uri =
           ipfsHost.map {
@@ -114,6 +118,7 @@ struct IpfsDownloader {
             seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
           }
         }).resume()
+         */
       }
     }
   }

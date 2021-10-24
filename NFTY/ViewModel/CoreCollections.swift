@@ -495,12 +495,12 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil/*SimilarTokensGetter(
+      similarTokens : SimilarTokensGetter(
         label:"Wizards",
         nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
-        propertiesJsonFileName:"Doodles_attributeScores.json"
-      )*/,
-      rarityRanking : nil // RarityRankingImpl(load("Doodles_attributeRanks.json"))
+        propertiesJsonFileName:"FRWC_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("FRWC_attributeRanks.json"))
     ),
     contract:FRWC_Contract),
   
