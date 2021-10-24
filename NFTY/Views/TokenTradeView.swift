@@ -55,11 +55,14 @@ struct TokenTradeView: View {
               DappLink(destination: DappLink.openSeaPath(nft: nft))
             }
             .font(.footnote)
+            
+            /*
             rank.map {
               Text("RarityRank: \($0)")
                 .font(.footnote)
                 .foregroundColor(.secondaryLabel)
             }
+             */
             
             floorPrice.map { floor in
               Text("Floor Price: \(ethFormatter.string(for:floor)!)")
