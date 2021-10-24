@@ -53,6 +53,8 @@ let JUNGLE_FREAKS_Contract = IpfsCollectionContract(name: "JungleFreaks",address
 
 let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
 
+let FRWC_Contract = IpfsCollectionContract(name: "FRWC",address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42")
+
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
@@ -483,6 +485,24 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Doodles_attributeRanks.json"))
     ),
     contract:DOODLES_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:FRWC_Contract.contractAddressHex,
+      sample:"SAMPLE_FRWC",
+      name:FRWC_Contract.name,
+      webLink: URL(string:"https://www.forgottenrunes.com/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil/*SimilarTokensGetter(
+        label:"Wizards",
+        nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
+        propertiesJsonFileName:"Doodles_attributeScores.json"
+      )*/,
+      rarityRanking : nil // RarityRankingImpl(load("Doodles_attributeRanks.json"))
+    ),
+    contract:FRWC_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
