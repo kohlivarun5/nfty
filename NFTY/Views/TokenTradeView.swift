@@ -27,6 +27,8 @@ struct TokenTradeView: View {
   let height : CGFloat = 240
   @State var rank : UInt? = nil
   
+  @State var floorPrice : Double?
+  
   var body: some View {
     VStack {
       
@@ -58,6 +60,13 @@ struct TokenTradeView: View {
                 .font(.footnote)
                 .foregroundColor(.secondaryLabel)
             }
+            
+            floorPrice.map { floor in
+              Text("Floor Price: \(ethFormatter.string(for:floor)!)")
+                .font(.footnote)
+                .foregroundColor(.secondaryLabel)
+            }
+            
           }
           Spacer()
           TokenPrice(price:price,color:.label)
@@ -111,6 +120,10 @@ struct TokenTradeView: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
+      OpenSeaApi.getAssetInfo(contract:nft.address,tokenId:nft.tokenId)
+        .done(on:.main) { info in
+          self.floorPrice = info.collection.stats.floor_price
+        }.catch { print($0) }
     }
   }
 }

@@ -258,6 +258,47 @@ struct OpenSeaApi {
       }
   }
   
+  struct AssetInfo : Codable {
+    
+    struct Stats : Codable {
+      let floor_price : Double
+      
+    }
+    
+    struct Collection : Codable {
+      let stats : Stats
+    }
+    
+    let collection : Collection
+    
+  }
+  
+  static func getAssetInfo(contract:String,tokenId:UInt) -> Promise<AssetInfo> {
+    
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/api/v1/asset/\(contract)/\(tokenId)"
+    
+    return Promise { seal in
+      var request = URLRequest(url:components.url!)
+      
+      request.httpMethod = "GET"
+      
+      print("calling \(request.url!)")
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          seal.fulfill(try jsonDecoder.decode(AssetInfo.self, from: data!))
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      }).resume()
+    }
+  }
+  
 }
 
 
