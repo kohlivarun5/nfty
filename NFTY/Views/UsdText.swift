@@ -31,11 +31,11 @@ func UsdString(wei:BigUInt,rate:Double) -> String {
   return formatter.string(for:amount)!
 }
 
+var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:nil)
+
 func EthString(wei:BigUInt) -> String {
   return ethFormatter.string(for:(Double(wei) / 1e18))!
 }
-
-var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:nil)
 
 struct UsdText: View {
   
