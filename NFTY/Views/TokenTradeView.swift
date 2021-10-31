@@ -41,10 +41,10 @@ struct TokenTradeView: View {
           size:.small,
           favButton:.none
         )
-        .frame(height:height)
-        .padding(.top,isSheet ? 10 : 30)
-        .padding(.bottom,10)
-        .background(themeColor)
+          .frame(height:height)
+          .padding(.top,isSheet ? 10 : 30)
+          .padding(.bottom,10)
+          .background(themeColor)
         
         HStack {
           VStack(alignment: .leading) {
@@ -57,10 +57,9 @@ struct TokenTradeView: View {
             .font(.footnote)
             
             Text(
-              floorPrice.map { floor
-                "Floor Price: \(ethFormatter.string(for:floor)!)"
-              } ?? ""
-            )
+              floorPrice.map {
+                "Floor Price: \(ethFormatter.string(for:$0)!)"
+              } ?? "" )
               .font(.footnote)
               .foregroundColor(.secondaryLabel)
             
