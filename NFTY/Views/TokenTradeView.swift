@@ -56,19 +56,14 @@ struct TokenTradeView: View {
             }
             .font(.footnote)
             
-            /*
-            rank.map {
-              Text("RarityRank: \($0)")
-                .font(.footnote)
-                .foregroundColor(.secondaryLabel)
-            }
-             */
+            Text(
+              floorPrice.map { floor
+                "Floor Price: \(ethFormatter.string(for:floor)!)"
+              } ?? ""
+            )
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
             
-            floorPrice.map { floor in
-              Text("Floor Price: \(ethFormatter.string(for:floor)!)")
-                .font(.footnote)
-                .foregroundColor(.secondaryLabel)
-            }
             
           }
           Spacer()
