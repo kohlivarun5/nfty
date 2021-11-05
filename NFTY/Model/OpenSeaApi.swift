@@ -105,6 +105,9 @@ struct OpenSeaApi {
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
         do {
+          
+          if let e = error { return seal.reject(e) }
+          
           let jsonDecoder = JSONDecoder()
           // print(data)
           var orders = try jsonDecoder.decode(Orders.self, from: data!)
@@ -290,6 +293,7 @@ struct OpenSeaApi {
         
         print("calling \(request.url!)")
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          if let e = error { return seal.reject(e) }
           do {
             let jsonDecoder = JSONDecoder()
             // print(data)
@@ -325,6 +329,7 @@ struct OpenSeaApi {
           
           print("calling \(request.url!)")
           URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            if let e = error { return seal.reject(e) }
             do {
               let jsonDecoder = JSONDecoder()
               // print(data)
