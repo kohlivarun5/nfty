@@ -20,19 +20,19 @@ class UrlCollectionContract : ContractInterface {
   
   let name : String
   let contractAddressHex : String
-  let baseUri : String
+  let tokenUri : (UInt) -> String
   var ethContract : Erc721Contract
   
   var tradeActions: TokenTradeInterface?
   
-  init(name:String,address:String,baseUri:String) {
+  init(name:String,address:String,tokenUri:@escaping (UInt) -> String) {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
     self.name = name
     self.contractAddressHex = address
     self.ethContract = Erc721Contract(address:address)
-    self.baseUri = baseUri
+    self.tokenUri = tokenUri
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
   }
   
@@ -50,7 +50,15 @@ class UrlCollectionContract : ContractInterface {
   
   func image(_ tokenId:BigUInt) -> Promise<Data?> {
     return Promise { seal in
-      var request = URLRequest(url:URL(string:"\(self.baseUri)\(tokenId)")!)
+      var request = URLRequest(
+        url:URL(
+          string:
+            tokenUri(UInt(tokenId))
+            .replacingOccurrences(
+              of: "ipfs://",
+              with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
+        )!)
+      
       request.httpMethod = "GET"
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in

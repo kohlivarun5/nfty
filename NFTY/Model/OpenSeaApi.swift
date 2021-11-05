@@ -8,7 +8,7 @@
 import Foundation
 import Web3
 import PromiseKit
-
+import Cache
 
 let ETH_ADDRESS = "0x0000000000000000000000000000000000000000"
 
@@ -258,44 +258,95 @@ struct OpenSeaApi {
       }
   }
   
-  struct AssetInfo : Codable {
-    
-    struct Stats : Codable {
-      let floor_price : Double
-      
-    }
-    
-    struct Collection : Codable {
-      let stats : Stats
-    }
-    
-    let collection : Collection
-    
+  struct CollectionInfo : Codable {
+    let slug : String?
   }
   
-  static func getAssetInfo(contract:String,tokenId:UInt) -> Promise<AssetInfo> {
-    
-    var components = URLComponents()
-    components.scheme = "https"
-    components.host = "api.opensea.io"
-    components.path = "/api/v1/asset/\(contract)/\(tokenId)"
+  struct Stats : Codable {
+    let floor_price : Double
+  }
+  
+  static private var collectionCache = try! DiskStorage<String, CollectionInfo>(
+    config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
+  
+  static func getCollectionStats(contract:String) -> Promise<Stats?> {
     
     return Promise { seal in
-      var request = URLRequest(url:components.url!)
       
-      request.httpMethod = "GET"
+      switch(try? collectionCache.object(forKey: contract)) {
+      case .some(let info):
+        seal.fulfill(info)
+      case .none:
+        
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.opensea.io"
+        components.path = "/api/v1/asset_contract/\(contract)"
+        
+        var request = URLRequest(url:components.url!)
+        
+        request.httpMethod = "GET"
+        
+        print("calling \(request.url!)")
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          do {
+            let jsonDecoder = JSONDecoder()
+            // print(data)
+            struct Data : Codable {
+              let collection : CollectionInfo
+            }
+            
+            let info = try jsonDecoder.decode(Data.self, from: data!).collection
+            try collectionCache.setObject(info,forKey: contract)
+            
+            seal.fulfill(info)
+          } catch {
+            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+            seal.reject(NSError(domain:"", code:404, userInfo:nil))
+          }
+        }).resume()
+      }
+    }
+    .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
       
-      print("calling \(request.url!)")
-      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-        do {
-          let jsonDecoder = JSONDecoder()
-          // print(data)
-          seal.fulfill(try jsonDecoder.decode(AssetInfo.self, from: data!))
-        } catch {
-          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+      Promise { seal in
+        
+        collectionInfo.slug.map { slug in
+          
+          var components = URLComponents()
+          components.scheme = "https"
+          components.host = "api.opensea.io"
+          components.path = "/api/v1/collection/\(slug)"
+          
+          var request = URLRequest(url:components.url!)
+          
+          request.httpMethod = "GET"
+          
+          print("calling \(request.url!)")
+          URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            do {
+              let jsonDecoder = JSONDecoder()
+              // print(data)
+              
+              struct Data : Codable {
+                
+                struct Collection : Codable {
+                  let stats : Stats
+                }
+                
+                let collection : Collection
+              }
+              
+              let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
+              seal.fulfill(info)
+            } catch {
+              print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+              seal.reject(NSError(domain:"", code:404, userInfo:nil))
+            }
+          }).resume()
         }
-      }).resume()
+      }
     }
   }
   
