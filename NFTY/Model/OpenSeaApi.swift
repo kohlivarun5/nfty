@@ -180,8 +180,88 @@ struct OpenSeaApi {
       }
   }
   
-  static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
-    OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
+  
+  static func getAssetBidAsk(contract:String,tokenId:UInt) -> Promise<[AssetOrder]> {
+    
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/api/v1/asset/\(contract)/\(tokenId)"
+ 
+    struct _Order: Codable {
+      let current_price : String
+      let payment_token : String
+      let side : Side
+      let expiration_time : UInt
+    }
+    
+    struct _Asset : Codable {
+      let orders : [_Order]
+    }
+    
+    
+    return Promise { seal in
+      var request = URLRequest(url:components.url!)
+      
+      request.httpMethod = "GET"
+      
+      print("calling \(request.url!)")
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          
+          if let e = error { return seal.reject(e) }
+          
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          let asset = try jsonDecoder.decode(_Asset.self, from: data!)
+          
+          //print(orders)
+          // remove duplicates, we request ordered by highest first
+          
+          var dict : [String:_Order] = [:]
+          // print(orders)
+          asset.orders.forEach { order in
+            
+            let key = "\(contract):\(tokenId):\(order.side)"
+            dict[key] = dict[key] ??
+            asset.orders.filter {
+              "\(contract):\(tokenId):\($0.side)" == key
+            }.sorted {
+              switch($0.side) {
+              case .buy:
+                return $0.payment_token == $1.payment_token && Double($0.current_price)! > Double($1.current_price)!
+              case .sell:
+                return $0.payment_token == $1.payment_token && Double($0.current_price)! < Double($1.current_price)!
+              }
+            }.first!
+          }
+          
+          let orders = Orders(orders: dict.map {
+            AssetOrder(
+              asset:Asset(
+                token_id:String(tokenId),
+                asset_contract:AssetContract(address:contract)),
+              current_price : $1.current_price,
+              payment_token : $1.payment_token,
+              side : $1.side,
+              expiration_time : $1.expiration_time
+            )
+          })
+              
+          seal.fulfill(orders.orders)
+          
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      }).resume()
+    }
+  }
+  
+  private static func getBidAskImpl(contract:String,tokenId:UInt) -> Promise<BidAsk> {
+    // OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
+    OpenSeaApi.getAssetBidAsk(contract: contract, tokenId: tokenId)
+    
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
         
         let ask = $0.first { $0.side == .sell }.flatMap { (order:AssetOrder) -> AskInfo? in
@@ -207,6 +287,27 @@ struct OpenSeaApi {
       }
   }
   
+  static let bidAskCache = try! DiskStorage<String, BidAsk>(
+    config: DiskConfig(name: "OpenSeaApi.bidAskCache",expiry: .seconds(TimeInterval(60))),
+    transformer: TransformerFactory.forCodable(ofType: BidAsk.self))
+  
+  
+  static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
+    try? bidAskCache.removeExpiredObjects()
+    
+    let key = "\(contract):\(tokenId)"
+    
+    switch(try? bidAskCache.object(forKey:key)) {
+    case .some(let val):
+      return Promise.value(val)
+    case .none:
+      return getBidAskImpl(contract: contract, tokenId: tokenId)
+        .map { object in
+          try! bidAskCache.setObject(object, forKey: key);
+          return object
+        }
+    }
+  }
   
   static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
