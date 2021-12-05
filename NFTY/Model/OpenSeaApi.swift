@@ -180,8 +180,7 @@ struct OpenSeaApi {
       }
   }
   
-  
-  static func getAssetBidAsk(contract:String,tokenId:UInt) -> Promise<[AssetOrder]> {
+  private static func getAssetBidAskImpl(contract:String,tokenId:UInt) -> Promise<Orders> {
     
     var components = URLComponents()
     components.scheme = "https"
@@ -248,7 +247,7 @@ struct OpenSeaApi {
             )
           })
               
-          seal.fulfill(orders.orders)
+          seal.fulfill(orders)
           
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
@@ -258,7 +257,28 @@ struct OpenSeaApi {
     }
   }
   
-  private static func getBidAskImpl(contract:String,tokenId:UInt) -> Promise<BidAsk> {
+  static let assetBidAskCache = try! DiskStorage<String, Orders>(
+    config: DiskConfig(name: "OpenSeaApi.bidAskCache",expiry: .seconds(TimeInterval(30))),
+    transformer: TransformerFactory.forCodable(ofType: Orders.self))
+  
+  static func getAssetBidAsk(contract:String,tokenId:UInt) -> Promise<[AssetOrder]> {
+    try? assetBidAskCache.removeExpiredObjects()
+    
+    let key = "\(contract):\(tokenId)"
+    
+    switch(try? assetBidAskCache.object(forKey:key)) {
+    case .some(let val):
+      return Promise.value(val.orders)
+    case .none:
+      return getAssetBidAskImpl(contract: contract, tokenId: tokenId)
+        .map { object in
+          try! assetBidAskCache.setObject(object, forKey: key);
+          return object.orders
+        }
+    }
+  }
+  
+  static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
     // OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: nil)
     OpenSeaApi.getAssetBidAsk(contract: contract, tokenId: tokenId)
     
@@ -285,28 +305,6 @@ struct OpenSeaApi {
         }
         return BidAsk(bid: bid, ask: ask)
       }
-  }
-  
-  static let bidAskCache = try! DiskStorage<String, BidAsk>(
-    config: DiskConfig(name: "OpenSeaApi.bidAskCache",expiry: .seconds(TimeInterval(60))),
-    transformer: TransformerFactory.forCodable(ofType: BidAsk.self))
-  
-  
-  static func getBidAsk(contract:String,tokenId:UInt) -> Promise<BidAsk> {
-    try? bidAskCache.removeExpiredObjects()
-    
-    let key = "\(contract):\(tokenId)"
-    
-    switch(try? bidAskCache.object(forKey:key)) {
-    case .some(let val):
-      return Promise.value(val)
-    case .none:
-      return getBidAskImpl(contract: contract, tokenId: tokenId)
-        .map { object in
-          try! bidAskCache.setObject(object, forKey: key);
-          return object
-        }
-    }
   }
   
   static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {

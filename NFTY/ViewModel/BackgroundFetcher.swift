@@ -62,9 +62,11 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       }
       
       if (!tokenIds.isEmpty) {
-        orders.append(
-          OpenSeaApi.getOrders(contract:address,tokenIds:tokenIds,user:nil,side:OpenSeaApi.Side.sell)
-            .map { (collection,$0) }
+        orders.append(contentsOf:
+          tokenIds.map {
+            OpenSeaApi.getAssetBidAsk(contract: address, tokenId:$0)
+            .map { (collection,$0.filter { $0.side == .sell }) }
+          }
         )
       }
     }
@@ -235,6 +237,8 @@ func performBackgroundFetch() -> Promise<Bool> {
   // Dispatch to multiple fetchers
   
   EthSpot.getLiveRate().then { spot in
+        fetchFavoriteSales(spot)
+    /*
     fetchOffers(spot)
       .then { foundOffers in
         fetchFavoriteSales(spot)
@@ -242,5 +246,6 @@ func performBackgroundFetch() -> Promise<Bool> {
             return foundOffers || foundFavs
           }
       }
+     */
   }
 }

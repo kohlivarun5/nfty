@@ -10,15 +10,15 @@ import PromiseKit
 import BigInt
 import Web3
 
-struct BidInfo : Codable {
+struct BidInfo {
   let wei : BigUInt
 }
 
-struct AskInfo : Codable {
+struct AskInfo {
   let wei : BigUInt
 }
 
-struct BidAsk : Codable {
+struct BidAsk {
   let bid : BidInfo?
   let ask : AskInfo?
 }
