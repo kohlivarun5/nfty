@@ -467,12 +467,13 @@ class CryptoKittiesAuction : ContractInterface {
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     self.getOwnerKitties(address: address)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { (kitties:KittiesByWallet) -> [Void] in
-        return kitties.kitties.map { kitty in
-          response(self.getToken(kitty.id))
-        }
-      }.catch {
+      .done(on:DispatchQueue.global(qos:.userInteractive)) { (kitties:KittiesByWallet) in
+        let _ = kitties.kitties.map { kitty in response(self.getToken(kitty.id)) }
+        onDone()
+      }
+      .catch {
         print ($0)
+        onDone()
       }
   }
   

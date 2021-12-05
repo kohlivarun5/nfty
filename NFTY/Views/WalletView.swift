@@ -57,6 +57,7 @@ struct WalletView: View {
             ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy,emptyMessage:"No Active Offers")
           }
           
+          /* TODO : Opensea Orders
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
                   set: { tag in
@@ -75,6 +76,7 @@ struct WalletView: View {
           .padding([.trailing,.leading])
           .padding(.top,5)
           .padding(.bottom,7)
+           */
           
         }
         

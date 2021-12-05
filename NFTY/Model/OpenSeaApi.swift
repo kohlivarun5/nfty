@@ -74,14 +74,14 @@ struct OpenSeaApi {
       URLQueryItem(name: "order_direction", value: "desc"),
     ]
     
-    contract.map {
-      components.queryItems?.append(URLQueryItem(name: "asset_contract_address", value: $0))
-    }
-    
     tokenIds.map {
       $0.forEach {
         components.queryItems?.append(URLQueryItem(name: "token_ids", value: String($0)))
       }
+    }
+    
+    contract.map {
+      components.queryItems?.append(URLQueryItem(name: "asset_contract_address", value: $0))
     }
     
     switch(user) {
@@ -138,7 +138,7 @@ struct OpenSeaApi {
           seal.fulfill(orders.orders)
           
         } catch {
-          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          print("JSON Serialization error when calling \(request.url!) :\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.reject(NSError(domain:"", code:404, userInfo:nil))
         }
       }).resume()
@@ -250,8 +250,8 @@ struct OpenSeaApi {
           seal.fulfill(orders)
           
         } catch {
-          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+          print("JSON Serialization error when calling \(request.url!) :\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.fulfill(Orders(orders: []))
         }
       }).resume()
     }
@@ -405,7 +405,7 @@ struct OpenSeaApi {
             
             seal.fulfill(info)
           } catch {
-            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+            print("JSON Serialization error when calling \(request.url!) :\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
           }
         }).resume()
@@ -445,7 +445,7 @@ struct OpenSeaApi {
               let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
               seal.fulfill(info)
             } catch {
-              print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+              print("JSON Serialization error when calling \(request.url!) :\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
             }
           }).resume()

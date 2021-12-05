@@ -63,10 +63,10 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       
       if (!tokenIds.isEmpty) {
         orders.append(contentsOf:
-          tokenIds.map {
-            OpenSeaApi.getAssetBidAsk(contract: address, tokenId:$0)
+                        tokenIds.map {
+          OpenSeaApi.getAssetBidAsk(contract: address, tokenId:$0)
             .map { (collection,$0.filter { $0.side == .sell }) }
-          }
+        }
         )
       }
     }
@@ -152,9 +152,22 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
     return Promise.value(false)
   }
   
-  let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
-  return orders
+  // TODO : Opensea Orders
+  // let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
+  // return orders
+  //  .then { orders -> Promise<Bool> in
+  
+  return getOwnerTokensPromise(address)
+    .then { tokens -> Promise<[OpenSeaApi.AssetOrder]> in
+      print("Got \(tokens.count) tokens");
+      return when(fulfilled: tokens.map { (token:NFTWithLazyPrice) in
+        OpenSeaApi.getAssetBidAsk(contract: token.nft.address, tokenId: token.nft.tokenId)
+      })
+        .map { $0.flatMap { $0 } }
+        .map { $0.filter { $0.side == .buy } }
+    }
     .then { orders -> Promise<Bool> in
+      
       
       // TODO : Better cache checks
       let offersCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
@@ -237,8 +250,6 @@ func performBackgroundFetch() -> Promise<Bool> {
   // Dispatch to multiple fetchers
   
   EthSpot.getLiveRate().then { spot in
-        fetchFavoriteSales(spot)
-    /*
     fetchOffers(spot)
       .then { foundOffers in
         fetchFavoriteSales(spot)
@@ -246,6 +257,5 @@ func performBackgroundFetch() -> Promise<Bool> {
             return foundOffers || foundFavs
           }
       }
-     */
   }
 }

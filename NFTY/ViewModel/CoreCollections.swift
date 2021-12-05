@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Web3
+import PromiseKit
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
@@ -298,10 +299,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
-       label:"Dads",
-       nearestTokensFileName:"Dads_nearestTokens.json",
-       propertiesJsonFileName:"Dads_attributeScores.json"
-       ),
+        label:"Dads",
+        nearestTokensFileName:"Dads_nearestTokens.json",
+        propertiesJsonFileName:"Dads_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
@@ -370,10 +371,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : nil/*SimilarTokensGetter(
-       label:"Birds",
-       nearestTokensFileName:"BirdHouse_nearestTokens.json",
-       propertiesJsonFileName:"BirdHouse_attributeScores.json"
-       )*/,
+                          label:"Birds",
+                          nearestTokensFileName:"BirdHouse_nearestTokens.json",
+                          propertiesJsonFileName:"BirdHouse_attributeScores.json"
+                          )*/,
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:ON1_Force_Contract),
@@ -632,3 +633,22 @@ func getOwnerTokens(_ address:EthereumAddress) -> NftOwnerTokens {
     return OwnerTokensCache[address]!
   }
 }
+
+func getOwnerTokensPromise(_ address:EthereumAddress) -> Promise<[NFTWithLazyPrice]> {
+  
+  let promises =
+  COLLECTIONS.map { collection -> Promise<[NFTWithLazyPrice]> in
+    var tokens : [NFTWithLazyPrice] = []
+    return Promise { seal in
+      collection.data.contract.getOwnerTokens(
+        address:address,
+        onDone: { seal.fulfill(tokens) }
+      ) { token in tokens.append(token) }
+    }
+  }
+  
+  return when(fulfilled:promises).map { return $0.flatMap { $0 } }
+}
+
+
+
