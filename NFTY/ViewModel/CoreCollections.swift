@@ -17,9 +17,15 @@ let baycContract = IpfsCollectionContract(name:"BAYC",address: "0xBC4CA0EdA7647A
 let fameLadyContract = FameLadySquad_Contract()
 let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers",address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
 let CROWNS_Contract = IpfsCollectionContract(name: "Crowns",address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
-let CCB_Contract = UrlCollectionContract(name: "NFTokers", address: "0x80a4B80C653112B789517eb28aC111519b608b19", baseUri: "https://api.cryptocannabisclub.com/image/")
+let CCB_Contract = UrlCollectionContract(
+  name: "NFTokers",
+  address: "0x80a4B80C653112B789517eb28aC111519b608b19",
+  tokenUri: { "https://api.cryptocannabisclub.com/image/\($0)"})
 
-let Birdhouse_Contract = UrlCollectionContract(name: "TheBirdHouse", address: "0x149915F1FD17fe5899ADac2542Be90690eD8A526", baseUri: "https://tbh-data.s3.amazonaws.com/final/images/")
+let Birdhouse_Contract = UrlCollectionContract(
+  name: "TheBirdHouse",
+  address: "0x149915F1FD17fe5899ADac2542Be90690eD8A526",
+  tokenUri: { "https://tbh-data.s3.amazonaws.com/final/images/\($0)"})
 
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
@@ -39,7 +45,10 @@ let WABC_Contract = IpfsCollectionContract(name: "Wicked Apes",address: "0xbe6e3
 
 let MAYC_Contract = IpfsCollectionContract(name: "MAYC",address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
 
-let KILLAZ_Contract = UrlCollectionContract(name: "KILLAz",address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",baseUri: "https://killaznft.com/api/images/")
+let KILLAZ_Contract = UrlCollectionContract(
+  name: "KILLAz",
+  address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",
+  tokenUri: { "https://killaznft.com/api/images/\($0)"})
 
 let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2352b1D2e185560494D5e577F9D3c238b78C5")
 
@@ -54,6 +63,11 @@ let JUNGLE_FREAKS_Contract = IpfsCollectionContract(name: "JungleFreaks",address
 let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
 
 let FRWC_Contract = IpfsCollectionContract(name: "FRWC",address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42")
+
+let PHUNKS_Contract = UrlCollectionContract(
+  name: "Phunks",
+  address: "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402",
+  tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"})
 
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
@@ -503,6 +517,20 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("FRWC_attributeRanks.json"))
     ),
     contract:FRWC_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:PHUNKS_Contract.contractAddressHex,
+      sample:"SAMPLE_PHUNK",
+      name:PHUNKS_Contract.name,
+      webLink: URL(string:"https://www.cryptophunks.com")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : SimilarTokensGetter(label:"Phunks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
+      rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
+    ),
+    contract:PHUNKS_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

@@ -297,6 +297,7 @@ class CryptoKittiesAuction : ContractInterface {
       
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        if let e = error { return seal.reject(e) }
         do {
           let jsonDecoder = JSONDecoder()
           let kitties = try jsonDecoder.decode(KittiesByWallet.self, from: data!)

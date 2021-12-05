@@ -12,11 +12,22 @@ struct DappLink: View {
   @StateObject var userSettings = UserSettings()
   
   static func openSeaPath(nft:NFT) -> URLComponents {
-    var components = URLComponents()
-    components.host = "opensea.io"
-    components.path = "/assets/\(nft.address)/\(nft.tokenId)"
-    components.queryItems = [URLQueryItem(name: "ref", value: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4")]
-    return components
+    
+    if (nft.address == "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402") {
+      
+      var components = URLComponents()
+      components.host = "notlarvalabs.com"
+      components.path = "/market/view/phunk/\(nft.tokenId)"
+      return components
+      
+    } else {
+      
+      var components = URLComponents()
+      components.host = "opensea.io"
+      components.path = "/assets/\(nft.address)/\(nft.tokenId)"
+      components.queryItems = [URLQueryItem(name: "ref", value: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4")]
+      return components
+    }
   }
   
   static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser?) -> URL {
