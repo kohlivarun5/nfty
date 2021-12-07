@@ -16,6 +16,8 @@ let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
 
 struct OpenSeaApi {
   
+  static let API_KEY = "5302eafecee44b198cfa1fb8bfbd5e5d"
+  
   enum Side : Int,Codable {
     case buy = 0
     case sell = 1
@@ -99,6 +101,7 @@ struct OpenSeaApi {
     
     return Promise { seal in
       var request = URLRequest(url:components.url!)
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
       request.httpMethod = "GET"
       
@@ -288,6 +291,7 @@ struct OpenSeaApi {
         components.path = "/api/v1/asset_contract/\(contract)"
         
         var request = URLRequest(url:components.url!)
+        request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
         
         request.httpMethod = "GET"
         
@@ -324,7 +328,8 @@ struct OpenSeaApi {
           components.path = "/api/v1/collection/\(slug)"
           
           var request = URLRequest(url:components.url!)
-          
+          request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+ 
           request.httpMethod = "GET"
           
           print("calling \(request.url!)")
