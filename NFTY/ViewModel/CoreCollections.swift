@@ -64,10 +64,7 @@ let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CA
 
 let FRWC_Contract = IpfsCollectionContract(name: "FRWC",address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42")
 
-let PHUNKS_Contract = UrlCollectionContract(
-  name: "Phunks",
-  address: "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402",
-  tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"})
+let PHUNKS_Contract = PhunksContract()
 
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
