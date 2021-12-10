@@ -83,7 +83,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.yellow,
       themeLabelColor:Color.systemBackground,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Punks",
+        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+        propertiesJsonFileName:"CryptoPunks_attributeScores.json"),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:cryptoPunksContract),
@@ -527,7 +530,11 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Phunks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Phunk",
+        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:PHUNKS_Contract),

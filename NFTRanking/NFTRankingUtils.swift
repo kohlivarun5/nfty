@@ -143,3 +143,8 @@ func loadJSON<T:Decodable>(_ filename:URL) -> T {
   let decoder = JSONDecoder()
   return try! decoder.decode(T.self, from: data)
 }
+
+func loadJSONObject(_ filename:URL) -> [String:Any] {
+  let data = try! Data(contentsOf: filename)
+  return try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String:Any]
+}
