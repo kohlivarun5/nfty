@@ -71,7 +71,7 @@ struct AddFavSheet: View {
               }
             ,
             content: {
-              ForEach(collectionsDict.map{$0}.sorted { $0.0 < $1.0 }, id: \.self.0, content: { (key,collection) in
+              ForEach(collectionsDict.map{$0}.sorted { $0.1.info.name < $1.1.info.name }, id: \.self.0, content: { (key,collection) in
                 Text(collection.info.name)
               })
             }

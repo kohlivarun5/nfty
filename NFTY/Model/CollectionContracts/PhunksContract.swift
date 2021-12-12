@@ -34,8 +34,7 @@ class PhunksContract : ContractInterface {
       ]
       let method = SolidityConstantFunction(name: "phunksOfferedForSale", inputs: inputs, outputs: outputs, handler: self)
       print("calling phunksOfferedForSale")
-      return
-      method.invoke(tokenId).call()
+      return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["isForSale"] as! Bool ? (outputs["minValue"] as? BigUInt).flatMap(priceIfNotZero) : nil
         }
@@ -50,10 +49,10 @@ class PhunksContract : ContractInterface {
         SolidityFunctionParameter(name: "bidder", type: .address),
         SolidityFunctionParameter(name: "value", type: .uint256)
       ]
+      
       let method = SolidityConstantFunction(name: "phunkBids", inputs: inputs, outputs: outputs, handler: self)
       print("calling phunkBids")
-      return
-      method.invoke(tokenId).call()
+      return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["hasBid"] as! Bool ? (outputs["value"] as? BigUInt).flatMap(priceIfNotZero) : nil
         }
