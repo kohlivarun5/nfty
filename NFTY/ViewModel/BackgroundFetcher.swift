@@ -49,10 +49,19 @@ func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL
 func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
   
-  var orders : [Promise<(Collection,[OpenSeaApi.AssetOrder])>] = []
+  struct Order : Codable {
+    let contract_address : String
+    let token_id : UInt
+    let wei : BigUInt
+    let expiration_time : UInt?
+  }
+  
+  
+  var orders : [Promise<(Collection,[Order])>] = []
   
   favorites?.forEach { (address,tokens) in
     collectionsFactory.getByAddress(address).map { collection in
+      
       let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
         if (isFav) {
           return UInt(tokenId)
@@ -62,17 +71,31 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       }
       
       if (!tokenIds.isEmpty) {
-        orders.append(
-          OpenSeaApi.getOrders(contract:address,tokenIds:tokenIds,user:nil,side:OpenSeaApi.Side.sell)
-            .map { (collection,$0) }
-        )
+        
+        switch(collection.data.contract.tradeActions) {
+        case .none:
+          return
+        case .some(let tradeActions):
+          orders.append(
+            tradeActions.getBidAsk(tokenIds)
+              .map { (bidAsks:[(tokenId:UInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
+                (collection,
+                 bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
+                  bidAsk.ask.map {
+                    Order(contract_address: address, token_id: tokenId, wei: $0.wei,expiration_time: $0.expiration_time)
+                  }
+                }
+                )
+              }
+          )
+        }
       }
     }
   }
   
-  let salesCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
-    config: DiskConfig(name: "FavoriteSales.cache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
+  let salesCache = try! DiskStorage<String, Order>(
+    config: DiskConfig(name: "FavoriteSellOrder.cache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: Order.self))
   
   try? salesCache.removeExpiredObjects()
   
@@ -83,46 +106,50 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
           let (collection,orders) = result
           print(orders)
           let promises = orders
-            .compactMap { (order:OpenSeaApi.AssetOrder) -> OpenSeaApi.AssetOrder? in
+            .compactMap { order -> Order? in
               
-              let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
+              let key = "\(order.contract_address):\(order.token_id)"
               
               if let entry = try? salesCache.object(forKey: key) {
                 // Entry in cache, lets compare and clean if needed
-                if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
+                let entry_expiry = entry.expiration_time ?? 0
+                
+                if (entry_expiry != 0
+                    && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
                   try? salesCache.removeObject(forKey: key)
                 }
-                else if (entry.current_price == order.current_price) { return nil }
+                else if (entry.wei == order.wei) { return nil }
               }
               
               try! salesCache.setObject(
                 order,
                 forKey: key,
-                expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+                expiry: order.expiration_time.map { .date(Date(timeIntervalSince1970:Double($0))) }
+              )
               
               return order
             }
             .map { order -> Promise<Void> in
               
-              return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+              return downloadImageToLocalDisk(collection: collection, tokenId: order.token_id)
                 .map { imageUrl in
                   let content = UNMutableNotificationContent()
                   content.title = "Favorite for Sale"
-                  content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-                  let wei = Double(order.current_price).map { BigUInt($0) }
-                  content.body = "On sale for \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+                  content.subtitle = "\(collection.info.name) #\(order.token_id)"
+                  let wei = order.wei
+                  content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
                   // content.sound = UNNotificationSound.default
                   
                   print("ImageUrl=\(String(describing:imageUrl))")
                   
                   imageUrl.map {
-                    content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+                    content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.token_id)", url: $0, options: .none)]
                   }
                   
                   content.userInfo = [
                     "sheetState": "nftTrade",
                     "address" : collection.info.address,
-                    "tokenId" : UInt(order.asset.token_id)!
+                    "tokenId" : order.token_id
                   ]
                   
                   // show this notification five seconds from now

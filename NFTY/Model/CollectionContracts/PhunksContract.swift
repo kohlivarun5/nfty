@@ -15,7 +15,7 @@ class PhunksContract : ContractInterface {
   class EthContract : EthereumContract {
     let eth = web3.eth
     let events : [SolidityEvent] = []
-    let addressHex = "0x3a6aDb264C96258C70681DF32a80dA027baDAB5f"
+    let addressHex = "0xd6c037bE7FA60587e174db7A6710f7635d2971e7"
     var address : EthereumAddress?
     init() {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
@@ -119,11 +119,15 @@ class PhunksContract : ContractInterface {
           ethContract.phunksOfferedForSale(BigUInt(tokenId))
             .map { askPrice in
               return BidAsk(
-                bid:bidPrice.map { BidInfo(wei:$0) },
-                ask:askPrice.map { AskInfo(wei:$0) }
+                bid:bidPrice.map { BidInfo(wei:$0,expiration_time:nil) },
+                ask:askPrice.map { AskInfo(wei:$0,expiration_time:nil) }
               )
             }
         }
+    }
+    
+    func getBidAsk(_ tokenIds: [UInt]) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+      return getBidAskSerial(tokenIds: tokenIds, getter: self.getBidAsk)
     }
   }
   

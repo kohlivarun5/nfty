@@ -238,8 +238,7 @@ class ZunksContract : ContractInterface {
           return when(
             fulfilled:
               Array(0...tokensNum-1).map { index -> Promise<Void> in
-                return
-                self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                return self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
                   .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {

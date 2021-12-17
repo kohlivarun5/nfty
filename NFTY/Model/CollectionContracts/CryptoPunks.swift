@@ -160,11 +160,15 @@ class CryptoPunksContract : ContractInterface {
           ethContract.punksOfferedForSale(BigUInt(tokenId))
             .map { askPrice in
               return BidAsk(
-                bid:bidPrice.map { BidInfo(wei:$0) },
-                ask:askPrice.map { AskInfo(wei:$0) }
+                bid:bidPrice.map { BidInfo(wei:$0,expiration_time:nil) },
+                ask:askPrice.map { AskInfo(wei:$0,expiration_time:nil) }
               )
             }
         }
+    }
+    
+    func getBidAsk(_ tokenIds: [UInt]) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+      return getBidAskSerial(tokenIds: tokenIds, getter: self.getBidAsk)
     }
   }
   

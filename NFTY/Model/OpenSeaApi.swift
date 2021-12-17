@@ -163,7 +163,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return AskInfo(wei: wei)
+              return AskInfo(wei: wei,expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -173,7 +173,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return BidInfo(wei: wei)
+              return BidInfo(wei: wei,expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -191,7 +191,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return AskInfo(wei: wei)
+            return AskInfo(wei: wei,expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -201,7 +201,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return BidInfo(wei: wei)
+            return BidInfo(wei: wei,expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -364,11 +364,17 @@ struct OpenSeaApi {
 
 
 struct OpenSeaTradeApi : TokenTradeInterface {
+  
   var actions: TradeActionsInterface? = nil
   
   let contract : EthereumAddress
   
   func getBidAsk(_ tokenId: UInt) -> Promise<BidAsk> {
     return OpenSeaApi.getBidAsk(contract: contract.hex(eip55: true),tokenId: tokenId)
+  }
+  
+func getBidAsk(_ tokenIds: [UInt]) -> Promise<[(tokenId: UInt, bidAsk: BidAsk)]> {
+    return OpenSeaApi.getBidAsk(contract: contract.hex(eip55: true),tokenIds: tokenIds,side:nil)
+      .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
   }
 }
