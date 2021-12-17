@@ -59,6 +59,7 @@ class TokensByPropertiesObject : ObservableObject {
       self.tokens.append(contentsOf: filtered)
     }
     
+    /*
     let tradeActions = collectionsFactory.getByAddress(contract.contractAddressHex)!.data.contract.tradeActions!
     
     tradeActions.getBidAsk(filtered.map { $0.id.tokenId })
@@ -72,6 +73,7 @@ class TokensByPropertiesObject : ObservableObject {
 //      .catch { print($0) }
 
     
+     */
     self.isLoading = false
   }
   
