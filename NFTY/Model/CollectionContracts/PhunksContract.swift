@@ -112,22 +112,25 @@ class PhunksContract : ContractInterface {
     
     let ethContract : EthContract
     
-    func getBidAsk(_ tokenId: UInt) -> Promise<BidAsk> {
+    func getBidAsk(_ tokenId: UInt,_ side:Side?) -> Promise<BidAsk> {
       
-      ethContract.phunkBids(BigUInt(tokenId))
-        .then { bidPrice in
-          ethContract.phunksOfferedForSale(BigUInt(tokenId))
-            .map { askPrice in
-              return BidAsk(
-                bid:bidPrice.map { BidInfo(wei:$0,expiration_time:nil) },
-                ask:askPrice.map { AskInfo(wei:$0,expiration_time:nil) }
-              )
-            }
+      let bidPrice = side != .ask ? ethContract.phunkBids(BigUInt(tokenId)) : Promise.value(nil)
+      let askPrice = side != .bid ? ethContract.phunksOfferedForSale(BigUInt(tokenId)) : Promise.value(nil)
+      
+      return bidPrice.then { bidPrice in
+        askPrice.map { askPrice in
+          (bidPrice,askPrice)
         }
+      }.map { prices in
+        return BidAsk(
+          bid:prices.0.map { BidInfo(wei:$0,expiration_time:nil) },
+          ask:prices.1.map { AskInfo(wei:$0,expiration_time:nil) }
+        )
+      }
     }
     
-    func getBidAsk(_ tokenIds: [UInt]) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
-      return getBidAskSerial(tokenIds: tokenIds, getter: self.getBidAsk)
+    func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+      return getBidAskSerial(tokenIds: tokenIds,side,wait:0.0005, getter: self.getBidAsk)
     }
   }
   

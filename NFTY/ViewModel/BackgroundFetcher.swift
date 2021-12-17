@@ -77,7 +77,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
           return
         case .some(let tradeActions):
           orders.append(
-            tradeActions.getBidAsk(tokenIds)
+            tradeActions.getBidAsk(tokenIds,.ask)
               .map { (bidAsks:[(tokenId:UInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
                 (collection,
                  bidAsks.compactMap { (tokenId,bidAsk) -> Order? in

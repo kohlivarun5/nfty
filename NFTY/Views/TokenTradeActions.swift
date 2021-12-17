@@ -217,7 +217,7 @@ struct TokenTradeActions: View {
       contract.tradeActions.map { tradeActions in
         self.tradeActions = TradeActionInfo(
           tradeActions: tradeActions,
-          bidAsk: tradeActions.getBidAsk(nft.tokenId))
+          bidAsk: tradeActions.getBidAsk(nft.tokenId,nil))
         
         self.tradeActions?.bidAsk
           .done {

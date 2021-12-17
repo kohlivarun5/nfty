@@ -59,22 +59,16 @@ class TokensByPropertiesObject : ObservableObject {
       self.tokens.append(contentsOf: filtered)
     }
     
-    /*
+    
     let tradeActions = collectionsFactory.getByAddress(contract.contractAddressHex)!.data.contract.tradeActions!
     
-    tradeActions.getBidAsk(filtered.map { $0.id.tokenId })
+    tradeActions.getBidAsk(filtered.map { $0.id.tokenId },.ask)
       .done(on:.main) { info -> Void in
-        info.forEach {
-          self.tokenAsks[$0.tokenId] = $0.bidAsk.ask.map {
-            AskInfo(wei: $0.wei, expiration_time: $0.expiration_time)
-          }
-        }
+        info.forEach { self.tokenAsks[$0.tokenId] = $0.bidAsk }
       }
-//      .catch { print($0) }
-
+      .catch { print($0) }
+      .finally { self.isLoading = false }
     
-     */
-    self.isLoading = false
   }
   
   func next(currentIndex:Int?) {

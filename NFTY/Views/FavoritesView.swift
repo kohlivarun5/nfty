@@ -117,7 +117,7 @@ struct FavoritesView: View {
                     DispatchQueue.global(qos:.userInteractive).async {
                       let contract = collection.data.contract
                       let _ = contract.tradeActions
-                        .map { $0.getBidAsk(nft.id.tokenId) }
+                        .map { $0.getBidAsk(nft.id.tokenId,.ask) }
                         .map {
                           $0.done {
                             $0.ask.map { ask in
