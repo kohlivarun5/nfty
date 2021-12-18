@@ -68,7 +68,7 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
   
   func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     print("Background fetch called")
-    
+    CompositeCollection.loadLatest { print("Loaded latest trades") }
     performBackgroundFetch()
       .done {
         completionHandler($0 ? .newData : .noData)

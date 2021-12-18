@@ -72,7 +72,7 @@ struct FeedView: View {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
       
       // trigger refresh again after 30 seconds
-      DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+      // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
     }
   }
   
@@ -208,7 +208,7 @@ struct FeedView: View {
           DispatchQueue.main.async {
             self.isLoading = false
             self.refreshButton = .loaded
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+            // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
           }
         } 
       }

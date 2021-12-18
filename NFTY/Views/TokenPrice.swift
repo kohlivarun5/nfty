@@ -73,13 +73,21 @@ struct TokenPriceKnown : View {
       VStack {
         
         HStack(spacing:4) {
-          UsdText(wei:wei,fontWeight:.semibold)
-            .foregroundColor(color(self.color))
+          switch(userSettings.quoteType) {
+          case .Both,.Fiat:
+            UsdText(wei:wei,fontWeight:.semibold)
+              .foregroundColor(color(self.color))
+          case .Crypto:
+            Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+              .fontWeight(.semibold)
+              .foregroundColor(color(self.color))
+          }
+          
           Image(systemName: TradeEventIcon.systemName(info.type))
             .font(.caption2)
         }
         
-        if (showEth) {
+        if (userSettings.quoteType == .Both && showEth) { 
           Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
             .font(.body)
             .italic()
