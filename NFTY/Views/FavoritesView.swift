@@ -95,7 +95,8 @@ struct FavoritesView: View {
           ScrollView {
             LazyVStack(pinnedViews:[.sectionHeaders]){
               ForEach(nfts,id:\.id) { nft in
-                let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
+                let collection = collectionsFactory.getByAddress(nft.nft.address)!
+                let info = collection.info
                 ZStack {
                   RoundedImage(
                     nft:nft.nft,
@@ -114,24 +115,28 @@ struct FavoritesView: View {
                   }
                   .onAppear {
                     DispatchQueue.global(qos:.userInteractive).async {
-                      OpenSeaApi.getBidAsk(contract: nft.id.address, tokenId:nft.id.tokenId)
-                        .done {
-                          $0.ask.map { ask in
-                            DispatchQueue.main.async {
-                              self.favorites[nft.id.address]!.updateValue(
-                                NFTWithLazyPrice(nft:nft.nft,getPrice: {
-                                  return ObservablePromise<NFTPriceStatus>(
-                                    resolved: NFTPriceStatus.known(
-                                      NFTPriceInfo(
-                                        price: ask.wei,
-                                        blockNumber: nil,
-                                        type: TradeEventType.ask))
-                                  )
-                                }),forKey:String(nft.id.tokenId))
+                      let contract = collection.data.contract
+                      let _ = contract.tradeActions
+                        .map { $0.getBidAsk(nft.id.tokenId,.ask) }
+                        .map {
+                          $0.done {
+                            $0.ask.map { ask in
+                              DispatchQueue.main.async {
+                                self.favorites[nft.id.address]!.updateValue(
+                                  NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                    return ObservablePromise<NFTPriceStatus>(
+                                      resolved: NFTPriceStatus.known(
+                                        NFTPriceInfo(
+                                          price: ask.wei,
+                                          blockNumber: nil,
+                                          type: TradeEventType.ask))
+                                    )
+                                  }),forKey:String(nft.id.tokenId))
+                              }
                             }
                           }
+                          .catch { print($0) }
                         }
-                        .catch { print($0) }
                     }
                   }
                   NavigationLink(destination: NftDetail(

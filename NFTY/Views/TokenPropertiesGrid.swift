@@ -65,7 +65,7 @@ struct TokenPropertiesGrid: View {
           
           let view =
             VStack(spacing:5) {
-              Text("\(item.name.capitalized): \(item.value.capitalized)")
+              Text("\(item.name.capitalized)\(item.value.isEmpty ? "" : " : \(item.value.capitalized)")")
               Text(
                 String(format: item.percentile > 0.019 ? "%.f%%" : "%.1f%%", item.percentile * 100)
               )
@@ -87,16 +87,21 @@ struct TokenPropertiesGrid: View {
             ZStack {
               view
                 .onTapGesture { self.action = index }
-                .contextMenu {
-                  
-                  ForEach(collection.info.similarTokens!.availableProperties![item.name]!.sorted(by:<),id:\.key) { val in
-                    Button("\(val.key.capitalized) - \(String(format:  val.value > 0.019 ? "%.f%%" : "%.1f%%", val.value * 100))",
-                           action: {
-                            self.selectedItem = Item(name:item.name,value:val.key,percentile:val.value,isSelected: isSelected && item.value == val.key);
-                            self.action = index;
-                           })
+                .contextMenu(
+                  item.value.isEmpty ? nil : ContextMenu {
+                    ForEach(collection.info.similarTokens!.availableProperties![item.name]!.sorted(by:<),id:\.key) { val in
+                      Button("\(val.key.capitalized) - \(String(format:  val.value > 0.019 ? "%.f%%" : "%.1f%%", val.value * 100))",
+                             action: {
+                        self.selectedItem = Item(
+                          name:item.name,
+                          value:val.key,
+                          percentile:val.value,
+                          isSelected: isSelected && item.value == val.key);
+                        self.action = index;
+                      })
+                    }
                   }
-                }
+                )
               NavigationLink(
                 destination:TokensByPropertiesList(
                   properties:selectedProperties(selectedItem ?? Item(name:item.name,value:item.value,percentile:item.percentile,isSelected:isSelected)),

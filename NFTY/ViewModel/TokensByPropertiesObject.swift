@@ -59,18 +59,16 @@ class TokensByPropertiesObject : ObservableObject {
       self.tokens.append(contentsOf: filtered)
     }
     
-    OpenSeaApi.getBidAsk(
-      contract: contract.contractAddressHex,
-      tokenIds:filtered.map { $0.id.tokenId },
-      side:OpenSeaApi.Side.sell
-    )
-    .done(on:.main) {
-      $0.forEach { (tokenId,quote) in self.tokenAsks[tokenId] = quote }
-    }
-    .catch { print($0) }
     
+    let tradeActions = collectionsFactory.getByAddress(contract.contractAddressHex)!.data.contract.tradeActions!
     
-    self.isLoading = false
+    tradeActions.getBidAsk(filtered.map { $0.id.tokenId },.ask)
+      .done(on:.main) { info -> Void in
+        info.forEach { self.tokenAsks[$0.tokenId] = $0.bidAsk }
+      }
+      .catch { print($0) }
+      .finally { self.isLoading = false }
+    
   }
   
   func next(currentIndex:Int?) {

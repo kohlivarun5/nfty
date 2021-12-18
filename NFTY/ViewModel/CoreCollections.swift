@@ -64,14 +64,19 @@ let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CA
 
 let FRWC_Contract = IpfsCollectionContract(name: "FRWC",address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42")
 
-let PHUNKS_Contract = UrlCollectionContract(
-  name: "Phunks",
-  address: "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402",
-  tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"})
+let PHUNKS_Contract = PhunksContract()
 
 let GBLOCKS_Contract = GenesisBlockContract(
   name: "GenesisBlocks",
   address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
+
+let ZUNKS_Contract = ZunksContract(
+  name: "CryptoZunks",
+  address: "0x031920cc2D9F5c10B444FD44009cd64F829E7be2")
+
+let PUDGY_Contract = IpfsCollectionContract(
+  name: "PudgyPenguins",
+  address: "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8")
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -83,7 +88,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.yellow,
       themeLabelColor:Color.systemBackground,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Punks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Punks",
+        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+        propertiesJsonFileName:"CryptoPunks_attributeScores.json"),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:cryptoPunksContract),
@@ -527,10 +535,50 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(label:"Phunks",nearestTokensFileName:"CryptoPunks_nearestTokens.json"),
+      similarTokens : SimilarTokensGetter(
+        label:"Phunk",
+        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:PHUNKS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:ZUNKS_Contract.contractAddressHex,
+      sample:"SAMPLE_ZUNK",
+      name:ZUNKS_Contract.name,
+      webLink: URL(string:"https://www.cryptozunks.com")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil /* SimilarTokensGetter(
+        label:"Phunk",
+        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+      )*/,
+      rarityRanking : nil // RarityRankingImpl(CryptoPunks_rarityRanks)
+    ),
+    contract:ZUNKS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:PUDGY_Contract.contractAddressHex,
+      sample:"SAMPLE_PUDGY",
+      name:PUDGY_Contract.name,
+      webLink: URL(string:"https://www.pudgypenguins.io")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil /* SimilarTokensGetter(
+                           label:"Phunk",
+                           nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+                           propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+                           )*/,
+      rarityRanking : nil // RarityRankingImpl(CryptoPunks_rarityRanks)
+    ),
+    contract:PUDGY_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(

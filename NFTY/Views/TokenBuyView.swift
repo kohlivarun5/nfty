@@ -327,7 +327,7 @@ struct TokenBuyView_Previews: PreviewProvider {
       rarityRank:SampleCollection.info.rarityRanking,
       tradeActions: TradeActionInfo(
         tradeActions: SampleCollection.data.contract.tradeActions!,
-        bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId)
+        bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId,nil)
       ),
       actions:SampleCollection.data.contract.tradeActions!.actions!,
       walletProvider:UserWallet().walletProvider!

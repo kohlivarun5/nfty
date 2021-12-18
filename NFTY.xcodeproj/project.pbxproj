@@ -68,6 +68,10 @@
 		4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */; };
 		4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21C265DF1F400AD320D /* UserUrlView.swift */; };
 		4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */; };
+		4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A37276378B30020C5FA /* CryptoPunksOnChain.swift */; };
+		4F4F9A3C276388EB0020C5FA /* CryptoPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */; };
+		4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */; };
+		4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4C276641D80020C5FA /* ZunksContract.swift */; };
 		4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E52648BB17007C8002 /* WalletView.swift */; };
 		4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */; };
 		4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */; };
@@ -308,6 +312,10 @@
 		4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftUrlView.swift; sourceTree = "<group>"; };
 		4F4DD21C265DF1F400AD320D /* UserUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUrlView.swift; sourceTree = "<group>"; };
 		4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabelWithShare.swift; sourceTree = "<group>"; };
+		4F4F9A37276378B30020C5FA /* CryptoPunksOnChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunksOnChain.swift; sourceTree = "<group>"; };
+		4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_attributeScores.json; sourceTree = "<group>"; };
+		4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhunksContract.swift; sourceTree = "<group>"; };
+		4F4F9A4C276641D80020C5FA /* ZunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZunksContract.swift; sourceTree = "<group>"; };
 		4F55A8E52648BB17007C8002 /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
 		4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensView.swift; sourceTree = "<group>"; };
 		4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectWalletSheet.swift; sourceTree = "<group>"; };
@@ -513,6 +521,8 @@
 				4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */,
 				4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */,
 				4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */,
+				4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */,
+				4F4F9A4C276641D80020C5FA /* ZunksContract.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -541,6 +551,7 @@
 			children = (
 				4FA10FF426A8E0E200719D22 /* main.swift */,
 				4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */,
+				4F4F9A37276378B30020C5FA /* CryptoPunksOnChain.swift */,
 			);
 			path = DownloadCollection;
 			sourceTree = "<group>";
@@ -718,6 +729,7 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */,
 				4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */,
 				4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */,
 				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
@@ -1021,6 +1033,7 @@
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
+				4F4F9A3C276388EB0020C5FA /* CryptoPunks_attributeScores.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
 				4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */,
 				4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */,
@@ -1124,6 +1137,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
@@ -1174,6 +1188,7 @@
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */,
+				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
@@ -1200,6 +1215,7 @@
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
+				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
 				4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */,
@@ -1463,7 +1479,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1491,7 +1507,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
