@@ -51,14 +51,16 @@ class NftRecentTradesObject : ObservableObject {
     }
   }
   
-  func getRecentTrades(currentIndex:Int?) {
+  func getRecentTrades(currentIndex:Int?,_ callback : @escaping () -> Void) {
     guard let index = currentIndex else {
-      loadMore() {}
+      loadMore(callback)
       return
     }
     let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -5)
     if index >= thresholdIndex {
-      loadMore() {}
+      loadMore(callback)
+    } else {
+      callback()
     }
   }
   
@@ -220,15 +222,17 @@ class CompositeRecentTradesObject : ObservableObject {
     loadMoreIndex(index: 0,onDone: onDone)
   }
   
-  func getRecentTrades(currentIndex:Int?) {
+  func getRecentTrades(currentIndex:Int?,_ onDone : @escaping () -> Void) {
     guard let index = currentIndex else {
-      loadMore() {}
+      loadMore(onDone)
       return
     }
     
     let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -5)
     if index >= thresholdIndex {
-      loadMore() {}
+      loadMore(onDone)
+    } else {
+      onDone()
     }
   }
   

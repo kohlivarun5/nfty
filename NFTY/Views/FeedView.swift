@@ -171,7 +171,7 @@ struct FeedView: View {
                 .hidden()
               }.onAppear {
                 DispatchQueue.global(qos:.userInitiated).async {
-                  self.trades.getRecentTrades(currentIndex:index)
+                  self.trades.getRecentTrades(currentIndex:index) {}
                 }
               }
             }
@@ -204,7 +204,7 @@ struct FeedView: View {
     )
     .onAppear {
       if (self.isLoading) {
-        self.trades.loadMore() {
+        self.trades.getRecentTrades(currentIndex: 0) {
           DispatchQueue.main.async {
             self.isLoading = false
             self.refreshButton = .loaded
