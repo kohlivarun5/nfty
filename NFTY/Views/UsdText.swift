@@ -63,6 +63,7 @@ struct UsdText: View {
 struct UsdEthVText: View {
   
   @ObservedObject private var spot = EthSpot.get()
+  @StateObject var userSettings = UserSettings()
   
   let wei:BigUInt
   let fontWeight : Font.Weight?
@@ -77,12 +78,23 @@ struct UsdEthVText: View {
           Text(EthString(wei: wei))
             .fontWeight(fontWeight)
         case .some(let rate):
-          VStack(alignment:alignment) {
+          
+          switch(userSettings.quoteType) {
+          case .Both:
+            VStack(alignment:alignment) {
+              Text(UsdString(wei: wei, rate:rate))
+                .fontWeight(fontWeight)
+              Text(EthString(wei: wei))
+                .fontWeight(Font.Weight.light)
+            }
+          case .Fiat:
             Text(UsdString(wei: wei, rate:rate))
               .fontWeight(fontWeight)
+          case .Crypto:
             Text(EthString(wei: wei))
-              .fontWeight(Font.Weight.light)
+              .fontWeight(fontWeight)
           }
+          
         }
       })
   }
@@ -91,6 +103,7 @@ struct UsdEthVText: View {
 struct UsdEthHText: View {
   
   @ObservedObject private var spot = EthSpot.get()
+  @StateObject var userSettings = UserSettings()
   
   let wei:BigUInt
   let fontWeight : Font.Weight?
@@ -104,12 +117,23 @@ struct UsdEthHText: View {
           Text(EthString(wei: wei))
             .fontWeight(fontWeight)
         case .some(let rate):
-          HStack {
+          
+          switch(userSettings.quoteType) {
+          case .Both:
+            HStack {
+              Text(UsdString(wei: wei, rate:rate))
+                .fontWeight(fontWeight)
+              Text("(\(EthString(wei: wei)))")
+                .fontWeight(Font.Weight.light)
+            }
+          case .Fiat:
             Text(UsdString(wei: wei, rate:rate))
               .fontWeight(fontWeight)
-            Text("(\(EthString(wei: wei)))")
-              .fontWeight(Font.Weight.light)
+          case .Crypto:
+            Text(EthString(wei: wei))
+              .fontWeight(fontWeight)
           }
+          
         }
       })
   }

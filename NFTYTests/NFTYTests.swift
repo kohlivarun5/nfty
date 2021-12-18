@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import NFTY
+//@testable import NFTY
 
 class NFTYTests: XCTestCase {
 

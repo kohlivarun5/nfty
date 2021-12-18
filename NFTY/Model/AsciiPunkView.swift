@@ -26,7 +26,7 @@ struct AsciiText : View {
       Text(text.unicode)
         .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
         .foregroundColor(Color.white)
-        .shadow(color:.gray,radius:3)
+        .shadow(color:.gray,radius:5)
         .padding(padding)
     }
   }
@@ -68,7 +68,7 @@ struct AsciiPunkView_Previews: PreviewProvider {
   static var previews: some View {
     AsciiPunkView(asciiPunk:
                     ObservablePromise(resolved:Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │")),
-                  themeColor:Color.secondary,
+                  themeColor:Color.black,
                   fontSize:20,
                   padding: nil)
   }
