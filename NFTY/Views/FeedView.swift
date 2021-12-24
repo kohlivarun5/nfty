@@ -72,7 +72,7 @@ struct FeedView: View {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
       
       // trigger refresh again after 30 seconds
-      DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+      // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
     }
   }
   
@@ -171,7 +171,7 @@ struct FeedView: View {
                 .hidden()
               }.onAppear {
                 DispatchQueue.global(qos:.userInitiated).async {
-                  self.trades.getRecentTrades(currentIndex:index)
+                  self.trades.getRecentTrades(currentIndex:index) {}
                 }
               }
             }
@@ -204,11 +204,11 @@ struct FeedView: View {
     )
     .onAppear {
       if (self.isLoading) {
-        self.trades.loadMore() {
+        self.trades.getRecentTrades(currentIndex: 0) {
           DispatchQueue.main.async {
             self.isLoading = false
             self.refreshButton = .loaded
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+            // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
           }
         } 
       }

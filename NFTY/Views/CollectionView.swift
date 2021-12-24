@@ -99,7 +99,7 @@ struct CollectionView: View {
             .hidden()
           }.onAppear {
             DispatchQueue.global(qos:.userInitiated).async {
-              self.recentTrades.getRecentTrades(currentIndex:index);
+              self.recentTrades.getRecentTrades(currentIndex:index) { }
             }
           }
         }
@@ -139,7 +139,7 @@ struct CollectionView: View {
       leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
     )
     .onAppear {
-      self.recentTrades.getRecentTrades(currentIndex: nil)
+      self.recentTrades.getRecentTrades(currentIndex: nil) {}
     }
     
   }

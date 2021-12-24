@@ -24,9 +24,9 @@ struct AsciiText : View {
         .padding(padding)
     case .some(let text):
       Text(text.unicode)
-        .font(.system(size:fontSize, weight:.heavy, design: .monospaced))
+        .font(.system(size:fontSize, weight:.black, design: .monospaced))
         .foregroundColor(Color.white)
-        .shadow(color:.gray,radius:3)
+        .shadow(color:.white,radius:2)
         .padding(padding)
     }
   }
@@ -68,7 +68,7 @@ struct AsciiPunkView_Previews: PreviewProvider {
   static var previews: some View {
     AsciiPunkView(asciiPunk:
                     ObservablePromise(resolved:Media.AsciiPunk(unicode:"↑↑↓↓ ←→←→AB ┌────┐ │ ├┐ │┌ ┌ └│ │ ╘ └┘ │ │ │╙─ │ │ │ └──┘ │ │ │ │ │")),
-                  themeColor:Color.secondary,
+                  themeColor:Color.black,
                   fontSize:20,
                   padding: nil)
   }

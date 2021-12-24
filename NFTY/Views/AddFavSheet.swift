@@ -120,8 +120,6 @@ struct AddFavSheet: View {
                 .padding()
                 
                 Spacer()
-                TokenPrice(price:.lazy(nftWithPrice.indicativePriceWei),color:.dark)
-                  .padding()
               }
               Spacer()
             }
