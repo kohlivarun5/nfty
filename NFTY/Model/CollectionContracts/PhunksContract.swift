@@ -141,7 +141,8 @@ class PhunksContract : ContractInterface {
     collectionContract = UrlCollectionContract(
       name: "Phunks",
       address: "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402",
-      tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"})
+      tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"},
+      indicativePriceSource: .swapPoolContract("0xd3e31f8aac930e354283ca3efda1e22525f98af1"))
     tradeActions = TradeInterface(ethContract:ethContract)
   }
   
@@ -176,5 +177,8 @@ class PhunksContract : ContractInterface {
     return collectionContract.getEventsFetcher(tokenId)
   }
   
+  func indicativeFloor() -> Promise<Double?> {
+    return collectionContract.indicativeFloor()
+  }
   
 }

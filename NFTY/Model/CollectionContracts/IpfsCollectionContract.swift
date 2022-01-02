@@ -91,7 +91,14 @@ class IpfsCollectionContract : ContractInterface {
   
   var tradeActions: TokenTradeInterface?
   
-  init(name:String,address:String) {
+  enum IndicativePrice {
+    case swapPoolContract(String)
+    case openSea
+  }
+  
+  var indicativePriceSource : IndicativePrice
+  
+  init(name:String,address:String,indicativePriceSource:IndicativePrice) {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
@@ -99,6 +106,7 @@ class IpfsCollectionContract : ContractInterface {
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
+    self.indicativePriceSource = indicativePriceSource
   }
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
@@ -258,6 +266,18 @@ class IpfsCollectionContract : ContractInterface {
   
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
     return ethContract.ownerOf(tokenId)
+  }
+  
+  func indicativeFloor() -> Promise<Double?> {
+    switch(self.indicativePriceSource) {
+    case .openSea:
+      return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
+        .map { stats in
+          stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
+        }
+    case .swapPoolContract(let address):
+      return SushiSwapPool(address:address).priceInEth()
+    }
   }
   
 }

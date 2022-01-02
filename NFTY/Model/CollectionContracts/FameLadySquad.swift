@@ -224,4 +224,11 @@ class FameLadySquad_Contract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
+  func indicativeFloor() -> Promise<Double?> {
+    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
+      .map { stats in
+        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
+      }
+  }
+  
 }

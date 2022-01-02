@@ -57,6 +57,7 @@
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
+		4F435187278239610095C88C /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
 		4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
 		4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4557D026ACC0A400092AC0 /* SheetButton.swift */; };
 		4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F468F682645FECB00CA6525 /* AddFavSheet.swift */; };
@@ -302,6 +303,7 @@
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
+		4F435186278239610095C88C /* SushiSwapPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SushiSwapPool.swift; sourceTree = "<group>"; };
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F4557D026ACC0A400092AC0 /* SheetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetButton.swift; sourceTree = "<group>"; };
 		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
@@ -722,6 +724,7 @@
 				4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */,
 				4FED1E4226D5ED52006274CE /* SECP256K1.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
+				4F435186278239610095C88C /* SushiSwapPool.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1214,6 +1217,7 @@
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
+				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
