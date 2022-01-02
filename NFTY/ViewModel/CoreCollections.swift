@@ -16,7 +16,9 @@ let autoGlyphsContract = AutoglyphsContract()
 let baycContract = IpfsCollectionContract(
   name:"BAYC",
   address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
-  indicativePriceSource: .swapPoolContract("0xb35d7cfe7f4874d57c047316bdd791b08236a151"))
+  indicativePriceSource: .swapPoolContractReversed("0xd829de54877e0b66a2c3890b702fa5df2245203e")
+)
+
 let fameLadyContract = FameLadySquad_Contract()
 let CRHDL_Contract = IpfsCollectionContract(
   name: "CryptoHodlers",

@@ -46,4 +46,8 @@ class SushiSwapPool : EthereumContract {
     return getReserves() .map { Double($0.reserve1) / Double($0.reserve0) }
   }
   
+  func priceInEthRev() -> Promise<Double?> {
+    return getReserves() .map { Double($0.reserve0) / Double($0.reserve1) }
+  }
+  
 }

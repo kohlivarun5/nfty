@@ -682,7 +682,7 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func indicativeFloor() -> Promise<Double?> {
-    return SushiSwapPool(address:"0x0d9f9c919f1b66a8587a5637b8d1a6a6c5854380").priceInEth()
+    return SushiSwapPool(address:"0x0d9f9c919f1b66a8587a5637b8d1a6a6c5854380").priceInEthRev()
   }
 }
 

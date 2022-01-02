@@ -27,6 +27,7 @@ class UrlCollectionContract : ContractInterface {
   
   enum IndicativePrice {
     case swapPoolContract(String)
+    case swapPoolContractReversed(String)
     case openSea
   }
   
@@ -242,6 +243,8 @@ class UrlCollectionContract : ContractInterface {
         }
     case .swapPoolContract(let address):
       return SushiSwapPool(address:address).priceInEth()
+    case .swapPoolContractReversed(let address):
+      return SushiSwapPool(address:address).priceInEthRev()
     }
   }
   
