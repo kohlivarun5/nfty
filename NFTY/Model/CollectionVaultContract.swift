@@ -1,8 +1,8 @@
 //
-//  SushiSwapPool.swift
+//  CollectionVaultContract.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 1/2/22.
+//  Created by Varun Kohli on 1/3/22.
 //
 
 import Foundation
