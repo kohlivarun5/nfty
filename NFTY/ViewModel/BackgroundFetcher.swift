@@ -224,8 +224,12 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                 withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.8)
               case (.some(let floor),.OTM_10_pct):
                 withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.9)
+              case (.some(let floor),.OTM_5_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.95)
               case (.some(let floor),.ATM):
                 withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.0)
+              case (.some(let floor),.ITM_5_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.05)
               case (.some(let floor),.ITM_10_pct):
                 withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.1)
               case (.some(let floor),.ITM_20_pct):
