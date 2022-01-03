@@ -10,6 +10,7 @@ import BigInt
 import PromiseKit
 import Web3
 import Web3ContractABI
+import Cache
 
 
 class SushiSwapPool : EthereumContract {
@@ -18,16 +19,20 @@ class SushiSwapPool : EthereumContract {
   let events : [SolidityEvent] = []
   var address: EthereumAddress?
   
+  private let cache = try! DiskStorage<String, Reserves>(
+    config: DiskConfig(name: "SushiSwapPool.getReserves",expiry: .seconds(30)),
+    transformer: TransformerFactory.forCodable(ofType: Reserves.self))
+  
   init(address:String) {
     self.address = EthereumAddress(hexString: address)
   }
   
-  struct Reserves {
+  struct Reserves : Codable {
     let reserve0 : BigUInt
     let reserve1 : BigUInt
   }
   
-  private func getReserves() -> Promise<Reserves> {
+  private func getReservesImpl() -> Promise<Reserves> {
     let inputs : [SolidityFunctionParameter] = []
     let outputs = [
       SolidityFunctionParameter(name: "reserve0", type: .uint256),
@@ -40,6 +45,19 @@ class SushiSwapPool : EthereumContract {
       .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
         return Reserves(reserve0: outputs["reserve0"] as! BigUInt, reserve1: outputs["reserve1"] as! BigUInt)
       }
+  }
+  
+  private func getReserves() -> Promise<Reserves> {
+    switch(try? cache.object(forKey:self.address!.hex(eip55: true))) {
+    case .some(let reserves):
+      return Promise.value(reserves)
+    case .none:
+      return self.getReservesImpl()
+        .map { reserves -> Reserves in
+          try! self.cache.setObject(reserves,forKey:self.address!.hex(eip55: true));
+          return reserves
+        }
+    }
   }
   
   func priceInEth() -> Promise<Double?> {

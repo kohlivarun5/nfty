@@ -276,6 +276,10 @@ struct OpenSeaApi {
     config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
   
+  static private var collectionStatsCache = try! DiskStorage<String, Stats>(
+    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
+    transformer: TransformerFactory.forCodable(ofType: Stats.self))
+  
   static func getCollectionStats(contract:String) -> Promise<Stats?> {
     
     return Promise { seal in
@@ -322,39 +326,46 @@ struct OpenSeaApi {
         
         collectionInfo.slug.map { slug in
           
-          var components = URLComponents()
-          components.scheme = "https"
-          components.host = "api.opensea.io"
-          components.path = "/api/v1/collection/\(slug)"
-          
-          var request = URLRequest(url:components.url!)
-          request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-          
-          request.httpMethod = "GET"
-          
-          print("calling \(request.url!)")
-          URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-            if let e = error { return seal.reject(e) }
-            do {
-              let jsonDecoder = JSONDecoder()
-              // print(data)
-              
-              struct Data : Codable {
+          switch(try? collectionStatsCache.object(forKey: slug)) {
+          case .some(let stats):
+            seal.fulfill(stats)
+          case .none:
+            
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = "api.opensea.io"
+            components.path = "/api/v1/collection/\(slug)"
+            
+            var request = URLRequest(url:components.url!)
+            request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+            
+            request.httpMethod = "GET"
+            
+            print("calling \(request.url!)")
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+              if let e = error { return seal.reject(e) }
+              do {
+                let jsonDecoder = JSONDecoder()
+                // print(data)
                 
-                struct Collection : Codable {
-                  let stats : Stats
+                struct Data : Codable {
+                  
+                  struct Collection : Codable {
+                    let stats : Stats
+                  }
+                  
+                  let collection : Collection
                 }
                 
-                let collection : Collection
+                let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
+                try! collectionStatsCache.setObject(info,forKey: slug)
+                seal.fulfill(info)
+              } catch {
+                print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+                seal.reject(NSError(domain:"", code:404, userInfo:nil))
               }
-              
-              let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
-              seal.fulfill(info)
-            } catch {
-              print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-              seal.reject(NSError(domain:"", code:404, userInfo:nil))
-            }
-          }).resume()
+            }).resume()
+          }
         }
       }
     }

@@ -13,6 +13,7 @@ struct UserSettingsView: View {
   
   @State private var dappBrowserIndex = 0
   @State private var quoteTypeIndex = 0
+  @State private var offerNotificationIndex = 0
   
   var body: some View {
     NavigationView {
@@ -46,6 +47,21 @@ struct UserSettingsView: View {
                 )
               }
             }
+            
+            
+            Picker(
+              selection: $offerNotificationIndex,
+              label:Text("Offer Notification Limit")) {
+                
+                ForEach(0 ..< UserSettings.OfferNotificationMinimumType.allCases.count) {
+                  Text(UserSettings.OfferNotificationMinimumType.allCases[$0].rawValue)
+                }
+              }
+              .onChange(of: offerNotificationIndex) { tag in
+                userSettings.updateOfferNotificationMinimum(
+                  offerNotificationMinimum:UserSettings.OfferNotificationMinimumType.allCases[tag]
+                )
+              }
           }
         }
       }
@@ -58,6 +74,9 @@ struct UserSettingsView: View {
       
       UserSettings.QuoteType.allCases.firstIndex(of: userSettings.quoteType)
         .map { self.quoteTypeIndex = $0 }
+      
+      UserSettings.OfferNotificationMinimumType.allCases.firstIndex(of: userSettings.offerNotificationMinimum)
+        .map { self.offerNotificationIndex = $0 }
     }
   }
 }
