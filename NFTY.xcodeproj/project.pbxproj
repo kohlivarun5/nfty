@@ -54,6 +54,9 @@
 		4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
 		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
+		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
+		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
+		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
@@ -300,6 +303,9 @@
 		4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsFetcher.swift; sourceTree = "<group>"; };
 		4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_nearestTokens.json; sourceTree = "<group>"; };
 		4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_rarityRanks.json; sourceTree = "<group>"; };
+		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
+		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
+		4F3582A52783A4A700D119F8 /* VaultTokensList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTokensList.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
@@ -544,6 +550,7 @@
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
 				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
+				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -703,6 +710,7 @@
 				4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */,
 				4F0E797F26E0777F009EC174 /* NFTExportView.swift */,
 				4F961F79271CC12600639E85 /* NftTradeUrlView.swift */,
+				4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -725,6 +733,7 @@
 				4FED1E4226D5ED52006274CE /* SECP256K1.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
 				4F435186278239610095C88C /* SushiSwapPool.swift */,
+				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1172,10 +1181,12 @@
 			files = (
 				4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */,
 				4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */,
+				4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */,
 				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
 				4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */,
 				4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
+				4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */,
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
@@ -1240,6 +1251,7 @@
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
 				4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */,
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
+				4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */,
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,

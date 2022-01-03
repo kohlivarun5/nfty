@@ -293,6 +293,22 @@ class RarityRankingImpl : RarityRanking {
   func getRank(_ tokenId:UInt) -> UInt? { return ranks[safe:Int(tokenId)] }
 }
 
+class CollectionVault {
+  let ranks : [UInt]
+  let sortedTokenIds : [UInt]
+  init(_ ranks:[UInt]) {
+    self.ranks = ranks
+    var indexed : [(Int,UInt)] = []
+    for (index, element) in ranks.enumerated() {
+      indexed.append((index,element))
+    }
+    indexed.sort { $0.1 < $1.1 }
+    self.sortedTokenIds = indexed.map { UInt($0.0) }
+  }
+  
+  func getRank(_ tokenId:UInt) -> UInt? { return ranks[safe:Int(tokenId)] }
+}
+
 struct CollectionInfo {
   let address: String
   let sample: String

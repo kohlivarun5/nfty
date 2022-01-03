@@ -17,6 +17,7 @@ struct VisualEffectView: UIViewRepresentable {
 struct CollectionView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  @Environment(\.openURL) var openURL
   
   @EnvironmentObject var userWallet: UserWallet
   
@@ -26,8 +27,9 @@ struct CollectionView: View {
   @ObservedObject var recentTrades : NftRecentTradesObject
   
   @State private var selectedNumber = 0
-  
   @State private var action: String? = ""
+  @State private var showRarityRanking = false
+  @State private var showVault = false
   
   init(collection:Collection) {
     self.collection = collection;
@@ -78,12 +80,12 @@ struct CollectionView: View {
               rarityRank: info.rarityRanking,
               width: .normal
             )
-            .shadow(color:.accentColor,radius:0)
-            .padding()
-            .onTapGesture {
-              //perform some tasks if needed before opening Destination view
-              self.action = String(nft.nft.tokenId)
-            }
+              .shadow(color:.accentColor,radius:0)
+              .padding()
+              .onTapGesture {
+                //perform some tasks if needed before opening Destination view
+                self.action = String(nft.nft.tokenId)
+              }
             
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
@@ -106,32 +108,96 @@ struct CollectionView: View {
       }
     }
     .toolbar {
-      switch(
-        self.info.rarityRanking,
-        userWallet.signedIn
-          && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
-       case (.some(let ranked),true):
-        NavigationLink(
-          destination:
-            TokenListView(
-              collection: self.collection,
-              tokenIds:ranked.sortedTokenIds
-            )
-            .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(
-              leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
-              trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
-            )
-        ) {
-          Image(systemName: "list.number")
-            .font(.title3)
-            .foregroundColor(.accentColor)
-            .padding(10)
+      
+      
+      ToolbarItem(placement: .primaryAction) {
+        Menu {
+          
+          Button(action: { openURL(self.collection.info.webLink) }) {
+            Label("Website", systemImage: "safari")
+          }
+          
+          self.info.rarityRanking.map { ranked in
+            Button(action: { self.showRarityRanking = true }) {
+              Label("Rarity Ranking", systemImage: "list.number")
+            }
+          }
+          
+          Button(action: { self.showVault = true }) {
+            Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
+          }
+          
         }
-      default:
-        Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
+        
+      label: {
+        Label("Options", systemImage: "filemenu.and.selection")
       }
+      .background(
+        
+        VStack {
+          
+          NavigationLink(
+            destination:
+              TokenListView(
+                collection: self.collection,
+                tokenIds:self.info.rarityRanking?.sortedTokenIds ?? []
+              )
+              .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
+              .navigationBarBackButtonHidden(true)
+              .navigationBarItems(
+                leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
+              ),
+            isActive:$showRarityRanking
+          ) {
+            EmptyView()
+          }
+          
+          
+          NavigationLink(
+            destination:
+              NFTXVaultViewLazy(
+                collection: collection,
+                vaultContract: CollectionVaultContract(address: "0xB39185e33E8c28e0BB3DbBCe24DA5dEA6379Ae91")),
+            isActive:$showVault
+          ) {
+            EmptyView()
+          }
+        }
+        
+      )
+      }
+      
+      
+      
+      
+      /*
+       switch(
+       self.info.rarityRanking,
+       userWallet.signedIn
+       && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
+       case (.some(let ranked),true):
+       NavigationLink(
+       destination:
+       TokenListView(
+       collection: self.collection,
+       tokenIds:ranked.sortedTokenIds
+       )
+       .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
+       .navigationBarBackButtonHidden(true)
+       .navigationBarItems(
+       leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+       trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
+       )
+       ) {
+       Image(systemName: "list.number")
+       .font(.title3)
+       .foregroundColor(.accentColor)
+       .padding(10)
+       }
+       default:
+       Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
+       }
+       */
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)
