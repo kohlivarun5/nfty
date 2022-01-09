@@ -19,13 +19,28 @@ class VaultTokensList : ObservableObject {
   private var lastIndex = -1
   
   let contract : ContractInterface
-  let allHoldings : [BigUInt]
+  var allHoldings : [BigUInt]
   
   init(contract : ContractInterface,
-       allHoldings : [BigUInt])
+       allHoldings : [BigUInt],
+       rankings:RarityRanking?)
   {
     self.contract = contract
+    
     self.allHoldings = allHoldings
+    
+    rankings.map { rankings in
+      self.allHoldings.sort { left,right in
+        switch(rankings.getRank(UInt(left)),rankings.getRank(UInt(right))) {
+        case (.some(let leftRank),.some(let rightRank)):
+          return leftRank < rightRank
+        default:
+          return left < right
+        }
+        
+      }
+    }
+    
   }
   
   func loadMore(_ callback : @escaping () -> Void) {

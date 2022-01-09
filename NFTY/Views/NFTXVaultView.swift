@@ -135,7 +135,8 @@ struct NFTXVaultViewLazy: View {
           collection: collection,
           nfts: VaultTokensList(
             contract:collection.data.contract,
-            allHoldings:$0
+            allHoldings:$0,
+            rankings:collection.info.rarityRanking
           )
         )
       }
