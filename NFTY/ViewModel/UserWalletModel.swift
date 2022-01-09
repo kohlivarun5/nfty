@@ -89,17 +89,35 @@ class UserWallet: ObservableObject {
     }
   }
   
+  private func getConnectionUrl(scheme: String,wcUrl:WCURL) throws -> String {
+    
+    switch(scheme) {
+    case "metamask:":
+      // https://github.com/WalletConnect/WalletConnectSwift/issues/79#issuecomment-1007324661
+      
+      let _encodeURL = wcUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+      let _end2 = _encodeURL.replacingOccurrences(of: "=", with: "%3D").replacingOccurrences(of: "&", with: "%26")
+      
+      let metamaskLink = "https://metamask.app.link/wc?uri="
+      return "\(metamaskLink)\(_end2)"
+    default:
+      let uri = wcUrl.fullyPercentEncodedStr
+      var delimiter: String
+      if scheme.contains("http") {
+        delimiter = "/"
+      } else {
+        delimiter = "//"
+      }
+      let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+      return "\(scheme)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
+    }
+    
+    
+  }
+  
   func connectToWallet(scheme: String) throws -> Void {
     let wcUrl = connect()
-    let uri = wcUrl.fullyPercentEncodedStr
-    var delimiter: String
-    if scheme.contains("http") {
-      delimiter = "/"
-    } else {
-      delimiter = "//"
-    }
-    let redirect = "www.nftygo.com".addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
-    let urlStr = "\(scheme)\(delimiter)wc?uri=\(uri)&redirectUrl=\(redirect)"
+    let urlStr = try! getConnectionUrl(scheme: scheme, wcUrl: wcUrl)
     let url = URL(string: urlStr)!
     // we need a delay so that WalletConnectClient can send handshake request
     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
