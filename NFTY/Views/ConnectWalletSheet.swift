@@ -27,82 +27,62 @@ struct UserWalletConnectorView : View {
             .foregroundColor(.secondary)
         }
       case (.none,false),(.some,_):
-        HStack(spacing:30) {
+        HStack {
           Spacer()
           
-          HStack {
+          VStack {
+            Text("Sign-in using")
+              .foregroundColor(.secondary)
+              .font(.subheadline)
+              .bold()
             
-            /*
-             Button(action:{
-             UIImpactFeedbackGenerator(style: .light)
-             .impactOccurred()
-             
-             self.userWallet.removeWalletConnectSession()
-             self.isConnecting = true
-             let url = try! userWallet.connectToWallet(link:"metamask:")
-             // we need a delay so that WalletConnectClient can send handshake request
-             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-             print("Launching=\(url)")
-             UIApplication.shared.open(url, options: [:], completionHandler: nil)
-             }
-             }) {
-             VStack {
-             Image("Metamask")
-             .resizable()
-             .frame(width: 60,height:60)
-             
-             Text("Sign-In with MetaMask")
-             .font(.caption)
-             .fontWeight(.bold)
-             .multilineTextAlignment(.center)
-             .foregroundColor(Color.orange)
-             }
-             .frame(minWidth: 0, maxWidth: .infinity)
-             .padding()
-             .border(Color.orange)
-             .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-             .overlay(
-             RoundedRectangle(cornerRadius:20, style: .continuous)
-             .stroke(Color.orange, lineWidth: 1))
-             }
-             
-             */
-            
-            Button(action:{
-              UIImpactFeedbackGenerator(style: .light)
-                .impactOccurred()
-              self.userWallet.removeWalletConnectSession()
-              self.isConnecting = true
-              try! userWallet.connectToWallet(scheme:"trust:")
-            }) {
-              VStack {
-                Image("TrustWallet")
-                  .resizable()
-                  .frame(width: 60,height:60)
+            HStack(spacing:20) {
+              
+              let config = [
+                (title:"MetaMask",image:"Metamask",color:Color.orange,scheme:"metamask:"),
+                (title:"Trust Wallet",image:"TrustWallet",color:Color.blue,scheme:"trust:"),
+                (title:"Rainbow",image:"RainbowWallet",color:Color(red:200/255,green:230/255,blue:80/255),scheme:"rainbow:"),
+              ];
+              
+              ForEach(config.indices) { index in
+                let (title,image,color,scheme) = config[index];
+                Button(action:{
+                  UIImpactFeedbackGenerator(style: .light)
+                    .impactOccurred()
+                  self.userWallet.removeWalletConnectSession()
+                  self.isConnecting = true
+                  try! userWallet.connectToWallet(scheme:scheme)
+                }) {
+                  VStack {
+                    Image(image)
+                      .resizable()
+                      .frame(width: 50,height:50)
+                    
+                    Text(title)
+                      .font(.caption)
+                      .fontWeight(.bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(color)
+                  }
+                  .padding()
+                  .border(color)
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .overlay(
+                    RoundedRectangle(cornerRadius:20, style: .continuous)
+                      .stroke(color, lineWidth: 3))
+                }
                 
-                Text("Sign-In with Trust Wallet")
-                  .font(.caption)
-                  .fontWeight(.bold)
-                  .multilineTextAlignment(.center)
-                  .foregroundColor(Color.blue)
               }
-              .frame(minWidth: 0, maxWidth: .infinity)
-              .padding()
-              .border(Color.blue)
-              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .overlay(
-                RoundedRectangle(cornerRadius:20, style: .continuous)
-                  .stroke(Color.blue, lineWidth: 1))
             }
           }
           Spacer()
         }
         
-        switch(userWallet.signedIn) {
-        case false:
+        switch(userWallet.signedIn,userWallet.walletConnectSession?.walletInfo?.peerMeta.name) {
+        case (false,_),(_,.none):
           EmptyView()
-        case true:
-          Text("Currently signed-in using Trust Wallet")
+        case (true,.some(let wallet)):
+          Text("Currently signed-in using \(wallet)")
             .foregroundColor(.secondary)
             .font(.caption)
             .italic()
