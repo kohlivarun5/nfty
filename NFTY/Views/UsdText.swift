@@ -31,7 +31,7 @@ func UsdString(wei:BigUInt,rate:Double) -> String {
   return formatter.string(for:amount)!
 }
 
-var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:nil)
+var ethFormatter = formatter(symbol:"Ξ",maximumFractionDigits:3)
 
 func EthString(wei:BigUInt) -> String {
   return ethFormatter.string(for:(Double(wei) / 1e18))!
