@@ -176,7 +176,7 @@ var wethFetcher = WETHFetcher()
 
 
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-var INIT_BLOCK = BigUInt(13406048 - (Date.from(year:2021,month:10,day:12)!.timeIntervalSinceNow / 15))
+var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
 
 protocol TokenEventsFetcher {
   func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void)

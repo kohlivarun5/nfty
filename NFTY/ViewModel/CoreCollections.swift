@@ -165,6 +165,21 @@ let PUDGY_Contract = IpfsCollectionContract(
     vault:"0xAbeA7663c472648d674bd3403D94C858dFeEF728")
 )
 
+let SSFU_Contract = IpfsCollectionContract(
+  name: "SSFU",
+  address: "0x4503e3C58377a9d2A9ec3c9eD42a8a6a241Cb4e2",
+  indicativePriceSource: .openSea)
+
+let ILLUMINATI_Contract = IpfsCollectionContract(
+  name: "Illuminati",
+  address: "0x26BAdF693F2b103B021c670c852262b379bBBE8A",
+  indicativePriceSource: .openSea)
+
+let CHUBBI_FRENS_Contract = IpfsCollectionContract(
+  name: "Chubbiverse Frens",
+  address: "0x42f1654B8eeB80C96471451B1106b63D0B1a9fe1",
+  indicativePriceSource: .openSea)
+
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
@@ -640,12 +655,8 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil /* SimilarTokensGetter(
-                           label:"Phunk",
-                           nearestTokensFileName:"CryptoPunks_nearestTokens.json",
-                           propertiesJsonFileName:"CryptoPunks_attributeScores.json"
-                           )*/,
-      rarityRanking : nil // RarityRankingImpl(CryptoPunks_rarityRanks)
+      similarTokens : nil,
+      rarityRanking : nil
     ),
     contract:ZUNKS_Contract),
   
@@ -658,14 +669,52 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil /* SimilarTokensGetter(
-                           label:"Phunk",
-                           nearestTokensFileName:"CryptoPunks_nearestTokens.json",
-                           propertiesJsonFileName:"CryptoPunks_attributeScores.json"
-                           )*/,
-      rarityRanking : nil // RarityRankingImpl(CryptoPunks_rarityRanks)
+      similarTokens : nil,
+      rarityRanking : nil
     ),
     contract:PUDGY_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:ILLUMINATI_Contract.contractAddressHex,
+      sample:"SAMPLE_ILLUMINATI",
+      name:ILLUMINATI_Contract.name,
+      webLink: URL(string:"https://www.illuminatinft.com/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil,
+      rarityRanking : nil
+    ),
+    contract:ILLUMINATI_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:CHUBBI_FRENS_Contract.contractAddressHex,
+      sample:"SAMPLE_CHUBBI_FRENS",
+      name:CHUBBI_FRENS_Contract.name,
+      webLink: URL(string:"https://www.chubbiverse.com/")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil,
+      rarityRanking : nil
+    ),
+    contract:CHUBBI_FRENS_Contract),
+  
+  CompositeRecentTradesObject.CollectionInitializer(
+    info:CollectionInfo(
+      address:SSFU_Contract.contractAddressHex,
+      sample:"SAMPLE_SSFU",
+      name:SSFU_Contract.name,
+      webLink: URL(string:"https://www.spikyspacefish.com/home")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens : nil,
+      rarityRanking : nil
+    ),
+    contract:SSFU_Contract),
   
   CompositeRecentTradesObject.CollectionInitializer(
     info:CollectionInfo(
