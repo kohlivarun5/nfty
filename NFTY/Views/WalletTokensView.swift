@@ -108,43 +108,47 @@ struct WalletTokensView: View {
                   by: { nft in nft.nft.address }).sorted(by: { $0.key > $1.key }),
                 id:\.key) { address,tokens in
                   
-                  let info = collectionsFactory.getByAddress(address)!.info;
+                  let collection = collectionsFactory.getByAddress(address)!
+                  let info = collection.info
                   
-                  ForEach(tokens,id:\.id) { nft in
+                  Section(header: WalletTokensCollectionHeader(collection:collection)) {
                     
-                    ZStack {
+                    ForEach(tokens,id:\.id) { nft in
                       
-                      NftImage(
-                        nft:nft.nft,
-                        sample:info.sample,
-                        themeColor:info.themeColor,
-                        themeLabelColor:info.themeLabelColor,
-                        size:.small,
-                        favButton:.none
-                      )
-                        .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                        .shadow(color:.secondary,radius:5)
-                        .padding(10)
-                        .onTapGesture {
-                          //perform some tasks if needed before opening Destination view
-                          self.selectedTokenId = nft.nft.tokenId
-                        }
-                        .onLongPressGesture(minimumDuration: 0.1) {
-                          UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                          self.sheetSelectedIndex = nft
-                        }
-                      NavigationLink(destination: NftDetail(
-                        nft:nft.nft,
-                        price:.lazy(nft.indicativePriceWei),
-                        sample:info.sample,
-                        themeColor:info.themeColor,
-                        themeLabelColor:info.themeLabelColor,
-                        similarTokens:info.similarTokens,
-                        rarityRank:info.rarityRanking,
-                        hideOwnerLink:false,
-                        selectedProperties:[]
-                      ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                      .hidden()
+                      ZStack {
+                        
+                        NftImage(
+                          nft:nft.nft,
+                          sample:info.sample,
+                          themeColor:info.themeColor,
+                          themeLabelColor:info.themeLabelColor,
+                          size:.small,
+                          favButton:.none
+                        )
+                          .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                          .shadow(color:.secondary,radius:5)
+                          .padding(10)
+                          .onTapGesture {
+                            //perform some tasks if needed before opening Destination view
+                            self.selectedTokenId = nft.nft.tokenId
+                          }
+                          .onLongPressGesture(minimumDuration: 0.1) {
+                            UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                            self.sheetSelectedIndex = nft
+                          }
+                        NavigationLink(destination: NftDetail(
+                          nft:nft.nft,
+                          price:.lazy(nft.indicativePriceWei),
+                          sample:info.sample,
+                          themeColor:info.themeColor,
+                          themeLabelColor:info.themeLabelColor,
+                          similarTokens:info.similarTokens,
+                          rarityRank:info.rarityRanking,
+                          hideOwnerLink:false,
+                          selectedProperties:[]
+                        ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                        .hidden()
+                      }
                     }
                   }
                 }
