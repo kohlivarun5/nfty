@@ -327,5 +327,7 @@ class AsciiPunksContract : ContractInterface {
       }
   }
   
+  var vaultContract : CollectionVaultContract? = nil
+  
 }
 

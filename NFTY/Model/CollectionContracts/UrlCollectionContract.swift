@@ -26,8 +26,8 @@ class UrlCollectionContract : ContractInterface {
   var tradeActions: TokenTradeInterface?
   
   enum IndicativePrice {
-    case swapPoolContract(String)
-    case swapPoolContractReversed(String)
+    case swapPoolContract(pool:String,vault:String)
+    case swapPoolContractReversed(pool:String,vault:String)
     case openSea
   }
   
@@ -241,11 +241,20 @@ class UrlCollectionContract : ContractInterface {
         .map { stats in
           stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
         }
-    case .swapPoolContract(let address):
+    case .swapPoolContract(let address,_):
       return SushiSwapPool(address:address).priceInEth()
-    case .swapPoolContractReversed(let address):
+    case .swapPoolContractReversed(let address,_):
       return SushiSwapPool(address:address).priceInEthRev()
     }
   }
+  
+  lazy var vaultContract: CollectionVaultContract? = {
+    switch(self.indicativePriceSource) {
+    case .openSea:
+      return nil
+    case .swapPoolContract(_,let address),.swapPoolContractReversed(_,let address):
+      return CollectionVaultContract(address: address)
+    }
+  }()
   
 }

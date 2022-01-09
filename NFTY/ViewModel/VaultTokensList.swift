@@ -14,8 +14,6 @@ class VaultTokensList : ObservableObject {
   var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
   var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
   
-  @Published var tokenAsks : [UInt : BidAsk] = [:]
-  
   private let loadingChunk = 20
   private var isLoading = false
   private var lastIndex = -1
@@ -47,19 +45,10 @@ class VaultTokensList : ObservableObject {
     }
     
     DispatchQueue.main.async {
-      print(filtered)
       self.tokens.append(contentsOf: filtered)
+      self.isLoading = false
     }
     
-    
-    let tradeActions = collectionsFactory.getByAddress(self.contract.contractAddressHex)!.data.contract.tradeActions!
-    
-    tradeActions.getBidAsk(filtered.map { $0.id.tokenId },.ask)
-      .done(on:.main) { info -> Void in
-        info.forEach { self.tokenAsks[$0.tokenId] = $0.bidAsk }
-      }
-      .catch { print($0) }
-      .finally { self.isLoading = false }
   }
   
   func next(currentIndex:Int?) {

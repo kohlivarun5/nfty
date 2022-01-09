@@ -266,4 +266,6 @@ class ZunksContract : ContractInterface {
       }
   }
   
+  var vaultContract: CollectionVaultContract? = nil
+  
 }

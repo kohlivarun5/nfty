@@ -117,14 +117,21 @@ struct CollectionView: View {
             Label("Website", systemImage: "safari")
           }
           
-          self.info.rarityRanking.map { ranked in
+          switch(self.info.rarityRanking,
+                 userWallet.signedIn
+                 && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
+          case (.some,true):
             Button(action: { self.showRarityRanking = true }) {
               Label("Rarity Ranking", systemImage: "list.number")
             }
+          default:
+            EmptyView()
           }
           
-          Button(action: { self.showVault = true }) {
-            Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
+          collection.data.contract.vaultContract.map { _ in
+            Button(action: { self.showVault = true }) {
+              Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
+            }
           }
           
         }
@@ -152,52 +159,22 @@ struct CollectionView: View {
             EmptyView()
           }
           
-          
-          NavigationLink(
-            destination:
-              NFTXVaultViewLazy(
-                collection: collection,
-                vaultContract: CollectionVaultContract(address: "0xB39185e33E8c28e0BB3DbBCe24DA5dEA6379Ae91")),
-            isActive:$showVault
-          ) {
-            EmptyView()
+          collection.data.contract.vaultContract.map {
+            NavigationLink(
+              destination:
+                NFTXVaultViewLazy(
+                  collection: collection,
+                  vaultContract: $0),
+              isActive:$showVault
+            ) {
+              EmptyView()
+            }
           }
         }
         
       )
       }
       
-      
-      
-      
-      /*
-       switch(
-       self.info.rarityRanking,
-       userWallet.signedIn
-       && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
-       case (.some(let ranked),true):
-       NavigationLink(
-       destination:
-       TokenListView(
-       collection: self.collection,
-       tokenIds:ranked.sortedTokenIds
-       )
-       .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
-       .navigationBarBackButtonHidden(true)
-       .navigationBarItems(
-       leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
-       trailing: Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
-       )
-       ) {
-       Image(systemName: "list.number")
-       .font(.title3)
-       .foregroundColor(.accentColor)
-       .padding(10)
-       }
-       default:
-       Link(destination: self.collection.info.webLink) { Image(systemName: "safari") }
-       }
-       */
     }
     .navigationBarTitle(info.name)
     .navigationBarBackButtonHidden(true)

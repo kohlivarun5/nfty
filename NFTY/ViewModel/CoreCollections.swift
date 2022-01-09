@@ -16,7 +16,9 @@ let autoGlyphsContract = AutoglyphsContract()
 let baycContract = IpfsCollectionContract(
   name:"BAYC",
   address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
-  indicativePriceSource: .swapPoolContractReversed("0xd829de54877e0b66a2c3890b702fa5df2245203e")
+  indicativePriceSource: .swapPoolContractReversed(
+    pool:"0xd829de54877e0b66a2c3890b702fa5df2245203e",
+    vault:"0xEA47B64e1BFCCb773A0420247C0aa0a3C1D2E5C5")
 )
 
 let fameLadyContract = FameLadySquad_Contract()
@@ -24,16 +26,17 @@ let CRHDL_Contract = IpfsCollectionContract(
   name: "CryptoHodlers",
   address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8",
   indicativePriceSource: .openSea)
+
 let CROWNS_Contract = IpfsCollectionContract(
   name: "Crowns",
   address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E",
   indicativePriceSource: .openSea)
+
 let CCB_Contract = UrlCollectionContract(
   name: "NFTokers",
   address: "0x80a4B80C653112B789517eb28aC111519b608b19",
   tokenUri: { "https://api.cryptocannabisclub.com/image/\($0)"},
-  indicativePriceSource: .openSea
-)
+  indicativePriceSource: .openSea)
 
 let Birdhouse_Contract = UrlCollectionContract(
   name: "TheBirdHouse",
@@ -49,7 +52,10 @@ let CYPHER_CITY_Contract = IpfsCollectionContract(
 let CoolCats_Contract = IpfsCollectionContract(
   name: "CoolCats",
   address: "0x1A92f7381B9F03921564a437210bB9396471050C",
-  indicativePriceSource: .swapPoolContract("0x0225e940deecc32a8d7c003cfb7dae22af18460c")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x0225e940deecc32a8d7c003cfb7dae22af18460c",
+    vault:"0x114f1388fAB456c4bA31B1850b244Eedcd024136"
+  )
 )
 
 let DeadFellaz_Contract = IpfsCollectionContract(
@@ -83,7 +89,10 @@ let WABC_Contract = IpfsCollectionContract(
 let MAYC_Contract = IpfsCollectionContract(
   name: "MAYC",
   address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6",
-  indicativePriceSource: .swapPoolContract("0xc5817a4c5e8ec6488c9a26c6862ff3060757b498")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0xc5817a4c5e8ec6488c9a26c6862ff3060757b498",
+    vault:"0x94c9cEb2F9741230FAD3a62781b27Cc79a9460d4"
+  )
 )
 
 let KILLAZ_Contract = UrlCollectionContract(
@@ -95,7 +104,10 @@ let KILLAZ_Contract = UrlCollectionContract(
 let ABS_Contract = IpfsCollectionContract(
   name: "AdamBombSquad",
   address: "0x7AB2352b1D2e185560494D5e577F9D3c238b78C5",
-  indicativePriceSource: .swapPoolContract("0xe3d7e2d92a5158229921c56fb23421093d475bfb")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0xe3d7e2d92a5158229921c56fb23421093d475bfb",
+    vault:"0x210f4A59097c5E10eC67DB9b03cF35332A9aa0Cf"
+  )
 )
 
 let DADS_Contract = IpfsCollectionContract(
@@ -111,8 +123,9 @@ let LIONS_Contract = IpfsCollectionContract(
 let MORIES_Contract = IpfsCollectionContract(
   name: "CryptoMories",
   address: "0x1a2F71468F656E97c2F86541E57189F59951efe7",
-  indicativePriceSource: .swapPoolContract("0x10e5b7e68febf9014e08e2b38894237a45fd32c2")
-)
+  indicativePriceSource: .swapPoolContract(
+    pool: "0x10e5b7e68febf9014e08e2b38894237a45fd32c2",
+    vault: "0x7269c9AAA5eD95f0CC9DC15ff19A4596308c889C"))
 
 let JUNGLE_FREAKS_Contract = IpfsCollectionContract(
   name: "JungleFreaks",
@@ -122,13 +135,19 @@ let JUNGLE_FREAKS_Contract = IpfsCollectionContract(
 let DOODLES_Contract = IpfsCollectionContract(
   name: "Doodles",
   address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-  indicativePriceSource: .swapPoolContract("0x60aacb5e507d41a95c9109cc6778fb0b94227616")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x60aacb5e507d41a95c9109cc6778fb0b94227616",
+    vault:"0x2F131C4DAd4Be81683ABb966b4DE05a549144443"
+  )
 )
 
 let FRWC_Contract = IpfsCollectionContract(
   name: "FRWC",
   address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42",
-  indicativePriceSource: .swapPoolContract("0x0a2f9b5360b5c7b6d3ce826971425b3b8b766519")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x0a2f9b5360b5c7b6d3ce826971425b3b8b766519",
+    vault:"0x87931E7AD81914e7898d07c68F145fC0A553D8Fb"
+  )
 )
 
 let PHUNKS_Contract = PhunksContract()
@@ -144,7 +163,9 @@ let ZUNKS_Contract = ZunksContract(
 let PUDGY_Contract = IpfsCollectionContract(
   name: "PudgyPenguins",
   address: "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8",
-  indicativePriceSource: .swapPoolContract("0x5d472c9edece12a75ed7c0584dd02407cb5b47da")
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x5d472c9edece12a75ed7c0584dd02407cb5b47da",
+    vault:"0xAbeA7663c472648d674bd3403D94C858dFeEF728")
 )
 
 let CompositeCollection = CompositeRecentTradesObject([

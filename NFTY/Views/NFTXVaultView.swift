@@ -60,25 +60,6 @@ struct NFTXVaultView: View {
                       self.sheetSelectedIndex = SheetSelection(id:index)
                     }
                   
-                  switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
-                  case .none:
-                    EmptyView()
-                  case .some(let ask):
-                    VStack {
-                      Spacer()
-                      UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
-                        .padding([.top,.bottom],2)
-                        .padding([.leading,.trailing],20)
-                        .font(.caption)
-                        .foregroundColor(colorScheme == .dark ? .label : .white)
-                        .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.75) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
-                        .colorMultiply(.accentColor)
-                        .shadow(radius: 5)
-                    }
-                    .padding(.bottom,11)
-                  }
-                  
-                  
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),

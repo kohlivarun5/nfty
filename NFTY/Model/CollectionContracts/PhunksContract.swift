@@ -142,7 +142,10 @@ class PhunksContract : ContractInterface {
       name: "Phunks",
       address: "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402",
       tokenUri: { "ipfs://QmSv6qnW1zCqiYBHCJKbfBu8YAcJefUYtPsDea3TsG2PHz/notpunk\(String(format: "%04d", $0)).png"},
-      indicativePriceSource: .swapPoolContract("0xd3e31f8aac930e354283ca3efda1e22525f98af1"))
+      indicativePriceSource: .swapPoolContract(
+        pool:"0xd3e31f8aac930e354283ca3efda1e22525f98af1",
+        vault:"0xB39185e33E8c28e0BB3DbBCe24DA5dEA6379Ae91"
+      ))
     tradeActions = TradeInterface(ethContract:ethContract)
   }
   
@@ -180,5 +183,9 @@ class PhunksContract : ContractInterface {
   func indicativeFloor() -> Promise<Double?> {
     return collectionContract.indicativeFloor()
   }
+  
+  lazy var vaultContract: CollectionVaultContract? = {
+    return collectionContract.vaultContract
+  }()
   
 }
