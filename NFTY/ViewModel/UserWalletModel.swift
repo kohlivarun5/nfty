@@ -100,6 +100,14 @@ class UserWallet: ObservableObject {
       
       let metamaskLink = "https://metamask.app.link/wc?uri="
       return "\(metamaskLink)\(_end2)"
+    case "rainbow:":
+      // https://github.com/WalletConnect/WalletConnectSwift/issues/79#issuecomment-1007324661
+      
+      let _encodeURL = wcUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+      let _end2 = _encodeURL.replacingOccurrences(of: "=", with: "%3D").replacingOccurrences(of: "&", with: "%26")
+      
+      let metamaskLink = "https://rnbwapp.com/wc?uri="
+      return "\(metamaskLink)\(_end2)"
     default:
       let uri = wcUrl.fullyPercentEncodedStr
       var delimiter: String

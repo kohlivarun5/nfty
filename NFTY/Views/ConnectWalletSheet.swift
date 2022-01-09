@@ -27,7 +27,7 @@ struct UserWalletConnectorView : View {
             .foregroundColor(.secondary)
         }
       case (.none,false),(.some,_):
-        HStack(spacing:30) {
+        HStack {
           Spacer()
           
           VStack {
@@ -36,61 +36,42 @@ struct UserWalletConnectorView : View {
               .font(.subheadline)
               .bold()
             
-            HStack {
+            HStack(spacing:20) {
               
+              let config = [
+                (title:"MetaMask",image:"Metamask",color:Color.orange,scheme:"metamask:"),
+                (title:"Trust Wallet",image:"TrustWallet",color:Color.blue,scheme:"trust:"),
+                (title:"Rainbow",image:"RainbowWallet",color:Color(red:200/255,green:230/255,blue:80/255),scheme:"rainbow:"),
+              ];
               
-              Button(action:{
-                UIImpactFeedbackGenerator(style: .light)
-                  .impactOccurred()
-                self.userWallet.removeWalletConnectSession()
-                self.isConnecting = true
-                try! userWallet.connectToWallet(scheme:"metamask:")
-              }) {
-                VStack {
-                  Image("Metamask")
-                    .resizable()
-                    .frame(width: 60,height:60)
-                  
-                  Text("MetaMask")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.orange)
+              ForEach(config.indices) { index in
+                let (title,image,color,scheme) = config[index];
+                Button(action:{
+                  UIImpactFeedbackGenerator(style: .light)
+                    .impactOccurred()
+                  self.userWallet.removeWalletConnectSession()
+                  self.isConnecting = true
+                  try! userWallet.connectToWallet(scheme:scheme)
+                }) {
+                  VStack {
+                    Image(image)
+                      .resizable()
+                      .frame(width: 50,height:50)
+                    
+                    Text(title)
+                      .font(.caption)
+                      .fontWeight(.bold)
+                      .multilineTextAlignment(.center)
+                      .foregroundColor(color)
+                  }
+                  .padding()
+                  .border(color)
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .overlay(
+                    RoundedRectangle(cornerRadius:20, style: .continuous)
+                      .stroke(color, lineWidth: 3))
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .padding()
-                .border(Color.orange)
-                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous)
-                    .stroke(Color.orange, lineWidth: 1))
-              }
-              
-              Button(action:{
-                UIImpactFeedbackGenerator(style: .light)
-                  .impactOccurred()
-                self.userWallet.removeWalletConnectSession()
-                self.isConnecting = true
-                try! userWallet.connectToWallet(scheme:"trust:")
-              }) {
-                VStack {
-                  Image("TrustWallet")
-                    .resizable()
-                    .frame(width: 60,height:60)
-                  
-                  Text("Trust Wallet")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color.blue)
-                }
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .padding()
-                .border(Color.blue)
-                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous)
-                    .stroke(Color.blue, lineWidth: 1))
+                
               }
             }
           }
