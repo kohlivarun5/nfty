@@ -320,5 +320,14 @@ class AsciiPunksContract : ContractInterface {
     return ethContract.ownerOf(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
+  func indicativeFloor() -> Promise<Double?> {
+    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
+      .map { stats in
+        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
+      }
+  }
+  
+  var vaultContract : CollectionVaultContract? = nil
+  
 }
 

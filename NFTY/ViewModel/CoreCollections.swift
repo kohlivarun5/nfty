@@ -13,56 +13,139 @@ let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
 let asciiPunksContract = AsciiPunksContract();
 let autoGlyphsContract = AutoglyphsContract()
-let baycContract = IpfsCollectionContract(name:"BAYC",address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D")
+let baycContract = IpfsCollectionContract(
+  name:"BAYC",
+  address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+  indicativePriceSource: .openSea)
+
 let fameLadyContract = FameLadySquad_Contract()
-let CRHDL_Contract = IpfsCollectionContract(name: "CryptoHodlers",address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8")
-let CROWNS_Contract = IpfsCollectionContract(name: "Crowns",address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E")
+let CRHDL_Contract = IpfsCollectionContract(
+  name: "CryptoHodlers",
+  address: "0xe12a2A0Fb3fB5089A498386A734DF7060c1693b8",
+  indicativePriceSource: .openSea)
+
+let CROWNS_Contract = IpfsCollectionContract(
+  name: "Crowns",
+  address: "0x42e8CB3b99658EeB70Af7eD97a3f21d8349b433E",
+  indicativePriceSource: .openSea)
+
 let CCB_Contract = UrlCollectionContract(
   name: "NFTokers",
   address: "0x80a4B80C653112B789517eb28aC111519b608b19",
-  tokenUri: { "https://api.cryptocannabisclub.com/image/\($0)"})
+  tokenUri: { "https://api.cryptocannabisclub.com/image/\($0)"},
+  indicativePriceSource: .openSea)
 
 let Birdhouse_Contract = UrlCollectionContract(
   name: "TheBirdHouse",
   address: "0x149915F1FD17fe5899ADac2542Be90690eD8A526",
-  tokenUri: { "https://tbh-data.s3.amazonaws.com/final/images/\($0)"})
+  tokenUri: { "https://tbh-data.s3.amazonaws.com/final/images/\($0)"},
+  indicativePriceSource: .openSea)
 
 let CYPHER_CITY_Contract = IpfsCollectionContract(
   name: "Cypher City",
-  address: "0x00C396383400a1EF2eB401052dBF5d989B2da481")
+  address: "0x00C396383400a1EF2eB401052dBF5d989B2da481",
+  indicativePriceSource: .openSea)
 
-let CoolCats_Contract = IpfsCollectionContract(name: "CoolCats",address: "0x1A92f7381B9F03921564a437210bB9396471050C")
+let CoolCats_Contract = IpfsCollectionContract(
+  name: "CoolCats",
+  address: "0x1A92f7381B9F03921564a437210bB9396471050C",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x0225e940deecc32a8d7c003cfb7dae22af18460c",
+    vault:"0x114f1388fAB456c4bA31B1850b244Eedcd024136"
+  )
+)
 
-let DeadFellaz_Contract = IpfsCollectionContract(name: "DeadFellaz",address: "0x2acAb3DEa77832C09420663b0E1cB386031bA17B")
+let DeadFellaz_Contract = IpfsCollectionContract(
+  name: "DeadFellaz",
+  address: "0x2acAb3DEa77832C09420663b0E1cB386031bA17B",
+  indicativePriceSource: .openSea
+)
 
-let DJs_Contract = IpfsWithOpenSea(name: "DJENERATES",address: "0x7d05c8D8cC1baC936eA09308a9E94823986f8321")
+let DJs_Contract = IpfsWithOpenSea(
+  name: "DJENERATES",
+  address: "0x7d05c8D8cC1baC936eA09308a9E94823986f8321",
+  indicativePriceSource: .openSea
+)
 
-let ON1_Force_Contract = IpfsCollectionContract(name: "0N1 Force",address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D")
+let ON1_Force_Contract = IpfsCollectionContract(
+  name: "0N1 Force",
+  address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D",
+  indicativePriceSource: .openSea
+)
 
-let Craniums_Contract = IpfsCollectionContract(name: "WickedCraniums",address: "0x85f740958906b317de6ed79663012859067E745B")
+let Craniums_Contract = IpfsCollectionContract(
+  name: "WickedCraniums",
+  address: "0x85f740958906b317de6ed79663012859067E745B",
+  indicativePriceSource: .openSea)
 
-let WABC_Contract = IpfsCollectionContract(name: "Wicked Apes",address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82")
+let WABC_Contract = IpfsCollectionContract(
+  name: "Wicked Apes",
+  address: "0xbe6e3669464E7dB1e1528212F0BfF5039461CB82",
+  indicativePriceSource: .openSea)
 
-let MAYC_Contract = IpfsCollectionContract(name: "MAYC",address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6")
+let MAYC_Contract = IpfsCollectionContract(
+  name: "MAYC",
+  address: "0x60E4d786628Fea6478F785A6d7e704777c86a7c6",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0xc5817a4c5e8ec6488c9a26c6862ff3060757b498",
+    vault:"0x94c9cEb2F9741230FAD3a62781b27Cc79a9460d4"
+  )
+)
 
 let KILLAZ_Contract = UrlCollectionContract(
   name: "KILLAz",
   address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",
-  tokenUri: { "https://killaznft.com/api/images/\($0)"})
+  tokenUri: { "https://killaznft.com/api/images/\($0)"},
+  indicativePriceSource: .openSea)
 
-let ABS_Contract = IpfsCollectionContract(name: "AdamBombSquad",address: "0x7AB2352b1D2e185560494D5e577F9D3c238b78C5")
+let ABS_Contract = IpfsCollectionContract(
+  name: "AdamBombSquad",
+  address: "0x7AB2352b1D2e185560494D5e577F9D3c238b78C5",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0xe3d7e2d92a5158229921c56fb23421093d475bfb",
+    vault:"0x210f4A59097c5E10eC67DB9b03cF35332A9aa0Cf"
+  )
+)
 
-let DADS_Contract = IpfsCollectionContract(name: "CryptoDads",address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461")
+let DADS_Contract = IpfsCollectionContract(
+  name: "CryptoDads",
+  address: "0xECDD2F733bD20E56865750eBcE33f17Da0bEE461",
+  indicativePriceSource: .openSea)
 
-let LIONS_Contract = IpfsCollectionContract(name: "LazyLions",address: "0x8943C7bAC1914C9A7ABa750Bf2B6B09Fd21037E0")
+let LIONS_Contract = IpfsCollectionContract(
+  name: "LazyLions",
+  address: "0x8943C7bAC1914C9A7ABa750Bf2B6B09Fd21037E0",
+  indicativePriceSource: .openSea)
 
-let MORIES_Contract = IpfsCollectionContract(name: "CryptoMories",address: "0x1a2F71468F656E97c2F86541E57189F59951efe7")
+let MORIES_Contract = IpfsCollectionContract(
+  name: "CryptoMories",
+  address: "0x1a2F71468F656E97c2F86541E57189F59951efe7",
+  indicativePriceSource: .swapPoolContract(
+    pool: "0x10e5b7e68febf9014e08e2b38894237a45fd32c2",
+    vault: "0x7269c9AAA5eD95f0CC9DC15ff19A4596308c889C"))
 
-let JUNGLE_FREAKS_Contract = IpfsCollectionContract(name: "JungleFreaks",address: "0x7E6Bc952d4b4bD814853301bEe48E99891424de0")
+let JUNGLE_FREAKS_Contract = IpfsCollectionContract(
+  name: "JungleFreaks",
+  address: "0x7E6Bc952d4b4bD814853301bEe48E99891424de0",
+  indicativePriceSource: .openSea)
 
-let DOODLES_Contract = IpfsCollectionContract(name: "Doodles",address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e")
+let DOODLES_Contract = IpfsCollectionContract(
+  name: "Doodles",
+  address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x60aacb5e507d41a95c9109cc6778fb0b94227616",
+    vault:"0x2F131C4DAd4Be81683ABb966b4DE05a549144443"
+  )
+)
 
-let FRWC_Contract = IpfsCollectionContract(name: "FRWC",address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42")
+let FRWC_Contract = IpfsCollectionContract(
+  name: "FRWC",
+  address: "0x521f9C7505005CFA19A8E5786a9c3c9c9F5e6f42",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x0a2f9b5360b5c7b6d3ce826971425b3b8b766519",
+    vault:"0x87931E7AD81914e7898d07c68F145fC0A553D8Fb"
+  )
+)
 
 let PHUNKS_Contract = PhunksContract()
 
@@ -76,7 +159,11 @@ let ZUNKS_Contract = ZunksContract(
 
 let PUDGY_Contract = IpfsCollectionContract(
   name: "PudgyPenguins",
-  address: "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8")
+  address: "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8",
+  indicativePriceSource: .swapPoolContract(
+    pool:"0x5d472c9edece12a75ed7c0584dd02407cb5b47da",
+    vault:"0xAbeA7663c472648d674bd3403D94C858dFeEF728")
+)
 
 let CompositeCollection = CompositeRecentTradesObject([
   CompositeRecentTradesObject.CollectionInitializer(
@@ -306,10 +393,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
-       label:"Dads",
-       nearestTokensFileName:"Dads_nearestTokens.json",
-       propertiesJsonFileName:"Dads_attributeScores.json"
-       ),
+        label:"Dads",
+        nearestTokensFileName:"Dads_nearestTokens.json",
+        propertiesJsonFileName:"Dads_attributeScores.json"
+      ),
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
@@ -378,10 +465,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : nil/*SimilarTokensGetter(
-       label:"Birds",
-       nearestTokensFileName:"BirdHouse_nearestTokens.json",
-       propertiesJsonFileName:"BirdHouse_attributeScores.json"
-       )*/,
+                          label:"Birds",
+                          nearestTokensFileName:"BirdHouse_nearestTokens.json",
+                          propertiesJsonFileName:"BirdHouse_attributeScores.json"
+                          )*/,
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:ON1_Force_Contract),
@@ -554,10 +641,10 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : nil /* SimilarTokensGetter(
-        label:"Phunk",
-        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
-        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
-      )*/,
+                           label:"Phunk",
+                           nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+                           propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+                           )*/,
       rarityRanking : nil // RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:ZUNKS_Contract),
@@ -626,6 +713,7 @@ enum CloudDefaultStorageKeys : String {
   case favoritesDict = "favoritesDict"
   case friendsDict = "friendsDict"
   case quoteType = "quoteType"
+  case offerNotificationMinimum = "offerNotificationMinimum"
 }
 
 class NftOwnerTokens : ObservableObject {

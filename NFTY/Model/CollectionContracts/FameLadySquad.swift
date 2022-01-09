@@ -16,7 +16,6 @@ import UIKit
 
 class FameLadySquad_Contract : ContractInterface {
   
-  
   private var imageCache = try! DiskStorage<BigUInt, UIImage>(
     config: DiskConfig(name: "FameLadySquad.ImageCache",expiry: .never),
     transformer:TransformerFactory.forImage())
@@ -223,5 +222,14 @@ class FameLadySquad_Contract : ContractInterface {
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
     return ethContract.ownerOf(tokenId)
   }
+  
+  func indicativeFloor() -> Promise<Double?> {
+    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
+      .map { stats in
+        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
+      }
+  }
+  
+  var vaultContract: CollectionVaultContract? = nil
   
 }

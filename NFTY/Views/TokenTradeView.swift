@@ -118,10 +118,9 @@ struct TokenTradeView: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = rarityRank?.getRank(nft.tokenId)
-      OpenSeaApi.getCollectionStats(contract:nft.address)
-        .done(on:.main) { stats in
-          self.floorPrice = stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil } 
-        }.catch { print($0) }
+      collectionsFactory.getByAddress(nft.address)!.data.contract.indicativeFloor()
+        .done(on:.main) { self.floorPrice = $0 }
+        .catch { print($0) }
     }
   }
 }

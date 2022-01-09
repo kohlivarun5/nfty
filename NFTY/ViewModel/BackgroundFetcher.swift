@@ -177,6 +177,8 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
     return Promise.value(false)
   }
   
+  let userSettings = UserSettings()
+  
   let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
   return orders
     .then { orders -> Promise<Bool> in
@@ -189,13 +191,13 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
       try? offersCache.removeExpiredObjects()
       
       let promises = orders
-        .compactMap { order -> (Collection,OpenSeaApi.AssetOrder)? in
+        .map { order -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
           
           let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
           
           guard let collection = collectionsFactory.getByAddress(collectionAddress) else {
             print("Collection \(collectionAddress) not supported")
-            return nil
+            return Promise.value(nil)
           }
           
           let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
@@ -205,52 +207,90 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
               try? offersCache.removeObject(forKey: key)
             }
-            else if (Double(entry.current_price)! >= Double(order.current_price)!) { return nil }
+            else if (Double(entry.current_price)! >= Double(order.current_price)!) { return Promise.value(nil) }
             
           }
           
-          try! offersCache.setObject(
-            order,
-            forKey: key,
-            expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
-          return (collection,order)
-          
-        }.map { result -> Promise<Void> in
-          let (collection,order) = result
-          return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
-            .map { imageUrl in
-              
-              let content = UNMutableNotificationContent()
-              content.title = "New Offer"
-              //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-              print(order)
-              
-              // TODO : Handle currency tokens
-              let wei = Double(order.current_price).map { BigUInt($0) }
-              content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-              content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
-              
-              print("ImageUrl=\(String(describing:imageUrl))")
-              
-              imageUrl.map {
-                content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+          return collection.data.contract.indicativeFloor()
+            .map { floor in
+              // Check user settings limit
+              var withinLimit = false
+              switch(floor,userSettings.offerNotificationMinimum) {
+              case (.none,_):
+                withinLimit = true
+              case (.some,.None):
+                withinLimit = true
+              case (.some(let floor),.OTM_20_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.8)
+              case (.some(let floor),.OTM_10_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.9)
+              case (.some(let floor),.OTM_5_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.95)
+              case (.some(let floor),.ATM):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.0)
+              case (.some(let floor),.ITM_5_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.05)
+              case (.some(let floor),.ITM_10_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.1)
+              case (.some(let floor),.ITM_20_pct):
+                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.2)
               }
               
-              content.userInfo = [
-                "sheetState": "nftTrade",
-                "address" : collection.info.address,
-                "tokenId" : UInt(order.asset.token_id)!
-              ]
-              
-              // show this notification five seconds from now
-              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-              
-              // choose a random identifier
-              let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-              
-              // add our notification request
-              UNUserNotificationCenter.current().add(request)
+              if (withinLimit) {
+                
+                try! offersCache.setObject(
+                  order,
+                  forKey: key,
+                  expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+                return (collection,order)
+              } else {
+                return nil
+              }
             }
+        }.map { resultP -> Promise<Void> in
+          
+          return resultP.then { resultOpt -> Promise<Void> in
+            
+            guard let result = resultOpt else {
+              return Promise.value(())
+            }
+            
+            let (collection,order) = result
+            return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+              .map { imageUrl in
+                
+                let content = UNMutableNotificationContent()
+                content.title = "New Offer"
+                //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                print(order)
+                
+                // TODO : Handle currency tokens
+                let wei = Double(order.current_price).map { BigUInt($0) }
+                content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+                
+                print("ImageUrl=\(String(describing:imageUrl))")
+                
+                imageUrl.map {
+                  content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+                }
+                
+                content.userInfo = [
+                  "sheetState": "nftTrade",
+                  "address" : collection.info.address,
+                  "tokenId" : UInt(order.asset.token_id)!
+                ]
+                
+                // show this notification five seconds from now
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                
+                // choose a random identifier
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                // add our notification request
+                UNUserNotificationCenter.current().add(request)
+              }
+          }
         }
       
       return when(fulfilled: promises).map { !$0.isEmpty }

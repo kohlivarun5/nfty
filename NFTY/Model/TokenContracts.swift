@@ -195,6 +195,10 @@ protocol ContractInterface {
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
   
+  func indicativeFloor() -> Promise<Double?>
+  
+  var vaultContract : CollectionVaultContract? { get }
+  
   var tradeActions : TokenTradeInterface? { get }
   
 }
@@ -205,6 +209,7 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 
 
 class CryptoKittiesAuction : ContractInterface {
+  var vaultContract: CollectionVaultContract? = nil
   
   var tradeActions: TokenTradeInterface? = nil
   
@@ -479,6 +484,9 @@ class CryptoKittiesAuction : ContractInterface {
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
     return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
+  
+  func indicativeFloor() -> Promise<Double?> { return Promise.value(nil) }
+  
 }
 
 
@@ -676,6 +684,11 @@ class AutoglyphsContract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
+  func indicativeFloor() -> Promise<Double?> {
+    return SushiSwapPool(address:"0x0d9f9c919f1b66a8587a5637b8d1a6a6c5854380").priceInEthRev()
+  }
+  
+  var vaultContract : CollectionVaultContract? = CollectionVaultContract(address:"0xD70240Dd62F4ea9a6A2416e0073D72139489d2AA")
 }
 
 
@@ -708,6 +721,7 @@ class BlockFetcherImpl {
       block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
     }
   }
+  
 }
 
 var BlocksFetcher = BlockFetcherImpl()

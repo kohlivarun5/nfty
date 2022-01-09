@@ -543,4 +543,10 @@ class CryptoPunksContract : ContractInterface {
     return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
+  func indicativeFloor() -> Promise<Double?> {
+    return SushiSwapPool(address:"0x0463a06fbc8bf28b3f120cd1bfc59483f099d332").priceInEth()
+  }
+  
+  var vaultContract : CollectionVaultContract? = CollectionVaultContract(address: "0x269616D549D7e8Eaa82DFb17028d0B212D11232A")
+  
 }
