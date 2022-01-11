@@ -25,7 +25,7 @@ struct CollectionsView: View {
       .interpolation(.none)
       .resizable()
       .aspectRatio(contentMode: .fit)
-      .cornerRadius(10)
+      .cornerRadius(20)
   }
   
   var body: some View {

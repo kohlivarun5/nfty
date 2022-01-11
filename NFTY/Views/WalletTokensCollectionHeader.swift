@@ -35,8 +35,9 @@ struct WalletTokensCollectionHeader: View {
     }
     .foregroundColor(.accentColor)
     .background(Color.systemBackground.opacity(0.9))
-    .clipShape(Capsule())
-    .shadow(color:.accentColor,radius:1)
+    .clipShape(RoundedRectangle(cornerRadius:10, style: .continuous))
+    .shadow(color:.accentColor,radius:3)
+    .padding(.top,2)
     .padding([.leading,.trailing],20)
   }
 }
