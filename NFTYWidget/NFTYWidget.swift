@@ -15,23 +15,25 @@ struct Provider: IntentTimelineProvider {
   }
   
   func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-    let entry = SimpleEntry(date: Date(), configuration: configuration,collections:[
-      CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
-      CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.4,change:-0.123131,changeSince: Date.now),
-    ])
-    completion(entry)
+    print("getSnapshot")
+    fetchStats()
+      .done { collections in
+        let entry = SimpleEntry(date: Date(), configuration: configuration,collections:collections)
+        completion(entry)
+      }
+      .catch { print($0) }
   }
   
   func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    print("getTimeline")
     var entries: [SimpleEntry] = []
     
-    // Generate a timeline consisting of five entries an hour apart, starting from the current date.
     let currentDate = Date()
     for hourOffset in 0 ..< 6 {
       let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
       let entry = SimpleEntry(date: entryDate, configuration: configuration,collections:[
         CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
-        CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.4,change:-0.123131,changeSince: Date.now),
+        CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.5,change:-0.123131,changeSince: Date.now),
       ])
       entries.append(entry)
     }
@@ -39,14 +41,6 @@ struct Provider: IntentTimelineProvider {
     let timeline = Timeline(entries: entries, policy: .atEnd)
     completion(timeline)
   }
-}
-
-struct CollectionStats : Identifiable {
-  let id : String
-  let name : String
-  let floorPrice : Double
-  let change : Double
-  let changeSince : Date
 }
 
 struct SimpleEntry: TimelineEntry {
@@ -82,7 +76,7 @@ struct NFTYWidgetEntryView : View {
   var entry: Provider.Entry
   
   var body: some View {
-    VStack(spacing:10) {
+    VStack(spacing:15) {
       ForEach(entry.collections) { stats in
         VStack(spacing:5) {
           HStack {

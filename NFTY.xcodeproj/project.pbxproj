@@ -202,9 +202,7 @@
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
 		4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FDEAB83278E3F5700F92160 /* Assets.xcassets */; };
 		4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */; };
-		4FDEAB87278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */; };
 		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4FDEAB91278E535200F92160 /* WidgetStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB90278E535200F92160 /* WidgetStorage.swift */; };
 		4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
 		4FDEAB94278E53C100F92160 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB93278E53C100F92160 /* Cache */; };
 		4FDEAB96278E53C800F92160 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB95278E53C800F92160 /* Web3 */; };
@@ -234,6 +232,8 @@
 		4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4026D4757C006274CE /* WalletProvider.swift */; };
 		4FDEABB0278E546300F92160 /* UIKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB825269AA26900AD5165 /* UIKitUtils.swift */; };
 		4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEABB1278E547F00F92160 /* Web3PromiseKit */; };
+		4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEABB3278E577600F92160 /* FloorFetcher.swift */; };
+		4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB90278E535200F92160 /* WidgetStorage.swift */; };
 		4FE2CB68278B7B8300930FD8 /* WalletTokensCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */; };
 		4FE818102725B9EF00B7D9C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */; };
 		4FE818132725BA7B00B7D9C5 /* FRWC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */; };
@@ -505,6 +505,7 @@
 		4FDEAB83278E3F5700F92160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FDEAB85278E3F5700F92160 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FDEAB90278E535200F92160 /* WidgetStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStorage.swift; sourceTree = "<group>"; };
+		4FDEABB3278E577600F92160 /* FloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorFetcher.swift; sourceTree = "<group>"; };
 		4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensCollectionHeader.swift; sourceTree = "<group>"; };
 		4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FRWC_attributeRanks.json; sourceTree = "<group>"; };
@@ -923,6 +924,7 @@
 				4FDEAB83278E3F5700F92160 /* Assets.xcassets */,
 				4FDEAB85278E3F5700F92160 /* Info.plist */,
 				4FDEAB90278E535200F92160 /* WidgetStorage.swift */,
+				4FDEABB3278E577600F92160 /* FloorFetcher.swift */,
 			);
 			path = NFTYWidget;
 			sourceTree = "<group>";
@@ -1348,7 +1350,6 @@
 				4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
 				4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */,
-				4FDEAB91278E535200F92160 /* WidgetStorage.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */,
 				4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */,
@@ -1385,7 +1386,6 @@
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
 				4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */,
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
-				4FDEAB87278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,
 				4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */,
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
@@ -1415,6 +1415,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
+				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
 				4FDEABAE278E542E00F92160 /* CollectionVaultContract.swift in Sources */,
