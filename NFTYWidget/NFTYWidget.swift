@@ -176,7 +176,7 @@ struct NFTYWidgetEntryView : View {
             Spacer()
             Text("Change since \(change.since.timeAgoDisplay())")
               .font(.system(size:7))
-              .foregroundColor(Color.tertiaryLabel)
+              .foregroundColor(Color.secondaryLabel)
           }
         }
         
