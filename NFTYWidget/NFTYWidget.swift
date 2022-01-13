@@ -74,7 +74,7 @@ struct Provider: IntentTimelineProvider {
           )
         ]
         
-        let refresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
+        let refresh = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
         let timeline = Timeline(entries: entries, policy: .after(refresh))
         completion(timeline)
       }
