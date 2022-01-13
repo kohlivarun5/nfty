@@ -284,8 +284,6 @@ struct OpenSeaApi {
     
     return Promise { seal in
       
-      try? collectionCache.removeExpiredObjects()
-      
       switch(try? collectionCache.object(forKey: contract)) {
       case .some(let info):
         seal.fulfill(info)
@@ -328,6 +326,7 @@ struct OpenSeaApi {
         
         collectionInfo.slug.map { slug in
           
+          try? collectionStatsCache.removeExpiredObjects()
           switch(try? collectionStatsCache.object(forKey: slug)) {
           case .some(let stats):
             seal.fulfill(stats)

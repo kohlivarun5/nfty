@@ -68,7 +68,16 @@ struct Provider: IntentTimelineProvider {
                       : (percentage: ($0.floorPrice - info.floorPrice) / info.floorPrice, since:$0.date)
                     }
                 )
-                try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
+                
+                switch(try? lastPriceCache.object(forKey:info.id)) {
+                case .none:
+                  try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
+                case .some(let floor):
+                  if (date.timeIntervalSince(floor.date) >= (60 * 60 * 6)) { // Only update every 6 hours
+                    try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
+                  }
+                }
+                print(stats)
                 return stats
               }
           )
@@ -117,7 +126,7 @@ struct NFTYWidgetEntryView : View {
   var entry: Provider.Entry
   
   var body: some View {
-    VStack(spacing:10) {
+    VStack(spacing:8) {
       
       if (entry.collections.isEmpty) {
         Text("No Collections in Wallet")
@@ -133,38 +142,51 @@ struct NFTYWidgetEntryView : View {
           ),
           id:\.info.id
         ) { stats in
-          VStack(spacing:5) {
+          VStack {
             HStack {
               Text(stats.info.name)
                 .foregroundColor(.secondary)
                 .bold()
             }
+            .colorMultiply(.accentColor)
             .font(.subheadline)
             
-            switch(stats.change) {
-            case .none:
+            HStack(spacing:0) {
               Text(Formatters.eth.string(for:stats.info.floorPrice)!)
                 .bold()
-                .font(.footnote)
-            case .some(let (percentage,_)):
+                .frame(alignment: .leading)
+              Spacer()
               
-              HStack(spacing:0) {
-                Text(Formatters.eth.string(for:stats.info.floorPrice)!)
-                  .bold()
-                  .frame(alignment: .leading)
-                Spacer()
+              switch(stats.change) {
+              case .none:
+                Text("unch")
+                  .foregroundColor(.secondary)
+                  .frame(alignment: .trailing)
+              case .some(let (percentage,_)):
+                
                 Text("\(percentage < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: percentage)!)
                   .foregroundColor(percentage < 0 ? Color.red : Color.green)
                   .frame(alignment: .trailing)
-                  .padding(.leading,20)
               }
-              .font(.footnote)
-            }
+            }.font(.footnote)
           }
         }
+        
+        entry.collections.compactMap { $0.change }.first.map { change in
+          HStack {
+            Spacer()
+            Text("Change since \(change.since.timeAgoDisplay())")
+              .font(.system(size:7))
+              .foregroundColor(Color.tertiaryLabel)
+          }
+        }
+        
       }
     }
-    .padding()
+    .padding([.leading,.trailing])
+    .padding(.top,10)
+    .padding(.bottom,5)
+    
   }
 }
 
@@ -175,6 +197,8 @@ struct NFTYWidget: Widget {
   var body: some WidgetConfiguration {
     IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
       NFTYWidgetEntryView(entry: entry)
+        .preferredColorScheme(.dark)
+        .accentColor(Color.orange)
     }
     .configurationDisplayName("Collections Floor")
     .description("Show floor price for relevant collections")

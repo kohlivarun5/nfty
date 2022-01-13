@@ -270,18 +270,10 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   func indicativeFloor() -> Promise<Double?> {
-    switch(self.indicativePriceSource) {
-    case .openSea:
-      return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-        .map { stats in
-          stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
-        }
-    case .swapPoolContract(let address,_):
-      return SushiSwapPool(address:address).priceInEth()
-    case .swapPoolContractReversed(let address,_):
-      return SushiSwapPool(address:address).priceInEthRev()
-    }
-    
+    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
+      .map { stats in
+        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
+      }
   }
   
   lazy var vaultContract: CollectionVaultContract? = {
