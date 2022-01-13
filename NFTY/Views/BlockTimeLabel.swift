@@ -9,14 +9,6 @@ import SwiftUI
 import BigInt
 import Web3
 
-extension Date {
-  func timeAgoDisplay() -> String {
-    let formatter = RelativeDateTimeFormatter()
-    formatter.unitsStyle = .full
-    return formatter.localizedString(for: self, relativeTo: Date())
-  }
-}
-
 struct BlockTimestampView : View {
   @ObservedObject var block : ObservablePromise<EthereumBlockObject?>
   

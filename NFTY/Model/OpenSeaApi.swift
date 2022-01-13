@@ -326,6 +326,7 @@ struct OpenSeaApi {
         
         collectionInfo.slug.map { slug in
           
+          try? collectionStatsCache.removeExpiredObjects()
           switch(try? collectionStatsCache.object(forKey: slug)) {
           case .some(let stats):
             seal.fulfill(stats)

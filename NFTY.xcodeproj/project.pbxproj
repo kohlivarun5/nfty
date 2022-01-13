@@ -197,6 +197,43 @@
 		4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
 		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */; };
+		4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */; };
+		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
+		4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FDEAB83278E3F5700F92160 /* Assets.xcassets */; };
+		4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */; };
+		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
+		4FDEAB94278E53C100F92160 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB93278E53C100F92160 /* Cache */; };
+		4FDEAB96278E53C800F92160 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB95278E53C800F92160 /* Web3 */; };
+		4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB97278E53CE00F92160 /* Web3ContractABI */; };
+		4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
+		4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
+		4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
+		4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
+		4FDEAB9D278E53F500F92160 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
+		4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
+		4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */; };
+		4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4C276641D80020C5FA /* ZunksContract.swift */; };
+		4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
+		4FDEABA2278E540500F92160 /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
+		4FDEABA3278E540800F92160 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
+		4FDEABA4278E540C00F92160 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
+		4FDEABA5278E540F00F92160 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
+		4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
+		4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC744692630F9130060FC6D /* TokenProtocols.swift */; };
+		4FDEABA8278E541900F92160 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
+		4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */; };
+		4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
+		4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4226D5ED52006274CE /* SECP256K1.swift */; };
+		4FDEABAC278E542700F92160 /* Web3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4426D5F3DC006274CE /* Web3Utils.swift */; };
+		4FDEABAD278E542A00F92160 /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
+		4FDEABAE278E542E00F92160 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
+		4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4026D4757C006274CE /* WalletProvider.swift */; };
+		4FDEABB0278E546300F92160 /* UIKitUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB825269AA26900AD5165 /* UIKitUtils.swift */; };
+		4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEABB1278E547F00F92160 /* Web3PromiseKit */; };
+		4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEABB3278E577600F92160 /* FloorFetcher.swift */; };
+		4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB90278E535200F92160 /* WidgetStorage.swift */; };
 		4FE2CB68278B7B8300930FD8 /* WalletTokensCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */; };
 		4FE818102725B9EF00B7D9C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */; };
 		4FE818132725BA7B00B7D9C5 /* FRWC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */; };
@@ -205,6 +242,93 @@
 		4FED1E4326D5ED53006274CE /* SECP256K1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4226D5ED52006274CE /* SECP256K1.swift */; };
 		4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4426D5F3DC006274CE /* Web3Utils.swift */; };
 		4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */; };
+		4FEEAA25278FB55E00EA6F51 /* CryptoPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */; };
+		4FEEAA26278FB56200EA6F51 /* FRWC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */; };
+		4FEEAA27278FB5D800EA6F51 /* FRWC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */; };
+		4FEEAA28278FB5DD00EA6F51 /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
+		4FEEAA2A278FB5F800EA6F51 /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
+		4FEEAA2B278FB67800EA6F51 /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
+		4FEEAA2C278FB72A00EA6F51 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
+		4FEEAA2D278FB72B00EA6F51 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
+		4FEEAA2E278FB72B00EA6F51 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4FEEAA2F278FB72B00EA6F51 /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
+		4FEEAA30278FB72B00EA6F51 /* BAYC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */; };
+		4FEEAA31278FB72B00EA6F51 /* BAYC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */; };
+		4FEEAA32278FB72B00EA6F51 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
+		4FEEAA33278FB72B00EA6F51 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
+		4FEEAA34278FB72B00EA6F51 /* BirdHouse_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */; };
+		4FEEAA35278FB72B00EA6F51 /* BirdHouse_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */; };
+		4FEEAA36278FB72B00EA6F51 /* Bombs_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */; };
+		4FEEAA37278FB72B00EA6F51 /* Bombs_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */; };
+		4FEEAA38278FB72B00EA6F51 /* Bombs_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */; };
+		4FEEAA39278FB72B00EA6F51 /* Bombs_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */; };
+		4FEEAA3A278FB72B00EA6F51 /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
+		4FEEAA3B278FB72B00EA6F51 /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
+		4FEEAA3C278FB72B00EA6F51 /* CoolCats_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */; };
+		4FEEAA3D278FB72B00EA6F51 /* CoolCats_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */; };
+		4FEEAA3E278FB72B00EA6F51 /* CoolCats_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */; };
+		4FEEAA3F278FB72B00EA6F51 /* CoolCats_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */; };
+		4FEEAA40278FB72B00EA6F51 /* Craniums_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */; };
+		4FEEAA41278FB72B00EA6F51 /* Craniums_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */; };
+		4FEEAA42278FB72B00EA6F51 /* Craniums_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */; };
+		4FEEAA43278FB72B00EA6F51 /* Craniums_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */; };
+		4FEEAA44278FB72B00EA6F51 /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
+		4FEEAA45278FB72B00EA6F51 /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
+		4FEEAA46278FB72B00EA6F51 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
+		4FEEAA47278FB72B00EA6F51 /* CryptoCannabisClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */; };
+		4FEEAA48278FB72B00EA6F51 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FEEAA49278FB72B00EA6F51 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
+		4FEEAA4A278FB72B00EA6F51 /* CryptoHodlers_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */; };
+		4FEEAA4B278FB72B00EA6F51 /* CryptoHodlers_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */; };
+		4FEEAA4C278FB72B00EA6F51 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
+		4FEEAA4D278FB72B00EA6F51 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
+		4FEEAA4E278FB72B00EA6F51 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
+		4FEEAA4F278FB72B00EA6F51 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
+		4FEEAA50278FB72B00EA6F51 /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
+		4FEEAA51278FB72B00EA6F51 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
+		4FEEAA52278FB72B00EA6F51 /* CypherCity_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */; };
+		4FEEAA53278FB72B00EA6F51 /* CypherCity_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */; };
+		4FEEAA54278FB72B00EA6F51 /* CypherCity_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */; };
+		4FEEAA55278FB72B00EA6F51 /* Dads_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */; };
+		4FEEAA56278FB72B00EA6F51 /* Dads_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */; };
+		4FEEAA57278FB72B00EA6F51 /* Dads_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */; };
+		4FEEAA58278FB72B00EA6F51 /* Dads_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */; };
+		4FEEAA59278FB72B00EA6F51 /* DeadFellaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */; };
+		4FEEAA5A278FB72B00EA6F51 /* DeadFellaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */; };
+		4FEEAA5B278FB72B00EA6F51 /* DeadFellaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */; };
+		4FEEAA5C278FB72B00EA6F51 /* DeadFellaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */; };
+		4FEEAA5D278FB72B00EA6F51 /* DJENERATES_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */; };
+		4FEEAA5E278FB72B00EA6F51 /* DJENERATES_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */; };
+		4FEEAA5F278FB72B00EA6F51 /* DJENERATES_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */; };
+		4FEEAA60278FB72B00EA6F51 /* DJENERATES_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */; };
+		4FEEAA61278FB72B00EA6F51 /* FameLadySquad_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */; };
+		4FEEAA62278FB72B00EA6F51 /* FameLadySquad_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */; };
+		4FEEAA63278FB72B00EA6F51 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
+		4FEEAA64278FB72B00EA6F51 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
+		4FEEAA65278FB72B00EA6F51 /* GenesisBlocks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */; };
+		4FEEAA66278FB72B00EA6F51 /* GenesisBlocks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */; };
+		4FEEAA67278FB72B00EA6F51 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
+		4FEEAA68278FB72B00EA6F51 /* JungleFreaks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */; };
+		4FEEAA69278FB72B00EA6F51 /* JungleFreaks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */; };
+		4FEEAA6A278FB72B00EA6F51 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
+		4FEEAA6B278FB72B00EA6F51 /* Killaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */; };
+		4FEEAA6C278FB72B00EA6F51 /* Killaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */; };
+		4FEEAA6D278FB72B00EA6F51 /* Killaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */; };
+		4FEEAA6E278FB72B00EA6F51 /* Killaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */; };
+		4FEEAA6F278FB72B00EA6F51 /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
+		4FEEAA70278FB72B00EA6F51 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
+		4FEEAA71278FB72B00EA6F51 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
+		4FEEAA72278FB72B00EA6F51 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
+		4FEEAA73278FB72B00EA6F51 /* LazyLions_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */; };
+		4FEEAA74278FB72B00EA6F51 /* MutantApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */; };
+		4FEEAA75278FB72B00EA6F51 /* MutantApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */; };
+		4FEEAA76278FB72B00EA6F51 /* MutantApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */; };
+		4FEEAA77278FB72B00EA6F51 /* MutantApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */; };
+		4FEEAA78278FB72B00EA6F51 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
+		4FEEAA79278FB72B00EA6F51 /* WickedApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */; };
+		4FEEAA7A278FB72B00EA6F51 /* WickedApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */; };
+		4FEEAA7B278FB72B00EA6F51 /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
+		4FEEAA7C278FB72B00EA6F51 /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
 		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
@@ -226,6 +350,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4FB9A7AC262B28A300C58AF9;
 			remoteInfo = NFTY;
+		};
+		4FDEAB88278E3F5700F92160 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FB9A7A5262B28A300C58AF9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FDEAB79278E3F5500F92160;
+			remoteInfo = NFTYWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -256,6 +387,17 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		4FDEAB8B278E3F5700F92160 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -442,6 +584,16 @@
 		4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
 		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
+		4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NFTYWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYWidget.swift; sourceTree = "<group>"; };
+		4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = NFTYWidget.intentdefinition; sourceTree = "<group>"; };
+		4FDEAB83278E3F5700F92160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4FDEAB85278E3F5700F92160 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FDEAB90278E535200F92160 /* WidgetStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStorage.swift; sourceTree = "<group>"; };
+		4FDEABB3278E577600F92160 /* FloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorFetcher.swift; sourceTree = "<group>"; };
+		4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYWidgetExtension.entitlements; sourceTree = "<group>"; };
 		4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensCollectionHeader.swift; sourceTree = "<group>"; };
 		4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FRWC_attributeRanks.json; sourceTree = "<group>"; };
@@ -511,6 +663,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4FDEAB77278E3F5500F92160 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FDEAB94278E53C100F92160 /* Cache in Frameworks */,
+				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
+				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
+				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
+				4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */,
+				4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -540,6 +705,8 @@
 		4F58A06C2636942200E258C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */,
+				4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -595,7 +762,9 @@
 		4FB9A7A4262B28A300C58AF9 = {
 			isa = PBXGroup;
 			children = (
+				4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */,
 				4FB72E4626A8DF250083F255 /* NFTRanking */,
+				4FDEAB7F278E3F5500F92160 /* NFTYWidget */,
 				4F58A06C2636942200E258C1 /* Frameworks */,
 				4FB9A7AF262B28A300C58AF9 /* NFTY */,
 				4FB9A7C1262B28A400C58AF9 /* NFTYTests */,
@@ -613,6 +782,7 @@
 				4FA10FF226A8E0E200719D22 /* DownloadCollection */,
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */,
+				4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -744,95 +914,108 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */,
-				4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */,
-				4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */,
-				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
-				4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */,
-				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
-				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
-				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
-				4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */,
-				4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */,
-				4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */,
-				4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */,
-				4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */,
-				4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */,
-				4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */,
-				4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */,
-				4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */,
-				4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */,
-				4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */,
-				4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */,
-				4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */,
-				4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */,
-				4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */,
-				4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */,
-				4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */,
-				4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */,
-				4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */,
-				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
-				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
-				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
-				4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */,
-				4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */,
-				4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */,
-				4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */,
-				4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */,
-				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
-				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
-				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
-				4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */,
-				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
-				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
-				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
-				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
-				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
-				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
-				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
-				4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */,
-				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
-				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
-				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
-				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
-				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
-				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
-				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
-				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
 				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
 				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
-				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
-				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
 				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
+				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
+				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
+				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
+				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
 				4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */,
+				4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */,
+				4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */,
+				4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */,
+				4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */,
 				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
 				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
 				4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */,
 				4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */,
 				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
 				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
+				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
+				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
+				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
+				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
 				4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */,
 				4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */,
 				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
 				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
+				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
+				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
 				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
 				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
+				4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */,
+				4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */,
+				4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */,
+				4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */,
+				4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */,
 				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
 				4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */,
+				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
+				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
 				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
 				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
+				4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */,
+				4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */,
+				4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */,
+				4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */,
 				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
 				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
 				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
 				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
+				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
+				4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */,
+				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
+				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
+				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
+				4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */,
+				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
+				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
 				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
 				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
+				4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */,
+				4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */,
+				4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */,
+				4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */,
+				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
+				4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */,
+				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
+				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
+				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
+				4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */,
+				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
+				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
+				4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */,
+				4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */,
+				4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */,
+				4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */,
+				4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */,
+				4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */,
+				4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */,
+				4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
+				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
+				4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */,
+				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
+				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		4FDEAB7F278E3F5500F92160 /* NFTYWidget */ = {
+			isa = PBXGroup;
+			children = (
+				4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */,
+				4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */,
+				4FDEAB83278E3F5700F92160 /* Assets.xcassets */,
+				4FDEAB85278E3F5700F92160 /* Info.plist */,
+				4FDEAB90278E535200F92160 /* WidgetStorage.swift */,
+				4FDEABB3278E577600F92160 /* FloorFetcher.swift */,
+			);
+			path = NFTYWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -902,10 +1085,12 @@
 				4FB9A7A9262B28A300C58AF9 /* Sources */,
 				4FB9A7AA262B28A300C58AF9 /* Frameworks */,
 				4FB9A7AB262B28A300C58AF9 /* Resources */,
+				4FDEAB8B278E3F5700F92160 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4FDEAB89278E3F5700F92160 /* PBXTargetDependency */,
 			);
 			name = NFTY;
 			packageProductDependencies = (
@@ -957,6 +1142,29 @@
 			productReference = 4FB9A7C9262B28A400C58AF9 /* NFTYUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FDEAB8E278E3F5700F92160 /* Build configuration list for PBXNativeTarget "NFTYWidgetExtension" */;
+			buildPhases = (
+				4FDEAB76278E3F5500F92160 /* Sources */,
+				4FDEAB77278E3F5500F92160 /* Frameworks */,
+				4FDEAB78278E3F5500F92160 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NFTYWidgetExtension;
+			packageProductDependencies = (
+				4FDEAB93278E53C100F92160 /* Cache */,
+				4FDEAB95278E53C800F92160 /* Web3 */,
+				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
+				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
+			);
+			productName = NFTYWidgetExtension;
+			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -966,7 +1174,7 @@
 				KnownAssetTags = (
 					TokenRanking,
 				);
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					4F1E4F3A26C850B7009D27E6 = {
@@ -988,6 +1196,9 @@
 					4FB9A7C8262B28A400C58AF9 = {
 						CreatedOnToolsVersion = 12.4;
 						TestTargetID = 4FB9A7AC262B28A300C58AF9;
+					};
+					4FDEAB79278E3F5500F92160 = {
+						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
 			};
@@ -1017,6 +1228,7 @@
 				4FA10FF126A8E0E200719D22 /* DownloadCollection */,
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */,
+				4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1131,6 +1343,101 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FDEAB78278E3F5500F92160 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FEEAA2C278FB72A00EA6F51 /* AsciiPunks_attributeRanks.json in Resources */,
+				4FEEAA2D278FB72B00EA6F51 /* AsciiPunks_attributeScores.json in Resources */,
+				4FEEAA2E278FB72B00EA6F51 /* AsciiPunks_nearestTokens.json in Resources */,
+				4FEEAA2F278FB72B00EA6F51 /* AsciiPunks_rarityRanks.json in Resources */,
+				4FEEAA30278FB72B00EA6F51 /* BAYC_attributeRanks.json in Resources */,
+				4FEEAA31278FB72B00EA6F51 /* BAYC_attributeScores.json in Resources */,
+				4FEEAA32278FB72B00EA6F51 /* BirdHouse_attributeRanks.json in Resources */,
+				4FEEAA33278FB72B00EA6F51 /* BirdHouse_attributeScores.json in Resources */,
+				4FEEAA34278FB72B00EA6F51 /* BirdHouse_nearestTokens.json in Resources */,
+				4FEEAA35278FB72B00EA6F51 /* BirdHouse_rarityRanks.json in Resources */,
+				4FEEAA36278FB72B00EA6F51 /* Bombs_attributeRanks.json in Resources */,
+				4FEEAA37278FB72B00EA6F51 /* Bombs_attributeScores.json in Resources */,
+				4FEEAA38278FB72B00EA6F51 /* Bombs_nearestTokens.json in Resources */,
+				4FEEAA39278FB72B00EA6F51 /* Bombs_rarityRanks.json in Resources */,
+				4FEEAA3A278FB72B00EA6F51 /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FEEAA3B278FB72B00EA6F51 /* BoredApeYachtClub_rarityRanks.json in Resources */,
+				4FEEAA3C278FB72B00EA6F51 /* CoolCats_attributeRanks.json in Resources */,
+				4FEEAA3D278FB72B00EA6F51 /* CoolCats_attributeScores.json in Resources */,
+				4FEEAA3E278FB72B00EA6F51 /* CoolCats_nearestTokens.json in Resources */,
+				4FEEAA3F278FB72B00EA6F51 /* CoolCats_rarityRanks.json in Resources */,
+				4FEEAA40278FB72B00EA6F51 /* Craniums_attributeRanks.json in Resources */,
+				4FEEAA41278FB72B00EA6F51 /* Craniums_attributeScores.json in Resources */,
+				4FEEAA42278FB72B00EA6F51 /* Craniums_nearestTokens.json in Resources */,
+				4FEEAA43278FB72B00EA6F51 /* Craniums_rarityRanks.json in Resources */,
+				4FEEAA44278FB72B00EA6F51 /* CryptoCannabisClub_attributeRanks.json in Resources */,
+				4FEEAA45278FB72B00EA6F51 /* CryptoCannabisClub_attributeScores.json in Resources */,
+				4FEEAA46278FB72B00EA6F51 /* CryptoCannabisClub_nearestTokens.json in Resources */,
+				4FEEAA47278FB72B00EA6F51 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FEEAA48278FB72B00EA6F51 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4FEEAA49278FB72B00EA6F51 /* CryptoHodlers_attributeScores.json in Resources */,
+				4FEEAA4A278FB72B00EA6F51 /* CryptoHodlers_nearestTokens.json in Resources */,
+				4FEEAA4B278FB72B00EA6F51 /* CryptoHodlers_rarityRanks.json in Resources */,
+				4FEEAA4C278FB72B00EA6F51 /* CryptoMories_attributeRanks.json in Resources */,
+				4FEEAA4D278FB72B00EA6F51 /* CryptoMories_attributeScores.json in Resources */,
+				4FEEAA4E278FB72B00EA6F51 /* CryptoMories_nearestTokens.json in Resources */,
+				4FEEAA4F278FB72B00EA6F51 /* CryptoMories_rarityRanks.json in Resources */,
+				4FEEAA50278FB72B00EA6F51 /* CryptoPunks_nearestTokens.json in Resources */,
+				4FEEAA51278FB72B00EA6F51 /* CypherCity_attributeRanks.json in Resources */,
+				4FEEAA52278FB72B00EA6F51 /* CypherCity_attributeScores.json in Resources */,
+				4FEEAA53278FB72B00EA6F51 /* CypherCity_nearestTokens.json in Resources */,
+				4FEEAA54278FB72B00EA6F51 /* CypherCity_rarityRanks.json in Resources */,
+				4FEEAA55278FB72B00EA6F51 /* Dads_attributeRanks.json in Resources */,
+				4FEEAA56278FB72B00EA6F51 /* Dads_attributeScores.json in Resources */,
+				4FEEAA57278FB72B00EA6F51 /* Dads_nearestTokens.json in Resources */,
+				4FEEAA58278FB72B00EA6F51 /* Dads_rarityRanks.json in Resources */,
+				4FEEAA59278FB72B00EA6F51 /* DeadFellaz_attributeRanks.json in Resources */,
+				4FEEAA5A278FB72B00EA6F51 /* DeadFellaz_attributeScores.json in Resources */,
+				4FEEAA5B278FB72B00EA6F51 /* DeadFellaz_nearestTokens.json in Resources */,
+				4FEEAA5C278FB72B00EA6F51 /* DeadFellaz_rarityRanks.json in Resources */,
+				4FEEAA5D278FB72B00EA6F51 /* DJENERATES_attributeRanks.json in Resources */,
+				4FEEAA5E278FB72B00EA6F51 /* DJENERATES_attributeScores.json in Resources */,
+				4FEEAA5F278FB72B00EA6F51 /* DJENERATES_nearestTokens.json in Resources */,
+				4FEEAA60278FB72B00EA6F51 /* DJENERATES_rarityRanks.json in Resources */,
+				4FEEAA61278FB72B00EA6F51 /* FameLadySquad_attributeRanks.json in Resources */,
+				4FEEAA62278FB72B00EA6F51 /* FameLadySquad_attributeScores.json in Resources */,
+				4FEEAA63278FB72B00EA6F51 /* FameLadySquad_nearestTokens.json in Resources */,
+				4FEEAA64278FB72B00EA6F51 /* FameLadySquad_rarityRanks.json in Resources */,
+				4FEEAA65278FB72B00EA6F51 /* GenesisBlocks_attributeRanks.json in Resources */,
+				4FEEAA66278FB72B00EA6F51 /* GenesisBlocks_attributeScores.json in Resources */,
+				4FEEAA67278FB72B00EA6F51 /* JungleFreaks_attributeRanks.json in Resources */,
+				4FEEAA68278FB72B00EA6F51 /* JungleFreaks_attributeScores.json in Resources */,
+				4FEEAA69278FB72B00EA6F51 /* JungleFreaks_nearestTokens.json in Resources */,
+				4FEEAA6A278FB72B00EA6F51 /* JungleFreaks_rarityRanks.json in Resources */,
+				4FEEAA6B278FB72B00EA6F51 /* Killaz_attributeRanks.json in Resources */,
+				4FEEAA6C278FB72B00EA6F51 /* Killaz_attributeScores.json in Resources */,
+				4FEEAA6D278FB72B00EA6F51 /* Killaz_nearestTokens.json in Resources */,
+				4FEEAA6E278FB72B00EA6F51 /* Killaz_rarityRanks.json in Resources */,
+				4FEEAA6F278FB72B00EA6F51 /* kitties.json in Resources */,
+				4FEEAA70278FB72B00EA6F51 /* LazyLions_attributeRanks.json in Resources */,
+				4FEEAA71278FB72B00EA6F51 /* LazyLions_attributeScores.json in Resources */,
+				4FEEAA72278FB72B00EA6F51 /* LazyLions_nearestTokens.json in Resources */,
+				4FEEAA73278FB72B00EA6F51 /* LazyLions_rarityRanks.json in Resources */,
+				4FEEAA74278FB72B00EA6F51 /* MutantApes_attributeRanks.json in Resources */,
+				4FEEAA75278FB72B00EA6F51 /* MutantApes_attributeScores.json in Resources */,
+				4FEEAA76278FB72B00EA6F51 /* MutantApes_nearestTokens.json in Resources */,
+				4FEEAA77278FB72B00EA6F51 /* MutantApes_rarityRanks.json in Resources */,
+				4FEEAA78278FB72B00EA6F51 /* punks.json in Resources */,
+				4FEEAA79278FB72B00EA6F51 /* WickedApes_attributeRanks.json in Resources */,
+				4FEEAA7A278FB72B00EA6F51 /* WickedApes_attributeScores.json in Resources */,
+				4FEEAA7B278FB72B00EA6F51 /* WickedApes_nearestTokens.json in Resources */,
+				4FEEAA7C278FB72B00EA6F51 /* WickedApes_rarityRanks.json in Resources */,
+				4FEEAA26278FB56200EA6F51 /* FRWC_attributeRanks.json in Resources */,
+				4FEEAA27278FB5D800EA6F51 /* FRWC_attributeScores.json in Resources */,
+				4FEEAA2A278FB5F800EA6F51 /* Doodles_attributeScores.json in Resources */,
+				4FEEAA25278FB55E00EA6F51 /* CryptoPunks_attributeScores.json in Resources */,
+				4FEEAA2B278FB67800EA6F51 /* CryptoPunks_rarityRanks.json in Resources */,
+				4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */,
+				4FEEAA28278FB5DD00EA6F51 /* Doodles_attributeRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1280,6 +1587,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4FDEAB76278E3F5500F92160 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
+				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
+				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
+				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
+				4FDEABAE278E542E00F92160 /* CollectionVaultContract.swift in Sources */,
+				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
+				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
+				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
+				4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */,
+				4FDEAB9D278E53F500F92160 /* AsciiPunksContract.swift in Sources */,
+				4FDEABA8278E541900F92160 /* Extensions.swift in Sources */,
+				4FDEABB0278E546300F92160 /* UIKitUtils.swift in Sources */,
+				4FDEABA5278E540F00F92160 /* ObservablePromise.swift in Sources */,
+				4FDEABA2278E540500F92160 /* LogsFetcher.swift in Sources */,
+				4FDEABAC278E542700F92160 /* Web3Utils.swift in Sources */,
+				4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */,
+				4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */,
+				4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */,
+				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
+				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
+				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
+				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
+				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
+				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
+				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
+				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,
+				4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,
+				4FDEABA3278E540800F92160 /* ModelData.swift in Sources */,
+				4FDEABAD278E542A00F92160 /* SushiSwapPool.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1292,6 +1635,11 @@
 			isa = PBXTargetDependency;
 			target = 4FB9A7AC262B28A300C58AF9 /* NFTY */;
 			targetProxy = 4FB9A7CA262B28A400C58AF9 /* PBXContainerItemProxy */;
+		};
+		4FDEAB89278E3F5700F92160 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */;
+			targetProxy = 4FDEAB88278E3F5700F92160 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1493,13 +1841,14 @@
 		4FB9A7D3262B28A400C58AF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1521,13 +1870,14 @@
 		4FB9A7D4262B28A400C58AF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1630,6 +1980,68 @@
 			};
 			name = Release;
 		};
+		4FDEAB8C278E3F5700F92160 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = C28QWE5379;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NFTYWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NFTYWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.5.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4FDEAB8D278E3F5700F92160 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = C28QWE5379;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NFTYWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NFTYWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.5.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1692,6 +2104,15 @@
 			buildConfigurations = (
 				4FB9A7D9262B28A400C58AF9 /* Debug */,
 				4FB9A7DA262B28A400C58AF9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4FDEAB8E278E3F5700F92160 /* Build configuration list for PBXNativeTarget "NFTYWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FDEAB8C278E3F5700F92160 /* Debug */,
+				4FDEAB8D278E3F5700F92160 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1796,6 +2217,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3;
+		};
+		4FDEAB93278E53C100F92160 /* Cache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
+			productName = Cache;
+		};
+		4FDEAB95278E53C800F92160 /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3;
+		};
+		4FDEAB97278E53CE00F92160 /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3ContractABI;
+		};
+		4FDEABB1278E547F00F92160 /* Web3PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
