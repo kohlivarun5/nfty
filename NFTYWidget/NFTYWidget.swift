@@ -34,7 +34,7 @@ struct Provider: IntentTimelineProvider {
       ),
       CollectionStats(
         info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
+        change:(percentage:-0.213123,since:Date())
       )
     ])
   }
@@ -145,7 +145,6 @@ struct NFTYWidgetEntryView : View {
           VStack {
             HStack {
               Text(stats.info.name)
-                .foregroundColor(.secondary)
                 .bold()
             }
             .colorMultiply(.accentColor)
@@ -197,7 +196,7 @@ struct NFTYWidget: Widget {
     IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
       NFTYWidgetEntryView(entry: entry)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.systemBackground)
+        .background(Color.black)
         .environment(\.colorScheme,.dark)
         .accentColor(Color.orange)
     }
