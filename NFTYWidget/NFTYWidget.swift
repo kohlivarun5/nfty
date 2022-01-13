@@ -8,12 +8,34 @@
 import WidgetKit
 import SwiftUI
 import Intents
+import Cache
+
+struct CollectionStats {
+  let info : CollectionFloorData
+  let change : (percentage:Double,since:Date)?
+}
 
 struct Provider: IntentTimelineProvider {
+  
+  struct FloorPrice : Codable {
+    let floorPrice : Double
+    let date : Date
+  }
+  
+  private var lastPriceCache = try! DiskStorage<String, FloorPrice>(
+    config: DiskConfig(name: "Provider.FloorsCache",expiry: .never),
+    transformer:TransformerFactory.forCodable(ofType:FloorPrice.self))
+  
   func placeholder(in context: Context) -> SimpleEntry {
     SimpleEntry(date: Date(), configuration: ConfigurationIntent(),collections:[
-      CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
-      CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.5,change:-0.123131,changeSince: Date.now),
+      CollectionStats(
+        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
+        change:(percentage:0.5213123,since:Date())
+      ),
+      CollectionStats(
+        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
+        change:(percentage:0.5213123,since:Date())
+      )
     ])
   }
   
@@ -22,15 +44,34 @@ struct Provider: IntentTimelineProvider {
     completion(placeholder(in:context))
   }
   
-  func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+  func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
     print("getTimeline")
     
     fetchStats()
       .done { collections in
-        print("Collections=\(collections)")
         
+        let date = Date()
         let entries = [
-          SimpleEntry(date: Date(), configuration: configuration,collections:collections)
+          SimpleEntry(
+            date: date,
+            configuration: configuration,
+            collections:
+              collections
+              .map { info in
+                let stats = CollectionStats(
+                  info: info,
+                  change:
+                    (try? lastPriceCache.object(forKey:info.id))
+                    .flatMap {
+                      $0.floorPrice == info.floorPrice
+                      ? nil
+                      : (percentage: ($0.floorPrice - info.floorPrice) / info.floorPrice, since:$0.date)
+                    }
+                )
+                try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
+                return stats
+              }
+          )
         ]
         
         let refresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
@@ -76,7 +117,7 @@ struct NFTYWidgetEntryView : View {
   var entry: Provider.Entry
   
   var body: some View {
-    VStack(spacing:15) {
+    VStack(spacing:10) {
       
       if (entry.collections.isEmpty) {
         Text("No Collections in Wallet")
@@ -84,29 +125,46 @@ struct NFTYWidgetEntryView : View {
           .foregroundColor(.secondary)
       } else {
         
-        ForEach(entry.collections) { stats in
+        ForEach(
+          Array(
+            entry.collections
+              .sorted { $0.info.floorPrice > $1.info.floorPrice }
+              .prefix(3)
+          ),
+          id:\.info.id
+        ) { stats in
           VStack(spacing:5) {
             HStack {
-              Text(stats.name)
+              Text(stats.info.name)
                 .foregroundColor(.secondary)
                 .bold()
             }
             .font(.subheadline)
-            HStack(spacing:0) {
-              Text(Formatters.eth.string(for:stats.floorPrice)!)
+            
+            switch(stats.change) {
+            case .none:
+              Text(Formatters.eth.string(for:stats.info.floorPrice)!)
                 .bold()
-                .frame(alignment: .leading)
-              Spacer()
-              Text("\(stats.change < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: stats.change)!)
-                .foregroundColor(stats.change < 0 ? Color.red : Color.green)
-                .frame(alignment: .trailing)
+                .font(.footnote)
+            case .some(let (percentage,_)):
+              
+              HStack(spacing:0) {
+                Text(Formatters.eth.string(for:stats.info.floorPrice)!)
+                  .bold()
+                  .frame(alignment: .leading)
+                Spacer()
+                Text("\(percentage < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: percentage)!)
+                  .foregroundColor(percentage < 0 ? Color.red : Color.green)
+                  .frame(alignment: .trailing)
+                  .padding(.leading,20)
+              }
+              .font(.footnote)
             }
-            .font(.footnote)
           }
-          .padding([.leading,.trailing],15)
         }
       }
     }
+    .padding()
   }
 }
 
@@ -129,9 +187,19 @@ struct NFTYWidget_Previews: PreviewProvider {
       entry: SimpleEntry(
         date: Date(),
         configuration: ConfigurationIntent(),collections:[
-          CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
-          CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.4,change:-0.123131,changeSince: Date.now),
-          CollectionStats(id: "c", name: "Illuminati", floorPrice: 0.4,change:-0.123131,changeSince: Date.now),
+          
+          CollectionStats(
+            info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
+            change:(percentage:0.5213123,since:Date())
+          ),
+          CollectionStats(
+            info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
+            change:(percentage:0.5213123,since:Date())
+          ),
+          CollectionStats(
+            info:CollectionFloorData(id: "c", name: "Illuminati", floorPrice: 1.409),
+            change:(percentage:0.5213123,since:Date())
+          )
         ]
       )
     ).previewContext(WidgetPreviewContext(family: .systemSmall))

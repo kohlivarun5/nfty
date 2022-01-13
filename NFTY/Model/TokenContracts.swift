@@ -476,9 +476,8 @@ class CryptoKittiesAuction : ContractInterface {
         return kitties.kitties.map { kitty in
           response(self.getToken(kitty.id))
         }
-      }.catch {
-        print ($0)
-      }
+      }.catch { print ($0) }
+      .finally { onDone() }
   }
   
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {

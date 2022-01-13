@@ -8,19 +8,15 @@
 import Foundation
 import PromiseKit
 
-struct CollectionStats : Identifiable {
+struct CollectionFloorData : Identifiable {
   let id : String
   let name : String
   let floorPrice : Double
-  let change : Double
-  let changeSince : Date
 }
 
-func fetchStats() -> Promise<[CollectionStats]> {
+func fetchStats() -> Promise<[CollectionFloorData]> {
   
   let storage = WidgetStorage()
-  print(storage.walletAddress)
-  print(storage.walletAddress)
   
   guard let address = storage.walletAddress else {
     return Promise.value([])
@@ -41,10 +37,9 @@ func fetchStats() -> Promise<[CollectionStats]> {
         }
       }
     })
-    .map { collections -> [Collection] in
-      print(collections);
+    .map { collections in
       // Filter collections user doesn't own
-      return collections
+      collections
         .filter { !$0.1.isEmpty }
         .map { $0.0 }
     }
@@ -53,21 +48,21 @@ func fetchStats() -> Promise<[CollectionStats]> {
       $0.reduce(Promise<[(Collection,Double?)]>.value([]), { accu,collection in
         accu
           .then { accu in
-            collection.data.contract.indicativeFloor().map { accu + [(collection,$0)] }
+            collection.data.contract.indicativeFloor().then { floor in
+              after(seconds: 0.1).map { _ in accu + [(collection,floor)] }
+            }
           }
       })
     }
     .map {
-      return $0.filter { $0.1 != .none }
+      $0.compactMap { info in info.1.map { (info.0,$0) } }
     }
     .map {
       $0.map {
-        CollectionStats(
+        CollectionFloorData(
           id: $0.0.data.contract.contractAddressHex,
           name: $0.0.info.name,
-          floorPrice: $0.1!,
-          change: 0,
-          changeSince: Date.now)
+          floorPrice: $0.1)
       }
     }
 }

@@ -242,6 +242,93 @@
 		4FED1E4326D5ED53006274CE /* SECP256K1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4226D5ED52006274CE /* SECP256K1.swift */; };
 		4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4426D5F3DC006274CE /* Web3Utils.swift */; };
 		4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */; };
+		4FEEAA25278FB55E00EA6F51 /* CryptoPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */; };
+		4FEEAA26278FB56200EA6F51 /* FRWC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */; };
+		4FEEAA27278FB5D800EA6F51 /* FRWC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */; };
+		4FEEAA28278FB5DD00EA6F51 /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
+		4FEEAA2A278FB5F800EA6F51 /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
+		4FEEAA2B278FB67800EA6F51 /* CryptoPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */; };
+		4FEEAA2C278FB72A00EA6F51 /* AsciiPunks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */; };
+		4FEEAA2D278FB72B00EA6F51 /* AsciiPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */; };
+		4FEEAA2E278FB72B00EA6F51 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4FEEAA2F278FB72B00EA6F51 /* AsciiPunks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */; };
+		4FEEAA30278FB72B00EA6F51 /* BAYC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */; };
+		4FEEAA31278FB72B00EA6F51 /* BAYC_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */; };
+		4FEEAA32278FB72B00EA6F51 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
+		4FEEAA33278FB72B00EA6F51 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
+		4FEEAA34278FB72B00EA6F51 /* BirdHouse_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */; };
+		4FEEAA35278FB72B00EA6F51 /* BirdHouse_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */; };
+		4FEEAA36278FB72B00EA6F51 /* Bombs_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */; };
+		4FEEAA37278FB72B00EA6F51 /* Bombs_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */; };
+		4FEEAA38278FB72B00EA6F51 /* Bombs_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */; };
+		4FEEAA39278FB72B00EA6F51 /* Bombs_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */; };
+		4FEEAA3A278FB72B00EA6F51 /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
+		4FEEAA3B278FB72B00EA6F51 /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
+		4FEEAA3C278FB72B00EA6F51 /* CoolCats_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */; };
+		4FEEAA3D278FB72B00EA6F51 /* CoolCats_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */; };
+		4FEEAA3E278FB72B00EA6F51 /* CoolCats_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */; };
+		4FEEAA3F278FB72B00EA6F51 /* CoolCats_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */; };
+		4FEEAA40278FB72B00EA6F51 /* Craniums_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */; };
+		4FEEAA41278FB72B00EA6F51 /* Craniums_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */; };
+		4FEEAA42278FB72B00EA6F51 /* Craniums_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */; };
+		4FEEAA43278FB72B00EA6F51 /* Craniums_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */; };
+		4FEEAA44278FB72B00EA6F51 /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
+		4FEEAA45278FB72B00EA6F51 /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
+		4FEEAA46278FB72B00EA6F51 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
+		4FEEAA47278FB72B00EA6F51 /* CryptoCannabisClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */; };
+		4FEEAA48278FB72B00EA6F51 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FEEAA49278FB72B00EA6F51 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
+		4FEEAA4A278FB72B00EA6F51 /* CryptoHodlers_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */; };
+		4FEEAA4B278FB72B00EA6F51 /* CryptoHodlers_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */; };
+		4FEEAA4C278FB72B00EA6F51 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
+		4FEEAA4D278FB72B00EA6F51 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
+		4FEEAA4E278FB72B00EA6F51 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
+		4FEEAA4F278FB72B00EA6F51 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
+		4FEEAA50278FB72B00EA6F51 /* CryptoPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */; };
+		4FEEAA51278FB72B00EA6F51 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
+		4FEEAA52278FB72B00EA6F51 /* CypherCity_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */; };
+		4FEEAA53278FB72B00EA6F51 /* CypherCity_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */; };
+		4FEEAA54278FB72B00EA6F51 /* CypherCity_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */; };
+		4FEEAA55278FB72B00EA6F51 /* Dads_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */; };
+		4FEEAA56278FB72B00EA6F51 /* Dads_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */; };
+		4FEEAA57278FB72B00EA6F51 /* Dads_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */; };
+		4FEEAA58278FB72B00EA6F51 /* Dads_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */; };
+		4FEEAA59278FB72B00EA6F51 /* DeadFellaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */; };
+		4FEEAA5A278FB72B00EA6F51 /* DeadFellaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */; };
+		4FEEAA5B278FB72B00EA6F51 /* DeadFellaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */; };
+		4FEEAA5C278FB72B00EA6F51 /* DeadFellaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */; };
+		4FEEAA5D278FB72B00EA6F51 /* DJENERATES_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */; };
+		4FEEAA5E278FB72B00EA6F51 /* DJENERATES_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */; };
+		4FEEAA5F278FB72B00EA6F51 /* DJENERATES_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */; };
+		4FEEAA60278FB72B00EA6F51 /* DJENERATES_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */; };
+		4FEEAA61278FB72B00EA6F51 /* FameLadySquad_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */; };
+		4FEEAA62278FB72B00EA6F51 /* FameLadySquad_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */; };
+		4FEEAA63278FB72B00EA6F51 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
+		4FEEAA64278FB72B00EA6F51 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
+		4FEEAA65278FB72B00EA6F51 /* GenesisBlocks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */; };
+		4FEEAA66278FB72B00EA6F51 /* GenesisBlocks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */; };
+		4FEEAA67278FB72B00EA6F51 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
+		4FEEAA68278FB72B00EA6F51 /* JungleFreaks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */; };
+		4FEEAA69278FB72B00EA6F51 /* JungleFreaks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */; };
+		4FEEAA6A278FB72B00EA6F51 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
+		4FEEAA6B278FB72B00EA6F51 /* Killaz_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */; };
+		4FEEAA6C278FB72B00EA6F51 /* Killaz_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */; };
+		4FEEAA6D278FB72B00EA6F51 /* Killaz_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */; };
+		4FEEAA6E278FB72B00EA6F51 /* Killaz_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */; };
+		4FEEAA6F278FB72B00EA6F51 /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
+		4FEEAA70278FB72B00EA6F51 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
+		4FEEAA71278FB72B00EA6F51 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
+		4FEEAA72278FB72B00EA6F51 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
+		4FEEAA73278FB72B00EA6F51 /* LazyLions_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */; };
+		4FEEAA74278FB72B00EA6F51 /* MutantApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */; };
+		4FEEAA75278FB72B00EA6F51 /* MutantApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */; };
+		4FEEAA76278FB72B00EA6F51 /* MutantApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */; };
+		4FEEAA77278FB72B00EA6F51 /* MutantApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */; };
+		4FEEAA78278FB72B00EA6F51 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
+		4FEEAA79278FB72B00EA6F51 /* WickedApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */; };
+		4FEEAA7A278FB72B00EA6F51 /* WickedApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */; };
+		4FEEAA7B278FB72B00EA6F51 /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
+		4FEEAA7C278FB72B00EA6F51 /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FF5E10826C9913A00D0B1E9 /* BirdHouse_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */; };
 		4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */; };
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
@@ -827,93 +914,93 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */,
-				4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */,
-				4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */,
-				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
-				4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */,
-				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
-				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
-				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
-				4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */,
-				4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */,
-				4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */,
-				4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */,
-				4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */,
-				4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */,
-				4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */,
-				4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */,
-				4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */,
-				4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */,
-				4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */,
-				4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */,
-				4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */,
-				4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */,
-				4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */,
-				4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */,
-				4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */,
-				4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */,
-				4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */,
-				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
-				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
-				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
-				4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */,
-				4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */,
-				4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */,
-				4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */,
-				4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */,
-				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
-				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
-				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
-				4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */,
-				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
-				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
-				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
-				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
-				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
-				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
-				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
-				4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */,
-				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
-				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
-				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
-				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
-				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
-				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
-				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
-				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
 				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
 				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
-				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
-				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
 				4FBF8AF7264E079D00569DCA /* AsciiPunks_rarityRanks.json */,
+				4FCB496926D1912100696F91 /* BAYC_attributeRanks.json */,
+				4FCB496A26D1912200696F91 /* BAYC_attributeScores.json */,
+				4FF5E10626C9913A00D0B1E9 /* BirdHouse_attributeRanks.json */,
+				4FF5E10726C9913A00D0B1E9 /* BirdHouse_attributeScores.json */,
 				4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */,
 				4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */,
+				4F12715A26EDD43D007E6A7B /* Bombs_attributeRanks.json */,
+				4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */,
+				4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */,
+				4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */,
 				4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */,
 				4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */,
 				4F1E4F4926C858FF009D27E6 /* CoolCats_attributeRanks.json */,
 				4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */,
 				4F1E4F2F26C8458F009D27E6 /* CoolCats_nearestTokens.json */,
 				4F1E4F2E26C8458F009D27E6 /* CoolCats_rarityRanks.json */,
+				4FAB56CA26DADF71007076BE /* Craniums_attributeRanks.json */,
+				4FAB56CB26DADF71007076BE /* Craniums_attributeScores.json */,
+				4FAB56CE26DB49E5007076BE /* Craniums_nearestTokens.json */,
+				4FAB56D126DB49E5007076BE /* Craniums_rarityRanks.json */,
 				4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */,
 				4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */,
 				4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */,
 				4FA0B2AF26C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json */,
+				4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */,
+				4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */,
 				4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */,
 				4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */,
+				4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */,
+				4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */,
+				4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */,
+				4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */,
+				4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */,
 				4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */,
 				4FBF8AF6264E079D00569DCA /* CryptoPunks_rarityRanks.json */,
+				4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */,
+				4FCB496D26D1925C00696F91 /* CypherCity_attributeScores.json */,
 				4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */,
 				4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */,
+				4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */,
+				4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */,
+				4F12715726EDB522007E6A7B /* Dads_nearestTokens.json */,
+				4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */,
 				4F1E4F4626C852D3009D27E6 /* DeadFellaz_attributeRanks.json */,
 				4F1E4F4526C852D3009D27E6 /* DeadFellaz_attributeScores.json */,
 				4F1E4F3326C84F81009D27E6 /* DeadFellaz_nearestTokens.json */,
 				4F1E4F3426C84F82009D27E6 /* DeadFellaz_rarityRanks.json */,
+				4FAB56C726DADF4A007076BE /* DJENERATES_attributeRanks.json */,
+				4FAB56C626DADF4A007076BE /* DJENERATES_attributeScores.json */,
+				4FAB56CF26DB49E5007076BE /* DJENERATES_nearestTokens.json */,
+				4FAB56D026DB49E5007076BE /* DJENERATES_rarityRanks.json */,
+				4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */,
+				4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */,
+				4FCB496626D1900700696F91 /* FameLadySquad_attributeRanks.json */,
+				4FCB496526D1900600696F91 /* FameLadySquad_attributeScores.json */,
 				4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */,
 				4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */,
+				4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */,
+				4FE818122725BA7B00B7D9C5 /* FRWC_attributeScores.json */,
+				4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */,
+				4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */,
+				4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */,
+				4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */,
+				4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */,
+				4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */,
+				4FCB359226E1BB1B0044BD84 /* Killaz_attributeRanks.json */,
+				4FCB359326E1BB1B0044BD84 /* Killaz_attributeScores.json */,
+				4FCB359A26E1C2E40044BD84 /* Killaz_nearestTokens.json */,
+				4FCB359926E1C2E40044BD84 /* Killaz_rarityRanks.json */,
 				4F6D3994262BFE4F007E79BB /* kitties.json */,
+				4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */,
+				4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */,
+				4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */,
+				4F1D2DC727095EA2000AD0A0 /* LazyLions_rarityRanks.json */,
+				4FCB358E26E1A7390044BD84 /* MutantApes_attributeRanks.json */,
+				4FCB358D26E1A7390044BD84 /* MutantApes_attributeScores.json */,
+				4FCB359426E1BB1B0044BD84 /* MutantApes_nearestTokens.json */,
+				4FCB359126E1BB1B0044BD84 /* MutantApes_rarityRanks.json */,
 				4FB9A802262B435400C58AF9 /* punks.json */,
+				4FAB56D626DB4C90007076BE /* WickedApes_attributeRanks.json */,
+				4FAB56D726DB4C90007076BE /* WickedApes_attributeScores.json */,
+				4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */,
+				4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1263,7 +1350,94 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FEEAA2C278FB72A00EA6F51 /* AsciiPunks_attributeRanks.json in Resources */,
+				4FEEAA2D278FB72B00EA6F51 /* AsciiPunks_attributeScores.json in Resources */,
+				4FEEAA2E278FB72B00EA6F51 /* AsciiPunks_nearestTokens.json in Resources */,
+				4FEEAA2F278FB72B00EA6F51 /* AsciiPunks_rarityRanks.json in Resources */,
+				4FEEAA30278FB72B00EA6F51 /* BAYC_attributeRanks.json in Resources */,
+				4FEEAA31278FB72B00EA6F51 /* BAYC_attributeScores.json in Resources */,
+				4FEEAA32278FB72B00EA6F51 /* BirdHouse_attributeRanks.json in Resources */,
+				4FEEAA33278FB72B00EA6F51 /* BirdHouse_attributeScores.json in Resources */,
+				4FEEAA34278FB72B00EA6F51 /* BirdHouse_nearestTokens.json in Resources */,
+				4FEEAA35278FB72B00EA6F51 /* BirdHouse_rarityRanks.json in Resources */,
+				4FEEAA36278FB72B00EA6F51 /* Bombs_attributeRanks.json in Resources */,
+				4FEEAA37278FB72B00EA6F51 /* Bombs_attributeScores.json in Resources */,
+				4FEEAA38278FB72B00EA6F51 /* Bombs_nearestTokens.json in Resources */,
+				4FEEAA39278FB72B00EA6F51 /* Bombs_rarityRanks.json in Resources */,
+				4FEEAA3A278FB72B00EA6F51 /* BoredApeYachtClub_nearestTokens.json in Resources */,
+				4FEEAA3B278FB72B00EA6F51 /* BoredApeYachtClub_rarityRanks.json in Resources */,
+				4FEEAA3C278FB72B00EA6F51 /* CoolCats_attributeRanks.json in Resources */,
+				4FEEAA3D278FB72B00EA6F51 /* CoolCats_attributeScores.json in Resources */,
+				4FEEAA3E278FB72B00EA6F51 /* CoolCats_nearestTokens.json in Resources */,
+				4FEEAA3F278FB72B00EA6F51 /* CoolCats_rarityRanks.json in Resources */,
+				4FEEAA40278FB72B00EA6F51 /* Craniums_attributeRanks.json in Resources */,
+				4FEEAA41278FB72B00EA6F51 /* Craniums_attributeScores.json in Resources */,
+				4FEEAA42278FB72B00EA6F51 /* Craniums_nearestTokens.json in Resources */,
+				4FEEAA43278FB72B00EA6F51 /* Craniums_rarityRanks.json in Resources */,
+				4FEEAA44278FB72B00EA6F51 /* CryptoCannabisClub_attributeRanks.json in Resources */,
+				4FEEAA45278FB72B00EA6F51 /* CryptoCannabisClub_attributeScores.json in Resources */,
+				4FEEAA46278FB72B00EA6F51 /* CryptoCannabisClub_nearestTokens.json in Resources */,
+				4FEEAA47278FB72B00EA6F51 /* CryptoCannabisClub_rarityRanks.json in Resources */,
+				4FEEAA48278FB72B00EA6F51 /* CryptoHodlers_attributeRanks.json in Resources */,
+				4FEEAA49278FB72B00EA6F51 /* CryptoHodlers_attributeScores.json in Resources */,
+				4FEEAA4A278FB72B00EA6F51 /* CryptoHodlers_nearestTokens.json in Resources */,
+				4FEEAA4B278FB72B00EA6F51 /* CryptoHodlers_rarityRanks.json in Resources */,
+				4FEEAA4C278FB72B00EA6F51 /* CryptoMories_attributeRanks.json in Resources */,
+				4FEEAA4D278FB72B00EA6F51 /* CryptoMories_attributeScores.json in Resources */,
+				4FEEAA4E278FB72B00EA6F51 /* CryptoMories_nearestTokens.json in Resources */,
+				4FEEAA4F278FB72B00EA6F51 /* CryptoMories_rarityRanks.json in Resources */,
+				4FEEAA50278FB72B00EA6F51 /* CryptoPunks_nearestTokens.json in Resources */,
+				4FEEAA51278FB72B00EA6F51 /* CypherCity_attributeRanks.json in Resources */,
+				4FEEAA52278FB72B00EA6F51 /* CypherCity_attributeScores.json in Resources */,
+				4FEEAA53278FB72B00EA6F51 /* CypherCity_nearestTokens.json in Resources */,
+				4FEEAA54278FB72B00EA6F51 /* CypherCity_rarityRanks.json in Resources */,
+				4FEEAA55278FB72B00EA6F51 /* Dads_attributeRanks.json in Resources */,
+				4FEEAA56278FB72B00EA6F51 /* Dads_attributeScores.json in Resources */,
+				4FEEAA57278FB72B00EA6F51 /* Dads_nearestTokens.json in Resources */,
+				4FEEAA58278FB72B00EA6F51 /* Dads_rarityRanks.json in Resources */,
+				4FEEAA59278FB72B00EA6F51 /* DeadFellaz_attributeRanks.json in Resources */,
+				4FEEAA5A278FB72B00EA6F51 /* DeadFellaz_attributeScores.json in Resources */,
+				4FEEAA5B278FB72B00EA6F51 /* DeadFellaz_nearestTokens.json in Resources */,
+				4FEEAA5C278FB72B00EA6F51 /* DeadFellaz_rarityRanks.json in Resources */,
+				4FEEAA5D278FB72B00EA6F51 /* DJENERATES_attributeRanks.json in Resources */,
+				4FEEAA5E278FB72B00EA6F51 /* DJENERATES_attributeScores.json in Resources */,
+				4FEEAA5F278FB72B00EA6F51 /* DJENERATES_nearestTokens.json in Resources */,
+				4FEEAA60278FB72B00EA6F51 /* DJENERATES_rarityRanks.json in Resources */,
+				4FEEAA61278FB72B00EA6F51 /* FameLadySquad_attributeRanks.json in Resources */,
+				4FEEAA62278FB72B00EA6F51 /* FameLadySquad_attributeScores.json in Resources */,
+				4FEEAA63278FB72B00EA6F51 /* FameLadySquad_nearestTokens.json in Resources */,
+				4FEEAA64278FB72B00EA6F51 /* FameLadySquad_rarityRanks.json in Resources */,
+				4FEEAA65278FB72B00EA6F51 /* GenesisBlocks_attributeRanks.json in Resources */,
+				4FEEAA66278FB72B00EA6F51 /* GenesisBlocks_attributeScores.json in Resources */,
+				4FEEAA67278FB72B00EA6F51 /* JungleFreaks_attributeRanks.json in Resources */,
+				4FEEAA68278FB72B00EA6F51 /* JungleFreaks_attributeScores.json in Resources */,
+				4FEEAA69278FB72B00EA6F51 /* JungleFreaks_nearestTokens.json in Resources */,
+				4FEEAA6A278FB72B00EA6F51 /* JungleFreaks_rarityRanks.json in Resources */,
+				4FEEAA6B278FB72B00EA6F51 /* Killaz_attributeRanks.json in Resources */,
+				4FEEAA6C278FB72B00EA6F51 /* Killaz_attributeScores.json in Resources */,
+				4FEEAA6D278FB72B00EA6F51 /* Killaz_nearestTokens.json in Resources */,
+				4FEEAA6E278FB72B00EA6F51 /* Killaz_rarityRanks.json in Resources */,
+				4FEEAA6F278FB72B00EA6F51 /* kitties.json in Resources */,
+				4FEEAA70278FB72B00EA6F51 /* LazyLions_attributeRanks.json in Resources */,
+				4FEEAA71278FB72B00EA6F51 /* LazyLions_attributeScores.json in Resources */,
+				4FEEAA72278FB72B00EA6F51 /* LazyLions_nearestTokens.json in Resources */,
+				4FEEAA73278FB72B00EA6F51 /* LazyLions_rarityRanks.json in Resources */,
+				4FEEAA74278FB72B00EA6F51 /* MutantApes_attributeRanks.json in Resources */,
+				4FEEAA75278FB72B00EA6F51 /* MutantApes_attributeScores.json in Resources */,
+				4FEEAA76278FB72B00EA6F51 /* MutantApes_nearestTokens.json in Resources */,
+				4FEEAA77278FB72B00EA6F51 /* MutantApes_rarityRanks.json in Resources */,
+				4FEEAA78278FB72B00EA6F51 /* punks.json in Resources */,
+				4FEEAA79278FB72B00EA6F51 /* WickedApes_attributeRanks.json in Resources */,
+				4FEEAA7A278FB72B00EA6F51 /* WickedApes_attributeScores.json in Resources */,
+				4FEEAA7B278FB72B00EA6F51 /* WickedApes_nearestTokens.json in Resources */,
+				4FEEAA7C278FB72B00EA6F51 /* WickedApes_rarityRanks.json in Resources */,
+				4FEEAA26278FB56200EA6F51 /* FRWC_attributeRanks.json in Resources */,
+				4FEEAA27278FB5D800EA6F51 /* FRWC_attributeScores.json in Resources */,
+				4FEEAA2A278FB5F800EA6F51 /* Doodles_attributeScores.json in Resources */,
+				4FEEAA25278FB55E00EA6F51 /* CryptoPunks_attributeScores.json in Resources */,
+				4FEEAA2B278FB67800EA6F51 /* CryptoPunks_rarityRanks.json in Resources */,
 				4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */,
+				4FEEAA28278FB5DD00EA6F51 /* Doodles_attributeRanks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1674,7 +1848,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1703,7 +1877,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1815,7 +1989,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -1827,7 +2001,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1846,7 +2020,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -1858,7 +2032,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
