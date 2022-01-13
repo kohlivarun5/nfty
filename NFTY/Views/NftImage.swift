@@ -42,6 +42,7 @@ struct NftImageImpl: View {
         .resizable()
         .aspectRatio(contentMode: .fit)
         .padding()
+        .shadow(color:.black,radius: 10)
     }
   }
 }
