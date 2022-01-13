@@ -19,6 +19,8 @@ struct CollectionStats : Identifiable {
 func fetchStats() -> Promise<[CollectionStats]> {
   
   let storage = WidgetStorage()
+  print(storage.walletAddress)
+  print(storage.walletAddress)
   
   guard let address = storage.walletAddress else {
     return Promise.value([])
@@ -39,9 +41,10 @@ func fetchStats() -> Promise<[CollectionStats]> {
         }
       }
     })
-    .map {
+    .map { collections -> [Collection] in
+      print(collections);
       // Filter collections user doesn't own
-      $0
+      return collections
         .filter { !$0.1.isEmpty }
         .map { $0.0 }
     }
@@ -54,7 +57,9 @@ func fetchStats() -> Promise<[CollectionStats]> {
           }
       })
     }
-    .map { $0.filter { $0.1 != .none } }
+    .map {
+      return $0.filter { $0.1 != .none }
+    }
     .map {
       $0.map {
         CollectionStats(

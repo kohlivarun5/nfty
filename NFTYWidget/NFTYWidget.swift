@@ -11,35 +11,35 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
   func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(date: Date(), configuration: ConfigurationIntent(),collections:[])
+    SimpleEntry(date: Date(), configuration: ConfigurationIntent(),collections:[
+      CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
+      CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.5,change:-0.123131,changeSince: Date.now),
+    ])
   }
   
   func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
     print("getSnapshot")
-    fetchStats()
-      .done { collections in
-        let entry = SimpleEntry(date: Date(), configuration: configuration,collections:collections)
-        completion(entry)
-      }
-      .catch { print($0) }
+    completion(placeholder(in:context))
   }
   
   func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
     print("getTimeline")
-    var entries: [SimpleEntry] = []
     
-    let currentDate = Date()
-    for hourOffset in 0 ..< 6 {
-      let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-      let entry = SimpleEntry(date: entryDate, configuration: configuration,collections:[
-        CollectionStats(id: "a", name: "CryptoMories", floorPrice: 1.409,change:0.5213123,changeSince: Date.now),
-        CollectionStats(id: "b", name: "Illuminati", floorPrice: 0.5,change:-0.123131,changeSince: Date.now),
-      ])
-      entries.append(entry)
-    }
+    fetchStats()
+      .done { collections in
+        print("Collections=\(collections)")
+        
+        let entries = [
+          SimpleEntry(date: Date(), configuration: configuration,collections:collections)
+        ]
+        
+        let refresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
+        let timeline = Timeline(entries: entries, policy: .after(refresh))
+        completion(timeline)
+      }
+      .catch { print($0) }
     
-    let timeline = Timeline(entries: entries, policy: .atEnd)
-    completion(timeline)
+    
   }
 }
 
@@ -77,26 +77,34 @@ struct NFTYWidgetEntryView : View {
   
   var body: some View {
     VStack(spacing:15) {
-      ForEach(entry.collections) { stats in
-        VStack(spacing:5) {
-          HStack {
-            Text(stats.name)
-              .foregroundColor(.secondary)
-              .bold()
+      
+      if (entry.collections.isEmpty) {
+        Text("No Collections in Wallet")
+          .multilineTextAlignment(.center)
+          .foregroundColor(.secondary)
+      } else {
+        
+        ForEach(entry.collections) { stats in
+          VStack(spacing:5) {
+            HStack {
+              Text(stats.name)
+                .foregroundColor(.secondary)
+                .bold()
+            }
+            .font(.subheadline)
+            HStack(spacing:0) {
+              Text(Formatters.eth.string(for:stats.floorPrice)!)
+                .bold()
+                .frame(alignment: .leading)
+              Spacer()
+              Text("\(stats.change < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: stats.change)!)
+                .foregroundColor(stats.change < 0 ? Color.red : Color.green)
+                .frame(alignment: .trailing)
+            }
+            .font(.footnote)
           }
-          .font(.subheadline)
-          HStack(spacing:0) {
-            Text(Formatters.eth.string(for:stats.floorPrice)!)
-              .bold()
-              .frame(alignment: .leading)
-            Spacer()
-            Text("\(stats.change < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: stats.change)!)
-              .foregroundColor(stats.change < 0 ? Color.red : Color.green)
-              .frame(alignment: .trailing)
-          }
-          .font(.footnote)
+          .padding([.leading,.trailing],15)
         }
-        .padding([.leading,.trailing],15)
       }
     }
   }
