@@ -112,6 +112,7 @@ class GenesisBlockContract : ContractInterface {
     
     return ObservablePromise(promise: Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
+        try? self.imageCache.removeExpiredObjects()
         switch(try? self.imageCache.object(forKey:tokenId)) {
         /* case .some(let image):
           seal.fulfill(Media.IpfsImage(image: image))

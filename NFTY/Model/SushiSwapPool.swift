@@ -48,6 +48,8 @@ class SushiSwapPool : EthereumContract {
   }
   
   private func getReserves() -> Promise<Reserves> {
+    try? cache.removeExpiredObjects()
+    
     switch(try? cache.object(forKey:self.address!.hex(eip55: true))) {
     case .some(let reserves):
       return Promise.value(reserves)
