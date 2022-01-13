@@ -186,7 +186,6 @@ struct NFTYWidgetEntryView : View {
     .padding([.leading,.trailing])
     .padding(.top,10)
     .padding(.bottom,5)
-    
   }
 }
 
@@ -197,11 +196,14 @@ struct NFTYWidget: Widget {
   var body: some WidgetConfiguration {
     IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
       NFTYWidgetEntryView(entry: entry)
-        .preferredColorScheme(.dark)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.systemBackground)
+        .environment(\.colorScheme,.dark)
         .accentColor(Color.orange)
     }
     .configurationDisplayName("Collections Floor")
-    .description("Show floor price for relevant collections")
+    .description("Floor price updates for collections in wallet")
+    .supportedFamilies([.systemSmall])
   }
 }
 
