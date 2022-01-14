@@ -158,9 +158,10 @@ struct Formatters {
   static var percentage : Formatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .percent
-    formatter.positivePrefix = formatter.plusSign
-    formatter.negativePrefix = formatter.minusSign
-    formatter.maximumFractionDigits = 2
+    formatter.positivePrefix = "▲ "
+    formatter.negativePrefix = "▼ "
+    formatter.minimumFractionDigits = 1
+    formatter.maximumFractionDigits = 1
     return formatter
   }()
 }
@@ -194,7 +195,7 @@ struct NFTYWidgetEntryStackView : View {
               .frame(alignment: .trailing)
           case .some(let (percentage,_)):
             
-            Text("\(percentage < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: percentage)!)
+            Text(Formatters.percentage.string(for: percentage)!)
               .foregroundColor(percentage < 0 ? Color.red : Color.green)
               .frame(alignment: .trailing)
           }
@@ -226,18 +227,33 @@ struct NFTYWidgetEntryView : View {
         case .systemSmall:
           NFTYWidgetEntryStackView(collections:sorted.prefix(3))
         case .systemMedium:
-          HStack {
-            LazyVGrid(
-              columns: Array(
-                repeating:GridItem(.flexible(maximum:140),spacing:20),
-                count:2
-              ),spacing:8
-            ) {
-              NFTYWidgetEntryStackView(collections:sorted.prefix(6))
-            }
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(6))
           }
-        default:
-          EmptyView()
+        case .systemLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(12))
+          }
+          
+        case .systemExtraLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:4
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(24))
+          }
         }
         
         entry.collections.compactMap { $0.change }.first.map { change in
@@ -271,76 +287,52 @@ struct NFTYWidget: Widget {
     }
     .configurationDisplayName("Collections Floor")
     .description("Floor price updates for collections in wallet")
-    .supportedFamilies([.systemSmall,.systemMedium])
+    .supportedFamilies([.systemSmall,.systemMedium,.systemLarge,.systemExtraLarge])
   }
 }
 
 struct NFTYWidget_Previews: PreviewProvider {
+  
   static var previews: some View {
+    
+    let collections : [CollectionStats] = {
+      return Array(0...100)
+        .map {
+          CollectionStats(
+            info:CollectionFloorData(id: "\($0)", name: "CryptoMories\($0)", floorPrice: 1.409),
+            change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
+          )
+        }
+    }()
     
     Group {
       NFTYWidgetEntryView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:[
-            
-            CollectionStats(
-              info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "c", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            )
-          ]
+          configuration: ConfigurationIntent(),collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemSmall))
       
       NFTYWidgetEntryView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:[
-            
-            CollectionStats(
-              info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "c", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            )
-          ]
+          configuration: ConfigurationIntent(),collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemMedium))
       
       NFTYWidgetEntryView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:[
-            
-            CollectionStats(
-              info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            ),
-            CollectionStats(
-              info:CollectionFloorData(id: "c", name: "Illuminati", floorPrice: 1.409),
-              change:(percentage:0.5213123,since:Date())
-            )
-          ]
+          configuration: ConfigurationIntent(),collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemLarge))
+      
+      NFTYWidgetEntryView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemExtraLarge))
       
     }
   }
