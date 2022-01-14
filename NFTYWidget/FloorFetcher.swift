@@ -49,7 +49,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
         accu
           .then { accu in
             collection.data.contract.indicativeFloor().then { floor in
-              after(seconds: 0.1).map { _ in accu + [(collection,floor)] }
+              after(seconds: 0.2).map { _ in accu + [(collection,floor)] }
             }
           }
       })

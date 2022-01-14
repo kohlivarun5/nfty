@@ -42,19 +42,19 @@ struct Provider: IntentTimelineProvider {
         change:(percentage:-0.213123,since:Date())
       ),
       CollectionStats(
-        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
+        info:CollectionFloorData(id: "c", name: "CryptoMories", floorPrice: 1.409),
         change:(percentage:0.5213123,since:Date())
       ),
       CollectionStats(
-        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
+        info:CollectionFloorData(id: "d", name: "Illuminati", floorPrice: 1.409),
         change:(percentage:-0.213123,since:Date())
       ),
       CollectionStats(
-        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
+        info:CollectionFloorData(id: "e", name: "CryptoMories", floorPrice: 1.409),
         change:(percentage:0.5213123,since:Date())
       ),
       CollectionStats(
-        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
+        info:CollectionFloorData(id: "f", name: "Illuminati", floorPrice: 1.409),
         change:(percentage:-0.213123,since:Date())
       ),
       CollectionStats(
@@ -230,7 +230,8 @@ struct NFTYWidgetEntryView : View {
             LazyVGrid(
               columns: Array(
                 repeating:GridItem(.flexible(maximum:140),spacing:20),
-                count:2)
+                count:2
+              ),spacing:8
             ) {
               NFTYWidgetEntryStackView(collections:sorted.prefix(6))
             }
