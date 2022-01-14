@@ -22,21 +22,30 @@ struct Provider: IntentTimelineProvider {
     let date : Date
   }
   
-  private var lastPriceCache = try! DiskStorage<String, FloorPrice>(
-    config: DiskConfig(name: "Provider.FloorsCache",expiry: .never),
-    transformer:TransformerFactory.forCodable(ofType:FloorPrice.self))
+  struct FloorPrices : Codable {
+    let prev : FloorPrice
+    let latest : FloorPrice
+  }
+  
+  private var lastPriceCache = try! DiskStorage<String, FloorPrices>(
+    config: DiskConfig(name: "Provider.FloorPrices",expiry: .never),
+    transformer:TransformerFactory.forCodable(ofType:FloorPrices.self))
   
   func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(date: Date(), configuration: ConfigurationIntent(),collections:[
-      CollectionStats(
-        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:-0.213123,since:Date())
-      )
-    ])
+    SimpleEntry(
+      date: Date(),
+      configuration: ConfigurationIntent(),
+      collections:Array(0...100).map {
+        CollectionStats(
+          info:CollectionFloorData(
+            id: "\($0)",
+            name: $0.isMultiple(of: 2) ? "CryptoMories" : "Illuminati",
+            floorPrice: 1.409),
+          change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
+        )
+      }
+    )
+
   }
   
   func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
@@ -58,25 +67,39 @@ struct Provider: IntentTimelineProvider {
             collections:
               collections
               .map { info in
-                let stats = CollectionStats(
-                  info: info,
-                  change:
-                    (try? lastPriceCache.object(forKey:info.id))
-                    .flatMap {
-                      $0.floorPrice == info.floorPrice
-                      ? nil
-                      : (percentage: ($0.floorPrice - info.floorPrice) / info.floorPrice, since:$0.date)
-                    }
-                )
                 
+                var change : (percentage:Double,since:Date)? = nil
+                
+                // The cache is setup to keep 2 value, because if we just keep one,
+                // we see all unch when the time lapses
                 switch(try? lastPriceCache.object(forKey:info.id)) {
-                case .none:
-                  try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
-                case .some(let floor):
-                  if (date.timeIntervalSince(floor.date) >= (60 * 60 * 6)) { // Only update every 6 hours
-                    try? lastPriceCache.setObject(FloorPrice(floorPrice:info.floorPrice,date:date),forKey:info.id)
+                case .some(let prices):
+                  // find change by comparing the present and prev timelines
+                  if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6) && prices.latest.floorPrice != info.floorPrice) {
+                    change = (percentage: (prices.latest.floorPrice - info.floorPrice) / info.floorPrice, since:prices.latest.date)
+                    
+                    // present is greater than 6 hours, make it prev
+                    try? lastPriceCache.setObject(
+                      FloorPrices(
+                        prev:prices.latest,
+                        latest:FloorPrice(floorPrice:info.floorPrice,date:date)
+                      ),forKey:info.id)
+                  } else if (prices.prev.floorPrice != info.floorPrice) {
+                    change = (percentage: (prices.prev.floorPrice - info.floorPrice) / info.floorPrice, since:prices.prev.date)
+                  } else {
+                    change = nil
                   }
+                  
+                case .none:
+                  try? lastPriceCache.setObject(
+                    FloorPrices(
+                      prev:FloorPrice(floorPrice:info.floorPrice,date:date),
+                      latest:FloorPrice(floorPrice:info.floorPrice,date:date)
+                    ),forKey:info.id)
                 }
+                
+                let stats = CollectionStats(info: info,change:change)
+                
                 print(stats)
                 return stats
               }
@@ -115,15 +138,58 @@ struct Formatters {
   static var percentage : Formatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .percent
-    formatter.positivePrefix = formatter.plusSign
-    formatter.negativePrefix = formatter.minusSign
-    formatter.maximumFractionDigits = 2
+    formatter.positivePrefix = "▲ "
+    formatter.negativePrefix = "▼ "
+    formatter.minimumFractionDigits = 1
+    formatter.maximumFractionDigits = 1
     return formatter
   }()
 }
 
+struct NFTYWidgetEntryStackView : View {
+  let collections: Array<CollectionStats>.SubSequence
+  
+  var body: some View {
+    ForEach(
+      collections,
+      id:\.info.id
+    ) { stats in
+      VStack {
+        HStack {
+          Text(stats.info.name)
+            .bold()
+        }
+        .colorMultiply(.accentColor)
+        .font(.subheadline)
+        
+        HStack(spacing:0) {
+          Text(Formatters.eth.string(for:stats.info.floorPrice)!)
+            .bold()
+            .frame(alignment: .leading)
+          Spacer()
+          
+          switch(stats.change) {
+          case .none:
+            Text("unch")
+              .foregroundColor(.secondary)
+              .frame(alignment: .trailing)
+          case .some(let (percentage,_)):
+            
+            Text(Formatters.percentage.string(for: percentage)!)
+              .foregroundColor(percentage < 0 ? Color.red : Color.green)
+              .frame(alignment: .trailing)
+          }
+        }.font(.footnote)
+      }
+    }
+  }
+}
+
+
 struct NFTYWidgetEntryView : View {
   var entry: Provider.Entry
+  
+  @Environment(\.widgetFamily) var widgetFamily
   
   var body: some View {
     VStack(spacing:8) {
@@ -134,40 +200,39 @@ struct NFTYWidgetEntryView : View {
           .foregroundColor(.secondary)
       } else {
         
-        ForEach(
-          Array(
-            entry.collections
-              .sorted { $0.info.floorPrice > $1.info.floorPrice }
-              .prefix(3)
-          ),
-          id:\.info.id
-        ) { stats in
-          VStack {
-            HStack {
-              Text(stats.info.name)
-                .bold()
-            }
-            .colorMultiply(.accentColor)
-            .font(.subheadline)
-            
-            HStack(spacing:0) {
-              Text(Formatters.eth.string(for:stats.info.floorPrice)!)
-                .bold()
-                .frame(alignment: .leading)
-              Spacer()
-              
-              switch(stats.change) {
-              case .none:
-                Text("unch")
-                  .foregroundColor(.secondary)
-                  .frame(alignment: .trailing)
-              case .some(let (percentage,_)):
-                
-                Text("\(percentage < 0 ? "▼" : "▲") "+Formatters.percentage.string(for: percentage)!)
-                  .foregroundColor(percentage < 0 ? Color.red : Color.green)
-                  .frame(alignment: .trailing)
-              }
-            }.font(.footnote)
+        let sorted = entry.collections
+          .sorted { $0.info.floorPrice > $1.info.floorPrice };
+        
+        switch(widgetFamily) {
+        case .systemSmall:
+          NFTYWidgetEntryStackView(collections:sorted.prefix(3))
+        case .systemMedium:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(6))
+          }
+        case .systemLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(12))
+          }
+          
+        case .systemExtraLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:4
+            ),spacing:8
+          ) {
+            NFTYWidgetEntryStackView(collections:sorted.prefix(24))
           }
         }
         
@@ -202,31 +267,53 @@ struct NFTYWidget: Widget {
     }
     .configurationDisplayName("Collections Floor")
     .description("Floor price updates for collections in wallet")
-    .supportedFamilies([.systemSmall])
+    .supportedFamilies([.systemSmall,.systemMedium,.systemLarge,.systemExtraLarge])
   }
 }
 
 struct NFTYWidget_Previews: PreviewProvider {
+  
   static var previews: some View {
-    NFTYWidgetEntryView(
-      entry: SimpleEntry(
-        date: Date(),
-        configuration: ConfigurationIntent(),collections:[
-          
+    
+    let collections : [CollectionStats] = {
+      return Array(0...100)
+        .map {
           CollectionStats(
-            info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-            change:(percentage:0.5213123,since:Date())
-          ),
-          CollectionStats(
-            info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-            change:(percentage:0.5213123,since:Date())
-          ),
-          CollectionStats(
-            info:CollectionFloorData(id: "c", name: "Illuminati", floorPrice: 1.409),
-            change:(percentage:0.5213123,since:Date())
+            info:CollectionFloorData(id: "\($0)", name: "CryptoMories\($0)", floorPrice: 1.409),
+            change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
           )
-        ]
-      )
-    ).previewContext(WidgetPreviewContext(family: .systemSmall))
+        }
+    }()
+    
+    Group {
+      NFTYWidgetEntryView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemSmall))
+      
+      NFTYWidgetEntryView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemMedium))
+      
+      NFTYWidgetEntryView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemLarge))
+      
+      NFTYWidgetEntryView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemExtraLarge))
+      
+    }
   }
 }
