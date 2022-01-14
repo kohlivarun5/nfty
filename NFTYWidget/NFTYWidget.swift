@@ -32,40 +32,20 @@ struct Provider: IntentTimelineProvider {
     transformer:TransformerFactory.forCodable(ofType:FloorPrices.self))
   
   func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(date: Date(), configuration: ConfigurationIntent(),collections:[
-      CollectionStats(
-        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:-0.213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "c", name: "CryptoMories", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "d", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:-0.213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "e", name: "CryptoMories", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "f", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:-0.213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "a", name: "CryptoMories", floorPrice: 1.409),
-        change:(percentage:0.5213123,since:Date())
-      ),
-      CollectionStats(
-        info:CollectionFloorData(id: "b", name: "Illuminati", floorPrice: 1.409),
-        change:(percentage:-0.213123,since:Date())
-      )
-    ])
+    SimpleEntry(
+      date: Date(),
+      configuration: ConfigurationIntent(),
+      collections:Array(0...100).map {
+        CollectionStats(
+          info:CollectionFloorData(
+            id: "\($0)",
+            name: $0.isMultiple(of: 2) ? "CryptoMories" : "Illuminati",
+            floorPrice: 1.409),
+          change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
+        )
+      }
+    )
+
   }
   
   func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
