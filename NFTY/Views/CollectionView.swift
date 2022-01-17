@@ -33,10 +33,10 @@ struct CollectionView: View {
   @State private var showRarityRanking = false
   @State private var showVault = false
   
-  init(collection:Collection) {
-    self.collection = collection;
+  init(loader:CompositeRecentTradesObject.CollectionLoader) {
+    self.collection = loader.collection;
     self.info = collection.info;
-    self.recentTrades = collection.data.recentTrades;
+    self.recentTrades = loader.recentTrades;
   }
   
   struct FillAll: View {
@@ -190,6 +190,6 @@ struct CollectionView: View {
 
 struct CollectionView_Previews: PreviewProvider {
   static var previews: some View {
-    CollectionView(collection:SampleCollection)
+    CollectionView(collection:CompositeCollection.loaders[0])
   }
 }

@@ -159,7 +159,7 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         
         NavigationView {
-          CollectionsView(collections:COLLECTIONS)
+          CollectionsView(collections:CompositeCollection.loaders)
             .navigationBarTitle("Gallery")
         }
         .tabItem {
