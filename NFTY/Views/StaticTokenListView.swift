@@ -19,16 +19,12 @@ struct StaticTokenListView: View {
       LazyVStack {
         ForEach(nfts.indices,id:\.self) { index in
           let nft = nfts[index];
-          let info = collection.info;
           
           ZStack {
             RoundedImage(
               nft:nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              rarityRank:info.rarityRanking,
+              collection:collection,
               width: .normal
             )
             .shadow(color:.accentColor,radius:0)

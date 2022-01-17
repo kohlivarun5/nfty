@@ -9,11 +9,11 @@ import Foundation
 import PromiseKit
 
 
-func openSeaCollection(address:String) -> Promise<CompositeRecentTradesObject.CollectionInitializer> {
+func openSeaCollection(address:String) -> Promise<Collection> {
   
   return OpenSeaApi.getCollectionInfo(contract: address)
     .map { info in
-      CompositeRecentTradesObject.CollectionInitializer(
+      Collection(
         info: CollectionInfo(
           address: address,
           sample: "SampleBAYC1",//info.image_url,

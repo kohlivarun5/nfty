@@ -54,7 +54,7 @@ struct FavoritesView: View {
         
         if (isFav) {
           _ = collectionsFactory.getByAddress(address).map {
-            let nft = $0.data.contract.getToken(UInt(tokenId)!)
+            let nft = $0.contract.getToken(UInt(tokenId)!)
             self.favorites[address]!.updateValue(nft,forKey:tokenId)
             self.isLoading = false // **** Update isLoading when we add to the list
           }
@@ -101,10 +101,7 @@ struct FavoritesView: View {
                   RoundedImage(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    rarityRank:info.rarityRanking,
+                    collection:collection,
                     width: .normal
                   )
                   .shadow(color:.accentColor,radius:0)
@@ -115,7 +112,7 @@ struct FavoritesView: View {
                   }
                   .onAppear {
                     DispatchQueue.global(qos:.userInteractive).async {
-                      let contract = collection.data.contract
+                      let contract = collection.contract
                       let _ = contract.tradeActions
                         .map { $0.getBidAsk(nft.id.tokenId,.ask) }
                         .map {
@@ -142,11 +139,7 @@ struct FavoritesView: View {
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRanking,
+                    collection:collection,
                     hideOwnerLink:false,selectedProperties:[]
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()

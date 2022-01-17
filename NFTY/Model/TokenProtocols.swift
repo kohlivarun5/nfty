@@ -88,6 +88,7 @@ class CompositeRecentTradesObject : ObservableObject {
   struct NFTItem {
     let nft : NFTWithPriceAndInfo
     var isNew : Bool
+    let collection : Collection
   }
   
   @Published var recentTrades: [NFTItem] = []
@@ -97,12 +98,12 @@ class CompositeRecentTradesObject : ObservableObject {
   var recentTradesPublished: Published<[NFTItem]> { _recentTrades }
   var recentTradesPublisher: Published<[NFTItem]>.Publisher { $recentTrades }
   
-  struct CollectionInitializer {
-    var info : CollectionInfo
-    var contract : ContractInterface
+  struct CollectionLoader {
+    var collection : Collection
+    var recentTrades: NftRecentTradesObject
   }
   
-  var collections : [Collection]
+  var loaders : [CollectionLoader]
   
   private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
     switch(trade.nftWithPrice.indicativePriceWei) {
@@ -136,7 +137,7 @@ class CompositeRecentTradesObject : ObservableObject {
   private func onDone(_ onDone : @escaping () -> Void) {
     if (loadedItems.count == 0) { onDone() }
     
-    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false) }
+    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false,collection:$0.collection) }
     items.append(contentsOf: self.loadedItems)
     
     self.loadedItems = []
@@ -174,42 +175,44 @@ class CompositeRecentTradesObject : ObservableObject {
     
   }
   
-  init(_ collections:[CollectionInitializer]) {
+  init(_ collections:[Collection]) {
     weak var selfWorkaround: CompositeRecentTradesObject?
     
-    self.collections = collections.map { initializer in
-      return Collection(
-        info:initializer.info,
-        data:CollectionData(
-          recentTrades:NftRecentTradesObject(contract:initializer.contract,parentOnTrade: { nft in
+    self.loaders = collections.map { collection in
+      return CollectionLoader(
+        collection:collection,
+        
+        recentTrades:NftRecentTradesObject(
+          contract:collection.contract,
+          parentOnTrade: { nft in
             DispatchQueue.main.async {
-              if (!initializer.info.disableRecentTrades) {
+              if (!collection.info.disableRecentTrades) {
                 selfWorkaround?.loadedItems.append(
-                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: false)
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: false,collection:collection)
                 )
               }
             }
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
-              if (!initializer.info.disableRecentTrades) {
+              if (!collection.info.disableRecentTrades) {
                 selfWorkaround?.loadedItems.append(
-                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:initializer.info),isNew: true)
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: true,collection:collection)
                 )
               }
             }
-          }),
-          contract:initializer.contract))
+          })
+      )
     }
     selfWorkaround = self
   }
   
   private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
-    switch(self.collections[safe:index]) {
-    case .some(let collection):
-      if (collection.info.disableRecentTrades) {
+    switch(self.loaders[safe:index]) {
+    case .some(let loader):
+      if (loader.collection.info.disableRecentTrades) {
         self.loadMoreIndex(index:index+1,onDone:onDone)
       } else {
-        collection.data.recentTrades.loadMore() {
+        loader.recentTrades.loadMore() {
           self.loadMoreIndex(index:index+1,onDone:onDone)
         }
       }
@@ -238,12 +241,12 @@ class CompositeRecentTradesObject : ObservableObject {
   
   private func loadLatestIndex(index:Int,onDone : @escaping () -> Void) {
     
-    switch(self.collections[safe:index]) {
-    case .some(let collection):
-      if (collection.info.disableRecentTrades) {
+    switch(self.loaders[safe:index]) {
+    case .some(let loader):
+      if (loader.collection.info.disableRecentTrades) {
         self.loadLatestIndex(index:index+1,onDone:onDone)
       } else {
-        collection.data.recentTrades.loadLatest() {
+        loader.recentTrades.loadLatest() {
           self.loadLatestIndex(index:index+1,onDone:onDone)
         }
       }

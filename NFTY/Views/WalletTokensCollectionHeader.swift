@@ -13,7 +13,7 @@ struct WalletTokensCollectionHeader: View {
     HStack {
       Spacer()
       ObservedPromiseView(
-        data:ObservablePromise(promise: collection.data.contract.indicativeFloor()),
+        data:ObservablePromise(promise: collection.contract.indicativeFloor()),
         progress: {
           Text(collection.info.name)
         },

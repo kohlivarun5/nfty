@@ -304,18 +304,10 @@ struct CollectionInfo {
   let similarTokens : SimilarTokensGetter?
   let rarityRanking : RarityRanking?
 }
-struct CollectionData : HasContractInterface {
-  let recentTrades: NftRecentTradesObject
-  let contract: ContractInterface
-}
 
-class Collection {
+struct Collection {
   let info : CollectionInfo
-  let data : CollectionData
-  init(info:CollectionInfo,data:CollectionData) {
-    self.info = info;
-    self.data = data;
-  }
+  let contract: ContractInterface
 }
 
 struct NFTWithPriceAndInfo : Identifiable {

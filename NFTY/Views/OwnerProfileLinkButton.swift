@@ -36,7 +36,7 @@ struct OwnerProfileLinkButton: View {
   var body: some View {
     ObservedPromiseView(
       data: ObservablePromise(
-        promise:collection.data.contract.ownerOf(nft.tokenId)),
+        promise:collection.contract.ownerOf(nft.tokenId)),
       progress: { ProgressView() } ) { address in
       UserProfileButton(address: address)
     }.foregroundColor(color)

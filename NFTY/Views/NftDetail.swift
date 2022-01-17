@@ -87,7 +87,7 @@ struct NftDetail: View {
               EmptyView()
             case false:
               HStack {
-                OwnerProfileLinkButton(nft:nft,color:collection.info.themeLabelColor)
+                OwnerProfileLinkButton(nft:nft,color:collection.info.themeLabelColor, collection: collection)
                 Spacer()
               }
             }
@@ -185,7 +185,7 @@ struct NftDetail: View {
                        label: Text("")) {
                   Text("Attributes")
                     .tag(SimilarSectionPage.attributes.rawValue)
-                  Text("Similar \(info.similarTokens?.label ?? "Tokens")")
+                  Text("Similar \(collection.info.similarTokens?.label ?? "Tokens")")
                     .tag(SimilarSectionPage.similar.rawValue)
                 }
                        .pickerStyle(SegmentedPickerStyle())
@@ -243,9 +243,9 @@ struct NftDetail: View {
     
     .ignoresSafeArea(edges: .top)
     .onAppear {
-      self.rank = rarityRank?.getRank(nft.tokenId)
-      self.tokens = similarTokens?.get(nft.tokenId)
-      self.properties = similarTokens?.getProperties(nft.tokenId)
+      self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
+      self.tokens = collection.info.similarTokens?.get(nft.tokenId)
+      self.properties = collection.info.similarTokens?.getProperties(nft.tokenId)
     }
   }
 }

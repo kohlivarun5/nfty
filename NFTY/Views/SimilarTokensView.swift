@@ -57,7 +57,7 @@ struct SimilarTokensView: View {
       .onAppear {
         DispatchQueue.global(qos:.userInteractive).async {
           tokens.forEach { tokenId in
-            let nft = collection.data.contract.getToken(tokenId)
+            let nft = collection.contract.getToken(tokenId)
             nfts.append(nft)
           }
         }

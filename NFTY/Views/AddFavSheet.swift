@@ -30,7 +30,7 @@ struct AddFavSheet: View {
         self.state = .empty
       case (.some(let token),.some(let collection)):
         self.state = .loading(collection.info)
-        let nftWithPrice = collection.data.contract.getToken(token)
+        let nftWithPrice = collection.contract.getToken(token)
         self.state = .loaded(collection.info,nftWithPrice)
       }
     }

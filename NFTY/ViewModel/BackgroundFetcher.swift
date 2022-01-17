@@ -33,7 +33,7 @@ func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UII
 
 func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL?> {
   let notificationImagesFolder = "NotificationImages"
-  switch(collection.data.contract.getNFT(tokenId).media) {
+  switch(collection.contract.getNFT(tokenId).media) {
   case .ipfsImage(let image):
     return image.image.promise.map { uiImage in
       uiImage.flatMap {
@@ -72,7 +72,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       
       if (!tokenIds.isEmpty) {
         
-        switch(collection.data.contract.tradeActions) {
+        switch(collection.contract.tradeActions) {
         case .none:
           return
         case .some(let tradeActions):
@@ -211,7 +211,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
             
           }
           
-          return collection.data.contract.indicativeFloor()
+          return collection.contract.indicativeFloor()
             .map { floor in
               // Check user settings limit
               var withinLimit = false

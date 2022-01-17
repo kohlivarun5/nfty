@@ -16,7 +16,7 @@ struct NftTradeUrlView: View {
   init(collection:Collection, tokenId:UInt,userWallet:UserWallet) {
     self.userWallet = userWallet
     self.collection = collection
-    self.nft = collection.data.contract.getToken(tokenId)
+    self.nft = collection.contract.getToken(tokenId)
   }
   
   var body: some View {

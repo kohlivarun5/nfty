@@ -113,7 +113,7 @@ struct TokenTradeView: View {
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
-      collection.data.contract.indicativeFloor()
+      collection.contract.indicativeFloor()
         .done(on:.main) { self.floorPrice = $0 }
         .catch { print($0) }
     }

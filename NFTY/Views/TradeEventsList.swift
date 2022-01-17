@@ -157,7 +157,7 @@ struct TradeEventsList: View {
   let tokenId : UInt
   
   var body: some View {
-    switch(collection.data.contract.getEventsFetcher(tokenId)) {
+    switch(collection.contract.getEventsFetcher(tokenId)) {
     case .none:
       Text("Unavailable")
     case .some(let fetcher):

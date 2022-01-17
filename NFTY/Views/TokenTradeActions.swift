@@ -207,7 +207,7 @@ struct TokenTradeActions: View {
         self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
       }
       
-      let contract = collection.data.contract
+      let contract = collection.contract
       contract.tradeActions.map { tradeActions in
         self.tradeActions = TradeActionInfo(
           tradeActions: tradeActions,

@@ -28,7 +28,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
       accu.then { accuTokens in
         return Promise { seal in
           var tokens : [NFTWithLazyPrice] = []
-          collection.data.contract.getOwnerTokens(
+          collection.contract.getOwnerTokens(
             address: address,
             onDone: {
               seal.fulfill(accuTokens + [(collection,tokens)])
@@ -48,7 +48,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
       $0.reduce(Promise<[(Collection,Double?)]>.value([]), { accu,collection in
         accu
           .then { accu in
-            collection.data.contract.indicativeFloor().then { floor in
+            collection.contract.indicativeFloor().then { floor in
               after(seconds: 0.2).map { _ in accu + [(collection,floor)] }
             }
           }
@@ -60,7 +60,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
     .map {
       $0.map {
         CollectionFloorData(
-          id: $0.0.data.contract.contractAddressHex,
+          id: $0.0.contract.contractAddressHex,
           name: $0.0.info.name,
           floorPrice: $0.1)
       }

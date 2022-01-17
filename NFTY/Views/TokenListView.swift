@@ -19,7 +19,7 @@ struct TokenListView: View {
   
   init(collection:Collection,tokenIds:[UInt]) {
     self.collection = collection
-    self.nfts = NftTokenList(contract:collection.data.contract,tokenIds:tokenIds)
+    self.nfts = NftTokenList(contract:collection.contract,tokenIds:tokenIds)
     self.nfts.loadMore { }
   }
   
@@ -28,16 +28,11 @@ struct TokenListView: View {
       LazyVStack {
         ForEach(nfts.tokens.indices,id:\.self) { index in
           let nft = nfts.tokens[index];
-          let info = collection.info
-          
           ZStack {
             RoundedImage(
               nft:nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              rarityRank:info.rarityRanking,
+              collection:collection,
               width: .normal
             )
             .shadow(color:.accentColor,radius:0)
@@ -46,11 +41,7 @@ struct TokenListView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              similarTokens:info.similarTokens,
-              rarityRank:info.rarityRanking,
+              collection:collection,
               hideOwnerLink:false,
               selectedProperties:[]
             ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}

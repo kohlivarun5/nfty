@@ -84,10 +84,10 @@ struct FeedView: View {
         ScrollView {
           LazyVStack {
             let sampleInfos = [
-              CompositeCollection.collections[0].info,
-              CompositeCollection.collections[3].info,
-              CompositeCollection.collections[4].info,
-              CompositeCollection.collections[5].info
+              CompositeCollection.loaders[0].collection.info,
+              CompositeCollection.loaders[3].collection.info,
+              CompositeCollection.loaders[4].collection.info,
+              CompositeCollection.loaders[5].collection.info,
             ]
             
             ForEach(sampleInfos.indices,id:\.self) { index in
@@ -145,10 +145,7 @@ struct FeedView: View {
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  sample:info.sample,
-                  themeColor:info.themeColor,
-                  themeLabelColor:info.themeLabelColor,
-                  rarityRank:info.rarityRanking,
+                  collection:item.collection,
                   width: .normal
                 )
                 .shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
@@ -161,11 +158,7 @@ struct FeedView: View {
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
-                  sample:info.sample,
-                  themeColor:info.themeColor,
-                  themeLabelColor:info.themeLabelColor,
-                  similarTokens:info.similarTokens,
-                  rarityRank:info.rarityRanking,
+                  collection:item.collection,
                   hideOwnerLink:false,selectedProperties:[]
                 ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}
                 .hidden()

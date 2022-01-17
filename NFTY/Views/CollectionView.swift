@@ -76,10 +76,7 @@ struct CollectionView: View {
             RoundedImage(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              rarityRank: info.rarityRanking,
+              collection:collection,
               width: .normal
             )
               .shadow(color:.accentColor,radius:0)
@@ -92,11 +89,7 @@ struct CollectionView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              similarTokens:info.similarTokens,
-              rarityRank:info.rarityRanking,
+              collection:collection,
               hideOwnerLink:false,
               selectedProperties:[]
             ),tag:String(nft.nft.tokenId),selection:$action) {}
@@ -135,7 +128,7 @@ struct CollectionView: View {
             EmptyView()
           }
           
-          collection.data.contract.vaultContract.map { _ in
+          collection.contract.vaultContract.map { _ in
             Button(action: { self.showVault = true }) {
               Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
             }
@@ -166,7 +159,7 @@ struct CollectionView: View {
             EmptyView()
           }
           
-          collection.data.contract.vaultContract.map {
+          collection.contract.vaultContract.map {
             NavigationLink(
               destination:
                 NFTXVaultViewLazy(

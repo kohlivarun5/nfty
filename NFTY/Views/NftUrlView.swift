@@ -14,7 +14,7 @@ struct NftUrlView: View {
   let collection : Collection
   
   init(collection:Collection, tokenId:UInt) {
-    self.nft = collection.data.contract.getToken(tokenId)
+    self.nft = collection.contract.getToken(tokenId)
     self.collection = collection
   }
   

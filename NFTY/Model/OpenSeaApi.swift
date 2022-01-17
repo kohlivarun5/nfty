@@ -235,7 +235,7 @@ struct OpenSeaApi {
                   .hex(eip55: true))
               .flatMap { collection in
                 UInt(order.asset.token_id).map {
-                  collection.data.contract.getNFT($0)
+                  collection.contract.getNFT($0)
                 }
               }
               .flatMap { (nft:NFT) -> NFTWithLazyPrice? in
