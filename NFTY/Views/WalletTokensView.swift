@@ -61,7 +61,7 @@ struct WalletTokensView: View {
   @ObservedObject var tokens : NftOwnerTokens
   @State private var selectedTokenId: UInt? = nil
   
-  @State private var sheetSelectedIndex: NFTWithLazyPrice? = nil
+  @State private var sheetSelectedIndex: (Collection,NFTWithLazyPrice)? = nil
   
   
   var body: some View {
@@ -105,10 +105,9 @@ struct WalletTokensView: View {
               ForEach(
                 Dictionary(
                   grouping:tokens.tokens,
-                  by: { nft in nft.nft.address }).sorted(by: { $0.key > $1.key }),
-                id:\.key) { address,tokens in
+                  by: { $0.0 }).sorted(by: { $0.key > $1.key }),
+                id:\.key) { collection,tokens in
                   
-                  let collection = collectionsFactory.getByAddress(address)!
                   let info = collection.info
                   
                   Section(header: WalletTokensCollectionHeader(collection:collection)) {
@@ -139,11 +138,7 @@ struct WalletTokensView: View {
                         NavigationLink(destination: NftDetail(
                           nft:nft.nft,
                           price:.lazy(nft.indicativePriceWei),
-                          sample:info.sample,
-                          themeColor:info.themeColor,
-                          themeLabelColor:info.themeLabelColor,
-                          similarTokens:info.similarTokens,
-                          rarityRank:info.rarityRanking,
+                          collection:collection,
                           hideOwnerLink:false,
                           selectedProperties:[]
                         ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
@@ -154,16 +149,13 @@ struct WalletTokensView: View {
                 }
             }
           }
-          .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) { nft in
-            let info = collectionsFactory.getByAddress(nft.nft.address)!.info;
+          .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) { (collection,nft) in
+            let info = collection.info;
             TokenTradeView(
               nft: nft.nft,
               price:.lazy(nft.indicativePriceWei),
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
+              collection:collection,
               size: .xsmall,
-              rarityRank:info.rarityRanking,
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)

@@ -766,7 +766,7 @@ enum CloudDefaultStorageKeys : String {
 }
 
 class NftOwnerTokens : ObservableObject {
-  @Published var tokens: [NFTWithLazyPrice] = []
+  @Published var tokens: [(Collection,NFTWithLazyPrice)] = []
   
   enum LoadingState {
     case notLoaded
@@ -776,21 +776,21 @@ class NftOwnerTokens : ObservableObject {
   @Published var state : LoadingState = .notLoaded
   
   let ownerAddress : EthereumAddress
-  private let contracts : [ContractInterface]
+  private let collections : [Collection]
   
   private var pendingCount = 0
   
   init(ownerAddress:EthereumAddress) {
     self.ownerAddress = ownerAddress
-    self.contracts = COLLECTIONS.map { $0.data.contract }
+    self.collections = COLLECTIONS
   }
   
   func load() {
     if (state != .notLoaded) { return }
     
     state = .loading
-    contracts.forEach { contract in
-      contract.getOwnerTokens(
+    collections.forEach { collection in
+      collection.data.contract.getOwnerTokens(
         address:ownerAddress,
         
         onDone: {
@@ -800,7 +800,7 @@ class NftOwnerTokens : ObservableObject {
         }
       ) { token in
         DispatchQueue.main.async {
-          self.tokens.append(token)
+          self.tokens.append((collection,token))
         }
       }
     }

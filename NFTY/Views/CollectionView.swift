@@ -21,6 +21,8 @@ struct CollectionView: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
+  @StateObject var userSettings = UserSettings()
+  
   private let collection : Collection
   private let info : CollectionInfo
   
@@ -113,7 +115,12 @@ struct CollectionView: View {
       ToolbarItem(placement: .primaryAction) {
         Menu {
           
-          Button(action: { openURL(self.collection.info.webLink) }) {
+          Button(action: {
+            openURL(
+              self.collection.info.webLink
+              ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
+            )
+          }) {
             Label("Website", systemImage: "safari")
           }
           

@@ -30,6 +30,25 @@ struct DappLink: View {
     }
   }
   
+  static func openSeaPath(address:String) -> URLComponents {
+    
+    if (address == "0xf07468eAd8cf26c752C676E43C814FEe9c8CF402") {
+      
+      var components = URLComponents()
+      components.host = "notlarvalabs.com"
+      components.path = "cryptophunks/forsale"
+      return components
+      
+    } else {
+      
+      var components = URLComponents()
+      components.host = "opensea.io"
+      components.path = "/assets/\(address)"
+      components.queryItems = [URLQueryItem(name: "ref", value: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4")]
+      return components
+    }
+  }
+  
   static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser?) -> URL {
     var components = comps
     switch(dappBrowser) {
@@ -45,6 +64,10 @@ struct DappLink: View {
   
   static func openSeaUrl(nft:NFT,dappBrowser:UserSettings.DappBrowser?) -> URL {
     DappLink.url(DappLink.openSeaPath(nft: nft),dappBrowser: dappBrowser)
+  }
+  
+  static func openSeaUrl(address:String,dappBrowser:UserSettings.DappBrowser?) -> URL {
+    DappLink.url(DappLink.openSeaPath(address: address),dappBrowser: dappBrowser)
   }
   
   var body: some View {

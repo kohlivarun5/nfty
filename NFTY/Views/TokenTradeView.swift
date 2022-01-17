@@ -15,11 +15,9 @@ struct TokenTradeView: View {
   
   let nft:NFT
   let price:TokenPriceType
-  let sample:String
-  let themeColor : Color
-  let themeLabelColor : Color
+  let collection : Collection
   let size : NftImage.Size
-  let rarityRank : RarityRanking?
+  
   @ObservedObject var userWallet: UserWallet
   let isSheet : Bool
   
@@ -35,16 +33,16 @@ struct TokenTradeView: View {
       VStack(spacing:0) {
         NftImage(
           nft:nft,
-          sample:sample,
-          themeColor:themeColor,
-          themeLabelColor:themeLabelColor,
+          sample:collection.info.sample,
+          themeColor:collection.info.themeColor,
+          themeLabelColor:collection.info.themeLabelColor,
           size:.small,
           favButton:.none
         )
           .frame(height:height)
           .padding(.top,isSheet ? 10 : 30)
           .padding(.bottom,10)
-          .background(themeColor)
+          .background(collection.info.themeColor)
         
         HStack {
           VStack(alignment: .leading) {
@@ -87,16 +85,13 @@ struct TokenTradeView: View {
           .background(Color.systemBackground)
       }
       
-      TradeEventsList(contract: nft.address, tokenId:nft.tokenId)
+      TradeEventsList(collection: collection, tokenId:nft.tokenId)
       
       TokenTradeActions(
         nft: nft,
         price:price,
-        sample: sample,
-        themeColor:themeColor,
-        themeLabelColor:themeLabelColor,
+        collection:collection,
         size: .small,
-        rarityRank:rarityRank,
         userWallet:userWallet)
         .padding(.bottom,isSheet ? 12 : 0)
         .background(
@@ -117,8 +112,8 @@ struct TokenTradeView: View {
     )
     .ignoresSafeArea(edges: .top)
     .onAppear {
-      self.rank = rarityRank?.getRank(nft.tokenId)
-      collectionsFactory.getByAddress(nft.address)!.data.contract.indicativeFloor()
+      self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
+      collection.data.contract.indicativeFloor()
         .done(on:.main) { self.floorPrice = $0 }
         .catch { print($0) }
     }
@@ -130,11 +125,8 @@ struct TokenTradeView_Previews: PreviewProvider {
     TokenTradeView(
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-      sample:SAMPLE_PUNKS[0],
-      themeColor:SampleCollection.info.themeColor,
-      themeLabelColor:SampleCollection.info.themeLabelColor,
+      collection:SampleCollection,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking,
       userWallet:UserWallet(),
       isSheet:true)
   }

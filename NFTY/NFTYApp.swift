@@ -233,12 +233,12 @@ struct NFTYApp: App {
         switch item.state {
         case .nft(let address,let tokenId):
           NavigationView {
-            NftUrlView(address: address, tokenId: tokenId)
+            NftUrlView(collection: collection, tokenId: tokenId)
           }
           .preferredColorScheme(.dark)
           .accentColor(Color.orange)
         case .nftTrade(let address,let tokenId):
-          NftTradeUrlView(address: address, tokenId: tokenId, userWallet: userWallet)
+          NftTradeUrlView(collection: collection, tokenId: tokenId, userWallet: userWallet)
             .accentColor(.orange)
             .ignoresSafeArea(edges: .bottom)
         case .user(let address,let friendName):

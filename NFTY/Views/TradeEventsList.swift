@@ -153,11 +153,11 @@ struct TradeEventsList: View {
       
     }
   }
-  let contract : String
+  let collection : Collection
   let tokenId : UInt
   
   var body: some View {
-    switch(collectionsFactory.getByAddress(contract)?.data.contract.getEventsFetcher(tokenId)) {
+    switch(collection.data.contract.getEventsFetcher(tokenId)) {
     case .none:
       Text("Unavailable")
     case .some(let fetcher):
@@ -185,7 +185,7 @@ struct TradeEventsList_Previews: PreviewProvider {
   
   static var previews: some View {
     TradeEventsList(
-      contract: SampleToken.address,
+      collection: SampleCollection,
       tokenId:SampleToken.tokenId
     )
   }

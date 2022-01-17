@@ -91,16 +91,10 @@ struct TokensByPropertiesList: View {
                 .padding(.bottom,11)
               }
               
-              
-              
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
-                sample:info.sample,
-                themeColor:info.themeColor,
-                themeLabelColor:info.themeLabelColor,
-                similarTokens:info.similarTokens,
-                rarityRank:info.rarityRanking,
+                collection:collection,
                 hideOwnerLink:false,
                 selectedProperties:nfts.selectedProperties
               ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
@@ -139,11 +133,8 @@ struct TokensByPropertiesList: View {
       TokenTradeView(
         nft: nft.nft,
         price:.lazy(nft.indicativePriceWei),
-        sample:info.sample,
-        themeColor:info.themeColor,
-        themeLabelColor:info.themeLabelColor,
+        collection:collection,
         size: .xsmall,
-        rarityRank:info.rarityRanking,
         userWallet:userWallet,
         isSheet:true)
         .ignoresSafeArea(edges:.bottom)

@@ -297,7 +297,7 @@ struct CollectionInfo {
   let address: String
   let sample: String
   let name: String
-  let webLink: URL
+  let webLink: URL?
   let themeColor:Color
   let themeLabelColor:Color
   let disableRecentTrades : Bool
