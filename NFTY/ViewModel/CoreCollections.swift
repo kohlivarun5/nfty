@@ -740,10 +740,12 @@ enum CloudDefaultStorageKeys : String {
   case offerNotificationMinimum = "offerNotificationMinimum"
 }
 
-class NftOwnerTokens : ObservableObject {
+class NftOwnerTokens : ObservableObject,Identifiable {
   struct Token {
     let nft : NFTWithLazyPrice
     let collection:Collection
+    
+    var id : NFT.NftID { return nft.nft.id }
   }
   
   @Published var tokens: [Token] = []

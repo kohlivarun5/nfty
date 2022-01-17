@@ -133,7 +133,7 @@ struct WalletTokensView: View {
                           }
                           .onLongPressGesture(minimumDuration: 0.1) {
                             UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                            self.sheetSelectedIndex = nft
+                            self.sheetSelectedIndex = token.nft
                           }
                         NavigationLink(destination: NftDetail(
                           nft:token.nft.nft,
