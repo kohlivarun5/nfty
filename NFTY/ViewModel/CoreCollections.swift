@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Web3
+import PromiseKit
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
@@ -716,12 +717,21 @@ let SampleCollection = CompositeCollection.loaders[0].collection
 
 let COLLECTIONS : [Collection] = CompositeCollection.loaders.map { $0.collection }
 
-struct CollectionsFactory {
+class CollectionsFactory {
   
-  let collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
+  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
   
-  func getByAddress(_ address:String) -> Collection? {
-    return collections[address]
+  func getByAddress(_ address:String) -> Promise<Collection> {
+    switch(collections[address]) {
+    case .some(let x):
+      return Promise.value(x)
+    case .none:
+      return openSeaCollection(address: address)
+        .map { collection -> Collection in
+          self.collections[address] = collection;
+          return collection
+        }
+    }
   }
   
 }

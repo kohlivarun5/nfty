@@ -213,7 +213,7 @@ struct OpenSeaApi {
   
   static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { orders in
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { orders in
         return orders
           .sorted {
             switch($0.expiration_time,$1.expiration_time) {
@@ -228,17 +228,15 @@ struct OpenSeaApi {
             }
           }
         
-          .map { order in
+          .map { order -> Promise<NFTWithLazyPrice?> in
             collectionsFactory
               .getByAddress(
                 try! EthereumAddress(hex: order.asset.asset_contract.address, eip55: false)
                   .hex(eip55: true))
-              .flatMap { collection in
-                UInt(order.asset.token_id).map {
-                  collection.contract.getNFT($0)
-                }
+              .map { collection in
+                collection.contract.getNFT(UInt(order.asset.token_id)!)
               }
-              .flatMap { (nft:NFT) -> NFTWithLazyPrice? in
+              .map { (nft:NFT) -> NFTWithLazyPrice? in
                 switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
                 case (ETH_ADDRESS,.some(let wei)),
                   (WETH_ADDRESS,.some(let wei)):
@@ -259,127 +257,130 @@ struct OpenSeaApi {
                 }
               }
           }
-          .filter { $0 != nil }
-          .map { $0! }
-      }
-  }
-  
-  struct CollectionInfo : Codable {
-    let name : String
-    let image_url : URL?
-    let slug : String?
-    let external_url : URL?
-  }
-  
-  struct Stats : Codable {
-    let floor_price : Double
-  }
-  
-  static private var collectionCache = try! DiskStorage<String, CollectionInfo>(
-    config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
-  
-  static private var collectionStatsCache = try! DiskStorage<String, Stats>(
-    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
-    transformer: TransformerFactory.forCodable(ofType: Stats.self))
-  
-  
-  static func getCollectionInfo(contract:String) -> Promise<CollectionInfo> {
-    return Promise { seal in
-      
-      switch(try? collectionCache.object(forKey: contract)) {
-      case .some(let info):
-        seal.fulfill(info)
-      case .none:
-        
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "api.opensea.io"
-        components.path = "/api/v1/asset_contract/\(contract)"
-        
-        var request = URLRequest(url:components.url!)
-        request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-        
-        request.httpMethod = "GET"
-        
-        print("calling \(request.url!)")
-        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-          if let e = error { return seal.reject(e) }
-          do {
-            let jsonDecoder = JSONDecoder()
-            // print(data)
-            struct Data : Codable {
-              let collection : CollectionInfo
+          .reduce(Promise.value([]), { accu, nft in
+            accu.then { accu in
+              nft.map { $0.map { accu + [$0] } ?? accu }
             }
-            
-            let info = try jsonDecoder.decode(Data.self, from: data!).collection
-            try collectionCache.setObject(info,forKey: contract)
-            
-            seal.fulfill(info)
-          } catch {
-            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-            seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          }
-        }).resume()
+          })
       }
+}
+
+struct CollectionInfo : Codable {
+  let name : String
+  let image_url : URL?
+  let slug : String?
+  let external_url : URL?
+}
+
+struct Stats : Codable {
+  let floor_price : Double
+}
+
+static private var collectionCache = try! DiskStorage<String, CollectionInfo>(
+  config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
+  transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
+
+static private var collectionStatsCache = try! DiskStorage<String, Stats>(
+  config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
+  transformer: TransformerFactory.forCodable(ofType: Stats.self))
+
+
+static func getCollectionInfo(contract:String) -> Promise<CollectionInfo> {
+  return Promise { seal in
+    
+    switch(try? collectionCache.object(forKey: contract)) {
+    case .some(let info):
+      seal.fulfill(info)
+    case .none:
+      
+      var components = URLComponents()
+      components.scheme = "https"
+      components.host = "api.opensea.io"
+      components.path = "/api/v1/asset_contract/\(contract)"
+      
+      var request = URLRequest(url:components.url!)
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      
+      request.httpMethod = "GET"
+      
+      print("calling \(request.url!)")
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        if let e = error { return seal.reject(e) }
+        do {
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          struct Data : Codable {
+            let collection : CollectionInfo
+          }
+          
+          let info = try jsonDecoder.decode(Data.self, from: data!).collection
+          try collectionCache.setObject(info,forKey: contract)
+          
+          seal.fulfill(info)
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      }).resume()
     }
   }
+}
+
+static func getCollectionStats(contract:String) -> Promise<Stats?> {
   
-  static func getCollectionStats(contract:String) -> Promise<Stats?> {
-    
-    return getCollectionInfo(contract: contract)
-      .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
+  return getCollectionInfo(contract: contract)
+    .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
+      
+      Promise { seal in
         
-        Promise { seal in
+        collectionInfo.slug.map { slug in
           
-          collectionInfo.slug.map { slug in
+          try? collectionStatsCache.removeExpiredObjects()
+          switch(try? collectionStatsCache.object(forKey: slug)) {
+          case .some(let stats):
+            seal.fulfill(stats)
+          case .none:
             
-            try? collectionStatsCache.removeExpiredObjects()
-            switch(try? collectionStatsCache.object(forKey: slug)) {
-            case .some(let stats):
-              seal.fulfill(stats)
-            case .none:
-              
-              var components = URLComponents()
-              components.scheme = "https"
-              components.host = "api.opensea.io"
-              components.path = "/api/v1/collection/\(slug)"
-              
-              var request = URLRequest(url:components.url!)
-              request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-              
-              request.httpMethod = "GET"
-              
-              print("calling \(request.url!)")
-              URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-                if let e = error { return seal.reject(e) }
-                do {
-                  let jsonDecoder = JSONDecoder()
-                  // print(data)
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = "api.opensea.io"
+            components.path = "/api/v1/collection/\(slug)"
+            
+            var request = URLRequest(url:components.url!)
+            request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+            
+            request.httpMethod = "GET"
+            
+            print("calling \(request.url!)")
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+              if let e = error { return seal.reject(e) }
+              do {
+                let jsonDecoder = JSONDecoder()
+                // print(data)
+                
+                struct Data : Codable {
                   
-                  struct Data : Codable {
-                    
-                    struct Collection : Codable {
-                      let stats : Stats
-                    }
-                    
-                    let collection : Collection
+                  struct Collection : Codable {
+                    let stats : Stats
                   }
                   
-                  let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
-                  try! collectionStatsCache.setObject(info,forKey: slug)
-                  seal.fulfill(info)
-                } catch {
-                  print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-                  seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                  let collection : Collection
                 }
-              }).resume()
-            }
+                
+                let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
+                try! collectionStatsCache.setObject(info,forKey: slug)
+                seal.fulfill(info)
+              } catch {
+                print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+                seal.reject(NSError(domain:"", code:404, userInfo:nil))
+              }
+            }).resume()
           }
         }
       }
-  }
-  
+    }
+}
+
 }
 
 
