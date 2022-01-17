@@ -137,7 +137,6 @@ struct FeedView: View {
           LazyVStack {
             ForEach(trades.recentTrades.indices,id:\.self) { index in
               let item = trades.recentTrades[index]
-              let info = item.nft.info
               let nft = item.nft.nftWithPrice
 
               ZStack {

@@ -96,7 +96,6 @@ struct FavoritesView: View {
             LazyVStack(pinnedViews:[.sectionHeaders]){
               ForEach(nfts,id:\.id) { nft in
                 let collection = collectionsFactory.getByAddress(nft.nft.address)!
-                let info = collection.info
                 ZStack {
                   RoundedImage(
                     nft:nft.nft,

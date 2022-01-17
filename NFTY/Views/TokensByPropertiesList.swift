@@ -129,7 +129,6 @@ struct TokensByPropertiesList: View {
     }
     .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) {
       let nft = nfts.tokens[$0.id]
-      let info = collection.info
       TokenTradeView(
         nft: nft.nft,
         price:.lazy(nft.indicativePriceWei),
