@@ -76,7 +76,7 @@ struct Provider: IntentTimelineProvider {
                 case .some(let prices):
                   // find change by comparing the present and prev timelines
                   if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6) && prices.latest.floorPrice != info.floorPrice) {
-                    change = (percentage: (prices.latest.floorPrice - info.floorPrice) / info.floorPrice, since:prices.latest.date)
+                    change = (percentage: (info.floorPrice - prices.latest.floorPrice) / prices.latest.floorPrice, since:prices.latest.date)
                     
                     // present is greater than 6 hours, make it prev
                     try? lastPriceCache.setObject(
@@ -85,7 +85,7 @@ struct Provider: IntentTimelineProvider {
                         latest:FloorPrice(floorPrice:info.floorPrice,date:date)
                       ),forKey:info.id)
                   } else if (prices.prev.floorPrice != info.floorPrice) {
-                    change = (percentage: (prices.prev.floorPrice - info.floorPrice) / info.floorPrice, since:prices.prev.date)
+                    change = (percentage: (info.floorPrice - prices.prev.floorPrice) / prices.prev.floorPrice, since:prices.prev.date)
                   } else {
                     change = nil
                   }

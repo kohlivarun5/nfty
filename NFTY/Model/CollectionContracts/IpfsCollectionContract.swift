@@ -24,6 +24,8 @@ class IpfsCollectionContract : ContractInterface {
     static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
       return data
         .flatMap { UIImage(data:$0) }
+        .flatMap { $0.jpegData(compressionQuality: 0.1) }
+        .flatMap { UIImage(data:$0) }
         .map { Media.IpfsImage(image:$0) }
     }
     
@@ -115,6 +117,7 @@ class IpfsCollectionContract : ContractInterface {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(contractAddressHex).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
+    try? self.imageCache.removeAll()
     self.ethContract = IpfsImageEthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource

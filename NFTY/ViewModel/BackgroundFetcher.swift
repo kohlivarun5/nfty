@@ -60,7 +60,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   var orders : [Promise<(Collection,[Order])>] = []
   
   favorites?.forEach { (address,tokens) in
-    collectionsFactory.getByAddress(address).map { collection in
+    _ = collectionsFactory.getByAddress(address).map { collection in
       
       let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
         if (isFav) {

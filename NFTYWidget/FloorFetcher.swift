@@ -7,11 +7,24 @@
 
 import Foundation
 import PromiseKit
+import Web3
 
 struct CollectionFloorData : Identifiable {
   let id : String
   let name : String
   let floorPrice : Double
+}
+
+func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foundMax:Bool) -> Promise<[NFTToken]> {
+  if (foundMax) { return Promise.value(accu) }
+  let limit = 40
+  
+  return after(seconds:0.2).then { _ in
+    OpenSeaApi.getOwnerTokens(address: address,offset:offset,limit:limit)
+      .then { tokens in
+        fetchAllOwnerTokens(address: address,accu:accu + tokens,offset:offset+limit,foundMax:tokens.isEmpty)
+      }
+  }
 }
 
 func fetchStats() -> Promise<[CollectionFloorData]> {
@@ -23,7 +36,10 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
   }
   
   // Need a way to fetch all
-  return OpenSeaApi.getOwnerTokens(address: address,offset:0,limit:50)
+  
+  
+  
+  return fetchAllOwnerTokens(address: address, accu:[], offset: 0, foundMax: false)
     .then {
       $0.reduce(Promise<[Collection]>.value([]), { accu,token in
         accu.map { accu in

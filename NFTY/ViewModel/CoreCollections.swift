@@ -755,14 +755,16 @@ enum CloudDefaultStorageKeys : String {
 
 class NftOwnerTokens : ObservableObject,Identifiable {
   
-  @Published var tokens: [NFTToken] = []
+  @Published var tokens: [(Collection,[NFTToken])] = []
   
   private var offset = 0
+  private var foundMax = false
   
   enum LoadingState {
     case notLoaded
     case loading
     case loaded
+    case loadingMore
   }
   @Published var state : LoadingState = .notLoaded
   
@@ -777,18 +779,32 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   
   func load() {
-    if (state == .loading) { return }
+    if (state == .loading || state == .loadingMore || foundMax) { return }
     
-    DispatchQueue.main.async { self.state = .loading }
-    
-    let limit = 50
-    
-    _ = OpenSeaApi.getOwnerTokens(address: ownerAddress,offset:offset,limit:limit)
-      .done(on:.main) {
-        self.state = .loaded
-        self.tokens.append(contentsOf: $0)
-      }
-    self.offset = self.offset + limit
+    DispatchQueue.main.async {
+      self.state = self.tokens.isEmpty ? .loading : .loadingMore
+      let limit = 40
+      
+      _ = OpenSeaApi.getOwnerTokens(address: self.ownerAddress,offset:self.offset,limit:limit)
+        .done(on:.main) {
+          
+          print("Found tokens count =\($0.count)")
+          
+          self.state = .loaded
+          self.foundMax = $0.isEmpty
+          
+          $0.forEach { token in
+            
+            switch(self.tokens.firstIndex { $0.0.info.address == token.collection.info.address }) {
+            case .some(let index):
+              self.tokens[index].1.append(token)
+            case .none:
+              self.tokens.append((token.collection,[token]))
+            }
+          }
+        }
+      self.offset = self.offset + limit
+    }
   }
   
 }
