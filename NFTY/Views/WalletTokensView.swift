@@ -147,6 +147,11 @@ struct WalletTokensView: View {
                       }
                     }
                   }
+                  .onAppear {
+                    /* DispatchQueue.global(qos:.userInitiated).async {
+                      self.tokens.load()
+                    } */
+                  }
                 }
             }
           }

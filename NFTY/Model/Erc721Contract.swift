@@ -66,7 +66,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
       let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
-      print("calling tokenURI")
+      print("calling tokenURI @ \(address?.hex(eip55:true) ?? "?")")
       return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["tokenURI"] as! String

@@ -32,10 +32,12 @@ struct OpenSeaApi {
   struct AssetContract: Codable {
     let address: String
     let schema_name : String
+    let total_supply : String?
   }
   struct Asset: Codable {
     let token_id : String
     let asset_contract: AssetContract
+    let token_metadata : String?
   }
   
   
@@ -228,7 +230,12 @@ struct OpenSeaApi {
               return $0.expiration_time < $1.expiration_time
             }
           }
-          .filter { $0.asset.asset_contract.schema_name == "ERC721" }
+          .filter {
+            $0.asset.asset_contract.schema_name == "ERC721"
+            && $0.asset.asset_contract.total_supply != nil
+            && ($0.asset.token_metadata == nil
+                || !$0.asset.token_metadata!.starts(with: "data:"))
+          }
           .map { order -> Promise<NFTToken?> in
             return collectionsFactory
               .getByAddress(
@@ -271,7 +278,7 @@ struct OpenSeaApi {
       }
   }
   
-  static func getOwnerTokens(address:EthereumAddress) -> Promise<[NFTToken]> {
+  static func getOwnerTokens(address:EthereumAddress,offset:Int,limit:Int) -> Promise<[NFTToken]> {
     
     struct OwnerAssets: Codable {
       var assets: [Asset]
@@ -285,6 +292,8 @@ struct OpenSeaApi {
       components.path = "/api/v1/assets"
       components.queryItems = [
         URLQueryItem(name: "owner", value: address.hex(eip55: false)),
+        URLQueryItem(name: "offset", value: String(offset)),
+        URLQueryItem(name: "limit", value: String(limit))
       ]
       
       
@@ -298,7 +307,12 @@ struct OpenSeaApi {
         do {
           let jsonDecoder = JSONDecoder()
           let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
-          seal.fulfill(assets.assets.filter { $0.asset_contract.schema_name == "ERC721" })
+          seal.fulfill(assets.assets.filter {
+            $0.asset_contract.schema_name == "ERC721"
+            && $0.asset_contract.total_supply != nil
+            && ($0.token_metadata == nil
+                || !$0.token_metadata!.starts(with: "data:"))
+          })
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.fulfill([])

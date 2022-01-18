@@ -22,8 +22,8 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
     return Promise.value([])
   }
   
-  
-  return OpenSeaApi.getOwnerTokens(address: address)
+  // Need a way to fetch all
+  return OpenSeaApi.getOwnerTokens(address: address,offset:0,limit:50)
     .then {
       $0.reduce(Promise<[Collection]>.value([]), { accu,token in
         accu.map { accu in

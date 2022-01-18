@@ -757,6 +757,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   @Published var tokens: [NFTToken] = []
   
+  private var offset = 0
+  
   enum LoadingState {
     case notLoaded
     case loading
@@ -775,16 +777,20 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   
   func load() {
-    if (state != .notLoaded) { return }
+    if (state == .loading) { return }
     
-    state = .loading
+    DispatchQueue.main.async { self.state = .loading }
     
-    _ = OpenSeaApi.getOwnerTokens(address: ownerAddress)
+    let limit = 50
+    
+    _ = OpenSeaApi.getOwnerTokens(address: ownerAddress,offset:offset,limit:limit)
       .done(on:.main) {
         self.state = .loaded
         self.tokens.append(contentsOf: $0)
       }
+    self.offset = self.offset + limit
   }
+  
 }
 
 var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]
