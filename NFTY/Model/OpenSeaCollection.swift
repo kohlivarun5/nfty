@@ -16,7 +16,7 @@ func openSeaCollection(address:String) -> Promise<Collection> {
       Collection(
         info: CollectionInfo(
           address: address,
-          sample: "SampleBAYC1",//info.image_url,
+          sample: "AsciiPunk1000",
           name: info.name,
           webLink: info.external_url,
           themeColor: .gunmetal,

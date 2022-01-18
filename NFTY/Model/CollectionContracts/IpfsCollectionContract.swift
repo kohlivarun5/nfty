@@ -18,7 +18,8 @@ class IpfsCollectionContract : ContractInterface {
   class IpfsImageEthContract : Erc721Contract {
     
     struct TokenUriData : Codable {
-      let image : String
+      let image : String?
+      let image_url : String?
     }
     
     static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
@@ -73,16 +74,23 @@ class IpfsCollectionContract : ContractInterface {
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
-            
-            var request = URLRequest(
-              url:URL(string:uriData.image.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
-            
-            print("calling \(request.url!)")
-            URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-              // print(data,response,error)
-              seal.fulfill(data)
-            }).resume()
+            switch(
+              (uriData.image == nil ? uriData.image_url : uriData.image)
+                .map { $0.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg=") }
+                .flatMap { URL(string:$0) }
+            ) {
+            case .none:
+              seal.reject(NSError(domain:"", code:404, userInfo:nil))
+            case .some(let url):
+              var request = URLRequest(url:url)
+              request.httpMethod = "GET"
+              
+              print("calling \(request.url!)")
+              URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+                // print(data,response,error)
+                seal.fulfill(data)
+              }).resume()
+            }
           }
         }
     }
