@@ -23,6 +23,7 @@ struct NftImageImpl: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .padding()
+          .colorMultiply(.accentColor)
           .blur(radius:20)
       }
     ) { url in
@@ -34,6 +35,7 @@ struct NftImageImpl: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
+            .colorMultiply(.accentColor)
             .blur(radius:20)
         }
         .diskCacheExpiration(.never)
@@ -62,6 +64,7 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(padding ?? 0)
+            .colorMultiply(.accentColor)
             .blur(radius:20)
         }
       },
@@ -73,6 +76,7 @@ struct NftIpfsImageView: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
               .padding(padding ?? 0)
+              .colorMultiply(.accentColor)
               .blur(radius:20)
           }
         case .some(let uiImage):
