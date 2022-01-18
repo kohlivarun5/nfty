@@ -190,6 +190,6 @@ struct CollectionView: View {
 
 struct CollectionView_Previews: PreviewProvider {
   static var previews: some View {
-    CollectionView(collection:CompositeCollection.loaders[0])
+    CollectionView(loader:CompositeCollection.loaders[0])
   }
 }

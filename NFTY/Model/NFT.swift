@@ -171,6 +171,13 @@ struct NFTPriceInfo {
   }
 }
 
+struct NFTToken : Identifiable {
+  let collection : Collection
+  let nft : NFTWithLazyPrice
+  
+  var id : NFT.NftID { return self.nft.id }
+}
+
 enum NFTPriceStatus {
   case known(NFTPriceInfo)
   case notSeenSince(NFTNotSeenSince)

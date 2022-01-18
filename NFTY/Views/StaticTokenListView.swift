@@ -9,16 +9,15 @@ import SwiftUI
 
 struct StaticTokenListView: View {
   
-  @State var nfts : [NFTWithLazyPrice]
+  @State var tokens : [NFTToken]
   @State private var selectedTokenId: UInt? = nil
-  
-  let collection : Collection
   
   var body: some View {
     ScrollView {
       LazyVStack {
-        ForEach(nfts.indices,id:\.self) { index in
-          let nft = nfts[index];
+        ForEach(tokens) { token in
+          let nft = token.nft;
+          let collection = token.collection;
           
           ZStack {
             RoundedImage(
@@ -47,6 +46,6 @@ struct StaticTokenListView: View {
 
 struct StaticTokenListView_Previews: PreviewProvider {
   static var previews: some View {
-    StaticTokenListView(nfts:[],collection:SampleCollection)
+    StaticTokenListView(tokens:[])
   }
 }

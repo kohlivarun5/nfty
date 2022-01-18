@@ -211,7 +211,7 @@ struct OpenSeaApi {
   }
   
   
-  static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
+  static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTToken]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
       .then(on:DispatchQueue.global(qos:.userInteractive)) { orders in
         return orders
@@ -228,30 +228,34 @@ struct OpenSeaApi {
             }
           }
         
-          .map { order -> Promise<NFTWithLazyPrice?> in
-            collectionsFactory
+          .map { order -> Promise<NFTToken?> in
+            return collectionsFactory
               .getByAddress(
                 try! EthereumAddress(hex: order.asset.asset_contract.address, eip55: false)
                   .hex(eip55: true))
-              .map { collection in
-                collection.contract.getNFT(UInt(order.asset.token_id)!)
+              .map { collection -> (Collection,NFT) in
+                (collection,collection.contract.getNFT(UInt(order.asset.token_id)!))
               }
-              .map { (nft:NFT) -> NFTWithLazyPrice? in
+              .map { (token:(Collection,NFT)) -> NFTToken? in
+                let (collection,nft) = token;
                 switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
                 case (ETH_ADDRESS,.some(let wei)),
                   (WETH_ADDRESS,.some(let wei)):
-                  return NFTWithLazyPrice(
-                    nft: nft,
-                    getPrice: {
-                      ObservablePromise<NFTPriceStatus>(
-                        resolved: NFTPriceStatus.known(
-                          NFTPriceInfo(
-                            price: wei,
-                            date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
-                            type:AssetOrder.sideToEvent(order.side))
+                  return NFTToken(
+                    collection: collection,
+                    nft: NFTWithLazyPrice(
+                      nft: nft,
+                      getPrice: {
+                        ObservablePromise<NFTPriceStatus>(
+                          resolved: NFTPriceStatus.known(
+                            NFTPriceInfo(
+                              price: wei,
+                              date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
+                              type:AssetOrder.sideToEvent(order.side))
+                          )
                         )
-                      )
-                    })
+                      })
+                  )
                 default:
                   return nil
                 }
