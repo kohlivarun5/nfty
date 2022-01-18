@@ -31,12 +31,12 @@ struct UserProfileButton : View {
 struct OwnerProfileLinkButton: View {
   let nft:NFT
   let color : Color
+  let collection : Collection
   
   var body: some View {
-    let collection = collectionsFactory.getByAddress(nft.address)!
     ObservedPromiseView(
       data: ObservablePromise(
-        promise:collection.data.contract.ownerOf(nft.tokenId)),
+        promise:collection.contract.ownerOf(nft.tokenId)),
       progress: { ProgressView() } ) { address in
       UserProfileButton(address: address)
     }.foregroundColor(color)
@@ -45,6 +45,6 @@ struct OwnerProfileLinkButton: View {
 
 struct OwnerProfileLinkButton_Previews: PreviewProvider {
   static var previews: some View {
-    OwnerProfileLinkButton(nft:SampleToken,color:.black)
+    OwnerProfileLinkButton(nft:SampleToken,color:.black,collection:SampleCollection)
   }
 }

@@ -13,11 +13,11 @@ struct TokenTradeActions: View {
   
   let nft:NFT
   let price:TokenPriceType
-  let sample:String
-  let themeColor : Color
-  let themeLabelColor : Color
+  
+  let collection : Collection
+  
   let size : NftImage.Size
-  let rarityRank : RarityRanking?
+  
   @ObservedObject var userWallet: UserWallet
   
   @StateObject var userSettings = UserSettings()
@@ -39,20 +39,14 @@ struct TokenTradeActions: View {
   init(
     nft:NFT,
     price:TokenPriceType,
-    sample:String,
-    themeColor : Color,
-    themeLabelColor : Color,
+    collection:Collection,
     size : NftImage.Size,
-    rarityRank : RarityRanking?,
     userWallet: UserWallet) {
     
     self.nft = nft
     self.price = price
-    self.sample = sample
-    self.themeColor = themeColor
-    self.themeLabelColor = themeLabelColor
+    self.collection = collection
     self.size = size
-    self.rarityRank = rarityRank
     self.userWallet = userWallet
   }
   
@@ -155,11 +149,11 @@ struct TokenTradeActions: View {
                   TokenBuyView(
                     nft: nft,
                     price:price,
-                    sample: sample,
-                    themeColor:themeColor,
-                    themeLabelColor:themeLabelColor,
+                    sample: collection.info.sample,
+                    themeColor:collection.info.themeColor,
+                    themeLabelColor:collection.info.themeLabelColor,
                     size: .xsmall,
-                    rarityRank:rarityRank,
+                    rarityRank:collection.info.rarityRanking,
                     tradeActions: tradeActions,
                     actions:txActions,
                     walletProvider:walletProvider
@@ -213,7 +207,7 @@ struct TokenTradeActions: View {
         self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
       }
       
-      let contract = collectionsFactory.getByAddress(nft.address)!.data.contract
+      let contract = collection.contract
       contract.tradeActions.map { tradeActions in
         self.tradeActions = TradeActionInfo(
           tradeActions: tradeActions,
@@ -243,11 +237,8 @@ struct TokenTradeActions_Previews: PreviewProvider {
     TokenTradeActions(
       nft: SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-      sample:SAMPLE_PUNKS[0],
-      themeColor:SampleCollection.info.themeColor,
-      themeLabelColor:SampleCollection.info.themeLabelColor,
+      collection:SampleCollection,
       size:.normal,
-      rarityRank:SampleCollection.info.rarityRanking,
       userWallet: UserWallet())
       .background(
         RoundedCorners(

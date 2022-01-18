@@ -11,7 +11,7 @@ struct CollectionsView: View {
   
   @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
   
-  var collections : [Collection]
+  var collections : [CompositeRecentTradesObject.CollectionLoader]
   
   @State private var showSorted = false
   @State private var filterZeros = false
@@ -37,17 +37,17 @@ struct CollectionsView: View {
           count:horizontalSizeClass == .some(.compact) ? 2 : 3)
       ) {
         
-        ForEach(collections,id:\.info.name) { collection in
+        ForEach(collections,id:\.collection.info.name) { loader in
           ZStack {
             
             VStack {
-              sampleImage(url:collection.info.sample,collection:collection)
+              sampleImage(url:loader.collection.info.sample,collection:loader.collection)
                 .padding(10)
-                .background(collection.info.themeColor)
+                .background(loader.collection.info.themeColor)
               
               
               HStack {
-                Text(collection.info.name)
+                Text(loader.collection.info.name)
               }
               .font(.headline)
               .padding(.bottom,10)
@@ -60,14 +60,14 @@ struct CollectionsView: View {
             .shadow(color:.secondary,radius:5)
             //.padding()
             
-            NavigationLink(destination: CollectionView(collection:collection), tag: collection.info.address,selection:$action) {}
+            NavigationLink(destination: CollectionView(loader:loader), tag: loader.collection.info.address,selection:$action) {}
               .hidden()
           }
           .padding([.leading,.trailing],8)
           .padding([.top,.bottom],10)
           .onTapGesture {
             //perform some tasks if needed before opening Destination view
-            self.action = collection.info.address
+            self.action = loader.collection.info.address
           }
         }
       }
@@ -93,6 +93,6 @@ struct CollectionsView: View {
 
 struct CollectionsView_Previews: PreviewProvider {
   static var previews: some View {
-    CollectionsView(collections:COLLECTIONS)
+    CollectionsView(collections:CompositeCollection.loaders)
   }
 }

@@ -198,7 +198,7 @@ struct TokenSellView_Previews: PreviewProvider {
         themeLabelColor:SampleCollection.info.themeLabelColor,
         size:.normal,
         rarityRank:SampleCollection.info.rarityRanking,
-        tradeActions: SampleCollection.data.contract.tradeActions!
+        tradeActions: SampleCollection.contract.tradeActions!
       )
     }
 }

@@ -12,7 +12,7 @@ import Web3
 struct FavoritesView: View {
   @State private var showAddFavSheet = false
   
-  typealias FavoritesDict = [String : [String : NFTWithLazyPrice?]]
+  typealias FavoritesDict = [String : [String : (Collection,NFTWithLazyPrice)?]]
   @State private var favorites : FavoritesDict = [:]
   
   @State private var showSorted = false
@@ -20,14 +20,14 @@ struct FavoritesView: View {
   @State private var selectedTokenId: UInt? = nil
   @State private var isLoading = true
   
-  func dictToNfts(_ dict : FavoritesDict) -> [NFTWithLazyPrice] {
-    var res : [NFTWithLazyPrice] = [];
+  func dictToNfts(_ dict : FavoritesDict) -> [(Collection,NFTWithLazyPrice)] {
+    var res : [(Collection,NFTWithLazyPrice)] = [];
     self.favorites.forEach { address,tokens in
       tokens.values.forEach {
         $0.map { res.append($0) }
       }
     }
-    return res.sorted(by: { $0.nft.id < $1.nft.id });
+    return res.sorted(by: { $0.1.nft.id < $1.1.nft.id });
   }
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
@@ -53,10 +53,11 @@ struct FavoritesView: View {
         }
         
         if (isFav) {
-          _ = collectionsFactory.getByAddress(address).map {
-            let nft = $0.data.contract.getToken(UInt(tokenId)!)
-            self.favorites[address]!.updateValue(nft,forKey:tokenId)
+          _ = collectionsFactory.getByAddress(address).done(on:.main) { collection in
+            let nft = collection.contract.getToken(UInt(tokenId)!)
+            self.favorites[address]!.updateValue((collection,nft),forKey:tokenId)
             self.isLoading = false // **** Update isLoading when we add to the list
+            
           }
         } else {
           self.favorites[address]!.updateValue(nil,forKey:tokenId)
@@ -94,59 +95,52 @@ struct FavoritesView: View {
         case _:
           ScrollView {
             LazyVStack(pinnedViews:[.sectionHeaders]){
-              ForEach(nfts,id:\.id) { nft in
-                let collection = collectionsFactory.getByAddress(nft.nft.address)!
-                let info = collection.info
+              ForEach(nfts,id:\.1.id) { token in
+                let (collection,nft) = token;
                 ZStack {
                   RoundedImage(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    rarityRank:info.rarityRanking,
+                    collection:collection,
                     width: .normal
                   )
-                  .shadow(color:.accentColor,radius:0)
-                  .padding()
-                  .onTapGesture {
-                    //perform some tasks if needed before opening Destination view
-                    self.selectedTokenId = nft.nft.tokenId
-                  }
-                  .onAppear {
-                    DispatchQueue.global(qos:.userInteractive).async {
-                      let contract = collection.data.contract
-                      let _ = contract.tradeActions
-                        .map { $0.getBidAsk(nft.id.tokenId,.ask) }
-                        .map {
-                          $0.done {
-                            $0.ask.map { ask in
-                              DispatchQueue.main.async {
-                                self.favorites[nft.id.address]!.updateValue(
-                                  NFTWithLazyPrice(nft:nft.nft,getPrice: {
-                                    return ObservablePromise<NFTPriceStatus>(
-                                      resolved: NFTPriceStatus.known(
-                                        NFTPriceInfo(
-                                          price: ask.wei,
-                                          blockNumber: nil,
-                                          type: TradeEventType.ask))
-                                    )
-                                  }),forKey:String(nft.id.tokenId))
+                    .shadow(color:.accentColor,radius:0)
+                    .padding()
+                    .onTapGesture {
+                      //perform some tasks if needed before opening Destination view
+                      self.selectedTokenId = nft.nft.tokenId
+                    }
+                    .onAppear {
+                      DispatchQueue.global(qos:.userInteractive).async {
+                        let contract = collection.contract
+                        let _ = contract.tradeActions
+                          .map { $0.getBidAsk(nft.id.tokenId,.ask) }
+                          .map {
+                            $0.done {
+                              $0.ask.map { ask in
+                                DispatchQueue.main.async {
+                                  self.favorites[nft.id.address]!.updateValue(
+                                    (collection,
+                                     NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                      return ObservablePromise<NFTPriceStatus>(
+                                        resolved: NFTPriceStatus.known(
+                                          NFTPriceInfo(
+                                            price: ask.wei,
+                                            blockNumber: nil,
+                                            type: TradeEventType.ask))
+                                      )
+                                    })),forKey:String(nft.id.tokenId))
+                                }
                               }
                             }
+                            .catch { print($0) }
                           }
-                          .catch { print($0) }
-                        }
+                      }
                     }
-                  }
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRanking,
+                    collection:collection,
                     hideOwnerLink:false,selectedProperties:[]
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
                   .hidden()

@@ -12,7 +12,7 @@ struct SimilarTokensView: View {
   @State private var nfts : [NFTWithLazyPrice] = []
   @State private var action: String? = ""
   
-  var info : CollectionInfo
+  var collection : Collection
   var tokens : [UInt]
   
   var body: some View {
@@ -24,9 +24,9 @@ struct SimilarTokensView: View {
             ZStack {
               NftImage(
                 nft:nft.nft,
-                sample:info.sample,
-                themeColor:info.themeColor,
-                themeLabelColor:info.themeLabelColor,
+                sample:collection.info.sample,
+                themeColor:collection.info.themeColor,
+                themeLabelColor:collection.info.themeLabelColor,
                 size:metrics.size.height < 700 ? .xxsmall : .xsmall,
                 favButton:.none
               )
@@ -45,11 +45,7 @@ struct SimilarTokensView: View {
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
-                sample:info.sample,
-                themeColor:info.themeColor,
-                themeLabelColor:info.themeLabelColor,
-                similarTokens:info.similarTokens,
-                rarityRank:info.rarityRanking,
+                collection:collection,
                 hideOwnerLink:false,
                 selectedProperties:[]
               ),tag:String(nft.nft.tokenId),selection:$action) {}
@@ -61,7 +57,7 @@ struct SimilarTokensView: View {
       .onAppear {
         DispatchQueue.global(qos:.userInteractive).async {
           tokens.forEach { tokenId in
-            let nft = collectionsFactory.getByAddress(info.address)!.data.contract.getToken(tokenId)
+            let nft = collection.contract.getToken(tokenId)
             nfts.append(nft)
           }
         }
@@ -72,6 +68,6 @@ struct SimilarTokensView: View {
 
 struct SimilarTokensView_Previews: PreviewProvider {
   static var previews: some View {
-    SimilarTokensView(info:SampleCollection.info,tokens:[])
+    SimilarTokensView(collection:SampleCollection,tokens:[])
   }
 }

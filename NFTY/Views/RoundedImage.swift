@@ -13,10 +13,7 @@ struct RoundedImage: View {
   
   var nft:NFT
   var price:TokenPriceType
-  var sample : String
-  var themeColor : Color
-  var themeLabelColor : Color
-  var rarityRank : RarityRanking?
+  let collection : Collection
   var rank : UInt?
   
   enum Width {
@@ -27,20 +24,14 @@ struct RoundedImage: View {
   
   init(nft:NFT,
        price:TokenPriceType,
-       sample : String,
-       themeColor : Color,
-       themeLabelColor : Color,
-       rarityRank : RarityRanking?,
+       collection:Collection,
        width:Width)
   {
     
     self.nft = nft
     self.price = price
-    self.sample = sample
-    self.themeColor = themeColor
-    self.themeLabelColor = themeLabelColor
-    self.rarityRank = rarityRank
-    self.rank = rarityRank?.getRank(nft.tokenId)
+    self.collection = collection
+    self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
     self.width = width
   }
   
@@ -74,7 +65,13 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack(spacing:0) {
-      NftImage(nft:nft,sample:sample,themeColor:themeColor,themeLabelColor:themeLabelColor,size:mediaSize(width),favButton:.topRight)
+      NftImage(
+        nft:nft,
+        sample:collection.info.sample,
+        themeColor:collection.info.themeColor,
+        themeLabelColor:collection.info.themeLabelColor,
+        size:mediaSize(width),
+        favButton:.topRight)
       
       switch(width) {
       case .narrow:
@@ -105,11 +102,8 @@ struct RoundedImage: View {
             TokenTradeView(
               nft: nft,
               price:price,
-              sample: sample,
-              themeColor:themeColor,
-              themeLabelColor:themeLabelColor,
+              collection:collection,
               size: .xsmall,
-              rarityRank:rarityRank,
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)
@@ -141,10 +135,7 @@ struct RoundedImage_Previews: PreviewProvider {
       RoundedImage(
         nft:SampleToken,
         price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
-        sample:SAMPLE_PUNKS[0],
-        themeColor:SampleCollection.info.themeColor,
-        themeLabelColor:SampleCollection.info.themeLabelColor,
-        rarityRank: SampleCollection.info.rarityRanking,
+        collection:SampleCollection,
         width: .normal)
     }
   }

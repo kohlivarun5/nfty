@@ -10,7 +10,7 @@ import Web3
 
 struct ActivityView: View {
   let emptyMessage : String
-  @ObservedObject var data : ObservablePromise<[NFTWithLazyPrice]>
+  @ObservedObject var data : ObservablePromise<[NFTToken]>
   init(address:OpenSeaApi.QueryAddress,side:OpenSeaApi.Side?,emptyMessage:String) {
     self.data = ObservablePromise(promise:OpenSeaApi.userOrders(address:address,side:side))
     self.emptyMessage = emptyMessage
@@ -28,8 +28,8 @@ struct ActivityView: View {
             .padding()
           Spacer()
         }
-      }) { nfts in
-      switch(nfts.isEmpty) {
+      }) { tokens in
+      switch(tokens.isEmpty) {
       case true:
         VStack {
           Spacer()
@@ -39,7 +39,7 @@ struct ActivityView: View {
           Spacer()
         }
       case false:
-        StaticTokenListView(nfts:nfts)
+        StaticTokenListView(tokens:tokens)
       }
       
     }

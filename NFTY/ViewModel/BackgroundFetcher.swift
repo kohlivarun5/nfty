@@ -33,7 +33,7 @@ func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UII
 
 func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL?> {
   let notificationImagesFolder = "NotificationImages"
-  switch(collection.data.contract.getNFT(tokenId).media) {
+  switch(collection.contract.getNFT(tokenId).media) {
   case .ipfsImage(let image):
     return image.image.promise.map { uiImage in
       uiImage.flatMap {
@@ -60,7 +60,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   var orders : [Promise<(Collection,[Order])>] = []
   
   favorites?.forEach { (address,tokens) in
-    collectionsFactory.getByAddress(address).map { collection in
+    _ = collectionsFactory.getByAddress(address).map { collection in
       
       let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
         if (isFav) {
@@ -72,7 +72,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       
       if (!tokenIds.isEmpty) {
         
-        switch(collection.data.contract.tradeActions) {
+        switch(collection.contract.tradeActions) {
         case .none:
           return
         case .some(let tradeActions):
@@ -195,57 +195,56 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
           
           let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
           
-          guard let collection = collectionsFactory.getByAddress(collectionAddress) else {
-            print("Collection \(collectionAddress) not supported")
-            return Promise.value(nil)
-          }
+          return collectionsFactory.getByAddress(collectionAddress)
+            .then { collection -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
           
-          let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
-          
-          if let entry = try? offersCache.object(forKey: key) {
-            // Entry in cache, lets compare and clean if needed
-            if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
-              try? offersCache.removeObject(forKey: key)
-            }
-            else if (Double(entry.current_price)! >= Double(order.current_price)!) { return Promise.value(nil) }
-            
-          }
-          
-          return collection.data.contract.indicativeFloor()
-            .map { floor in
-              // Check user settings limit
-              var withinLimit = false
-              switch(floor,userSettings.offerNotificationMinimum) {
-              case (.none,_):
-                withinLimit = true
-              case (.some,.None):
-                withinLimit = true
-              case (.some(let floor),.OTM_20_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.8)
-              case (.some(let floor),.OTM_10_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.9)
-              case (.some(let floor),.OTM_5_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.95)
-              case (.some(let floor),.ATM):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.0)
-              case (.some(let floor),.ITM_5_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.05)
-              case (.some(let floor),.ITM_10_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.1)
-              case (.some(let floor),.ITM_20_pct):
-                withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.2)
+              let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
+              
+              if let entry = try? offersCache.object(forKey: key) {
+                // Entry in cache, lets compare and clean if needed
+                if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
+                  try? offersCache.removeObject(forKey: key)
+                }
+                else if (Double(entry.current_price)! >= Double(order.current_price)!) { return Promise.value(nil) }
+                
               }
               
-              if (withinLimit) {
-                
-                try! offersCache.setObject(
-                  order,
-                  forKey: key,
-                  expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
-                return (collection,order)
-              } else {
-                return nil
-              }
+              return collection.contract.indicativeFloor()
+                .map { floor -> (Collection,OpenSeaApi.AssetOrder)? in
+                  // Check user settings limit
+                  var withinLimit = false
+                  switch(floor,userSettings.offerNotificationMinimum) {
+                  case (.none,_):
+                    withinLimit = true
+                  case (.some,.None):
+                    withinLimit = true
+                  case (.some(let floor),.OTM_20_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.8)
+                  case (.some(let floor),.OTM_10_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.9)
+                  case (.some(let floor),.OTM_5_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.95)
+                  case (.some(let floor),.ATM):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.0)
+                  case (.some(let floor),.ITM_5_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.05)
+                  case (.some(let floor),.ITM_10_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.1)
+                  case (.some(let floor),.ITM_20_pct):
+                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.2)
+                  }
+                  
+                  if (withinLimit) {
+                    
+                    try! offersCache.setObject(
+                      order,
+                      forKey: key,
+                      expiry: order.expiration_time != 0 ? .date(Date(timeIntervalSince1970:Double(order.expiration_time ))) : nil)
+                    return (collection,order)
+                  } else {
+                    return nil
+                  }
+                }
             }
         }.map { resultP -> Promise<Void> in
           

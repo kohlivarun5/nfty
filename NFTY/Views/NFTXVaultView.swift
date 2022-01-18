@@ -63,11 +63,7 @@ struct NFTXVaultView: View {
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
                     price:.lazy(nft.indicativePriceWei),
-                    sample:info.sample,
-                    themeColor:info.themeColor,
-                    themeLabelColor:info.themeLabelColor,
-                    similarTokens:info.similarTokens,
-                    rarityRank:info.rarityRanking,
+                    collection:collection,
                     hideOwnerLink:false,
                     selectedProperties:[]
                   ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
@@ -88,15 +84,11 @@ struct NFTXVaultView: View {
     }
     .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) {
       let nft = nfts.tokens[$0.id]
-      let info = collection.info
       TokenTradeView(
         nft: nft.nft,
         price:.lazy(nft.indicativePriceWei),
-        sample:info.sample,
-        themeColor:info.themeColor,
-        themeLabelColor:info.themeLabelColor,
+        collection:collection,
         size: .xsmall,
-        rarityRank:info.rarityRanking,
         userWallet:userWallet,
         isSheet:true)
         .ignoresSafeArea(edges:.bottom)
@@ -134,7 +126,7 @@ struct NFTXVaultViewLazy: View {
         NFTXVaultView(
           collection: collection,
           nfts: VaultTokensList(
-            contract:collection.data.contract,
+            contract:collection.contract,
             allHoldings:$0,
             rankings:collection.info.rarityRanking
           )

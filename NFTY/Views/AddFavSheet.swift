@@ -22,19 +22,21 @@ struct AddFavSheet: View {
     @Published var state : State = .empty
     
     func update(address:String,tokenId:UInt?) {
-      let collection = collectionsFactory.getByAddress(address)
-      switch (tokenId,collection) {
-      case (.none,_):
+      
+      switch (tokenId) {
+      case .none:
         self.state = .empty
-      case (_,.none):
-        self.state = .empty
-      case (.some(let token),.some(let collection)):
-        self.state = .loading(collection.info)
-        let nftWithPrice = collection.data.contract.getToken(token)
-        self.state = .loaded(collection.info,nftWithPrice)
+      case .some(let token):
+        let _ = collectionsFactory.getByAddress(address)
+          .done(on:.main) { collection in
+            self.state = .loading(collection.info)
+            let nftWithPrice = collection.contract.getToken(token)
+            self.state = .loaded(collection.info,nftWithPrice)
+          }
       }
     }
   }
+  
   
   private var collectionsDict = collectionsFactory.collections
   @State private var collectionAddress : String = ""
@@ -45,7 +47,7 @@ struct AddFavSheet: View {
   
   private func onChange() {
     nft.update(address:collectionAddress,tokenId:UInt(tokenId))
-    UInt(tokenId).map { tokenId in
+    let _ = UInt(tokenId).map { tokenId in
       collectionsFactory.getByAddress(collectionAddress).map { collection in
         self.rank = collection.info.rarityRanking?.getRank(tokenId)
       }

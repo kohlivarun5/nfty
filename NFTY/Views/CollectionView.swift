@@ -21,6 +21,8 @@ struct CollectionView: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
+  @StateObject var userSettings = UserSettings()
+  
   private let collection : Collection
   private let info : CollectionInfo
   
@@ -31,10 +33,10 @@ struct CollectionView: View {
   @State private var showRarityRanking = false
   @State private var showVault = false
   
-  init(collection:Collection) {
-    self.collection = collection;
+  init(loader:CompositeRecentTradesObject.CollectionLoader) {
+    self.collection = loader.collection;
     self.info = collection.info;
-    self.recentTrades = collection.data.recentTrades;
+    self.recentTrades = loader.recentTrades;
   }
   
   struct FillAll: View {
@@ -74,10 +76,7 @@ struct CollectionView: View {
             RoundedImage(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              rarityRank: info.rarityRanking,
+              collection:collection,
               width: .normal
             )
               .shadow(color:.accentColor,radius:0)
@@ -90,11 +89,7 @@ struct CollectionView: View {
             NavigationLink(destination: NftDetail(
               nft:nft.nft,
               price:nft.indicativePriceWei,
-              sample:info.sample,
-              themeColor:info.themeColor,
-              themeLabelColor:info.themeLabelColor,
-              similarTokens:info.similarTokens,
-              rarityRank:info.rarityRanking,
+              collection:collection,
               hideOwnerLink:false,
               selectedProperties:[]
             ),tag:String(nft.nft.tokenId),selection:$action) {}
@@ -113,7 +108,12 @@ struct CollectionView: View {
       ToolbarItem(placement: .primaryAction) {
         Menu {
           
-          Button(action: { openURL(self.collection.info.webLink) }) {
+          Button(action: {
+            openURL(
+              self.collection.info.webLink
+              ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
+            )
+          }) {
             Label("Website", systemImage: "safari")
           }
           
@@ -128,7 +128,7 @@ struct CollectionView: View {
             EmptyView()
           }
           
-          collection.data.contract.vaultContract.map { _ in
+          collection.contract.vaultContract.map { _ in
             Button(action: { self.showVault = true }) {
               Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
             }
@@ -159,7 +159,7 @@ struct CollectionView: View {
             EmptyView()
           }
           
-          collection.data.contract.vaultContract.map {
+          collection.contract.vaultContract.map {
             NavigationLink(
               destination:
                 NFTXVaultViewLazy(
@@ -190,6 +190,6 @@ struct CollectionView: View {
 
 struct CollectionView_Previews: PreviewProvider {
   static var previews: some View {
-    CollectionView(collection:SampleCollection)
+    CollectionView(loader:CompositeCollection.loaders[0])
   }
 }

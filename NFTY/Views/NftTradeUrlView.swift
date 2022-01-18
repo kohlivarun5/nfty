@@ -10,24 +10,21 @@ import SwiftUI
 struct NftTradeUrlView: View {
   let nft : NFTWithLazyPrice
   
-  let info : CollectionInfo
+  let collection : Collection
   let userWallet : UserWallet
   
-  init(address:String, tokenId:UInt,userWallet:UserWallet) {
+  init(collection:Collection, tokenId:UInt,userWallet:UserWallet) {
     self.userWallet = userWallet
-    self.nft = collectionsFactory.getByAddress(address)!.data.contract.getToken(tokenId)
-    self.info = collectionsFactory.getByAddress(nft.nft.address)!.info
+    self.collection = collection
+    self.nft = collection.contract.getToken(tokenId)
   }
   
   var body: some View {
     TokenTradeView(
       nft: nft.nft,
       price: .lazy(nft.indicativePriceWei),
-      sample: info.sample,
-      themeColor: info.themeColor,
-      themeLabelColor: info.themeLabelColor,
+      collection:collection,
       size: .medium,
-      rarityRank: info.rarityRanking,
       userWallet: userWallet,
       isSheet: true)
   }
@@ -35,6 +32,6 @@ struct NftTradeUrlView: View {
 
 struct NftTradeUrlView_Previews: PreviewProvider {
     static var previews: some View {
-        NftTradeUrlView(address:SampleToken.address,tokenId: SampleToken.tokenId,userWallet: UserWallet())
+        NftTradeUrlView(collection:SampleCollection,tokenId: SampleToken.tokenId,userWallet: UserWallet())
     }
 }

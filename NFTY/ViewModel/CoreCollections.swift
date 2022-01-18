@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Web3
+import PromiseKit
 
 let cryptoPunksContract =  CryptoPunksContract();
 let cryptoKittiesContract = CryptoKittiesAuction();
@@ -181,7 +182,7 @@ let CHUBBI_FRENS_Contract = IpfsCollectionContract(
   indicativePriceSource: .openSea)
 
 let CompositeCollection = CompositeRecentTradesObject([
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:cryptoPunksContract.contractAddressHex,
       sample:SAMPLE_PUNKS[0],
@@ -197,7 +198,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:cryptoPunksContract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:autoGlyphsContract.contractAddressHex,
       sample:SAMPLE_AUTOGLYPHS[0],
@@ -210,7 +211,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking: nil
     ),
     contract:autoGlyphsContract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:asciiPunksContract.contractAddressHex,
       sample:SAMPLE_ASCII_PUNKS[0],
@@ -226,7 +227,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(AsciiPunks_rarityRanks)
     ),
     contract:asciiPunksContract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:baycContract.contractAddressHex,
       sample:SAMPLE_BAYC[0],
@@ -243,7 +244,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:baycContract),
   
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:MAYC_Contract.contractAddressHex,
       sample:"SAMPLE_MAYC",
@@ -259,9 +260,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("MutantApes_rarityRanks.json"))
     ),
     contract:MAYC_Contract),
-  
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:fameLadyContract.contractAddressHex,
       sample:SAMPLE_FLS[0],
@@ -278,7 +277,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(FLS_rarityRanks)
     ),
     contract:fameLadyContract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CRHDL_Contract.contractAddressHex,
       sample:SAMPLE_CRHDL[0],
@@ -295,7 +294,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
     ),
     contract:CRHDL_Contract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CROWNS_Contract.contractAddressHex,
       sample:SAMPLE_CROWNS[0],
@@ -308,7 +307,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking: nil
     ),
     contract:CROWNS_Contract),
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CYPHER_CITY_Contract.contractAddressHex,
       sample:SAMPLE_CYPHER[0],
@@ -326,7 +325,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:CYPHER_CITY_Contract),
   
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CCB_Contract.contractAddressHex,
       sample:SAMPLE_CCB[0],
@@ -342,9 +341,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
     contract:CCB_Contract),
-  
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CoolCats_Contract.contractAddressHex,
       sample:SAMPLE_COOL_CATS[0],
@@ -362,7 +359,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:CoolCats_Contract),
   
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:ABS_Contract.contractAddressHex,
       sample:"SAMPLE_ABS",
@@ -379,8 +376,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
     ),
     contract:ABS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:LIONS_Contract.contractAddressHex,
       sample:"SAMPLE_LAZY_LION",
@@ -397,8 +393,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("LazyLions_rarityRanks.json"))
     ),
     contract:LIONS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:DADS_Contract.contractAddressHex,
       sample:"SAMPLE_DAD",
@@ -415,8 +410,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:GBLOCKS_Contract.contractAddressHex,
       sample:"SAMPLE_GBLOCK",
@@ -433,8 +427,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:GBLOCKS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
       sample:SAMPLE_DEAD_FELLAZ[0],
@@ -451,8 +444,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
     ),
     contract:DeadFellaz_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:Birdhouse_Contract.contractAddressHex,
       sample:SAMPLE_TBH[0],
@@ -469,8 +461,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:Birdhouse_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:ON1_Force_Contract.contractAddressHex,
       sample:"SAMPLE_0N1",
@@ -487,8 +478,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:ON1_Force_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:DJs_Contract.contractAddressHex,
       sample:"SAMPLE_DJ",
@@ -504,8 +494,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json"))
     ),
     contract:DJs_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:WABC_Contract.contractAddressHex,
       sample:"SAMPLE_WABC",
@@ -521,8 +510,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("WickedApes_rarityRanks.json"))
     ),
     contract:WABC_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:Craniums_Contract.contractAddressHex,
       sample:"SAMPLE_WICKED_CRANIUM",
@@ -538,8 +526,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
     ),
     contract:Craniums_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:KILLAZ_Contract.contractAddressHex,
       sample:"SAMPLE_KILLAZ",
@@ -555,8 +542,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Killaz_rarityRanks.json"))
     ),
     contract:KILLAZ_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:MORIES_Contract.contractAddressHex,
       sample:"SAMPLE_MORIES",
@@ -573,8 +559,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
     ),
     contract:MORIES_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:JUNGLE_FREAKS_Contract.contractAddressHex,
       sample:"SAMPLE_JUNGLE_FREAK",
@@ -591,8 +576,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("JungleFreaks_rarityRanks.json"))
     ),
     contract:JUNGLE_FREAKS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:DOODLES_Contract.contractAddressHex,
       sample:"SAMPLE_DOODLE",
@@ -609,8 +593,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Doodles_attributeRanks.json"))
     ),
     contract:DOODLES_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:FRWC_Contract.contractAddressHex,
       sample:"SAMPLE_FRWC",
@@ -627,8 +610,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("FRWC_attributeRanks.json"))
     ),
     contract:FRWC_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:PHUNKS_Contract.contractAddressHex,
       sample:"SAMPLE_PHUNK",
@@ -645,8 +627,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
     ),
     contract:PHUNKS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:ZUNKS_Contract.contractAddressHex,
       sample:"SAMPLE_ZUNK",
@@ -659,8 +640,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:ZUNKS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:PUDGY_Contract.contractAddressHex,
       sample:"SAMPLE_PUDGY",
@@ -673,8 +653,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:PUDGY_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:ILLUMINATI_Contract.contractAddressHex,
       sample:"SAMPLE_ILLUMINATI",
@@ -687,8 +666,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:ILLUMINATI_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:CHUBBI_FRENS_Contract.contractAddressHex,
       sample:"SAMPLE_CHUBBI_FRENS",
@@ -701,8 +679,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:CHUBBI_FRENS_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:SSFU_Contract.contractAddressHex,
       sample:"SAMPLE_SSFU",
@@ -715,8 +692,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:SSFU_Contract),
-  
-  CompositeRecentTradesObject.CollectionInitializer(
+  Collection(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
       sample:SAMPLE_KITTIES[0],
@@ -737,16 +713,28 @@ let SampleToken = NFT(
   tokenId: 340, name: "CryptoPunks",
   media: .image(MediaImageEager(URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk0385.png")!)))
 
-let SampleCollection = CompositeCollection.collections[0]
+let SampleCollection = CompositeCollection.loaders[0].collection
 
-let COLLECTIONS : [Collection] = CompositeCollection.collections
+let COLLECTIONS : [Collection] = CompositeCollection.loaders.map { $0.collection }
 
-struct CollectionsFactory {
+class CollectionsFactory {
   
-  let collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
+  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address.lowercased(),$0) })
   
-  func getByAddress(_ address:String) -> Collection? {
-    return collections[address]
+  func getByAddress(_ address:String) -> Promise<Collection> {
+    switch(collections[address.lowercased()]) {
+    case .some(let x):
+      return Promise.value(x)
+    case .none:
+      // Add some throttle here
+      return after(seconds: 0.2).then { _ in
+        openSeaCollection(address: address)
+          .map { collection -> Collection in
+            self.collections[address.lowercased()] = collection;
+            return collection
+          }
+      }
+    }
   }
   
 }
@@ -765,44 +753,57 @@ enum CloudDefaultStorageKeys : String {
   case offerNotificationMinimum = "offerNotificationMinimum"
 }
 
-class NftOwnerTokens : ObservableObject {
-  @Published var tokens: [NFTWithLazyPrice] = []
+class NftOwnerTokens : ObservableObject,Identifiable {
+  
+  @Published var tokens: [(Collection,[NFTToken])] = []
+  
+  private var offset = 0
+  private var foundMax = false
   
   enum LoadingState {
     case notLoaded
     case loading
     case loaded
+    case loadingMore
   }
   @Published var state : LoadingState = .notLoaded
   
   let ownerAddress : EthereumAddress
-  private let contracts : [ContractInterface]
+  private let collections : [Collection]
   
   private var pendingCount = 0
   
   init(ownerAddress:EthereumAddress) {
     self.ownerAddress = ownerAddress
-    self.contracts = COLLECTIONS.map { $0.data.contract }
+    self.collections = COLLECTIONS
   }
   
   func load() {
-    if (state != .notLoaded) { return }
+    if (state == .loading || state == .loadingMore || foundMax) { return }
     
-    state = .loading
-    contracts.forEach { contract in
-      contract.getOwnerTokens(
-        address:ownerAddress,
-        
-        onDone: {
-          DispatchQueue.main.async {
-            self.state = .loaded
+    DispatchQueue.main.async {
+      self.state = self.tokens.isEmpty ? .loading : .loadingMore
+      let limit = 40
+      
+      _ = OpenSeaApi.getOwnerTokens(address: self.ownerAddress,offset:self.offset,limit:limit)
+        .done(on:.main) {
+          
+          print("Found tokens count =\($0.count)")
+          
+          self.state = .loaded
+          self.foundMax = $0.isEmpty
+          
+          $0.forEach { token in
+            
+            switch(self.tokens.firstIndex { $0.0.info.address == token.collection.info.address }) {
+            case .some(let index):
+              self.tokens[index].1.append(token)
+            case .none:
+              self.tokens.append((token.collection,[token]))
+            }
           }
         }
-      ) { token in
-        DispatchQueue.main.async {
-          self.tokens.append(token)
-        }
-      }
+      self.offset = self.offset + limit
     }
   }
   

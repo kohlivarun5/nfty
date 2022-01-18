@@ -326,10 +326,10 @@ struct TokenBuyView_Previews: PreviewProvider {
       size:.normal,
       rarityRank:SampleCollection.info.rarityRanking,
       tradeActions: TradeActionInfo(
-        tradeActions: SampleCollection.data.contract.tradeActions!,
-        bidAsk:SampleCollection.data.contract.tradeActions!.getBidAsk(SampleToken.tokenId,nil)
+        tradeActions: SampleCollection.contract.tradeActions!,
+        bidAsk:SampleCollection.contract.tradeActions!.getBidAsk(SampleToken.tokenId,nil)
       ),
-      actions:SampleCollection.data.contract.tradeActions!.actions!,
+      actions:SampleCollection.contract.tradeActions!.actions!,
       walletProvider:UserWallet().walletProvider!
     )
   }

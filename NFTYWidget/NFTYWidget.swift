@@ -12,7 +12,8 @@ import Cache
 
 struct CollectionStats {
   let info : CollectionFloorData
-  let change : (percentage:Double,since:Date)?
+  let percent_change : Double?
+  let since : Date?
 }
 
 struct Provider: IntentTimelineProvider {
@@ -41,8 +42,8 @@ struct Provider: IntentTimelineProvider {
             id: "\($0)",
             name: $0.isMultiple(of: 2) ? "CryptoMories" : "Illuminati",
             floorPrice: 1.409),
-          change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
-        )
+          percent_change: $0.isMultiple(of: 2) ? 0.5213123 : -0.23,
+          since:Date())
       }
     )
 
@@ -68,15 +69,17 @@ struct Provider: IntentTimelineProvider {
               collections
               .map { info in
                 
-                var change : (percentage:Double,since:Date)? = nil
+                var since : Date? = nil
+                var change : Double? = nil
                 
                 // The cache is setup to keep 2 value, because if we just keep one,
                 // we see all unch when the time lapses
                 switch(try? lastPriceCache.object(forKey:info.id)) {
                 case .some(let prices):
                   // find change by comparing the present and prev timelines
-                  if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6) && prices.latest.floorPrice != info.floorPrice) {
-                    change = (percentage: (prices.latest.floorPrice - info.floorPrice) / info.floorPrice, since:prices.latest.date)
+                  if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6)) {
+                    change = prices.latest.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.latest.floorPrice) / prices.latest.floorPrice
+                    since = prices.latest.date
                     
                     // present is greater than 6 hours, make it prev
                     try? lastPriceCache.setObject(
@@ -84,10 +87,10 @@ struct Provider: IntentTimelineProvider {
                         prev:prices.latest,
                         latest:FloorPrice(floorPrice:info.floorPrice,date:date)
                       ),forKey:info.id)
-                  } else if (prices.prev.floorPrice != info.floorPrice) {
-                    change = (percentage: (prices.prev.floorPrice - info.floorPrice) / info.floorPrice, since:prices.prev.date)
+                    
                   } else {
-                    change = nil
+                    change = prices.prev.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.prev.floorPrice) / prices.prev.floorPrice
+                    since = prices.prev.date
                   }
                   
                 case .none:
@@ -98,7 +101,7 @@ struct Provider: IntentTimelineProvider {
                     ),forKey:info.id)
                 }
                 
-                let stats = CollectionStats(info: info,change:change)
+                let stats = CollectionStats(info: info,percent_change:change,since:since)
                 
                 print(stats)
                 return stats
@@ -106,7 +109,7 @@ struct Provider: IntentTimelineProvider {
           )
         ]
         
-        let refresh = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
+        let refresh = Calendar.current.date(byAdding: .minute, value: 15, to: Date())!
         let timeline = Timeline(entries: entries, policy: .after(refresh))
         completion(timeline)
       }
@@ -168,12 +171,12 @@ struct NFTYWidgetEntryStackView : View {
             .frame(alignment: .leading)
           Spacer()
           
-          switch(stats.change) {
+          switch(stats.percent_change) {
           case .none:
             Text("unch")
               .foregroundColor(.secondary)
               .frame(alignment: .trailing)
-          case .some(let (percentage,_)):
+          case .some(let percentage):
             
             Text(Formatters.percentage.string(for: percentage)!)
               .foregroundColor(percentage < 0 ? Color.red : Color.green)
@@ -236,20 +239,27 @@ struct NFTYWidgetEntryView : View {
           }
         }
         
-        entry.collections.compactMap { $0.change }.first.map { change in
-          HStack {
-            Spacer()
-            Text("Change since \(change.since.timeAgoDisplay())")
-              .font(.system(size:7))
-              .foregroundColor(Color.secondaryLabel)
+        VStack(spacing:0) {
+          sorted.compactMap { $0.since }.first.map { since in
+            HStack {
+              Text("Change since \(since.timeAgoDisplay())")
+                .font(.system(size:7))
+                .foregroundColor(Color.secondaryLabel)
+              Spacer()
+            }
           }
+          
+          (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+            .font(.system(size:7))
+            .foregroundColor(Color.secondaryLabel)
+          
         }
         
       }
     }
     .padding([.leading,.trailing])
     .padding(.top,10)
-    .padding(.bottom,5)
+    .padding(.bottom,7)
   }
 }
 
@@ -280,8 +290,8 @@ struct NFTYWidget_Previews: PreviewProvider {
         .map {
           CollectionStats(
             info:CollectionFloorData(id: "\($0)", name: "CryptoMories\($0)", floorPrice: 1.409),
-            change:(percentage:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,since:Date())
-          )
+            percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
+            since:Date())
         }
     }()
     

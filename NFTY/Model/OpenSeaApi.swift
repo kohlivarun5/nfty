@@ -31,10 +31,13 @@ struct OpenSeaApi {
   
   struct AssetContract: Codable {
     let address: String
+    let schema_name : String
+    let total_supply : String?
   }
   struct Asset: Codable {
     let token_id : String
     let asset_contract: AssetContract
+    let token_metadata : String?
   }
   
   
@@ -211,9 +214,9 @@ struct OpenSeaApi {
   }
   
   
-  static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTWithLazyPrice]> {
+  static func userOrders(address:QueryAddress,side:Side?) -> Promise<[NFTToken]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { orders in
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { orders in
         return orders
           .sorted {
             switch($0.expiration_time,$1.expiration_time) {
@@ -227,45 +230,120 @@ struct OpenSeaApi {
               return $0.expiration_time < $1.expiration_time
             }
           }
-        
-          .map { order in
-            collectionsFactory
+          .filter {
+            $0.asset.asset_contract.schema_name == "ERC721"
+            && $0.asset.asset_contract.total_supply != nil
+            && ($0.asset.token_metadata == nil
+                || (!$0.asset.token_metadata!.starts(with: "data:")
+                    && URL(string:$0.asset.token_metadata!) != nil))
+          }
+          .map { order -> Promise<NFTToken?> in
+            return collectionsFactory
               .getByAddress(
                 try! EthereumAddress(hex: order.asset.asset_contract.address, eip55: false)
                   .hex(eip55: true))
-              .flatMap { collection in
-                UInt(order.asset.token_id).map {
-                  collection.data.contract.getNFT($0)
-                }
-              }
-              .flatMap { (nft:NFT) -> NFTWithLazyPrice? in
-                switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
-                case (ETH_ADDRESS,.some(let wei)),
-                  (WETH_ADDRESS,.some(let wei)):
-                  return NFTWithLazyPrice(
-                    nft: nft,
-                    getPrice: {
-                      ObservablePromise<NFTPriceStatus>(
-                        resolved: NFTPriceStatus.known(
-                          NFTPriceInfo(
-                            price: wei,
-                            date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
-                            type:AssetOrder.sideToEvent(order.side))
-                        )
+              .map { collection -> NFTToken? in
+                
+                UInt(order.asset.token_id)
+                  .map { collection.contract.getNFT($0) }
+                  .flatMap { nft in
+                    switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
+                    case (ETH_ADDRESS,.some(let wei)),
+                      (WETH_ADDRESS,.some(let wei)):
+                      return NFTToken(
+                        collection: collection,
+                        nft: NFTWithLazyPrice(
+                          nft: nft,
+                          getPrice: {
+                            ObservablePromise<NFTPriceStatus>(
+                              resolved: NFTPriceStatus.known(
+                                NFTPriceInfo(
+                                  price: wei,
+                                  date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
+                                  type:AssetOrder.sideToEvent(order.side))
+                              )
+                            )
+                          })
                       )
-                    })
-                default:
-                  return nil
-                }
+                    default:
+                      return nil
+                    }
+                  }
               }
           }
-          .filter { $0 != nil }
-          .map { $0! }
+          .reduce(Promise.value([]), { accu, nft in
+            accu.then { accu in
+              nft.map { $0.map { accu + [$0] } ?? accu }
+            }
+          })
       }
   }
   
+  static func getOwnerTokens(address:EthereumAddress,offset:Int,limit:Int) -> Promise<[NFTToken]> {
+    
+    struct OwnerAssets: Codable {
+      var assets: [Asset]
+    }
+    
+    return Promise { seal in
+      
+      var components = URLComponents()
+      components.scheme = "https"
+      components.host = "api.opensea.io"
+      components.path = "/api/v1/assets"
+      components.queryItems = [
+        URLQueryItem(name: "owner", value: address.hex(eip55: false)),
+        URLQueryItem(name: "offset", value: String(offset)),
+        URLQueryItem(name: "limit", value: String(limit))
+      ]
+      
+      
+      var request = URLRequest(url: components.url!)
+      request.httpMethod = "GET"
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      
+      print("calling \(request.url!)")
+      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        if let e = error { return seal.reject(e) }
+        do {
+          let jsonDecoder = JSONDecoder()
+          let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
+          seal.fulfill(assets.assets.filter {
+            $0.asset_contract.schema_name == "ERC721"
+            && $0.asset_contract.total_supply != nil
+            && ($0.token_metadata == nil
+                || (!$0.token_metadata!.starts(with: "data:")
+                    && URL(string:$0.token_metadata!) != nil))
+          })
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.fulfill([])
+        }
+      }).resume()
+    }.then { (assets:[Asset]) -> Promise<[NFTToken]> in
+      assets.reduce(Promise.value([]), { accu,asset in
+        accu.then { accu in
+          collectionsFactory.getByAddress(asset.asset_contract.address)
+            .map { collection in
+              UInt(asset.token_id)
+                .map {
+                  accu +
+                  [NFTToken(
+                    collection: collection,
+                    nft: collection.contract.getToken($0))]
+                } ?? accu
+            }
+        }
+      })
+    }
+  }
+  
+  
   struct CollectionInfo : Codable {
+    let name : String
+    let image_url : URL?
     let slug : String?
+    let external_url : URL?
   }
   
   struct Stats : Codable {
@@ -280,15 +358,14 @@ struct OpenSeaApi {
     config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
     transformer: TransformerFactory.forCodable(ofType: Stats.self))
   
-  static func getCollectionStats(contract:String) -> Promise<Stats?> {
-    
+  
+  static func getCollectionInfo(contract:String) -> Promise<CollectionInfo> {
     return Promise { seal in
       
       switch(try? collectionCache.object(forKey: contract)) {
       case .some(let info):
         seal.fulfill(info)
       case .none:
-        
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.opensea.io"
@@ -320,56 +397,61 @@ struct OpenSeaApi {
         }).resume()
       }
     }
-    .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
-      
-      Promise { seal in
+  }
+  
+  static func getCollectionStats(contract:String) -> Promise<Stats?> {
+    
+    return getCollectionInfo(contract: contract)
+      .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
         
-        collectionInfo.slug.map { slug in
+        Promise { seal in
           
-          try? collectionStatsCache.removeExpiredObjects()
-          switch(try? collectionStatsCache.object(forKey: slug)) {
-          case .some(let stats):
-            seal.fulfill(stats)
-          case .none:
+          collectionInfo.slug.map { slug in
             
-            var components = URLComponents()
-            components.scheme = "https"
-            components.host = "api.opensea.io"
-            components.path = "/api/v1/collection/\(slug)"
-            
-            var request = URLRequest(url:components.url!)
-            request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-            
-            request.httpMethod = "GET"
-            
-            print("calling \(request.url!)")
-            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-              if let e = error { return seal.reject(e) }
-              do {
-                let jsonDecoder = JSONDecoder()
-                // print(data)
-                
-                struct Data : Codable {
+            try? collectionStatsCache.removeExpiredObjects()
+            switch(try? collectionStatsCache.object(forKey: slug)) {
+            case .some(let stats):
+              seal.fulfill(stats)
+            case .none:
+              
+              var components = URLComponents()
+              components.scheme = "https"
+              components.host = "api.opensea.io"
+              components.path = "/api/v1/collection/\(slug)"
+              
+              var request = URLRequest(url:components.url!)
+              request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+              
+              request.httpMethod = "GET"
+              
+              print("calling \(request.url!)")
+              URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+                if let e = error { return seal.reject(e) }
+                do {
+                  let jsonDecoder = JSONDecoder()
+                  // print(data)
                   
-                  struct Collection : Codable {
-                    let stats : Stats
+                  struct Data : Codable {
+                    
+                    struct Collection : Codable {
+                      let stats : Stats
+                    }
+                    
+                    let collection : Collection
                   }
                   
-                  let collection : Collection
+                  let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
+                  try! collectionStatsCache.setObject(info,forKey: slug)
+                  seal.fulfill(info)
+                } catch {
+                  print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+                  seal.reject(NSError(domain:"", code:404, userInfo:nil))
                 }
-                
-                let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
-                try! collectionStatsCache.setObject(info,forKey: slug)
-                seal.fulfill(info)
-              } catch {
-                print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-                seal.reject(NSError(domain:"", code:404, userInfo:nil))
-              }
-            }).resume()
+              }).resume()
+            }
           }
         }
       }
-    }
   }
   
 }

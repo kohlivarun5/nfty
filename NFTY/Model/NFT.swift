@@ -171,6 +171,13 @@ struct NFTPriceInfo {
   }
 }
 
+struct NFTToken : Identifiable {
+  let collection : Collection
+  let nft : NFTWithLazyPrice
+  
+  var id : NFT.NftID { return self.nft.id }
+}
+
 enum NFTPriceStatus {
   case known(NFTPriceInfo)
   case notSeenSince(NFTNotSeenSince)
@@ -297,25 +304,17 @@ struct CollectionInfo {
   let address: String
   let sample: String
   let name: String
-  let webLink: URL
+  let webLink: URL?
   let themeColor:Color
   let themeLabelColor:Color
   let disableRecentTrades : Bool
   let similarTokens : SimilarTokensGetter?
   let rarityRanking : RarityRanking?
 }
-struct CollectionData : HasContractInterface {
-  let recentTrades: NftRecentTradesObject
-  let contract: ContractInterface
-}
 
-class Collection {
+struct Collection {
   let info : CollectionInfo
-  let data : CollectionData
-  init(info:CollectionInfo,data:CollectionData) {
-    self.info = info;
-    self.data = data;
-  }
+  let contract: ContractInterface
 }
 
 struct NFTWithPriceAndInfo : Identifiable {

@@ -107,7 +107,7 @@ struct TokenPropertiesGrid: View {
                   properties:selectedProperties(selectedItem ?? Item(name:item.name,value:item.value,percentile:item.percentile,isSelected:isSelected)),
                   collection: collection,
                   nfts: TokensByPropertiesObject(
-                    contract: collection.data.contract,
+                    contract: collection.contract,
                     properties: properties,
                     selectedProperties: selectedItems( selectedItem ?? Item(name:item.name,value:item.value,percentile:item.percentile,isSelected:isSelected))
                   )

@@ -6,38 +6,39 @@
 //
 
 import SwiftUI
+import PromiseKit
 
 struct WalletTokensCollectionHeader: View {
   let collection : Collection
   var body: some View {
-    HStack {
+    
+    HStack(spacing:0) {
+      Text(collection.info.name)
+        .frame(alignment:.leading)
       Spacer()
+      
       ObservedPromiseView(
-        data:ObservablePromise(promise: collection.data.contract.indicativeFloor()),
+        data:ObservablePromise(
+          promise: after(seconds: 0.2).then { _ in collection.contract.indicativeFloor() } ),
         progress: {
-          Text(collection.info.name)
+          Spacer()
         },
         view: { floor in
-          switch(floor) {
-          case .none:
-            Text(collection.info.name)
-          case .some(let floor):
-            VStack(spacing:0) {
-              Text(collection.info.name)
-              Text("Floor \(ethFormatter.string(for:floor)!)")
-                .font(.footnote)
-                .foregroundColor(.secondaryLabel)
-            }
+          floor.map { floor in
+            Text("Floor \(ethFormatter.string(for:floor)!)")
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
+              .frame(alignment:.trailing)
           }
         })
-        .padding(5)
-      Spacer()
     }
+    .padding([.leading,.trailing],10)
+    .padding(5)
     .foregroundColor(.accentColor)
     .background(Color.systemBackground.opacity(0.9))
     .clipShape(RoundedRectangle(cornerRadius:10, style: .continuous))
     .shadow(color:.accentColor,radius:3)
-    .padding(.top,2)
+    .padding(.top,1)
     .padding([.leading,.trailing],20)
   }
 }
