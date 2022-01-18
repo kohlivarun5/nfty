@@ -19,7 +19,7 @@ func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foun
   if (foundMax) { return Promise.value(accu) }
   let limit = 40
   
-  return after(seconds:0.2).then { _ in
+  return after(seconds:0.5).then { _ in
     OpenSeaApi.getOwnerTokens(address: address,offset:offset,limit:limit)
       .then { tokens in
         fetchAllOwnerTokens(address: address,accu:accu + tokens,offset:offset+limit,foundMax:tokens.isEmpty)
@@ -56,7 +56,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
             accu
               .then { accu in
                 collection.contract.indicativeFloor().then { floor in
-                  after(seconds: 0.2).map { _ in accu + [(collection,floor)] }
+                  after(seconds: 0.5).map { _ in accu + [(collection,floor)] }
                 }
               }
           })

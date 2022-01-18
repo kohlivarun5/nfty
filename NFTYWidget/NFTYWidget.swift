@@ -239,28 +239,27 @@ struct NFTYWidgetEntryView : View {
           }
         }
         
-        VStack(spacing:2) {
+        VStack(spacing:0) {
           sorted.compactMap { $0.since }.first.map { since in
             HStack {
-              Spacer()
               Text("Change since \(since.timeAgoDisplay())")
                 .font(.system(size:7))
                 .foregroundColor(Color.secondaryLabel)
+              Spacer()
             }
           }
-          HStack {
-            Spacer()
-            Text("Updated \(entry.date.timeAgoDisplay())")
-              .font(.system(size:7))
-              .foregroundColor(Color.secondaryLabel)
-          }
+          
+          (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+            .font(.system(size:7))
+            .foregroundColor(Color.secondaryLabel)
+          
         }
         
       }
     }
     .padding([.leading,.trailing])
     .padding(.top,10)
-    .padding(.bottom,5)
+    .padding(.bottom,7)
   }
 }
 
