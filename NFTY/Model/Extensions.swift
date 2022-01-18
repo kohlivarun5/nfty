@@ -30,7 +30,7 @@ extension Date {
     formatter.unitsStyle = .full
     return formatter.localizedString(for: self, relativeTo: Date())
   }
-
+  
 }
 
 extension Array {

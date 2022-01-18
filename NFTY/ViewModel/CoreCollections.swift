@@ -726,11 +726,14 @@ class CollectionsFactory {
     case .some(let x):
       return Promise.value(x)
     case .none:
-      return openSeaCollection(address: address)
-        .map { collection -> Collection in
-          self.collections[address] = collection;
-          return collection
-        }
+      // Add some throttle here
+      return after(seconds: 0.2).then { _ in
+        openSeaCollection(address: address)
+          .map { collection -> Collection in
+            self.collections[address] = collection;
+            return collection
+          }
+      }
     }
   }
   
@@ -775,23 +778,13 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     if (state != .notLoaded) { return }
     
     state = .loading
-    collections.forEach { collection in
-      collection.contract.getOwnerTokens(
-        address:ownerAddress,
-        
-        onDone: {
-          DispatchQueue.main.async {
-            self.state = .loaded
-          }
-        }
-      ) { token in
-        DispatchQueue.main.async {
-          self.tokens.append(NFTToken(collection:collection,nft: token))
-        }
+    
+    _ = OpenSeaApi.getOwnerTokens(address: ownerAddress)
+      .done(on:.main) {
+        self.state = .loaded
+        self.tokens.append(contentsOf: $0)
       }
-    }
   }
-  
 }
 
 var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PromiseKit
 
 struct WalletTokensCollectionHeader: View {
   let collection : Collection
@@ -13,7 +14,8 @@ struct WalletTokensCollectionHeader: View {
     HStack {
       Spacer()
       ObservedPromiseView(
-        data:ObservablePromise(promise: collection.contract.indicativeFloor()),
+        data:ObservablePromise(
+          promise: after(seconds: 0.2).then { _ in collection.contract.indicativeFloor() } ),
         progress: {
           Text(collection.info.name)
         },

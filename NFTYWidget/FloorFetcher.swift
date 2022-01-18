@@ -23,46 +23,38 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
   }
   
   
-  return COLLECTIONS
-    .reduce(Promise<[(Collection,[NFTWithLazyPrice])]>.value([]), { accu,collection in
-      accu.then { accuTokens in
-        return Promise { seal in
-          var tokens : [NFTWithLazyPrice] = []
-          collection.contract.getOwnerTokens(
-            address: address,
-            onDone: {
-              seal.fulfill(accuTokens + [(collection,tokens)])
-            },
-            { tokens.append($0)})
-        }
-      }
-    })
-    .map { collections in
-      // Filter collections user doesn't own
-      collections
-        .filter { !$0.1.isEmpty }
-        .map { $0.0 }
-    }
+  return OpenSeaApi.getOwnerTokens(address: address)
     .then {
-      // Fetch floor for each collection
-      $0.reduce(Promise<[(Collection,Double?)]>.value([]), { accu,collection in
-        accu
-          .then { accu in
-            collection.contract.indicativeFloor().then { floor in
-              after(seconds: 0.2).map { _ in accu + [(collection,floor)] }
-            }
+      $0.reduce(Promise<[Collection]>.value([]), { accu,token in
+        accu.map { accu in
+          if (accu.contains { $0.info.address == token.collection.info.address }) {
+            return accu
+          } else {
+            return (accu + [token.collection])
           }
+        }
       })
-    }
-    .map {
-      $0.compactMap { info in info.1.map { (info.0,$0) } }
-    }
-    .map {
-      $0.map {
-        CollectionFloorData(
-          id: $0.0.contract.contractAddressHex,
-          name: $0.0.info.name,
-          floorPrice: $0.1)
-      }
+        .then {
+          // Fetch floor for each collection
+          $0.reduce(Promise<[(Collection,Double?)]>.value([]), { accu,collection in
+            accu
+              .then { accu in
+                collection.contract.indicativeFloor().then { floor in
+                  after(seconds: 0.2).map { _ in accu + [(collection,floor)] }
+                }
+              }
+          })
+        }
+        .map {
+          $0.compactMap { info in info.1.map { (info.0,$0) } }
+        }
+        .map {
+          $0.map {
+            CollectionFloorData(
+              id: $0.0.contract.contractAddressHex,
+              name: $0.0.info.name,
+              floorPrice: $0.1)
+          }
+        }
     }
 }
