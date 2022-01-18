@@ -39,33 +39,39 @@ class IpfsCollectionContract : ContractInterface {
               of: "ipfs://",
               with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))
             
-            var request = URLRequest(
-              url:URL(string: uri.replacingOccurrences(
-                        of: "ipfs://",
-                        with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
-            
-            print("calling \(request.url!)")
-            URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-              // print(data,response,error)
-              do {
-                switch(data) {
-                case .some(let data):
-                  if (data.isEmpty) {
-                    // print(data,response,error)
-                    seal.reject(NSError(domain:"", code:404, userInfo:nil))
-                  } else {
-                    seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
-                  }
-                case .none:
-                  // print(data,response,error)
-                  seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
-                }
-              } catch {
+            switch(
+              URL(
+                string: uri.replacingOccurrences(
+                  of: "ipfs://",
+                  with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))) {
+            case .none:
+              seal.reject(NSError(domain:"", code:404, userInfo:nil))
+            case .some(let url):
+              var request = URLRequest(url:url)
+              request.httpMethod = "GET"
+              
+              print("calling \(request.url!)")
+              URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
                 // print(data,response,error)
-                seal.reject(error)
-              }
-            }).resume()
+                do {
+                  switch(data) {
+                  case .some(let data):
+                    if (data.isEmpty) {
+                      // print(data,response,error)
+                      seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                    } else {
+                      seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                    }
+                  case .none:
+                    // print(data,response,error)
+                    seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+                  }
+                } catch {
+                  // print(data,response,error)
+                  seal.reject(error)
+                }
+              }).resume()
+            }
           }
           
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
