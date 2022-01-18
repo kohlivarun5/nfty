@@ -61,7 +61,7 @@ struct WalletTokensView: View {
   @ObservedObject var tokens : NftOwnerTokens
   @State private var selectedTokenId: UInt? = nil
   
-  @State private var sheetSelectedIndex: NftOwnerTokens.Token? = nil
+  @State private var sheetSelectedIndex: NFTToken? = nil
   
   
   var body: some View {
@@ -106,13 +106,14 @@ struct WalletTokensView: View {
                 Dictionary(
                   grouping:tokens.tokens,
                   by: { return $0.collection.info.address }).sorted(by: { $0.key > $1.key }),
-                id:\.key) { (_,tokens) in
+                id:\.key) { key_value in
                   
+                  let (_,tokens) = key_value;
                   let collection = tokens.first!.collection
                   
                   Section(header: WalletTokensCollectionHeader(collection:collection)) {
                     
-                    ForEach(tokens,id:\.nft.id) { token in
+                    ForEach(tokens) { token in
                       
                       ZStack {
                         
@@ -133,7 +134,7 @@ struct WalletTokensView: View {
                           }
                           .onLongPressGesture(minimumDuration: 0.1) {
                             UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                            self.sheetSelectedIndex = token.nft
+                            self.sheetSelectedIndex = token
                           }
                         NavigationLink(destination: NftDetail(
                           nft:token.nft.nft,

@@ -123,7 +123,7 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
 struct NFTYApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
-
+  
   @ObservedObject var appDelegateState = AppDelegateState.shared
   
   @StateObject var userWallet = UserWallet()
@@ -192,17 +192,17 @@ struct NFTYApp: App {
         }
         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
         /*
-        DispatchQueue.global(qos:.utility).async {
-          CompositeCollection.collections.forEach { collection in
-            print(
-              collection.info.name,
-              collection.info.similarTokens?.get(1)?.count,
-              collection.info.similarTokens?.getProperties(1)?.count,
-              collection.info.similarTokens?.availableProperties?.count
-            )
-          }
-        }
-        */
+         DispatchQueue.global(qos:.utility).async {
+         CompositeCollection.collections.forEach { collection in
+         print(
+         collection.info.name,
+         collection.info.similarTokens?.get(1)?.count,
+         collection.info.similarTokens?.getProperties(1)?.count,
+         collection.info.similarTokens?.availableProperties?.count
+         )
+         }
+         }
+         */
       }
       .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
@@ -233,14 +233,32 @@ struct NFTYApp: App {
         switch item.state {
         case .nft(let address,let tokenId):
           NavigationView {
-            NftUrlView(collection: collection, tokenId: tokenId)
+            ObservedPromiseView(
+              data: ObservablePromise(
+                promise: collectionsFactory.getByAddress(address)),
+              progress: {
+                ProgressView()
+              },
+              view: { collection in
+                NftUrlView(collection: collection, tokenId: tokenId)
+              }
+            )
           }
           .preferredColorScheme(.dark)
           .accentColor(Color.orange)
         case .nftTrade(let address,let tokenId):
-          NftTradeUrlView(collection: collection, tokenId: tokenId, userWallet: userWallet)
-            .accentColor(.orange)
-            .ignoresSafeArea(edges: .bottom)
+          ObservedPromiseView(
+            data: ObservablePromise(
+              promise: collectionsFactory.getByAddress(address)),
+            progress: {
+              ProgressView()
+            },
+            view: { collection in
+              NftTradeUrlView(collection: collection, tokenId: tokenId, userWallet: userWallet)
+                .accentColor(.orange)
+                .ignoresSafeArea(edges: .bottom)
+            }
+          )
         case .user(let address,let friendName):
           UserUrlView(address: address,friendName:friendName)
             .preferredColorScheme(.dark)
@@ -255,7 +273,7 @@ struct NFTYApp: App {
     }
   }
   
- 
+  
   
 }
 

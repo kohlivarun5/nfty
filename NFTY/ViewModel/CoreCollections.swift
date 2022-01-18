@@ -751,14 +751,8 @@ enum CloudDefaultStorageKeys : String {
 }
 
 class NftOwnerTokens : ObservableObject,Identifiable {
-  struct Token {
-    let nft : NFTWithLazyPrice
-    let collection:Collection
-    
-    var id : NFT.NftID { return nft.nft.id }
-  }
   
-  @Published var tokens: [Token] = []
+  @Published var tokens: [NFTToken] = []
   
   enum LoadingState {
     case notLoaded
@@ -792,7 +786,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
         }
       ) { token in
         DispatchQueue.main.async {
-          self.tokens.append(Token(nft: token, collection: collection))
+          self.tokens.append(NFTToken(collection:collection,nft: token))
         }
       }
     }
