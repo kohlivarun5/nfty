@@ -31,6 +31,7 @@ struct OpenSeaApi {
   
   struct AssetContract: Codable {
     let address: String
+    let schema_name : String
   }
   struct Asset: Codable {
     let token_id : String
@@ -227,38 +228,39 @@ struct OpenSeaApi {
               return $0.expiration_time < $1.expiration_time
             }
           }
-        
+          .filter { $0.asset.asset_contract.schema_name == "ERC721" }
           .map { order -> Promise<NFTToken?> in
             return collectionsFactory
               .getByAddress(
                 try! EthereumAddress(hex: order.asset.asset_contract.address, eip55: false)
                   .hex(eip55: true))
-              .map { collection -> (Collection,NFT) in
-                (collection,collection.contract.getNFT(UInt(order.asset.token_id)!))
-              }
-              .map { (token:(Collection,NFT)) -> NFTToken? in
-                let (collection,nft) = token;
-                switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
-                case (ETH_ADDRESS,.some(let wei)),
-                  (WETH_ADDRESS,.some(let wei)):
-                  return NFTToken(
-                    collection: collection,
-                    nft: NFTWithLazyPrice(
-                      nft: nft,
-                      getPrice: {
-                        ObservablePromise<NFTPriceStatus>(
-                          resolved: NFTPriceStatus.known(
-                            NFTPriceInfo(
-                              price: wei,
-                              date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
-                              type:AssetOrder.sideToEvent(order.side))
-                          )
-                        )
-                      })
-                  )
-                default:
-                  return nil
-                }
+              .map { collection -> NFTToken? in
+                
+                UInt(order.asset.token_id)
+                  .map { collection.contract.getNFT($0) }
+                  .flatMap { nft in
+                    switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
+                    case (ETH_ADDRESS,.some(let wei)),
+                      (WETH_ADDRESS,.some(let wei)):
+                      return NFTToken(
+                        collection: collection,
+                        nft: NFTWithLazyPrice(
+                          nft: nft,
+                          getPrice: {
+                            ObservablePromise<NFTPriceStatus>(
+                              resolved: NFTPriceStatus.known(
+                                NFTPriceInfo(
+                                  price: wei,
+                                  date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
+                                  type:AssetOrder.sideToEvent(order.side))
+                              )
+                            )
+                          })
+                      )
+                    default:
+                      return nil
+                    }
+                  }
               }
           }
           .reduce(Promise.value([]), { accu, nft in
@@ -296,28 +298,25 @@ struct OpenSeaApi {
         do {
           let jsonDecoder = JSONDecoder()
           let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
-          seal.fulfill(assets.assets)
+          seal.fulfill(assets.assets.filter { $0.asset_contract.schema_name == "ERC721" })
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.fulfill([])
         }
       }).resume()
     }.then { (assets:[Asset]) -> Promise<[NFTToken]> in
-      
       assets.reduce(Promise.value([]), { accu,asset in
         accu.then { accu in
-          after(seconds: 0.2).then { _ in
-            collectionsFactory.getByAddress(asset.asset_contract.address)
-              .map { collection in
-                UInt(asset.token_id)
-                  .map {
-                    accu +
-                    [NFTToken(
-                      collection: collection,
-                      nft: collection.contract.getToken($0))]
-                  } ?? accu
-              }
-          }
+          collectionsFactory.getByAddress(asset.asset_contract.address)
+            .map { collection in
+              UInt(asset.token_id)
+                .map {
+                  accu +
+                  [NFTToken(
+                    collection: collection,
+                    nft: collection.contract.getToken($0))]
+                } ?? accu
+            }
         }
       })
     }
@@ -351,7 +350,6 @@ struct OpenSeaApi {
       case .some(let info):
         seal.fulfill(info)
       case .none:
-        
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.opensea.io"
