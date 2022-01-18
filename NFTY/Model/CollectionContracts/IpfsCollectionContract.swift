@@ -35,12 +35,6 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-            print("uri=[\(uri)]")
-            
-            print(uri.replacingOccurrences(
-              of: "ipfs://",
-              with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))
-            
             switch(
               URL(
                 string: uri.replacingOccurrences(
@@ -117,7 +111,6 @@ class IpfsCollectionContract : ContractInterface {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(contractAddressHex).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
-    try? self.imageCache.removeAll()
     self.ethContract = IpfsImageEthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource

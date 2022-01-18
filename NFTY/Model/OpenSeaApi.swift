@@ -234,7 +234,8 @@ struct OpenSeaApi {
             $0.asset.asset_contract.schema_name == "ERC721"
             && $0.asset.asset_contract.total_supply != nil
             && ($0.asset.token_metadata == nil
-                || !$0.asset.token_metadata!.starts(with: "data:"))
+                || (!$0.asset.token_metadata!.starts(with: "data:")
+                    && URL(string:$0.asset.token_metadata!) != nil))
           }
           .map { order -> Promise<NFTToken?> in
             return collectionsFactory
@@ -311,7 +312,8 @@ struct OpenSeaApi {
             $0.asset_contract.schema_name == "ERC721"
             && $0.asset_contract.total_supply != nil
             && ($0.token_metadata == nil
-                || !$0.token_metadata!.starts(with: "data:"))
+                || (!$0.token_metadata!.starts(with: "data:")
+                    && URL(string:$0.token_metadata!) != nil))
           })
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
