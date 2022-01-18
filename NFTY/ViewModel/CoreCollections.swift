@@ -719,10 +719,10 @@ let COLLECTIONS : [Collection] = CompositeCollection.loaders.map { $0.collection
 
 class CollectionsFactory {
   
-  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address,$0) })
+  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address.lowercased(),$0) })
   
   func getByAddress(_ address:String) -> Promise<Collection> {
-    switch(collections[address]) {
+    switch(collections[address.lowercased()]) {
     case .some(let x):
       return Promise.value(x)
     case .none:
@@ -730,7 +730,7 @@ class CollectionsFactory {
       return after(seconds: 0.2).then { _ in
         openSeaCollection(address: address)
           .map { collection -> Collection in
-            self.collections[address] = collection;
+            self.collections[address.lowercased()] = collection;
             return collection
           }
       }
