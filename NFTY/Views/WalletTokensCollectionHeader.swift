@@ -19,7 +19,7 @@ struct WalletTokensCollectionHeader: View {
       
       ObservedPromiseView(
         data:ObservablePromise(
-          promise: after(seconds: 1.2).then { _ in collection.contract.indicativeFloor() } ),
+          promise: after(seconds: 0.2).then { _ in collection.contract.indicativeFloor() } ),
         progress: {
           Spacer()
         },
