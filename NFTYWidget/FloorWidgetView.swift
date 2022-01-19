@@ -1,0 +1,189 @@
+//
+//  FloorWidgetView.swift
+//  NFTYWidgetExtension
+//
+//  Created by Varun Kohli on 1/18/22.
+//
+
+import SwiftUI
+import WidgetKit
+
+
+struct FloorWidgetStackView : View {
+  let collections: Array<CollectionStats>.SubSequence
+  
+  var body: some View {
+    ForEach(
+      collections,
+      id:\.info.id
+    ) { stats in
+      VStack {
+        HStack {
+          Text(stats.info.name)
+            .bold()
+        }
+        .colorMultiply(.accentColor)
+        .font(.subheadline)
+        
+        HStack(spacing:0) {
+          Text(Formatters.eth.string(for:stats.info.floorPrice)!)
+            .bold()
+            .frame(alignment: .leading)
+          Spacer()
+          
+          switch(stats.percent_change) {
+          case .none:
+            Text("unch")
+              .foregroundColor(.secondary)
+              .frame(alignment: .trailing)
+          case .some(let percentage):
+            
+            Text(Formatters.percentage.string(for: percentage)!)
+              .foregroundColor(percentage < 0 ? Color.red : Color.green)
+              .frame(alignment: .trailing)
+          }
+        }.font(.footnote)
+      }
+    }
+  }
+}
+
+
+struct FloorWidgetView : View {
+  var entry: Provider.Entry
+  
+  @Environment(\.widgetFamily) var widgetFamily
+  
+  var body: some View {
+    VStack(spacing:8) {
+      
+      if (entry.collections.isEmpty) {
+        Text("No Collections in Wallet")
+          .multilineTextAlignment(.center)
+          .foregroundColor(.secondary)
+      } else {
+        
+        let sorted = entry.collections
+          .sorted { $0.info.floorPrice > $1.info.floorPrice };
+        
+        switch(widgetFamily) {
+        case .systemSmall:
+          FloorWidgetStackView(collections:sorted.prefix(3))
+        case .systemMedium:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            FloorWidgetStackView(collections:sorted.prefix(6))
+          }
+        case .systemLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:2
+            ),spacing:8
+          ) {
+            FloorWidgetStackView(collections:sorted.prefix(12))
+          }
+          
+        case .systemExtraLarge:
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:140),spacing:20),
+              count:4
+            ),spacing:8
+          ) {
+            FloorWidgetStackView(collections:sorted.prefix(24))
+          }
+        }
+        
+        VStack(spacing:0) {
+          sorted.compactMap { $0.since }.first.map { since in
+            HStack {
+              Text("Change since \(since.timeAgoDisplay())")
+                .font(.system(size:7))
+                .foregroundColor(Color.secondaryLabel)
+              Spacer()
+            }
+          }
+          
+          (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+            .font(.system(size:7))
+            .foregroundColor(Color.secondaryLabel)
+          
+        }
+        
+      }
+    }
+    .padding([.leading,.trailing])
+    .padding(.top,10)
+    .padding(.bottom,7)
+  }
+}
+
+
+struct FloorWidget: Widget {
+  let kind: String = "NFTY floors"
+  
+  var body: some WidgetConfiguration {
+    IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+      FloorWidgetView(entry: entry)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
+        .environment(\.colorScheme,.dark)
+        .accentColor(Color.orange)
+    }
+    .configurationDisplayName("Collections Floor")
+    .description("Floor price updates for collections in wallet")
+    .supportedFamilies([.systemSmall,.systemMedium,.systemLarge,.systemExtraLarge])
+  }
+}
+
+
+struct FloorWidgetView_Previews: PreviewProvider {
+  static var previews: some View {
+    
+    let collections : [CollectionStats] = {
+      return Array(0...100)
+        .map {
+          CollectionStats(
+            info:CollectionFloorData(id: "\($0)", name: "CryptoMories\($0)", floorPrice: 1.409),
+            percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
+            since:Date())
+        }
+    }()
+    
+    Group {
+      FloorWidgetView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemSmall))
+      
+      FloorWidgetView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemMedium))
+      
+      FloorWidgetView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemLarge))
+      
+      FloorWidgetView(
+        entry: SimpleEntry(
+          date: Date(),
+          configuration: ConfigurationIntent(),collections:collections
+        )
+      ).previewContext(WidgetPreviewContext(family: .systemExtraLarge))
+      
+    }
+  }
+}
