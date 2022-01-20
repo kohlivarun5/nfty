@@ -32,7 +32,6 @@ struct OpenSeaApi {
   struct AssetContract: Codable {
     let address: String
     let schema_name : String
-    let total_supply : String?
   }
   struct Asset: Codable {
     let token_id : String
