@@ -21,6 +21,7 @@ struct FloorWidgetStackView : View {
         HStack {
           Text(stats.info.name)
             .bold()
+            .lineLimit(1)
         }
         .colorMultiply(.accentColor)
         .font(.subheadline)
