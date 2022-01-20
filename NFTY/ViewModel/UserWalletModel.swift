@@ -10,6 +10,7 @@ import Web3
 import WalletConnectSwift
 import PromiseKit
 import SwiftUI
+import WidgetKit
 
 class UserWallet: ObservableObject {
   
