@@ -32,7 +32,6 @@ struct OpenSeaApi {
   struct AssetContract: Codable {
     let address: String
     let schema_name : String
-    let total_supply : String?
   }
   struct Asset: Codable {
     let token_id : String
@@ -232,7 +231,6 @@ struct OpenSeaApi {
           }
           .filter {
             $0.asset.asset_contract.schema_name == "ERC721"
-            && $0.asset.asset_contract.total_supply != nil
             && ($0.asset.token_metadata == nil
                 || (!$0.asset.token_metadata!.starts(with: "data:")
                     && URL(string:$0.asset.token_metadata!) != nil))
@@ -300,7 +298,13 @@ struct OpenSeaApi {
       
       var request = URLRequest(url: components.url!)
       request.httpMethod = "GET"
-      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      
+      request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
+                       forHTTPHeaderField:"User-Agent")
+      
+      request.setValue("https://api.opensea.io/api/v1/assets",
+                       forHTTPHeaderField:"referrer")
       
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
@@ -310,14 +314,13 @@ struct OpenSeaApi {
           let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
           seal.fulfill(assets.assets.filter {
             $0.asset_contract.schema_name == "ERC721"
-            && $0.asset_contract.total_supply != nil
             && ($0.token_metadata == nil
                 || (!$0.token_metadata!.starts(with: "data:")
                     && URL(string:$0.token_metadata!) != nil))
           })
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          seal.fulfill([])
+          seal.reject(error)
         }
       }).resume()
     }.then { (assets:[Asset]) -> Promise<[NFTToken]> in

@@ -781,17 +781,39 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   func load() {
     if (state == .loading || state == .loadingMore || foundMax) { return }
     
+    self.state = self.state == .notLoaded ? .loading : .loadingMore
+    
     DispatchQueue.main.async {
-      self.state = self.tokens.isEmpty ? .loading : .loadingMore
       let limit = 40
       
       _ = OpenSeaApi.getOwnerTokens(address: self.ownerAddress,offset:self.offset,limit:limit)
+        .recover { error -> Promise<[NFTToken]> in
+          print("OpenSea Error=\(error)")
+          self.foundMax = true
+          // Open sea errored, lets recover from known collections
+          return COLLECTIONS
+            .reduce(Promise<[NFTToken]>.value([]), { accu,collection in
+              return after(seconds: 0.2).then { _ in
+                accu.then { accuTokens in
+                  return Promise { seal in
+                    var tokens : [NFTWithLazyPrice] = []
+                    collection.contract.getOwnerTokens(
+                      address: self.ownerAddress,
+                      onDone: {
+                        seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
+                      },
+                      { tokens.append($0)})
+                  }
+                }
+              }
+            })
+        }
         .done(on:.main) {
           
           print("Found tokens count =\($0.count)")
           
           self.state = .loaded
-          self.foundMax = $0.isEmpty
+          self.foundMax = self.foundMax || $0.isEmpty
           
           $0.forEach { token in
             
@@ -803,7 +825,14 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             }
           }
         }
+        
       self.offset = self.offset + limit
+    }
+  }
+  
+  func loadMore(_ index:Int) {
+    if (index > (self.tokens.count - 3)) {
+      DispatchQueue.main.async { self.load() }
     }
   }
   

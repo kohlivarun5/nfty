@@ -77,7 +77,9 @@ struct WalletTokensView: View {
             .scaleEffect(2,anchor: .center)
             .padding()
             .onAppear {
-              tokens.load()
+              DispatchQueue.main.async {
+                tokens.load()
+              }
             }
           Spacer()
         }
@@ -143,9 +145,7 @@ struct WalletTokensView: View {
                 }
                 .onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {
-                    if (index > self.tokens.tokens.count - 3) {
-                      self.tokens.load()
-                    }
+                    self.tokens.loadMore(index)
                   }
                 }
               }

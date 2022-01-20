@@ -10,6 +10,7 @@ import Web3
 import WalletConnectSwift
 import PromiseKit
 import SwiftUI
+import WidgetKit
 
 class UserWallet: ObservableObject {
   
@@ -52,6 +53,7 @@ class UserWallet: ObservableObject {
       self.walletAddress = address
       self.signIn()
     }
+    WidgetCenter.shared.reloadAllTimelines()
   }
   
   func saveWalletConnectSession(session:Session,signature:String) {
