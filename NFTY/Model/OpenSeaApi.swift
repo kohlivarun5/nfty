@@ -298,7 +298,13 @@ struct OpenSeaApi {
       
       var request = URLRequest(url: components.url!)
       request.httpMethod = "GET"
-      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      
+      request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
+                       forHTTPHeaderField:"User-Agent")
+      
+      request.setValue("https://api.opensea.io/api/v1/assets",
+                       forHTTPHeaderField:"referrer")
       
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
