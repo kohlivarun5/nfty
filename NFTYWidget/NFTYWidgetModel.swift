@@ -13,6 +13,7 @@ import Cache
 
 struct CollectionStats {
   let info : CollectionFloorData
+  let prev_floor : Double
   let percent_change : Double?
   let since : Date?
 }
@@ -37,12 +38,15 @@ struct Provider: IntentTimelineProvider {
     SimpleEntry(
       date: Date(),
       configuration: ConfigurationIntent(),
+      spot:3000,
       collections:Array(0...100).map {
         CollectionStats(
           info:CollectionFloorData(
             id: "\($0)",
             name: $0.isMultiple(of: 2) ? "CryptoMories" : "Illuminati",
+            ownedCount: $0,
             floorPrice: 1.409),
+          prev_floor:1.407,
           percent_change: $0.isMultiple(of: 2) ? 0.5213123 : -0.23,
           since:Date())
       }
@@ -59,19 +63,27 @@ struct Provider: IntentTimelineProvider {
     print("getTimeline")
     
     fetchStats()
-      .done { collections in
+      .then { collections in
+        EthSpot.getLiveRate()
+          .map { spot in (collections,spot) }
+      }
+      .done { data in
+        
+        let (collections,spot) = data;
         
         let date = Date()
         let entries = [
           SimpleEntry(
             date: date,
             configuration: configuration,
+            spot:spot,
             collections:
               collections
               .map { info in
                 
                 var since : Date? = nil
                 var change : Double? = nil
+                var prev_floor = info.floorPrice
                 
                 // The cache is setup to keep 2 value, because if we just keep one,
                 // we see all unch when the time lapses
@@ -81,7 +93,7 @@ struct Provider: IntentTimelineProvider {
                   if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6)) {
                     change = prices.latest.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.latest.floorPrice) / prices.latest.floorPrice
                     since = prices.latest.date
-                    
+                    prev_floor = prices.latest.floorPrice
                     // present is greater than 6 hours, make it prev
                     try? lastPriceCache.setObject(
                       FloorPrices(
@@ -92,6 +104,7 @@ struct Provider: IntentTimelineProvider {
                   } else {
                     change = prices.prev.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.prev.floorPrice) / prices.prev.floorPrice
                     since = prices.prev.date
+                    prev_floor = prices.prev.floorPrice
                   }
                   
                 case .none:
@@ -102,7 +115,7 @@ struct Provider: IntentTimelineProvider {
                     ),forKey:info.id)
                 }
                 
-                let stats = CollectionStats(info: info,percent_change:change,since:since)
+                let stats = CollectionStats(info: info,prev_floor:prev_floor,percent_change:change,since:since)
                 
                 print(stats)
                 return stats
@@ -123,6 +136,7 @@ struct Provider: IntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
   let date: Date
   let configuration: ConfigurationIntent
+  let spot : Double?
   let collections : [CollectionStats]
 }
 
@@ -148,4 +162,16 @@ struct Formatters {
     formatter.maximumFractionDigits = 1
     return formatter
   }()
+  
+  static var fiat : Formatter = {
+    let currencyFormatter = NumberFormatter()
+    currencyFormatter.usesGroupingSeparator = true
+    currencyFormatter.numberStyle = .currency
+    // localize to your grouping and decimal separator
+    currencyFormatter.locale = Locale.current
+    currencyFormatter.maximumFractionDigits = 0
+    currencyFormatter.negativePrefix = currencyFormatter.currencySymbol
+    return currencyFormatter
+  }()
+  
 }

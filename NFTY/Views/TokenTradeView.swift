@@ -40,7 +40,7 @@ struct TokenTradeView: View {
           favButton:.none
         )
           .frame(height:height)
-          .padding(.top,isSheet ? 10 : 30)
+          .padding(.top,isSheet ? 10 : 40)
           .padding(.bottom,10)
           .background(collection.info.themeColor)
         

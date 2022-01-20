@@ -149,7 +149,12 @@ struct FloorWidgetView_Previews: PreviewProvider {
       return Array(0...100)
         .map {
           CollectionStats(
-            info:CollectionFloorData(id: "\($0)", name: "CryptoMories\($0)", floorPrice: 1.409),
+            info:CollectionFloorData(
+              id: "\($0)",
+              name: "CryptoMories\($0)",
+              ownedCount: $0,
+              floorPrice: 1.409),
+            prev_floor:1.2,
             percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
             since:Date())
         }
@@ -159,28 +164,36 @@ struct FloorWidgetView_Previews: PreviewProvider {
       FloorWidgetView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:collections
+          configuration: ConfigurationIntent(),
+          spot:3000,
+          collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemSmall))
       
       FloorWidgetView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:collections
+          configuration: ConfigurationIntent(),
+          spot:3000,
+          collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemMedium))
       
       FloorWidgetView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:collections
+          configuration: ConfigurationIntent(),
+          spot:3000,
+          collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemLarge))
       
       FloorWidgetView(
         entry: SimpleEntry(
           date: Date(),
-          configuration: ConfigurationIntent(),collections:collections
+          configuration: ConfigurationIntent(),
+          spot:3000,
+          collections:collections
         )
       ).previewContext(WidgetPreviewContext(family: .systemExtraLarge))
       
