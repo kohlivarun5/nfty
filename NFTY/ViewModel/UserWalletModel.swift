@@ -52,6 +52,7 @@ class UserWallet: ObservableObject {
       self.walletAddress = address
       self.signIn()
     }
+    WidgetCenter.shared.reloadAllTimelines()
   }
   
   func saveWalletConnectSession(session:Session,signature:String) {
