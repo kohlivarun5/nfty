@@ -143,9 +143,7 @@ struct WalletTokensView: View {
                 }
                 .onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {
-                    if (index > self.tokens.tokens.count - 3) {
-                      self.tokens.load()
-                    }
+                    self.tokens.loadMore(index)
                   }
                 }
               }

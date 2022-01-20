@@ -807,6 +807,12 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     }
   }
   
+  func loadMore(_ index:Int) {
+    if (index > (self.tokens.count - 3)) {
+      return load()
+    }
+  }
+  
 }
 
 var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]

@@ -232,7 +232,6 @@ struct OpenSeaApi {
           }
           .filter {
             $0.asset.asset_contract.schema_name == "ERC721"
-            && $0.asset.asset_contract.total_supply != nil
             && ($0.asset.token_metadata == nil
                 || (!$0.asset.token_metadata!.starts(with: "data:")
                     && URL(string:$0.asset.token_metadata!) != nil))
@@ -310,7 +309,6 @@ struct OpenSeaApi {
           let assets = try jsonDecoder.decode(OwnerAssets.self, from: data!)
           seal.fulfill(assets.assets.filter {
             $0.asset_contract.schema_name == "ERC721"
-            && $0.asset_contract.total_supply != nil
             && ($0.token_metadata == nil
                 || (!$0.token_metadata!.starts(with: "data:")
                     && URL(string:$0.token_metadata!) != nil))
