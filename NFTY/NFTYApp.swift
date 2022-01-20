@@ -55,7 +55,7 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
     
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { success, error in
       if success {
-        print("All set!")
+        print("Notifications approved")
       } else if let error = error {
         print(error.localizedDescription)
       }
