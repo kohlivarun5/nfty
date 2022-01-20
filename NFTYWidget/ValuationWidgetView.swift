@@ -42,43 +42,62 @@ struct ValuationWidgetView: View {
           
           entry.spot.map { spot in
             HStack {
-              Spacer()
               Text(Formatters.fiat.string(for:(spot * nav))!)
                 .font(.title2)
                 .bold()
+              Spacer()
             }
+            .foregroundColor(.accentColor)
           }
 
           HStack {
-            Spacer()
             Text(Formatters.eth.string(for:nav)!)
               .font(.title2)
               .bold()
+            Spacer()
+          }
+        }
+          
+        VStack {
+          
+          HStack {
+            Spacer()
+            Text(Formatters.percentage.string(for: nav_pct_change)!)
           }
           
-          VStack {
-            switch(entry.spot) {
-            case .none:
-              HStack {
-                Spacer()
-                Text(Formatters.percentage.string(for: nav_pct_change)!)
-              }
-            case .some(let spot):
-              HStack {
-                Text(Formatters.percentage.string(for: nav_pct_change)!)
-                Spacer()
-                (Text("(")
-                 + Text(Formatters.fiat.string(for: (nav_pct_change * spot))!)
-                 + Text(")"))
-              }
+          entry.spot.map { spot in
+            HStack {
+              Spacer()
+              (Text("(")
+               + Text(Formatters.fiat.string(for: ((nav - nav_prev) * spot))!)
+               + Text(")"))
             }
           }
-          .foregroundColor(nav_pct_change < 0 ? Color.red : Color.green)
+        }
+        .foregroundColor(nav_pct_change < 0 ? Color.red : Color.green)
+        
+        VStack(spacing:0) {
+          sorted.compactMap { $0.since }.first.map { since in
+            HStack {
+              Text("Change since \(since.timeAgoDisplay())")
+                .font(.system(size:7))
+                .foregroundColor(Color.secondaryLabel)
+              Spacer()
+            }
+          }
+          
+          (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+            .font(.system(size:7))
+            .foregroundColor(Color.secondaryLabel)
           
         }
+        .padding(.top,10)
+        
+        
       }
     }
-    .padding()
+    .padding([.top,.leading,.trailing])
+    .padding(.bottom,10)
   }
 }
 
