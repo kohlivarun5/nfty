@@ -25,6 +25,26 @@ func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foun
       .then { tokens in
         fetchAllOwnerTokens(address: address,accu:accu + tokens,offset:offset+limit,foundMax:tokens.isEmpty)
       }
+      .recover { error -> Promise<[NFTToken]> in
+        print("OpenSea Error=\(error)")
+        // Open sea errored, lets recover from known collections
+        return COLLECTIONS
+          .reduce(Promise<[NFTToken]>.value([]), { accu,collection in
+            return after(seconds: 0.2).then { _ in
+              accu.then { accuTokens in
+                return Promise { seal in
+                  var tokens : [NFTWithLazyPrice] = []
+                  collection.contract.getOwnerTokens(
+                    address: address,
+                    onDone: {
+                      seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
+                    },
+                    { tokens.append($0)})
+                }
+              }
+            }
+          })
+      }
   }
 }
 

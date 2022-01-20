@@ -77,7 +77,9 @@ struct WalletTokensView: View {
             .scaleEffect(2,anchor: .center)
             .padding()
             .onAppear {
-              tokens.load()
+              DispatchQueue.main.async {
+                tokens.load()
+              }
             }
           Spacer()
         }

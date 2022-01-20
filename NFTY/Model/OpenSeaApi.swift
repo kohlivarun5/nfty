@@ -314,7 +314,7 @@ struct OpenSeaApi {
           })
         } catch {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          seal.fulfill([])
+          seal.reject(error)
         }
       }).resume()
     }.then { (assets:[Asset]) -> Promise<[NFTToken]> in
