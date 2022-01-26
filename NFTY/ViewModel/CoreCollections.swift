@@ -181,6 +181,12 @@ let CHUBBI_FRENS_Contract = IpfsCollectionContract(
   address: "0x42f1654B8eeB80C96471451B1106b63D0B1a9fe1",
   indicativePriceSource: .openSea)
 
+let XAPES_Contract = IpfsCollectionContract(
+  name: "0xApes",
+  address: "0x22C08C358f62f35B742D023Bf2fAF67e30e5376E",
+  indicativePriceSource: .openSea)
+
+
 let CompositeCollection = CompositeRecentTradesObject([
   Collection(
     info:CollectionInfo(
@@ -679,6 +685,23 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:CHUBBI_FRENS_Contract),
+  Collection(
+    info:CollectionInfo(
+      address:XAPES_Contract.contractAddressHex,
+      sample:"SAMPLE_XAPES",
+      name:XAPES_Contract.name,
+      webLink: URL(string:"https://www.0xapes.com")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:false,
+      similarTokens:SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"0xApes_nearestTokens.json",
+        propertiesJsonFileName:"0xApes_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("0xApes_rarityRanks.json"))
+    ),
+    contract:XAPES_Contract),
   Collection(
     info:CollectionInfo(
       address:SSFU_Contract.contractAddressHex,

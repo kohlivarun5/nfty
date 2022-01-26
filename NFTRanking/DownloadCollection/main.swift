@@ -66,6 +66,9 @@ let downloaders = [
   )
 ]
 
+
+// DOwnload using cli: ./ipget --progress QmPyYXzqU7tsTxQ7WFN32iUKRy78T6ZiFGxYiJiv1TcoKE
+
 try? downloaders.forEach { downloader in
   
   let firstIndex = downloader.firstIndex
@@ -79,13 +82,13 @@ try? downloaders.forEach { downloader in
   print("Started downloading collection:\(collectionName)")
   
   func saveToken(_ tokenId : Int) -> Promise<Void> {
-    return after(seconds:0.5)
+    return after(seconds:0.001)
       .then { _ in
         downloader.collection.tokenData(BigUInt(tokenId))
           .map { data -> Void in
             print("Downloaded \(tokenId)")
-            let filename = getImageFileName(collectionName,UInt(tokenId))
-            try! data.image.write(to: filename)
+            // let filename = getImageFileName(collectionName,UInt(tokenId))
+            // try! data.image.write(to: filename)
             saveJSON(getAttributesFileName(collectionName,UInt(tokenId)),data.attributes)
           }
       }
@@ -118,9 +121,9 @@ try? downloaders.forEach { downloader in
         let fileName = getImageFileName(collectionName,UInt(tokenId)).path
         let attrFileName = getAttributesFileName(collectionName,UInt(tokenId)).path
         let p =
-        fileManager.fileExists(atPath:fileName)
-        && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
-        && fileManager.fileExists(atPath:attrFileName)
+        // fileManager.fileExists(atPath:fileName)
+        // && (minFileSize < (try! fileManager.attributesOfItem(atPath:fileName))[FileAttributeKey.size] as! UInt64)
+        fileManager.fileExists(atPath:attrFileName)
         ? Promise.value(tokenId+parallelCount)
         : saveToken(tokenId).map { tokenId + parallelCount }
         return p.map { index in
