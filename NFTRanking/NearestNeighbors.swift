@@ -18,11 +18,12 @@ class NearestNeighbors {
     
     // iterate for each token and collect it's closest neighbors
     // Also, sum those neighbors and save as token score
-    
+    print("Calculating NearestNeighbors")
     let nearestNeighbors : [[TokenDistance]] = distances.map { tokenDistances in
-      tokenDistances
-        .prefix(closestNeighborsNum)
+      Array(tokenDistances
         .filter { $0[1] > 0 }
+        .prefix(closestNeighborsNum))
+        
     }
     
     self.nearestTokens = nearestNeighbors.map { tokenDistances in

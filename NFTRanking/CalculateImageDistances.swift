@@ -52,7 +52,7 @@ class CalculateImageDistances {
           continue
         }
         
-        var distance : Float = -1.0
+        var distance = -1
         try? image1Unwrapped.computeDistance(&distance, to: image2)
         distances[tokenId][tokenId2] = [Float(tokenId2),Float(distance)]
         // print("Done tokenId2=\(tokenId2)")
@@ -66,6 +66,10 @@ class CalculateImageDistances {
     
   }
 
-  func loadDistancesFromFile() { distances = loadJSON(getDistancesFilename(collectionName)) }
+  func loadDistancesFromFile() {
+    print("Loading DistancesFromFile")
+    distances = loadJSON(getDistancesFilename(collectionName))
+    print("Done DistancesFromFile")
+  }
   
 }

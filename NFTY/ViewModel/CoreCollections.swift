@@ -699,7 +699,7 @@ let CompositeCollection = CompositeRecentTradesObject([
         nearestTokensFileName:"0xApes_nearestTokens.json",
         propertiesJsonFileName:"0xApes_attributeScores.json"
       ),
-      rarityRanking : RarityRankingImpl(load("0xApes_rarityRanks.json"))
+      rarityRanking : nil
     ),
     contract:XAPES_Contract),
   Collection(

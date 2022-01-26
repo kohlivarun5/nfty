@@ -64,8 +64,10 @@ class CalculateImageFeaturePrints {
   }
   
   func loadFeaturesFromFile() {
+    print("Loading FeaturesFromFile")
     let data = try! Data(contentsOf: getFeaturesFilename(collectionName))
     self.tokenImages = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! [VNFeaturePrintObservation?]
+    print("Done FeaturesFromFile")
   }
   
 }

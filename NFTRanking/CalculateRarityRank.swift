@@ -18,7 +18,13 @@ struct CalculateRarityRank {
   func saveRanking(distances : [[TokenDistance]]) {
     
     let closestSums = distances.enumerated().map { (index,distances) in
-      return TokenSumOfClosest(tokenId:index,sum:distances.prefix(closestForRanking).reduce(0) { $0 + $1[1] })
+      return TokenSumOfClosest(
+        tokenId:index,
+        sum:distances
+          .filter { $0[1] > 0 }
+          .prefix(closestForRanking)
+          .reduce(0) { $0 + $1[1] }
+      )
     }.sorted(by: { $0.sum > $1.sum } )
     
     var ranks : [Int] =  Array(repeating: 0, count:distances.count)

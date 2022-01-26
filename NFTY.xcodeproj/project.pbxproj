@@ -22,7 +22,6 @@
 		4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */; };
 		4F11C77327A0E48600938036 /* 0xApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */; };
 		4F11C77427A0E48600938036 /* 0xApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */; };
-		4F11C77527A0E48600938036 /* 0xApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77127A0E48600938036 /* 0xApes_rarityRanks.json */; };
 		4F11C77627A0E48600938036 /* 0xApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */; };
 		4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */; };
 		4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */; };
@@ -427,7 +426,6 @@
 		4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuationWidgetView.swift; sourceTree = "<group>"; };
 		4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_attributeRanks.json; sourceTree = "<group>"; };
 		4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_nearestTokens.json; sourceTree = "<group>"; };
-		4F11C77127A0E48600938036 /* 0xApes_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_rarityRanks.json; sourceTree = "<group>"; };
 		4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_attributeScores.json; sourceTree = "<group>"; };
 		4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeRanks.json; sourceTree = "<group>"; };
 		4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeScores.json; sourceTree = "<group>"; };
@@ -935,7 +933,6 @@
 				4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */,
 				4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */,
 				4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */,
-				4F11C77127A0E48600938036 /* 0xApes_rarityRanks.json */,
 				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
 				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
@@ -1284,7 +1281,6 @@
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */,
-				4F11C77527A0E48600938036 /* 0xApes_rarityRanks.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F4F9A3C276388EB0020C5FA /* CryptoPunks_attributeScores.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
