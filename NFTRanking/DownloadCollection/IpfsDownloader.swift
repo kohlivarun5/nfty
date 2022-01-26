@@ -34,7 +34,7 @@ struct IpfsDownloader {
   let name : String
   let baseUri : String
    
-  let ipfsHost : String? = "http://ipfs.io/ipfs/" // "https://cloudflare-ipfs.com/ipfs/" // "http://ipfs.io/ipfs/" // "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
+  let ipfsHost : String? = "https://ipfs.infura.io:5001/api/v0/cat?arg=" //  "https://cloudflare-ipfs.com/ipfs/" // "http://ipfs.io/ipfs/" // "https://ipfs.infura.io:5001/api/v0/cat?arg="// "http://ipfs.io/ipfs/" //"http://127.0.0.1:8080/ipfs/"
   
   func tokenData(_ tokenId:BigUInt) -> Promise<Erc721TokenData> {
     return Promise { seal in
@@ -82,44 +82,43 @@ struct IpfsDownloader {
     }
     .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:Erc721TokenUriData) -> Promise<Erc721TokenData> in
       
-      return Promise { seal in
-        
-        seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
-        
-        /*
-        
-        var uri = uriData.image
-        uri =
-          ipfsHost.map {
-            uri
-              .replacingOccurrences(
-                of: "ipfs://",
-                with: $0)
-              .replacingOccurrences(
-                of: "https://ipfs.io/ipfs/",
-                with: $0)
-              .replacingOccurrences(
-                of: "https://gateway.pinata.cloud/ipfs/",
-                with: $0)
-          } ?? uri
-        
-        var request = URLRequest(url:URL(string:uri)!)
-        request.httpMethod = "GET"
-        
-        print("calling \(request.url!)")
-        URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-          // print(data,response,error)
-          switch(data) {
-          case .some(let data):
-            let compressed = NSImage(data:data)?.compressedJPEGRepresentation ?? Data()
-            seal.fulfill(Erc721TokenData(image:compressed,attributes:uriData.attributes))
-          case .none:
-            print(data,response,error)
-            seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
+      after(seconds:0.3)
+        .then { _ in
+          
+          return Promise { seal in
+            
+            var uri = uriData.image
+            uri =
+            ipfsHost.map {
+              uri
+                .replacingOccurrences(
+                  of: "ipfs://",
+                  with: $0)
+                .replacingOccurrences(
+                  of: "https://ipfs.io/ipfs/",
+                  with: $0)
+                .replacingOccurrences(
+                  of: "https://gateway.pinata.cloud/ipfs/",
+                  with: $0)
+            } ?? uri
+            
+            var request = URLRequest(url:URL(string:uri)!)
+            request.httpMethod = "GET"
+            
+            print("calling \(request.url!)")
+            URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+              // print(data,response,error)
+              switch(data) {
+              case .some(let data):
+                let compressed = NSImage(data:data)?.compressedJPEGRepresentation ?? Data()
+                seal.fulfill(Erc721TokenData(image:compressed,attributes:uriData.attributes))
+              case .none:
+                print(data,response,error)
+                seal.fulfill(Erc721TokenData(image:Data(),attributes:uriData.attributes))
+              }
+            }).resume()
           }
-        }).resume()
-         */
-      }
+        }
     }
   }
 }

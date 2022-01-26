@@ -60,9 +60,9 @@ let downloaders = [
    */
   Downloader(
     collection:IpfsDownloader(
-      name:"PudgyPenguins",baseUri:"ipfs://QmWXJXRdExse2YHRY21Wvh4pjRxNRQcWVhcKw4DLVnqGqs/"), // TODO
-    firstIndex:0,
-    lastIndex:8887
+      name:"0xApes",baseUri:"ipfs://QmPyYXzqU7tsTxQ7WFN32iUKRy78T6ZiFGxYiJiv1TcoKE/"), // TODO
+    firstIndex:10038,
+    lastIndex:20145
   )
 ]
 
@@ -74,17 +74,20 @@ try? downloaders.forEach { downloader in
   let collectionName = downloader.collection.name
   
   let minFileSize = 1000
-  let parallelCount = 1//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
+  let parallelCount = 2//downloader.collection.baseUri.contains("ipfs://") ? 5 : 1
   
   print("Started downloading collection:\(collectionName)")
   
   func saveToken(_ tokenId : Int) -> Promise<Void> {
-    return downloader.collection.tokenData(BigUInt(tokenId))
-      .map { data -> Void in
-        print("Downloaded \(tokenId)")
-        let filename = getImageFileName(collectionName,UInt(tokenId))
-        try! data.image.write(to: filename)
-        saveJSON(getAttributesFileName(collectionName,UInt(tokenId)),data.attributes)
+    return after(seconds:0.5)
+      .then { _ in
+        downloader.collection.tokenData(BigUInt(tokenId))
+          .map { data -> Void in
+            print("Downloaded \(tokenId)")
+            let filename = getImageFileName(collectionName,UInt(tokenId))
+            try! data.image.write(to: filename)
+            saveJSON(getAttributesFileName(collectionName,UInt(tokenId)),data.attributes)
+          }
       }
   }
   
