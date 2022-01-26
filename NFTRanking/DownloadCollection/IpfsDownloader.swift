@@ -82,7 +82,7 @@ struct IpfsDownloader {
     }
     .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:Erc721TokenUriData) -> Promise<Erc721TokenData> in
       
-      after(seconds:0.3)
+      after(seconds:0.5)
         .then { _ in
           
           return Promise { seal in
