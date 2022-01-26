@@ -52,7 +52,7 @@ class CalculateImageDistances {
           continue
         }
         
-        var distance = -1
+        var distance : Float = -1.0
         try? image1Unwrapped.computeDistance(&distance, to: image2)
         distances[tokenId][tokenId2] = [Float(tokenId2),Float(distance)]
         // print("Done tokenId2=\(tokenId2)")
