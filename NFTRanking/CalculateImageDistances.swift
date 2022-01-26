@@ -66,6 +66,10 @@ class CalculateImageDistances {
     
   }
 
-  func loadDistancesFromFile() { distances = loadJSON(getDistancesFilename(collectionName)) }
+  func loadDistancesFromFile() {
+    print("Loading DistancesFromFile")
+    distances = loadJSON(getDistancesFilename(collectionName))
+    print("Done DistancesFromFile")
+  }
   
 }

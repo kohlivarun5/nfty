@@ -20,6 +20,9 @@
 		4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76927978C6600938036 /* FloorWidgetView.swift */; };
 		4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */; };
 		4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */; };
+		4F11C77327A0E48600938036 /* 0xApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */; };
+		4F11C77427A0E48600938036 /* 0xApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */; };
+		4F11C77627A0E48600938036 /* 0xApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */; };
 		4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */; };
 		4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */; };
 		4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */; };
@@ -421,6 +424,9 @@
 		4F11C76927978C6600938036 /* FloorWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorWidgetView.swift; sourceTree = "<group>"; };
 		4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYWidgetModel.swift; sourceTree = "<group>"; };
 		4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuationWidgetView.swift; sourceTree = "<group>"; };
+		4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_attributeRanks.json; sourceTree = "<group>"; };
+		4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_nearestTokens.json; sourceTree = "<group>"; };
+		4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0xApes_attributeScores.json; sourceTree = "<group>"; };
 		4F12715226EDAA87007E6A7B /* Dads_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeRanks.json; sourceTree = "<group>"; };
 		4F12715326EDAA87007E6A7B /* Dads_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_attributeScores.json; sourceTree = "<group>"; };
 		4F12715626EDB522007E6A7B /* Dads_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Dads_rarityRanks.json; sourceTree = "<group>"; };
@@ -924,6 +930,9 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */,
+				4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */,
+				4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */,
 				4FCB496126D1892900696F91 /* AsciiPunks_attributeRanks.json */,
 				4FCB496226D1892900696F91 /* AsciiPunks_attributeScores.json */,
 				4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */,
@@ -1316,6 +1325,8 @@
 				4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */,
 				4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */,
 				4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */,
+				4F11C77327A0E48600938036 /* 0xApes_attributeRanks.json in Resources */,
+				4F11C77627A0E48600938036 /* 0xApes_attributeScores.json in Resources */,
 				4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */,
 				4F1E4F4826C852D3009D27E6 /* DeadFellaz_attributeRanks.json in Resources */,
 				4F1E4F4B26C858FF009D27E6 /* CoolCats_attributeRanks.json in Resources */,
@@ -1338,6 +1349,7 @@
 				4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */,
 				4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */,
 				4F1E4F3026C8458F009D27E6 /* CoolCats_rarityRanks.json in Resources */,
+				4F11C77427A0E48600938036 /* 0xApes_nearestTokens.json in Resources */,
 				4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */,
 				4FAB56C826DADF4B007076BE /* DJENERATES_attributeScores.json in Resources */,
 				4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */,
@@ -1866,7 +1878,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1895,7 +1907,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2007,7 +2019,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2038,7 +2050,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;

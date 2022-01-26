@@ -7,11 +7,11 @@
 
 import Foundation
 
-let collectionName = "FRWC"
+let collectionName = "0xApes"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 9999 : 100
+let firstIndex = 10038
+let lastIndex = isFull ? 20145 : 100
 
 // STAGES
 let doCalculatePercentiles = true

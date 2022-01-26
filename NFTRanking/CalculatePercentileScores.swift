@@ -67,7 +67,7 @@ class CalculatePercentileScores {
       .sorted(by: { $0.element > $1.element } )
     
     // print(tokensSortedByScore)
-    var ranks : [Int] =  Array(repeating: 0, count:totalCount + 1)
+    var ranks : [Int] =  Array(repeating: 0, count: lastIndex + 1)
     _ = tokensSortedByScore.enumerated().map { (index,info) in
       ranks[Int(info.offset)] = index + 1
     }

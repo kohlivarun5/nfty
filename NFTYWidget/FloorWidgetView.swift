@@ -100,22 +100,38 @@ struct FloorWidgetView : View {
           }
         }
         
-        VStack(spacing:0) {
-          sorted.compactMap { $0.since }.first.map { since in
-            HStack {
+        switch(widgetFamily) {
+        case .systemSmall:
+          
+          VStack(spacing:0) {
+            sorted.compactMap { $0.since }.first.map { since in
+              HStack {
+                Text("Change since \(since.timeAgoDisplay())")
+                  .font(.system(size:7))
+                  .foregroundColor(Color.secondaryLabel)
+                Spacer()
+              }
+            }
+            
+            (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+              .font(.system(size:7))
+              .foregroundColor(Color.secondaryLabel)
+            
+          }
+        case .systemMedium,.systemLarge,.systemExtraLarge:
+          HStack {
+            (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
+              .font(.system(size:7))
+              .foregroundColor(Color.secondaryLabel)
+            
+            Spacer()
+            sorted.compactMap { $0.since }.first.map { since in
               Text("Change since \(since.timeAgoDisplay())")
                 .font(.system(size:7))
                 .foregroundColor(Color.secondaryLabel)
-              Spacer()
             }
           }
-          
-          (Text("Updated ") + Text(entry.date, style: .relative) + Text(" ago"))
-            .font(.system(size:7))
-            .foregroundColor(Color.secondaryLabel)
-          
         }
-        
       }
     }
     .padding([.leading,.trailing])
