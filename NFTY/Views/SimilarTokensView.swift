@@ -28,6 +28,7 @@ struct SimilarTokensView: View {
                 themeColor:collection.info.themeColor,
                 themeLabelColor:collection.info.themeLabelColor,
                 size:metrics.size.height < 700 ? .xxsmall : .xsmall,
+                resolution:.hd,
                 favButton:.none
               )
               .frame(maxHeight:200)

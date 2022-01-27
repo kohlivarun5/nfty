@@ -69,20 +69,6 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
   func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     print("Background fetch called")
     
-    CompositeCollection.loadLatest {
-      print("Loaded latest trades")
-      CompositeCollection.recentTrades.forEach {
-        switch($0.nft.nftWithPrice.nft.media) {
-        case .ipfsImage(let image):
-          image.image.load()
-        case .image(let image):
-          image.url.load()
-        case .asciiPunk,.autoglyph:
-          return
-        }
-      }
-    }
-    
     performBackgroundFetch()
       .done {
         completionHandler($0 ? .newData : .noData)
@@ -91,6 +77,20 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
         // called when any promises throw an error
         print($0)
         completionHandler(.failed)
+      }.finally {
+        CompositeCollection.loadLatest {
+          print("Loaded latest trades")
+          CompositeCollection.recentTrades.forEach {
+            switch($0.nft.nftWithPrice.nft.media) {
+            case .ipfsImage(let image):
+              image.image.load()
+            case .image(let image):
+              image.url.load()
+            case .asciiPunk,.autoglyph:
+              return
+            }
+          }
+        }
       }
   }
   

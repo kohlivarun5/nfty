@@ -21,11 +21,13 @@ struct RoundedImage: View {
     case narrow
   }
   var width : Width
+  let resolution : NftImageResolution
   
   init(nft:NFT,
        price:TokenPriceType,
        collection:Collection,
-       width:Width)
+       width:Width,
+       resolution:NftImageResolution)
   {
     
     self.nft = nft
@@ -33,6 +35,7 @@ struct RoundedImage: View {
     self.collection = collection
     self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
     self.width = width
+    self.resolution = resolution
   }
   
   private func frameWidth(_ width:Width) -> CGFloat {
@@ -71,6 +74,7 @@ struct RoundedImage: View {
         themeColor:collection.info.themeColor,
         themeLabelColor:collection.info.themeLabelColor,
         size:mediaSize(width),
+        resolution:resolution,
         favButton:.topRight)
       
       switch(width) {
@@ -136,7 +140,8 @@ struct RoundedImage_Previews: PreviewProvider {
         nft:SampleToken,
         price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
         collection:SampleCollection,
-        width: .normal)
+        width: .normal,
+        resolution: .hd)
     }
   }
 }

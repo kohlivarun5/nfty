@@ -92,6 +92,7 @@ enum Media {
   
   struct IpfsImage {
     let image : UIImage // let data : Data
+    let image_hd : UIImage // let data : Data
   }
   
   struct IpfsImageLazy {

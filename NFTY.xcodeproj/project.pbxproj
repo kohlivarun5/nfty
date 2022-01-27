@@ -342,11 +342,6 @@
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
 		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
-		4FFAE78B27A2418A002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78A27A2418A002129E9 /* NearApi.swift */; };
-		4FFAE78D27A24223002129E9 /* NearUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78C27A24223002129E9 /* NearUtils.swift */; };
-		4FFAE78E27A24C8E002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78A27A2418A002129E9 /* NearApi.swift */; };
-		4FFAE79027A24CAB002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78F27A24CAB002129E9 /* NearNFT.swift */; };
-		4FFAE79127A24CAE002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78F27A24CAB002129E9 /* NearNFT.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -627,9 +622,6 @@
 		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
 		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
-		4FFAE78A27A2418A002129E9 /* NearApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearApi.swift; sourceTree = "<group>"; };
-		4FFAE78C27A24223002129E9 /* NearUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearUtils.swift; sourceTree = "<group>"; };
-		4FFAE78F27A24CAB002129E9 /* NearNFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearNFT.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -914,7 +906,6 @@
 		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4FFAE78927A24166002129E9 /* Near */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
@@ -1047,16 +1038,6 @@
 				4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */,
 			);
 			path = NFTYWidget;
-			sourceTree = "<group>";
-		};
-		4FFAE78927A24166002129E9 /* Near */ = {
-			isa = PBXGroup;
-			children = (
-				4FFAE78A27A2418A002129E9 /* NearApi.swift */,
-				4FFAE78C27A24223002129E9 /* NearUtils.swift */,
-				4FFAE78F27A24CAB002129E9 /* NearNFT.swift */,
-			);
-			path = Near;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1503,8 +1484,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FFAE78E27A24C8E002129E9 /* NearApi.swift in Sources */,
-				4FFAE79127A24CAE002129E9 /* NearNFT.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
@@ -1562,7 +1541,6 @@
 				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
-				4FFAE78B27A2418A002129E9 /* NearApi.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
@@ -1606,7 +1584,6 @@
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
-				4FFAE78D27A24223002129E9 /* NearUtils.swift in Sources */,
 				4F673CA02697E5F400CA6918 /* TradeEventsList.swift in Sources */,
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
 				4FA0B2B326C2260F00821413 /* ActivityView.swift in Sources */,
@@ -1615,7 +1592,6 @@
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
-				4FFAE79027A24CAB002129E9 /* NearNFT.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
 			);
@@ -1902,7 +1878,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1931,7 +1907,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2043,7 +2019,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2074,7 +2050,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;

@@ -72,6 +72,7 @@ struct TokenBuyView: View {
           themeColor:themeColor,
           themeLabelColor:themeLabelColor,
           size:.xsmall,
+          resolution:.hd,
           favButton:.none)
           .border(Color.secondary)
           .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

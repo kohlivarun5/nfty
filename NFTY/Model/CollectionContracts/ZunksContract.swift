@@ -23,10 +23,15 @@ class ZunksContract : ContractInterface {
     
     static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
       return data
-        .flatMap { UIImage(data:$0) }
-        .flatMap { $0.jpegData(compressionQuality: 0.1) }
-        .flatMap { UIImage(data:$0) }
-        .map { Media.IpfsImage(image:$0) }
+        .flatMap {
+          UIImage(data:$0)
+            .flatMap { image_hd in
+              image_hd
+                .jpegData(compressionQuality: 0.1)
+                .flatMap { UIImage(data:$0) }
+                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+            }
+        }
     }
     
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
@@ -83,6 +88,7 @@ class ZunksContract : ContractInterface {
   }
   
   private var imageCache : DiskStorage<BigUInt,UIImage>
+  private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -95,6 +101,11 @@ class ZunksContract : ContractInterface {
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(name).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
+    
+    self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
+      config: DiskConfig(name: "\(name).ImageCacheHD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+    
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
@@ -108,15 +119,16 @@ class ZunksContract : ContractInterface {
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     return ObservablePromise(promise: Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId)) {
-        case .some(let image):
-          seal.fulfill(Media.IpfsImage(image: image))
-        case .none:
+        switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
+        case (.some(let image),.some(let image_hd)):
+          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+        case (_,.none),(.none,_):
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = IpfsImageEthContract.imageOfData($0)
               image.flatMap {
                 try? self.imageCache.setObject($0.image, forKey: tokenId)
+                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
               }
               seal.fulfill(image)
             }

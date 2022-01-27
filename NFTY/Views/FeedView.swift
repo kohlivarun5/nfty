@@ -145,7 +145,8 @@ struct FeedView: View {
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
                   collection:item.collection,
-                  width: .normal
+                  width: .normal,
+                  resolution: .normal
                 )
                 .shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
                 .padding()
