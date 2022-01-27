@@ -74,7 +74,7 @@ try hang(
   ASAC.nft_total_supply()
     .then { count -> Promise<NearNFT.Token?> in
       print("ASAC Supply=\(count). Calling for\((Int(count)!-1))")
-      return ASAC.nft_token(token_id: ((try! BigUInt(Int(count)!-1))))
+      return ASAC.nft_token(token_id: (BigUInt(Int(count)!-1)))
     }
     .then { token_data in
       ASAC.nft_metadata()

@@ -109,7 +109,7 @@ struct NearApi {
     return Impl.fetch(url:URL(string:"https://rpc.mainnet.near.org")!, params: request)
       .map { result in
         // print(result)
-        print(String(data:Data(result.result),encoding:.ascii))
+        print(String(data:Data(result.result),encoding:.ascii) as Any)
         return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
       }
   }

@@ -342,6 +342,14 @@
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
 		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
+		4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
+		4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
+		4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */; };
+		4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
+		4FFAE79C27A32E84002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
+		4FFAE79E27A33391002129E9 /* NearNFTContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */; };
+		4FFAE79F27A333B2002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
+		4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -622,6 +630,9 @@
 		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
 		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
+		4FFAE79327A32AD5002129E9 /* NearApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearApi.swift; sourceTree = "<group>"; };
+		4FFAE79527A32AD5002129E9 /* NearNFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearNFT.swift; sourceTree = "<group>"; };
+		4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearNFTContract.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -906,6 +917,7 @@
 		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4FFAE79227A32AD5002129E9 /* Near */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
@@ -1038,6 +1050,16 @@
 				4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */,
 			);
 			path = NFTYWidget;
+			sourceTree = "<group>";
+		};
+		4FFAE79227A32AD5002129E9 /* Near */ = {
+			isa = PBXGroup;
+			children = (
+				4FFAE79327A32AD5002129E9 /* NearApi.swift */,
+				4FFAE79527A32AD5002129E9 /* NearNFT.swift */,
+				4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */,
+			);
+			path = Near;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1484,12 +1506,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FFAE79C27A32E84002129E9 /* NearApi.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
+				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1541,6 +1565,7 @@
 				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
+				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
@@ -1565,6 +1590,7 @@
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
+				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
@@ -1592,6 +1618,7 @@
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
+				4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
 			);
@@ -1617,6 +1644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
@@ -1629,6 +1657,7 @@
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
 				4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */,
+				4FFAE79E27A33391002129E9 /* NearNFTContract.swift in Sources */,
 				4FDEAB9D278E53F500F92160 /* AsciiPunksContract.swift in Sources */,
 				4FDEABA8278E541900F92160 /* Extensions.swift in Sources */,
 				4FDEABB0278E546300F92160 /* UIKitUtils.swift in Sources */,
@@ -1638,6 +1667,7 @@
 				4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */,
 				4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */,
 				4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */,
+				4FFAE79F27A333B2002129E9 /* NearNFT.swift in Sources */,
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
