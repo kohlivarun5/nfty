@@ -344,6 +344,9 @@
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
 		4FFAE78B27A2418A002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78A27A2418A002129E9 /* NearApi.swift */; };
 		4FFAE78D27A24223002129E9 /* NearUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78C27A24223002129E9 /* NearUtils.swift */; };
+		4FFAE78E27A24C8E002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78A27A2418A002129E9 /* NearApi.swift */; };
+		4FFAE79027A24CAB002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78F27A24CAB002129E9 /* NearNFT.swift */; };
+		4FFAE79127A24CAE002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE78F27A24CAB002129E9 /* NearNFT.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -626,6 +629,7 @@
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
 		4FFAE78A27A2418A002129E9 /* NearApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearApi.swift; sourceTree = "<group>"; };
 		4FFAE78C27A24223002129E9 /* NearUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearUtils.swift; sourceTree = "<group>"; };
+		4FFAE78F27A24CAB002129E9 /* NearNFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearNFT.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1050,6 +1054,7 @@
 			children = (
 				4FFAE78A27A2418A002129E9 /* NearApi.swift */,
 				4FFAE78C27A24223002129E9 /* NearUtils.swift */,
+				4FFAE78F27A24CAB002129E9 /* NearNFT.swift */,
 			);
 			path = Near;
 			sourceTree = "<group>";
@@ -1498,6 +1503,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FFAE78E27A24C8E002129E9 /* NearApi.swift in Sources */,
+				4FFAE79127A24CAE002129E9 /* NearNFT.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
@@ -1608,6 +1615,7 @@
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
+				4FFAE79027A24CAB002129E9 /* NearNFT.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
 			);

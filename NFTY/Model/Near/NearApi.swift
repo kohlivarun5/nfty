@@ -86,7 +86,12 @@ struct NearApi {
   
   
   
-  static func call_function<INPUT:Encodable,OUTPUT: Decodable>(account_id:String,method_name:String,args: INPUT) -> Promise<OUTPUT> {
+  static func call_function<
+    INPUT:Encodable,
+    OUTPUT: Decodable>(
+      account_id:String,
+      method_name:String,
+      args: INPUT) -> Promise<OUTPUT> {
     
     let request: [String: Any] = [
       "jsonrpc": "2.0",
@@ -102,8 +107,7 @@ struct NearApi {
     ]
     return Impl.fetch(url:URL(string:"https://rpc.mainnet.near.org")!, params: request)
       .map { result in
-        let rawData = Data(result.result)
-        return try JSONDecoder().decode(OUTPUT.self, from: rawData)
+        return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
       }
   }
   

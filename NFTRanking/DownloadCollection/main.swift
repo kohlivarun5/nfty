@@ -66,6 +66,19 @@ let downloaders = [
   )
 ]
 
+// exit
+
+let ASAC = NearNFT(account_id: "asac.near")
+
+try hang(ASAC.nft_total_supply()
+  .map {
+    print("ASAC Supply=\($0)")
+  }
+  .done {
+    print("Done")
+  })
+
+exit(0)
 
 // DOwnload using cli: ./ipget --progress QmPyYXzqU7tsTxQ7WFN32iUKRy78T6ZiFGxYiJiv1TcoKE
 
