@@ -13,6 +13,23 @@ import Web3
 import Cache
 import UIKit
 
+func reduce_p<Element,Result>(_ items:Array<Element>,
+                              _ initialResult: Result,
+                              _ nextPartialResult: @escaping (Result, Element) -> Promise<Result>) -> Promise<Result> {
+  
+  return items.reduce(Promise.value(initialResult), { accu,item in
+    accu
+      .then { accu in
+        nextPartialResult(accu,item)
+          .recover { error -> Promise<Result> in
+            print("Error in chain for item=\(item), Error=\(error)");
+            return Promise.value(accu)
+          }
+      }
+    
+  })
+}
+
 func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UIImage) -> URL? {
   let fileManager = FileManager.default
   let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
@@ -47,6 +64,9 @@ func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL
 }
 
 func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
+  
+  print("Fetching Favorite Sales")
+  
   let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
   
   struct Order : Codable {
@@ -57,41 +77,42 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   }
   
   
-  var orders : [Promise<(Collection,[Order])>] = []
-  
-  favorites?.forEach { (address,tokens) in
-    _ = collectionsFactory.getByAddress(address).map { collection in
-      
-      let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
-        if (isFav) {
-          return UInt(tokenId)
-        } else {
-          return nil
-        }
-      }
-      
-      if (!tokenIds.isEmpty) {
+  let orders : Promise<[(Collection,[Order])]> = reduce_p(
+    favorites?.map { ($0,$1) } ?? [],
+    [],{ accu,item in
+      let (address,tokens) = item
+      return collectionsFactory.getByAddress(address).then { collection -> Promise<[(Collection,[Order])]> in
         
-        switch(collection.contract.tradeActions) {
-        case .none:
-          return
-        case .some(let tradeActions):
-          orders.append(
-            tradeActions.getBidAsk(tokenIds,.ask)
-              .map { (bidAsks:[(tokenId:UInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
-                (collection,
-                 bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
-                  bidAsk.ask.map {
-                    Order(contract_address: address, token_id: tokenId, wei: $0.wei,expiration_time: $0.expiration_time)
+        let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
+          if (isFav) { return UInt(tokenId) }
+          else { return nil }
+        }
+        
+        if (!tokenIds.isEmpty) {
+          
+          switch(collection.contract.tradeActions) {
+          case .none:
+            return Promise.value(accu)
+          case .some(let tradeActions):
+            return after(seconds:0.3).then { // throttle
+              tradeActions.getBidAsk(tokenIds,.ask)
+                .map { (bidAsks:[(tokenId:UInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
+                  (collection,
+                   bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
+                    bidAsk.ask.map {
+                      Order(contract_address: address, token_id: tokenId, wei: $0.wei,expiration_time: $0.expiration_time)
+                    }
                   }
-                }
-                )
-              }
-          )
+                  )
+                }.map { accu + [$0] }
+            }
+          }
+        } else {
+          return Promise.value(accu)
         }
       }
     }
-  }
+  )
   
   let salesCache = try! DiskStorage<String, Order>(
     config: DiskConfig(name: "FavoriteSellOrder.cache",expiry: .never),
@@ -99,78 +120,79 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   
   try? salesCache.removeExpiredObjects()
   
-  return when(fulfilled:orders)
-    .then { results -> Promise<Bool> in
-      let promises = results
-        .map { result -> Promise<Bool> in
-          let (collection,orders) = result
-          print(orders)
-          let promises = orders
-            .compactMap { order -> Order? in
+  return orders.then {
+    reduce_p(
+      $0,
+      false, { accu,result -> Promise<Bool> in
+        let (collection,orders) = result
+        print(orders)
+        
+        let filtered =
+        orders
+          .compactMap { order -> Order? in
+            
+            let key = "\(order.contract_address):\(order.token_id)"
+            
+            if let entry = try? salesCache.object(forKey: key) {
+              // Entry in cache, lets compare and clean if needed
+              let entry_expiry = entry.expiration_time ?? 0
               
-              let key = "\(order.contract_address):\(order.token_id)"
+              if (entry_expiry != 0
+                  && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
+                try? salesCache.removeObject(forKey: key)
+              }
+              else if (entry.wei == order.wei) { return nil }
+            }
+            
+            try! salesCache.setObject(
+              order,
+              forKey: key,
+              expiry: order.expiration_time.map { .date(Date(timeIntervalSince1970:Double($0))) }
+            )
+            
+            return order
+          }
+        
+        return reduce_p(filtered, accu, { accu,order -> Promise<Bool> in
+          
+          return downloadImageToLocalDisk(collection: collection, tokenId: order.token_id)
+            .map { imageUrl in
+              let content = UNMutableNotificationContent()
+              content.title = "Favorite for Sale"
+              content.subtitle = "\(collection.info.name) #\(order.token_id)"
+              let wei = order.wei
+              content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
+              // content.sound = UNNotificationSound.default
               
-              if let entry = try? salesCache.object(forKey: key) {
-                // Entry in cache, lets compare and clean if needed
-                let entry_expiry = entry.expiration_time ?? 0
-                
-                if (entry_expiry != 0
-                    && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
-                  try? salesCache.removeObject(forKey: key)
-                }
-                else if (entry.wei == order.wei) { return nil }
+              print("ImageUrl=\(String(describing:imageUrl))")
+              
+              imageUrl.map {
+                content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.token_id)", url: $0, options: .none)]
               }
               
-              try! salesCache.setObject(
-                order,
-                forKey: key,
-                expiry: order.expiration_time.map { .date(Date(timeIntervalSince1970:Double($0))) }
-              )
+              content.userInfo = [
+                "sheetState": "nftTrade",
+                "address" : collection.info.address,
+                "tokenId" : order.token_id
+              ]
               
-              return order
-            }
-            .map { order -> Promise<Void> in
+              // show this notification five seconds from now
+              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
               
-              return downloadImageToLocalDisk(collection: collection, tokenId: order.token_id)
-                .map { imageUrl in
-                  let content = UNMutableNotificationContent()
-                  content.title = "Favorite for Sale"
-                  content.subtitle = "\(collection.info.name) #\(order.token_id)"
-                  let wei = order.wei
-                  content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
-                  // content.sound = UNNotificationSound.default
-                  
-                  print("ImageUrl=\(String(describing:imageUrl))")
-                  
-                  imageUrl.map {
-                    content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.token_id)", url: $0, options: .none)]
-                  }
-                  
-                  content.userInfo = [
-                    "sheetState": "nftTrade",
-                    "address" : collection.info.address,
-                    "tokenId" : order.token_id
-                  ]
-                  
-                  // show this notification five seconds from now
-                  let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                  
-                  let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                  
-                  // add our notification request
-                  UNUserNotificationCenter.current().add(request)
-                }
+              let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+              
+              // add our notification request
+              UNUserNotificationCenter.current().add(request)
+              return (accu || true)
             }
-          
-          return when(fulfilled: promises).map { !$0.isEmpty }
-        }
-      
-      return when(fulfilled: promises).map { $0.allSatisfy({$0}) }
-    }
+        })
+      })
+  }
 }
 
 func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   
+  print("Fetching Offers")
   let userWallet = UserWallet()
   
   guard let address = userWallet.walletAddress else {
@@ -190,14 +212,15 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
       
       try? offersCache.removeExpiredObjects()
       
-      let promises = orders
-        .map { order -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
+      return reduce_p(
+        orders,
+        false, { accu,order -> Promise<Bool> in
           
           let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
           
           return collectionsFactory.getByAddress(collectionAddress)
             .then { collection -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
-          
+              
               let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
               
               if let entry = try? offersCache.object(forKey: key) {
@@ -246,53 +269,55 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                   }
                 }
             }
-        }.map { resultP -> Promise<Void> in
-          
-          return resultP.then { resultOpt -> Promise<Void> in
-            
-            guard let result = resultOpt else {
-              return Promise.value(())
+            .recover { error -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
+              print("Error fetching order:\(error)");
+              return Promise.value(nil)
             }
-            
-            let (collection,order) = result
-            return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
-              .map { imageUrl in
-                
-                let content = UNMutableNotificationContent()
-                content.title = "New Offer"
-                //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-                print(order)
-                
-                // TODO : Handle currency tokens
-                let wei = Double(order.current_price).map { BigUInt($0) }
-                content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-                content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
-                
-                print("ImageUrl=\(String(describing:imageUrl))")
-                
-                imageUrl.map {
-                  content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
-                }
-                
-                content.userInfo = [
-                  "sheetState": "nftTrade",
-                  "address" : collection.info.address,
-                  "tokenId" : UInt(order.asset.token_id)!
-                ]
-                
-                // show this notification five seconds from now
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-                
-                // choose a random identifier
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                
-                // add our notification request
-                UNUserNotificationCenter.current().add(request)
+            .then { resultOpt -> Promise<Bool> in
+              
+              guard let result = resultOpt else {
+                return Promise.value(accu)
               }
-          }
-        }
-      
-      return when(fulfilled: promises).map { !$0.isEmpty }
+              
+              let (collection,order) = result
+              return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+                .map { imageUrl in
+                  
+                  let content = UNMutableNotificationContent()
+                  content.title = "New Offer"
+                  //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                  print(order)
+                  
+                  // TODO : Handle currency tokens
+                  let wei = Double(order.current_price).map { BigUInt($0) }
+                  content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                  content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+                  
+                  print("ImageUrl=\(String(describing:imageUrl))")
+                  
+                  imageUrl.map {
+                    content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+                  }
+                  
+                  content.userInfo = [
+                    "sheetState": "nftTrade",
+                    "address" : collection.info.address,
+                    "tokenId" : UInt(order.asset.token_id)!
+                  ]
+                  
+                  // show this notification five seconds from now
+                  let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+                  
+                  // choose a random identifier
+                  let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                  
+                  // add our notification request
+                  UNUserNotificationCenter.current().add(request)
+                  return accu || true
+                }
+            }
+          
+        })
     }
 }
 
@@ -302,6 +327,10 @@ func performBackgroundFetch() -> Promise<Bool> {
   
   EthSpot.getLiveRate().then { spot in
     fetchOffers(spot)
+      .recover { error -> Promise<Bool> in
+        print("FetchOffers Failed with:\(error)")
+        return Promise.value(false)
+      }
       .then { foundOffers in
         fetchFavoriteSales(spot)
           .map { foundFavs in
