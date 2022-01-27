@@ -77,7 +77,8 @@ struct CollectionView: View {
               nft:nft.nft,
               price:nft.indicativePriceWei,
               collection:collection,
-              width: .normal
+              width: .normal,
+              resolution: .normal
             )
               .shadow(color:.accentColor,radius:0)
               .padding()

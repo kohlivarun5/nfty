@@ -59,6 +59,7 @@ struct TokensByPropertiesList: View {
                 themeColor:info.themeColor,
                 themeLabelColor:info.themeLabelColor,
                 size:.small,
+                resolution:.normal,
                 favButton:.none
               )
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

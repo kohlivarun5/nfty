@@ -106,6 +106,7 @@ struct AddFavSheet: View {
                      themeColor:info.themeColor,
                      themeLabelColor:info.themeLabelColor,
                      size:metrics.size.height < 700 ? .small : .medium,
+                     resolution:.hd,
                      favButton:.bottomRight)
               .frame(minHeight: 250)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

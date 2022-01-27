@@ -37,6 +37,7 @@ struct TokenTradeView: View {
           themeColor:collection.info.themeColor,
           themeLabelColor:collection.info.themeLabelColor,
           size:.small,
+          resolution:.hd,
           favButton:.none
         )
           .frame(height:height)
