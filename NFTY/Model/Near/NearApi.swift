@@ -18,7 +18,7 @@ struct NearApi {
     }
     
     public struct QueryResult: Equatable, Decodable {
-      let logs: [String]
+      //let logs: [String]
       let result: [UInt8]
     }
     
@@ -48,7 +48,8 @@ struct NearApi {
       return Promise.init { seal in
         let task = session.dataTask(with: request) { data, response, error in
           if let error = error { return seal.reject(error) }
-          
+          // print(data)
+          // print(String(decoding:data!,as:UTF8.self))
           switch(data.flatMap { try? JSONDecoder().decode(RpcResponse.self, from: $0) }?.result ) {
           case .some(let result):
             seal.fulfill(result)
@@ -107,6 +108,8 @@ struct NearApi {
     ]
     return Impl.fetch(url:URL(string:"https://rpc.mainnet.near.org")!, params: request)
       .map { result in
+        // print(result)
+        print(String(data:Data(result.result),encoding:.ascii))
         return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
       }
   }

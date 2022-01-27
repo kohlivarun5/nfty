@@ -70,13 +70,24 @@ let downloaders = [
 
 let ASAC = NearNFT(account_id: "asac.near")
 
-try hang(ASAC.nft_total_supply()
-  .map {
-    print("ASAC Supply=\($0)")
-  }
-  .done {
-    print("Done")
-  })
+try hang(
+  ASAC.nft_total_supply()
+    .then { count -> Promise<NearNFT.Token?> in
+      print("ASAC Supply=\(count). Calling for\((Int(count)!-1))")
+      return ASAC.nft_token(token_id: ((try! BigUInt(Int(count)!-1))))
+    }
+    .then { token_data in
+      ASAC.nft_metadata()
+        .map { nft_data in
+          (nft_data,token_data)
+        }
+    }
+    .map {
+      print("ASAC Token=\($0)")
+    }
+    .done {
+      print("Done")
+    })
 
 exit(0)
 
