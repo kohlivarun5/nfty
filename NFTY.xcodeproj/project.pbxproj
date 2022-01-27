@@ -342,6 +342,10 @@
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
 		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
+		4FFAE7A527A33B6F002129E9 /* asac.near_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FFAE7A127A33B6E002129E9 /* asac.near_attributeScores.json */; };
+		4FFAE7A627A33B6F002129E9 /* asac.near_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FFAE7A227A33B6F002129E9 /* asac.near_attributeRanks.json */; };
+		4FFAE7A727A33B6F002129E9 /* asac.near_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FFAE7A327A33B6F002129E9 /* asac.near_rarityRanks.json */; };
+		4FFAE7A827A33B6F002129E9 /* asac.near_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FFAE7A427A33B6F002129E9 /* asac.near_nearestTokens.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -622,6 +626,10 @@
 		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
 		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
+		4FFAE7A127A33B6E002129E9 /* asac.near_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_attributeScores.json; sourceTree = "<group>"; };
+		4FFAE7A227A33B6F002129E9 /* asac.near_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_attributeRanks.json; sourceTree = "<group>"; };
+		4FFAE7A327A33B6F002129E9 /* asac.near_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_rarityRanks.json; sourceTree = "<group>"; };
+		4FFAE7A427A33B6F002129E9 /* asac.near_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_nearestTokens.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -930,6 +938,10 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FFAE7A227A33B6F002129E9 /* asac.near_attributeRanks.json */,
+				4FFAE7A127A33B6E002129E9 /* asac.near_attributeScores.json */,
+				4FFAE7A427A33B6F002129E9 /* asac.near_nearestTokens.json */,
+				4FFAE7A327A33B6F002129E9 /* asac.near_rarityRanks.json */,
 				4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */,
 				4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */,
 				4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */,
@@ -1265,6 +1277,7 @@
 				4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */,
 				4FCB359626E1BB1C0044BD84 /* Killaz_attributeRanks.json in Resources */,
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
+				4FFAE7A827A33B6F002129E9 /* asac.near_nearestTokens.json in Resources */,
 				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
 				4FCB359526E1BB1C0044BD84 /* MutantApes_rarityRanks.json in Resources */,
@@ -1295,6 +1308,7 @@
 				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
+				4FFAE7A627A33B6F002129E9 /* asac.near_attributeRanks.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
 				4FCB358F26E1A7390044BD84 /* MutantApes_attributeScores.json in Resources */,
@@ -1319,7 +1333,9 @@
 				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
 				4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */,
 				4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */,
+				4FFAE7A727A33B6F002129E9 /* asac.near_rarityRanks.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
+				4FFAE7A527A33B6F002129E9 /* asac.near_attributeScores.json in Resources */,
 				4F12715D26EDD43D007E6A7B /* Bombs_attributeScores.json in Resources */,
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */,
