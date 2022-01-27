@@ -107,6 +107,13 @@
 		4F6EB33A27A33D8400E6FD9A /* asac.near_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */; };
 		4F6EB33B27A33D8400E6FD9A /* asac.near_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */; };
 		4F6EB33C27A33D8400E6FD9A /* asac.near_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */; };
+		4F6EB33D27A33F2600E6FD9A /* asac.near_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */; };
+		4F6EB33E27A33F8A00E6FD9A /* asac.near_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */; };
+		4F6EB33F27A33F8A00E6FD9A /* asac.near_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */; };
+		4F6EB34027A33F8A00E6FD9A /* asac.near_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */; };
+		4F6EB34127A33F8A00E6FD9A /* 0xApes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */; };
+		4F6EB34227A33F8A00E6FD9A /* 0xApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */; };
+		4F6EB34327A33F8A00E6FD9A /* 0xApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */; };
 		4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */; };
 		4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */; };
 		4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */; };
@@ -1413,6 +1420,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F6EB33E27A33F8A00E6FD9A /* asac.near_attributeScores.json in Resources */,
+				4F6EB33F27A33F8A00E6FD9A /* asac.near_nearestTokens.json in Resources */,
+				4F6EB34027A33F8A00E6FD9A /* asac.near_rarityRanks.json in Resources */,
+				4F6EB34127A33F8A00E6FD9A /* 0xApes_attributeRanks.json in Resources */,
+				4F6EB34227A33F8A00E6FD9A /* 0xApes_attributeScores.json in Resources */,
+				4F6EB34327A33F8A00E6FD9A /* 0xApes_nearestTokens.json in Resources */,
 				4FEEAA2C278FB72A00EA6F51 /* AsciiPunks_attributeRanks.json in Resources */,
 				4FEEAA2D278FB72B00EA6F51 /* AsciiPunks_attributeScores.json in Resources */,
 				4FEEAA2E278FB72B00EA6F51 /* AsciiPunks_nearestTokens.json in Resources */,
@@ -1433,6 +1446,7 @@
 				4FEEAA3D278FB72B00EA6F51 /* CoolCats_attributeScores.json in Resources */,
 				4FEEAA3E278FB72B00EA6F51 /* CoolCats_nearestTokens.json in Resources */,
 				4FEEAA3F278FB72B00EA6F51 /* CoolCats_rarityRanks.json in Resources */,
+				4F6EB33D27A33F2600E6FD9A /* asac.near_attributeRanks.json in Resources */,
 				4FEEAA40278FB72B00EA6F51 /* Craniums_attributeRanks.json in Resources */,
 				4FEEAA41278FB72B00EA6F51 /* Craniums_attributeScores.json in Resources */,
 				4FEEAA42278FB72B00EA6F51 /* Craniums_nearestTokens.json in Resources */,
