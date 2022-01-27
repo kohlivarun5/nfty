@@ -119,6 +119,7 @@ struct WalletTokensView: View {
                         themeColor:token.collection.info.themeColor,
                         themeLabelColor:token.collection.info.themeLabelColor,
                         size:.small,
+                        resolution:.normal,
                         favButton:.none
                       )
                         .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))

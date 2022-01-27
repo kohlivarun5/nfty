@@ -49,9 +49,17 @@ struct NftImageImpl: View {
   }
 }
 
+enum NftImageResolution {
+  case hd
+  case normal
+}
+
 struct NftIpfsImageView: View {
   
   @ObservedObject var image : ObservablePromise<Media.IpfsImage?>
+  
+  let resolution : NftImageResolution
+  
   var padding : CGFloat?
   var sample : String
   var body: some View {
@@ -69,7 +77,7 @@ struct NftIpfsImageView: View {
         }
       },
       view: { ipfs in
-        switch(ipfs?.image) {
+        switch(ipfs) {
         case .none:
           ZStack {
             Image(sample)
@@ -79,12 +87,21 @@ struct NftIpfsImageView: View {
               .colorMultiply(.accentColor)
               .blur(radius:20)
           }
-        case .some(let uiImage):
-          Image(uiImage: uiImage)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            .padding(padding ?? 0)
+        case .some(let image):
+          switch(resolution) {
+          case .normal:
+            Image(uiImage: image.image)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              .padding(padding ?? 0)
+          case .hd:
+            Image(uiImage: image.image_hd)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              .padding(padding ?? 0)
+          }
         }
       })
   }
@@ -113,6 +130,7 @@ struct NftImage: View {
   }
   
   let size : Size
+  let resolution : NftImageResolution
   let favButton : FavButtonLocation
   
   private func fontSize(_ size:Size) -> CGFloat {
@@ -226,7 +244,7 @@ struct NftImage: View {
           .padding(.top,autoglypPaddingTop(size))
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
-        NftIpfsImageView(image:ipfs.image,padding:imagePadding(size), sample:sample)
+        NftIpfsImageView(image:ipfs.image,resolution:resolution,padding:imagePadding(size), sample:sample)
         
       }
       
@@ -254,6 +272,6 @@ struct NftImage: View {
 
 struct NftImage_Previews: PreviewProvider {
   static var previews: some View {
-    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal,favButton:.topRight)
+    NftImage(nft:SampleToken,sample:SAMPLE_PUNKS[0],themeColor:SampleCollection.info.themeColor,themeLabelColor:SampleCollection.info.themeLabelColor,size:.normal,resolution:.hd,favButton:.topRight)
   }
 }
