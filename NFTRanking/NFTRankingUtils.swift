@@ -90,7 +90,7 @@ func getRarityRankFilename(_ collectionName:String) -> URL {
     .appendingPathComponent("\(collectionName)_rarityRanks.json")
 }
 
-func getImageDirectory(_ collectionName:String) -> URL {
+func getImageDirectory(collectionName:String,imagesDir:String) -> URL {
   return
     getDocumentsDirectory()
     .appendingPathComponent("../")
@@ -99,16 +99,16 @@ func getImageDirectory(_ collectionName:String) -> URL {
     .appendingPathComponent("data")
     .appendingPathComponent("Images")
     .appendingPathComponent(collectionName)
-    .appendingPathComponent("png")
+    .appendingPathComponent(imagesDir)
 }
 
-func getImageFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
-  return getImageDirectory(collectionName)
+func getImageFileName(collectionName:String,imagesDir:String,_ tokenId:UInt) -> URL {
+  return getImageDirectory(collectionName:collectionName,imagesDir: imagesDir)
     .appendingPathComponent("\(tokenId).png")
   
 }
 
-func getAttributesDirectory(_ collectionName:String) -> URL {
+func getAttributesDirectory(collectionName:String,attributesDir:String) -> URL {
   return
     getDocumentsDirectory()
     .appendingPathComponent("../")
@@ -117,17 +117,17 @@ func getAttributesDirectory(_ collectionName:String) -> URL {
     .appendingPathComponent("data")
     .appendingPathComponent("Images")
     .appendingPathComponent(collectionName)
-    .appendingPathComponent("attributes")
+    .appendingPathComponent(attributesDir)
   
 }
 
-func getAttributesFileName(_ collectionName:String,_ tokenId:UInt) -> URL {
-  return getAttributesDirectory(collectionName)
+func getAttributesFileName(collectionName:String,attributesDir:String,_ tokenId:UInt) -> URL {
+  return getAttributesDirectory(collectionName:collectionName,attributesDir: attributesDir)
     .appendingPathComponent("\(tokenId).json")
 }
 
-func loadImageData(_ collectionName:String,_ tokenId:UInt) -> Data {
-  let filename = getImageFileName(collectionName,tokenId)
+func loadImageData(collectionName:String,imagesDir:String,_ tokenId:UInt) -> Data {
+  let filename = getImageFileName(collectionName:collectionName,imagesDir:imagesDir,tokenId)
   return try! Data(contentsOf: filename)
 }
 
