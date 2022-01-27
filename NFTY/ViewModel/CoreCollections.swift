@@ -725,8 +725,12 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:true,
-      similarTokens : nil,
-      rarityRanking : nil
+      similarTokens : SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"asac.near_nearestTokens.json",
+        propertiesJsonFileName:"asac.near_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
     ),
     contract:ASAC_Contract),
   Collection(
