@@ -9,22 +9,27 @@ import Foundation
 
 // PARAMETERS
 
-let collectionName = "0xApes"
+let collectionName = "asac.near"
+let imagesDir = "bafybeicj5zfhe3ytmfleeiindnqlj7ydkpoyitxm7idxdw2kucchojf7v4"
 
 let isFull = true
-let firstIndex = 10038
-let lastIndex = isFull ? 20145 : 10138
+let firstIndex = 0
+let lastIndex = isFull ? 3332 : 100
 
 // STAGES
-let doCalculateFeatures = false
-let doCalculateDistances = false
+let doCalculateFeatures = true
+let doCalculateDistances = true
 let doNearestNeghbors = true
-let doCalculateRarityRank = false
+let doCalculateRarityRank = true
 
 
 // PIPELINE
 
-let features = CalculateImageFeaturePrints(firstIndex: firstIndex,lastIndex: lastIndex,collectionName:collectionName)
+let features = CalculateImageFeaturePrints(
+  firstIndex: firstIndex,
+  lastIndex: lastIndex,
+  collectionName:collectionName,
+  imagesDir:imagesDir)
 // features.loadFeaturesFromFile()
 if (doCalculateFeatures) {
   features.calculateFeatures()

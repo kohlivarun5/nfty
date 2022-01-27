@@ -12,18 +12,23 @@ import Vision
 class CalculateImageFeaturePrints {
   let firstIndex : Int
   let lastIndex : Int
-  let collectionName : String  
+  let collectionName : String
+  let imagesDir : String
   var tokenImages : [VNFeaturePrintObservation?]
   
-  init(firstIndex:Int,lastIndex:Int,collectionName:String) {
+  init(firstIndex:Int,lastIndex:Int,collectionName:String,imagesDir:String) {
     self.firstIndex = firstIndex
     self.lastIndex = lastIndex
     self.collectionName = collectionName
+    self.imagesDir = imagesDir
     self.tokenImages = Array(repeating:nil, count: (lastIndex + 1))
   }
   
   private func featureprintObservationForImage(tokenId:Int) -> VNFeaturePrintObservation? {
-    let requestHandler = VNImageRequestHandler(data:loadImageData(collectionName,UInt(tokenId)), options: [:])
+    let requestHandler = VNImageRequestHandler(data:loadImageData(
+      collectionName:collectionName,
+      imagesDir:imagesDir,
+      UInt(tokenId)), options: [:])
     let request = VNGenerateImageFeaturePrintRequest()
     do {
       try requestHandler.perform([request])

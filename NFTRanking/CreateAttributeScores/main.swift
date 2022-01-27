@@ -7,11 +7,12 @@
 
 import Foundation
 
-let collectionName = "0xApes"
+let collectionName = "asac.near"
+let attributesDir = "bafybeicj5zfhe3ytmfleeiindnqlj7ydkpoyitxm7idxdw2kucchojf7v4"
 
 let isFull = true
-let firstIndex = 10038
-let lastIndex = isFull ? 20145 : 100
+let firstIndex = 0
+let lastIndex = isFull ? 3332 : 100
 
 // STAGES
 let doCalculatePercentiles = true
@@ -20,7 +21,12 @@ let doCalculateAttrScores = true
 
 
 // Percentiles
-let percentiles = CalculateAttributePercentiles(firstIndex: firstIndex, lastIndex: lastIndex, collectionName: collectionName)
+let percentiles = CalculateAttributePercentiles(
+  firstIndex: firstIndex,
+  lastIndex: lastIndex,
+  collectionName: collectionName,
+  attributesDir: attributesDir)
+
 if (doCalculatePercentiles) {
   percentiles.calculatePercentiles()
 } else {
@@ -31,6 +37,7 @@ let attrScores = CalculatePercentileScores(
   firstIndex: firstIndex,
   lastIndex: lastIndex,
   collectionName: collectionName,
+  attributesDir: attributesDir,
   attributes: percentiles.attributes)
 if (doCalculateAttrScores) {
   attrScores.calculateScores()

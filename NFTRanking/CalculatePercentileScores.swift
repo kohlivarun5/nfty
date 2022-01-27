@@ -11,6 +11,7 @@ class CalculatePercentileScores {
   let firstIndex : Int
   let lastIndex : Int
   let collectionName : String
+  let attributesDir : String
   
   // Each attribute contains a dict of the value and count of items wioth that value
   let attributes : [ String : [String : UInt] ]
@@ -25,10 +26,11 @@ class CalculatePercentileScores {
   
   var tokenAttributes : [ [TokenAttributePercentile] ]
   
-  init(firstIndex:Int,lastIndex:Int,collectionName:String,attributes:[ String : [String : UInt] ]) {
+  init(firstIndex:Int,lastIndex:Int,collectionName:String,attributesDir:String,attributes:[ String : [String : UInt] ]) {
     self.firstIndex = firstIndex
     self.lastIndex = lastIndex
     self.collectionName = collectionName
+    self.attributesDir = attributesDir
     self.attributes = attributes
     self.tokenScores = Array(repeating: 0, count: lastIndex + 1)
     self.tokenAttributes = Array(repeating: [], count: lastIndex + 1)
@@ -42,7 +44,11 @@ class CalculatePercentileScores {
     for tokenId in firstIndex...lastIndex {
       print("Starting tokenId=\(tokenId)")
       
-      let attributes : [Erc721TokenAttribute] = loadJSON(getAttributesFileName(collectionName,UInt(tokenId)))
+      let data : Erc721TokenUriData = loadJSON(getAttributesFileName(
+        collectionName:collectionName,
+        attributesDir: attributesDir,
+        UInt(tokenId)))
+      let attributes = data.attributes
       
       var score = 0
       attributes.forEach { attr in

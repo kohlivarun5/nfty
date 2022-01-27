@@ -103,6 +103,10 @@
 		4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3961262BD8A8007E79BB /* CollectionView.swift */; };
 		4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6D3974262BE4F3007E79BB /* NftImage.swift */; };
 		4F6D3995262BFE4F007E79BB /* kitties.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6D3994262BFE4F007E79BB /* kitties.json */; };
+		4F6EB33927A33D8400E6FD9A /* asac.near_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */; };
+		4F6EB33A27A33D8400E6FD9A /* asac.near_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */; };
+		4F6EB33B27A33D8400E6FD9A /* asac.near_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */; };
+		4F6EB33C27A33D8400E6FD9A /* asac.near_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */; };
 		4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */; };
 		4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */; };
 		4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */; };
@@ -509,6 +513,10 @@
 		4F6D3961262BD8A8007E79BB /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		4F6D3974262BE4F3007E79BB /* NftImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftImage.swift; sourceTree = "<group>"; };
 		4F6D3994262BFE4F007E79BB /* kitties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kitties.json; sourceTree = "<group>"; };
+		4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_attributeRanks.json; sourceTree = "<group>"; };
+		4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_nearestTokens.json; sourceTree = "<group>"; };
+		4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_attributeScores.json; sourceTree = "<group>"; };
+		4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_rarityRanks.json; sourceTree = "<group>"; };
 		4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaCollection.swift; sourceTree = "<group>"; };
 		4F7CF7E426C823D800394FA2 /* IpfsDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpfsDownloader.swift; sourceTree = "<group>"; };
 		4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_nearestTokens.json; sourceTree = "<group>"; };
@@ -942,6 +950,10 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */,
+				4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */,
+				4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */,
+				4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */,
 				4F11C76F27A0E48600938036 /* 0xApes_attributeRanks.json */,
 				4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */,
 				4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */,
@@ -1303,9 +1315,12 @@
 				4FBF8AF8264E079D00569DCA /* CryptoPunks_rarityRanks.json in Resources */,
 				4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */,
 				4F7CF7E826C8264700394FA2 /* BirdHouse_nearestTokens.json in Resources */,
+				4F6EB33A27A33D8400E6FD9A /* asac.near_nearestTokens.json in Resources */,
 				4F446F2E263773EE00BE739E /* CryptoPunks_nearestTokens.json in Resources */,
 				4F4F9A3C276388EB0020C5FA /* CryptoPunks_attributeScores.json in Resources */,
 				4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */,
+				4F6EB33B27A33D8400E6FD9A /* asac.near_attributeScores.json in Resources */,
+				4F6EB33927A33D8400E6FD9A /* asac.near_attributeRanks.json in Resources */,
 				4FCB496B26D1912500696F91 /* BAYC_attributeRanks.json in Resources */,
 				4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */,
 				4FB9A803262B435400C58AF9 /* punks.json in Resources */,
@@ -1316,6 +1331,7 @@
 				4FAB56D326DB49E6007076BE /* DJENERATES_nearestTokens.json in Resources */,
 				4FF5E10926C9913A00D0B1E9 /* BirdHouse_attributeScores.json in Resources */,
 				4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */,
+				4F6EB33C27A33D8400E6FD9A /* asac.near_rarityRanks.json in Resources */,
 				4F1E4F4726C852D3009D27E6 /* DeadFellaz_attributeScores.json in Resources */,
 				4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */,
 				4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */,
@@ -1908,7 +1924,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1918,7 +1934,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1937,7 +1953,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -1947,7 +1963,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2049,7 +2065,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2061,7 +2077,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2080,7 +2096,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2092,7 +2108,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.2;
+				MARKETING_VERSION = 1.5.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

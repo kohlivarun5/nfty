@@ -91,6 +91,9 @@ try hang(
 
 exit(0)
 
+//
+// THIS IS DEPRECATED, Use ipget to download directly
+
 // DOwnload using cli: ./ipget --progress QmPyYXzqU7tsTxQ7WFN32iUKRy78T6ZiFGxYiJiv1TcoKE
 
 try? downloaders.forEach { downloader in
