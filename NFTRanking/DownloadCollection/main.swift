@@ -71,8 +71,9 @@ let downloaders = [
 let ASAC = NearNFT(account_id: "asac.near")
 
 try hang(
+  NearApi.changes(account_ids: ["asac.near"]).then { _ in
   ASAC.nft_total_supply()
-    .then { count -> Promise<NearNFT.Token?> in
+    .then { count -> Promise<NearNFT.Token> in
       print("ASAC Supply=\(count). Calling for\((Int(count)!-1))")
       return ASAC.nft_token(token_id: (BigUInt(Int(count)!-1)))
     }
@@ -87,7 +88,9 @@ try hang(
     }
     .done {
       print("Done")
-    })
+    }
+  }
+)
 
 exit(0)
 
@@ -95,7 +98,7 @@ exit(0)
 // THIS IS DEPRECATED, Use ipget to download directly
 
 // DOwnload using cli: ./ipget --progress QmPyYXzqU7tsTxQ7WFN32iUKRy78T6ZiFGxYiJiv1TcoKE
-
+/*
 try? downloaders.forEach { downloader in
   
   let firstIndex = downloader.firstIndex
@@ -181,3 +184,4 @@ try? downloaders.forEach { downloader in
   }
   print("All downloaded=\(downloader.collection.name)")
 }
+ */

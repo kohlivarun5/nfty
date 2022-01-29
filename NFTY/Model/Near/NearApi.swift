@@ -17,28 +17,11 @@ struct NearApi {
       case error(status: Int, message: String?)
     }
     
-    public struct QueryResult: Equatable, Decodable {
-      //let logs: [String]
-      let result: [UInt8]
+    struct RpcResponse<Result:Decodable> : Decodable {
+      let result : Result
     }
     
-    struct RpcResponse :Decodable {
-      /*
-      {
-        "jsonrpc": "2.0",
-        "result": {
-          "result": [48],
-          "logs": [],
-          "block_height": 17817336,
-          "block_hash": "4qkA4sUUG8opjH5Q9bL5mWJTnfR4ech879Db1BZXbx6P"
-        },
-        "id": "dontcare"
-      }
-       */
-      let result : QueryResult
-    }
-    
-    static func fetch(url: URL, params: [String: Any]?) -> Promise<QueryResult> {
+    static func fetch<Result:Decodable>(url: URL, params: [String: Any]?) -> Promise<Result> {
       
       let session = URLSession.shared
       var request = URLRequest(url: url)
@@ -50,7 +33,7 @@ struct NearApi {
           if let error = error { return seal.reject(error) }
           // print(data)
           // print(String(decoding:data!,as:UTF8.self))
-          switch(data.flatMap { try? JSONDecoder().decode(RpcResponse.self, from: $0) }?.result ) {
+          switch(data.flatMap { try? JSONDecoder().decode(RpcResponse<Result>.self, from: $0) }?.result ) {
           case .some(let result):
             seal.fulfill(result)
           case .none:
@@ -85,7 +68,10 @@ struct NearApi {
    }
    */
   
-  
+  public struct QueryResult: Equatable, Decodable {
+    let logs: [String]
+    let result: [UInt8]
+  }
   
   static func call_function<
     INPUT:Encodable,
@@ -93,25 +79,93 @@ struct NearApi {
       account_id:String,
       method_name:String,
       args: INPUT) -> Promise<OUTPUT> {
+        
+        let request: [String: Any] = [
+          "jsonrpc": "2.0",
+          "id": "dontcare",
+          "method": "query",
+          "params": [
+            "request_type": "call_function",
+            "finality": "final",
+            "account_id": account_id,
+            "method_name": method_name,
+            "args_base64": try! JSONEncoder().encode(args).base64EncodedString()
+          ]
+        ]
+        return Impl.fetch(url:URL(string:"https://rpc.mainnet.near.org")!, params: request)
+          .map { (result:QueryResult) in
+            print(result.logs)
+            print(String(data:Data(result.result),encoding:.ascii) as Any)
+            return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
+          }
+      }
+  
+  /*
+   {
+   "jsonrpc": "2.0",
+   "id": "dontcare",
+   "method": "EXPERIMENTAL_changes",
+   "params": {
+   "changes_type": "account_changes",
+   "account_ids": ["your_account.testnet"],
+   "block_id": 19703467
+   }
+   }
+   */
+  
+  struct AccountChanges : Decodable {
+    /*
+     {
+     "block_hash": "6U8Yd4JFZwJUNfqkD4KaKgTKmpNSmVRTSggpjmsRWdKY",
+     "changes": [
+     {
+     "cause": {
+     "type": "receipt_processing",
+     "receipt_hash": "9ewznXgs2t7vRCssxW4thgaiwggnMagKybZ7ryLNTT2z"
+     },
+     "type": "data_update",
+     "change": {
+     "account_id": "guest-book.testnet",
+     "key_base64": "bTo6Mzk=",
+     "value_base64": "eyJwcmVtaXVtIjpmYWxzZSwic2VuZGVyIjoiZmhyLnRlc3RuZXQiLCJ0ZXh0IjoiSGkifQ=="
+     }
+     },
+     {
+     "cause": {
+     "type": "receipt_processing",
+     "receipt_hash": "9ewznXgs2t7vRCssxW4thgaiwggnMagKybZ7ryLNTT2z"
+     },
+     "type": "data_update",
+     "change": {
+     "account_id": "guest-book.testnet",
+     "key_base64": "bTpsZW4=",
+     "value_base64": "NDA="
+     }
+     }
+     ]
+     }
+     */
+    
+    let block_hash : String
+  }
+  
+  static func changes(account_ids:[String]) -> Promise<AccountChanges> {
     
     let request: [String: Any] = [
       "jsonrpc": "2.0",
       "id": "dontcare",
-      "method": "query",
+      "method": "EXPERIMENTAL_changes",
       "params": [
-        "request_type": "call_function",
-        "finality": "final",
-        "account_id": account_id,
-        "method_name": method_name,
-        "args_base64": try! JSONEncoder().encode(args).base64EncodedString()
+        "changes_type": "account_changes",
+        "account_ids": account_ids,
+        "finality" : "final"
       ]
     ]
     return Impl.fetch(url:URL(string:"https://rpc.mainnet.near.org")!, params: request)
-      .map { result in
-        // print(result)
-        print(String(data:Data(result.result),encoding:.ascii) as Any)
-        return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
+      .map { (result:AccountChanges) in
+        print(result)
+        return result
       }
+    
   }
-  
 }
