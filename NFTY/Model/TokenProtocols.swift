@@ -103,7 +103,7 @@ class CompositeRecentTradesObject : ObservableObject {
     var recentTrades: NftRecentTradesObject
   }
   
-  var loaders : [CollectionLoader]
+  
   
   private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
     switch(trade.nftWithPrice.indicativePriceWei) {
@@ -175,10 +175,13 @@ class CompositeRecentTradesObject : ObservableObject {
     
   }
   
+  private let collections : [Collection]
   init(_ collections:[Collection]) {
-    weak var selfWorkaround: CompositeRecentTradesObject?
-    
-    self.loaders = collections.map { collection in
+    self.collections = collections
+  }
+ 
+  lazy var loaders : [CollectionLoader] = {
+    return collections.map { collection in
       return CollectionLoader(
         collection:collection,
         
@@ -187,7 +190,7 @@ class CompositeRecentTradesObject : ObservableObject {
           parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
-                selfWorkaround?.loadedItems.append(
+                self.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: false,collection:collection)
                 )
               }
@@ -195,7 +198,7 @@ class CompositeRecentTradesObject : ObservableObject {
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
-                selfWorkaround?.loadedItems.append(
+                self.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: true,collection:collection)
                 )
               }
@@ -203,8 +206,7 @@ class CompositeRecentTradesObject : ObservableObject {
           })
       )
     }
-    selfWorkaround = self
-  }
+  }()
   
   private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
     switch(self.loaders[safe:index]) {
