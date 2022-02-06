@@ -328,6 +328,10 @@ class AsciiPunksContract : ContractInterface {
   }
   
   var vaultContract : CollectionVaultContract? = nil
+ 
+  lazy var floorFetcher: PagedTokensFetcher? = {
+    return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
+  }()
   
 }
 

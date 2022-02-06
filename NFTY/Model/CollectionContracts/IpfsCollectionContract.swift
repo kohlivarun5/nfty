@@ -309,6 +309,11 @@ class IpfsCollectionContract : ContractInterface {
     }
   }()
   
+  
+  lazy var floorFetcher: PagedTokensFetcher? = {
+    return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
+  }()
+  
 }
 
 

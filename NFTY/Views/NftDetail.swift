@@ -113,17 +113,14 @@ struct NftDetail: View {
           
           HStack() {
             
-            /*
-            switch(OpenSeaFloorFetcher.make(collection:EthereumAddress(collection.info.address),limit:20)) {
+            switch(self.collection.contract.floorFetcher) {
             case .none:
               NFTNameIdRank(nft:nft,rank:rank)
             case .some(let fetcher):
               NavigationLink(
                 destination:TokenListPagedView(
                   collection: collection,
-                  nfts: TokensListPaged(
-                    fetcher: OpenSeaFloorFetcher.make(collection: collection.contract.address)
-                  )
+                  nfts: TokensListPaged(fetcher:fetcher)
                 ),
                 isActive:$showFloorView
               ) {
@@ -134,25 +131,6 @@ struct NftDetail: View {
                 }) {
                   NFTNameIdRank(nft:nft,rank:rank)
                 }
-              }
-            }
-             */
-            
-            NavigationLink(
-              destination:TokenListPagedView(
-                collection: collection,
-                nfts: TokensListPaged(
-                  fetcher: OpenSeaFloorFetcher.make(collection:try! EthereumAddress(hex: collection.info.address, eip55: true))
-                )
-              ),
-              isActive:$showFloorView
-            ) {
-              Button(action: {
-                UIImpactFeedbackGenerator(style:.soft)
-                  .impactOccurred()
-                self.showFloorView = true
-              }) {
-                NFTNameIdRank(nft:nft,rank:rank)
               }
             }
             

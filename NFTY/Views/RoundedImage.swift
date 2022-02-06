@@ -23,6 +23,8 @@ struct RoundedImage: View {
   var width : Width
   let resolution : NftImageResolution
   
+  @State private var showFloorView : Bool = false
+  
   init(nft:NFT,
        price:TokenPriceType,
        collection:Collection,
@@ -82,22 +84,26 @@ struct RoundedImage: View {
         HStack {}
       case .normal:
         HStack(alignment:.center) {
-          VStack(alignment:.leading) {
-            Text(nft.name)
-            HStack {
-              Text("#\(nft.tokenId)")
-              DappLink(destination: DappLink.openSeaPath(nft: nft))
+          switch(self.collection.contract.floorFetcher) {
+          case .none:
+            NFTNameIdRank(nft:nft,rank:rank)
+          case .some(let fetcher):
+            NavigationLink(
+              destination:TokenListPagedView(
+                collection: collection,
+                nfts: TokensListPaged(fetcher:fetcher)
+              ),
+              isActive:$showFloorView
+            ) {
+              Button(action: {
+                UIImpactFeedbackGenerator(style:.soft)
+                  .impactOccurred()
+                self.showFloorView = true
+              }) {
+                NFTNameIdRank(nft:nft,rank:rank)
+              }
             }
-            .font(.footnote)
-            
-            rank.map {
-              Text( "RarityRank: \($0)")
-                .font(.caption2)
-                .foregroundColor(.secondaryLabel)
-            }
-            
           }
-          .padding(.leading)
           
           Spacer()
           SheetButton(content: {

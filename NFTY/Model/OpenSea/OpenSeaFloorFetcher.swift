@@ -10,17 +10,17 @@ import Web3
 import PromiseKit
 
 class OpenSeaFloorFetcher : PagedTokensFetcher {
-  let collection : EthereumAddress
+  let contractAddress : String
   let limit : UInt
   private var cursor : String?
   
-  init(collection:EthereumAddress,limit:UInt) {
-    self.collection = collection
+  init(contractAddress:String,limit:UInt) {
+    self.contractAddress = contractAddress
     self.limit = limit
   }
   
   func fetchNext() -> Promise<[NFTWithLazyPrice]> {
-    OpenSeaApiCore.getCollectionInfo(contract: collection.hex(eip55: true))
+    OpenSeaApiCore.getCollectionInfo(contract:contractAddress)
       .then { (info:OpenSeaApiCore.CollectionInfo) -> Promise<[NFTWithLazyPrice]> in
         switch(info.slug) {
         case .some(let slug):
@@ -55,8 +55,8 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
       }
   }
   
-  static func make(collection:EthereumAddress) -> PagedTokensFetcher {
-    return OpenSeaFloorFetcher(collection:collection,limit:40)
+  static func make(contractAddress:String) -> PagedTokensFetcher {
+    return OpenSeaFloorFetcher(contractAddress:contractAddress,limit:40)
   }
   
 }

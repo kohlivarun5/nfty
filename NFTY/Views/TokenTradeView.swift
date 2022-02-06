@@ -49,21 +49,24 @@ struct TokenTradeView: View {
         
         HStack {
           
-          NavigationLink(
-            destination:TokenListPagedView(
-              collection: collection,
-              nfts: TokensListPaged(
-                fetcher: OpenSeaFloorFetcher.make(collection:try! EthereumAddress(hex: collection.info.address, eip55: false))
-              )
-            ),
-            isActive:$showFloorView
-          ) {
-            Button(action: {
-              UIImpactFeedbackGenerator(style:.soft)
-                .impactOccurred()
-              self.showFloorView = true
-            }) {
-              NFTNameIdRank(nft:nft,rank:rank)
+          switch(self.collection.contract.floorFetcher) {
+          case .none:
+            NFTNameIdRank(nft:nft,rank:rank)
+          case .some(let fetcher):
+            NavigationLink(
+              destination:TokenListPagedView(
+                collection: collection,
+                nfts: TokensListPaged(fetcher:fetcher)
+              ),
+              isActive:$showFloorView
+            ) {
+              Button(action: {
+                UIImpactFeedbackGenerator(style:.soft)
+                  .impactOccurred()
+                self.showFloorView = true
+              }) {
+                NFTNameIdRank(nft:nft,rank:rank)
+              }
             }
           }
           

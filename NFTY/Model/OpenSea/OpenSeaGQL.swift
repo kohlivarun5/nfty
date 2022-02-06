@@ -133,7 +133,7 @@ struct OpenSeaGQL {
         }
         
         // print(String(decoding:data!,as:UTF8.self))
-        switch(data.flatMap { try! JSONDecoder().decode(Response.self, from: $0) }?.data.query ) {
+        switch(data.flatMap { try? JSONDecoder().decode(Response.self, from: $0) }?.data.query ) {
         case .some(let result):
           seal.fulfill(result)
           //seal.reject(HTTPError.unknown)
