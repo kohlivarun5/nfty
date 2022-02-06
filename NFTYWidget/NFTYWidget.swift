@@ -12,7 +12,7 @@ import Intents
 @main
 struct NFTYWidgets: WidgetBundle {
   var body: some Widget {
-    FloorWidget()
     ValuationWidget()
+    FloorWidget()    
   }
 }
