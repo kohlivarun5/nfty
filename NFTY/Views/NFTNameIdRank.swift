@@ -44,8 +44,6 @@ struct NFTNameIdRank: View {
         }
      
       }
-      .padding(.leading)
-      
       
     case (false,.some(let fetcher)):
       NavigationLink(
@@ -72,12 +70,11 @@ struct NFTNameIdRank: View {
           }
           
         }
-        .padding(.leading)
         .onTapGesture {
           self.showFloorView = true
         }
-        
       }
+      .buttonStyle(.plain)
     }
   }
 }

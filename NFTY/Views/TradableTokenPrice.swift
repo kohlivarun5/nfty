@@ -14,7 +14,7 @@ struct TradableTokenPrice: View {
   
   var body: some View {
     HStack {
-      TokenPrice(price:price,color:color)
+      TokenPrice(price:price,color:color,hideIcon:false)
         .padding(.trailing,5)
       Image(systemName: "chevron.right.circle.fill")
         .resizable()

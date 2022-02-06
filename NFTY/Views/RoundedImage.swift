@@ -83,10 +83,11 @@ struct RoundedImage: View {
       case .normal:
         HStack(alignment:.center) {
           NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet: false)
+            .padding(.leading)
           
           Spacer()
           SheetButton(content: {
-            TokenPrice(price:price,color:.label)
+            TokenPrice(price:price,color:.label,hideIcon:false)
           },sheetContent: {
             TokenTradeView(
               nft: nft,

@@ -48,7 +48,7 @@ struct TokenTradeView: View {
         HStack {
           NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:floorPrice,isSheet: isSheet)
           Spacer()
-          TokenPrice(price:price,color:.label)
+          TokenPrice(price:price,color:.label,hideIcon:false)
             .font(.title2)
         }
         .padding()

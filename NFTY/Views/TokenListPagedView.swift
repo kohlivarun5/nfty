@@ -83,8 +83,7 @@ struct TokenListPagedView: View {
                       }
                     
                     VStack {
-                      Spacer()
-                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label)
+                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label,hideIcon:true)
                         .padding([.top,.bottom],2)
                         .padding([.leading,.trailing],20)
                         .font(.caption2)
@@ -97,8 +96,9 @@ struct TokenListPagedView: View {
                             tl: 5, tr: 5, bl: 5, br: 5))
                         .colorMultiply(.accentColor)
                         .shadow(radius: 5)
+                      Spacer()
                     }
-                    .padding(.bottom,11)
+                    .padding(.top,11)
                     
                     NavigationLink(destination: NftDetail(
                       nft:nft.nft,

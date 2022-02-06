@@ -111,6 +111,7 @@ struct NftDetail: View {
           
           HStack() {
             NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet:false)
+              .padding(.leading)
             
             Spacer()
             
