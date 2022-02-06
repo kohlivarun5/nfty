@@ -8,7 +8,6 @@
 import SwiftUI
 import BigInt
 import PromiseKit
-import Web3
 
 struct NftDetail: View {
   
