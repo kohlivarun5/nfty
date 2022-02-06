@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import BigInt
+import Web3
 
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
 
@@ -68,31 +69,8 @@ let downloaders = [
 
 // exit
 
-let ASAC = NearNFT(account_id: "asac.near")
-
-try hang(
-  NearApi.changes(account_ids: ["asac.near"]).then { _ in
-  ASAC.nft_total_supply()
-    .then { count -> Promise<NearNFT.Token> in
-      print("ASAC Supply=\(count). Calling for\((Int(count)!-1))")
-      return ASAC.nft_token(token_id: (BigUInt(Int(count)!-1)))
-    }
-    .then { token_data in
-      ASAC.nft_metadata()
-        .map { nft_data in
-          (nft_data,token_data)
-        }
-    }
-    .map {
-      print("ASAC Token=\($0)")
-    }
-    .done {
-      print("Done")
-    }
-  }
-)
-
-exit(0)
+let fetcher = OpenSeaGQL.floorFetcher(collection:try! EthereumAddress(hex: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e", eip55: true))
+try! hang(fetcher.fetchNext(offset:0,limit:40))
 
 //
 // THIS IS DEPRECATED, Use ipget to download directly

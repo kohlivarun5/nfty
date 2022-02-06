@@ -16,7 +16,7 @@ let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
 
 struct OpenSeaApi {
   
-  static let API_KEY = "5302eafecee44b198cfa1fb8bfbd5e5d"
+  static let API_KEY = OpenSeaApiCore.API_KEY
   
   enum Side : Int,Codable {
     case buy = 0
@@ -341,66 +341,13 @@ struct OpenSeaApi {
     }
   }
   
-  
-  struct CollectionInfo : Codable {
-    let name : String
-    let image_url : URL?
-    let slug : String?
-    let external_url : URL?
-  }
-  
   struct Stats : Codable {
     let floor_price : Double
   }
   
-  static private var collectionCache = try! DiskStorage<String, CollectionInfo>(
-    config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
-  
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
     config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
     transformer: TransformerFactory.forCodable(ofType: Stats.self))
-  
-  
-  static func getCollectionInfo(contract:String) -> Promise<CollectionInfo> {
-    return Promise { seal in
-      
-      switch(try? collectionCache.object(forKey: contract)) {
-      case .some(let info):
-        seal.fulfill(info)
-      case .none:
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "api.opensea.io"
-        components.path = "/api/v1/asset_contract/\(contract)"
-        
-        var request = URLRequest(url:components.url!)
-        request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-        
-        request.httpMethod = "GET"
-        
-        print("calling \(request.url!)")
-        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
-          if let e = error { return seal.reject(e) }
-          do {
-            let jsonDecoder = JSONDecoder()
-            // print(data)
-            struct Data : Codable {
-              let collection : CollectionInfo
-            }
-            
-            let info = try jsonDecoder.decode(Data.self, from: data!).collection
-            try collectionCache.setObject(info,forKey: contract)
-            
-            seal.fulfill(info)
-          } catch {
-            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-            seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          }
-        }).resume()
-      }
-    }
-  }
   
   static func getCollectionStats(contract:String) -> Promise<Stats?> {
     
