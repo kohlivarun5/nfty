@@ -16,6 +16,8 @@ class TokensListPaged : ObservableObject {
   var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
   var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
   
+  @Published var error: String? = nil
+  
   private var isLoading = false
   private var lastIndex = -1
   
@@ -37,8 +39,11 @@ class TokensListPaged : ObservableObject {
         print("Adding \($0.count) tokens")
         self.tokens.append(contentsOf: $0)
       }
-      .catch { print($0) }
-      .finally {
+      .catch(on:.main) {
+        print($0)
+        self.error = "Failed to load items"
+      }
+      .finally(on:.main) {
         self.isLoading = false
       }
     

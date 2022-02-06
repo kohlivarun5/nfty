@@ -30,7 +30,17 @@ struct TokenListPagedView: View {
   var body: some View {
     VStack(spacing:0) {
       
-      if(nfts.tokens.isEmpty) {
+      switch(nfts.error,nfts.tokens.count) {
+      case (.some(let error),_):
+        VStack(spacing:20) {
+          Image(systemName: "exclamationmark.triangle")
+            .font(.title)
+            .foregroundColor(.accentColor)
+          Text(error)
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+        }
+      case (.none,0):
         ProgressView()
           .scaleEffect(2.0, anchor: .center)
           .onAppear {
@@ -38,7 +48,7 @@ struct TokenListPagedView: View {
               print(self.nfts.tokens)
             } // TODO
           }
-      } else {
+      case (.none,_):
         
         ScrollView {
           LazyVGrid(
@@ -77,7 +87,7 @@ struct TokenListPagedView: View {
                       TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label)
                         .padding([.top,.bottom],2)
                         .padding([.leading,.trailing],20)
-                        .font(.caption)
+                        .font(.caption2)
                         .foregroundColor(colorScheme == .dark ? .label : .white)
                         .background(
                           RoundedCorners(

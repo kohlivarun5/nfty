@@ -27,8 +27,6 @@ struct TokenTradeView: View {
   
   @State var floorPrice : Double?
   
-  @State var showFloorView : Bool = false
-  
   var body: some View {
     VStack {
       
@@ -48,28 +46,7 @@ struct TokenTradeView: View {
           .background(collection.info.themeColor)
         
         HStack {
-          
-          switch(self.collection.contract.floorFetcher) {
-          case .none:
-            NFTNameIdRank(nft:nft,rank:rank)
-          case .some(let fetcher):
-            NavigationLink(
-              destination:TokenListPagedView(
-                collection: collection,
-                nfts: TokensListPaged(fetcher:fetcher)
-              ),
-              isActive:$showFloorView
-            ) {
-              Button(action: {
-                UIImpactFeedbackGenerator(style:.soft)
-                  .impactOccurred()
-                self.showFloorView = true
-              }) {
-                NFTNameIdRank(nft:nft,rank:rank)
-              }
-            }
-          }
-          
+          NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:floorPrice,isSheet: isSheet)
           Spacer()
           TokenPrice(price:price,color:.label)
             .font(.title2)

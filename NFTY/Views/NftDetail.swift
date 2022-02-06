@@ -35,8 +35,6 @@ struct NftDetail: View {
   
   @State var showTradeView : Bool = false
   
-  @State var showFloorView : Bool = false
-  
   enum ShareSheetPicker : Int,Identifiable {
     var id: Int { self.rawValue }
     
@@ -112,27 +110,7 @@ struct NftDetail: View {
           }
           
           HStack() {
-            
-            switch(self.collection.contract.floorFetcher) {
-            case .none:
-              NFTNameIdRank(nft:nft,rank:rank)
-            case .some(let fetcher):
-              NavigationLink(
-                destination:TokenListPagedView(
-                  collection: collection,
-                  nfts: TokensListPaged(fetcher:fetcher)
-                ),
-                isActive:$showFloorView
-              ) {
-                Button(action: {
-                  UIImpactFeedbackGenerator(style:.soft)
-                    .impactOccurred()
-                  self.showFloorView = true
-                }) {
-                  NFTNameIdRank(nft:nft,rank:rank)
-                }
-              }
-            }
+            NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet:false)
             
             Spacer()
             
