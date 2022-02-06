@@ -93,7 +93,6 @@ struct RoundedImage: View {
               nft: nft,
               price:price,
               collection:collection,
-              size: .xsmall,
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)

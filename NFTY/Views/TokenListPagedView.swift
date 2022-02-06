@@ -129,7 +129,6 @@ struct TokenListPagedView: View {
         nft: nft.nft,
         price:.lazy(nft.indicativePriceWei),
         collection:collection,
-        size: .xsmall,
         userWallet:userWallet,
         isSheet:true)
         .ignoresSafeArea(edges:.bottom)

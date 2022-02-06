@@ -157,7 +157,6 @@ struct WalletTokensView: View {
               nft: token.nft.nft,
               price:.lazy(token.nft.indicativePriceWei),
               collection:token.collection,
-              size: .xsmall,
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)

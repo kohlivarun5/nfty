@@ -16,13 +16,12 @@ struct TokenTradeView: View {
   let nft:NFT
   let price:TokenPriceType
   let collection : Collection
-  let size : NftImage.Size
   
   @ObservedObject var userWallet: UserWallet
   let isSheet : Bool
   
   let cornerRadius : CGFloat = 20
-  let height : CGFloat = 240
+  let height : CGFloat = 300
   @State var rank : UInt? = nil
   
   @State var floorPrice : Double?
@@ -36,7 +35,7 @@ struct TokenTradeView: View {
           sample:collection.info.sample,
           themeColor:collection.info.themeColor,
           themeLabelColor:collection.info.themeLabelColor,
-          size:.small,
+          size:.medium,
           resolution:.hd,
           favButton:.none
         )
@@ -109,7 +108,6 @@ struct TokenTradeView_Previews: PreviewProvider {
       nft:SampleToken,
       price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
       collection:SampleCollection,
-      size:.normal,
       userWallet:UserWallet(),
       isSheet:true)
   }

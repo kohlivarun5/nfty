@@ -73,7 +73,6 @@ struct NftDetail: View {
         nft: nft,
         price:price,
         collection:collection,
-        size: .small,
         userWallet:userWallet,
         isSheet:false)
     case .some:
@@ -119,7 +118,6 @@ struct NftDetail: View {
                 nft: nft,
                 price:price,
                 collection:collection,
-                size: .small,
                 userWallet:userWallet,
                 isSheet:false),
               isActive:$showTradeView
