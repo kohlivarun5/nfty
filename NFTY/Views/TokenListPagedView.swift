@@ -72,20 +72,23 @@ struct TokenListPagedView: View {
                         self.sheetSelectedIndex = SheetSelection(id:index)
                       }
                     
-                    TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label)
-                      .padding([.top,.bottom],2)
-                      .padding([.leading,.trailing],20)
-                      .font(.caption)
-                      .foregroundColor(colorScheme == .dark ? .label : .white)
-                      .background(
-                        RoundedCorners(
-                          color:colorScheme == .dark
-                          ? .tertiarySystemBackground.opacity(0.75)
-                          : .secondary,
-                          tl: 5, tr: 5, bl: 5, br: 5))
-                      .colorMultiply(.accentColor)
-                      .shadow(radius: 5)
-                      .padding(.bottom,11)
+                    VStack {
+                      Spacer()
+                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label)
+                        .padding([.top,.bottom],2)
+                        .padding([.leading,.trailing],20)
+                        .font(.caption)
+                        .foregroundColor(colorScheme == .dark ? .label : .white)
+                        .background(
+                          RoundedCorners(
+                            color:colorScheme == .dark
+                            ? .tertiarySystemBackground.opacity(0.75)
+                            : .secondary,
+                            tl: 5, tr: 5, bl: 5, br: 5))
+                        .colorMultiply(.accentColor)
+                        .shadow(radius: 5)
+                    }
+                    .padding(.bottom,11)
                     
                     NavigationLink(destination: NftDetail(
                       nft:nft.nft,
@@ -123,7 +126,7 @@ struct TokenListPagedView: View {
         .preferredColorScheme(.dark)
         .accentColor(.orange)
     }
-    .navigationBarTitle("\(nfts.tokens.count)",displayMode: .inline)
+    .navigationBarTitle(collection.info.name,displayMode: .inline)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
       leading:
