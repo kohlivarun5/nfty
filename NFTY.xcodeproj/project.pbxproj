@@ -86,7 +86,6 @@
 		4F529BB527B0590900EFE626 /* TokensListPaged.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB427B0590900EFE626 /* TokensListPaged.swift */; };
 		4F529BB727B0594600EFE626 /* PagedTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */; };
 		4F529BB827B05D2500EFE626 /* OpenSeaGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */; };
-		4F529BB927B05D2E00EFE626 /* PagedTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */; };
 		4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */; };
 		4F529BBD27B0648E00EFE626 /* OpenSeaApiCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BBC27B0648E00EFE626 /* OpenSeaApiCore.swift */; };
 		4F529BBE27B0651300EFE626 /* OpenSeaApiCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BBC27B0648E00EFE626 /* OpenSeaApiCore.swift */; };
@@ -131,6 +130,12 @@
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
+		4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
+		4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */; };
+		4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BBC27B0648E00EFE626 /* OpenSeaApiCore.swift */; };
+		4F8E16FC27B06FB500E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
+		4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */; };
+		4F8E16FF27B079B300E54BB5 /* NFTNameIdRank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16FE27B079B300E54BB5 /* NFTNameIdRank.swift */; };
 		4F92144E271BA54C0085D238 /* JungleFreaks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */; };
 		4F92144F271BA54C0085D238 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
 		4F921452271C62E30085D238 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
@@ -544,6 +549,9 @@
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
+		4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaFloorFetcher.swift; sourceTree = "<group>"; };
+		4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListPagedView.swift; sourceTree = "<group>"; };
+		4F8E16FE27B079B300E54BB5 /* NFTNameIdRank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTNameIdRank.swift; sourceTree = "<group>"; };
 		4F92144C271BA54C0085D238 /* JungleFreaks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeScores.json; sourceTree = "<group>"; };
 		4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeRanks.json; sourceTree = "<group>"; };
 		4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_rarityRanks.json; sourceTree = "<group>"; };
@@ -761,6 +769,8 @@
 				4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */,
 				4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */,
 				4F529BBC27B0648E00EFE626 /* OpenSeaApiCore.swift */,
+				4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */,
+				4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */,
 			);
 			path = OpenSea;
 			sourceTree = "<group>";
@@ -948,6 +958,8 @@
 				4F961F79271CC12600639E85 /* NftTradeUrlView.swift */,
 				4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */,
 				4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */,
+				4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */,
+				4F8E16FE27B079B300E54BB5 /* NFTNameIdRank.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -972,7 +984,6 @@
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
 				4F435186278239610095C88C /* SushiSwapPool.swift */,
 				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
-				4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */,
 				4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */,
 			);
 			path = Model;
@@ -1568,7 +1579,6 @@
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
-				4F529BB927B05D2E00EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4F529BBE27B0651300EFE626 /* OpenSeaApiCore.swift in Sources */,
 				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
@@ -1619,6 +1629,7 @@
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */,
+				4F8E16FF27B079B300E54BB5 /* NFTNameIdRank.swift in Sources */,
 				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4F529BB727B0594600EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
@@ -1627,6 +1638,7 @@
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
+				4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4F6AC08226AE1134000A7539 /* TokenTradeActions.swift in Sources */,
 				4F529BB527B0590900EFE626 /* TokensListPaged.swift in Sources */,
@@ -1677,6 +1689,7 @@
 				4F6D3962262BD8A8007E79BB /* CollectionView.swift in Sources */,
 				4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */,
 				4F0FB83026A4890300AD5165 /* FameLadySquad.swift in Sources */,
+				4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */,
 				4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */,
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
 				4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */,
@@ -1707,6 +1720,7 @@
 			files = (
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
+				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
@@ -1727,6 +1741,7 @@
 				4FDEABAC278E542700F92160 /* Web3Utils.swift in Sources */,
 				4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */,
 				4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */,
+				4F8E16FC27B06FB500E54BB5 /* OpenSeaFloorFetcher.swift in Sources */,
 				4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */,
 				4FFAE79F27A333B2002129E9 /* NearNFT.swift in Sources */,
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
@@ -1736,6 +1751,7 @@
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
+				4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */,
 				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
 				4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,

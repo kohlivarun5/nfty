@@ -9,5 +9,5 @@ import Foundation
 import PromiseKit
 
 protocol PagedTokensFetcher {
-  func fetchNext(offset:UInt,limit:UInt) -> Promise<[Any]>
+  func fetchNext() -> Promise<[NFTWithLazyPrice]>
 }

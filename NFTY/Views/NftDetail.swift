@@ -8,6 +8,7 @@
 import SwiftUI
 import BigInt
 import PromiseKit
+import Web3
 
 struct NftDetail: View {
   
@@ -33,6 +34,8 @@ struct NftDetail: View {
   @State var properties : [SimilarTokensGetter.TokenAttributePercentile]? = nil
   
   @State var showTradeView : Bool = false
+  
+  @State var showFloorView : Bool = false
   
   enum ShareSheetPicker : Int,Identifiable {
     var id: Int { self.rawValue }
@@ -109,21 +112,50 @@ struct NftDetail: View {
           }
           
           HStack() {
-            VStack(alignment:.leading) {
-              Text(nft.name)
-                .font(.headline)
-              HStack {
-                Text("#\(nft.tokenId)")
-                  .font(.subheadline)
-                DappLink(destination: DappLink.openSeaPath(nft: nft))
-              }
-              rank.map {
-                Text("RarityRank: \($0)")
-                  .font(.footnote)
-                  .foregroundColor(.secondaryLabel)
+            
+            /*
+            switch(OpenSeaFloorFetcher.make(collection:EthereumAddress(collection.info.address),limit:20)) {
+            case .none:
+              NFTNameIdRank(nft:nft,rank:rank)
+            case .some(let fetcher):
+              NavigationLink(
+                destination:TokenListPagedView(
+                  collection: collection,
+                  nfts: TokensListPaged(
+                    fetcher: OpenSeaFloorFetcher.make(collection: collection.contract.address)
+                  )
+                ),
+                isActive:$showFloorView
+              ) {
+                Button(action: {
+                  UIImpactFeedbackGenerator(style:.soft)
+                    .impactOccurred()
+                  self.showFloorView = true
+                }) {
+                  NFTNameIdRank(nft:nft,rank:rank)
+                }
               }
             }
-            .padding(.leading)
+             */
+            
+            NavigationLink(
+              destination:TokenListPagedView(
+                collection: collection,
+                nfts: TokensListPaged(
+                  fetcher: OpenSeaFloorFetcher.make(collection:try! EthereumAddress(hex: collection.info.address, eip55: true))
+                )
+              ),
+              isActive:$showFloorView
+            ) {
+              Button(action: {
+                UIImpactFeedbackGenerator(style:.soft)
+                  .impactOccurred()
+                self.showFloorView = true
+              }) {
+                NFTNameIdRank(nft:nft,rank:rank)
+              }
+            }
+            
             Spacer()
             
             NavigationLink(

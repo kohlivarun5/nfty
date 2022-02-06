@@ -11,7 +11,7 @@ import PromiseKit
 
 func openSeaCollection(address:String) -> Promise<Collection> {
   
-  return OpenSeaApi.getCollectionInfo(contract: address)
+  return OpenSeaApiCore.getCollectionInfo(contract: address)
     .map { info in
       Collection(
         info: CollectionInfo(

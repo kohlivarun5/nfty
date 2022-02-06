@@ -12,77 +12,58 @@ import PromiseKit
 
 struct OpenSeaGQL {
   
-  struct FloorFetcher : PagedTokensFetcher {
-    let collection:EthereumAddress
+  struct QueryResult : Decodable {
     
-    func fetchNext(offset:UInt,limit:UInt) -> Promise<[Any]> {
-      OpenSeaApiCore.getCollectionInfo(contract: collection.hex(eip55: true))
-        .then { (info:OpenSeaApiCore.CollectionInfo) -> Promise<[Any]> in
-          switch(info.slug) {
-          case .some(let slug):
-            let query = OpenSeaGQL.assetSearchQuery(collection:slug, offset:offset,limit:limit)
-            return OpenSeaGQL.call(query:query)
-          case .none:
-            return Promise.value([])
-          }
-        }
-    }
-  }
-  
-  static func floorFetcher(collection:EthereumAddress) -> PagedTokensFetcher {
-    return FloorFetcher(collection:collection)
-  }
-  
-  struct QueryResult {
-    
-    struct SelectedCollections {
-      struct Edge {
-        struct Node {
+    struct SelectedCollections : Decodable {
+      struct Edge : Decodable {
+        struct Node : Decodable {
           let name : String
         }
         let node : Node
       }
-      let edges : [SelectedCollections]
+      let edges : [Edge]
     }
     let selectedCollections : SelectedCollections
     
-    struct Search {
-      struct Edge {
-        struct Node {
-          struct Asset {
-            struct AssetContract {
+    struct Search : Decodable {
+      struct Edge : Decodable {
+        struct Node : Decodable {
+          struct Asset : Decodable {
+            struct AssetContract : Decodable {
               let address : String
             }
             let assetContract : AssetContract
-          }
-          let asset : Asset
-          let collection : SelectedCollections.Edge.Node
-          let tokenId : String
-          
-          struct OrderData {
-            struct Ask {
-              struct PaymentAssetQuantity {
-                let quantity : String
-                struct Asset {
-                  let symbol : String
+            let collection : SelectedCollections.Edge.Node
+            let tokenId : String
+            
+            struct OrderData : Decodable {
+              struct Ask : Decodable {
+                struct PaymentAssetQuantity : Decodable {
+                  let quantity : String
+                  struct Asset : Decodable {
+                    let symbol : String
+                  }
+                  
+                  let asset : Asset
+                  let quantityInEth : String
                 }
-                
-                let asset : Asset
-                let quantityInEth : String
+                let paymentAssetQuantity : PaymentAssetQuantity
               }
-              let paymentAssetQuantity : PaymentAssetQuantity
+              let bestAsk : Ask
             }
-            let bestAsk : Ask
+            let orderData : OrderData
           }
-          let orderData : OrderData
+          
+          let asset : Asset
+          
         }
         let node : Node
       }
       let edges : [Edge]
       
-      struct PageInfo {
+      struct PageInfo : Decodable {
         let endCursor : String
-        let hasNextPage : Boolean
+        let hasNextPage : Bool
       }
       let pageInfo : PageInfo
       let totalCount : UInt
@@ -91,7 +72,12 @@ struct OpenSeaGQL {
     let search : Search
   }
   
-  private static func call(query:[String:Any]) -> Promise<[Any]> {
+  enum HTTPError: Error {
+    case unknown
+    case error(status: Int, message: String?)
+  }
+  
+  static func call(query:[String:Any]) -> Promise<QueryResult> {
     var request = URLRequest(url:URL(string:"https://api.opensea.io/graphql/")!)
     
     request.httpMethod = "POST"
@@ -136,38 +122,37 @@ struct OpenSeaGQL {
       print("Calling \(request.url!)")
       let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error { return seal.reject(error) }
-        print(String(decoding:data!,as:UTF8.self))
+        // print(String(decoding:data!,as:UTF8.self))
         
-        struct Response {
-          struct ResponseData {
+        struct Response : Decodable {
+          struct ResponseData : Decodable {
             let query : QueryResult
           }
           
           let data : ResponseData
         }
         
-        
         // print(String(decoding:data!,as:UTF8.self))
-        /* switch(data.flatMap { try? JSONDecoder().decode(RpcResponse<Result>.self, from: $0) }?.result ) {
-         case .some(let result):
-         seal.fulfill(result)
-         case .none:
-         if let httpResponse = response as? HTTPURLResponse {
-         let error = HTTPError.error(status: httpResponse.statusCode,
-         message: data.flatMap({ String(data: $0, encoding: .utf8) }))
-         seal.reject(error)
-         } else {
-         seal.reject(HTTPError.unknown)
-         }
-         }
-         */
-        seal.fulfill([])
+        switch(data.flatMap { try! JSONDecoder().decode(Response.self, from: $0) }?.data.query ) {
+        case .some(let result):
+          seal.fulfill(result)
+          //seal.reject(HTTPError.unknown)
+        case .none:
+          if let httpResponse = response as? HTTPURLResponse {
+            let error = HTTPError.error(status: httpResponse.statusCode,
+                                        message: data.flatMap({ String(data: $0, encoding: .utf8) }))
+            seal.reject(error)
+          } else {
+            seal.reject(HTTPError.unknown)
+          }
+        }
+        
       }
       task.resume()
     }
   }
   
-  private static func assetSearchQuery(collection:String,offset:UInt,limit:UInt) -> [String:Any] {
+  static func assetSearchQuery(collection:String,cursor:String?,limit:UInt) -> [String:Any] {
     let variables : [String:Any?] = [
       "categories": nil,
       "chains": nil,
@@ -178,7 +163,7 @@ struct OpenSeaGQL {
         collection
       ],
       "count": limit,
-      "cursor": offset,
+      "cursor": cursor,
       "identity": nil,
       "includeHiddenCollections": nil,
       "numericTraits": nil,

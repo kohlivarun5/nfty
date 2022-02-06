@@ -351,8 +351,8 @@ struct OpenSeaApi {
   
   static func getCollectionStats(contract:String) -> Promise<Stats?> {
     
-    return getCollectionInfo(contract: contract)
-      .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:CollectionInfo) -> Promise<Stats?> in
+    return OpenSeaApiCore.getCollectionInfo(contract: contract)
+      .then(on:DispatchQueue.global(qos: .userInitiated)) { (collectionInfo:OpenSeaApiCore.CollectionInfo) -> Promise<Stats?> in
         
         Promise { seal in
           

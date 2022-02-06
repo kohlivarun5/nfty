@@ -27,6 +27,8 @@ struct TokenTradeView: View {
   
   @State var floorPrice : Double?
   
+  @State var showFloorView : Bool = false
+  
   var body: some View {
     VStack {
       
@@ -46,25 +48,25 @@ struct TokenTradeView: View {
           .background(collection.info.themeColor)
         
         HStack {
-          VStack(alignment: .leading) {
-            Text(nft.name)
-              .font(.headline)
-            HStack {
-              Text("#\(nft.tokenId)")
-              DappLink(destination: DappLink.openSeaPath(nft: nft))
+          
+          NavigationLink(
+            destination:TokenListPagedView(
+              collection: collection,
+              nfts: TokensListPaged(
+                fetcher: OpenSeaFloorFetcher.make(collection:try! EthereumAddress(hex: collection.info.address, eip55: false))
+              )
+            ),
+            isActive:$showFloorView
+          ) {
+            Button(action: {
+              UIImpactFeedbackGenerator(style:.soft)
+                .impactOccurred()
+              self.showFloorView = true
+            }) {
+              NFTNameIdRank(nft:nft,rank:rank)
             }
-            .font(.footnote)
-            
-            Text(
-              floorPrice.map {
-                "Floor Price: \(ethFormatter.string(for:$0)!)"
-              } ?? "" )
-              .font(.footnote)
-              .foregroundColor(.secondaryLabel)
-              .animation(.default)
-            
-            
           }
+          
           Spacer()
           TokenPrice(price:price,color:.label)
             .font(.title2)
