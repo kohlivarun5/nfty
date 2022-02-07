@@ -46,7 +46,7 @@ struct TokenListPagedView: View {
           .onAppear {
             nfts.loadMore {
               print(self.nfts.tokens)
-            } // TODO
+            }
           }
       case (.none,_):
         
@@ -115,10 +115,6 @@ struct TokenListPagedView: View {
                     }
                   }
                 }
-              }.onAppear {
-                nfts.loadMore {
-                  print(self.nfts.tokens)
-                } // TODO
               }
         }
       }

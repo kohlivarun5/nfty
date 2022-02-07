@@ -38,6 +38,7 @@ class TokensListPaged : ObservableObject {
       .done(on:.main) {
         print("Adding \($0.count) tokens")
         self.tokens.append(contentsOf: $0)
+        print("Total count=\(self.tokens.count) tokens")
       }
       .catch(on:.main) {
         print($0)

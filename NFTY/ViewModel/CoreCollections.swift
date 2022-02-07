@@ -854,7 +854,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
         }
         .done(on:.main) {
           
-          print("Found tokens count =\($0.count)")
+          print("Found tokens count=\($0.count)")
           
           self.state = .loaded
           self.foundMax = self.foundMax || $0.isEmpty
