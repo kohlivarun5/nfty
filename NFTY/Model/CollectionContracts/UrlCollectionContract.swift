@@ -260,4 +260,8 @@ class UrlCollectionContract : ContractInterface {
     }
   }()
   
+  func floorFetcher() -> PagedTokensFetcher? {
+    return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
+  }
+  
 }

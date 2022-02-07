@@ -197,5 +197,8 @@ class PhunksContract : ContractInterface {
   lazy var vaultContract: CollectionVaultContract? = {
     return collectionContract.vaultContract
   }()
+
+  func floorFetcher() -> PagedTokensFetcher? { nil }
   
 }
+

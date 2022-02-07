@@ -73,7 +73,6 @@ struct NftDetail: View {
         nft: nft,
         price:price,
         collection:collection,
-        size: .small,
         userWallet:userWallet,
         isSheet:false)
     case .some:
@@ -109,21 +108,9 @@ struct NftDetail: View {
           }
           
           HStack() {
-            VStack(alignment:.leading) {
-              Text(nft.name)
-                .font(.headline)
-              HStack {
-                Text("#\(nft.tokenId)")
-                  .font(.subheadline)
-                DappLink(destination: DappLink.openSeaPath(nft: nft))
-              }
-              rank.map {
-                Text("RarityRank: \($0)")
-                  .font(.footnote)
-                  .foregroundColor(.secondaryLabel)
-              }
-            }
-            .padding(.leading)
+            NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet:false)
+              .padding(.leading)
+            
             Spacer()
             
             NavigationLink(
@@ -131,7 +118,6 @@ struct NftDetail: View {
                 nft: nft,
                 price:price,
                 collection:collection,
-                size: .small,
                 userWallet:userWallet,
                 isSheet:false),
               isActive:$showTradeView

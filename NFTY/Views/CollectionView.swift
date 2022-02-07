@@ -32,6 +32,7 @@ struct CollectionView: View {
   @State private var action: String? = ""
   @State private var showRarityRanking = false
   @State private var showVault = false
+  @State private var showFloorView = false
   
   init(loader:CompositeRecentTradesObject.CollectionLoader) {
     self.collection = loader.collection;
@@ -135,6 +136,12 @@ struct CollectionView: View {
             }
           }
           
+          collection.contract.floorFetcher().map { _ in
+            Button(action: { self.showFloorView = true }) {
+              Label("Floor Listings", systemImage: "square.2.stack.3d.bottom.filled")
+            }
+          }
+          
         }
         
       label: {
@@ -167,6 +174,19 @@ struct CollectionView: View {
                   collection: collection,
                   vaultContract: $0),
               isActive:$showVault
+            ) {
+              EmptyView()
+            }
+          }
+          
+          collection.contract.floorFetcher().map {
+            NavigationLink(
+              destination:
+                TokenListPagedView(
+                  collection: collection,
+                  nfts: TokensListPaged(fetcher:$0)
+                ),
+              isActive:$showFloorView
             ) {
               EmptyView()
             }

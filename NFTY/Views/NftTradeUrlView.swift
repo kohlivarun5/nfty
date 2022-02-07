@@ -24,7 +24,6 @@ struct NftTradeUrlView: View {
       nft: nft.nft,
       price: .lazy(nft.indicativePriceWei),
       collection:collection,
-      size: .medium,
       userWallet: userWallet,
       isSheet: true)
   }

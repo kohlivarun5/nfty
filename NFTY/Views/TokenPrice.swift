@@ -18,6 +18,8 @@ struct TokenPriceKnown : View {
   let color : Style
   let showEth : Bool
   
+  let hideIcon : Bool
+  
   @StateObject var userSettings = UserSettings()
   
   private func color(_ color:Style) -> Color {
@@ -42,7 +44,7 @@ struct TokenPriceKnown : View {
     switch(info.price,info.blockNumber) {
     case (.some(let wei),.some(let blockNumber)):
       VStack {
-                
+        
         HStack(spacing:4) {
           switch(userSettings.quoteType) {
           case .Both,.Fiat:
@@ -53,9 +55,11 @@ struct TokenPriceKnown : View {
               .fontWeight(.semibold)
               .foregroundColor(color(self.color))
           }
-            
-          Image(systemName: TradeEventIcon.systemName(info.type))
-            .font(.caption2)
+          
+          if (!hideIcon) {
+            Image(systemName: TradeEventIcon.systemName(info.type))
+              .font(.caption2)
+          }
         }
         
         if (userSettings.quoteType == .Both && showEth) {
@@ -83,11 +87,13 @@ struct TokenPriceKnown : View {
               .foregroundColor(color(self.color))
           }
           
-          Image(systemName: TradeEventIcon.systemName(info.type))
-            .font(.caption2)
+          if (!hideIcon) {
+            Image(systemName: TradeEventIcon.systemName(info.type))
+              .font(.caption2)
+          }
         }
         
-        if (userSettings.quoteType == .Both && showEth) { 
+        if (userSettings.quoteType == .Both && showEth) {
           Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
             .font(.body)
             .italic()
@@ -112,8 +118,10 @@ struct TokenPriceKnown : View {
       HStack {
         UsdEthVText(wei:wei,fontWeight:.semibold,alignment:.center)
           .foregroundColor(color(self.color))
-        Image(systemName: TradeEventIcon.systemName(info.type))
-          .font(.caption2)
+        if (!hideIcon) {
+          Image(systemName: TradeEventIcon.systemName(info.type))
+            .font(.caption2)
+        }
       }
     case (.none,.none):
       EmptyView()
@@ -126,6 +134,8 @@ struct TokenPriceStatus : View {
   
   let color : Style
   let showEth : Bool
+  
+  let hideIcon : Bool
   
   private func color(_ color:Style) -> Color {
     switch(color){
@@ -148,7 +158,7 @@ struct TokenPriceStatus : View {
   var body: some View {
     switch(status) {
     case .known(let info):
-      TokenPriceKnown(info:info,color:color,showEth: showEth)
+      TokenPriceKnown(info:info,color:color,showEth: showEth,hideIcon:hideIcon)
     case .notSeenSince(let since):
       VStack {
         Text("Not seen since")
@@ -170,6 +180,8 @@ struct TokenPriceLazy : View {
   let color : Style
   let showEth : Bool
   
+  let hideIcon : Bool
+  
   private func subtleColor(_ color:Style) -> Color {
     switch(color){
     case .label:
@@ -186,8 +198,8 @@ struct TokenPriceLazy : View {
         Text(" ··· ")
           .padding([.leading,.trailing],5)
       }) {
-      TokenPriceStatus(status:$0,color:color,showEth: showEth)
-    }
+        TokenPriceStatus(status:$0,color:color,showEth: showEth,hideIcon:hideIcon)
+      }
   }
 }
 
@@ -195,13 +207,15 @@ struct TokenPrice: View {
   let price : TokenPriceType
   let color : Style
   
+  let hideIcon : Bool
+  
   var body: some View {
     HStack {
       switch (price) {
       case .eager(let info):
-        TokenPriceKnown(info:info,color:color,showEth: false)
+        TokenPriceKnown(info:info,color:color,showEth: false,hideIcon:hideIcon)
       case .lazy(let status):
-        TokenPriceLazy(status: status(),color:color,showEth: false)
+        TokenPriceLazy(status: status(),color:color,showEth: false,hideIcon:hideIcon)
       }
     }.padding([.leading,.trailing],5)
   }
@@ -215,9 +229,9 @@ struct TokenPriceWithEth: View {
     HStack {
       switch (price) {
       case .eager(let info):
-        TokenPriceKnown(info:info,color:color,showEth: true)
+        TokenPriceKnown(info:info,color:color,showEth: true,hideIcon:false)
       case .lazy(let status):
-        TokenPriceLazy(status: status(),color:color,showEth: true)
+        TokenPriceLazy(status: status(),color:color,showEth: true,hideIcon:false)
       }
     }.padding([.leading,.trailing],5)
   }
@@ -225,6 +239,6 @@ struct TokenPriceWithEth: View {
 
 struct TokenPrice_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label)
+    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label,hideIcon:false)
   }
 }

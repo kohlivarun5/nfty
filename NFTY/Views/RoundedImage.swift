@@ -82,32 +82,17 @@ struct RoundedImage: View {
         HStack {}
       case .normal:
         HStack(alignment:.center) {
-          VStack(alignment:.leading) {
-            Text(nft.name)
-            HStack {
-              Text("#\(nft.tokenId)")
-              DappLink(destination: DappLink.openSeaPath(nft: nft))
-            }
-            .font(.footnote)
-            
-            rank.map {
-              Text( "RarityRank: \($0)")
-                .font(.caption2)
-                .foregroundColor(.secondaryLabel)
-            }
-            
-          }
-          .padding(.leading)
+          NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet: false)
+            .padding(.leading)
           
           Spacer()
           SheetButton(content: {
-            TokenPrice(price:price,color:.label)
+            TokenPrice(price:price,color:.label,hideIcon:false)
           },sheetContent: {
             TokenTradeView(
               nft: nft,
               price:price,
               collection:collection,
-              size: .xsmall,
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)

@@ -242,4 +242,8 @@ class FameLadySquad_Contract : ContractInterface {
   
   var vaultContract: CollectionVaultContract? = nil
   
+  func floorFetcher() -> PagedTokensFetcher? {
+    return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
+  }
+  
 }
