@@ -26,7 +26,7 @@ struct AsciiText : View {
       Text(text.unicode)
         .font(.system(size:fontSize, weight:.black, design: .monospaced))
         .foregroundColor(Color.white)
-        .shadow(color:.white,radius:2)
+        .shadow(color:.white,radius:1)
         .padding(padding)
     }
   }

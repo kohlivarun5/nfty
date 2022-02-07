@@ -198,7 +198,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.vaultContract
   }()
 
-  func floorFetcher() -> PagedTokensFetcher? { nil }
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { nil }
   
 }
 

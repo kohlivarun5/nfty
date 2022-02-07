@@ -15,11 +15,9 @@ struct NFTNameIdRank: View {
   
   let isSheet : Bool
   
-  @State var showFloorView : Bool = false
-  
   var body: some View {
     
-    switch(isSheet,self.collection.contract.floorFetcher()) {
+    switch(isSheet,self.collection.contract.floorFetcher(collection)) {
     case (false,.none),(true,_):
       VStack(alignment:.leading) {
         Text(nft.name)
@@ -50,9 +48,7 @@ struct NFTNameIdRank: View {
         destination:TokenListPagedView(
           collection: collection,
           nfts: TokensListPaged(fetcher:fetcher)
-        ),
-        isActive:$showFloorView
-      ) {
+        )) {
         
         VStack(alignment:.leading) {
           Text(nft.name)
@@ -69,9 +65,6 @@ struct NFTNameIdRank: View {
               .foregroundColor(.secondaryLabel)
           }
           
-        }
-        .onTapGesture {
-          self.showFloorView = true
         }
       }
       .buttonStyle(.plain)
