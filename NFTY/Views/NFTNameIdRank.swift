@@ -19,7 +19,7 @@ struct NFTNameIdRank: View {
   
   var body: some View {
     
-    switch(isSheet,self.collection.contract.floorFetcher) {
+    switch(isSheet,self.collection.contract.floorFetcher()) {
     case (false,.none),(true,_):
       VStack(alignment:.leading) {
         Text(nft.name)

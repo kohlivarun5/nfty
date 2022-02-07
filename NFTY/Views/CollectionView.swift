@@ -136,7 +136,7 @@ struct CollectionView: View {
             }
           }
           
-          collection.contract.floorFetcher.map { _ in
+          collection.contract.floorFetcher().map { _ in
             Button(action: { self.showFloorView = true }) {
               Label("Floor Listings", systemImage: "square.2.stack.3d.bottom.filled")
             }
@@ -179,7 +179,7 @@ struct CollectionView: View {
             }
           }
           
-          collection.contract.floorFetcher.map {
+          collection.contract.floorFetcher().map {
             NavigationLink(
               destination:
                 TokenListPagedView(

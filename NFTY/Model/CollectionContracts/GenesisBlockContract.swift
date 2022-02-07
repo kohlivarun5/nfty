@@ -282,8 +282,8 @@ class GenesisBlockContract : ContractInterface {
  
   var vaultContract: CollectionVaultContract? = nil
   
-  lazy var floorFetcher: PagedTokensFetcher? = {
+  func floorFetcher() -> PagedTokensFetcher? {
     return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
-  }()
+  }
   
 }
