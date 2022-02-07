@@ -8,7 +8,7 @@
 import SwiftUI
 import PromiseKit
 
-struct WalletTokensCollectionHeader: View {
+struct WalletTokensCollectionHeaderImpl: View {
   let collection : Collection
   var body: some View {
     
@@ -40,5 +40,27 @@ struct WalletTokensCollectionHeader: View {
     .shadow(color:.accentColor,radius:3)
     .padding(.top,1)
     .padding([.leading,.trailing],20)
+  }
+}
+
+struct WalletTokensCollectionHeader: View {
+  let collection : Collection
+  var body: some View {
+    
+    switch(collection.contract.floorFetcher()) {
+    case .some(let fetcher):
+      NavigationLink(
+        destination:
+          TokenListPagedView(
+            collection: collection,
+            nfts: TokensListPaged(fetcher:fetcher)
+          )
+      ) {
+        WalletTokensCollectionHeaderImpl(collection: collection)
+      }
+      
+    case .none:
+      WalletTokensCollectionHeaderImpl(collection: collection)
+    }
   }
 }
