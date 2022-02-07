@@ -10,17 +10,18 @@ import Web3
 import PromiseKit
 
 class OpenSeaFloorFetcher : PagedTokensFetcher {
-  let contractAddress : String
+  let collection : Collection
   let limit : UInt
   private var cursor : String?
   
-  init(contractAddress:String,limit:UInt) {
-    self.contractAddress = contractAddress
+  init(collection:Collection,limit:UInt) {
+    self.collection = collection
     self.limit = limit
   }
   
   func fetchNext() -> Promise<[NFTWithLazyPrice]> {
-    OpenSeaApiCore.getCollectionInfo(contract:contractAddress)
+    
+    OpenSeaApiCore.getCollectionInfo(contract:self.collection.contract.contractAddressHex)
       .then { (info:OpenSeaApiCore.CollectionInfo) -> Promise<[NFTWithLazyPrice]> in
         switch(info.slug) {
         case .some(let slug):
@@ -30,10 +31,7 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
               self.cursor = result.search.pageInfo.endCursor
               return result.search.edges.map { (edge:OpenSeaGQL.QueryResult.Search.Edge) -> NFTWithLazyPrice in
                 
-                let contract = IpfsCollectionContract(
-                  name: edge.node.asset.collection.name,
-                  address: edge.node.asset.assetContract.address,
-                  indicativePriceSource: .openSea)
+                let contract = self.collection.contract
                 
                 return NFTWithLazyPrice(
                   nft: contract.getNFT(UInt(edge.node.asset.tokenId)!),
@@ -55,8 +53,8 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
       }
   }
   
-  static func make(contractAddress:String) -> PagedTokensFetcher {
-    return OpenSeaFloorFetcher(contractAddress:contractAddress,limit:40)
+  static func make(collection:Collection) -> PagedTokensFetcher {
+    return OpenSeaFloorFetcher(collection:collection,limit:40)
   }
   
 }

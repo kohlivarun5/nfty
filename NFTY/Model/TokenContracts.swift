@@ -201,7 +201,7 @@ protocol ContractInterface {
   
   var tradeActions : TokenTradeInterface? { get }
   
-  func floorFetcher() -> PagedTokensFetcher?
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher?
   
 }
 
@@ -211,7 +211,7 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
 
 
 class CryptoKittiesAuction : ContractInterface {
-  func floorFetcher() -> PagedTokensFetcher? { return nil }
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { return nil }
   
   var vaultContract: CollectionVaultContract? = nil
   
@@ -693,8 +693,8 @@ class AutoglyphsContract : ContractInterface {
   
   var vaultContract : CollectionVaultContract? = CollectionVaultContract(address:"0xD70240Dd62F4ea9a6A2416e0073D72139489d2AA")
   
-  func floorFetcher() -> PagedTokensFetcher? {
-    return OpenSeaFloorFetcher.make(contractAddress: self.contractAddressHex)
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? {
+    return OpenSeaFloorFetcher.make(collection: collection)
   }
   
 }

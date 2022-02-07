@@ -154,6 +154,6 @@ class NearNFTContract : ContractInterface {
   
   var tradeActions: TokenTradeInterface? = nil
     
-  func floorFetcher() -> PagedTokensFetcher? { nil }
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { nil }
   
 }

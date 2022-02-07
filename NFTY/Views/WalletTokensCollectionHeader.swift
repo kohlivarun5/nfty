@@ -47,7 +47,7 @@ struct WalletTokensCollectionHeader: View {
   let collection : Collection
   var body: some View {
     
-    switch(collection.contract.floorFetcher()) {
+    switch(collection.contract.floorFetcher(collection)) {
     case .some(let fetcher):
       NavigationLink(
         destination:
