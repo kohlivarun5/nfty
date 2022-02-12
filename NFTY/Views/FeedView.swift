@@ -148,7 +148,7 @@ struct FeedView: View {
                   width: .normal,
                   resolution: .normal
                 )
-                .shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
+                //.shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
                 .padding()
                 .onTapGesture {
                   //perform some tasks if needed before opening Destination view
