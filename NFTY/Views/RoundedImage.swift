@@ -86,17 +86,19 @@ struct RoundedImage: View {
             .padding(.leading)
           
           Spacer()
-          SheetButton(content: {
-            TokenPrice(price:price,color:.label,hideIcon:false)
-          },sheetContent: {
-            TokenTradeView(
+          
+          
+          NavigationLink(
+            destination:TokenTradeView(
               nft: nft,
               price:price,
               collection:collection,
               userWallet:userWallet,
-              isSheet:true)
-              .ignoresSafeArea(edges:.bottom)
-          })
+              isSheet:false)
+          ) {
+            TokenPrice(price:price,color:.label,hideIcon:false)
+          }
+          //.buttonStyle()
           .padding(.leading,5)
           .padding(.trailing,5)
           .padding([.top,.bottom],5)
