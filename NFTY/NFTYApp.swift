@@ -142,7 +142,7 @@ struct NFTYApp: App {
         
         NavigationView {
           FavoritesView()
-            .navigationBarTitle("Favorites")
+            .navigationBarTitle("Favorites",displayMode: .inline)
         }
         .tabItem {
           Label("Favorites",systemImage:"heart.fill")
