@@ -28,68 +28,48 @@ struct FavoritesView: View {
       self.isLoading = false
     }
     
-    dict.reduce(Promise.value(()), { accu,dict_item in
+    dict.reduce(Promise<FavoritesDict>.value([:]), { favorites,dict_item in
       let (address_in,tokens) = dict_item
-      return accu.then { () -> Promise<Void> in
+      return favorites.then { favorites -> Promise<FavoritesDict> in
         
-        return collectionsFactory.getByAddress(address_in).then(on:.main) { collection -> Promise<Void> in
+        return collectionsFactory.getByAddress(address_in).map(on:.main) { collection -> FavoritesDict in
           let address = collection.contract.contractAddressHex
-          return tokens.reduce(accu, { accu,token_item in
+          return tokens.reduce(into:favorites, { favorites,token_item in
             let (tokenId,isFav) = token_item
-            return accu.map { () -> Void in
-              
-              switch(self.favorites[address],isFav) {
-              case (.some(let (collection,token_items)),true):
-                // In collection and fav, add if not already there
-                if (token_items[tokenId] == nil) {
-                  self.favorites[address]!.1[tokenId] = collection.contract.getToken(UInt(tokenId)!)
-                  self.isLoading = false // **** Update isLoading when we add to the list
-                }
-              case (.some(let (_,token_items)),false):
-                if (token_items[tokenId] != nil) {
-                  self.favorites[address]!.1.removeValue(forKey:tokenId)
-                  if (token_items.isEmpty) {
-                    self.favorites.removeValue(forKey: address)
-                  }
-                  self.isLoading = false // **** Update isLoading when we add to the list
-                }
-              case (.none,true):
-                
-                let nft = collection.contract.getToken(UInt(tokenId)!)
-                self.favorites[address] = (collection,[tokenId:nft])
-                self.isLoading = false // **** Update isLoading when we add to the list
-              case (.none,false):
-                ()
+            
+            
+            switch(favorites[address],isFav) {
+            case (.some(let (collection,token_items)),true):
+              // In collection and fav, add if not already there
+              if (token_items[tokenId] == nil) {
+                favorites[address]!.1[tokenId] = collection.contract.getToken(UInt(tokenId)!)
+                isLoading = false // **** Update isLoading when we add to the list
               }
+            case (.some(let (_,token_items)),false):
+              if (token_items[tokenId] != nil) {
+                favorites[address]!.1.removeValue(forKey:tokenId)
+                if (token_items.isEmpty) {
+                  favorites.removeValue(forKey: address)
+                }
+                self.isLoading = false // **** Update isLoading when we add to the list
+              }
+            case (.none,true):
+              
+              let nft = collection.contract.getToken(UInt(tokenId)!)
+              favorites[address] = (collection,[tokenId:nft])
+              self.isLoading = false // **** Update isLoading when we add to the list
+            case (.none,false):
+              ()
             }
           })
-        }.recover { error -> Promise<Void> in
+        }.recover { error -> Promise<FavoritesDict> in
           print(error);
-          return Promise.value(())
+          return Promise.value(favorites)
         }
       }
     })
       .done(on:.main) {
-        // Cleanup reverse side
-        self.favorites.forEach { address,item in
-          switch(dict[address]) {
-          case .none:
-            self.favorites.removeValue(forKey: address)
-          case .some(let tokens):
-            let (_,token_items) = item
-            token_items.forEach { tokenId,token in
-              switch(tokens[tokenId]) {
-              case .none,.some(false):
-                self.favorites[address]!.1.removeValue(forKey: tokenId)
-                if (token_items.isEmpty) {
-                  self.favorites.removeValue(forKey: address)
-                }
-              case .some(true):
-                ()
-              }
-            }
-          }
-        }
+        self.favorites = $0
       }
   }
   
@@ -123,7 +103,43 @@ struct FavoritesView: View {
             LazyVStack(pinnedViews:[.sectionHeaders]) {
               ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in
                 let (collection,tokens) = key_value.1;
-                Section(header: WalletTokensCollectionHeader(collection:collection)) {
+                Section(
+                  header:
+                    WalletTokensCollectionHeader(collection:collection)
+                    .onAppear {
+                      DispatchQueue.global(qos:.userInteractive).async {
+                        collection.contract.tradeActions
+                          .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }
+                          .map {
+                            $0.done { asks in
+                              DispatchQueue.main.async {
+                                asks.map {
+                                  let (tokenId,bidAsk) = $0
+                                  bidAsk.ask.map { ask in
+                                    
+                                    self.favorites[collection.contract.contractAddressHex]?.1[String(tokenId)].map { nft in
+                                      
+                                      self.favorites[collection.contract.contractAddressHex]?.1.updateValue(
+                                        NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                          return ObservablePromise<NFTPriceStatus>(
+                                            resolved: NFTPriceStatus.known(
+                                              NFTPriceInfo(
+                                                price: ask.wei,
+                                                blockNumber: nil,
+                                                type: TradeEventType.ask))
+                                          )
+                                        }),forKey:String(tokenId))
+                                    }
+                                    
+                                  }
+                                }
+                              }
+                            }
+                            .catch { print($0) }
+                          }
+                      }
+                    }
+                ) {
                   
                   ForEach(tokens.map { ($0.key,$0.value)}.sorted(by: { $0.0 < $1.0 }),id:\.0) { token_info in
                     let nft = token_info.1;
@@ -151,32 +167,6 @@ struct FavoritesView: View {
                       .hidden()
                     }
                     
-                    .onAppear {
-                      DispatchQueue.global(qos:.userInteractive).async {
-                        let contract = collection.contract
-                        let _ = contract.tradeActions
-                          .map { $0.getBidAsk(nft.id.tokenId,.ask) }
-                          .map {
-                            $0.done {
-                              $0.ask.map { ask in
-                                DispatchQueue.main.async {
-                                  self.favorites[nft.id.address]?.1.updateValue(
-                                    NFTWithLazyPrice(nft:nft.nft,getPrice: {
-                                      return ObservablePromise<NFTPriceStatus>(
-                                        resolved: NFTPriceStatus.known(
-                                          NFTPriceInfo(
-                                            price: ask.wei,
-                                            blockNumber: nil,
-                                            type: TradeEventType.ask))
-                                      )
-                                    }),forKey:String(nft.id.tokenId))
-                                }
-                              }
-                            }
-                            .catch { print($0) }
-                          }
-                      }
-                    }
                   }
                 }
               }
