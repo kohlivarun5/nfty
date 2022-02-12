@@ -23,11 +23,6 @@ struct FavoritesView: View {
   @State private var isLoading = true
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {
-    
-    if (dict.isEmpty) {
-      self.isLoading = false
-    }
-    
     dict.reduce(Promise<FavoritesDict>.value([:]), { favorites,dict_item in
       let (address_in,tokens) = dict_item
       return favorites.then { favorites -> Promise<FavoritesDict> in
@@ -43,7 +38,6 @@ struct FavoritesView: View {
               // In collection and fav, add if not already there
               if (token_items[tokenId] == nil) {
                 favorites[address]!.1[tokenId] = collection.contract.getToken(UInt(tokenId)!)
-                isLoading = false // **** Update isLoading when we add to the list
               }
             case (.some(let (_,token_items)),false):
               if (token_items[tokenId] != nil) {
@@ -51,13 +45,11 @@ struct FavoritesView: View {
                 if (token_items.isEmpty) {
                   favorites.removeValue(forKey: address)
                 }
-                self.isLoading = false // **** Update isLoading when we add to the list
               }
             case (.none,true):
               
               let nft = collection.contract.getToken(UInt(tokenId)!)
               favorites[address] = (collection,[tokenId:nft])
-              self.isLoading = false // **** Update isLoading when we add to the list
             case (.none,false):
               ()
             }
@@ -69,8 +61,10 @@ struct FavoritesView: View {
       }
     })
       .done(on:.main) {
+        self.isLoading = false
         self.favorites = $0
       }
+      .catch {print ($0) }
   }
   
   struct FillAll: View {
@@ -108,35 +102,35 @@ struct FavoritesView: View {
                     WalletTokensCollectionHeader(collection:collection)
                     .onAppear {
                       DispatchQueue.global(qos:.userInteractive).async {
-                        collection.contract.tradeActions
-                          .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }
-                          .map {
-                            $0.done { asks in
-                              DispatchQueue.main.async {
-                                asks.map {
-                                  let (tokenId,bidAsk) = $0
-                                  bidAsk.ask.map { ask in
-                                    
-                                    self.favorites[collection.contract.contractAddressHex]?.1[String(tokenId)].map { nft in
-                                      
-                                      self.favorites[collection.contract.contractAddressHex]?.1.updateValue(
-                                        NFTWithLazyPrice(nft:nft.nft,getPrice: {
-                                          return ObservablePromise<NFTPriceStatus>(
-                                            resolved: NFTPriceStatus.known(
-                                              NFTPriceInfo(
-                                                price: ask.wei,
-                                                blockNumber: nil,
-                                                type: TradeEventType.ask))
-                                          )
-                                        }),forKey:String(tokenId))
-                                    }
-                                    
-                                  }
-                                }
-                              }
+                        guard let asks = (collection.contract.tradeActions
+                                            .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }) else { return }
+                        
+                        asks.done { asks in
+                          DispatchQueue.main.async {
+                            
+                            asks.forEach {
+                              let (tokenId,bidAsk) = $0
+                              
+                              guard let ask = bidAsk.ask else { return }
+                              
+                              guard let nft = self.favorites[collection.contract.contractAddressHex]?.1[String(tokenId)] else { return }
+                              
+                              self.favorites[collection.contract.contractAddressHex]?.1.updateValue(
+                                NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                  return ObservablePromise<NFTPriceStatus>(
+                                    resolved: NFTPriceStatus.known(
+                                      NFTPriceInfo(
+                                        price: ask.wei,
+                                        blockNumber: nil,
+                                        type: TradeEventType.ask))
+                                  )
+                                }),forKey:String(tokenId))
+                              
                             }
-                            .catch { print($0) }
                           }
+                        }
+                        .catch { print($0) }
+                        
                       }
                     }
                 ) {
@@ -196,8 +190,10 @@ struct FavoritesView: View {
         .preferredColorScheme(.dark)
     }
     .onAppear {
-      let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
-      updateFavorites(favorites ?? [:])
+      if (self.isLoading) {
+        let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
+        updateFavorites(favorites ?? [:])
+      }
     }
   }
 }

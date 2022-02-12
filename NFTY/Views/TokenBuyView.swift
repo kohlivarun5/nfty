@@ -48,11 +48,10 @@ struct TokenBuyView: View {
   @State private var spot : SpotState = .loading
   
   private func onSubmit() {
-    let _ = bidPriceInWei.map {
-      actions.submitBid(tokenId: nft.tokenId, wei: $0, wallet:walletProvider)
-        .done { print ($0) }
-        .catch { print($0) }
-    }
+    guard let wei = bidPriceInWei else { return }
+    actions.submitBid(tokenId: nft.tokenId, wei: wei, wallet:walletProvider)
+      .done { print ($0) }
+      .catch { print($0) }
   }
   
   private func onBuyNow(_ ask : BigUInt) {

@@ -27,12 +27,13 @@ struct AddFavSheet: View {
       case .none:
         self.state = .empty
       case .some(let token):
-        let _ = collectionsFactory.getByAddress(address)
+        collectionsFactory.getByAddress(address)
           .done(on:.main) { collection in
             self.state = .loading(collection.info)
             let nftWithPrice = collection.contract.getToken(token)
             self.state = .loaded(collection.info,nftWithPrice)
           }
+          .catch { print($0) }
       }
     }
   }
@@ -47,11 +48,11 @@ struct AddFavSheet: View {
   
   private func onChange() {
     nft.update(address:collectionAddress,tokenId:UInt(tokenId))
-    let _ = UInt(tokenId).map { tokenId in
-      collectionsFactory.getByAddress(collectionAddress).map { collection in
+    guard let tokenId = UInt(tokenId) else { return }
+    collectionsFactory.getByAddress(collectionAddress)
+      .done(on:.main) { collection in
         self.rank = collection.info.rarityRanking?.getRank(tokenId)
-      }
-    }
+      }.catch { print($0) }
   }
   
   var body: some View {
@@ -78,8 +79,8 @@ struct AddFavSheet: View {
               })
             }
           )
-          .pickerStyle(MenuPickerStyle())
-          .onChange(of: collectionAddress) { tag in self.onChange() }
+            .pickerStyle(MenuPickerStyle())
+            .onChange(of: collectionAddress) { tag in self.onChange() }
           Spacer()
         }
         .animation(.none)
@@ -101,15 +102,15 @@ struct AddFavSheet: View {
         case .loaded(let info,let nftWithPrice):
           ZStack {
             GeometryReader { metrics in
-            NftImage(nft:nftWithPrice.nft,
-                     sample:info.sample,
-                     themeColor:info.themeColor,
-                     themeLabelColor:info.themeLabelColor,
-                     size:metrics.size.height < 700 ? .small : .medium,
-                     resolution:.hd,
-                     favButton:.bottomRight)
-              .frame(minHeight: 250)
-              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+              NftImage(nft:nftWithPrice.nft,
+                       sample:info.sample,
+                       themeColor:info.themeColor,
+                       themeLabelColor:info.themeLabelColor,
+                       size:metrics.size.height < 700 ? .small : .medium,
+                       resolution:.hd,
+                       favButton:.bottomRight)
+                .frame(minHeight: 250)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
             }
             VStack {
               HStack {
