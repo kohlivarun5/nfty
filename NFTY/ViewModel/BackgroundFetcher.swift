@@ -280,7 +280,10 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
               }
               
               let (collection,order) = result
-              return downloadImageToLocalDisk(collection: collection, tokenId: UInt(order.asset.token_id)!)
+              
+              guard let tokenId = UInt(order.asset.token_id) else { return Promise.value(accu) }
+              
+              return downloadImageToLocalDisk(collection: collection, tokenId:tokenId)
                 .map { imageUrl in
                   
                   let content = UNMutableNotificationContent()
