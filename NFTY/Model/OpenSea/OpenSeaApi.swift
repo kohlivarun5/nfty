@@ -341,7 +341,7 @@ struct OpenSeaApi {
   }
   
   struct Stats : Codable {
-    let floor_price : Double
+    let floor_price : Double?
   }
   
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
