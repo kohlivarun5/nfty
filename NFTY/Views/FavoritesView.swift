@@ -92,83 +92,90 @@ struct FavoritesView: View {
             .font(.title)
             .foregroundColor(.secondary)
         case false:
-          ScrollView {
-            
-            LazyVStack(pinnedViews:[.sectionHeaders]) {
-              ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in
-                let (collection,tokens) = key_value.1;
-                Section(
-                  header:
-                    WalletTokensCollectionHeader(collection:collection)
-                    .onAppear {
-                      DispatchQueue.global(qos:.userInteractive).async {
-                        guard let asks = (collection.contract.tradeActions
-                                            .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }) else { return }
-                        
-                        asks.done { asks in
-                          DispatchQueue.main.async {
-                            
-                            asks.forEach {
-                              let (tokenId,bidAsk) = $0
+          GeometryReader { metrics in
+            ScrollView {
+              
+              LazyVGrid(
+                columns: Array(
+                  repeating:GridItem(.flexible()),
+                  count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+                pinnedViews: [.sectionHeaders])
+              {
+                ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in
+                  let (collection,tokens) = key_value.1;
+                  Section(
+                    header:
+                      WalletTokensCollectionHeader(collection:collection)
+                      .onAppear {
+                        DispatchQueue.global(qos:.userInteractive).async {
+                          guard let asks = (collection.contract.tradeActions
+                                              .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }) else { return }
+                          
+                          asks.done { asks in
+                            DispatchQueue.main.async {
                               
-                              guard let ask = bidAsk.ask else { return }
-                              
-                              guard let nft = self.favorites[collection.contract.contractAddressHex]?.1[String(tokenId)] else { return }
-                              
-                              self.favorites[collection.contract.contractAddressHex]?.1.updateValue(
-                                NFTWithLazyPrice(nft:nft.nft,getPrice: {
-                                  return ObservablePromise<NFTPriceStatus>(
-                                    resolved: NFTPriceStatus.known(
-                                      NFTPriceInfo(
-                                        price: ask.wei,
-                                        blockNumber: nil,
-                                        type: TradeEventType.ask))
-                                  )
-                                }),forKey:String(tokenId))
-                              
+                              asks.forEach {
+                                let (tokenId,bidAsk) = $0
+                                
+                                guard let ask = bidAsk.ask else { return }
+                                
+                                guard let nft = self.favorites[collection.contract.contractAddressHex]?.1[String(tokenId)] else { return }
+                                
+                                self.favorites[collection.contract.contractAddressHex]?.1.updateValue(
+                                  NFTWithLazyPrice(nft:nft.nft,getPrice: {
+                                    return ObservablePromise<NFTPriceStatus>(
+                                      resolved: NFTPriceStatus.known(
+                                        NFTPriceInfo(
+                                          price: ask.wei,
+                                          blockNumber: nil,
+                                          type: TradeEventType.ask))
+                                    )
+                                  }),forKey:String(tokenId))
+                                
+                              }
                             }
                           }
+                          .catch { print($0) }
+                          
                         }
-                        .catch { print($0) }
-                        
                       }
-                    }
-                ) {
-                  
-                  ForEach(tokens.map { ($0.key,$0.value)}.sorted(by: { $0.0 < $1.0 }),id:\.0) { token_info in
-                    let nft = token_info.1;
+                  ) {
                     
-                    ZStack {
-                      RoundedImage(
-                        nft:nft.nft,
-                        price:.lazy(nft.indicativePriceWei),
-                        collection:collection,
-                        width: .normal,
-                        resolution: .normal
-                      )
-                        .shadow(color:.accentColor,radius:0)
-                        .padding()
-                        .onTapGesture {
-                          //perform some tasks if needed before opening Destination view
-                          self.selectedTokenId = nft.nft.tokenId
-                        }
-                      NavigationLink(destination: NftDetail(
-                        nft:nft.nft,
-                        price:.lazy(nft.indicativePriceWei),
-                        collection:collection,
-                        hideOwnerLink:false,selectedProperties:[]
-                      ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                      .hidden()
+                    ForEach(tokens.map { ($0.key,$0.value)}.sorted(by: { $0.0 < $1.0 }),id:\.0) { token_info in
+                      let nft = token_info.1;
+                      
+                      ZStack {
+                        RoundedImage(
+                          nft:nft.nft,
+                          price:.lazy(nft.indicativePriceWei),
+                          collection:collection,
+                          width: .normal,
+                          resolution: .normal
+                        )
+                          .shadow(color:.accentColor,radius:0)
+                          .padding()
+                          .onTapGesture {
+                            //perform some tasks if needed before opening Destination view
+                            self.selectedTokenId = nft.nft.tokenId
+                          }
+                        NavigationLink(destination: NftDetail(
+                          nft:nft.nft,
+                          price:.lazy(nft.indicativePriceWei),
+                          collection:collection,
+                          hideOwnerLink:false,selectedProperties:[]
+                        ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                        .hidden()
+                      }
+                      
                     }
-                    
                   }
                 }
               }
             }
-            
           }
         }
       }
+      
     }
     .navigationBarItems(
       trailing:

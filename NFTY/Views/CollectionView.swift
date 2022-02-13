@@ -68,37 +68,45 @@ struct CollectionView: View {
   
   var body: some View {
     
-    ScrollView {
-      LazyVStack {
-        let data = sorted(recentTrades.recentTrades);
-        ForEach(data.indices,id: \.self) { index in
-          let nft = data[index];
-          ZStack {
-            RoundedImage(
-              nft:nft.nft,
-              price:nft.indicativePriceWei,
-              collection:collection,
-              width: .normal,
-              resolution: .normal
-            )
-              .shadow(color:.accentColor,radius:0)
-              .padding()
-              .onTapGesture {
-                //perform some tasks if needed before opening Destination view
-                self.action = String(nft.nft.tokenId)
+    GeometryReader { metrics in
+      ScrollView {
+        
+        LazyVGrid(
+          columns: Array(
+            repeating:GridItem(.flexible()),
+            count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+          pinnedViews: [.sectionHeaders])
+        {
+          let data = sorted(recentTrades.recentTrades);
+          ForEach(data.indices,id: \.self) { index in
+            let nft = data[index];
+            ZStack {
+              RoundedImage(
+                nft:nft.nft,
+                price:nft.indicativePriceWei,
+                collection:collection,
+                width: .normal,
+                resolution: .normal
+              )
+                .shadow(color:.accentColor,radius:0)
+                .padding()
+                .onTapGesture {
+                  //perform some tasks if needed before opening Destination view
+                  self.action = String(nft.nft.tokenId)
+                }
+              
+              NavigationLink(destination: NftDetail(
+                nft:nft.nft,
+                price:nft.indicativePriceWei,
+                collection:collection,
+                hideOwnerLink:false,
+                selectedProperties:[]
+              ),tag:String(nft.nft.tokenId),selection:$action) {}
+              .hidden()
+            }.onAppear {
+              DispatchQueue.global(qos:.userInitiated).async {
+                self.recentTrades.getRecentTrades(currentIndex:index) { }
               }
-            
-            NavigationLink(destination: NftDetail(
-              nft:nft.nft,
-              price:nft.indicativePriceWei,
-              collection:collection,
-              hideOwnerLink:false,
-              selectedProperties:[]
-            ),tag:String(nft.nft.tokenId),selection:$action) {}
-            .hidden()
-          }.onAppear {
-            DispatchQueue.global(qos:.userInitiated).async {
-              self.recentTrades.getRecentTrades(currentIndex:index) { }
             }
           }
         }

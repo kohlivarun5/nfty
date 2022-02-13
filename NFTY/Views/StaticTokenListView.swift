@@ -13,31 +13,38 @@ struct StaticTokenListView: View {
   @State private var selectedTokenId: UInt? = nil
   
   var body: some View {
-    ScrollView {
-      LazyVStack {
-        ForEach(tokens) { token in
-          let nft = token.nft;
-          let collection = token.collection;
-          
-          ZStack {
-            RoundedImage(
-              nft:nft.nft,
-              price:.lazy(nft.indicativePriceWei),
-              collection:collection,
-              width: .normal,
-              resolution: .normal
-            )
-            .shadow(color:.accentColor,radius:0)
-            .padding()
-            .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
-            NavigationLink(destination: NftDetail(
-              nft:nft.nft,
-              price:.lazy(nft.indicativePriceWei),
-              collection: collection,
-              hideOwnerLink:false,
-              selectedProperties:[]
-            ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-            .hidden()
+    GeometryReader { metrics in
+      ScrollView {
+        LazyVGrid(
+          columns: Array(
+            repeating:GridItem(.flexible()),
+            count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+          pinnedViews: [.sectionHeaders])
+        {
+          ForEach(tokens) { token in
+            let nft = token.nft;
+            let collection = token.collection;
+            
+            ZStack {
+              RoundedImage(
+                nft:nft.nft,
+                price:.lazy(nft.indicativePriceWei),
+                collection:collection,
+                width: .normal,
+                resolution: .normal
+              )
+                .shadow(color:.accentColor,radius:0)
+                .padding()
+                .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
+              NavigationLink(destination: NftDetail(
+                nft:nft.nft,
+                price:.lazy(nft.indicativePriceWei),
+                collection: collection,
+                hideOwnerLink:false,
+                selectedProperties:[]
+              ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+              .hidden()
+            }
           }
         }
       }

@@ -128,49 +128,56 @@ struct FeedView: View {
           }
         }
       case false:
-        ScrollView {
-          PullToRefresh(coordinateSpaceName: "RefreshControl") {
-            self.triggerRefresh()
-            let impactMed = UIImpactFeedbackGenerator(style: .light)
-            impactMed.impactOccurred()
-          }
-          LazyVStack {
-            ForEach(trades.recentTrades.indices,id:\.self) { index in
-              let item = trades.recentTrades[index]
-              let nft = item.nft.nftWithPrice
-              
-              ZStack {
+        GeometryReader { metrics in
+          ScrollView {
+            PullToRefresh(coordinateSpaceName: "RefreshControl") {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
+            LazyVGrid(
+              columns: Array(
+                repeating:GridItem(.flexible()),
+                count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+              pinnedViews: [.sectionHeaders])
+            {
+              ForEach(trades.recentTrades.indices,id:\.self) { index in
+                let item = trades.recentTrades[index]
+                let nft = item.nft.nftWithPrice
                 
-                RoundedImage(
-                  nft:nft.nft,
-                  price:nft.indicativePriceWei,
-                  collection:item.collection,
-                  width: .normal,
-                  resolution: .normal
-                )
-                  .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
-                  .padding()
-                  .onTapGesture {
-                    //perform some tasks if needed before opening Destination view
-                    self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
+                ZStack {
+                  
+                  RoundedImage(
+                    nft:nft.nft,
+                    price:nft.indicativePriceWei,
+                    collection:item.collection,
+                    width: .normal,
+                    resolution: .normal
+                  )
+                    .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
+                    .padding()
+                    .onTapGesture {
+                      //perform some tasks if needed before opening Destination view
+                      self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
+                    }
+                  
+                  NavigationLink(destination: NftDetail(
+                    nft:nft.nft,
+                    price:nft.indicativePriceWei,
+                    collection:item.collection,
+                    hideOwnerLink:false,selectedProperties:[]
+                  ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}
+                  .hidden()
+                }.onAppear {
+                  DispatchQueue.global(qos:.userInitiated).async {
+                    self.trades.getRecentTrades(currentIndex:index) {}
                   }
-                
-                NavigationLink(destination: NftDetail(
-                  nft:nft.nft,
-                  price:nft.indicativePriceWei,
-                  collection:item.collection,
-                  hideOwnerLink:false,selectedProperties:[]
-                ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}
-                .hidden()
-              }.onAppear {
-                DispatchQueue.global(qos:.userInitiated).async {
-                  self.trades.getRecentTrades(currentIndex:index) {}
                 }
               }
+              .textCase(nil)
             }
-            .textCase(nil)
-          }
-        }.coordinateSpace(name: "RefreshControl")
+          }.coordinateSpace(name: "RefreshControl")
+        }
       }
     }
     .navigationBarItems(
