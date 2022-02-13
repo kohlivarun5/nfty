@@ -39,13 +39,14 @@ struct RoundedImage: View {
   }
   
   static let NormalSize = 250.0
+  static let NarrowSize = 150.0
   
   private func frameWidth(_ width:Width) -> CGFloat {
     switch(width) {
     case .normal:
       return RoundedImage.NormalSize
     case .narrow:
-      return 150.0
+      return RoundedImage.NarrowSize
     }
   }
   

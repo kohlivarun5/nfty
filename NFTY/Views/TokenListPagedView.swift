@@ -12,8 +12,6 @@ struct TokenListPagedView: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
-  
   @EnvironmentObject var userWallet: UserWallet
   
   @State private var selectedTokenId: UInt? = nil
@@ -49,73 +47,74 @@ struct TokenListPagedView: View {
             }
           }
       case (.none,_):
-        
-        ScrollView {
-          LazyVGrid(
-            columns: Array(
-              repeating:GridItem(.flexible(maximum:160)),
-              count:horizontalSizeClass == .some(.compact) ? 2 : 3)) {
-                ForEach(nfts.tokens.indices,id:\.self) { index in
-                  let nft = nfts.tokens[index];
-                  let info = collection.info
-                  
-                  ZStack {
+        GeometryReader { metrics in
+          ScrollView {
+            LazyVGrid(
+              columns: Array(
+                repeating:GridItem(.flexible(maximum:RoundedImage.NarrowSize + 40)),
+                count:Int((metrics.size.width / RoundedImage.NarrowSize)) - 2)) {
+                  ForEach(nfts.tokens.indices,id:\.self) { index in
+                    let nft = nfts.tokens[index];
+                    let info = collection.info
                     
-                    NftImage(
-                      nft:nft.nft,
-                      sample:info.sample,
-                      themeColor:info.themeColor,
-                      themeLabelColor:info.themeLabelColor,
-                      size:.small,
-                      resolution:.normal,
-                      favButton:.none
-                    )
-                      .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                      .shadow(color:.secondary,radius:5)
-                      .padding(10)
-                      .onTapGesture {
-                        //perform some tasks if needed before opening Destination view
-                        self.selectedTokenId = nft.nft.tokenId
+                    ZStack {
+                      
+                      NftImage(
+                        nft:nft.nft,
+                        sample:info.sample,
+                        themeColor:info.themeColor,
+                        themeLabelColor:info.themeLabelColor,
+                        size:.small,
+                        resolution:.normal,
+                        favButton:.none
+                      )
+                        .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                        .shadow(color:.secondary,radius:5)
+                        .padding(10)
+                        .onTapGesture {
+                          //perform some tasks if needed before opening Destination view
+                          self.selectedTokenId = nft.nft.tokenId
+                        }
+                        .onLongPressGesture(minimumDuration: 0.1) {
+                          UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                          self.sheetSelectedIndex = SheetSelection(id:index)
+                        }
+                      
+                      VStack {
+                        TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label,hideIcon:true)
+                          .padding([.top,.bottom],2)
+                          .padding([.leading,.trailing],20)
+                          .font(.caption2)
+                          .foregroundColor(colorScheme == .dark ? .label : .white)
+                          .background(
+                            RoundedCorners(
+                              color:colorScheme == .dark
+                              ? .tertiarySystemBackground.opacity(0.75)
+                              : .secondary,
+                              tl: 5, tr: 5, bl: 5, br: 5))
+                          .colorMultiply(.accentColor)
+                          .shadow(radius: 5)
+                        Spacer()
                       }
-                      .onLongPressGesture(minimumDuration: 0.1) {
-                        UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                        self.sheetSelectedIndex = SheetSelection(id:index)
-                      }
-                    
-                    VStack {
-                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label,hideIcon:true)
-                        .padding([.top,.bottom],2)
-                        .padding([.leading,.trailing],20)
-                        .font(.caption2)
-                        .foregroundColor(colorScheme == .dark ? .label : .white)
-                        .background(
-                          RoundedCorners(
-                            color:colorScheme == .dark
-                            ? .tertiarySystemBackground.opacity(0.75)
-                            : .secondary,
-                            tl: 5, tr: 5, bl: 5, br: 5))
-                        .colorMultiply(.accentColor)
-                        .shadow(radius: 5)
-                      Spacer()
+                      .padding(.top,11)
+                      
+                      NavigationLink(destination: NftDetail(
+                        nft:nft.nft,
+                        price:.lazy(nft.indicativePriceWei),
+                        collection:collection,
+                        hideOwnerLink:false,
+                        selectedProperties:[]
+                      ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                      .hidden()
                     }
-                    .padding(.top,11)
-                    
-                    NavigationLink(destination: NftDetail(
-                      nft:nft.nft,
-                      price:.lazy(nft.indicativePriceWei),
-                      collection:collection,
-                      hideOwnerLink:false,
-                      selectedProperties:[]
-                    ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                    .hidden()
-                  }
-                  .onAppear {
-                    DispatchQueue.global(qos:.userInitiated).async {
-                      self.nfts.next(currentIndex: index)
+                    .onAppear {
+                      DispatchQueue.global(qos:.userInitiated).async {
+                        self.nfts.next(currentIndex: index)
+                      }
                     }
                   }
                 }
-              }
+          }
         }
       }
     }
@@ -142,10 +141,10 @@ struct TokenListPagedView: View {
 }
 
 /*
-struct TokenListPagedView_Previews: PreviewProvider {
-    static var previews: some View {
-        TokenListPagedView(
-        )
-    }
-}
+ struct TokenListPagedView_Previews: PreviewProvider {
+ static var previews: some View {
+ TokenListPagedView(
+ )
+ }
+ }
  */
