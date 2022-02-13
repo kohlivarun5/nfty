@@ -138,9 +138,9 @@ struct FeedView: View {
             ForEach(trades.recentTrades.indices,id:\.self) { index in
               let item = trades.recentTrades[index]
               let nft = item.nft.nftWithPrice
-
+              
               ZStack {
-                                
+                
                 RoundedImage(
                   nft:nft.nft,
                   price:nft.indicativePriceWei,
@@ -148,12 +148,12 @@ struct FeedView: View {
                   width: .normal,
                   resolution: .normal
                 )
-                .shadow(color:.accentColor,radius:item.isNew ? 10 : 0)
-                .padding()
-                .onTapGesture {
-                  //perform some tasks if needed before opening Destination view
-                  self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
-                }
+                  .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
+                  .padding()
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
+                  }
                 
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
@@ -203,7 +203,7 @@ struct FeedView: View {
             self.refreshButton = .loaded
             // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
           }
-        } 
+        }
       }
     }
     

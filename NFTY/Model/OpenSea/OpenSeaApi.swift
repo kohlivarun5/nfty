@@ -346,7 +346,7 @@ struct OpenSeaApi {
   }
   
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
-    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(30)),
+    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(60)),
     transformer: TransformerFactory.forCodable(ofType: Stats.self))
   
   static func getCollectionStats(contract:String) -> Promise<Stats?> {
