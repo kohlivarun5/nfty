@@ -62,7 +62,7 @@ let DeadFellaz_Contract = IpfsCollectionContract(
   indicativePriceSource: .openSea
 )
 
-let DJs_Contract = IpfsWithOpenSea(
+let DJs_Contract = IpfsCollectionContract(
   name: "DJENERATES",
   address: "0x7d05c8D8cC1baC936eA09308a9E94823986f8321",
   indicativePriceSource: .openSea
@@ -718,24 +718,24 @@ let CompositeCollection = CompositeRecentTradesObject([
     contract:SSFU_Contract),
   
   /* TODO : NEAR Disabled
-  Collection(
-    info:CollectionInfo(
-      address:ASAC_Contract.contractAddressHex,
-      sample:"SAMPLE_ASAC",
-      name:ASAC_Contract.name,
-      webLink: URL(string:"https://antisocialape.club")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Apes",
-        nearestTokensFileName:"asac.near_nearestTokens.json",
-        propertiesJsonFileName:"asac.near_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
-    ),
-    contract:ASAC_Contract),
-  */
+   Collection(
+   info:CollectionInfo(
+   address:ASAC_Contract.contractAddressHex,
+   sample:"SAMPLE_ASAC",
+   name:ASAC_Contract.name,
+   webLink: URL(string:"https://antisocialape.club")!,
+   themeColor:Color.gunmetal,
+   themeLabelColor:Color.white,
+   disableRecentTrades:true,
+   similarTokens : SimilarTokensGetter(
+   label:"Apes",
+   nearestTokensFileName:"asac.near_nearestTokens.json",
+   propertiesJsonFileName:"asac.near_attributeScores.json"
+   ),
+   rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
+   ),
+   contract:ASAC_Contract),
+   */
   Collection(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,
@@ -771,12 +771,16 @@ class CollectionsFactory {
       return Promise.value(x)
     case .none:
       // Add some throttle here
-      return after(seconds: 0.2).then { _ in
-        openSeaCollection(address: address)
-          .map { collection -> Collection in
-            self.collections[address.lowercased()] = collection;
-            return collection
-          }
+      return after(seconds: 0.2).then { _ -> Promise<Collection> in
+        if (address.hasSuffix(".near")) {
+          return NearCollection(address: address)
+        } else {
+          return openSeaCollection(address: address)
+            .map { collection -> Collection in
+              self.collections[address.lowercased()] = collection;
+              return collection
+            }
+        }
       }
     }
   }
@@ -869,7 +873,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             }
           }
         }
-        
+      
       self.offset = self.offset + limit
     }
   }

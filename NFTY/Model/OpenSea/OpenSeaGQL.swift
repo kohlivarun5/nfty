@@ -119,8 +119,8 @@ struct OpenSeaGQL {
     // x-signed-query: bd533b153dff5b775a0504f27a4ec5d3a13325045eaa720c797d1ea23a924c3e
     
     return Promise.init { seal in
-      print("Calling \(request.url!)")
-      let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      
+      OpenSeaApiCore.UrlSession.enqueue(with: request,completionHandler: { data, response, error in
         if let error = error { return seal.reject(error) }
         // print(String(decoding:data!,as:UTF8.self))
         
@@ -146,9 +146,7 @@ struct OpenSeaGQL {
             seal.reject(HTTPError.unknown)
           }
         }
-        
-      }
-      task.resume()
+      })
     }
   }
   

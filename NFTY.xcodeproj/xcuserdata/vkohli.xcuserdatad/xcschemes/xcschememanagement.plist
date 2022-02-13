@@ -12,7 +12,7 @@
 		<key>CreateRankingFiles.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Demo (Playground) 1.xcscheme</key>
 		<dict>
@@ -38,7 +38,7 @@
 		<key>DownloadCollection.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>4</integer>
 		</dict>
 		<key>DownloadCryptoPunks.xcscheme_^#shared#^_</key>
 		<dict>
@@ -74,7 +74,7 @@
 		<key>NFTYWidgetExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>ParseTokenDistances.xcscheme_^#shared#^_</key>
 		<dict>

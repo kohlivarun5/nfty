@@ -183,6 +183,7 @@ enum NFTPriceStatus {
   case known(NFTPriceInfo)
   case notSeenSince(NFTNotSeenSince)
   case burnt
+  case unavailable
 }
 
 enum TokenPriceType {

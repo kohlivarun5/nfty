@@ -59,10 +59,18 @@ struct NFTNameIdRank: View {
           }
           .font(.footnote)
           
-          rank.map {
-            Text( "RarityRank: \($0)")
+          switch(floorPrice,rank) {
+          case (.some(let floorPrice),_):
+            Text("Floor Price: \(ethFormatter.string(for:floorPrice)!)")
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
+              .animation(.default)
+          case (_,.some(let rank)):
+            Text( "RarityRank: \(rank)")
               .font(.caption2)
               .foregroundColor(.secondaryLabel)
+          case (.none,.none):
+            EmptyView()
           }
           
         }

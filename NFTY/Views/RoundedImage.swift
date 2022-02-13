@@ -98,7 +98,6 @@ struct RoundedImage: View {
           ) {
             TokenPrice(price:price,color:.label,hideIcon:false)
           }
-          //.buttonStyle()
           .padding(.leading,5)
           .padding(.trailing,5)
           .padding([.top,.bottom],5)

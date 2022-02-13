@@ -13,6 +13,10 @@ struct OpenSeaApiCore {
   
   static let API_KEY = "5302eafecee44b198cfa1fb8bfbd5e5d"
   
+  static let UrlSession = UrlTaskThrottle(
+    queue:DispatchQueue(label: "OpenSeaApiCore.serialQueue",qos:.userInitiated),
+    deadline:DispatchTimeInterval.milliseconds(250))
+  
   struct CollectionInfo : Codable {
     let name : String
     let image_url : URL?
@@ -41,8 +45,7 @@ struct OpenSeaApiCore {
         
         request.httpMethod = "GET"
         
-        print("calling \(request.url!)")
-        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
           if let e = error { return seal.reject(e) }
           do {
             let jsonDecoder = JSONDecoder()
@@ -59,7 +62,7 @@ struct OpenSeaApiCore {
             print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
           }
-        }).resume()
+        })
       }
     }
   }
