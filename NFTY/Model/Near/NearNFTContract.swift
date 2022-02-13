@@ -26,7 +26,7 @@ class NearNFTContract : ContractInterface {
     self.name = name
     self.account_id = account_id
     self.nearContract = NearNFT(account_id: account_id)
-    self.contractAddressHex = "NearNFT@\(account_id)"
+    self.contractAddressHex = account_id
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(contractAddressHex).ImageCache",expiry: .never),
       transformer: TransformerFactory.forImage())
@@ -130,7 +130,7 @@ class NearNFTContract : ContractInterface {
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(nft: self.getNFT(tokenId), getPrice: {
-      return ObservablePromise(resolved: NFTPriceStatus.burnt)
+      return ObservablePromise(resolved: NFTPriceStatus.unavailable)
     })
   }
   
@@ -153,7 +153,26 @@ class NearNFTContract : ContractInterface {
   var vaultContract: CollectionVaultContract? = nil
   
   var tradeActions: TokenTradeInterface? = nil
-    
+  
   func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { nil }
   
+}
+
+func NearCollection(address:String) -> Promise<Collection> {
+  
+  return Promise.value(
+    Collection(
+      info: CollectionInfo(
+        address: address,
+        sample: "SAMPLE_ASAC",
+        name: address,
+        webLink: nil,
+        themeColor: .gunmetal,
+        themeLabelColor: .white,
+        disableRecentTrades: true,
+        similarTokens: nil,
+        rarityRanking: nil),
+      contract: NearNFTContract(name: address, account_id: address)
+    )
+  )
 }

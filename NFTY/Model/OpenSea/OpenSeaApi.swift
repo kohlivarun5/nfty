@@ -107,8 +107,7 @@ struct OpenSeaApi {
       
       request.httpMethod = "GET"
       
-      print("calling \(request.url!)")
-      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+      OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         do {
           
           if let e = error { return seal.reject(e) }
@@ -146,7 +145,7 @@ struct OpenSeaApi {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.reject(NSError(domain:"", code:404, userInfo:nil))
         }
-      }).resume()
+      })
     }
   }
   
@@ -306,8 +305,8 @@ struct OpenSeaApi {
       request.setValue("https://api.opensea.io/api/v1/assets",
                        forHTTPHeaderField:"referrer")
       
-      print("calling \(request.url!)")
-      URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+      
+      OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         if let e = error { return seal.reject(e) }
         do {
           let jsonDecoder = JSONDecoder()
@@ -322,7 +321,7 @@ struct OpenSeaApi {
           print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
           seal.reject(error)
         }
-      }).resume()
+      })
     }.then { (assets:[Asset]) -> Promise<[NFTToken]> in
       assets.reduce(Promise.value([]), { accu,asset in
         accu.then { accu in
@@ -346,7 +345,7 @@ struct OpenSeaApi {
   }
   
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
-    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(60)),
+    config: DiskConfig(name: "OpenSeaApi/api/v1/collection",expiry: .seconds(0)),
     transformer: TransformerFactory.forCodable(ofType: Stats.self))
   
   static func getCollectionStats(contract:String) -> Promise<Stats?> {
@@ -374,8 +373,8 @@ struct OpenSeaApi {
               
               request.httpMethod = "GET"
               
-              print("calling \(request.url!)")
-              URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+              
+              OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
                 if let e = error { return seal.reject(e) }
                 do {
                   let jsonDecoder = JSONDecoder()
@@ -397,7 +396,7 @@ struct OpenSeaApi {
                   print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
                   seal.reject(NSError(domain:"", code:404, userInfo:nil))
                 }
-              }).resume()
+              })
             }
           }
         }

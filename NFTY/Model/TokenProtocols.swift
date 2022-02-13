@@ -181,7 +181,7 @@ class CompositeRecentTradesObject : ObservableObject {
   }
  
   lazy var loaders : [CollectionLoader] = {
-    return collections.map { collection in
+    return collections.map { [weak self] collection in
       return CollectionLoader(
         collection:collection,
         
@@ -190,7 +190,7 @@ class CompositeRecentTradesObject : ObservableObject {
           parentOnTrade: { nft in
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
-                self.loadedItems.append(
+                self?.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: false,collection:collection)
                 )
               }
@@ -198,7 +198,7 @@ class CompositeRecentTradesObject : ObservableObject {
           },parentOnLatest: { nft in
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
-                self.loadedItems.append(
+                self?.loadedItems.append(
                   NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: true,collection:collection)
                 )
               }

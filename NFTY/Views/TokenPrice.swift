@@ -170,6 +170,9 @@ struct TokenPriceStatus : View {
       Text("Burnt")
         .font(.footnote)
         .foregroundColor(subtleColor(self.color))
+    case .unavailable:
+      Text(" ··· ")
+        .padding([.leading,.trailing],5)
     }
   }
 }
