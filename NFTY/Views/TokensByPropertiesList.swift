@@ -14,8 +14,6 @@ struct TokensByPropertiesList: View {
   
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
-  
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
   
@@ -42,73 +40,75 @@ struct TokensByPropertiesList: View {
   
   var body: some View {
     VStack(spacing:0) {
-      ScrollView {
-        LazyVGrid(
-          columns: Array(
-            repeating:GridItem(.flexible(maximum:160)),
-            count:horizontalSizeClass == .some(.compact) ? 2 : 3)) {
-          ForEach(nfts.tokens.indices,id:\.self) { index in
-            let nft = nfts.tokens[index];
-            let info = collection.info
-            
-            ZStack {
-              
-              NftImage(
-                nft:nft.nft,
-                sample:info.sample,
-                themeColor:info.themeColor,
-                themeLabelColor:info.themeLabelColor,
-                size:.small,
-                resolution:.normal,
-                favButton:.none
-              )
-              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .shadow(color:.secondary,radius:5)
-              .padding(10)
-              .onTapGesture {
-                //perform some tasks if needed before opening Destination view
-                self.selectedTokenId = nft.nft.tokenId
-              }
-              .onLongPressGesture(minimumDuration: 0.1) {
-                UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                self.sheetSelectedIndex = SheetSelection(id:index)
-              }
-              
-              switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
-              case .none:
-                EmptyView()
-              case .some(let ask):
-                VStack {
-                  Spacer()
-                  UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
-                    .padding([.top,.bottom],2)
-                    .padding([.leading,.trailing],20)
-                    .font(.caption)
-                    .foregroundColor(colorScheme == .dark ? .label : .white)
-                    .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.75) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
-                    .colorMultiply(.accentColor)
-                    .shadow(radius: 5)
+      GeometryReader { metrics in
+        ScrollView {
+          LazyVGrid(
+            columns: Array(
+              repeating:GridItem(.flexible(maximum:RoundedImage.NarrowSize + 40)),
+              count:Int((metrics.size.width / RoundedImage.NarrowSize)) - 2)) {
+                ForEach(nfts.tokens.indices,id:\.self) { index in
+                  let nft = nfts.tokens[index];
+                  let info = collection.info
+                  
+                  ZStack {
+                    
+                    NftImage(
+                      nft:nft.nft,
+                      sample:info.sample,
+                      themeColor:info.themeColor,
+                      themeLabelColor:info.themeLabelColor,
+                      size:.small,
+                      resolution:.normal,
+                      favButton:.none
+                    )
+                      .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                      .shadow(color:.secondary,radius:5)
+                      .padding(10)
+                      .onTapGesture {
+                        //perform some tasks if needed before opening Destination view
+                        self.selectedTokenId = nft.nft.tokenId
+                      }
+                      .onLongPressGesture(minimumDuration: 0.1) {
+                        UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                        self.sheetSelectedIndex = SheetSelection(id:index)
+                      }
+                    
+                    switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+                    case .none:
+                      EmptyView()
+                    case .some(let ask):
+                      VStack {
+                        Spacer()
+                        UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
+                          .padding([.top,.bottom],2)
+                          .padding([.leading,.trailing],20)
+                          .font(.caption)
+                          .foregroundColor(colorScheme == .dark ? .label : .white)
+                          .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.75) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                          .colorMultiply(.accentColor)
+                          .shadow(radius: 5)
+                      }
+                      .padding(.bottom,11)
+                    }
+                    
+                    NavigationLink(destination: NftDetail(
+                      nft:nft.nft,
+                      price:.lazy(nft.indicativePriceWei),
+                      collection:collection,
+                      hideOwnerLink:false,
+                      selectedProperties:nfts.selectedProperties
+                    ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                    .hidden()
+                  }
+                  .onAppear {
+                    DispatchQueue.global(qos:.userInitiated).async {
+                      self.nfts.next(currentIndex: index)
+                    }
+                  }
                 }
-                .padding(.bottom,11)
+              }.onAppear {
+                nfts.loadMore {} // TODO
               }
-              
-              NavigationLink(destination: NftDetail(
-                nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
-                collection:collection,
-                hideOwnerLink:false,
-                selectedProperties:nfts.selectedProperties
-              ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-              .hidden()
-            }
-            .onAppear {
-              DispatchQueue.global(qos:.userInitiated).async {
-                self.nfts.next(currentIndex: index)
-              }
-            }
-          }
-        }.onAppear {
-          nfts.loadMore {} // TODO
         }
       }
       
