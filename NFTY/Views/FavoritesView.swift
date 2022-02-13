@@ -97,7 +97,7 @@ struct FavoritesView: View {
               
               LazyVGrid(
                 columns: Array(
-                  repeating:GridItem(.flexible()),
+                  repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
                   count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
                 pinnedViews: [.sectionHeaders])
               {
