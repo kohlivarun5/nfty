@@ -126,6 +126,10 @@ struct WalletTokensView: View {
                           )
                             .shadow(color:.accentColor,radius:0)
                             .padding()
+                            .onTapGesture {
+                              //perform some tasks if needed before opening Destination view
+                              self.selectedTokenId = token.nft.nft.tokenId
+                            }
                           
                         } else {
                           
