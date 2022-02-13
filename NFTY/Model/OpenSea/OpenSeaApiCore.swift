@@ -15,7 +15,7 @@ struct OpenSeaApiCore {
   
   static let UrlSession = UrlTaskThrottle(
     queue:DispatchQueue(label: "OpenSeaApiCore.serialQueue",qos:.userInitiated),
-    deadline:DispatchTimeInterval.milliseconds(500))
+    deadline:DispatchTimeInterval.milliseconds(250))
   
   struct CollectionInfo : Codable {
     let name : String
