@@ -170,6 +170,7 @@
 		4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
 		4FA1102726A9102500719D22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
 		4FA1102926AA27D400719D22 /* CalculateImageFeaturePrints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */; };
+		4FA9C62127C13D83001219F9 /* CollectionRecentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */; };
 		4FAA1E1B26B748EA00102174 /* CypherCity_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */; };
 		4FAA1E1C26B748EA00102174 /* CypherCity_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */; };
 		4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA1E1D26B7628700102174 /* UserWalletModel.swift */; };
@@ -581,6 +582,7 @@
 		4FA1102226A8F7DB00719D22 /* CryptoHodlers_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_nearestTokens.json; sourceTree = "<group>"; };
 		4FA1102326A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_rarityRanks.json; sourceTree = "<group>"; };
 		4FA1102826AA27D400719D22 /* CalculateImageFeaturePrints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateImageFeaturePrints.swift; sourceTree = "<group>"; };
+		4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionRecentView.swift; sourceTree = "<group>"; };
 		4FAA1E1926B748EA00102174 /* CypherCity_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_nearestTokens.json; sourceTree = "<group>"; };
 		4FAA1E1A26B748EA00102174 /* CypherCity_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_rarityRanks.json; sourceTree = "<group>"; };
 		4FAA1E1D26B7628700102174 /* UserWalletModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserWalletModel.swift; sourceTree = "<group>"; };
@@ -963,6 +965,7 @@
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
+				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1674,6 +1677,7 @@
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
 				4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */,
+				4FA9C62127C13D83001219F9 /* CollectionRecentView.swift in Sources */,
 				4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */,
 				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,

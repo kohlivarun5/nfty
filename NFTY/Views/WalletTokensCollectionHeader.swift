@@ -51,7 +51,7 @@ struct WalletTokensCollectionHeader: View {
     case .some(let fetcher):
       NavigationLink(
         destination:
-          TokenListPagedView(
+          TokenListPagedViewNav(
             collection: collection,
             nfts: TokensListPaged(fetcher:fetcher)
           )

@@ -117,13 +117,6 @@ struct NFTXVaultView: View {
         .preferredColorScheme(.dark)
         .accentColor(.orange)
     }
-    .navigationBarTitle(collection.info.name,displayMode: .inline)
-    .navigationBarBackButtonHidden(true)
-    .navigationBarItems(
-      leading:
-        Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
-    )
   }
   
 }

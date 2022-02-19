@@ -45,7 +45,7 @@ struct NFTNameIdRank: View {
       
     case (false,.some(let fetcher)):
       NavigationLink(
-        destination:TokenListPagedView(
+        destination:TokenListPagedViewNav(
           collection: collection,
           nfts: TokensListPaged(fetcher:fetcher)
         )) {
