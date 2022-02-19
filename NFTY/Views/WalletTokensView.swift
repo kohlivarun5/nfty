@@ -99,7 +99,7 @@ struct WalletTokensView: View {
               
               LazyVGrid(
                 columns: Array(
-                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : 160)),
+                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : 200)),
                   count:UIDevice.current.userInterfaceIdiom == .pad
                   ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
                   : 2),
