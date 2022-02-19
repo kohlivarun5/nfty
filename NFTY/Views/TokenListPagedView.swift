@@ -158,29 +158,3 @@ struct TokenListPagedView: View {
     }
   }
 }
-
-struct TokenListPagedViewNav: View {
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
-  let collection : Collection
-  @StateObject var nfts : TokensListPaged
-  var body: some View {
-    TokenListPagedView(collection: collection,nfts:nfts)
-      .navigationBarTitle(collection.info.name,displayMode: .inline)
-      .navigationBarBackButtonHidden(true)
-      .navigationBarItems(
-        leading:
-          Button(action: {presentationMode.wrappedValue.dismiss()},
-                 label: { BackButton() })
-      )
-  }
-}
-
-/*
- struct TokenListPagedView_Previews: PreviewProvider {
- static var previews: some View {
- TokenListPagedView(
- )
- }
- }
- */
