@@ -48,13 +48,14 @@ struct WalletTokensCollectionHeader: View {
   var body: some View {
     
     switch(collection.contract.floorFetcher(collection)) {
-    case .some(let fetcher):
+    case .some:
       NavigationLink(
         destination:
-          TokenListPagedViewNav(
-            collection: collection,
-            nfts: TokensListPaged(fetcher:fetcher)
-          )
+          CollectionView(
+            collection:collection,
+            info:collection.info,
+            loader: CompositeCollection.getLoader(collection: collection),
+            page:.floor)
       ) {
         WalletTokensCollectionHeaderImpl(collection: collection)
       }

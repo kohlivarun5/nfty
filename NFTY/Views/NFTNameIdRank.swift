@@ -44,12 +44,15 @@ struct NFTNameIdRank: View {
      
       }
       
-    case (false,.some(let fetcher)):
+    case (false,.some):
       NavigationLink(
-        destination:TokenListPagedViewNav(
-          collection: collection,
-          nfts: TokensListPaged(fetcher:fetcher)
-        )) {
+        destination:
+          CollectionView(
+            collection:collection,
+            info:collection.info,
+            loader: CompositeCollection.getLoader(collection: collection),
+            page:.floor)
+      ) {
         
         VStack(alignment:.leading) {
           Text(nft.name)

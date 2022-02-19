@@ -208,6 +208,21 @@ class CompositeRecentTradesObject : ObservableObject {
     }
   }()
   
+  public func getLoader(collection:Collection) -> CollectionLoader {
+    switch(self.loaders.first{$0.collection.info.address == collection.info.address}) {
+    case .some(let loader):
+      return loader
+    case .none:
+      return CollectionLoader(
+        collection:collection,
+        recentTrades:NftRecentTradesObject(
+          contract:collection.contract,
+          parentOnTrade: { _ in return },
+          parentOnLatest: {  _ in return })
+      )
+    }
+  }
+  
   private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
     switch(self.loaders[safe:index]) {
     case .some(let loader):

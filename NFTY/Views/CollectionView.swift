@@ -21,10 +21,9 @@ struct CollectionView: View {
   
   @StateObject var userSettings = UserSettings()
   
-  let loader : CompositeRecentTradesObject.CollectionLoader
-  
-  private let collection : Collection
-  private let info : CollectionInfo
+  let collection : Collection
+  let info : CollectionInfo
+  let loader : CompositeRecentTradesObject.CollectionLoader?
   
   enum Page : Int {
     case recent
@@ -33,7 +32,7 @@ struct CollectionView: View {
     case ranking
   }
   
-  @State private var page : Page = .recent
+  @State var page : Page
   
   private func title(_ page:Page) -> String {
     switch(page) {
@@ -48,19 +47,13 @@ struct CollectionView: View {
     }
   }
   
-  init(loader:CompositeRecentTradesObject.CollectionLoader) {
-    self.loader = loader
-    self.collection = loader.collection
-    self.info = collection.info
-  }
-  
   var body: some View {
     
     VStack(spacing:0) {
       
       switch(self.page) {
       case .recent:
-        CollectionRecentView(loader:loader)
+        CollectionRecentView(loader:loader!)
       case .floor:
         collection.contract.floorFetcher(collection).map {
           TokenListPagedView(
@@ -89,7 +82,9 @@ struct CollectionView: View {
         }
       ),label: Text(""))
       {
-        Text(title(.recent)).tag(Page.recent.rawValue)
+        self.loader.map { _ in
+          Text(title(.recent)).tag(Page.recent.rawValue)
+        }
         
         collection.contract.floorFetcher(collection).map { _ in
           Text(title(.floor)).tag(Page.floor.rawValue)
@@ -124,11 +119,5 @@ struct CollectionView: View {
       }
     )
     
-  }
-}
-
-struct CollectionView_Previews: PreviewProvider {
-  static var previews: some View {
-    CollectionView(loader:CompositeCollection.loaders[0])
   }
 }
