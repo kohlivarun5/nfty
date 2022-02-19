@@ -132,8 +132,7 @@ struct WalletTokensView: View {
                             }
                           
                         } else {
-                          
-                          
+                            
                           NftImage(
                             nft:token.nft.nft,
                             sample:token.collection.info.sample,
