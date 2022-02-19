@@ -24,11 +24,12 @@ struct TokenListPagedView: View {
   let collection : Collection
   @ObservedObject var nfts : TokensListPaged
   
+  @State private var isLoading = true
   
   var body: some View {
     VStack(spacing:0) {
       
-      switch(nfts.error,nfts.tokens.count) {
+      switch(nfts.error,isLoading) {
       case (.some(let error),_):
         VStack(spacing:20) {
           Image(systemName: "exclamationmark.triangle")
@@ -38,15 +39,16 @@ struct TokenListPagedView: View {
             .font(.subheadline)
             .foregroundColor(.secondary)
         }
-      case (.none,0):
+      case (.none,true):
         ProgressView()
           .scaleEffect(2.0, anchor: .center)
           .onAppear {
             nfts.loadMore {
+              self.isLoading = false
               print(self.nfts.tokens)
             }
           }
-      case (.none,_):
+      case (.none,false):
         GeometryReader { metrics in
           ScrollView {
             LazyVGrid(
