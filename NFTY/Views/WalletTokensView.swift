@@ -99,7 +99,7 @@ struct WalletTokensView: View {
               
               LazyVGrid(
                 columns: Array(
-                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : 160)),
+                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : min(200,(metrics.size.width - 40) / Double(2)))),
                   count:UIDevice.current.userInterfaceIdiom == .pad
                   ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
                   : 2),
@@ -132,8 +132,7 @@ struct WalletTokensView: View {
                             }
                           
                         } else {
-                          
-                          
+                            
                           NftImage(
                             nft:token.nft.nft,
                             sample:token.collection.info.sample,

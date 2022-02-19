@@ -46,6 +46,7 @@ class TokensListPaged : ObservableObject {
       }
       .finally(on:.main) {
         self.isLoading = false
+        callback()
       }
     
   }

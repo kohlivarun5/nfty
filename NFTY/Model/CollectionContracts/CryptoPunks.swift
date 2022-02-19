@@ -549,8 +549,6 @@ class CryptoPunksContract : ContractInterface {
   
   var vaultContract : CollectionVaultContract? = CollectionVaultContract(address: "0x269616D549D7e8Eaa82DFb17028d0B212D11232A")
   
-  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? {
-    return OpenSeaFloorFetcher.make(collection:collection)
-  }
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { return nil }
   
 }

@@ -10,18 +10,10 @@ import Web3
 
 struct TokenListView: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
   let collection : Collection
+  @StateObject var nfts : NftTokenList
   
-  @ObservedObject var nfts : NftTokenList
-  @State private var selectedTokenId: UInt? = nil
-  
-  init(collection:Collection,tokenIds:[UInt]) {
-    self.collection = collection
-    self.nfts = NftTokenList(contract:collection.contract,tokenIds:tokenIds)
-    self.nfts.loadMore { }
-  }
+  @State private var selectedTokenId: NFT.NftID? = nil
   
   var body: some View {
     GeometryReader { metrics in
@@ -44,14 +36,14 @@ struct TokenListView: View {
               )
                 .shadow(color:.accentColor,radius:0)
                 .padding()
-                .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
+                .onTapGesture { self.selectedTokenId = nft.nft.id }
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:.lazy(nft.indicativePriceWei),
                 collection:collection,
                 hideOwnerLink:false,
                 selectedProperties:[]
-              ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+              ),tag:nft.nft.id,selection:$selectedTokenId) {}
               .hidden()
             }
             .onAppear {
@@ -60,14 +52,8 @@ struct TokenListView: View {
               }
             }
           }
-        }
+        }.onAppear {self.nfts.loadMore {}}
       }
     }
-  }
-}
-
-struct TokenListView_Previews: PreviewProvider {
-  static var previews: some View {
-    TokenListView(collection:SampleCollection,tokenIds:[])
   }
 }

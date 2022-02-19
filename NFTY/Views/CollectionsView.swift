@@ -60,7 +60,11 @@ struct CollectionsView: View {
             .shadow(color:.secondary,radius:5)
             //.padding()
             
-            NavigationLink(destination: CollectionView(loader:loader), tag: loader.collection.info.address,selection:$action) {}
+            NavigationLink(destination: CollectionView(
+              collection:loader.collection,
+              info:loader.collection.info,
+              loader:loader,
+              page:.recent), tag: loader.collection.info.address,selection:$action) {}
               .hidden()
           }
           .padding([.leading,.trailing],8)

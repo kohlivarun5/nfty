@@ -19,206 +19,105 @@ struct CollectionView: View {
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   @Environment(\.openURL) var openURL
   
-  @EnvironmentObject var userWallet: UserWallet
-  
   @StateObject var userSettings = UserSettings()
   
-  private let collection : Collection
-  private let info : CollectionInfo
+  let collection : Collection
+  let info : CollectionInfo
+  let loader : CompositeRecentTradesObject.CollectionLoader?
   
-  @ObservedObject var recentTrades : NftRecentTradesObject
-  
-  @State private var selectedNumber = 0
-  @State private var action: String? = ""
-  @State private var showRarityRanking = false
-  @State private var showVault = false
-  @State private var showFloorView = false
-  
-  init(loader:CompositeRecentTradesObject.CollectionLoader) {
-    self.collection = loader.collection;
-    self.info = collection.info;
-    self.recentTrades = loader.recentTrades;
+  enum Page : Int {
+    case recent
+    case floor
+    case vault
+    case ranking
   }
   
-  struct FillAll: View {
-    let color: Color
-    
-    var body: some View {
-      GeometryReader { proxy in
-        self.color.frame(width: proxy.size.width * 1.3).fixedSize()
-      }
+  @State var page : Page
+  
+  private func title(_ page:Page) -> String {
+    switch(page) {
+    case .recent:
+      return "Recent"
+    case .floor:
+      return "Floor"
+    case .vault:
+      return "Vault"
+    case .ranking:
+      return "Ranking"
     }
-  }
-  
-  private func sorted(_ l:[NFTWithPrice]) -> [NFTWithPrice] {
-    let res = l.sorted(by:{ left,right in
-      switch(left.blockNumber,right.blockNumber) {
-      case (.none,.none):
-        return true
-      case (.some(let l),.some(let r)):
-        return l > r;
-      case (.none,.some):
-        return true;
-      case (.some,.none):
-        return false;
-      }
-    })
-    return res;
   }
   
   var body: some View {
     
-    GeometryReader { metrics in
-      ScrollView {
-        
-        LazyVGrid(
-          columns: Array(
-            repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
-            count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
-          pinnedViews: [.sectionHeaders])
-        {
-          let data = sorted(recentTrades.recentTrades);
-          ForEach(data.indices,id: \.self) { index in
-            let nft = data[index];
-            ZStack {
-              RoundedImage(
-                nft:nft.nft,
-                price:nft.indicativePriceWei,
-                collection:collection,
-                width: .normal,
-                resolution: .normal
-              )
-                .shadow(color:.accentColor,radius:0)
-                .padding()
-                .onTapGesture {
-                  //perform some tasks if needed before opening Destination view
-                  self.action = String(nft.nft.tokenId)
-                }
-              
-              NavigationLink(destination: NftDetail(
-                nft:nft.nft,
-                price:nft.indicativePriceWei,
-                collection:collection,
-                hideOwnerLink:false,
-                selectedProperties:[]
-              ),tag:String(nft.nft.tokenId),selection:$action) {}
-              .hidden()
-            }.onAppear {
-              DispatchQueue.global(qos:.userInitiated).async {
-                self.recentTrades.getRecentTrades(currentIndex:index) { }
-              }
-            }
-          }
-        }
-      }
-    }
-    .toolbar {
+    VStack(spacing:0) {
       
+      switch(self.page) {
+      case .recent:
+        CollectionRecentView(loader:loader!)
+      case .floor:
+        collection.contract.floorFetcher(collection).map {
+          TokenListPagedView(
+            collection: collection,
+            nfts: TokensListPaged(fetcher:$0))
+        }
+      case .vault:
+        collection.contract.vaultContract.map {
+          NFTXVaultViewLazy(
+            collection: collection,
+            vaultContract: $0)
+        }
+      case .ranking:
+        TokenListView(
+          collection: self.collection,
+          nfts:NftTokenList(contract:collection.contract,tokenIds:self.info.rarityRanking?.sortedTokenIds ?? [])
+        )
+      }
       
-      ToolbarItem(placement: .primaryAction) {
-        Menu {
-          
-          Button(action: {
-            openURL(
-              self.collection.info.webLink
-              ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
-            )
-          }) {
-            Label("Website", systemImage: "safari")
-          }
-          
-          switch(self.info.rarityRanking,
-                 userWallet.signedIn
-                 && userWallet.walletAddress?.hex(eip55: true) == "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4") {
-          case (.some,true):
-            Button(action: { self.showRarityRanking = true }) {
-              Label("Rarity Ranking", systemImage: "list.number")
-            }
-          default:
-            EmptyView()
-          }
-          
-          collection.contract.vaultContract.map { _ in
-            Button(action: { self.showVault = true }) {
-              Label("NFTX Vault", systemImage: "lock.rectangle.on.rectangle")
-            }
-          }
-          
-          collection.contract.floorFetcher(collection).map { _ in
-            Button(action: { self.showFloorView = true }) {
-              Label("Floor Listings", systemImage: "square.2.stack.3d.bottom.filled")
-            }
-          }
-          
-        }
-        
-      label: {
-        Label("Options", systemImage: "filemenu.and.selection")
-      }
-      .background(
-        
-        VStack {
-          
-          NavigationLink(
-            destination:
-              TokenListView(
-                collection: self.collection,
-                tokenIds:self.info.rarityRanking?.sortedTokenIds ?? []
-              )
-              .navigationBarTitle("\(info.name) Ranking",displayMode: .inline)
-              .navigationBarBackButtonHidden(true)
-              .navigationBarItems(
-                leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
-              ),
-            isActive:$showRarityRanking
-          ) {
-            EmptyView()
-          }
-          
-          collection.contract.vaultContract.map {
-            NavigationLink(
-              destination:
-                NFTXVaultViewLazy(
-                  collection: collection,
-                  vaultContract: $0),
-              isActive:$showVault
-            ) {
-              EmptyView()
-            }
-          }
-          
-          collection.contract.floorFetcher(collection).map {
-            NavigationLink(
-              destination:
-                TokenListPagedView(
-                  collection: collection,
-                  nfts: TokensListPaged(fetcher:$0)
-                ),
-              isActive:$showFloorView
-            ) {
-              EmptyView()
-            }
+      Picker(selection: Binding<Int>(
+        get: { self.page.rawValue },
+        set: { tag in
+          withAnimation { // needed explicit for transitions
+            self.page = Page(rawValue: tag)!
           }
         }
+      ),label: Text(""))
+      {
+        self.loader.map { _ in
+          Text(title(.recent)).tag(Page.recent.rawValue)
+        }
         
-      )
+        collection.contract.floorFetcher(collection).map { _ in
+          Text(title(.floor)).tag(Page.floor.rawValue)
+        }
+        
+        collection.contract.vaultContract.map { _ in
+          Text(title(.vault)).tag(Page.vault.rawValue)
+        }
+        
+        self.info.rarityRanking.map { _ in
+          Text(title(.ranking)).tag(Page.ranking.rawValue)
+        }
       }
+      .pickerStyle(SegmentedPickerStyle())
+      .colorMultiply(.accentColor)
+      .padding([.trailing,.leading])
+      .padding(.top,5)
+      .padding(.bottom,7)
       
     }
-    .navigationBarTitle(info.name)
+    .navigationBarTitle(info.name,displayMode: .inline)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
-      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() })
+      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
+      trailing:Button(action: {
+        openURL(
+          self.collection.info.webLink
+          ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
+        )
+      }) {
+        Label("Website", systemImage: "safari")
+      }
     )
-    .onAppear {
-      self.recentTrades.getRecentTrades(currentIndex: nil) {}
-    }
     
-  }
-}
-
-struct CollectionView_Previews: PreviewProvider {
-  static var previews: some View {
-    CollectionView(loader:CompositeCollection.loaders[0])
   }
 }

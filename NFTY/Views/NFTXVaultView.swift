@@ -14,7 +14,7 @@ struct NFTXVaultView: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: NFT.NftID? = nil
   
   struct SheetSelection : Identifiable {
     let id : Int
@@ -22,7 +22,7 @@ struct NFTXVaultView: View {
   @State private var sheetSelectedIndex: SheetSelection? = nil
   
   let collection : Collection
-  @ObservedObject var nfts : VaultTokensList
+  @StateObject var nfts : VaultTokensList
   
   
   var body: some View {
@@ -31,8 +31,10 @@ struct NFTXVaultView: View {
         ScrollView {
           LazyVGrid(
             columns: Array(
-              repeating:GridItem(.flexible(maximum:RoundedImage.NarrowSize + 40)),
-              count:Int((metrics.size.width / RoundedImage.NarrowSize)) - 2)
+              repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : min(200,(metrics.size.width - 20) / Double(2)))),
+              count:UIDevice.current.userInterfaceIdiom == .pad
+              ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
+              : 2)
           ) {
                 ForEach(nfts.tokens.indices,id:\.self) { index in
                   let nft = nfts.tokens[index];
@@ -40,26 +42,45 @@ struct NFTXVaultView: View {
                   
                   ZStack {
                     
-                    NftImage(
-                      nft:nft.nft,
-                      sample:info.sample,
-                      themeColor:info.themeColor,
-                      themeLabelColor:info.themeLabelColor,
-                      size:.small,
-                      resolution:.normal,
-                      favButton:.none
-                    )
-                      .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                      .shadow(color:.secondary,radius:5)
-                      .padding(10)
-                      .onTapGesture {
-                        //perform some tasks if needed before opening Destination view
-                        self.selectedTokenId = nft.nft.tokenId
-                      }
-                      .onLongPressGesture(minimumDuration: 0.1) {
-                        UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                        self.sheetSelectedIndex = SheetSelection(id:index)
-                      }
+                    if (UIDevice.current.userInterfaceIdiom == .pad) {
+                      
+                      RoundedImage(
+                        nft:nft.nft,
+                        price:.lazy(nft.indicativePriceWei),
+                        collection:collection,
+                        width: .normal,
+                        resolution: .normal
+                      )
+                        .shadow(color:.accentColor,radius:0)
+                        .padding()
+                        .onTapGesture {
+                          //perform some tasks if needed before opening Destination view
+                          self.selectedTokenId = nft.nft.id
+                        }
+                      
+                    } else {
+                      
+                      NftImage(
+                        nft:nft.nft,
+                        sample:info.sample,
+                        themeColor:info.themeColor,
+                        themeLabelColor:info.themeLabelColor,
+                        size:.small,
+                        resolution:.normal,
+                        favButton:.none
+                      )
+                        .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                        .shadow(color:.secondary,radius:5)
+                        .padding(10)
+                        .onTapGesture {
+                          //perform some tasks if needed before opening Destination view
+                          self.selectedTokenId = nft.nft.id
+                        }
+                        .onLongPressGesture(minimumDuration: 0.1) {
+                          UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                          self.sheetSelectedIndex = SheetSelection(id:index)
+                        }
+                    }
                     
                     NavigationLink(destination: NftDetail(
                       nft:nft.nft,
@@ -67,7 +88,7 @@ struct NFTXVaultView: View {
                       collection:collection,
                       hideOwnerLink:false,
                       selectedProperties:[]
-                    ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                    ),tag:nft.nft.id,selection:$selectedTokenId) {}
                     .hidden()
                   }
                   .onAppear {
@@ -96,13 +117,6 @@ struct NFTXVaultView: View {
         .preferredColorScheme(.dark)
         .accentColor(.orange)
     }
-    .navigationBarTitle(collection.info.name,displayMode: .inline)
-    .navigationBarBackButtonHidden(true)
-    .navigationBarItems(
-      leading:
-        Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
-    )
   }
   
 }
