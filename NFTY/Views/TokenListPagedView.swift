@@ -12,7 +12,7 @@ struct TokenListPagedView: View {
    
   @EnvironmentObject var userWallet: UserWallet
   
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: NFT.NftID? = nil
   
   struct SheetSelection : Identifiable {
     let id : Int
@@ -78,7 +78,7 @@ struct TokenListPagedView: View {
                       .padding()
                       .onTapGesture {
                         //perform some tasks if needed before opening Destination view
-                        self.selectedTokenId = nft.nft.tokenId
+                        self.selectedTokenId = nft.nft.id
                       }
                     
                   } else {
@@ -97,7 +97,7 @@ struct TokenListPagedView: View {
                       .padding(10)
                       .onTapGesture {
                         //perform some tasks if needed before opening Destination view
-                        self.selectedTokenId = nft.nft.tokenId
+                        self.selectedTokenId = nft.nft.id
                       }
                       .onLongPressGesture(minimumDuration: 0.1) {
                         UIImpactFeedbackGenerator(style:.medium).impactOccurred()
@@ -130,7 +130,7 @@ struct TokenListPagedView: View {
                     collection:collection,
                     hideOwnerLink:false,
                     selectedProperties:[]
-                  ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                  ),tag:nft.nft.id,selection:$selectedTokenId) {}
                   .hidden()
                 }
                 .onAppear {

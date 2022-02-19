@@ -76,7 +76,7 @@ struct CollectionView: View {
       case .ranking:
         TokenListView(
           collection: self.collection,
-          tokenIds:self.info.rarityRanking?.sortedTokenIds ?? []
+          nfts:NftTokenList(contract:collection.contract,tokenIds:self.info.rarityRanking?.sortedTokenIds ?? [])
         )
       }
       

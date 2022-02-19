@@ -38,7 +38,8 @@ struct NFTNameIdRank: View {
             .font(.caption2)
             .foregroundColor(.secondaryLabel)
         case (.none,.none):
-          EmptyView()
+          Text("")
+            .font(.footnote)
         }
      
       }
