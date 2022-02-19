@@ -22,7 +22,7 @@ struct NFTXVaultView: View {
   @State private var sheetSelectedIndex: SheetSelection? = nil
   
   let collection : Collection
-  @ObservedObject var nfts : VaultTokensList
+  @StateObject var nfts : VaultTokensList
   
   
   var body: some View {

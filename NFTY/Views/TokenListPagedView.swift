@@ -20,7 +20,7 @@ struct TokenListPagedView: View {
   @State private var sheetSelectedIndex: SheetSelection? = nil
   
   let collection : Collection
-  @ObservedObject var nfts : TokensListPaged
+  @StateObject var nfts : TokensListPaged
   
   @State private var isLoading = true
   
@@ -163,7 +163,7 @@ struct TokenListPagedViewNav: View {
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   let collection : Collection
-  @ObservedObject var nfts : TokensListPaged
+  @StateObject var nfts : TokensListPaged
   var body: some View {
     TokenListPagedView(collection: collection,nfts:nfts)
       .navigationBarTitle(collection.info.name,displayMode: .inline)

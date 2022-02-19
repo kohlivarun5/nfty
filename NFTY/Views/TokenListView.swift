@@ -11,7 +11,7 @@ import Web3
 struct TokenListView: View {
   
   let collection : Collection
-  @ObservedObject var nfts : NftTokenList
+  @StateObject var nfts : NftTokenList
   
   @State private var selectedTokenId: NFT.NftID? = nil
   
