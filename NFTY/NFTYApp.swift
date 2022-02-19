@@ -158,15 +158,6 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        NavigationView {
-          CollectionsView(collections:CompositeCollection.loaders)
-            .navigationBarTitle("Gallery")
-        }
-        .tabItem {
-          Label("Gallery",systemImage:"square.grid.3x1.fill.below.line.grid.1x2")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        
         if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
           NavigationView {
