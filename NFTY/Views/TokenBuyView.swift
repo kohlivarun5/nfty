@@ -233,7 +233,7 @@ struct TokenBuyView: View {
                     .onAppear {
                       switch(self.spot) {
                       case .loading:
-                        EthSpot.getLiveRate()
+                        UserEthRate.getLiveRate()
                           .done(on:.main) { spot in
                             switch(spot) {
                             case .none:
@@ -291,7 +291,7 @@ struct TokenBuyView: View {
       
       switch(self.spot) {
       case .loading:
-        EthSpot.getLiveRate()
+        UserEthRate.getLiveRate()
           .done(on:.main) { spot in
             switch(spot) {
             case .none:

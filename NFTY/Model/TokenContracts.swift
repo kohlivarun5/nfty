@@ -747,7 +747,7 @@ class UserEthRate {
     let data : SpotData
   }
   
-  func getLiveRate() -> Promise<Double?> {
+  static func getLiveRate() -> Promise<Double?> {
     print("Getting spot")
     switch(NSLocale.current.currencyCode) {
     case .none:
@@ -778,7 +778,7 @@ class UserEthRate {
     case .some(let p):
       return p
     case .none:
-      let p = ObservablePromise(promise: getLiveRate())
+      let p = ObservablePromise(promise: UserEthRate.getLiveRate())
       self.cache = p
       return p
     }

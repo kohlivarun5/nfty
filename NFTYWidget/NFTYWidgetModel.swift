@@ -64,7 +64,7 @@ struct Provider: IntentTimelineProvider {
     
     fetchStats()
       .then { collections in
-        EthSpot.getLiveRate()
+        UserEthRate.getLiveRate()
           .map { spot in (collections,spot) }
       }
       .done { data in

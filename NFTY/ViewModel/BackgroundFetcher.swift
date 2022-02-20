@@ -328,7 +328,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
 func performBackgroundFetch() -> Promise<Bool> {
   // Dispatch to multiple fetchers
   
-  EthSpot.getLiveRate().then { spot in
+  UserEthRate.getLiveRate().then { spot in
     fetchOffers(spot)
       .recover { error -> Promise<Bool> in
         print("FetchOffers Failed with:\(error)")
