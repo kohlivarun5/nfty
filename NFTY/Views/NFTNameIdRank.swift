@@ -15,13 +15,20 @@ struct NFTNameIdRank: View {
     let nft : NFT
     let rank : UInt?
     let floorPrice : Double?
+    let isExternalLink : Bool
     
     var body: some View {
       VStack(alignment:.leading) {
         Text(nft.name)
         HStack {
           Text("#\(nft.tokenId)")
-          DappLink(destination: DappLink.openSeaPath(nft: nft))
+          switch(isExternalLink) {
+          case true:
+            DappLink(destination: DappLink.openSeaPath(nft: nft))
+          case false:
+            Image(systemName: "arrow.right.square.fill")
+              .foregroundColor(.tertiaryLabel)
+          }
         }
         .font(.footnote)
         
@@ -58,7 +65,8 @@ struct NFTNameIdRank: View {
         collection: collection,
         nft: nft,
         rank: rank,
-        floorPrice: floorPrice)
+        floorPrice: floorPrice,
+        isExternalLink:true)
       
     case (false,.some):
       NavigationLink(
@@ -73,7 +81,8 @@ struct NFTNameIdRank: View {
           collection: collection,
           nft: nft,
           rank: rank,
-          floorPrice: floorPrice)
+          floorPrice: floorPrice,
+          isExternalLink:true)
       }
       .buttonStyle(.plain)
     }
