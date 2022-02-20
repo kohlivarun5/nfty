@@ -90,7 +90,7 @@ struct NftDetail: View {
               resolution:.hd,
               favButton:.bottomRight
             )
-              .frame(minHeight: min(metrics.size.height-260,450))
+              .frame(minHeight: min(metrics.size.height-260,400))
             
             VStack(alignment: .leading) {
               Spacer()

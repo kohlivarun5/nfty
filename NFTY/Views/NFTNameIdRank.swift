@@ -27,6 +27,7 @@ struct NFTNameIdRank: View {
         }
         .font(.footnote)
         
+        
         switch(floorPrice,rank) {
         case (.some(let floorPrice),_):
           Text("Floor Price: \(ethFormatter.string(for:floorPrice)!)")
@@ -35,14 +36,12 @@ struct NFTNameIdRank: View {
             .animation(.default)
         case (_,.some(let rank)):
           Text( "RarityRank: \(rank)")
-            .font(.caption2)
+            .font(.footnote)
             .foregroundColor(.secondaryLabel)
         case (.none,.none):
-          Text("")
-            .font(.footnote)
+          EmptyView()
         }
-     
-      }
+      }.padding([.top,.bottom],floorPrice == nil && rank == nil ? 2 : 0)
       
     case (false,.some):
       NavigationLink(
@@ -71,13 +70,12 @@ struct NFTNameIdRank: View {
               .animation(.default)
           case (_,.some(let rank)):
             Text( "RarityRank: \(rank)")
-              .font(.caption2)
+              .font(.footnote)
               .foregroundColor(.secondaryLabel)
           case (.none,.none):
             EmptyView()
           }
-          
-        }
+        }.padding([.top,.bottom],floorPrice == nil && rank == nil ? 2 : 0)
       }
       .buttonStyle(.plain)
     }

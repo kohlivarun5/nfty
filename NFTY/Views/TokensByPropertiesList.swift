@@ -19,7 +19,7 @@ struct TokensByPropertiesList: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
-  @ObservedObject var nfts : TokensByPropertiesObject
+  @StateObject var nfts : TokensByPropertiesObject
   
   @State private var selectedTokenId: UInt? = nil
   
@@ -44,71 +44,74 @@ struct TokensByPropertiesList: View {
         ScrollView {
           LazyVGrid(
             columns: Array(
-              repeating:GridItem(.flexible(maximum:RoundedImage.NarrowSize + 40)),
-              count:Int((metrics.size.width / RoundedImage.NarrowSize)) - 2)) {
-                ForEach(nfts.tokens.indices,id:\.self) { index in
-                  let nft = nfts.tokens[index];
-                  let info = collection.info
-                  
-                  ZStack {
-                    
-                    NftImage(
-                      nft:nft.nft,
-                      sample:info.sample,
-                      themeColor:info.themeColor,
-                      themeLabelColor:info.themeLabelColor,
-                      size:.small,
-                      resolution:.normal,
-                      favButton:.none
-                    )
-                      .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                      .shadow(color:.secondary,radius:5)
-                      .padding(10)
-                      .onTapGesture {
-                        //perform some tasks if needed before opening Destination view
-                        self.selectedTokenId = nft.nft.tokenId
-                      }
-                      .onLongPressGesture(minimumDuration: 0.1) {
-                        UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                        self.sheetSelectedIndex = SheetSelection(id:index)
-                      }
-                    
-                    switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
-                    case .none:
-                      EmptyView()
-                    case .some(let ask):
-                      VStack {
-                        Spacer()
-                        UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
-                          .padding([.top,.bottom],2)
-                          .padding([.leading,.trailing],20)
-                          .font(.caption)
-                          .foregroundColor(colorScheme == .dark ? .label : .white)
-                          .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.75) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
-                          .colorMultiply(.accentColor)
-                          .shadow(radius: 5)
-                      }
-                      .padding(.bottom,11)
-                    }
-                    
-                    NavigationLink(destination: NftDetail(
-                      nft:nft.nft,
-                      price:.lazy(nft.indicativePriceWei),
-                      collection:collection,
-                      hideOwnerLink:false,
-                      selectedProperties:nfts.selectedProperties
-                    ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                    .hidden()
+              repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NarrowSize+40 : min(200,(metrics.size.width - 20) / Double(2)))),
+              count:UIDevice.current.userInterfaceIdiom == .pad
+              ? Int(metrics.size.width / RoundedImage.NarrowSize) - 1
+              : 2)
+          ) {
+            ForEach(nfts.tokens.indices,id:\.self) { index in
+              let nft = nfts.tokens[index];
+              let info = collection.info
+              
+              ZStack {
+                
+                NftImage(
+                  nft:nft.nft,
+                  sample:info.sample,
+                  themeColor:info.themeColor,
+                  themeLabelColor:info.themeLabelColor,
+                  size:.small,
+                  resolution:.normal,
+                  favButton:.none
+                )
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .shadow(color:.secondary,radius:5)
+                  .padding(10)
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.selectedTokenId = nft.nft.tokenId
                   }
-                  .onAppear {
-                    DispatchQueue.global(qos:.userInitiated).async {
-                      self.nfts.next(currentIndex: index)
-                    }
+                  .onLongPressGesture(minimumDuration: 0.1) {
+                    UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+                    self.sheetSelectedIndex = SheetSelection(id:index)
                   }
+                
+                switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+                case .none:
+                  EmptyView()
+                case .some(let ask):
+                  VStack {
+                    UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
+                      .padding([.top,.bottom],2)
+                      .padding([.leading,.trailing],20)
+                      .font(.caption)
+                      .foregroundColor(colorScheme == .dark ? .label : .white)
+                      .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.75) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+                      .colorMultiply(.accentColor)
+                      .shadow(radius: 5)
+                    Spacer()
+                  }
+                  .padding(.top,11)
                 }
-              }.onAppear {
-                nfts.loadMore {} // TODO
+                
+                NavigationLink(destination: NftDetail(
+                  nft:nft.nft,
+                  price:.lazy(nft.indicativePriceWei),
+                  collection:collection,
+                  hideOwnerLink:false,
+                  selectedProperties:nfts.selectedProperties
+                ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
+                .hidden()
               }
+              .onAppear {
+                DispatchQueue.global(qos:.userInitiated).async {
+                  self.nfts.next(currentIndex: index)
+                }
+              }
+            }
+          }.onAppear {
+            nfts.loadMore {} // TODO
+          }
         }
       }
       
