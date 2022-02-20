@@ -82,7 +82,7 @@ struct NFTNameIdRank: View {
           nft: nft,
           rank: rank,
           floorPrice: floorPrice,
-          isExternalLink:true)
+          isExternalLink:false)
       }
       .buttonStyle(.plain)
     }
