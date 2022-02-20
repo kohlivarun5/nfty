@@ -19,7 +19,7 @@ struct TokensByPropertiesList: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
-  @StateObject var nfts : TokensByPropertiesObject
+  @ObservedObject var nfts : TokensByPropertiesObject
   
   @State private var selectedTokenId: UInt? = nil
   
