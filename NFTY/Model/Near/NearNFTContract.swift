@@ -158,7 +158,38 @@ class NearNFTContract : ContractInterface {
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(nft: self.getNFT(tokenId), getPrice: {
-      return ObservablePromise(resolved: NFTPriceStatus.unavailable)
+      ObservablePromise(
+        promise:
+          ParasApi.activities(contract_id: self.account_id, token_id: String(tokenId),eventType:nil,offset:nil,limit:nil)
+          .map { (result:ParasApi.ActivitiesResult) in
+            
+            result.data.results
+              .sorted {
+                $0.msg.block_height > $1.msg.block_height
+              }
+              .first {
+                switch(ParasApi.eventType($0.type)) {
+                case .none:
+                  return false
+                case .some(.bought),.some(.minted):
+                  return true
+                case .some(.ask),.some(.bid),.some(.transfer):
+                  return false
+                }
+              }
+          }.map { (result:ParasApi.ActivitiesResult.Data.Result?) -> NFTPriceStatus in
+            switch(result) {
+            case .none:
+              return NFTPriceStatus.unavailable
+            case .some(let result):
+              return NFTPriceStatus.known(
+                NFTPriceInfo(
+                  price: result.price.flatMap { BigUInt($0.numberDecimal) }.map { PriceUnit.near($0) },
+                  blockNumber:.some(.near(EthereumQuantity(quantity: BigUInt(result.msg.block_height)))),
+                  type:ParasApi.eventType(result.type)!))
+            }
+          }
+      )
     })
   }
   
@@ -168,15 +199,15 @@ class NearNFTContract : ContractInterface {
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
     /*
-    self.nearContract.nft_tokens_for_owner(owner_account_id: address, from_index: nil, limit: nil)
-      .map { tokens in
-        tokens.forEach {
-          guard let token_id = UInt($0.token_id) else { return }
-          response(getToken(token_id))
-        }
-      }
-      .catch { print($0) }
-      .finally { onDone() }
+     self.nearContract.nft_tokens_for_owner(owner_account_id: address, from_index: nil, limit: nil)
+     .map { tokens in
+     tokens.forEach {
+     guard let token_id = UInt($0.token_id) else { return }
+     response(getToken(token_id))
+     }
+     }
+     .catch { print($0) }
+     .finally { onDone() }
      */
     onDone()
   }
@@ -187,7 +218,7 @@ class NearNFTContract : ContractInterface {
       
       let contract_id : String
       let token_id : String
-    
+      
       func getEvents(onDone: @escaping () -> Void, _ response: @escaping (TradeEvent) -> Void) {
         ParasApi.activities(contract_id: self.contract_id, token_id: token_id,eventType:nil,offset:nil,limit:nil)
           .map { (result:ParasApi.ActivitiesResult) in
@@ -283,3 +314,4 @@ func NearCollection(address:String) -> Promise<Collection> {
     )
   )
 }
+

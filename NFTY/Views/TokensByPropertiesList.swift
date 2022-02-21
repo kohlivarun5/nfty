@@ -46,7 +46,7 @@ struct TokensByPropertiesList: View {
             columns: Array(
               repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NarrowSize+40 : min(200,(metrics.size.width - 20) / Double(2)))),
               count:UIDevice.current.userInterfaceIdiom == .pad
-              ? Int(metrics.size.width / RoundedImage.NarrowSize) - 1
+              ? min(4,Int(metrics.size.width / RoundedImage.NarrowSize) - 1)
               : 2)
           ) {
             ForEach(nfts.tokens.indices,id:\.self) { index in
