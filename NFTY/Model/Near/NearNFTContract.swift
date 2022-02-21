@@ -139,6 +139,17 @@ class NearNFTContract : ContractInterface {
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
+    /*
+    self.nearContract.nft_tokens_for_owner(owner_account_id: address, from_index: nil, limit: nil)
+      .map { tokens in
+        tokens.forEach {
+          guard let token_id = UInt($0.token_id) else { return }
+          response(getToken(token_id))
+        }
+      }
+      .catch { print($0) }
+      .finally { onDone() }
+     */
     onDone()
   }
   
