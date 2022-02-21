@@ -754,11 +754,32 @@ class BlockFetcherImpl {
   }
   
   private func getNearBlock(blockHeight:EthereumQuantity) -> ObservablePromise<BlockInfo?> {
-    // TODO : Implement
+    
     return ObservablePromise(
       promise: Promise { seal in
-        seal.fulfill(nil)
-      })
+        DispatchQueue.global(qos:.userInteractive).async {
+          switch(try? self.blocksCache.object(forKey:.near(blockHeight))) {
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
+            NearApi.block(block_id: blockHeight.quantity)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) {
+                seal.fulfill(
+                  $0.map {
+                    BlockInfo(timestamp:Date(timeIntervalSince1970:Double($0.header.timestamp) / Double(1e-9)))
+                  }
+                )
+              }
+              .catch {
+                print($0)
+                seal.fulfill(nil)
+              }
+          }
+        }
+      }
+    ) { block in
+      block.flatMap { try? self.blocksCache.setObject($0, forKey: .near(blockHeight)) }
+    } 
   }
   
   func getBlock(blockNumber:BlockNumber) -> ObservablePromise<BlockInfo?> {
