@@ -186,7 +186,7 @@ let XAPES_Contract = IpfsCollectionContract(
   address: "0x22C08C358f62f35B742D023Bf2fAF67e30e5376E",
   indicativePriceSource: .openSea)
 
-// let ASAC_Contract = NearNFTContract(name: "ASAC.near", account_id: "asac.near")
+let ASAC_Contract = NearNFTContract(name: "ASAC.near", account_id: "asac.near")
 
 let CompositeCollection = CompositeRecentTradesObject([
   Collection(
@@ -717,25 +717,24 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:SSFU_Contract),
   
-  /* TODO : NEAR Disabled
-   Collection(
-   info:CollectionInfo(
-   address:ASAC_Contract.contractAddressHex,
-   sample:"SAMPLE_ASAC",
-   name:ASAC_Contract.name,
-   webLink: URL(string:"https://antisocialape.club")!,
-   themeColor:Color.gunmetal,
-   themeLabelColor:Color.white,
-   disableRecentTrades:true,
-   similarTokens : SimilarTokensGetter(
-   label:"Apes",
-   nearestTokensFileName:"asac.near_nearestTokens.json",
-   propertiesJsonFileName:"asac.near_attributeScores.json"
-   ),
-   rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
-   ),
-   contract:ASAC_Contract),
-   */
+  Collection(
+    info:CollectionInfo(
+      address:ASAC_Contract.contractAddressHex,
+      sample:"SAMPLE_ASAC",
+      name:ASAC_Contract.name,
+      webLink: URL(string:"https://antisocialape.club")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:true,
+      similarTokens : SimilarTokensGetter(
+        label:"Apes",
+        nearestTokensFileName:"asac.near_nearestTokens.json",
+        propertiesJsonFileName:"asac.near_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
+    ),
+    contract:ASAC_Contract),
+  
   Collection(
     info:CollectionInfo(
       address:cryptoKittiesContract.contractAddressHex,

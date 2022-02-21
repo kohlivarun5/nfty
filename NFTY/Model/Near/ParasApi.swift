@@ -34,19 +34,18 @@ struct ParasApi {
         print("Calling \(request.url!)")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
           if let error = error { return seal.reject(error) }
-          // print(data)
-          // print(String(decoding:data!,as:UTF8.self))
-          switch(data.flatMap { try? JSONDecoder().decode(Result.self, from: $0) }) {
-          case .some(let result):
-            seal.fulfill(result)
-          case .none:
-            if let httpResponse = response as? HTTPURLResponse {
-              let error = HTTPError.error(status: httpResponse.statusCode,
-                                          message: data.flatMap({ String(data: $0, encoding: .utf8) }))
-              seal.reject(error)
-            } else {
-              seal.reject(HTTPError.unknown)
+          
+          do {
+            switch(data) {
+            case .some(let data):
+                seal.fulfill(try JSONDecoder().decode(Result.self, from: data))
+            case .none:
+              // print(data,response,error)
+              seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
             }
+          } catch {
+            // print(data,response,error)
+            seal.reject(error)
           }
         }
         task.resume()
@@ -104,28 +103,31 @@ struct ParasApi {
         let _id : String
         let contract_id : String
         let type : String
-        let from : String
-        let to : String
+        let from : String?
+        let to : String?
         let token_id : String
-        let token_seties_id : String
         
         struct Price : Decodable {
           let numberDecimal : String
         }
         
-        let price : Price
+        let price : Price?
         
         struct Msg : Decodable {
           
           let contract_id : String
           let block_height : UInt
+          let datetime : String
           let event_type : String
+          
+          /*
           struct Params : Decodable {
             let price : String
             let receiver_id : String
             let token_id : String
           }
           let params : Params
+           */
           
         }
         let msg : Msg

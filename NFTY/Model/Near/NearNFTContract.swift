@@ -161,12 +161,18 @@ class NearNFTContract : ContractInterface {
       let token_id : String
     
       
-      private func eventType(_ type:String) -> TradeEventType {
+      private func eventType(_ type:String) -> TradeEventType? {
         switch(type) {
         case "nft_transfer":
           return TradeEventType.transfer
+        case "resolve_purchase":
+          return TradeEventType.bought
+        case "add_offer":
+          return TradeEventType.bid
+        case "add_market_data":
+          return TradeEventType.ask
         default:
-          return TradeEventType.transfer
+          return nil
         }
       }
       
@@ -175,10 +181,13 @@ class NearNFTContract : ContractInterface {
           .map { (result:ParasApi.ActivitiesResult) in
             
             result.data.results.map { result in
+              print(result)
+              
+              guard let type = eventType(result.type) else { return }
               response(
                 TradeEvent(
-                  type: eventType(result.type),
-                  value: (try? BigUInt(result.msg.params.price)) ?? 0,
+                  type: type,
+                  value:  result.price.flatMap { BigUInt($0.numberDecimal) } ?? 0,
                   blockNumber: EthereumQuantity.init(integerLiteral: UInt64(result.msg.block_height))) // TODO Chose a different block height
               )
             }
