@@ -123,8 +123,8 @@ class PhunksContract : ContractInterface {
         }
       }.map { prices in
         return BidAsk(
-          bid:prices.0.map { BidInfo(wei:$0,expiration_time:nil) },
-          ask:prices.1.map { AskInfo(wei:$0,expiration_time:nil) }
+          bid:prices.0.map { BidInfo(price:.wei($0),expiration_time:nil) },
+          ask:prices.1.map { AskInfo(price:.wei($0),expiration_time:nil) }
         )
       }
     }

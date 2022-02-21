@@ -164,7 +164,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return AskInfo(wei: wei,expiration_time:order.expiration_time)
+              return AskInfo(price:.wei(wei),expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -174,7 +174,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return BidInfo(wei: wei,expiration_time:order.expiration_time)
+              return BidInfo(price: .wei(wei),expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -192,7 +192,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return AskInfo(wei: wei,expiration_time:order.expiration_time)
+            return AskInfo(price:.wei(wei),expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -202,7 +202,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return BidInfo(wei: wei,expiration_time:order.expiration_time)
+            return BidInfo(price:.wei(wei),expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -255,7 +255,7 @@ struct OpenSeaApi {
                             ObservablePromise<NFTPriceStatus>(
                               resolved: NFTPriceStatus.known(
                                 NFTPriceInfo(
-                                  price: wei,
+                                  wei: wei,
                                   date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
                                   type:AssetOrder.sideToEvent(order.side))
                               )

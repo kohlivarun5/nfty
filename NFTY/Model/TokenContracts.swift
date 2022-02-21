@@ -209,6 +209,21 @@ func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
   return price.flatMap { $0 != 0 ? $0 : nil }
 }
 
+func priceIfNotZero(_ price:PriceUnit?) -> BigUInt? {
+  switch(price) {
+  case .some(.wei(0)):
+    return nil
+  case .some(.near(0)):
+    return nil
+  case .none:
+    return nil
+  case .some(.wei(let x)):
+    return x
+  case .some(.near(let x)):
+    return x
+  }
+}
+
 
 class CryptoKittiesAuction : ContractInterface {
   func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { return nil }
@@ -372,7 +387,7 @@ class CryptoKittiesAuction : ContractInterface {
           media:.image(self.getMediaImage(tokenId))),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.eager(NFTPriceInfo(
-                                    price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+                                    wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
                                     blockNumber: log.blockNumber?.quantity,
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
@@ -391,7 +406,7 @@ class CryptoKittiesAuction : ContractInterface {
           media:.image(self.getMediaImage(tokenId))),
         blockNumber: log.blockNumber?.quantity,
         indicativePriceWei:.eager(NFTPriceInfo(
-                                    price: priceIfNotZero(res["totalPrice"] as? BigUInt),
+                                    wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
                                     blockNumber: log.blockNumber?.quantity,
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
@@ -406,7 +421,7 @@ class CryptoKittiesAuction : ContractInterface {
         log.blockNumber.map { blockNumber in
           // CryptoKitties does not index logs, so we filter here
           if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
-            events.append(TradeEvent(type: .bought, value: res["totalPrice"] as! BigUInt, blockNumber:blockNumber))
+            events.append(TradeEvent(type: .bought, value: .wei(res["totalPrice"] as! BigUInt), blockNumber:blockNumber))
           }
         }
       }
@@ -459,7 +474,7 @@ class CryptoKittiesAuction : ContractInterface {
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -580,7 +595,7 @@ class AutoglyphsContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
+                    wei:price,
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
@@ -610,7 +625,7 @@ class AutoglyphsContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
+                    wei:price,
                     blockNumber:log.blockNumber?.quantity,
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
@@ -641,7 +656,7 @@ class AutoglyphsContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }

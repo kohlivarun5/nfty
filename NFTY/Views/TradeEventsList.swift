@@ -104,7 +104,7 @@ struct TradeEventsList: View {
             VStack {
               
               switch(event.value,event.type) {
-              case (0,.bought):
+              case (.wei(0),.bought),(.near(0),.bought):
                 HStack {
                   Text("Transfer")
                     .frame(width:120,alignment: .trailing)
@@ -116,7 +116,7 @@ struct TradeEventsList: View {
                 }
                 .foregroundColor(.secondaryLabel)
                 .font(.footnote)
-              case (0,_):
+              case (.wei(0),_),(.near(0),_):
                 HStack {
                   Text("")
                     .frame(width:120,alignment: .trailing)
@@ -130,7 +130,7 @@ struct TradeEventsList: View {
               default:
                 HStack {
                   UsdEthVText(
-                    wei:event.value,
+                    price:event.value,
                     fontWeight: event.type == .bought ? .semibold : nil,
                     alignment:.trailing
                   )
@@ -171,12 +171,12 @@ struct TradeEventsList_Previews: PreviewProvider {
   class SampleEvents : TokenEventsFetcher {
     func getEvents(onDone: @escaping () -> Void, _ response: @escaping (TradeEvent) -> Void) {
       
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: BigUInt(0), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
       onDone()
     }
     

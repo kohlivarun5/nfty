@@ -76,12 +76,12 @@ struct TokensByPropertiesList: View {
                     self.sheetSelectedIndex = SheetSelection(id:index)
                   }
                 
-                switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+                switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.price) {
                 case .none:
                   EmptyView()
                 case .some(let ask):
                   VStack {
-                    UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
+                    UsdEthVText(price: ask, fontWeight: .semibold,alignment:.center)
                       .padding([.top,.bottom],2)
                       .padding([.leading,.trailing],20)
                       .font(.caption)

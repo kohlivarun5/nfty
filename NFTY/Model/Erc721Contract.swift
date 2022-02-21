@@ -102,18 +102,18 @@ class Erc721Contract {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
         }
       }
       .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
         switch(event?.value) {
-        case .none,.some(0):
+        case .none,.some(.wei(0)):
           return wethFetcher.valueOfTx(transactionHash: transactionHash)
             .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
               switch(txData) {
               case .none: return nil
               case .some(let tx):
-                return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
               }
             }
         case .some:
@@ -206,21 +206,21 @@ class Erc721Contract {
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:
-              return TradeEvent(type:type ?? .transfer,value:BigUInt(0),blockNumber:log.blockNumber!)
+              return TradeEvent(type:type ?? .transfer,value:.wei(BigUInt(0)),blockNumber:log.blockNumber!)
             case .some(let tx):
-              return TradeEvent(type:type ?? .bought,value:tx.value,blockNumber:tx.blockNumber)
+              return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:tx.blockNumber)
             }
           }
           .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent) -> Promise<TradeEvent> in
             switch(event.value) {
-            case 0:
+            case .wei(0):
               return wethFetcher.valueOfTx(transactionHash: log.transactionHash)
                 .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
                   switch(txData) {
                   case .none:
                     return event
                   case .some(let tx):
-                    return TradeEvent(type:type ?? .bought,value:tx.value,blockNumber:tx.blockNumber)
+                    return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:tx.blockNumber)
                   }
                 }
             default:

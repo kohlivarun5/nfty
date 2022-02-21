@@ -126,18 +126,18 @@ class AsciiPunksContract : ContractInterface {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
         }
       }
       .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
         switch(event?.value) {
-        case .none,.some(0):
+        case .none,.some(.wei(0)):
           return wethFetcher.valueOfTx(transactionHash: transactionHash)
             .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:WETHFetcher.Info?) in
               switch(txData) {
               case .none: return nil
               case .some(let tx):
-                return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
               }
             }
         case .some:
@@ -167,7 +167,7 @@ class AsciiPunksContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
+                    wei:price,
                     blockNumber:log.blockNumber?.quantity,
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
@@ -197,7 +197,7 @@ class AsciiPunksContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
+                    wei:price,
                     blockNumber:log.blockNumber?.quantity,
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
@@ -274,7 +274,7 @@ class AsciiPunksContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }

@@ -164,8 +164,8 @@ class CryptoPunksContract : ContractInterface {
         }
       }.map { prices in
         return BidAsk(
-          bid:prices.0.map { BidInfo(wei:$0,expiration_time:nil) },
-          ask:prices.1.map { AskInfo(wei:$0,expiration_time:nil) }
+          bid:prices.0.map { BidInfo(price:.wei($0),expiration_time:nil) },
+          ask:prices.1.map { AskInfo(price:.wei($0),expiration_time:nil) }
         )
       }
     }
@@ -195,7 +195,7 @@ class CryptoPunksContract : ContractInterface {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
         }
       }
   }
@@ -213,7 +213,7 @@ class CryptoPunksContract : ContractInterface {
         blockNumber: blockNumber,
         indicativePriceWei:.eager(
           NFTPriceInfo(
-            price:value,
+            wei:value,
             blockNumber: blockNumber,
             type:type))
       ))
@@ -233,7 +233,7 @@ class CryptoPunksContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
+                    wei:price,
                     blockNumber:blockNumber,
                     type: price.map { _ in type } ?? TradeEventType.transfer))
               }
@@ -315,7 +315,7 @@ class CryptoPunksContract : ContractInterface {
       punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
         log.blockNumber.map { blockNumber in
-          events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
+          events.append(TradeEvent(type: .bought, value: .wei(res["value"] as! BigUInt), blockNumber:blockNumber))
         }
       }
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { boughtEvents -> Promise<[TradeEvent]> in
@@ -325,7 +325,7 @@ class CryptoPunksContract : ContractInterface {
           //print(log);
           let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
           log.blockNumber.map { blockNumber in
-            events.append(TradeEvent(type: .ask, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+            events.append(TradeEvent(type: .ask, value: .wei(res["minValue"] as! BigUInt), blockNumber:blockNumber))
           }
         }
       }
@@ -390,7 +390,7 @@ class CryptoPunksContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -450,7 +450,7 @@ class CryptoPunksContract : ContractInterface {
         if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
           type = .minted
         }
-        response(TradeEvent(type:type, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:type, value: .wei(res["value"] as! BigUInt), blockNumber:log.blockNumber!))
       }
       
       punkOfferedFetcher.fetchAllLogs(onDone: {
@@ -458,7 +458,7 @@ class CryptoPunksContract : ContractInterface {
         if (counter >= 3) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
-        response(TradeEvent(type:.ask, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:.ask, value: .wei(res["minValue"] as! BigUInt), blockNumber:log.blockNumber!))
       }
       
       punkBidFetcher.fetchAllLogs(onDone: {
@@ -466,7 +466,7 @@ class CryptoPunksContract : ContractInterface {
         if (counter >= 3) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkBidEntered,from:log);
-        response(TradeEvent(type:.bid, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:.bid, value: .wei(res["value"] as! BigUInt), blockNumber:log.blockNumber!))
       }
     }
     

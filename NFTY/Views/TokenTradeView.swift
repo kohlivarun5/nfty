@@ -106,7 +106,7 @@ struct TokenTradeView_Previews: PreviewProvider {
   static var previews: some View {
     TokenTradeView(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
+      price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),
       collection:SampleCollection,
       userWallet:UserWallet(),
       isSheet:true)

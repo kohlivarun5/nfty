@@ -26,8 +26,8 @@ struct TokenTradeActions: View {
   
   @State private var tradeActions : TradeActionInfo? = nil
   
-  @State var currentBidPriceInWei : BigUInt?
-  @State var currentAskPriceInWei : BigUInt?
+  @State var currentBidPrice : PriceUnit?
+  @State var currentAskPrice : PriceUnit?
   
   enum ActionsState {
     case buyActions
@@ -54,7 +54,7 @@ struct TokenTradeActions: View {
     
     VStack {
       
-      switch (tradeActions,currentBidPriceInWei,currentAskPriceInWei) {
+      switch (tradeActions,currentBidPrice,currentAskPrice) {
       case (.none,_,_),(_,.none,.none):
         EmptyView()
         
@@ -65,7 +65,7 @@ struct TokenTradeActions: View {
             .foregroundColor(.secondary)
             .italic()
           Spacer()
-          UsdEthHText(wei: bidPrice,fontWeight:.semibold)
+          UsdEthHText(price: bidPrice,fontWeight:.semibold)
           Spacer()
         }
         .font(.title3)
@@ -79,7 +79,7 @@ struct TokenTradeActions: View {
             .foregroundColor(.secondary)
             .italic()
           Spacer()
-          UsdEthHText(wei: askPrice,fontWeight:.semibold)
+          UsdEthHText(price: askPrice,fontWeight:.semibold)
           Spacer()
         }
         .font(.title3)
@@ -96,7 +96,7 @@ struct TokenTradeActions: View {
                 .italic()
                 .foregroundColor(.secondary)
                 .padding(.bottom,1)
-              UsdEthHText(wei: bidPrice,fontWeight:.semibold)
+              UsdEthHText(price: bidPrice,fontWeight:.semibold)
             }
             Spacer()
           }
@@ -108,7 +108,7 @@ struct TokenTradeActions: View {
                 .italic()
                 .foregroundColor(.secondary)
                 .padding(.bottom,1)
-              UsdEthHText(wei: askPrice,fontWeight:.semibold)
+              UsdEthHText(price: askPrice,fontWeight:.semibold)
             }
             Spacer()
           }
@@ -196,7 +196,7 @@ struct TokenTradeActions: View {
             }
           }
           .padding(.bottom,10)
-          .padding(.top,currentBidPriceInWei == nil && currentAskPriceInWei == nil ? 10 : 0)
+          .padding(.top,currentBidPrice == nil && currentAskPrice == nil ? 10 : 0)
         }
       }
       
@@ -215,8 +215,8 @@ struct TokenTradeActions: View {
         
         self.tradeActions?.bidAsk
           .done {
-            self.currentBidPriceInWei = $0.bid.map { $0.wei }
-            self.currentAskPriceInWei = $0.ask.map { $0.wei }
+            self.currentBidPrice = $0.bid.map { $0.price }
+            self.currentAskPrice = $0.ask.map { $0.price }
           }
           .catch { print($0) }
       }
@@ -236,7 +236,7 @@ struct TokenTradeActions_Previews: PreviewProvider {
   static var previews: some View {
     TokenTradeActions(
       nft: SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
+      price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),
       collection:SampleCollection,
       size:.normal,
       userWallet: UserWallet())

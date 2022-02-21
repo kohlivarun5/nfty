@@ -72,7 +72,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   struct Order : Codable {
     let contract_address : String
     let token_id : UInt
-    let wei : BigUInt
+    let price : PriceUnit
     let expiration_time : UInt?
   }
   
@@ -100,7 +100,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                   (collection,
                    bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
                     bidAsk.ask.map {
-                      Order(contract_address: address, token_id: tokenId, wei: $0.wei,expiration_time: $0.expiration_time)
+                      Order(contract_address: address, token_id: tokenId, price: $0.price,expiration_time: $0.expiration_time)
                     }
                   }
                   )
@@ -141,7 +141,15 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                   && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
                 try? salesCache.removeObject(forKey: key)
               }
-              else if (entry.wei == order.wei) { return nil }
+              else {
+                switch(entry.price,order.price) {
+                case (.wei,.near),(.near,.wei):
+                  assertionFailure("Incompatible orders for same collection")
+                case (.near(let a),.near(let b)),(.wei(let a),.wei(let b)):
+                  if (a == b) { return nil}
+                }
+                
+              }
             }
             
             try! salesCache.setObject(
@@ -160,10 +168,13 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               let content = UNMutableNotificationContent()
               content.title = "Favorite for Sale"
               content.subtitle = "\(collection.info.name) #\(order.token_id)"
-              let wei = order.wei
-              content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
-              // content.sound = UNNotificationSound.default
               
+              switch(order.price) {
+              case .wei(let wei):
+                content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
+              case .near(let near):
+                content.body = "On sale for \(PriceString(price:.near(near)) )"
+              }
               print("ImageUrl=\(String(describing:imageUrl))")
               
               imageUrl.map {

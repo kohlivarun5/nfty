@@ -126,8 +126,8 @@ struct FavoritesView: View {
                                     return ObservablePromise<NFTPriceStatus>(
                                       resolved: NFTPriceStatus.known(
                                         NFTPriceInfo(
-                                          price: ask.wei,
-                                          blockNumber: nil,
+                                          price: ask.price,
+                                          blockNumber: .none,
                                           type: TradeEventType.ask))
                                     )
                                   }),forKey:String(tokenId))

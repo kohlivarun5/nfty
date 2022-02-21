@@ -56,7 +56,7 @@ class NearNFTContract : ContractInterface {
             NFTWithPrice(
               nft: self.getNFT(tokenId  ),
               blockNumber: nil, // TODO
-              indicativePriceWei: TokenPriceType.eager(NFTPriceInfo(price: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
+              indicativePriceWei: TokenPriceType.eager(NFTPriceInfo(near: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
           )
         }
       }
@@ -197,7 +197,7 @@ class NearNFTContract : ContractInterface {
               response(
                 TradeEvent(
                   type: type,
-                  value:  result.price.flatMap { BigUInt($0.numberDecimal) } ?? 0,
+                  value:  result.price.flatMap { BigUInt($0.numberDecimal) }.map { PriceUnit.near($0) } ?? PriceUnit.near(BigUInt(0)),
                   blockNumber: EthereumQuantity.init(integerLiteral: UInt64(result.msg.block_height))) // TODO Chose a different block height
               )
             }
@@ -248,7 +248,7 @@ class NearNFTContract : ContractInterface {
                 ObservablePromise<NFTPriceStatus>(
                   resolved: NFTPriceStatus.known(
                     NFTPriceInfo(
-                      price: price,
+                      near: price,
                       date:nil,
                       type:TradeEventType.ask)
                   )
