@@ -10,23 +10,21 @@ import BigInt
 import Web3
 
 struct BlockTimestampView : View {
-  @ObservedObject var block : ObservablePromise<EthereumBlockObject?>
+  @ObservedObject var block : ObservablePromise<BlockFetcherImpl.BlockInfo?>
   
   var body: some View {
     ObservedPromiseView(data: block, progress: {Text(" ··· ")}) { block in
       Text(
-        (block?.timestamp).map {
-          Date(timeIntervalSince1970:Double($0.quantity)).timeAgoDisplay()
-        } ?? " ··· "
+        (block?.timestamp).map { $0.timeAgoDisplay() } ?? " ··· "
       )
     }
   }
 }
 
 struct BlockTimeLabel: View {
-  let blockNumber : BigUInt?
+  let blockNumber : BlockNumber?
   
-  init(blockNumber:BigUInt?) {
+  init(blockNumber:BlockNumber?) {
     self.blockNumber = blockNumber
   }
   
@@ -36,7 +34,7 @@ struct BlockTimeLabel: View {
       Text(" ··· ")
     case .some(let blockNum):
       BlockTimestampView(
-        block:BlocksFetcher.getBlock(blockNumber:.block(blockNum)))
+        block:BlocksFetcher.getBlock(blockNumber:blockNum))
     }
   }
 }

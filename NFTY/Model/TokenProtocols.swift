@@ -303,7 +303,7 @@ class NftRecentEventsObject : ObservableObject {
       DispatchQueue.main.async {
         self.events.append(event)
         self.events.sort { left, right in
-          return left.blockNumber.quantity > right.blockNumber.quantity
+          return left.blockNumber > right.blockNumber
         }
       }
     }

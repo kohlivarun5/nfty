@@ -153,7 +153,7 @@ class GenesisBlockContract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))
         ),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber: log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -163,7 +163,7 @@ class GenesisBlockContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber: log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -185,7 +185,7 @@ class GenesisBlockContract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))
         ),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber: log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -195,7 +195,7 @@ class GenesisBlockContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber: log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -227,7 +227,7 @@ class GenesisBlockContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }

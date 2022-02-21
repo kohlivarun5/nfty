@@ -126,7 +126,7 @@ class AsciiPunksContract : ContractInterface {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
         }
       }
       .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
@@ -137,7 +137,7 @@ class AsciiPunksContract : ContractInterface {
               switch(txData) {
               case .none: return nil
               case .some(let tx):
-                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
+                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
               }
             }
         case .some:
@@ -158,7 +158,7 @@ class AsciiPunksContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -168,7 +168,7 @@ class AsciiPunksContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -188,7 +188,7 @@ class AsciiPunksContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -198,7 +198,7 @@ class AsciiPunksContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -235,14 +235,14 @@ class AsciiPunksContract : ContractInterface {
       }
     }
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
-      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+      events.sorted(by: { $0.blockNumber > $1.blockNumber})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count) {
       case 0:
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
-              blockNumber:transerFetcher.fromBlock
+              blockNumber:.ethereum(EthereumQuantity(quantity: transerFetcher.fromBlock))
             )
           )
         )
@@ -274,7 +274,7 @@ class AsciiPunksContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }

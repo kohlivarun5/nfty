@@ -102,7 +102,7 @@ class Erc721Contract {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
         }
       }
       .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent?) -> Promise<TradeEvent?> in
@@ -113,7 +113,7 @@ class Erc721Contract {
               switch(txData) {
               case .none: return nil
               case .some(let tx):
-                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:tx.blockNumber)
+                return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
               }
             }
         case .some:
@@ -147,14 +147,14 @@ class Erc721Contract {
       }
     }
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
-      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+      events.sorted(by: { $0.blockNumber > $1.blockNumber})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count) {
       case 0:
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
-              blockNumber:fetcher.fromBlock
+              blockNumber:.ethereum(EthereumQuantity(quantity: fetcher.fromBlock))
             )
           )
         )
@@ -206,9 +206,9 @@ class Erc721Contract {
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:
-              return TradeEvent(type:type ?? .transfer,value:.wei(BigUInt(0)),blockNumber:log.blockNumber!)
+              return TradeEvent(type:type ?? .transfer,value:.wei(BigUInt(0)),blockNumber:.ethereum(log.blockNumber!))
             case .some(let tx):
-              return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:tx.blockNumber)
+              return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
             }
           }
           .then (on:DispatchQueue.global(qos:.userInitiated)) { (event:TradeEvent) -> Promise<TradeEvent> in
@@ -220,7 +220,7 @@ class Erc721Contract {
                   case .none:
                     return event
                   case .some(let tx):
-                    return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:tx.blockNumber)
+                    return TradeEvent(type:type ?? .bought,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
                   }
                 }
             default:

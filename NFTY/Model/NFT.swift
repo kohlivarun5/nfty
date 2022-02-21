@@ -24,14 +24,40 @@ enum PriceUnit : Codable {
   case near(BigUInt)
 }
 
+enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
+  case ethereum(EthereumQuantity)
+  case near(EthereumQuantity)
+  
+  public static func < (a: BlockNumber, b: BlockNumber) -> Bool {
+    switch(a,b) {
+    case (.ethereum(let x),.ethereum(let y)),(.near(let x),.near(let y)):
+      return x.quantity < y.quantity
+    case (.ethereum,.near):
+      assertionFailure("Incompatible blocks")
+      return true
+    case (.near,ethereum):
+      assertionFailure("Incompatible blocks")
+      return false
+    }
+  }
+  
+  var id : BigUInt {
+    switch(self) {
+    case .ethereum(let q),.near(let q):
+      return q.quantity
+    }
+  }
+  
+}
+
 struct TradeEvent {
   var type : TradeEventType
   var value : PriceUnit
-  var blockNumber : EthereumQuantity
+  var blockNumber : BlockNumber
 }
 
 struct NFTNotSeenSince {
-  var blockNumber : BigUInt
+  var blockNumber : BlockNumber
 }
 
 enum TradeEventStatus {
@@ -148,7 +174,7 @@ struct NFTPriceInfo {
   
   enum BlockTimeStamp {
     case none
-    case some(BigUInt)
+    case some(BlockNumber)
     case date(Date)
   }
   
@@ -161,7 +187,7 @@ struct NFTPriceInfo {
     self.type = type
   }
   
-  init(wei:BigUInt?, blockNumber:BigUInt?,type:TradeEventType) {
+  init(wei:BigUInt?, blockNumber:BlockNumber?,type:TradeEventType) {
     self.price = wei.map { .wei($0) }
     self.type = type
     switch(blockNumber) {
@@ -217,7 +243,7 @@ enum TokenPriceType {
 
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let blockNumber : BigUInt?
+  let blockNumber : BlockNumber?
   let indicativePrice : TokenPriceType
   
   var id : NFT.NftID {

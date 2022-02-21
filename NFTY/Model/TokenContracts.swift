@@ -385,10 +385,10 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.eager(NFTPriceInfo(
                                     wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
-                                    blockNumber: log.blockNumber?.quantity,
+                                    blockNumber:log.blockNumber.map { .ethereum($0) },
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
     }
@@ -404,10 +404,10 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.eager(NFTPriceInfo(
                                     wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
-                                    blockNumber: log.blockNumber?.quantity,
+                                    blockNumber:log.blockNumber.map { .ethereum($0) },
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
     }
@@ -421,20 +421,20 @@ class CryptoKittiesAuction : ContractInterface {
         log.blockNumber.map { blockNumber in
           // CryptoKitties does not index logs, so we filter here
           if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
-            events.append(TradeEvent(type: .bought, value: .wei(res["totalPrice"] as! BigUInt), blockNumber:blockNumber))
+            events.append(TradeEvent(type: .bought, value: .wei(res["totalPrice"] as! BigUInt), blockNumber:.ethereum(blockNumber)))
           }
         }
       }
     }
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
-      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+      events.sorted(by: { $0.blockNumber > $1.blockNumber})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
-              blockNumber:fetcher.fromBlock
+              blockNumber:.ethereum(EthereumQuantity(quantity: fetcher.fromBlock))
             )
           )
         )
@@ -474,7 +474,7 @@ class CryptoKittiesAuction : ContractInterface {
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -586,7 +586,7 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -596,7 +596,7 @@ class AutoglyphsContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -616,7 +616,7 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
             promise:
@@ -626,7 +626,7 @@ class AutoglyphsContract : ContractInterface {
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
                     wei:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -656,7 +656,7 @@ class AutoglyphsContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -718,21 +718,29 @@ class AutoglyphsContract : ContractInterface {
 
 class BlockFetcherImpl {
   
-  private var blocksCache = try! DiskStorage<EthereumQuantityTag, EthereumBlockObject>(
-    config: DiskConfig(name: "BlockFetcherCache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: EthereumBlockObject.self))
+  struct BlockInfo : Codable {
+    let timestamp : Date
+  }
   
-  func getBlock(blockNumber:EthereumQuantityTag) -> ObservablePromise<EthereumBlockObject?> {
+  private var blocksCache = try! DiskStorage<BlockNumber, BlockInfo>(
+    config: DiskConfig(name: "BlockFetcherImplCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: BlockInfo.self))
+  
+  private func getEthereumBlock(blockNumber:EthereumQuantity) -> ObservablePromise<BlockInfo?> {
     return ObservablePromise(
       promise: Promise { seal in
         DispatchQueue.global(qos:.userInteractive).async {
-          switch(try? self.blocksCache.object(forKey:blockNumber)) {
+          switch(try? self.blocksCache.object(forKey:.ethereum(blockNumber))) {
           case .some(let p):
             seal.fulfill(p)
           case .none:
             print("getBlockByNumber")
-            web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
-              .done(on:DispatchQueue.global(qos:.userInteractive)) { seal.fulfill($0) }
+            web3.eth.getBlockByNumber(block:.block(blockNumber.quantity), fullTransactionObjects: false)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) {
+                seal.fulfill(($0?.timestamp).map {
+                  BlockInfo(timestamp:Date(timeIntervalSince1970:Double($0.quantity)))
+                })
+              }
               .catch {
                 print($0)
                 seal.fulfill(nil)
@@ -741,7 +749,24 @@ class BlockFetcherImpl {
         }
       }
     ) { block in
-      block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
+      block.flatMap { try? self.blocksCache.setObject($0, forKey: .ethereum(blockNumber)) }
+    }
+  }
+  
+  private func getNearBlock(blockHeight:EthereumQuantity) -> ObservablePromise<BlockInfo?> {
+    // TODO : Implement
+    return ObservablePromise(
+      promise: Promise { seal in
+        seal.fulfill(nil)
+      })
+  }
+  
+  func getBlock(blockNumber:BlockNumber) -> ObservablePromise<BlockInfo?> {
+    switch(blockNumber) {
+    case .ethereum(let blockNumber):
+      return self.getEthereumBlock(blockNumber: blockNumber)
+    case .near(let blockHeight):
+      return self.getNearBlock(blockHeight:blockHeight)
     }
   }
   

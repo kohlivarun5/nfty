@@ -99,7 +99,7 @@ struct TradeEventsList: View {
       case false:
         ScrollView {
           
-          ForEach(events.events,id:\.self.blockNumber.quantity) { event in
+          ForEach(events.events,id:\.self.blockNumber.id) { event in
             
             VStack {
               
@@ -111,7 +111,7 @@ struct TradeEventsList: View {
                   Spacer()
                   TradeEventIconView(type:.transfer)
                   Spacer()
-                  BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  BlockTimeLabel(blockNumber: event.blockNumber)
                     .frame(width:120,alignment: .trailing)
                 }
                 .foregroundColor(.secondaryLabel)
@@ -123,7 +123,7 @@ struct TradeEventsList: View {
                   Spacer()
                   TradeEventIconView(type:event.type)
                   Spacer()
-                  BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  BlockTimeLabel(blockNumber: event.blockNumber)
                     .frame(width:120,alignment: .trailing)
                 }
                 .foregroundColor(event.type == .bought || event.type == .minted ? .label : .secondary)
@@ -138,7 +138,7 @@ struct TradeEventsList: View {
                   Spacer()
                   TradeEventIconView(type:event.type)
                   Spacer()
-                  BlockTimeLabel(blockNumber: event.blockNumber.quantity)
+                  BlockTimeLabel(blockNumber: event.blockNumber)
                     .frame(width:120,alignment: .trailing)
                 }
                 .foregroundColor(event.type == .bought || event.type == .minted ? .label : .secondary)
@@ -171,12 +171,12 @@ struct TradeEventsList_Previews: PreviewProvider {
   class SampleEvents : TokenEventsFetcher {
     func getEvents(onDone: @escaping () -> Void, _ response: @escaping (TradeEvent) -> Void) {
       
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
-      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: EthereumQuantity(quantity:BigUInt(10))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
+      response(TradeEvent(type: TradeEventType.bought, value: .wei(BigUInt(0)), blockNumber: .ethereum(EthereumQuantity(quantity:BigUInt(10)))))
       onDone()
     }
     

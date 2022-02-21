@@ -198,7 +198,7 @@ class NearNFTContract : ContractInterface {
                 TradeEvent(
                   type: type,
                   value:  result.price.flatMap { BigUInt($0.numberDecimal) }.map { PriceUnit.near($0) } ?? PriceUnit.near(BigUInt(0)),
-                  blockNumber: EthereumQuantity.init(integerLiteral: UInt64(result.msg.block_height))) // TODO Chose a different block height
+                  blockNumber: .near(EthereumQuantity(quantity: BigUInt(result.msg.block_height))))
               )
             }
             
