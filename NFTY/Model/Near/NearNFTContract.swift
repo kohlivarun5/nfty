@@ -22,6 +22,12 @@ class NearNFTContract : ContractInterface {
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   
+  struct RecentEventsPager {
+    var offset : UInt = 0
+    let limit : UInt = 20
+  }
+  private var recentEventsPager : RecentEventsPager
+  
   init(name:String,account_id:String) {
     self.name = name
     self.account_id = account_id
@@ -33,10 +39,32 @@ class NearNFTContract : ContractInterface {
     self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(contractAddressHex).ImageCacheHD",expiry: .never),
       transformer: TransformerFactory.forImage())
+    
+    self.recentEventsPager = RecentEventsPager()
   }
   
   func getRecentTrades(onDone: @escaping () -> Void, _ response: @escaping (NFTWithPrice) -> Void) {
-    onDone()
+    let type = TradeEventType.bought
+    ParasApi.activities(contract_id: self.account_id, token_id: nil, eventType:type, offset: recentEventsPager.offset,limit:recentEventsPager.limit)
+      .map { result in
+        result.data.results.map { result in
+          
+          guard let price = result.price?.numberDecimal else { return }
+          guard let tokenId = UInt(result.token_id) else { return }
+          
+          response(
+            NFTWithPrice(
+              nft: self.getNFT(tokenId  ),
+              blockNumber: nil, // TODO
+              indicativePriceWei: TokenPriceType.eager(NFTPriceInfo(price: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
+          )
+        }
+      }
+      .catch { print($0) }
+      .finally(on:.main) {
+        self.recentEventsPager.offset = self.recentEventsPager.offset + self.recentEventsPager.limit
+        onDone()
+      }
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void, _ response: @escaping (NFTWithPrice) -> Void) {
@@ -160,30 +188,12 @@ class NearNFTContract : ContractInterface {
       let contract_id : String
       let token_id : String
     
-      
-      private func eventType(_ type:String) -> TradeEventType? {
-        switch(type) {
-        case "nft_transfer":
-          return TradeEventType.transfer
-        case "resolve_purchase":
-          return TradeEventType.bought
-        case "add_offer":
-          return TradeEventType.bid
-        case "add_market_data":
-          return TradeEventType.ask
-        default:
-          return nil
-        }
-      }
-      
       func getEvents(onDone: @escaping () -> Void, _ response: @escaping (TradeEvent) -> Void) {
-        ParasApi.activities(contract_id: self.contract_id, token_id: token_id)
+        ParasApi.activities(contract_id: self.contract_id, token_id: token_id,eventType:nil,offset:nil,limit:nil)
           .map { (result:ParasApi.ActivitiesResult) in
             
             result.data.results.map { result in
-              print(result)
-              
-              guard let type = eventType(result.type) else { return }
+              guard let type = ParasApi.eventType(result.type) else { return }
               response(
                 TradeEvent(
                   type: type,
@@ -211,7 +221,47 @@ class NearNFTContract : ContractInterface {
   
   var tradeActions: TokenTradeInterface? = nil
   
-  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { nil }
+  class FloorFetcher : PagedTokensFetcher {
+    
+    let contract : NearNFTContract
+    var offset : UInt
+    let limit : UInt
+    
+    init(contract:NearNFTContract) {
+      self.contract = contract
+      self.offset = 0
+      self.limit = 20
+    }
+    
+    func fetchNext() -> Promise<[NFTWithLazyPrice]> {
+      ParasApi.token_series(collection_id: self.contract.account_id, offset: self.offset, limit: self.limit, sort: ParasApi.Sort.lowest_price)
+        .map { result in
+          self.offset = self.offset + self.limit
+          
+          return result.data.results.compactMap { result -> NFTWithLazyPrice? in
+            guard let tokenId = UInt(result.token_series_id) else { return nil }
+            guard let price = BigUInt(result.lowest_price) else { return nil }
+            
+            return NFTWithLazyPrice(
+              nft: self.contract.getNFT(tokenId),
+              getPrice: {
+                ObservablePromise<NFTPriceStatus>(
+                  resolved: NFTPriceStatus.known(
+                    NFTPriceInfo(
+                      price: price,
+                      date:nil,
+                      type:TradeEventType.ask)
+                  )
+                )
+              }
+            )
+          }
+        }
+    }
+    
+  }
+  
+  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher? { return FloorFetcher(contract:self) }
   
 }
 

@@ -725,7 +725,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://antisocialape.club")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:true,
+      disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
         label:"Apes",
         nearestTokensFileName:"asac.near_nearestTokens.json",

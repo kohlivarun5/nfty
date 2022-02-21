@@ -38,13 +38,13 @@ struct ParasApi {
           do {
             switch(data) {
             case .some(let data):
-                seal.fulfill(try JSONDecoder().decode(Result.self, from: data))
+              seal.fulfill(try JSONDecoder().decode(Result.self, from: data))
             case .none:
               // print(data,response,error)
               seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
             }
           } catch {
-            // print(data,response,error)
+            data.map { print(String(decoding:$0,as:UTF8.self)) }
             seal.reject(error)
           }
         }
@@ -121,12 +121,12 @@ struct ParasApi {
           let event_type : String
           
           /*
-          struct Params : Decodable {
-            let price : String
-            let receiver_id : String
-            let token_id : String
-          }
-          let params : Params
+           struct Params : Decodable {
+           let price : String
+           let receiver_id : String
+           let token_id : String
+           }
+           let params : Params
            */
           
         }
@@ -140,19 +140,109 @@ struct ParasApi {
   
   static func activities(
     contract_id:String?,
-    token_id:String?) -> Promise<ActivitiesResult> {
-      
-      var params : [String : String] = [:]
-      let _ = contract_id.map {
-        params["contract_id"] = $0
-      }
-      
-      let _ = token_id.map {
-        params["token_id"] = $0
-      }
-      
-      return Impl.fetch(path:"/activities", params: params)
+    token_id:String?,
+    eventType:TradeEventType?,
+    offset:UInt?,
+    limit:UInt?) -> Promise<ActivitiesResult>
+  {
+    
+    var params : [String : String] = [:]
+    let _ = contract_id.map {
+      params["contract_id"] = $0
     }
+    
+    let _ = token_id.map {
+      params["token_id"] = $0
+    }
+    
+    let _ = eventType.map {
+      switch($0) {
+      case .ask:
+        params["type"] = "add_market_data"
+      case .bid:
+        params["type"] = "add_offer"
+      case .bought:
+        params["type"] = "resolve_purchase"
+      case .transfer:
+        params["type"] = "nft_transfer"
+      case .minted:
+        return // TODO : Find minted event
+      }
+    }
+    
+    let _ = offset.map {
+      params["__skip"] = String($0)
+    }
+    
+    let _ = limit.map {
+      params["__limit"] = String($0)
+    }
+    
+    return Impl.fetch(path:"/activities", params: params)
+  }
+  
+  static public func eventType(_ type:String) -> TradeEventType? {
+    switch(type) {
+    case "nft_transfer":
+      return TradeEventType.transfer
+    case "resolve_purchase":
+      return TradeEventType.bought
+    case "add_offer":
+      return TradeEventType.bid
+    case "add_market_data":
+      return TradeEventType.ask
+    default:
+      return nil
+    }
+  }
+  
+  enum Sort {
+    case lowest_price
+  }
+  
+  struct TokenSeriesResult : Codable {
+    struct Data : Codable {
+      struct Result : Codable {
+        let contract_id : String
+        let token_series_id : String
+        let lowest_price : String
+      }
+      let results : [Result]
+    }
+    let status : UInt
+    let data : Data
+  }
+  
+  // https://api-v2-mainnet.paras.id/token-series?collection_id=asac.near&exclude_total_burn=true&__limit=8&__sort=lowest_price::1&lookup_token=true
+  static func token_series(
+    collection_id:String,
+    offset:UInt?,
+    limit:UInt?,
+    sort:Sort?) -> Promise<TokenSeriesResult>
+  {
+    
+    var params : [String : String] = [:]
+    params["contract_id"] = collection_id
+       
+    let _ = offset.map {
+      params["__skip"] = String($0)
+    }
+    
+    let _ = limit.map {
+      params["__limit"] = String($0)
+    }
+    
+    let _ = sort.map {
+      switch($0) {
+      case .lowest_price:
+        params["__sort"] = "lowest_price"
+      }
+    }
+    
+    return Impl.fetch(path:"/token-series", params: params)
+  }
+  
+  
 }
 
 
