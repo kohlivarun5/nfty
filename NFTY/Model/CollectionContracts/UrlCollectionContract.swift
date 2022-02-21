@@ -128,7 +128,7 @@ class UrlCollectionContract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
@@ -159,7 +159,7 @@ class UrlCollectionContract : ContractInterface {
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)

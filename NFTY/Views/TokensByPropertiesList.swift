@@ -96,7 +96,7 @@ struct TokensByPropertiesList: View {
                 
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
-                  price:.lazy(nft.indicativePriceWei),
+                  price:.lazy(nft.indicativePrice),
                   collection:collection,
                   hideOwnerLink:false,
                   selectedProperties:nfts.selectedProperties
@@ -135,7 +135,7 @@ struct TokensByPropertiesList: View {
       let nft = nfts.tokens[$0.id]
       TokenTradeView(
         nft: nft.nft,
-        price:.lazy(nft.indicativePriceWei),
+        price:.lazy(nft.indicativePrice),
         collection:collection,
         userWallet:userWallet,
         isSheet:true)

@@ -69,7 +69,7 @@ struct TokenListPagedView: View {
                     
                     RoundedImage(
                       nft:nft.nft,
-                      price:.lazy(nft.indicativePriceWei),
+                      price:.lazy(nft.indicativePrice),
                       collection:collection,
                       width: .normal,
                       resolution: .normal
@@ -105,7 +105,7 @@ struct TokenListPagedView: View {
                       }
                     
                     VStack {
-                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePriceWei), color: .label,hideIcon:true)
+                      TokenPrice(price: TokenPriceType.lazy(nft.indicativePrice), color: .label,hideIcon:true)
                         .padding([.top,.bottom],2)
                         .padding([.leading,.trailing],20)
                         .font(.caption2)
@@ -126,7 +126,7 @@ struct TokenListPagedView: View {
                   
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
-                    price:.lazy(nft.indicativePriceWei),
+                    price:.lazy(nft.indicativePrice),
                     collection:collection,
                     hideOwnerLink:false,
                     selectedProperties:[]
@@ -148,7 +148,7 @@ struct TokenListPagedView: View {
       let nft = nfts.tokens[$0.id]
       TokenTradeView(
         nft: nft.nft,
-        price:.lazy(nft.indicativePriceWei),
+        price:.lazy(nft.indicativePrice),
         collection:collection,
         userWallet:userWallet,
         isSheet:true)

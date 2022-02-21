@@ -56,7 +56,7 @@ class NearNFTContract : ContractInterface {
             NFTWithPrice(
               nft: self.getNFT(tokenId  ),
               blockNumber: nil, // TODO
-              indicativePriceWei: TokenPriceType.eager(NFTPriceInfo(near: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
+              indicativePrice: TokenPriceType.eager(NFTPriceInfo(near: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
           )
         }
       }

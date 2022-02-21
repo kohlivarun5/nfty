@@ -218,7 +218,7 @@ enum TokenPriceType {
 struct NFTWithPrice : Identifiable {
   let nft : NFT
   let blockNumber : BigUInt?
-  let indicativePriceWei : TokenPriceType
+  let indicativePrice : TokenPriceType
   
   var id : NFT.NftID {
     return nft.id
@@ -243,7 +243,7 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  func indicativePriceWei() -> ObservablePromise<NFTPriceStatus> {
+  func indicativePrice() -> ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
 }

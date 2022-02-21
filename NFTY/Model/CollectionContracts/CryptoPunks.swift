@@ -211,7 +211,7 @@ class CryptoPunksContract : ContractInterface {
           name:self.name,
           media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
         blockNumber: blockNumber,
-        indicativePriceWei:.eager(
+        indicativePrice:.eager(
           NFTPriceInfo(
             wei:value,
             blockNumber: blockNumber,
@@ -225,7 +225,7 @@ class CryptoPunksContract : ContractInterface {
           name:self.name,
           media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
         blockNumber: blockNumber,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:transactionHash,eventType:type)

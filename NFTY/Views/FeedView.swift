@@ -149,7 +149,7 @@ struct FeedView: View {
                   
                   RoundedImage(
                     nft:nft.nft,
-                    price:nft.indicativePriceWei,
+                    price:nft.indicativePrice,
                     collection:item.collection,
                     width: .normal,
                     resolution: .normal
@@ -163,7 +163,7 @@ struct FeedView: View {
                   
                   NavigationLink(destination: NftDetail(
                     nft:nft.nft,
-                    price:nft.indicativePriceWei,
+                    price:nft.indicativePrice,
                     collection:item.collection,
                     hideOwnerLink:false,selectedProperties:[]
                   ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}

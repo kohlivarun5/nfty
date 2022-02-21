@@ -386,7 +386,7 @@ class CryptoKittiesAuction : ContractInterface {
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.eager(NFTPriceInfo(
+        indicativePrice:.eager(NFTPriceInfo(
                                     wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
                                     blockNumber: log.blockNumber?.quantity,
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
@@ -405,7 +405,7 @@ class CryptoKittiesAuction : ContractInterface {
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.eager(NFTPriceInfo(
+        indicativePrice:.eager(NFTPriceInfo(
                                     wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
                                     blockNumber: log.blockNumber?.quantity,
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
@@ -587,7 +587,7 @@ class AutoglyphsContract : ContractInterface {
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -617,7 +617,7 @@ class AutoglyphsContract : ContractInterface {
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)

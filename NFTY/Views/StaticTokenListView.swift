@@ -28,7 +28,7 @@ struct StaticTokenListView: View {
             ZStack {
               RoundedImage(
                 nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
+                price:.lazy(nft.indicativePrice),
                 collection:collection,
                 width: .normal,
                 resolution: .normal
@@ -38,7 +38,7 @@ struct StaticTokenListView: View {
                 .onTapGesture { self.selectedTokenId = nft.nft.tokenId }
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
+                price:.lazy(nft.indicativePrice),
                 collection: collection,
                 hideOwnerLink:false,
                 selectedProperties:[]

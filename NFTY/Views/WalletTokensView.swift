@@ -119,7 +119,7 @@ struct WalletTokensView: View {
                           
                           RoundedImage(
                             nft:token.nft.nft,
-                            price:.lazy(token.nft.indicativePriceWei),
+                            price:.lazy(token.nft.indicativePrice),
                             collection:collection,
                             width: .normal,
                             resolution: .normal
@@ -156,7 +156,7 @@ struct WalletTokensView: View {
                         }
                         NavigationLink(destination: NftDetail(
                           nft:token.nft.nft,
-                          price:.lazy(token.nft.indicativePriceWei),
+                          price:.lazy(token.nft.indicativePrice),
                           collection:token.collection,
                           hideOwnerLink:false,
                           selectedProperties:[]
@@ -177,7 +177,7 @@ struct WalletTokensView: View {
           .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) { token in
             TokenTradeView(
               nft: token.nft.nft,
-              price:.lazy(token.nft.indicativePriceWei),
+              price:.lazy(token.nft.indicativePrice),
               collection:token.collection,
               userWallet:userWallet,
               isSheet:true)

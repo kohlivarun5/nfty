@@ -21,7 +21,7 @@ struct NftUrlView: View {
   var body: some View {
     NftDetail(
       nft:nft.nft,
-      price:.lazy(nft.indicativePriceWei),
+      price:.lazy(nft.indicativePrice),
       collection:collection,
       hideOwnerLink:true,selectedProperties:[]
     )

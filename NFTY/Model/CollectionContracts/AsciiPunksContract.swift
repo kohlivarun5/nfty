@@ -159,7 +159,7 @@ class AsciiPunksContract : ContractInterface {
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
@@ -189,7 +189,7 @@ class AsciiPunksContract : ContractInterface {
           name:self.name,
           media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
         blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
