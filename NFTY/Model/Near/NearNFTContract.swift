@@ -154,7 +154,44 @@ class NearNFTContract : ContractInterface {
   }
   
   func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
-    return nil
+    
+    struct ParasEventsFetcher : TokenEventsFetcher {
+      
+      let contract_id : String
+      let token_id : String
+    
+      
+      private func eventType(_ type:String) -> TradeEventType {
+        switch(type) {
+        case "nft_transfer":
+          return TradeEventType.transfer
+        default:
+          return TradeEventType.transfer
+        }
+      }
+      
+      func getEvents(onDone: @escaping () -> Void, _ response: @escaping (TradeEvent) -> Void) {
+        ParasApi.activities(contract_id: self.contract_id, token_id: token_id)
+          .map { (result:ParasApi.ActivitiesResult) in
+            
+            result.data.results.map { result in
+              response(
+                TradeEvent(
+                  type: eventType(result.type),
+                  value: (try? BigUInt(result.msg.params.price)) ?? 0,
+                  blockNumber: EthereumQuantity.init(integerLiteral: UInt64(result.msg.block_height))) // TODO Chose a different block height
+              )
+            }
+            
+          }
+          .catch { print($0) }
+          .finally { onDone() }
+      }
+      
+    }
+    
+    return ParasEventsFetcher(contract_id: self.account_id, token_id: String(tokenId))
+    
   }
   
   func indicativeFloor() -> Promise<Double?> {

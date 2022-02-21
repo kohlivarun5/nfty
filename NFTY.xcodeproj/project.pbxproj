@@ -61,6 +61,7 @@
 		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
 		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
 		4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
+		4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2EFECB27B893D400C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
@@ -1733,6 +1734,7 @@
 			files = (
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
+				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,

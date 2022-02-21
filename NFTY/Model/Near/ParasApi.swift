@@ -119,7 +119,7 @@ struct ParasApi {
           
           let contract_id : String
           let block_height : UInt
-          let event_type : StringLiteralType
+          let event_type : String
           struct Params : Decodable {
             let price : String
             let receiver_id : String
