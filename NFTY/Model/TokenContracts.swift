@@ -766,7 +766,7 @@ class BlockFetcherImpl {
               .done(on:DispatchQueue.global(qos:.userInteractive)) {
                 seal.fulfill(
                   $0.map {
-                    BlockInfo(timestamp:Date(timeIntervalSince1970:Double($0.header.timestamp) / Double(1e-9)))
+                    BlockInfo(timestamp:Date(timeIntervalSince1970:(Double($0.header.timestamp) / Double(1e9))))
                   }
                 )
               }
