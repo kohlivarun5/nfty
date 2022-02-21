@@ -235,7 +235,7 @@ struct ParasApi {
     let _ = sort.map {
       switch($0) {
       case .lowest_price:
-        params["__sort"] = "lowest_price"
+        params["__sort"] = "lowest_price::1"
       }
     }
     
