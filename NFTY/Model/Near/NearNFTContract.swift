@@ -54,9 +54,13 @@ class NearNFTContract : ContractInterface {
           
           response(
             NFTWithPrice(
-              nft: self.getNFT(tokenId  ),
-              blockNumber: nil, // TODO
-              indicativePrice: TokenPriceType.eager(NFTPriceInfo(near: BigUInt(price), date: ISO8601DateFormatter().date(from:result.msg.datetime), type:type)))
+              nft: self.getNFT(tokenId),
+              blockNumber:.near(EthereumQuantity(quantity: BigUInt(result.msg.block_height))),
+              indicativePrice: TokenPriceType.eager(
+                NFTPriceInfo(
+                  near: BigUInt(price),
+                  blockNumber:EthereumQuantity(quantity: BigUInt(result.msg.block_height)),
+                  type:type)))
           )
         }
       }
@@ -184,8 +188,8 @@ class NearNFTContract : ContractInterface {
             case .some(let result):
               return NFTPriceStatus.known(
                 NFTPriceInfo(
-                  price: result.price.flatMap { BigUInt($0.numberDecimal) }.map { PriceUnit.near($0) },
-                  blockNumber:.some(.near(EthereumQuantity(quantity: BigUInt(result.msg.block_height)))),
+                  near: result.price.flatMap { BigUInt($0.numberDecimal) },
+                  blockNumber:EthereumQuantity(quantity: BigUInt(result.msg.block_height)),
                   type:ParasApi.eventType(result.type)!))
             }
           }

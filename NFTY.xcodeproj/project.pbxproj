@@ -797,6 +797,7 @@
 			children = (
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
+				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
 				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
@@ -986,7 +987,6 @@
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
-				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
 				4F0FB83626A50BF000AD5165 /* Extensions.swift */,
 				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
 				4FED1E4226D5ED52006274CE /* SECP256K1.swift */,

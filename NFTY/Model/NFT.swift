@@ -28,15 +28,26 @@ enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
   case ethereum(EthereumQuantity)
   case near(EthereumQuantity)
   
-  public static func < (a: BlockNumber, b: BlockNumber) -> Bool {
+  public static func<(a: BlockNumber, b: BlockNumber) -> Bool {
     switch(a,b) {
-    case (.ethereum(let x),.ethereum(let y)),(.near(let x),.near(let y)):
+    case (.ethereum(let x),.ethereum(let y)),
+         (.near(let x),.near(let y)):
       return x.quantity < y.quantity
     case (.ethereum,.near):
-      assertionFailure("Incompatible blocks")
+      return false
+    case (.near,ethereum):
+      return true
+    }
+  }
+  
+  public static func>(a: BlockNumber, b: BlockNumber) -> Bool {
+    switch(a,b) {
+    case (.ethereum(let x),.ethereum(let y)),
+         (.near(let x),.near(let y)):
+      return x.quantity > y.quantity
+    case (.ethereum,.near):
       return true
     case (.near,ethereum):
-      assertionFailure("Incompatible blocks")
       return false
     }
   }
@@ -215,6 +226,17 @@ struct NFTPriceInfo {
     switch(date) {
     case .some(let x):
       self.blockNumber = .date(x)
+    case .none:
+      self.blockNumber = .none
+    }
+  }
+  
+  init(near:BigUInt?, blockNumber:EthereumQuantity?,type:TradeEventType) {
+    self.price = near.map { .near($0) }
+    self.type = type
+    switch(blockNumber) {
+    case .some(let x):
+      self.blockNumber = .some(.near(x))
     case .none:
       self.blockNumber = .none
     }
