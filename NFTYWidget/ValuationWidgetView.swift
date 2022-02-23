@@ -25,18 +25,15 @@ struct ValuationWidgetView: View {
       } else {
         
         let sorted = entry.collections
-          .compactMap {
-            switch($0.info.floorPrice,$0.info.prev_floor) {
+          .compactMap { (collection:CollectionStats) -> (Double,Double,Double,Date?)? in
+            switch(collection.info.floorPrice,collection.prev_floor) {
             case (.wei(let floorWei),.wei(let prevWei)):
-              return (Double(floorWei) / 1e18,Double(prevWei)/1e18,Double($0.info.ownedCount),$0.since)
+              return (Double(floorWei) / 1e18,Double(prevWei)/1e18,Double(collection.info.ownedCount),collection.since)
             case (.wei,.near),(.near,.wei),(.near,.near):
               return nil
             }
           }
-          .sorted {
-            $0.0 * $0.2
-            > $1.0 * $1.2
-          };
+          .sorted { $0.0 * $0.2 > $1.0 * $1.2 };
         
         let nav = sorted.reduce(0, { accu,collection in
           return accu + (collection.0 * collection.2)
@@ -140,7 +137,7 @@ struct ValuationWidgetView_Previews: PreviewProvider {
               name: "CryptoMories\($0)",
               ownedCount: $0,
               floorPrice: .wei(BigUInt(1e18 * 1.409))),
-            prev_floor:1.2,
+            prev_floor:.wei(BigUInt(1e18 * 1.2)),
             percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
             since:Date())
         }

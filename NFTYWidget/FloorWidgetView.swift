@@ -38,7 +38,6 @@ struct FloorWidgetStackView : View {
               .foregroundColor(.secondary)
               .frame(alignment: .trailing)
           case .some(let percentage):
-            
             Text(Formatters.percentage.string(for: percentage)!)
               .foregroundColor(percentage < 0 ? Color.red : Color.green)
               .frame(alignment: .trailing)
