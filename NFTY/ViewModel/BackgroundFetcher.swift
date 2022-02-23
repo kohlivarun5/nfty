@@ -248,38 +248,38 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                 .map { floor -> (Collection,OpenSeaApi.AssetOrder)? in
                   // Check user settings limit
                   var withinLimit = false
-                  switch(floor,userSettings.offerNotificationMinimum) {
-                  case (.none,_):
+                  switch(floor,Double(order.current_price).map { BigUInt($0) },userSettings.offerNotificationMinimum) {
+                  case (.none,_,_),(_,.none,_):
                     withinLimit = true
-                  case (.some,.None):
+                  case (.some,.some,.None):
                     withinLimit = true
-                  case (.some(let floor),.OTM_20_pct):
+                  case (.some(let floor),.some(let current_price),.OTM_20_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > (-0.2)
-                  case (.some(let floor),.OTM_10_pct):
+                  case (.some(let floor),.some(let current_price),.OTM_10_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > (-0.1)
-                  case (.some(let floor),.OTM_5_pct):
+                  case (.some(let floor),.some(let current_price),.OTM_5_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > (-0.05)
-                  case (.some(let floor),.ATM):
+                  case (.some(let floor),.some(let current_price),.ATM):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > 0
-                  case (.some(let floor),.ITM_5_pct):
+                  case (.some(let floor),.some(let current_price),.ITM_5_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > 0.05
-                  case (.some(let floor),.ITM_10_pct):
+                  case (.some(let floor),.some(let current_price),.ITM_10_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > 0.1
-                  case (.some(let floor),.ITM_20_pct):
+                  case (.some(let floor),.some(let current_price),.ITM_20_pct):
                     withinLimit = PriceUnit.change(
-                      new: .wei(BigUInt(1e18 * Double(order.current_price)!)),
+                      new: .wei(current_price),
                       prev: floor)! > 0.2
                   }
                   
