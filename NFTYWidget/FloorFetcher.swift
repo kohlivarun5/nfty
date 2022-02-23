@@ -13,7 +13,7 @@ struct CollectionFloorData : Identifiable {
   let id : String
   let name : String
   let ownedCount : UInt
-  let floorPrice : Double
+  let floorPrice : PriceUnit
 }
 
 func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foundMax:Bool) -> Promise<[NFTToken]> {
@@ -75,7 +75,7 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
       })
         .then {
           // Fetch floor for each collection
-          $0.reduce(Promise<[(Collection,UInt,Double?)]>.value([]), { accu,item in
+          $0.reduce(Promise<[(Collection,UInt,PriceUnit?)]>.value([]), { accu,item in
             let (collection,count) = item;
             return accu
               .then { accu in

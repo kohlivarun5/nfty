@@ -543,7 +543,7 @@ class CryptoPunksContract : ContractInterface {
     return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return SushiSwapPool(address:"0x0463a06fbc8bf28b3f120cd1bfc59483f099d332").priceInEth()
   }
   

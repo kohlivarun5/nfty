@@ -195,7 +195,7 @@ protocol ContractInterface {
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
   
-  func indicativeFloor() -> Promise<Double?>
+  func indicativeFloor() -> Promise<PriceUnit?>
   
   var vaultContract : CollectionVaultContract? { get }
   
@@ -503,7 +503,7 @@ class CryptoKittiesAuction : ContractInterface {
     return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
-  func indicativeFloor() -> Promise<Double?> { return Promise.value(nil) }
+  func indicativeFloor() -> Promise<PriceUnit?> { return Promise.value(nil) }
   
 }
 
@@ -702,7 +702,7 @@ class AutoglyphsContract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return SushiSwapPool(address:"0x0d9f9c919f1b66a8587a5637b8d1a6a6c5854380").priceInEthRev()
   }
   

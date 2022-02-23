@@ -248,7 +248,7 @@ class NearNFTContract : ContractInterface {
     
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return Promise.value(nil)
   }
   

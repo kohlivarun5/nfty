@@ -242,6 +242,28 @@ struct ParasApi {
     return Impl.fetch(path:"/token-series", params: params)
   }
   
+  struct CollectionStats : Codable {
+    struct Data : Codable {
+      struct Result : Codable {
+        let floor_price : String
+      }
+      let results : [Result]
+    }
+    let status : UInt
+    let data : Data
+  }
+  
+  // https://api-v2-mainnet.paras.id/collection-stats
+  static func token_series(
+    collection_id:String) -> Promise<CollectionStats>
+  {
+    
+    var params : [String : String] = [:]
+    params["contract_id"] = collection_id
+    
+    return Impl.fetch(path:"/collection-stats", params: params)
+  }
+  
   
 }
 

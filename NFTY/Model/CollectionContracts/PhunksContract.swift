@@ -180,13 +180,11 @@ class PhunksContract : ContractInterface {
     return collectionContract.getEventsFetcher(tokenId)
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     switch(self.collectionContract.indicativePriceSource) {
     case .openSea:
       return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-        .map { stats in
-          stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
-        }
+        .map { stats in stats?.floor_price }
     case .swapPoolContract(let address,_):
       return SushiSwapPool(address:address).priceInEth()
     case .swapPoolContractReversed(let address,_):

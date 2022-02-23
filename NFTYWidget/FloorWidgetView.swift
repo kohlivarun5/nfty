@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WidgetKit
-
+import BigInt
 
 struct FloorWidgetStackView : View {
   let collections: Array<CollectionStats>.SubSequence
@@ -27,7 +27,7 @@ struct FloorWidgetStackView : View {
         .font(.subheadline)
         
         HStack(spacing:0) {
-          Text(Formatters.eth.string(for:stats.info.floorPrice)!)
+          Text(Formatters.PriceString(stats.info.floorPrice))
             .bold()
             .frame(alignment: .leading)
           Spacer()
@@ -170,8 +170,8 @@ struct FloorWidgetView_Previews: PreviewProvider {
               id: "\($0)",
               name: "CryptoMories\($0)",
               ownedCount: $0,
-              floorPrice: 1.409),
-            prev_floor:1.2,
+              floorPrice: .wei(BigUInt(1e18 * 1.409))),
+            prev_floor:.wei(BigUInt(1e18 * 1.2)),
             percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
             since:Date())
         }

@@ -9,11 +9,12 @@ import Foundation
 import WidgetKit
 import Intents
 import Cache
+import BigInt
 
 
 struct CollectionStats {
   let info : CollectionFloorData
-  let prev_floor : Double
+  let prev_floor : PriceUnit
   let percent_change : Double?
   let since : Date?
 }
@@ -21,7 +22,7 @@ struct CollectionStats {
 struct Provider: IntentTimelineProvider {
   
   struct FloorPrice : Codable {
-    let floorPrice : Double
+    let floorPrice : PriceUnit
     let date : Date
   }
   
@@ -45,8 +46,8 @@ struct Provider: IntentTimelineProvider {
             id: "\($0)",
             name: $0.isMultiple(of: 2) ? "CryptoMories" : "Illuminati",
             ownedCount: $0,
-            floorPrice: 1.409),
-          prev_floor:1.407,
+            floorPrice: .wei(BigUInt(1e18 * 1.409))),
+          prev_floor:.wei(BigUInt(1e18 * 1.407)),
           percent_change: $0.isMultiple(of: 2) ? 0.5213123 : -0.23,
           since:Date())
       }
@@ -91,7 +92,7 @@ struct Provider: IntentTimelineProvider {
                 case .some(let prices):
                   // find change by comparing the present and prev timelines
                   if (date.timeIntervalSince(prices.latest.date) >= (60 * 60 * 6)) {
-                    change = prices.latest.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.latest.floorPrice) / prices.latest.floorPrice
+                    change = prices.latest.floorPrice == info.floorPrice ? nil : PriceUnit.change(new:info.floorPrice,prev:prices.latest.floorPrice)
                     since = prices.latest.date
                     prev_floor = prices.latest.floorPrice
                     // present is greater than 6 hours, make it prev
@@ -102,7 +103,7 @@ struct Provider: IntentTimelineProvider {
                       ),forKey:info.id)
                     
                   } else {
-                    change = prices.prev.floorPrice == info.floorPrice ? nil : (info.floorPrice - prices.prev.floorPrice) / prices.prev.floorPrice
+                    change = prices.prev.floorPrice == info.floorPrice ? nil : PriceUnit.change(new:info.floorPrice,prev:prices.prev.floorPrice)
                     since = prices.prev.date
                     prev_floor = prices.prev.floorPrice
                   }
@@ -153,6 +154,17 @@ struct Formatters {
     return currencyFormatter
   }()
   
+  static var near : Formatter = {
+    let currencyFormatter = NumberFormatter()
+    currencyFormatter.usesGroupingSeparator = true
+    currencyFormatter.numberStyle = .currency
+    // localize to your grouping and decimal separator
+    currencyFormatter.locale = Locale.current
+    currencyFormatter.maximumFractionDigits = 2
+    currencyFormatter.currencySymbol = "Ⓝ "
+    return currencyFormatter
+  }()
+  
   static var percentage : Formatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .percent
@@ -173,5 +185,16 @@ struct Formatters {
     currencyFormatter.negativePrefix = currencyFormatter.currencySymbol
     return currencyFormatter
   }()
+  
+  
+  static func PriceString(_ price:PriceUnit) -> String {
+    switch(price) {
+    case .wei(let wei):
+      return Formatters.eth.string(for:Double(wei) / 1e18)!
+    case .near(let near):
+      return Formatters.near.string(for:Double(near) / 1e24)!
+    }
+  }
+  
   
 }

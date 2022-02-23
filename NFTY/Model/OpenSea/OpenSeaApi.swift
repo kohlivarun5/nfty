@@ -341,7 +341,7 @@ struct OpenSeaApi {
   }
   
   struct Stats : Codable {
-    let floor_price : Double?
+    let floor_price : PriceUnit?
   }
   
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
@@ -383,6 +383,11 @@ struct OpenSeaApi {
                   struct Data : Codable {
                     
                     struct Collection : Codable {
+                      
+                      struct Stats : Codable {
+                        let floor_price : Double?
+                      }
+                      
                       let stats : Stats
                     }
                     
@@ -390,8 +395,9 @@ struct OpenSeaApi {
                   }
                   
                   let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
-                  try! collectionStatsCache.setObject(info,forKey: slug)
-                  seal.fulfill(info)
+                  let result = Stats(floor_price: info.floor_price.map { .wei(BigUInt($0 * 1e18)) })
+                  try! collectionStatsCache.setObject(result,forKey: slug)
+                  seal.fulfill(result)
                 } catch {
                   print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
                   seal.reject(NSError(domain:"", code:404, userInfo:nil))

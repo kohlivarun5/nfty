@@ -233,11 +233,9 @@ class FameLadySquad_Contract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-      .map { stats in
-        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
-      }
+      .map { stats in stats?.floor_price }
   }
   
   var vaultContract: CollectionVaultContract? = nil
