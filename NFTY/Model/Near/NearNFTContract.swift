@@ -258,7 +258,60 @@ class NearNFTContract : ContractInterface {
   
   var vaultContract: CollectionVaultContract? = nil
   
-  var tradeActions: TokenTradeInterface? = nil
+  struct TradeInterface : TokenTradeInterface {
+    let contract_id : String
+    
+    private func getAsk(_ tokenId:UInt,_ side:Side?) -> Promise<AskInfo?> {
+      switch(side) {
+      case .some(.ask),.none:
+        return ParasApi.token(contract_id: self.contract_id, token_id: String(tokenId))
+          .map { (response:ParasApi.Token) -> AskInfo? in
+            response.data.results
+              .first
+              .flatMap { $0.price }
+              .flatMap { BigUInt($0) }.map { AskInfo(price:.near($0),expiration_time: nil) }
+          }
+      case .some(.bid):
+        return Promise.value(nil)
+      }
+    }
+    
+    private func getBid(_ tokenId:UInt,_ side:Side?) -> Promise<BidInfo?> {
+      switch(side) {
+      case .some(.bid),.none:
+        return ParasApi.offers(contract_id: self.contract_id, token_id: String(tokenId))
+          .map { (response:ParasApi.Offers) -> BidInfo? in
+            response.data.results
+              .compactMap { BigUInt($0.price) }
+              .sorted { $0 > $1 }
+              .first
+              .map { BidInfo(price:.near($0),expiration_time: nil) }
+          }
+      case .some(.ask):
+        return Promise.value(nil)
+      }
+    }
+    
+    func getBidAsk(_ tokenId:UInt,_ side:Side?) -> Promise<BidAsk> {
+      let ask = self.getAsk(tokenId,side)
+      let bid = self.getBid(tokenId,side)
+      
+      return bid.then { bid in
+        ask.map { ask in
+          BidAsk(bid:bid, ask:ask)
+        }
+      }
+    }
+    
+    func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+      return getBidAskSerial(tokenIds: tokenIds,side,wait:0.005, getter: self.getBidAsk)
+    }
+    var actions : TradeActionsInterface? = nil
+  }
+  
+  lazy var tradeActions: TokenTradeInterface? = {
+    return TradeInterface(contract_id: self.account_id)
+  }()
   
   class FloorFetcher : PagedTokensFetcher {
     
