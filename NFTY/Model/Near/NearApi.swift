@@ -29,7 +29,7 @@ struct NearApi {
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
       request.httpBody = params.flatMap { try? JSONSerialization.data(withJSONObject: $0, options: []) }
       return Promise.init { seal in
-        print("Calling \(request.url!)")
+        print("Calling \(request.url!) with body = \(request.httpBody.map { String(decoding: $0,as:UTF8.self) } ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
           if let error = error { return seal.reject(error) }
           // print(data)
