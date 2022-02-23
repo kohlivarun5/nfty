@@ -25,7 +25,7 @@ struct WalletTokensCollectionHeaderImpl: View {
         },
         view: { floor in
           floor.map { floor in
-            Text("Floor \(ethFormatter.string(for:floor)!)")
+            Text("Floor \(PriceString(price:floor))")
               .font(.footnote)
               .foregroundColor(.secondaryLabel)
               .frame(alignment:.trailing)

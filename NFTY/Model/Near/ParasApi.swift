@@ -38,6 +38,7 @@ struct ParasApi {
           do {
             switch(data) {
             case .some(let data):
+              // print(String(decoding:data,as:UTF8.self))
               seal.fulfill(try JSONDecoder().decode(Result.self, from: data))
             case .none:
               // print(data,response,error)
@@ -247,19 +248,19 @@ struct ParasApi {
       struct Result : Codable {
         let floor_price : String
       }
-      let results : [Result]
+      let results : Result
     }
     let status : UInt
     let data : Data
   }
   
   // https://api-v2-mainnet.paras.id/collection-stats
-  static func token_series(
+  static func collection_stats(
     collection_id:String) -> Promise<CollectionStats>
   {
     
     var params : [String : String] = [:]
-    params["contract_id"] = collection_id
+    params["collection_id"] = collection_id
     
     return Impl.fetch(path:"/collection-stats", params: params)
   }

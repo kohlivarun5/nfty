@@ -249,7 +249,11 @@ class NearNFTContract : ContractInterface {
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {
-    return Promise.value(nil)
+    return ParasApi.collection_stats(collection_id: self.account_id)
+      .map {
+        guard let floor_price = BigUInt($0.data.results.floor_price) else { return nil }
+        return PriceUnit.near(floor_price)
+      }
   }
   
   var vaultContract: CollectionVaultContract? = nil

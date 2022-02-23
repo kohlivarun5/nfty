@@ -24,7 +24,7 @@ struct TokenTradeView: View {
   let height : CGFloat = 300
   @State var rank : UInt? = nil
   
-  @State var floorPrice : Double?
+  @State var floorPrice : PriceUnit?
   
   var body: some View {
     VStack {

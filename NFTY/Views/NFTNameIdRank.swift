@@ -14,7 +14,7 @@ struct NFTNameIdRank: View {
     let collection : Collection
     let nft : NFT
     let rank : UInt?
-    let floorPrice : Double?
+    let floorPrice : PriceUnit?
     let isExternalLink : Bool
     
     var body: some View {
@@ -35,7 +35,7 @@ struct NFTNameIdRank: View {
         
         switch(floorPrice,rank) {
         case (.some(let floorPrice),_):
-          Text("Floor Price: \(ethFormatter.string(for:floorPrice)!)")
+          Text("Floor Price: \(PriceString(price:floorPrice))")
             .font(.footnote)
             .foregroundColor(.secondaryLabel)
             .animation(.default)
@@ -53,7 +53,7 @@ struct NFTNameIdRank: View {
   let collection : Collection
   let nft : NFT
   let rank : UInt?
-  let floorPrice : Double?
+  let floorPrice : PriceUnit?
   
   let isSheet : Bool
   
