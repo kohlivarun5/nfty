@@ -68,6 +68,7 @@ struct NearNFT {
   
   enum NearNFTError : Error {
     case TokenNotFound
+    case UnknownError
   }
   
   func nft_token(token_id:BigUInt) -> Promise<Token> {
@@ -83,6 +84,40 @@ struct NearNFT {
     
     return token_opt.then {
       $0.map { Promise.value($0) } ?? Promise.init(error: NearNFTError.TokenNotFound)
+    }
+  }
+  
+  func nft_supply_for_owner(owner_account_id:String) -> Promise<BigUInt?> {
+    struct Input :Encodable {
+      let account_id : String
+    }
+    
+    let num_tokens : Promise<String?> = NearApi.call_function(
+      account_id: self.account_id,
+      method_name: "nft_supply_for_owner",
+      args: Input(account_id:owner_account_id)
+    )
+    
+    return num_tokens.then {
+      $0.map { Promise.value(BigUInt($0)) } ?? Promise.init(error: NearNFTError.UnknownError)
+    }
+  }
+  
+  func nft_tokens_for_owner(owner_account_id:String,from_index:UInt?,limit:UInt?) -> Promise<[Token]> {
+    struct Input : Encodable {
+      let account_id : String
+      let from_index: String?
+      let limit: UInt?
+    }
+    
+    let tokens : Promise<[Token]?> = NearApi.call_function(
+      account_id: self.account_id,
+      method_name: "nft_tokens_for_owner",
+      args: Input(account_id:owner_account_id,from_index: from_index.map { String($0) },limit:limit)
+    )
+    
+    return tokens.then {
+      $0.map { Promise.value($0) } ?? Promise.init(error: NearNFTError.UnknownError)
     }
   }
   

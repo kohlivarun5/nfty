@@ -38,7 +38,7 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
                   getPrice: {
                     return ObservablePromise(
                       resolved:NFTPriceStatus.known(
-                        NFTPriceInfo(price: BigUInt(edge.node.asset.orderData.bestAsk.paymentAssetQuantity.quantityInEth),
+                        NFTPriceInfo(wei: BigUInt(edge.node.asset.orderData.bestAsk.paymentAssetQuantity.quantityInEth),
                                      date: nil,
                                      type: TradeEventType.ask)
                       )

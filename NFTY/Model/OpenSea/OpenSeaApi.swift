@@ -164,7 +164,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return AskInfo(wei: wei,expiration_time:order.expiration_time)
+              return AskInfo(price:.wei(wei),expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -174,7 +174,7 @@ struct OpenSeaApi {
             switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
             case (ETH_ADDRESS,.some(let wei)),
               (WETH_ADDRESS,.some(let wei)):
-              return BidInfo(wei: wei,expiration_time:order.expiration_time)
+              return BidInfo(price: .wei(wei),expiration_time:order.expiration_time)
             default:
               return nil
             }
@@ -192,7 +192,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return AskInfo(wei: wei,expiration_time:order.expiration_time)
+            return AskInfo(price:.wei(wei),expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -202,7 +202,7 @@ struct OpenSeaApi {
           switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
           case (ETH_ADDRESS,.some(let wei)),
             (WETH_ADDRESS,.some(let wei)):
-            return BidInfo(wei: wei,expiration_time:order.expiration_time)
+            return BidInfo(price:.wei(wei),expiration_time:order.expiration_time)
           default:
             return nil
           }
@@ -255,7 +255,7 @@ struct OpenSeaApi {
                             ObservablePromise<NFTPriceStatus>(
                               resolved: NFTPriceStatus.known(
                                 NFTPriceInfo(
-                                  price: wei,
+                                  wei: wei,
                                   date:order.expiration_time == 0 ? nil : Date(timeIntervalSince1970:Double(order.expiration_time)),
                                   type:AssetOrder.sideToEvent(order.side))
                               )
@@ -341,7 +341,7 @@ struct OpenSeaApi {
   }
   
   struct Stats : Codable {
-    let floor_price : Double?
+    let floor_price : PriceUnit?
   }
   
   static private var collectionStatsCache = try! DiskStorage<String, Stats>(
@@ -383,6 +383,11 @@ struct OpenSeaApi {
                   struct Data : Codable {
                     
                     struct Collection : Codable {
+                      
+                      struct Stats : Codable {
+                        let floor_price : Double?
+                      }
+                      
                       let stats : Stats
                     }
                     
@@ -390,8 +395,9 @@ struct OpenSeaApi {
                   }
                   
                   let info = try jsonDecoder.decode(Data.self, from: data!).collection.stats
-                  try! collectionStatsCache.setObject(info,forKey: slug)
-                  seal.fulfill(info)
+                  let result = Stats(floor_price: info.floor_price.map { .wei(BigUInt($0 * 1e18)) })
+                  try! collectionStatsCache.setObject(result,forKey: slug)
+                  seal.fulfill(result)
                 } catch {
                   print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
                   seal.reject(NSError(domain:"", code:404, userInfo:nil))

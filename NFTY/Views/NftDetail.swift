@@ -107,7 +107,7 @@ struct NftDetail: View {
             .padding()
           }
           
-          HStack() {
+          HStack {
             NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:nil,isSheet:false)
               .padding(.leading)
             
@@ -129,7 +129,7 @@ struct NftDetail: View {
               }) {
                 TradableTokenPrice(price:price,color:.label)
                   .font(.title2)
-                  .padding(.top,8)
+                  .padding([.top,.bottom],8)
               }
             }
           }
@@ -254,7 +254,7 @@ struct NftDetail_Previews: PreviewProvider {
   static var previews: some View {
     NftDetail(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
+      price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),
       collection:SampleCollection,
       hideOwnerLink:false,
       selectedProperties:[])

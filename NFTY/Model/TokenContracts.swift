@@ -195,7 +195,7 @@ protocol ContractInterface {
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
   
-  func indicativeFloor() -> Promise<Double?>
+  func indicativeFloor() -> Promise<PriceUnit?>
   
   var vaultContract : CollectionVaultContract? { get }
   
@@ -207,6 +207,21 @@ protocol ContractInterface {
 
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
   return price.flatMap { $0 != 0 ? $0 : nil }
+}
+
+func priceIfNotZero(_ price:PriceUnit?) -> BigUInt? {
+  switch(price) {
+  case .some(.wei(0)):
+    return nil
+  case .some(.near(0)):
+    return nil
+  case .none:
+    return nil
+  case .some(.wei(let x)):
+    return x
+  case .some(.near(let x)):
+    return x
+  }
 }
 
 
@@ -370,10 +385,10 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.eager(NFTPriceInfo(
-                                    price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-                                    blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.eager(NFTPriceInfo(
+                                    wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
+                                    blockNumber:log.blockNumber.map { .ethereum($0) },
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
     }
@@ -389,10 +404,10 @@ class CryptoKittiesAuction : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.eager(NFTPriceInfo(
-                                    price: priceIfNotZero(res["totalPrice"] as? BigUInt),
-                                    blockNumber: log.blockNumber?.quantity,
+        blockNumber:log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.eager(NFTPriceInfo(
+                                    wei: priceIfNotZero(res["totalPrice"] as? BigUInt),
+                                    blockNumber:log.blockNumber.map { .ethereum($0) },
                                     type: priceIfNotZero(res["totalPrice"] as? BigUInt) == nil ? .transfer : .bought))
       ))
     }
@@ -406,20 +421,20 @@ class CryptoKittiesAuction : ContractInterface {
         log.blockNumber.map { blockNumber in
           // CryptoKitties does not index logs, so we filter here
           if (res["tokenId"] as! BigUInt == BigUInt(tokenId)) {
-            events.append(TradeEvent(type: .bought, value: res["totalPrice"] as! BigUInt, blockNumber:blockNumber))
+            events.append(TradeEvent(type: .bought, value: .wei(res["totalPrice"] as! BigUInt), blockNumber:.ethereum(blockNumber)))
           }
         }
       }
     }
     .compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
-      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+      events.sorted(by: { $0.blockNumber > $1.blockNumber})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
-              blockNumber:fetcher.fromBlock
+              blockNumber:.ethereum(EthereumQuantity(quantity: fetcher.fromBlock))
             )
           )
         )
@@ -459,7 +474,7 @@ class CryptoKittiesAuction : ContractInterface {
             .map { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -488,7 +503,7 @@ class CryptoKittiesAuction : ContractInterface {
     return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
-  func indicativeFloor() -> Promise<Double?> { return Promise.value(nil) }
+  func indicativeFloor() -> Promise<PriceUnit?> { return Promise.value(nil) }
   
 }
 
@@ -571,8 +586,8 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        blockNumber:log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -580,8 +595,8 @@ class AutoglyphsContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    wei:price,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -601,8 +616,8 @@ class AutoglyphsContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        blockNumber:log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
@@ -610,8 +625,8 @@ class AutoglyphsContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    wei:price,
+                    blockNumber:log.blockNumber.map { .ethereum($0) },
                     type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -641,7 +656,7 @@ class AutoglyphsContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -687,7 +702,7 @@ class AutoglyphsContract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return SushiSwapPool(address:"0x0d9f9c919f1b66a8587a5637b8d1a6a6c5854380").priceInEthRev()
   }
   
@@ -703,21 +718,29 @@ class AutoglyphsContract : ContractInterface {
 
 class BlockFetcherImpl {
   
-  private var blocksCache = try! DiskStorage<EthereumQuantityTag, EthereumBlockObject>(
-    config: DiskConfig(name: "BlockFetcherCache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: EthereumBlockObject.self))
+  struct BlockInfo : Codable {
+    let timestamp : Date
+  }
   
-  func getBlock(blockNumber:EthereumQuantityTag) -> ObservablePromise<EthereumBlockObject?> {
+  private var blocksCache = try! DiskStorage<BlockNumber, BlockInfo>(
+    config: DiskConfig(name: "BlockFetcherImplCache",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: BlockInfo.self))
+  
+  private func getEthereumBlock(blockNumber:EthereumQuantity) -> ObservablePromise<BlockInfo?> {
     return ObservablePromise(
       promise: Promise { seal in
         DispatchQueue.global(qos:.userInteractive).async {
-          switch(try? self.blocksCache.object(forKey:blockNumber)) {
+          switch(try? self.blocksCache.object(forKey:.ethereum(blockNumber))) {
           case .some(let p):
             seal.fulfill(p)
           case .none:
             print("getBlockByNumber")
-            web3.eth.getBlockByNumber(block:blockNumber, fullTransactionObjects: false)
-              .done(on:DispatchQueue.global(qos:.userInteractive)) { seal.fulfill($0) }
+            web3.eth.getBlockByNumber(block:.block(blockNumber.quantity), fullTransactionObjects: false)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) {
+                seal.fulfill(($0?.timestamp).map {
+                  BlockInfo(timestamp:Date(timeIntervalSince1970:Double($0.quantity)))
+                })
+              }
               .catch {
                 print($0)
                 seal.fulfill(nil)
@@ -726,7 +749,45 @@ class BlockFetcherImpl {
         }
       }
     ) { block in
-      block.flatMap { try? self.blocksCache.setObject($0, forKey: blockNumber) }
+      block.flatMap { try? self.blocksCache.setObject($0, forKey: .ethereum(blockNumber)) }
+    }
+  }
+  
+  private func getNearBlock(blockHeight:EthereumQuantity) -> ObservablePromise<BlockInfo?> {
+    
+    return ObservablePromise(
+      promise: Promise { seal in
+        DispatchQueue.global(qos:.userInteractive).async {
+          switch(try? self.blocksCache.object(forKey:.near(blockHeight))) {
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
+            NearApi.block(block_id: blockHeight.quantity)
+              .done(on:DispatchQueue.global(qos:.userInteractive)) {
+                seal.fulfill(
+                  $0.map {
+                    BlockInfo(timestamp:Date(timeIntervalSince1970:(Double($0.header.timestamp) / Double(1e9))))
+                  }
+                )
+              }
+              .catch {
+                print($0)
+                seal.fulfill(nil)
+              }
+          }
+        }
+      }
+    ) { block in
+      block.flatMap { try? self.blocksCache.setObject($0, forKey: .near(blockHeight)) }
+    } 
+  }
+  
+  func getBlock(blockNumber:BlockNumber) -> ObservablePromise<BlockInfo?> {
+    switch(blockNumber) {
+    case .ethereum(let blockNumber):
+      return self.getEthereumBlock(blockNumber: blockNumber)
+    case .near(let blockHeight):
+      return self.getNearBlock(blockHeight:blockHeight)
     }
   }
   

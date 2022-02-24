@@ -26,7 +26,7 @@ struct TradableTokenPrice: View {
     .padding(.bottom,8)
     .padding(.leading)
     .padding(.trailing,10)
-    
+    .frame(minHeight:60)
     .background(RoundedCorners(color: .secondarySystemBackground, tl: 20, tr: 00, bl: 20, br: 0))
   }
 }
@@ -39,7 +39,7 @@ struct TradableTokenPrice_Previews: PreviewProvider {
         Spacer()
         
         TradableTokenPrice(
-          price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label)
+          price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),color:.label)
       }
       Spacer()
     }

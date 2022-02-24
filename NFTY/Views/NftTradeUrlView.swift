@@ -22,7 +22,7 @@ struct NftTradeUrlView: View {
   var body: some View {
     TokenTradeView(
       nft: nft.nft,
-      price: .lazy(nft.indicativePriceWei),
+      price: .lazy(nft.indicativePrice),
       collection:collection,
       userWallet: userWallet,
       isSheet: true)

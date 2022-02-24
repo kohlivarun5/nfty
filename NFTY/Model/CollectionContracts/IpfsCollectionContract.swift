@@ -175,8 +175,8 @@ class IpfsCollectionContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        blockNumber: log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
@@ -184,8 +184,8 @@ class IpfsCollectionContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    wei:price,
+                    blockNumber: log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -206,8 +206,8 @@ class IpfsCollectionContract : ContractInterface {
           tokenId:tokenId,
           name:self.name,
           media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
-        blockNumber: log.blockNumber?.quantity,
-        indicativePriceWei:.lazy {
+        blockNumber: log.blockNumber.map { .ethereum($0) },
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
@@ -215,8 +215,8 @@ class IpfsCollectionContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
-                    blockNumber:log.blockNumber?.quantity,
+                    wei:price,
+                    blockNumber: log.blockNumber.map { .ethereum($0) },
                     type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
               }
           )
@@ -247,7 +247,7 @@ class IpfsCollectionContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -293,11 +293,9 @@ class IpfsCollectionContract : ContractInterface {
     return ethContract.ownerOf(tokenId)
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-      .map { stats in
-        stats.flatMap { $0.floor_price != 0 ? $0.floor_price : nil }
-      }
+      .map { stats in stats?.floor_price }
   }
   
   lazy var vaultContract: CollectionVaultContract? = {

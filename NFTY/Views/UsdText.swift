@@ -37,26 +37,52 @@ func EthString(wei:BigUInt) -> String {
   return ethFormatter.string(for:(Double(wei) / 1e18))!
 }
 
+var nearFormatter = formatter(symbol:"Ⓝ ",maximumFractionDigits:2)
+
+func NearString(near:BigUInt) -> String {
+  return nearFormatter.string(for:(Double(near) / 1e24))!
+}
+
+func PriceString(price:PriceUnit) -> String {
+  switch(price) {
+  case .wei(let wei):
+    return EthString(wei: wei)
+  case .near(let near):
+    return NearString(near: near)
+  }
+}
+
+
+
 struct UsdText: View {
   
   @ObservedObject private var spot = EthSpot.get()
   
-  let wei:BigUInt
+  let price:PriceUnit
   let fontWeight : Font.Weight?
   var body: some View {
-    ObservedPromiseView(
-      data: spot,
-      progress: { Text("") },
-      view: { spot in
-        switch(spot) {
-        case .none:
-          Text(EthString(wei: wei))
-            .fontWeight(fontWeight)
-        case .some(let rate):
-          Text(UsdString(wei: wei, rate:rate))
-            .fontWeight(fontWeight)
-        }
-      })
+    
+    switch(price) {
+    case .near(let near):
+      Text(NearString(near: near))
+        .fontWeight(fontWeight)
+    case .wei(let wei):
+      
+      
+      ObservedPromiseView(
+        data: spot,
+        progress: { Text("") },
+        view: { spot in
+          switch(spot) {
+          case .none:
+            Text(EthString(wei: wei))
+              .fontWeight(fontWeight)
+          case .some(let rate):
+            Text(UsdString(wei: wei, rate:rate))
+              .fontWeight(fontWeight)
+          }
+        })
+    }
   }
 }
 
@@ -65,38 +91,45 @@ struct UsdEthVText: View {
   @ObservedObject private var spot = EthSpot.get()
   @StateObject var userSettings = UserSettings()
   
-  let wei:BigUInt
+  let price:PriceUnit
   let fontWeight : Font.Weight?
   let alignment : HorizontalAlignment
   var body: some View {
-    ObservedPromiseView(
-      data: spot,
-      progress: { Text("") },
-      view: { spot in
-        switch(spot) {
-        case .none:
-          Text(EthString(wei: wei))
-            .fontWeight(fontWeight)
-        case .some(let rate):
-          
-          switch(userSettings.quoteType) {
-          case .Both:
-            VStack(alignment:alignment) {
-              Text(UsdString(wei: wei, rate:rate))
-                .fontWeight(fontWeight)
-              Text(EthString(wei: wei))
-                .fontWeight(Font.Weight.light)
-            }
-          case .Fiat:
-            Text(UsdString(wei: wei, rate:rate))
-              .fontWeight(fontWeight)
-          case .Crypto:
+    
+    switch(price) {
+    case .near(let near):
+      Text(NearString(near: near))
+        .fontWeight(fontWeight)
+    case .wei(let wei):
+      ObservedPromiseView(
+        data: spot,
+        progress: { Text("") },
+        view: { spot in
+          switch(spot) {
+          case .none:
             Text(EthString(wei: wei))
               .fontWeight(fontWeight)
+          case .some(let rate):
+            
+            switch(userSettings.quoteType) {
+            case .Both:
+              VStack(alignment:alignment) {
+                Text(UsdString(wei: wei, rate:rate))
+                  .fontWeight(fontWeight)
+                Text(EthString(wei: wei))
+                  .fontWeight(Font.Weight.light)
+              }
+            case .Fiat:
+              Text(UsdString(wei: wei, rate:rate))
+                .fontWeight(fontWeight)
+            case .Crypto:
+              Text(EthString(wei: wei))
+                .fontWeight(fontWeight)
+            }
+            
           }
-          
-        }
-      })
+        })
+    }
   }
 }
 
@@ -105,42 +138,49 @@ struct UsdEthHText: View {
   @ObservedObject private var spot = EthSpot.get()
   @StateObject var userSettings = UserSettings()
   
-  let wei:BigUInt
+  let price:PriceUnit
   let fontWeight : Font.Weight?
   var body: some View {
-    ObservedPromiseView(
-      data: spot,
-      progress: { Text("") },
-      view: { spot in
-        switch(spot) {
-        case .none:
-          Text(EthString(wei: wei))
-            .fontWeight(fontWeight)
-        case .some(let rate):
-          
-          switch(userSettings.quoteType) {
-          case .Both:
-            HStack {
-              Text(UsdString(wei: wei, rate:rate))
-                .fontWeight(fontWeight)
-              Text("(\(EthString(wei: wei)))")
-                .fontWeight(Font.Weight.light)
-            }
-          case .Fiat:
-            Text(UsdString(wei: wei, rate:rate))
-              .fontWeight(fontWeight)
-          case .Crypto:
+    
+    switch(price) {
+    case .near(let near):
+      Text(NearString(near: near))
+        .fontWeight(fontWeight)
+    case .wei(let wei):
+      ObservedPromiseView(
+        data: spot,
+        progress: { Text("") },
+        view: { spot in
+          switch(spot) {
+          case .none:
             Text(EthString(wei: wei))
               .fontWeight(fontWeight)
+          case .some(let rate):
+            
+            switch(userSettings.quoteType) {
+            case .Both:
+              HStack {
+                Text(UsdString(wei: wei, rate:rate))
+                  .fontWeight(fontWeight)
+                Text("(\(EthString(wei: wei)))")
+                  .fontWeight(Font.Weight.light)
+              }
+            case .Fiat:
+              Text(UsdString(wei: wei, rate:rate))
+                .fontWeight(fontWeight)
+            case .Crypto:
+              Text(EthString(wei: wei))
+                .fontWeight(fontWeight)
+            }
+            
           }
-          
-        }
-      })
+        })
+    }
   }
 }
 
 struct UsdText_Previews: PreviewProvider {
   static var previews: some View {
-    UsdText(wei:BigUInt(2.2),fontWeight: nil)
+    UsdText(price:.wei(BigUInt(2.2)),fontWeight: nil)
   }
 }

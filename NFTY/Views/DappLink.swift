@@ -20,6 +20,12 @@ struct DappLink: View {
       components.path = "/market/view/phunk/\(nft.tokenId)"
       return components
       
+    } else if (nft.address.hasSuffix(".near")) {
+      // https://paras.id/token/asac.near::2371/2371
+      var components = URLComponents()
+      components.host = "paras.id"
+      components.path = "/token/\(nft.address)::\(nft.tokenId)/\(nft.tokenId)"
+      return components
     } else {
       
       var components = URLComponents()
@@ -37,6 +43,13 @@ struct DappLink: View {
       var components = URLComponents()
       components.host = "notlarvalabs.com"
       components.path = "cryptophunks/forsale"
+      return components
+      
+    } else if (address.hasSuffix(".near")) {
+      // https://paras.id/collection/asac.near
+      var components = URLComponents()
+      components.host = "paras.id"
+      components.path = "/collection/\(address)"
       return components
       
     } else {

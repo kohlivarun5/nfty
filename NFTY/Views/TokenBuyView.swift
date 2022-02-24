@@ -29,8 +29,8 @@ struct TokenBuyView: View {
   
   @State private var eth : String = ""
   
-  @State private var currentBidPriceInWei : BigUInt? = nil
-  @State private var currentAskPriceInWei : BigUInt? = nil
+  @State private var currentBidPrice : PriceUnit? = nil
+  @State private var currentAskPrice : PriceUnit? = nil
   
   @State private var bidPriceInWei : BigUInt? = nil
   
@@ -54,10 +54,15 @@ struct TokenBuyView: View {
       .catch { print($0) }
   }
   
-  private func onBuyNow(_ ask : BigUInt) {
-    actions.acceptOffer(tokenId: nft.tokenId, wei: ask, wallet:walletProvider)
-      .done { print ($0) }
-      .catch { print($0) }
+  private func onBuyNow(_ ask : PriceUnit) {
+    switch(ask) {
+    case .wei(let wei):
+      actions.acceptOffer(tokenId: nft.tokenId, wei: wei, wallet:walletProvider)
+        .done { print ($0) }
+        .catch { print($0) }
+    case .near:
+      assertionFailure("Near not support for actions yet")
+    }
   }
   
   var body: some View {
@@ -131,20 +136,20 @@ struct TokenBuyView: View {
               Text("Current Bid")
               Spacer()
               
-              switch(currentBidPriceInWei) {
-              case .none:
+              switch(currentBidPrice,spot) {
+              case (.none,_):
                 Text("N/A")
                   .foregroundColor(.secondary)
                   .font(.caption)
-              case .some(let currentBidPriceInWei):
-                switch(spot) {
-                case .loading:
-                  ProgressView()
-                case .localCurrency(let rate):
-                  Text("\(UsdString(wei:currentBidPriceInWei,rate:rate)) (\(Text(EthString(wei:currentBidPriceInWei))))")
-                case .unknown:
-                  Text(EthString(wei:currentBidPriceInWei))
-                }
+              case (.some,.loading):
+                ProgressView()
+              case (.some(.wei(let wei)),.localCurrency(let rate)):
+                Text("\(UsdString(wei:wei,rate:rate)) (\(Text(PriceString(price:.wei(wei))))")
+                
+              case (.some(.near(let near)),_):
+                Text(PriceString(price:.near(near)))
+              case (.some(let price),.unknown):
+                Text(PriceString(price:price))
               }
             }
             
@@ -206,13 +211,13 @@ struct TokenBuyView: View {
             HStack {
               Text("Current Ask (in ETH)")
               Spacer()
-              switch(currentAskPriceInWei) {
+              switch(currentAskPrice) {
               case .none:
                 Text("N/A")
                   .foregroundColor(.secondary)
                   .font(.caption)
-              case .some(let askPriceInWei):
-                Text(ethFormatter.string(for:(Double(askPriceInWei) / 1e18))!)
+              case .some(let askPrice):
+                Text(PriceString(price:askPrice))
               }
             }
             
@@ -220,43 +225,42 @@ struct TokenBuyView: View {
               Text("Ask Price")
               Spacer()
               
-              switch(currentAskPriceInWei) {
-              case .none:
+              switch(currentAskPrice,spot) {
+              case (.none,_):
                 Text("N/A")
                   .foregroundColor(.secondary)
                   .font(.caption)
-              case .some(let askPriceInWei):
-                
-                switch(spot) {
-                case .loading:
-                  ProgressView()
-                    .onAppear {
-                      switch(self.spot) {
-                      case .loading:
-                        UserEthRate.getLiveRate()
-                          .done(on:.main) { spot in
-                            switch(spot) {
-                            case .none:
-                              self.spot = .unknown
-                            case .some(let rate):
-                              self.spot = .localCurrency(rate)
-                            }
-                          }.catch { print ($0) }
-                      case .localCurrency,.unknown:
-                        break
-                      }
+              case (.some,.loading):
+                ProgressView()
+                  .onAppear {
+                    switch(self.spot) {
+                    case .loading:
+                      UserEthRate.getLiveRate()
+                        .done(on:.main) { spot in
+                          switch(spot) {
+                          case .none:
+                            self.spot = .unknown
+                          case .some(let rate):
+                            self.spot = .localCurrency(rate)
+                          }
+                        }.catch { print ($0) }
+                    case .localCurrency,.unknown:
+                      break
                     }
-                case .localCurrency(let rate):
-                  Text(UsdString(wei:askPriceInWei,rate:rate))
-                    .fontWeight(.semibold)
-                case .unknown:
-                  Text(EthString(wei:askPriceInWei))
-                    .fontWeight(.semibold)
-                }
+                  }
+              case (.some(.wei(let wei)),.localCurrency(let rate)):
+                Text(UsdString(wei:wei,rate:rate))
+                  .fontWeight(.semibold)
+              case (.some(.near(let near)),_):
+                Text(PriceString(price:.near(near)))
+                  .fontWeight(.semibold)
+              case (.some(let price),.unknown):
+                Text(PriceString(price:price))
+                  .fontWeight(.semibold)
               }
             }
             
-            switch (currentAskPriceInWei) {
+            switch (currentAskPrice) {
             case .some(let ask):
               HStack {
                 Button(action: {
@@ -307,8 +311,8 @@ struct TokenBuyView: View {
       self.rank = rarityRank?.getRank(nft.tokenId)
       self.tradeActions.bidAsk
         .done {
-          self.currentAskPriceInWei = $0.ask.map { $0.wei }
-          self.currentBidPriceInWei = $0.bid.map { $0.wei }
+          self.currentAskPrice = $0.ask.map { $0.price }
+          self.currentBidPrice = $0.bid.map { $0.price }
         }
         .catch { print($0) }
     }
@@ -319,7 +323,7 @@ struct TokenBuyView_Previews: PreviewProvider {
   static var previews: some View {
     TokenBuyView(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:123450,blockNumber: nil,type:.ask)),
+      price:.eager(NFTPriceInfo(price:.wei(123450),blockNumber: .none,type:.ask)),
       sample:SAMPLE_PUNKS[0],
       themeColor:SampleCollection.info.themeColor,
       themeLabelColor:SampleCollection.info.themeLabelColor,

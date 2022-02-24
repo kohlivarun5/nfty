@@ -46,7 +46,7 @@ struct TokensByPropertiesList: View {
             columns: Array(
               repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NarrowSize+40 : min(200,(metrics.size.width - 20) / Double(2)))),
               count:UIDevice.current.userInterfaceIdiom == .pad
-              ? Int(metrics.size.width / RoundedImage.NarrowSize) - 1
+              ? min(4,Int(metrics.size.width / RoundedImage.NarrowSize) - 1)
               : 2)
           ) {
             ForEach(nfts.tokens.indices,id:\.self) { index in
@@ -76,12 +76,12 @@ struct TokensByPropertiesList: View {
                     self.sheetSelectedIndex = SheetSelection(id:index)
                   }
                 
-                switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.wei) {
+                switch(nfts.tokenAsks[nft.nft.tokenId]?.ask?.price) {
                 case .none:
                   EmptyView()
                 case .some(let ask):
                   VStack {
-                    UsdEthVText(wei: ask, fontWeight: .semibold,alignment:.center)
+                    UsdEthVText(price: ask, fontWeight: .semibold,alignment:.center)
                       .padding([.top,.bottom],2)
                       .padding([.leading,.trailing],20)
                       .font(.caption)
@@ -96,7 +96,7 @@ struct TokensByPropertiesList: View {
                 
                 NavigationLink(destination: NftDetail(
                   nft:nft.nft,
-                  price:.lazy(nft.indicativePriceWei),
+                  price:.lazy(nft.indicativePrice),
                   collection:collection,
                   hideOwnerLink:false,
                   selectedProperties:nfts.selectedProperties
@@ -135,7 +135,7 @@ struct TokensByPropertiesList: View {
       let nft = nfts.tokens[$0.id]
       TokenTradeView(
         nft: nft.nft,
-        price:.lazy(nft.indicativePriceWei),
+        price:.lazy(nft.indicativePrice),
         collection:collection,
         userWallet:userWallet,
         isSheet:true)

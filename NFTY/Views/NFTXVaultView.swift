@@ -46,7 +46,7 @@ struct NFTXVaultView: View {
                       
                       RoundedImage(
                         nft:nft.nft,
-                        price:.lazy(nft.indicativePriceWei),
+                        price:.lazy(nft.indicativePrice),
                         collection:collection,
                         width: .normal,
                         resolution: .normal
@@ -84,7 +84,7 @@ struct NFTXVaultView: View {
                     
                     NavigationLink(destination: NftDetail(
                       nft:nft.nft,
-                      price:.lazy(nft.indicativePriceWei),
+                      price:.lazy(nft.indicativePrice),
                       collection:collection,
                       hideOwnerLink:false,
                       selectedProperties:[]
@@ -109,7 +109,7 @@ struct NFTXVaultView: View {
       let nft = nfts.tokens[$0.id]
       TokenTradeView(
         nft: nft.nft,
-        price:.lazy(nft.indicativePriceWei),
+        price:.lazy(nft.indicativePrice),
         collection:collection,
         userWallet:userWallet,
         isSheet:true)

@@ -72,7 +72,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   struct Order : Codable {
     let contract_address : String
     let token_id : UInt
-    let wei : BigUInt
+    let price : PriceUnit
     let expiration_time : UInt?
   }
   
@@ -100,7 +100,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                   (collection,
                    bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
                     bidAsk.ask.map {
-                      Order(contract_address: address, token_id: tokenId, wei: $0.wei,expiration_time: $0.expiration_time)
+                      Order(contract_address: address, token_id: tokenId, price: $0.price,expiration_time: $0.expiration_time)
                     }
                   }
                   )
@@ -141,7 +141,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                   && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
                 try? salesCache.removeObject(forKey: key)
               }
-              else if (entry.wei == order.wei) { return nil }
+              else if (entry.price == order.price) { return nil }
             }
             
             try! salesCache.setObject(
@@ -160,10 +160,13 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               let content = UNMutableNotificationContent()
               content.title = "Favorite for Sale"
               content.subtitle = "\(collection.info.name) #\(order.token_id)"
-              let wei = order.wei
-              content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
-              // content.sound = UNNotificationSound.default
               
+              switch(order.price) {
+              case .wei(let wei):
+                content.body = "On sale for \(spot.map { "\(UsdString(wei: wei, rate: $0)) (\(EthString(wei: wei)))" } ?? EthString(wei: wei) )"
+              case .near(let near):
+                content.body = "On sale for \(PriceString(price:.near(near)) )"
+              }
               print("ImageUrl=\(String(describing:imageUrl))")
               
               imageUrl.map {
@@ -201,6 +204,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   
   let userSettings = UserSettings()
   
+  // TODO Support Near
   let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
   return orders
     .then { orders -> Promise<Bool> in
@@ -236,25 +240,39 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                 .map { floor -> (Collection,OpenSeaApi.AssetOrder)? in
                   // Check user settings limit
                   var withinLimit = false
-                  switch(floor,userSettings.offerNotificationMinimum) {
-                  case (.none,_):
+                  switch(floor,Double(order.current_price).map { BigUInt($0) },userSettings.offerNotificationMinimum) {
+                  case (.none,_,_),(_,.none,_):
                     withinLimit = true
-                  case (.some,.None):
+                  case (.some,.some,.None):
                     withinLimit = true
-                  case (.some(let floor),.OTM_20_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.8)
-                  case (.some(let floor),.OTM_10_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.9)
-                  case (.some(let floor),.OTM_5_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 0.95)
-                  case (.some(let floor),.ATM):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.0)
-                  case (.some(let floor),.ITM_5_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.05)
-                  case (.some(let floor),.ITM_10_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.1)
-                  case (.some(let floor),.ITM_20_pct):
-                    withinLimit = Double(order.current_price)! > (floor * 1e18 * 1.2)
+                  case (.some(let floor),.some(let current_price),.OTM_20_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > (-0.2)
+                  case (.some(let floor),.some(let current_price),.OTM_10_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > (-0.1)
+                  case (.some(let floor),.some(let current_price),.OTM_5_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > (-0.05)
+                  case (.some(let floor),.some(let current_price),.ATM):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > 0
+                  case (.some(let floor),.some(let current_price),.ITM_5_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > 0.05
+                  case (.some(let floor),.some(let current_price),.ITM_10_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > 0.1
+                  case (.some(let floor),.some(let current_price),.ITM_20_pct):
+                    withinLimit = PriceUnit.change(
+                      new: .wei(current_price),
+                      prev: floor)! > 0.2
                   }
                   
                   if (withinLimit) {

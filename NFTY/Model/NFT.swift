@@ -18,14 +18,92 @@ enum TradeEventType {
   case transfer
 }
 
+
+enum PriceUnit : Codable,Comparable,Equatable {
+  case wei(BigUInt)
+  case near(BigUInt)
+  
+  public static func>(a: PriceUnit, b: PriceUnit) -> Bool {
+    switch(a,b) {
+    case (.wei(let x),.wei(let y)),
+      (.near(let x),.near(let y)):
+      return x > y
+    case (.wei,.near):
+      return true
+    case (.near,wei):
+      return false
+    }
+  }
+  
+  public static func==(a: PriceUnit, b: PriceUnit) -> Bool {
+    switch(a,b) {
+    case (.wei(let x),.wei(let y)),
+      (.near(let x),.near(let y)):
+      return x == y
+    case (.wei,.near),
+         (.near,wei):
+      return false
+    }
+  }
+  
+  public static func change(new:PriceUnit,prev:PriceUnit) -> Double? {
+    switch(new,prev) {
+    case (.wei(let x),.wei(let y)),
+         (.near(let x),.near(let y)):
+      return (Double(x) - Double(y)) / Double(y)
+    case (.wei,.near):
+      return nil
+    case (.near,wei):
+      return nil
+    }
+  }
+}
+
+enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
+  case ethereum(EthereumQuantity)
+  case near(EthereumQuantity)
+  
+  public static func<(a: BlockNumber, b: BlockNumber) -> Bool {
+    switch(a,b) {
+    case (.ethereum(let x),.ethereum(let y)),
+         (.near(let x),.near(let y)):
+      return x.quantity < y.quantity
+    case (.ethereum,.near):
+      return false
+    case (.near,ethereum):
+      return true
+    }
+  }
+  
+  public static func>(a: BlockNumber, b: BlockNumber) -> Bool {
+    switch(a,b) {
+    case (.ethereum(let x),.ethereum(let y)),
+         (.near(let x),.near(let y)):
+      return x.quantity > y.quantity
+    case (.ethereum,.near):
+      return true
+    case (.near,ethereum):
+      return false
+    }
+  }
+  
+  var id : BigUInt {
+    switch(self) {
+    case .ethereum(let q),.near(let q):
+      return q.quantity
+    }
+  }
+  
+}
+
 struct TradeEvent {
   var type : TradeEventType
-  var value : BigUInt
-  var blockNumber : EthereumQuantity
+  var value : PriceUnit
+  var blockNumber : BlockNumber
 }
 
 struct NFTNotSeenSince {
-  var blockNumber : BigUInt
+  var blockNumber : BlockNumber
 }
 
 enum TradeEventStatus {
@@ -137,19 +215,26 @@ struct NFT: Identifiable {
 }
 
 struct NFTPriceInfo {
-  let price : BigUInt?
+  
+  let price : PriceUnit?
   
   enum BlockTimeStamp {
     case none
-    case some(BigUInt)
+    case some(BlockNumber)
     case date(Date)
   }
   
   let blockNumber : BlockTimeStamp
   let type : TradeEventType
   
-  init(price:BigUInt?, blockNumber:BigUInt?,type:TradeEventType) {
+  init(price:PriceUnit?, blockNumber:BlockTimeStamp,type:TradeEventType) {
     self.price = price
+    self.blockNumber = blockNumber
+    self.type = type
+  }
+  
+  init(wei:BigUInt?, blockNumber:BlockNumber?,type:TradeEventType) {
+    self.price = wei.map { .wei($0) }
     self.type = type
     switch(blockNumber) {
     case .some(let x):
@@ -159,8 +244,8 @@ struct NFTPriceInfo {
     }
   }
   
-  init(price:BigUInt?, date:Date?,type:TradeEventType) {
-    self.price = price
+  init(wei:BigUInt?, date:Date?,type:TradeEventType) {
+    self.price = wei.map { .wei($0) }
     self.type = type
     switch(date) {
     case .some(let x):
@@ -168,8 +253,30 @@ struct NFTPriceInfo {
     case .none:
       self.blockNumber = .none
     }
-    
   }
+  
+  init(near:BigUInt?, date:Date?,type:TradeEventType) {
+    self.price = near.map { .near($0) }
+    self.type = type
+    switch(date) {
+    case .some(let x):
+      self.blockNumber = .date(x)
+    case .none:
+      self.blockNumber = .none
+    }
+  }
+  
+  init(near:BigUInt?, blockNumber:EthereumQuantity?,type:TradeEventType) {
+    self.price = near.map { .near($0) }
+    self.type = type
+    switch(blockNumber) {
+    case .some(let x):
+      self.blockNumber = .some(.near(x))
+    case .none:
+      self.blockNumber = .none
+    }
+  }
+  
 }
 
 struct NFTToken : Identifiable {
@@ -193,8 +300,8 @@ enum TokenPriceType {
 
 struct NFTWithPrice : Identifiable {
   let nft : NFT
-  let blockNumber : BigUInt?
-  let indicativePriceWei : TokenPriceType
+  let blockNumber : BlockNumber?
+  let indicativePrice : TokenPriceType
   
   var id : NFT.NftID {
     return nft.id
@@ -219,7 +326,7 @@ struct NFTWithLazyPrice : Identifiable {
     return nft.id
   }
   
-  func indicativePriceWei() -> ObservablePromise<NFTPriceStatus> {
+  func indicativePrice() -> ObservablePromise<NFTPriceStatus> {
     self.getPrice()
   }
 }

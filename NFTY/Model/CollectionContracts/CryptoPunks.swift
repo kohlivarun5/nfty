@@ -164,8 +164,8 @@ class CryptoPunksContract : ContractInterface {
         }
       }.map { prices in
         return BidAsk(
-          bid:prices.0.map { BidInfo(wei:$0,expiration_time:nil) },
-          ask:prices.1.map { AskInfo(wei:$0,expiration_time:nil) }
+          bid:prices.0.map { BidInfo(price:.wei($0),expiration_time:nil) },
+          ask:prices.1.map { AskInfo(price:.wei($0),expiration_time:nil) }
         )
       }
     }
@@ -195,12 +195,12 @@ class CryptoPunksContract : ContractInterface {
         switch(txData) {
         case .none: return nil
         case .some(let tx):
-          return TradeEvent(type:eventType,value:tx.value,blockNumber:tx.blockNumber)
+          return TradeEvent(type:eventType,value:.wei(tx.value),blockNumber:.ethereum(tx.blockNumber))
         }
       }
   }
   
-  private func onTradeLog(tokenId:BigUInt,logValue:BigUInt?,type:TradeEventType,blockNumber:BigUInt?,transactionHash:EthereumData?,
+  private func onTradeLog(tokenId:BigUInt,logValue:BigUInt?,type:TradeEventType,blockNumber:EthereumQuantity?,transactionHash:EthereumData?,
                           _ response: @escaping (NFTWithPrice) -> Void) {
     switch (logValue) {
     case .some (let value):
@@ -210,11 +210,11 @@ class CryptoPunksContract : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
-        blockNumber: blockNumber,
-        indicativePriceWei:.eager(
+        blockNumber: blockNumber.map { .ethereum($0) },
+        indicativePrice:.eager(
           NFTPriceInfo(
-            price:value,
-            blockNumber: blockNumber,
+            wei:value,
+            blockNumber: blockNumber.map { .ethereum($0) },
             type:type))
       ))
     case .none:
@@ -224,8 +224,8 @@ class CryptoPunksContract : ContractInterface {
           tokenId:UInt(tokenId),
           name:self.name,
           media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
-        blockNumber: blockNumber,
-        indicativePriceWei:.lazy {
+        blockNumber: blockNumber.map { .ethereum($0) },
+        indicativePrice:.lazy {
           ObservablePromise(
             promise:
               self.eventOfTx(transactionHash:transactionHash,eventType:type)
@@ -233,8 +233,8 @@ class CryptoPunksContract : ContractInterface {
                 let price = priceIfNotZero($0?.value);
                 return NFTPriceStatus.known(
                   NFTPriceInfo(
-                    price:price,
-                    blockNumber:blockNumber,
+                    wei:price,
+                    blockNumber: blockNumber.map { .ethereum($0) },
                     type: price.map { _ in type } ?? TradeEventType.transfer))
               }
           )
@@ -256,7 +256,7 @@ class CryptoPunksContract : ContractInterface {
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["value"] as? BigUInt),
         type:.bought,
-        blockNumber:log.blockNumber?.quantity,
+        blockNumber:log.blockNumber,
         transactionHash:log.transactionHash,
         response)
     }
@@ -269,7 +269,7 @@ class CryptoPunksContract : ContractInterface {
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["minValue"] as? BigUInt),
         type:.ask,
-        blockNumber:log.blockNumber?.quantity,
+        blockNumber:log.blockNumber,
         transactionHash:log.transactionHash,
         response)
     }
@@ -288,7 +288,7 @@ class CryptoPunksContract : ContractInterface {
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["value"] as? BigUInt),
         type:.bought,
-        blockNumber:log.blockNumber?.quantity,
+        blockNumber:log.blockNumber,
         transactionHash:log.transactionHash,
         response)
     }
@@ -302,7 +302,7 @@ class CryptoPunksContract : ContractInterface {
         tokenId:res["punkIndex"] as! BigUInt,
         logValue:priceIfNotZero(res["minValue"] as? BigUInt),
         type:.ask,
-        blockNumber:log.blockNumber?.quantity,
+        blockNumber:log.blockNumber,
         transactionHash:log.transactionHash,
         response)
     }
@@ -315,7 +315,7 @@ class CryptoPunksContract : ContractInterface {
       punkBoughtFetcher.fetch(onDone:{seal.fulfill(events)}) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkBought,from:log);
         log.blockNumber.map { blockNumber in
-          events.append(TradeEvent(type: .bought, value: res["value"] as! BigUInt, blockNumber:blockNumber))
+          events.append(TradeEvent(type: .bought, value: .wei(res["value"] as! BigUInt), blockNumber:.ethereum(blockNumber)))
         }
       }
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { boughtEvents -> Promise<[TradeEvent]> in
@@ -325,22 +325,22 @@ class CryptoPunksContract : ContractInterface {
           //print(log);
           let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
           log.blockNumber.map { blockNumber in
-            events.append(TradeEvent(type: .ask, value: res["minValue"] as! BigUInt, blockNumber:blockNumber))
+            events.append(TradeEvent(type: .ask, value: .wei(res["minValue"] as! BigUInt), blockNumber:.ethereum(blockNumber)))
           }
         }
       }
     }.compactMap(on:DispatchQueue.global(qos:.userInteractive)) { events in
-      events.sorted(by: { $0.blockNumber.quantity > $1.blockNumber.quantity})
+      events.sorted(by: { $0.blockNumber > $1.blockNumber})
     }.then(on:DispatchQueue.global(qos:.userInteractive)) { events -> Promise<TradeEventStatus> in
       switch(events.count,retries) {
       case (0,0):
         return Promise.value(
           TradeEventStatus.notSeenSince(
             NFTNotSeenSince(
-              blockNumber: min(
+              blockNumber: .ethereum(EthereumQuantity(quantity: min(
                 punkBoughtFetcher.fromBlock,
                 punkOfferedFetcher.fromBlock
-              )
+              )))
             )
           )
         )
@@ -390,7 +390,7 @@ class CryptoPunksContract : ContractInterface {
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
-                return NFTPriceStatus.known(NFTPriceInfo(price:priceIfNotZero(event.value),blockNumber:event.blockNumber.quantity,type:event.type))
+                return NFTPriceStatus.known(NFTPriceInfo(wei:priceIfNotZero(event.value),blockNumber:event.blockNumber,type:event.type))
               case .notSeenSince(let since):
                 return NFTPriceStatus.notSeenSince(since)
               }
@@ -450,7 +450,7 @@ class CryptoPunksContract : ContractInterface {
         if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
           type = .minted
         }
-        response(TradeEvent(type:type, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:type, value: .wei(res["value"] as! BigUInt), blockNumber:.ethereum(log.blockNumber!)))
       }
       
       punkOfferedFetcher.fetchAllLogs(onDone: {
@@ -458,7 +458,7 @@ class CryptoPunksContract : ContractInterface {
         if (counter >= 3) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkOffered,from:log);
-        response(TradeEvent(type:.ask, value: res["minValue"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:.ask, value: .wei(res["minValue"] as! BigUInt), blockNumber:.ethereum(log.blockNumber!)))
       }
       
       punkBidFetcher.fetchAllLogs(onDone: {
@@ -466,7 +466,7 @@ class CryptoPunksContract : ContractInterface {
         if (counter >= 3) { onDone() }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.PunkBidEntered,from:log);
-        response(TradeEvent(type:.bid, value: res["value"] as! BigUInt, blockNumber:log.blockNumber!))
+        response(TradeEvent(type:.bid, value: .wei(res["value"] as! BigUInt), blockNumber:.ethereum(log.blockNumber!)))
       }
     }
     
@@ -543,7 +543,7 @@ class CryptoPunksContract : ContractInterface {
     return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
   }
   
-  func indicativeFloor() -> Promise<Double?> {
+  func indicativeFloor() -> Promise<PriceUnit?> {
     return SushiSwapPool(address:"0x0463a06fbc8bf28b3f120cd1bfc59483f099d332").priceInEth()
   }
   

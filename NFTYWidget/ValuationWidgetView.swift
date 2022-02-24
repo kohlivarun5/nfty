@@ -8,6 +8,7 @@
 import SwiftUI
 import Intents
 import WidgetKit
+import BigInt
 
 struct ValuationWidgetView: View {
   var entry: Provider.Entry
@@ -24,16 +25,22 @@ struct ValuationWidgetView: View {
       } else {
         
         let sorted = entry.collections
-          .sorted {
-            $0.info.floorPrice * Double($0.info.ownedCount)
-            > $1.info.floorPrice * Double($1.info.ownedCount) };
+          .compactMap { (collection:CollectionStats) -> (Double,Double,Double,Date?)? in
+            switch(collection.info.floorPrice,collection.prev_floor) {
+            case (.wei(let floorWei),.wei(let prevWei)):
+              return (Double(floorWei) / 1e18,Double(prevWei)/1e18,Double(collection.info.ownedCount),collection.since)
+            case (.wei,.near),(.near,.wei),(.near,.near):
+              return nil
+            }
+          }
+          .sorted { $0.0 * $0.2 > $1.0 * $1.2 };
         
         let nav = sorted.reduce(0, { accu,collection in
-          return accu + (collection.info.floorPrice * Double(collection.info.ownedCount))
+          return accu + (collection.0 * collection.2)
         });
         
         let nav_prev = sorted.reduce(0, { accu,collection in
-          return accu + (collection.prev_floor * Double(collection.info.ownedCount))
+          return accu + (collection.1 * collection.2)
         });
         
         let nav_pct_change = ((nav - nav_prev) / nav_prev);
@@ -77,7 +84,7 @@ struct ValuationWidgetView: View {
         .foregroundColor(nav_pct_change < 0 ? Color.red : Color.green)
         
         VStack(spacing:0) {
-          sorted.compactMap { $0.since }.first.map { since in
+          sorted.compactMap { $0.3 }.first.map { since in
             HStack {
               Text("Change since \(since.timeAgoDisplay())")
                 .font(.system(size:7))
@@ -129,8 +136,8 @@ struct ValuationWidgetView_Previews: PreviewProvider {
               id: "\($0)",
               name: "CryptoMories\($0)",
               ownedCount: $0,
-              floorPrice: 1.409),
-            prev_floor:1.2,
+              floorPrice: .wei(BigUInt(1e18 * 1.409))),
+            prev_floor:.wei(BigUInt(1e18 * 1.2)),
             percent_change:$0.isMultiple(of: 2) ? 0.5213123 : -0.23,
             since:Date())
         }

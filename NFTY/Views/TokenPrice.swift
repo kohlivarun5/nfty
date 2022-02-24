@@ -42,16 +42,16 @@ struct TokenPriceKnown : View {
   
   var body: some View {
     switch(info.price,info.blockNumber) {
-    case (.some(let wei),.some(let blockNumber)):
+    case (.some(let price),.some(let blockNumber)):
       VStack {
         
         HStack(spacing:4) {
           switch(userSettings.quoteType) {
           case .Both,.Fiat:
-            UsdText(wei:wei,fontWeight:.semibold)
+            UsdText(price:price,fontWeight:.semibold)
               .foregroundColor(color(self.color))
           case .Crypto:
-            Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+            Text(PriceString(price:price))
               .fontWeight(.semibold)
               .foregroundColor(color(self.color))
           }
@@ -63,7 +63,7 @@ struct TokenPriceKnown : View {
         }
         
         if (userSettings.quoteType == .Both && showEth) {
-          Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+          Text(PriceString(price:price))
             .font(.body)
             .italic()
         }
@@ -73,16 +73,16 @@ struct TokenPriceKnown : View {
           .foregroundColor(subtleColor(self.color))
       }
       
-    case (.some(let wei),.date(let date)):
+    case (.some(let price),.date(let date)):
       VStack {
         
         HStack(spacing:4) {
           switch(userSettings.quoteType) {
           case .Both,.Fiat:
-            UsdText(wei:wei,fontWeight:.semibold)
+            UsdText(price:price,fontWeight:.semibold)
               .foregroundColor(color(self.color))
           case .Crypto:
-            Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+            Text(PriceString(price:price))
               .fontWeight(.semibold)
               .foregroundColor(color(self.color))
           }
@@ -94,7 +94,7 @@ struct TokenPriceKnown : View {
         }
         
         if (userSettings.quoteType == .Both && showEth) {
-          Text(ethFormatter.string(for:(Double(wei) / 1e18))!)
+          Text(PriceString(price:price))
             .font(.body)
             .italic()
         }
@@ -114,9 +114,9 @@ struct TokenPriceKnown : View {
         .font(.caption2)
         .foregroundColor(subtleColor(self.color))
         .padding([.top,.bottom],2)
-    case (.some(let wei),.none):
+    case (.some(let price),.none):
       HStack {
-        UsdEthVText(wei:wei,fontWeight:.semibold,alignment:.center)
+        UsdEthVText(price:price,fontWeight:.semibold,alignment:.center)
           .foregroundColor(color(self.color))
         if (!hideIcon) {
           Image(systemName: TradeEventIcon.systemName(info.type))
@@ -242,6 +242,6 @@ struct TokenPriceWithEth: View {
 
 struct TokenPrice_Previews: PreviewProvider {
   static var previews: some View {
-    TokenPrice(price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),color:.label,hideIcon:false)
+    TokenPrice(price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),color:.label,hideIcon:false)
   }
 }

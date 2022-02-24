@@ -106,7 +106,7 @@ class CompositeRecentTradesObject : ObservableObject {
   
   
   private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
-    switch(trade.nftWithPrice.indicativePriceWei) {
+    switch(trade.nftWithPrice.indicativePrice) {
     case .lazy(let promise):
       promise().loadMore { onDone() }
     case .eager:
@@ -303,7 +303,7 @@ class NftRecentEventsObject : ObservableObject {
       DispatchQueue.main.async {
         self.events.append(event)
         self.events.sort { left, right in
-          return left.blockNumber.quantity > right.blockNumber.quantity
+          return left.blockNumber > right.blockNumber
         }
       }
     }

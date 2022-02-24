@@ -11,12 +11,12 @@ import BigInt
 import Web3
 
 struct BidInfo {
-  let wei : BigUInt
+  let price : PriceUnit
   let expiration_time : UInt?
 }
 
 struct AskInfo {
-  let wei : BigUInt
+  let price : PriceUnit
   let expiration_time : UInt?
 }
 

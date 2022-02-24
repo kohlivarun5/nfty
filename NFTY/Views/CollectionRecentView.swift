@@ -52,7 +52,7 @@ struct CollectionRecentView: View {
             ZStack {
               RoundedImage(
                 nft:nft.nft,
-                price:nft.indicativePriceWei,
+                price:nft.indicativePrice,
                 collection:collection,
                 width: .normal,
                 resolution: .normal
@@ -66,7 +66,7 @@ struct CollectionRecentView: View {
               
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
-                price:nft.indicativePriceWei,
+                price:nft.indicativePrice,
                 collection:collection,
                 hideOwnerLink:false,
                 selectedProperties:[]

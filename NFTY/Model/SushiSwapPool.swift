@@ -62,12 +62,12 @@ class SushiSwapPool : EthereumContract {
     }
   }
   
-  func priceInEth() -> Promise<Double?> {
-    return getReserves() .map { Double($0.reserve1) / Double($0.reserve0) }
+  func priceInEth() -> Promise<PriceUnit?> {
+    return getReserves() .map { .wei( BigUInt(Double(1e18) * Double($0.reserve1) / Double($0.reserve0))) }
   }
   
-  func priceInEthRev() -> Promise<Double?> {
-    return getReserves() .map { Double($0.reserve0) / Double($0.reserve1) }
+  func priceInEthRev() -> Promise<PriceUnit?> {
+    return getReserves() .map { .wei( BigUInt(Double(1e18) * Double($0.reserve0) / Double($0.reserve1))) }
   }
   
 }

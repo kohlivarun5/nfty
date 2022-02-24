@@ -45,7 +45,7 @@ struct SimilarTokensView: View {
               
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
-                price:.lazy(nft.indicativePriceWei),
+                price:.lazy(nft.indicativePrice),
                 collection:collection,
                 hideOwnerLink:false,
                 selectedProperties:[]

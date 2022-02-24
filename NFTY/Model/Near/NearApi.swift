@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import BigInt
 
 struct NearApi {
   
@@ -28,7 +29,7 @@ struct NearApi {
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
       request.httpBody = params.flatMap { try? JSONSerialization.data(withJSONObject: $0, options: []) }
       return Promise.init { seal in
-        print("Calling \(request.url!)")
+        print("Calling \(request.url!) with body = \(request.httpBody.map { String(decoding: $0,as:UTF8.self) } ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
           if let error = error { return seal.reject(error) }
           // print(data)
@@ -99,4 +100,40 @@ struct NearApi {
             return try JSONDecoder().decode(OUTPUT.self, from: Data(result.result))
           }
       }
+  
+  /*
+   https://docs.near.org/docs/api/rpc/block-chunk#block-details
+   {
+   "jsonrpc": "2.0",
+   "id": "dontcare",
+   "method": "block",
+   "params": {
+   "block_id": 17821130
+   }
+   }
+   */
+  
+  public struct BlockInfo: Decodable {
+    
+    struct Header : Decodable {
+      let timestamp : UInt64
+    }
+    let author : String
+    let header : Header
+  }
+  
+  static func block(block_id:BigUInt) -> Promise<BlockInfo?> {
+    
+    guard let block_id_uint = try? UInt64(block_id) else { return Promise.value(nil) }
+    
+    let request: [String: Any] = [
+      "jsonrpc": "2.0",
+      "id": "dontcare",
+      "method": "block",
+      "params": [
+        "block_id": block_id_uint
+      ]
+    ]
+    return Impl.fetch(url:URL(string:"https://archival-rpc.mainnet.near.org")!, params: request)
+  }
 }

@@ -24,7 +24,7 @@ struct TokenTradeView: View {
   let height : CGFloat = 300
   @State var rank : UInt? = nil
   
-  @State var floorPrice : Double?
+  @State var floorPrice : PriceUnit?
   
   var body: some View {
     VStack {
@@ -106,7 +106,7 @@ struct TokenTradeView_Previews: PreviewProvider {
   static var previews: some View {
     TokenTradeView(
       nft:SampleToken,
-      price:.eager(NFTPriceInfo(price:0,blockNumber: nil,type:.ask)),
+      price:.eager(NFTPriceInfo(wei:0,blockNumber: nil,type:.ask)),
       collection:SampleCollection,
       userWallet:UserWallet(),
       isSheet:true)
