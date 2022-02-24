@@ -15,7 +15,7 @@ struct UserProfileButton : View {
   var body : some View {
     switch (address.flatMap { addressIfNotZero($0) }) {
     case .none:
-      Image(systemName: "flame.fill")
+      EmptyView()
     case .some (let address):
       NavigationLink(
         destination:PrivateCollectionView(address: address)
