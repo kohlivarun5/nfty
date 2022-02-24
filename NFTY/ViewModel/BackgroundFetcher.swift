@@ -141,15 +141,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                   && Date(timeIntervalSince1970: Double(entry_expiry)).timeIntervalSinceNow.sign == .minus) {
                 try? salesCache.removeObject(forKey: key)
               }
-              else {
-                switch(entry.price,order.price) {
-                case (.wei,.near),(.near,.wei):
-                  assertionFailure("Incompatible orders for same collection")
-                case (.near(let a),.near(let b)),(.wei(let a),.wei(let b)):
-                  if (a == b) { return nil}
-                }
-                
-              }
+              else if (entry.price == order.price) { return nil }
             }
             
             try! salesCache.setObject(
