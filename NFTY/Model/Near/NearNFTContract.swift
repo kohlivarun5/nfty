@@ -198,6 +198,9 @@ class NearNFTContract : ContractInterface {
   }
   
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+    /* self.nearContract.nft_token(token_id: tokenId)
+      .map { EthereumAddress(hexString: $0.owner_id) } */
+    
     return Promise.value(nil)
   }
   
