@@ -40,13 +40,14 @@ struct NFTNameIdRank: View {
             .foregroundColor(.secondaryLabel)
             .animation(.default)
         case (_,.some(let rank)):
-          Text( "RarityRank: \(rank)")
+          Text("RarityRank: \(rank)")
             .font(.footnote)
             .foregroundColor(.secondaryLabel)
         case (.none,.none):
-          EmptyView()
+          Text("")
+            .font(.footnote)
         }
-      }.padding([.top,.bottom],floorPrice == nil && rank == nil ? 2 : 0)
+      }
     }
   }
   
