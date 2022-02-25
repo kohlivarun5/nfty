@@ -135,13 +135,13 @@ class CryptoPunksContract : ContractInterface {
     func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting enterBidForPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
     
     func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting buyPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
   }
   

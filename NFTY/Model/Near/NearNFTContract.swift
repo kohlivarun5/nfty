@@ -199,7 +199,7 @@ class NearNFTContract : ContractInterface {
   
   func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
     /* self.nearContract.nft_token(token_id: tokenId)
-      .map { EthereumAddress(hexString: $0.owner_id) } */
+     .map { EthereumAddress(hexString: $0.owner_id) } */
     
     return Promise.value(nil)
   }
@@ -360,22 +360,20 @@ class NearNFTContract : ContractInterface {
   
 }
 
-func NearCollection(address:String) -> Promise<Collection> {
+func NearCollection(address:String) -> Collection {
   
-  return Promise.value(
-    Collection(
-      info: CollectionInfo(
-        address: address,
-        sample: "SAMPLE_ASAC",
-        name: address,
-        webLink: nil,
-        themeColor: .gunmetal,
-        themeLabelColor: .white,
-        disableRecentTrades: true,
-        similarTokens: nil,
-        rarityRanking: nil),
-      contract: NearNFTContract(name: address, account_id: address)
-    )
+  return Collection(
+    info: CollectionInfo(
+      address: address,
+      sample: "SAMPLE_ASAC",
+      name: address,
+      webLink: nil,
+      themeColor: .gunmetal,
+      themeLabelColor: .white,
+      disableRecentTrades: true,
+      similarTokens: nil,
+      rarityRanking: nil),
+    contract: NearNFTContract(name: address, account_id: address)
   )
 }
 

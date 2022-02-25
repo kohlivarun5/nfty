@@ -772,7 +772,7 @@ class CollectionsFactory {
       // Add some throttle here
       return after(seconds: 0.2).then { _ -> Promise<Collection> in
         if (address.hasSuffix(".near")) {
-          return NearCollection(address: address)
+          return Promise.value(NearCollection(address: address))
         } else {
           return openSeaCollection(address: address)
             .map { collection -> Collection in
@@ -804,7 +804,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   @Published var tokens: [(Collection,[NFTToken])] = []
   
-  private var offset = 0
+  private var openSeaOffset : UInt = 0
+  private var parasOffset : UInt = 0
   private var foundMax = false
   
   enum LoadingState {
@@ -815,13 +816,13 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   @Published var state : LoadingState = .notLoaded
   
-  let ownerAddress : EthereumAddress
+  let account : UserAccount
   private let collections : [Collection]
   
   private var pendingCount = 0
   
-  init(ownerAddress:EthereumAddress) {
-    self.ownerAddress = ownerAddress
+  init(account:UserAccount) {
+    self.account = account
     self.collections = COLLECTIONS
   }
   
@@ -831,9 +832,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     self.state = self.state == .notLoaded ? .loading : .loadingMore
     
     DispatchQueue.main.async {
-      let limit = 40
+      let limit : UInt = 40
       
-      _ = OpenSeaApi.getOwnerTokens(address: self.ownerAddress,offset:self.offset,limit:limit)
+      _ = OpenSeaApi.getOwnerTokens(address: self.account.ethAddress,offset:self.openSeaOffset,limit:limit)
         .recover { error -> Promise<[NFTToken]> in
           print("OpenSea Error=\(error)")
           self.foundMax = true
@@ -845,7 +846,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                   return Promise { seal in
                     var tokens : [NFTWithLazyPrice] = []
                     collection.contract.getOwnerTokens(
-                      address: self.ownerAddress,
+                      address: self.account.ethAddress,
                       onDone: {
                         seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
                       },
@@ -854,6 +855,23 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                 }
               }
             })
+        }
+        .then { openSeaTokens -> Promise<[NFTToken]> in
+          switch(self.account.nearAccount) {
+          case .none:
+            return Promise.value(openSeaTokens)
+          case .some(let nearAddress):
+            return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: limit)
+              .map { (results:ParasApi.Token) -> [NFTToken] in
+                results.data.results.compactMap { token -> NFTToken? in
+                  guard let tokenId = UInt(token.token_series_id) else { return nil }
+                  let collection = NearCollection(address:token.contract_id)
+                  return NFTToken(
+                    collection:collection,
+                    nft: collection.contract.getToken(tokenId))
+                } + openSeaTokens
+              }
+          }
         }
         .done(on:.main) {
           
@@ -873,7 +891,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           }
         }
       
-      self.offset = self.offset + limit
+      self.openSeaOffset = self.openSeaOffset + limit
+      self.parasOffset = self.parasOffset + limit
     }
   }
   
@@ -886,12 +905,12 @@ class NftOwnerTokens : ObservableObject,Identifiable {
 }
 
 var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]
-func getOwnerTokens(_ address:EthereumAddress) -> NftOwnerTokens {
-  switch OwnerTokensCache[address] {
+func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
+  switch OwnerTokensCache[account.ethAddress] {
   case .some(let tokens):
     return tokens
   case .none:
-    OwnerTokensCache[address] = NftOwnerTokens(ownerAddress: address)
-    return OwnerTokensCache[address]!
+    OwnerTokensCache[account.ethAddress] = NftOwnerTokens(account:account)
+    return OwnerTokensCache[account.ethAddress]!
   }
 }

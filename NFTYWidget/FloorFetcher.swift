@@ -16,9 +16,9 @@ struct CollectionFloorData : Identifiable {
   let floorPrice : PriceUnit
 }
 
-func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foundMax:Bool) -> Promise<[NFTToken]> {
+func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:UInt,foundMax:Bool) -> Promise<[NFTToken]> {
   if (foundMax) { return Promise.value(accu) }
-  let limit = 40
+  let limit : UInt = 40
   
   return after(seconds:0.5).then { _ in
     OpenSeaApi.getOwnerTokens(address: address,offset:offset,limit:limit)

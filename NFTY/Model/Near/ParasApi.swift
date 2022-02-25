@@ -268,6 +268,8 @@ struct ParasApi {
   struct Offers : Codable {
     struct Data : Codable {
       struct Result : Codable {
+        let contract_id : String
+        let token_series_id : String
         let price : String
       }
       let results : [Result]
@@ -277,6 +279,18 @@ struct ParasApi {
   }
   
   // https://api-v2-mainnet.paras.id/offers?__skip=0&__limit=12&token_id=2428&contract_id=asac.near
+  static func offers(
+    buyer_id:String?,
+    receiver_id:String?) -> Promise<Offers>
+  {
+    
+    var params : [String : String] = [:]
+    params["buyer_id"] = buyer_id
+    params["receiver_id"] = receiver_id
+    
+    return Impl.fetch(path:"/offers", params: params)
+  }
+  
   static func offers(
     contract_id:String,
     token_id:String) -> Promise<Offers>
@@ -292,6 +306,8 @@ struct ParasApi {
   struct Token : Codable {
     struct Data : Codable {
       struct Result : Codable {
+        let contract_id : String
+        let token_series_id : String
         let price : String?
       }
       let results : [Result]
@@ -309,6 +325,21 @@ struct ParasApi {
     var params : [String : String] = [:]
     params["contract_id"] = contract_id
     params["token_id"] = token_id
+    
+    return Impl.fetch(path:"/token", params: params)
+  }
+  
+  // https://api-v2-mainnet.paras.id/token
+  static func token(
+    owner_id:String,
+    offset:UInt,
+    limit:UInt) -> Promise<Token>
+  {
+    
+    var params : [String : String] = [:]
+    params["owner_id"] = owner_id
+    params["__skip"] = String(offset)
+    params["__limit"] = String(limit)
     
     return Impl.fetch(path:"/token", params: params)
   }
