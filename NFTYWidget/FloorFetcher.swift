@@ -97,6 +97,9 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
               .then { accu in
                 collection.contract.indicativeFloor().then { floor in
                   after(seconds: 0.5).map { _ in accu + [(collection,count,floor)] }
+                }.recover { error -> Promise<[(Collection,UInt,PriceUnit?)]> in
+                  print(error)
+                  return Promise.value(accu)
                 }
               }
           })
