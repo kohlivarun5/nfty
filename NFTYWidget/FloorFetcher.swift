@@ -26,24 +26,40 @@ func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:UInt,fou
         fetchAllOwnerTokens(address: address,accu:accu + tokens,offset:offset+limit,foundMax:tokens.isEmpty)
       }
       .recover { error -> Promise<[NFTToken]> in
-        print("OpenSea Error=\(error)")
-        // Open sea errored, lets recover from known collections
-        return COLLECTIONS
-          .reduce(Promise<[NFTToken]>.value([]), { accu,collection in
-            return after(seconds: 0.2).then { _ in
-              accu.then { accuTokens in
-                return Promise { seal in
-                  var tokens : [NFTWithLazyPrice] = []
-                  collection.contract.getOwnerTokens(
-                    address: address,
-                    onDone: {
-                      seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
-                    },
-                    { tokens.append($0)})
+        print("OpenSea Error=\(error)");
+        return Promise.value([])
+      }.then { openSeaTokens -> Promise<[NFTToken]> in
+        if (offset != 0) {
+          return Promise.value(openSeaTokens)
+        } else {
+          // Open sea errored, lets recover from known collections
+          return COLLECTIONS
+            .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
+              return after(seconds: 0.2).then { _ in
+                accu.then { accuTokens -> Promise<[NFTToken]> in
+                  
+                  if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
+                    return Promise.value(accuTokens)
+                  }
+                  
+                  return Promise { seal in
+                    var tokens : [NFTWithLazyPrice] = []
+                    collection.contract.getOwnerTokens(
+                      address: address,
+                      onDone: {
+                        seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
+                      },
+                      { token in
+                        if (!accuTokens.contains { $0.id == token.id }) {
+                          tokens.append(token)
+                          
+                        }
+                      })
+                  }
                 }
               }
-            }
-          })
+            })
+        }
       }
   }
 }

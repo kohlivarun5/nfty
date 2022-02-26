@@ -531,10 +531,9 @@ class CryptoPunksContract : ContractInterface {
     getOwnerTokensFromOpenSea(address:address)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> [Void] in
         return tokenIds.map { response(self.getToken($0)) }
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:[Void]) -> Void in
-        onDone()
       }.catch {
         print ($0)
+      }.finally {
         onDone()
       }
   }

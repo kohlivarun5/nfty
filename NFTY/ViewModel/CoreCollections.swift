@@ -808,6 +808,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   private var parasOffset : UInt = 0
   private var foundMax = false
   private let limit : UInt = 40
+  private var loadedFromChain = false
   
   enum LoadingState {
     case notLoaded
@@ -836,23 +837,40 @@ class NftOwnerTokens : ObservableObject,Identifiable {
         .recover { error -> Promise<[NFTToken]> in
           print("OpenSea Error=\(error)")
           self.foundMax = true
+          return Promise.value([])
+        }.then { openSeaTokens -> Promise<[NFTToken]> in
           // Open sea errored, lets recover from known collections
-          return COLLECTIONS
-            .reduce(Promise<[NFTToken]>.value([]), { accu,collection in
-              return after(seconds: 0.2).then { _ in
-                accu.then { accuTokens in
-                  return Promise { seal in
-                    var tokens : [NFTWithLazyPrice] = []
-                    collection.contract.getOwnerTokens(
-                      address: address,
-                      onDone: {
-                        seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
-                      },
-                      { tokens.append($0)})
+          if (self.loadedFromChain) {
+            return Promise.value(openSeaTokens)
+          } else {
+            self.loadedFromChain = true
+            return COLLECTIONS
+              .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
+                if (collection.info.disableRecentTrades) {
+                  return accu
+                }
+                return after(seconds: 0.2).then { _ in
+                  accu.then { accuTokens -> Promise<[NFTToken]> in
+                    if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
+                      Promise.value(accuTokens)
+                    }
+                    return Promise { seal in
+                      var tokens : [NFTWithLazyPrice] = []
+                      collection.contract.getOwnerTokens(
+                        address: address,
+                        onDone: {
+                          seal.fulfill(tokens.map { NFTToken(collection: collection, nft: $0) } + accuTokens)
+                        },
+                        { token in
+                          if (!accuTokens.contains { $0.id == token.id }) {
+                            tokens.append(token)
+                          }
+                        })
+                    }
                   }
                 }
-              }
-            })
+              })
+          }
         }
     }
   }
@@ -891,7 +909,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             
             switch(self.tokens.firstIndex { $0.0.info.address == token.collection.info.address }) {
             case .some(let index):
-              self.tokens[index].1.append(token)
+              if (!self.tokens[index].1.contains { $0.id == token.id}) {
+                self.tokens[index].1.append(token)
+              }
             case .none:
               self.tokens.append((token.collection,[token]))
             }
@@ -935,7 +955,7 @@ func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
     case (.some(let ethAddress),.none):
       OwnerTokensCache[ethAddress.hex(eip55: true)] = tokens
       return tokens
-           
+      
     case (.none,.none):
       return tokens
     }

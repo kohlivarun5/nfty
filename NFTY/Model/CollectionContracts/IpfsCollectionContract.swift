@@ -296,6 +296,17 @@ class IpfsCollectionContract : ContractInterface {
   func indicativeFloor() -> Promise<PriceUnit?> {
     return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
       .map { stats in stats?.floor_price }
+      .recover { error -> Promise<PriceUnit?> in
+        print(error)
+        switch(self.indicativePriceSource) {
+        case .openSea:
+          return Promise.value(nil)
+        case .swapPoolContract(let address,_):
+          return SushiSwapPool(address:address).priceInEth()
+        case .swapPoolContractReversed(let address,_):
+          return SushiSwapPool(address:address).priceInEthRev()
+        }
+      }
   }
   
   lazy var vaultContract: CollectionVaultContract? = {
