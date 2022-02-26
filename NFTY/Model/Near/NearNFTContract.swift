@@ -97,7 +97,7 @@ class NearNFTContract : ContractInterface {
       .then(on: DispatchQueue.global(qos:.userInitiated)) { (metadata,token) -> Promise<Data?> in
         
         let uri = metadata.base_uri.flatMap { baseUri in
-          token.metadata.media.flatMap { media in "\(baseUri)/\(media)" }
+          token.metadata.media.map { media in "\(baseUri)/\(media)" }
         }
         
         return Promise { seal in
@@ -105,7 +105,7 @@ class NearNFTContract : ContractInterface {
             uri
               .map { $0.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg=") }
               .flatMap { return URL(string:$0) }
-            ,token.metadata.media.flatMap { URL(string:$0) }) {
+            ,token.metadata.media.flatMap { $0.hasPrefix("http") || $0.hasPrefix("ipfs") ? $0 : nil}.flatMap { URL(string:$0) }) {
           case (.none,.none):
             print(uri as Any,metadata,token)
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
