@@ -267,7 +267,7 @@ class ZunksContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return ethContract.ownerOf(tokenId)
   }
   

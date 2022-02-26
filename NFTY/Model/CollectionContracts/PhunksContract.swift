@@ -168,7 +168,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.getToken(tokenId)
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return collectionContract.ownerOf(tokenId)
   }
   

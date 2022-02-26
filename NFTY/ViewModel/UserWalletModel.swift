@@ -267,8 +267,8 @@ class UserWallet: ObservableObject {
     }
   }
   
-  public func userAccount() -> UserAccount {
-    return UserAccount(ethAddress: self.walletEthAddress, nearAccount: self.walletNearAddress)
+  public func userAccount() -> UserAccount? {
+    return self.walletEthAddress.map { UserAccount(ethAddress: $0, nearAccount: self.walletNearAddress) }
   }
   
 }

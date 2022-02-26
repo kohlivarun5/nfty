@@ -10,15 +10,15 @@ import Web3
 
 struct UserProfileButton : View {
   
-  let address : EthereumAddress?
+  let account : UserAccount?
   
   var body : some View {
-    switch (address.flatMap { addressIfNotZero($0) }) {
+    switch (account) {
     case .none:
       EmptyView()
-    case .some (let address):
+    case .some (let account):
       NavigationLink(
-        destination:PrivateCollectionView(address: address)
+        destination:PrivateCollectionView(account:account)
       ) {
         Image(systemName: "person.crop.circle")
           .font(.largeTitle)
@@ -37,8 +37,8 @@ struct OwnerProfileLinkButton: View {
     ObservedPromiseView(
       data: ObservablePromise(
         promise:collection.contract.ownerOf(nft.tokenId)),
-      progress: { ProgressView() } ) { address in
-      UserProfileButton(address: address)
+      progress: { ProgressView() } ) { account in
+      UserProfileButton(account: account)
     }.foregroundColor(color)
   }
 }

@@ -12,7 +12,7 @@ import Web3
 
 struct WalletOverview: View {
   
-  @State var address : EthereumAddress
+  @State var account : UserAccount
   @State private var balance : EthereumQuantity? = nil
   
   var body: some View {
@@ -25,7 +25,7 @@ struct WalletOverview: View {
             .font(.title3)
         }
         Spacer()
-        AddressLabelWithShare(address:address.hex(eip55:true),maxLen:25)
+        account.ethAddress.map { AddressLabelWithShare(address:$0.hex(eip55:true),maxLen:25) }
       }
       Divider()
       VStack {
@@ -36,10 +36,12 @@ struct WalletOverview: View {
           case .none:
             Text("")
               .onAppear {
+                guard let address = account.ethAddress else { return }
                 web3.eth.getBalance(address: address, block:.latest)
                   .done(on:.main) { balance in
                     self.balance = balance
                   }.catch { print($0) }
+                
               }
           case .some(let wei):
             UsdEthHText(price:.wei(wei.quantity),fontWeight: .semibold)
@@ -69,7 +71,7 @@ struct WalletTokensView: View {
       switch (tokens.state) {
       case .notLoaded,.loading:
         VStack {
-          WalletOverview(address:tokens.ownerAddress)
+          WalletOverview(account:tokens.account)
           Spacer()
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
@@ -85,7 +87,7 @@ struct WalletTokensView: View {
       case .loaded,.loadingMore:
         if (tokens.tokens.isEmpty) {
           VStack {
-            WalletOverview(address:tokens.ownerAddress)
+            WalletOverview(account:tokens.account)
             Spacer()
             Text("No Collectibles in Wallet")
               .font(.title)
@@ -95,7 +97,7 @@ struct WalletTokensView: View {
         } else {
           GeometryReader { metrics in
             ScrollView {
-              WalletOverview(address:tokens.ownerAddress)
+              WalletOverview(account:tokens.account)
               
               LazyVGrid(
                 columns: Array(
@@ -188,12 +190,5 @@ struct WalletTokensView: View {
         }
       }
     }
-  }
-}
-
-struct WalletTokensView_Previews: PreviewProvider {
-  static var previews: some View {
-    WalletTokensView(tokens:NftOwnerTokens(
-      ownerAddress:SAMPLE_WALLET_ADDRESS))
   }
 }

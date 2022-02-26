@@ -31,7 +31,7 @@ struct FriendsView: View {
       case false:
         
         List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
-          NavigationLink(destination: PrivateCollectionView(address: (try! EthereumAddress(hex:address, eip55: true)))) {
+          NavigationLink(destination: PrivateCollectionView(account:UserAccount(ethAddress: try! EthereumAddress(hex:address, eip55: true), nearAccount: nil))){
             HStack() {
               Text(name)
                 .font(.title3)

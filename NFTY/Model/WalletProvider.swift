@@ -11,6 +11,6 @@ import PromiseKit
 
 protocol WalletProvider {
   var ethAddress : EthereumAddress { get }
-  var nearAddress : EthereumAddress { get }
+  var nearAddress : String? { get }
   func sendTransaction(tx:EthereumTransaction) -> Promise<EthereumTransactionReceiptObject>
 }

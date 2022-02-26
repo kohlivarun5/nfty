@@ -197,11 +197,9 @@ class NearNFTContract : ContractInterface {
     })
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
-    /* self.nearContract.nft_token(token_id: tokenId)
-     .map { EthereumAddress(hexString: $0.owner_id) } */
-    
-    return Promise.value(nil)
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+    return self.nearContract.nft_token(token_id: BigUInt(tokenId))
+      .map { UserAccount(ethAddress:nil, nearAccount:$0.owner_id) }
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {

@@ -807,6 +807,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   private var openSeaOffset : UInt = 0
   private var parasOffset : UInt = 0
   private var foundMax = false
+  private let limit : UInt = 40
   
   enum LoadingState {
     case notLoaded
@@ -826,15 +827,12 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     self.collections = COLLECTIONS
   }
   
-  func load() {
-    if (state == .loading || state == .loadingMore || foundMax) { return }
-    
-    self.state = self.state == .notLoaded ? .loading : .loadingMore
-    
-    DispatchQueue.main.async {
-      let limit : UInt = 40
-      
-      _ = OpenSeaApi.getOwnerTokens(address: self.account.ethAddress,offset:self.openSeaOffset,limit:limit)
+  private func openseaTokens() -> Promise<[NFTToken]> {
+    switch(self.account.ethAddress) {
+    case .none:
+      return Promise.value([])
+    case .some(let address):
+      return OpenSeaApi.getOwnerTokens(address: address,offset:self.openSeaOffset,limit:limit)
         .recover { error -> Promise<[NFTToken]> in
           print("OpenSea Error=\(error)")
           self.foundMax = true
@@ -846,7 +844,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                   return Promise { seal in
                     var tokens : [NFTWithLazyPrice] = []
                     collection.contract.getOwnerTokens(
-                      address: self.account.ethAddress,
+                      address: address,
                       onDone: {
                         seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
                       },
@@ -856,12 +854,23 @@ class NftOwnerTokens : ObservableObject,Identifiable {
               }
             })
         }
+    }
+  }
+  
+  func load() {
+    if (state == .loading || state == .loadingMore || foundMax) { return }
+    
+    self.state = self.state == .notLoaded ? .loading : .loadingMore
+    
+    DispatchQueue.main.async {
+      
+      _ = self.openseaTokens()
         .then { openSeaTokens -> Promise<[NFTToken]> in
           switch(self.account.nearAccount) {
           case .none:
             return Promise.value(openSeaTokens)
           case .some(let nearAddress):
-            return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: limit)
+            return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: self.limit)
               .map { (results:ParasApi.Token) -> [NFTToken] in
                 results.data.results.compactMap { token -> NFTToken? in
                   guard let tokenId = UInt(token.token_series_id) else { return nil }
@@ -891,8 +900,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           }
         }
       
-      self.openSeaOffset = self.openSeaOffset + limit
-      self.parasOffset = self.parasOffset + limit
+      self.openSeaOffset = self.openSeaOffset + self.limit
+      self.parasOffset = self.parasOffset + self.limit
     }
   }
   
@@ -904,13 +913,29 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
 }
 
-var OwnerTokensCache : [EthereumAddress:NftOwnerTokens] = [:]
+var OwnerTokensCache : [String:NftOwnerTokens] = [:]
 func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
-  switch OwnerTokensCache[account.ethAddress] {
-  case .some(let tokens):
+  switch (account.ethAddress.flatMap { OwnerTokensCache[$0.hex(eip55: true)] },account.nearAccount.flatMap { OwnerTokensCache[$0] }) {
+  case (.some(let tokens),_),(_,.some(let tokens)):
     return tokens
-  case .none:
-    OwnerTokensCache[account.ethAddress] = NftOwnerTokens(account:account)
-    return OwnerTokensCache[account.ethAddress]!
+  case (.none,.none):
+    let tokens = NftOwnerTokens(account:account)
+    switch(account.ethAddress,account.nearAccount) {
+    case (.some(let ethAddress),.some(let nearAccount)):
+      OwnerTokensCache[ethAddress.hex(eip55: true)] = tokens
+      OwnerTokensCache[nearAccount] = tokens
+      return tokens
+      
+    case (.none,.some(let nearAccount)):
+      OwnerTokensCache[nearAccount] = tokens
+      return tokens
+      
+    case (.some(let ethAddress),.none):
+      OwnerTokensCache[ethAddress.hex(eip55: true)] = tokens
+      return tokens
+           
+    case (.none,.none):
+      return tokens
+    }
   }
 }

@@ -15,7 +15,7 @@ struct PrivateCollectionView: View {
   
   @State private var showDialog = false
   
-  let address : EthereumAddress
+  let account : UserAccount
   
   enum TokensPage : Int {
     case owned
@@ -24,14 +24,28 @@ struct PrivateCollectionView: View {
   
   @State private var tokensPage : TokensPage = .owned
   
+  private func key() -> String? {
+    switch(account.ethAddress,account.nearAccount) {
+    case (.some(let address),_):
+      return address.hex(eip55: true)
+    case (_,.some(let account)):
+      return account
+    case (.none,.none):
+      return nil
+    }
+  }
+  
   private func setFriend(_ name:String?) {
+    
+    guard let key = key() else { return }
+    
     self.friendName = name
     switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
     case .none:
       switch name {
       case .some(let name):
         var friends : [String : String] = [:]
-        friends[address.hex(eip55: true)] = name
+        friends[key] = name
         NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
       case .none:
         break
@@ -39,9 +53,9 @@ struct PrivateCollectionView: View {
     case .some(var friends):
       switch name {
       case .some(let name):
-        friends[address.hex(eip55: true)] = name
+        friends[key] = name
       case .none:
-        friends.removeValue(forKey: address.hex(eip55: true))
+        friends.removeValue(forKey: key)
       }
       NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
     }
@@ -53,9 +67,9 @@ struct PrivateCollectionView: View {
       
       switch(self.tokensPage) {
       case .owned:
-        WalletTokensView(tokens: getOwnerTokens(address))
+        WalletTokensView(tokens: getOwnerTokens(account))
       case .sales:
-        ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell,emptyMessage:"No Active Sales")
+        ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
       }
       
       Picker(selection: Binding<Int>(
@@ -77,8 +91,9 @@ struct PrivateCollectionView: View {
       
     }
     .onAppear {
+      guard let key = key() else { return }
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-      self.friendName = friends?[address.hex(eip55: true)]
+      self.friendName = friends?[key]
     }
     .alert(isPresented: $showDialog,
            TextAlert(title: "Enter friend name",message:"") { result in
@@ -102,11 +117,5 @@ struct PrivateCollectionView: View {
           .renderingMode(.original)
       })
     )
-  }
-}
-
-struct PrivateCollectionView_Previews: PreviewProvider {
-  static var previews: some View {
-    PrivateCollectionView(address: EthereumAddress(hexString: "0x0")!)
   }
 }

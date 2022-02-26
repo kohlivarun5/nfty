@@ -7,46 +7,64 @@
 
 import Foundation
 import PromiseKit
+import Web3
 
 struct UserAccountOffers {
   
-  enum Side {
-    case buy
-    case sell
+  enum Kind {
+    case sales
+    case bids
+    case offers
   }
-  
-  static private func openSeaSide(_ side:Side) -> OpenSeaApi.Side {
-    switch(side) {
-    case .buy:
-      return OpenSeaApi.Side.buy
-    case .sell:
-      return OpenSeaApi.Side.sell
+   
+  static private func openSeaQueryAddress(_ account:EthereumAddress,_ kind:Kind) -> (OpenSeaApi.QueryAddress,OpenSeaApi.Side) {
+    switch(kind) {
+    case .bids:
+      return (.maker(account),OpenSeaApi.Side.buy)
+    case .sales:
+      return (.maker(account),OpenSeaApi.Side.sell)
+    case .offers:
+      return (.owner(account),OpenSeaApi.Side.buy)
     }
   }
   
-  private func buyerReceiver(_ side:Side,_ account:String) -> (String?,String?) {
-    switch(side) {
-    case .buy:
+  static private func nearBuyerReceiver(_ account:String?,_ kind:Kind) -> (String?,String?)? {
+    
+    switch(account,kind) {
+    case (.none,_):
+      return nil
+    case (_,.bids):
       return (account,nil)
-    case .sell:
+    case (_,.sales):
+      return nil
+    case (_,.offers):
       return (nil,account)
     }
   }
   
-  static func getOffers(account:UserAccount,side:Side) -> Promise<[NFTToken]> {
-    
-    return OpenSeaApi.userOrders(address: account.ethAddress, side: UserAccountOffers.openSeaSide((side)))
-      .then { openSeaTokens in
+  static private func openSeaOffers(_ account:UserAccount,_ kind:Kind) -> Promise<[NFTToken]> {
+    switch(account.ethAddress) {
+    case .none:
+      return Promise.value([])
+    case .some(let ethAddress):
+      let (address,side) = openSeaQueryAddress(ethAddress,kind)
+      return OpenSeaApi.userOrders(address:address, side:side)
+    }
+  }
+  
+  static func getOffers(account:UserAccount,kind:Kind) -> Promise<[NFTToken]> {
+    return openSeaOffers(account,kind)
+      .then { openSeaTokens -> Promise<[NFTToken]> in
         
-        switch(account.nearAccount) {
+        switch(nearBuyerReceiver(account.nearAccount,kind)) {
         case .none:
           return Promise.value(openSeaTokens)
-        case .some(let account):
-          let (buyer_id,receiver_id) = buyerReceiver(side,account)
+        case .some(let info):
+          let (buyer_id,receiver_id) = info
           return ParasApi.offers(buyer_id:buyer_id,receiver_id: receiver_id)
             .map { (result:ParasApi.Offers) -> [NFTToken] in
               
-              result.data.results.map {
+              result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_series_id) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(

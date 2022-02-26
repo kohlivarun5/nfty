@@ -539,8 +539,9 @@ class CryptoPunksContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
+    .map { $0.map { UserAccount(ethAddress: $0, nearAccount: nil) } }
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {
