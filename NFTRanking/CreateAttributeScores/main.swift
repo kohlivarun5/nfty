@@ -7,12 +7,12 @@
 
 import Foundation
 
-let collectionName = "asac.near"
-let attributesDir = "bafybeicj5zfhe3ytmfleeiindnqlj7ydkpoyitxm7idxdw2kucchojf7v4"
+let collectionName = "kaizofighters.tenk.near"
+let attributesDir = "bafybeie3tapnsmwdzhrq6vzb6vpo623kxgominzaiyxh7igdrskk2drdj4"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 3332 : 100
+let firstIndex = 1
+let lastIndex = isFull ? 4693 : 100
 
 // STAGES
 let doCalculatePercentiles = true

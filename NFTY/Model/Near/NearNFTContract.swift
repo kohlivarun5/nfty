@@ -104,11 +104,12 @@ class NearNFTContract : ContractInterface {
           switch(
             uri
               .map { $0.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg=") }
-              .flatMap { URL(string:$0) }
-          ) {
-          case .none:
+              .flatMap { return URL(string:$0) }
+            ,token.metadata.media.flatMap { URL(string:$0) }) {
+          case (.none,.none):
+            print(uri as Any,metadata,token)
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          case .some(let url):
+          case (.some(let url),_),(_,.some(let url)):
             var request = URLRequest(url:url)
             request.httpMethod = "GET"
             
