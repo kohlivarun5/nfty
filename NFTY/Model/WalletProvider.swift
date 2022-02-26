@@ -10,6 +10,7 @@ import Web3
 import PromiseKit
 
 protocol WalletProvider {
-  var account : EthereumAddress { get }
+  var ethAddress : EthereumAddress { get }
+  var nearAddress : String? { get }
   func sendTransaction(tx:EthereumTransaction) -> Promise<EthereumTransactionReceiptObject>
 }

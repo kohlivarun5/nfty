@@ -190,7 +190,7 @@ protocol ContractInterface {
   
   func getNFT(_ tokenId:UInt) -> NFT
   func getToken(_ tokenId:UInt) -> NFTWithLazyPrice
-  func ownerOf(_ tokenId:UInt) -> Promise<EthereumAddress?>
+  func ownerOf(_ tokenId:UInt) -> Promise<UserAccount?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
@@ -499,8 +499,9 @@ class CryptoKittiesAuction : ContractInterface {
       .finally { onDone() }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
+    .map { $0.map { UserAccount(ethAddress: $0, nearAccount: nil) } }
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> { return Promise.value(nil) }
@@ -698,7 +699,7 @@ class AutoglyphsContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return ethContract.ownerOf(tokenId)
   }
   

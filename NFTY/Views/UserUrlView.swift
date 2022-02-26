@@ -12,17 +12,31 @@ struct UserUrlView: View {
   @State private var isFav : Bool = false
   @State private var showDialog = false
   
-  @State var address : EthereumAddress
+  @State var account : UserAccount
   @State var friendName : String?
   
+  private func key() -> String? {
+    switch(account.ethAddress,account.nearAccount) {
+    case (.some(let address),_):
+      return address.hex(eip55: true)
+    case (_,.some(let account)):
+      return account
+    case (.none,.none):
+      return nil
+    }
+  }
+  
   private func setFriend(_ isFav:Bool) {
+    
+    guard let key = key() else { return }
+    
     self.isFav = isFav
     switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]) {
     case .none:
       switch self.friendName {
       case .some(let name):
         var friends : [String : String] = [:]
-        friends[address.hex(eip55: true)] = name
+        friends[key] = name
         NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
       case .none:
         break
@@ -30,9 +44,9 @@ struct UserUrlView: View {
     case .some(var friends):
       switch self.friendName {
       case .some(let name):
-        friends[address.hex(eip55: true)] = name
+        friends[key] = name
       case .none:
-        friends.removeValue(forKey: address.hex(eip55: true))
+        friends.removeValue(forKey: key)
       }
       NSUbiquitousKeyValueStore.default.set(friends,forKey:CloudDefaultStorageKeys.friendsDict.rawValue)
     }
@@ -63,13 +77,16 @@ struct UserUrlView: View {
         }
       }.padding(.top)
       
-      WalletTokensView(tokens: getOwnerTokens(address))
+      WalletTokensView(tokens: getOwnerTokens(account))
         .onAppear {
+          
+          guard let key = key() else { return }
+          
           let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
           if (self.friendName == nil) {
-            self.friendName = friends?[address.hex(eip55: true)]
+            self.friendName = friends?[key]
           }
-          self.isFav = friends?[address.hex(eip55: true)] != nil
+          self.isFav = friends?[key] != nil
         }
         .alert(isPresented: $showDialog,
                TextAlert(title: "Enter friend name",message:friendName ?? "") { result in
@@ -80,11 +97,5 @@ struct UserUrlView: View {
                })
     }
     
-  }
-}
-
-struct UserUrlView_Previews: PreviewProvider {
-  static var previews: some View {
-    UserUrlView(address: SAMPLE_WALLET_ADDRESS,friendName:nil)
   }
 }

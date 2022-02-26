@@ -39,14 +39,16 @@ struct NearNFT {
     let description: String?
     let media: String?
     let media_hash: String?
-    let copies: String?
-    let issued_at: String?
+    /*
+    let copies: Int?
+    let issued_at: Int?
     let expires_at: String?
     let starts_at: String?
     let updated_at: String?
     let extra: String?
     let reference: String?
     let reference_hash: String?
+     */
   }
   
   struct Token : Decodable {

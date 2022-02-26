@@ -135,13 +135,13 @@ class CryptoPunksContract : ContractInterface {
     func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting enterBidForPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
     
     func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting buyPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
   }
   
@@ -531,16 +531,16 @@ class CryptoPunksContract : ContractInterface {
     getOwnerTokensFromOpenSea(address:address)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { (tokenIds:[UInt]) -> [Void] in
         return tokenIds.map { response(self.getToken($0)) }
-      }.done(on:DispatchQueue.global(qos:.userInteractive)) { (promises:[Void]) -> Void in
-        onDone()
       }.catch {
         print ($0)
+      }.finally {
         onDone()
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
+    .map { $0.map { UserAccount(ethAddress: $0, nearAccount: nil) } }
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {

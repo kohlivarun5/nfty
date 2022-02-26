@@ -11,8 +11,8 @@ import Web3
 struct ActivityView: View {
   let emptyMessage : String
   @ObservedObject var data : ObservablePromise<[NFTToken]>
-  init(address:OpenSeaApi.QueryAddress,side:OpenSeaApi.Side?,emptyMessage:String) {
-    self.data = ObservablePromise(promise:OpenSeaApi.userOrders(address:address,side:side))
+  init(account:UserAccount,kind:UserAccountOffers.Kind,emptyMessage:String) {
+    self.data = ObservablePromise(promise:UserAccountOffers.getOffers(account: account, kind: kind))
     self.emptyMessage = emptyMessage
   }
   
@@ -43,11 +43,5 @@ struct ActivityView: View {
       }
       
     }
-  }
-}
-
-struct ActivityView_Previews: PreviewProvider {
-  static var previews: some View {
-    ActivityView(address: .maker(SAMPLE_WALLET_ADDRESS),side:nil,emptyMessage: "")
   }
 }

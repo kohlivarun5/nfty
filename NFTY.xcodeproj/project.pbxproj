@@ -62,6 +62,10 @@
 		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
 		4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
+		4F2D6B2927C84C26009908C5 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
+		4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
+		4F2D6B2F27C855CD009908C5 /* UserAccountOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */; };
+		4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */; };
 		4F2EFECB27B893D400C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
@@ -498,6 +502,8 @@
 		4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_nearestTokens.json; sourceTree = "<group>"; };
 		4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BoredApeYachtClub_rarityRanks.json; sourceTree = "<group>"; };
 		4F2D6B2527C3402E009908C5 /* ParasApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParasApi.swift; sourceTree = "<group>"; };
+		4F2D6B2827C84C26009908C5 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
+		4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountOffers.swift; sourceTree = "<group>"; };
 		4F2EFECA27B893D400C30F3D /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
 		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
@@ -995,6 +1001,8 @@
 				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
 				4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */,
 				4F2EFECA27B893D400C30F3D /* Throttle.swift */,
+				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
+				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1618,6 +1626,7 @@
 			files = (
 				4FE2CB68278B7B8300930FD8 /* WalletTokensCollectionHeader.swift in Sources */,
 				4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */,
+				4F2D6B2F27C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */,
 				4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */,
 				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
@@ -1708,6 +1717,7 @@
 				4FB9A7FB262B3BBA00C58AF9 /* ModelData.swift in Sources */,
 				4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */,
 				4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */,
+				4F2D6B2927C84C26009908C5 /* UserAccount.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1741,6 +1751,7 @@
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
+				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
 				4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */,
 				4FDEABAE278E542E00F92160 /* CollectionVaultContract.swift in Sources */,
 				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
@@ -1763,6 +1774,7 @@
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
+				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
@@ -2002,7 +2014,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2031,7 +2043,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2143,7 +2155,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2174,7 +2186,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;

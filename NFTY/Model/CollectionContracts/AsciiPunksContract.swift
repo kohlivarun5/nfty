@@ -79,7 +79,7 @@ class AsciiPunksContract : ContractInterface {
         }
     }
     
-    func ownerOf(_ tokenId:BigUInt) -> Promise<EthereumAddress> {
+    func ownerOf(_ tokenId:BigUInt) -> Promise<UserAccount?> {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "address", type: .address)]
       let method = SolidityConstantFunction(name: "ownerOf", inputs: inputs, outputs: outputs, handler: self)
@@ -89,6 +89,7 @@ class AsciiPunksContract : ContractInterface {
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["address"] as! EthereumAddress
         }
+        .map { addressIfNotZero($0).map { UserAccount(ethAddress: $0, nearAccount: nil) } }
     }
     
   }
@@ -316,8 +317,8 @@ class AsciiPunksContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
-    return ethContract.ownerOf(BigUInt(tokenId)).map { addressIfNotZero($0) }
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+    return ethContract.ownerOf(BigUInt(tokenId))
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {

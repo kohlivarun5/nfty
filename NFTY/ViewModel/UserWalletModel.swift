@@ -20,7 +20,8 @@ class UserWallet: ObservableObject {
   private let walletConnectSchemeKey = "walletConnectScheme"
   private let walletSignatureKey = "Sign-In" // This key is important as it is also the signed message
   
-  @Published var walletAddress : EthereumAddress?
+  @Published var walletNearAddress : String?
+  @Published var walletEthAddress : EthereumAddress?
   @Published var walletConnectSession : Session?
   @Published var walletSignature : String?
   
@@ -33,9 +34,9 @@ class UserWallet: ObservableObject {
   init() {
     if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
                                                             .walletAddress.rawValue) {
-      self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
+      self.walletEthAddress = try? EthereumAddress(hex:addr,eip55: false)
     } else {
-      self.walletAddress = nil
+      self.walletEthAddress = nil
     }
     
     if let oldSessionObject = UserDefaults.standard.object(forKey: walletConnectKey) as? Data {
@@ -50,7 +51,7 @@ class UserWallet: ObservableObject {
   func saveWalletAddress(address:EthereumAddress) {
     NSUbiquitousKeyValueStore.default.set(address.hex(eip55:true), forKey:CloudDefaultStorageKeys.walletAddress.rawValue)
     DispatchQueue.main.async {
-      self.walletAddress = address
+      self.walletEthAddress = address
       self.signIn()
     }
     WidgetCenter.shared.reloadAllTimelines()
@@ -80,7 +81,7 @@ class UserWallet: ObservableObject {
   private func signIn() {
     let signedAddress = recoverSignedAddress()
     DispatchQueue.main.async {
-      self.signedIn = signedAddress != nil && signedAddress == self.walletAddress
+      self.signedIn = signedAddress != nil && signedAddress == self.walletEthAddress
       self.walletProvider = self.makeWalletProvider()
     }
   }
@@ -182,9 +183,11 @@ class UserWallet: ObservableObject {
   }
   
   struct WalletConnectProvider : WalletProvider {
+        
     @Environment(\.openURL) var openURL
     
-    let account : EthereumAddress
+    let ethAddress : EthereumAddress
+    var nearAddress: String?
     let client : Client
     let session : Session
     let scheme : String
@@ -249,19 +252,23 @@ class UserWallet: ObservableObject {
   
   private func makeWalletProvider() -> WalletProvider? {
     
-    walletAddress.flatMap { account in
+    walletEthAddress.flatMap { account in
       self.walletConnectScheme.flatMap { scheme in
         walletConnectSession.map { session in
           
           let client = Client(delegate: self, dAppInfo: session.dAppInfo)
           return WalletConnectProvider(
-            account: account,
+            ethAddress: account,
             client: client,
             session: session,
             scheme:scheme)
         }
       }
     }
+  }
+  
+  public func userAccount() -> UserAccount? {
+    return self.walletEthAddress.map { UserAccount(ethAddress: $0, nearAccount: self.walletNearAddress) }
   }
   
 }

@@ -94,13 +94,13 @@ class PhunksContract : ContractInterface {
     func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting enterBidForPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.enterBidForPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.enterBidForPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
     
     func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting buyPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.buyPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.account))
+                                      ethContract.buyPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
     }
   }
   
@@ -168,7 +168,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.getToken(tokenId)
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
     return collectionContract.ownerOf(tokenId)
   }
   

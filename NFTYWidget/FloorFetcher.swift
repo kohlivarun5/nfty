@@ -16,9 +16,9 @@ struct CollectionFloorData : Identifiable {
   let floorPrice : PriceUnit
 }
 
-func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foundMax:Bool) -> Promise<[NFTToken]> {
+func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:UInt,foundMax:Bool) -> Promise<[NFTToken]> {
   if (foundMax) { return Promise.value(accu) }
-  let limit = 40
+  let limit : UInt = 40
   
   return after(seconds:0.5).then { _ in
     OpenSeaApi.getOwnerTokens(address: address,offset:offset,limit:limit)
@@ -26,24 +26,40 @@ func fetchAllOwnerTokens(address:EthereumAddress,accu:[NFTToken],offset:Int,foun
         fetchAllOwnerTokens(address: address,accu:accu + tokens,offset:offset+limit,foundMax:tokens.isEmpty)
       }
       .recover { error -> Promise<[NFTToken]> in
-        print("OpenSea Error=\(error)")
-        // Open sea errored, lets recover from known collections
-        return COLLECTIONS
-          .reduce(Promise<[NFTToken]>.value([]), { accu,collection in
-            return after(seconds: 0.2).then { _ in
-              accu.then { accuTokens in
-                return Promise { seal in
-                  var tokens : [NFTWithLazyPrice] = []
-                  collection.contract.getOwnerTokens(
-                    address: address,
-                    onDone: {
-                      seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
-                    },
-                    { tokens.append($0)})
+        print("OpenSea Error=\(error)");
+        return Promise.value([])
+      }.then { openSeaTokens -> Promise<[NFTToken]> in
+        if (offset != 0) {
+          return Promise.value(openSeaTokens)
+        } else {
+          // Open sea errored, lets recover from known collections
+          return COLLECTIONS
+            .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
+              return after(seconds: 0.2).then { _ in
+                accu.then { accuTokens -> Promise<[NFTToken]> in
+                  
+                  if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
+                    return Promise.value(accuTokens)
+                  }
+                  
+                  return Promise { seal in
+                    var tokens : [NFTWithLazyPrice] = []
+                    collection.contract.getOwnerTokens(
+                      address: address,
+                      onDone: {
+                        seal.fulfill(accuTokens + tokens.map { NFTToken(collection: collection, nft: $0) } )
+                      },
+                      { token in
+                        if (!accuTokens.contains { $0.id == token.id }) {
+                          tokens.append(token)
+                          
+                        }
+                      })
+                  }
                 }
               }
-            }
-          })
+            })
+        }
       }
   }
 }
@@ -81,6 +97,9 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
               .then { accu in
                 collection.contract.indicativeFloor().then { floor in
                   after(seconds: 0.5).map { _ in accu + [(collection,count,floor)] }
+                }.recover { error -> Promise<[(Collection,UInt,PriceUnit?)]> in
+                  print(error)
+                  return Promise.value(accu)
                 }
               }
           })

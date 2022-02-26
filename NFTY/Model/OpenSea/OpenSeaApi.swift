@@ -276,7 +276,7 @@ struct OpenSeaApi {
       }
   }
   
-  static func getOwnerTokens(address:EthereumAddress,offset:Int,limit:Int) -> Promise<[NFTToken]> {
+  static func getOwnerTokens(address:EthereumAddress,offset:UInt,limit:UInt) -> Promise<[NFTToken]> {
     
     struct OwnerAssets: Codable {
       var assets: [Asset]

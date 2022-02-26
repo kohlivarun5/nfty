@@ -22,8 +22,6 @@ struct TokenTradeActions: View {
   
   @StateObject var userSettings = UserSettings()
   
-  @State private var walletAddress : EthereumAddress? = nil
-  
   @State private var tradeActions : TradeActionInfo? = nil
   
   @State var currentBidPrice : PriceUnit?
@@ -202,11 +200,6 @@ struct TokenTradeActions: View {
       
     }
     .onAppear {
-      if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
-                                                              .walletAddress.rawValue) {
-        self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
-      }
-      
       let contract = collection.contract
       contract.tradeActions.map { tradeActions in
         self.tradeActions = TradeActionInfo(
@@ -221,9 +214,12 @@ struct TokenTradeActions: View {
           .catch { print($0) }
       }
       contract.ownerOf(nft.tokenId)
-        .done { ownerAddress in
+        .done { account in
           self.actionsState = self.tradeActions.flatMap { _ in
-            walletAddress == ownerAddress ? .sellActions : .buyActions
+            let walletAccount = userWallet.userAccount()
+            return (walletAccount?.ethAddress == account?.ethAddress
+            || (walletAccount?.nearAccount != nil && account?.nearAccount != nil && walletAccount?.nearAccount == account?.nearAccount))
+            ? .sellActions : .buyActions
           }
         }
         .catch { print($0) }

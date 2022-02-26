@@ -40,21 +40,20 @@ struct WalletView: View {
   var body: some View {
     
     VStack {
-      switch (userWallet.walletAddress) {
+      switch (userWallet.userAccount()) {
       case .none:
         ConnectWalletSheet(userWallet:userWallet)
-      case .some(let address):
+      case .some(let account):
         VStack(spacing:0) {
-          
           switch(self.tokensPage) {
           case .owned:
-            WalletTokensView(tokens: getOwnerTokens(address))
+            WalletTokensView(tokens: getOwnerTokens(account))
           case .bids:
-            ActivityView(address:.maker(address),side:OpenSeaApi.Side.buy,emptyMessage:"No Active Bids")
+            ActivityView(account:account,kind:UserAccountOffers.Kind.bids,emptyMessage:"No Active Bids")
           case .sales:
-            ActivityView(address:.maker(address),side:OpenSeaApi.Side.sell,emptyMessage:"No Active Sales")
+            ActivityView(account:account,kind:UserAccountOffers.Kind.sales,emptyMessage:"No Active Sales")
           case .offers:
-            ActivityView(address:.owner(address),side:OpenSeaApi.Side.buy,emptyMessage:"No Active Offers")
+            ActivityView(account:account,kind:UserAccountOffers.Kind.offers,emptyMessage:"No Active Offers")
           }
           
           Picker(selection: Binding<Int>(

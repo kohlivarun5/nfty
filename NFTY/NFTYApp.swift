@@ -251,7 +251,7 @@ struct NFTYApp: App {
             }
           )
         case .user(let address,let friendName):
-          UserUrlView(address: address,friendName:friendName)
+          UserUrlView(account:UserAccount(ethAddress: address, nearAccount: nil),friendName:friendName)
             .preferredColorScheme(.dark)
             .accentColor(Color.orange)
         }

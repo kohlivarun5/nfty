@@ -12,43 +12,61 @@ import Web3
 
 struct WalletOverview: View {
   
-  @State var address : EthereumAddress
+  @State var account : UserAccount
   @State private var balance : EthereumQuantity? = nil
   
   var body: some View {
     
     VStack {
       
-      HStack() {
-        VStack(alignment:.leading) {
-          Text("Address")
-            .font(.title3)
-        }
-        Spacer()
-        AddressLabelWithShare(address:address.hex(eip55:true),maxLen:25)
-      }
-      Divider()
-      VStack {
+      account.ethAddress.map { address in
+        
         HStack() {
-          Text("Balance")
-            .font(.title3)
-          switch(balance) {
-          case .none:
-            Text("")
-              .onAppear {
-                web3.eth.getBalance(address: address, block:.latest)
-                  .done(on:.main) { balance in
-                    self.balance = balance
-                  }.catch { print($0) }
-              }
-          case .some(let wei):
-            UsdEthHText(price:.wei(wei.quantity),fontWeight: .semibold)
+          VStack(alignment:.leading) {
+            Text("Address")
               .font(.title3)
-              .foregroundColor(.secondary)
           }
+          Spacer()
+          AddressLabelWithShare(address:address.hex(eip55:true),maxLen:25)
         }
-        Divider()
       }
+      
+      account.nearAccount.map { account in
+        
+        HStack() {
+          Spacer()
+          Text(account)
+            .font(.title3)
+          Spacer()
+        }
+      }
+      
+      Divider()
+      account.ethAddress.map { address in
+        VStack {
+          HStack() {
+            Text("Balance")
+              .font(.title3)
+            switch(balance) {
+            case .none:
+              Text("")
+                .onAppear {
+                  web3.eth.getBalance(address: address, block:.latest)
+                    .done(on:.main) { balance in
+                      self.balance = balance
+                    }.catch { print($0) }
+                  
+                }
+            case .some(let wei):
+              UsdEthHText(price:.wei(wei.quantity),fontWeight: .semibold)
+                .font(.title3)
+                .foregroundColor(.secondary)
+            }
+          }
+          Divider()
+        }
+      }
+      
     }.padding()
   }
 }
@@ -69,7 +87,7 @@ struct WalletTokensView: View {
       switch (tokens.state) {
       case .notLoaded,.loading:
         VStack {
-          WalletOverview(address:tokens.ownerAddress)
+          WalletOverview(account:tokens.account)
           Spacer()
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
@@ -85,7 +103,7 @@ struct WalletTokensView: View {
       case .loaded,.loadingMore:
         if (tokens.tokens.isEmpty) {
           VStack {
-            WalletOverview(address:tokens.ownerAddress)
+            WalletOverview(account:tokens.account)
             Spacer()
             Text("No Collectibles in Wallet")
               .font(.title)
@@ -95,7 +113,7 @@ struct WalletTokensView: View {
         } else {
           GeometryReader { metrics in
             ScrollView {
-              WalletOverview(address:tokens.ownerAddress)
+              WalletOverview(account:tokens.account)
               
               LazyVGrid(
                 columns: Array(
@@ -188,12 +206,5 @@ struct WalletTokensView: View {
         }
       }
     }
-  }
-}
-
-struct WalletTokensView_Previews: PreviewProvider {
-  static var previews: some View {
-    WalletTokensView(tokens:NftOwnerTokens(
-      ownerAddress:SAMPLE_WALLET_ADDRESS))
   }
 }

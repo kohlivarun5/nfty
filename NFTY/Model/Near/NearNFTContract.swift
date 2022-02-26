@@ -97,18 +97,19 @@ class NearNFTContract : ContractInterface {
       .then(on: DispatchQueue.global(qos:.userInitiated)) { (metadata,token) -> Promise<Data?> in
         
         let uri = metadata.base_uri.flatMap { baseUri in
-          token.metadata.media.flatMap { media in "\(baseUri)/\(media)" }
+          token.metadata.media.map { media in "\(baseUri)/\(media)" }
         }
         
         return Promise { seal in
           switch(
             uri
               .map { $0.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg=") }
-              .flatMap { URL(string:$0) }
-          ) {
-          case .none:
+              .flatMap { return URL(string:$0) }
+            ,token.metadata.media.flatMap { $0.hasPrefix("http") || $0.hasPrefix("ipfs") ? $0 : nil}.flatMap { URL(string:$0) }) {
+          case (.none,.none):
+            print(uri as Any,metadata,token)
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          case .some(let url):
+          case (_,.some(let url)),(.some(let url),_):
             var request = URLRequest(url:url)
             request.httpMethod = "GET"
             
@@ -197,11 +198,9 @@ class NearNFTContract : ContractInterface {
     })
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<EthereumAddress?> {
-    /* self.nearContract.nft_token(token_id: tokenId)
-      .map { EthereumAddress(hexString: $0.owner_id) } */
-    
-    return Promise.value(nil)
+  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+    return self.nearContract.nft_token(token_id: BigUInt(tokenId))
+      .map { UserAccount(ethAddress:nil, nearAccount:$0.owner_id) }
   }
   
   func getOwnerTokens(address: EthereumAddress, onDone: @escaping () -> Void, _ response: @escaping (NFTWithLazyPrice) -> Void) {
@@ -360,22 +359,20 @@ class NearNFTContract : ContractInterface {
   
 }
 
-func NearCollection(address:String) -> Promise<Collection> {
+func NearCollection(address:String) -> Collection {
   
-  return Promise.value(
-    Collection(
-      info: CollectionInfo(
-        address: address,
-        sample: "SAMPLE_ASAC",
-        name: address,
-        webLink: nil,
-        themeColor: .gunmetal,
-        themeLabelColor: .white,
-        disableRecentTrades: true,
-        similarTokens: nil,
-        rarityRanking: nil),
-      contract: NearNFTContract(name: address, account_id: address)
-    )
+  return Collection(
+    info: CollectionInfo(
+      address: address,
+      sample: "SAMPLE_ASAC",
+      name: address,
+      webLink: nil,
+      themeColor: .gunmetal,
+      themeLabelColor: .white,
+      disableRecentTrades: true,
+      similarTokens: nil,
+      rarityRanking: nil),
+    contract: NearNFTContract(name: address, account_id: address)
   )
 }
 

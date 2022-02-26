@@ -198,7 +198,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   print("Fetching Offers")
   let userWallet = UserWallet()
   
-  guard let address = userWallet.walletAddress else {
+  guard let address = userWallet.walletEthAddress else {
     return Promise.value(false)
   }
   
