@@ -351,6 +351,7 @@ struct ParasApi {
     var params : [String : String] = [:]
     params["owner_id"] = owner_id
     params["min_price"] = "0"
+    params["__limit"] = "100"
     
     return Impl.fetch(path:"/token", params: params)
   }
