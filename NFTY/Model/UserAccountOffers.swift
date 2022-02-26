@@ -16,7 +16,7 @@ struct UserAccountOffers {
     case bids
     case offers
   }
-   
+  
   static private func openSeaQueryAddress(_ account:EthereumAddress,_ kind:Kind) -> (OpenSeaApi.QueryAddress,OpenSeaApi.Side) {
     switch(kind) {
     case .bids:
@@ -53,16 +53,40 @@ struct UserAccountOffers {
   }
   
   static func getOffers(account:UserAccount,kind:Kind) -> Promise<[NFTToken]> {
+    print(account,kind)
     return openSeaOffers(account,kind)
       .then { openSeaTokens -> Promise<[NFTToken]> in
         
-        switch(nearBuyerReceiver(account.nearAccount,kind)) {
-        case .none:
+        switch(account.nearAccount,kind) {
+        case (.none,_):
           return Promise.value(openSeaTokens)
-        case .some(let info):
-          let (buyer_id,receiver_id) = info
-          return ParasApi.offers(buyer_id:buyer_id,receiver_id: receiver_id)
+        case (.some(let account),.bids):
+          return ParasApi.offers(buyer_id:account,receiver_id: nil)
             .map { (result:ParasApi.Offers) -> [NFTToken] in
+              
+              result.data.results.compactMap { token in
+                guard let tokenId = UInt(token.token_id) else { return nil }
+                let collection = NearCollection(address:token.contract_id)
+                return NFTToken(
+                  collection:collection,
+                  nft: collection.contract.getToken(tokenId))
+              } + openSeaTokens
+            }
+        case (.some(let account),.offers):
+          return ParasApi.offers(buyer_id:nil,receiver_id: account)
+            .map { (result:ParasApi.Offers) -> [NFTToken] in
+              
+              result.data.results.compactMap { token in
+                guard let tokenId = UInt(token.token_id) else { return nil }
+                let collection = NearCollection(address:token.contract_id)
+                return NFTToken(
+                  collection:collection,
+                  nft: collection.contract.getToken(tokenId))
+              } + openSeaTokens
+            }
+        case (.some(let account),.sales):
+          return ParasApi.token_for_sale(owner_id: account)
+            .map { (result:ParasApi.Token) -> [NFTToken] in
               
               result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }

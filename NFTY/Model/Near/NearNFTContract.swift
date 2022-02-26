@@ -109,7 +109,7 @@ class NearNFTContract : ContractInterface {
           case (.none,.none):
             print(uri as Any,metadata,token)
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
-          case (.some(let url),_),(_,.some(let url)):
+          case (_,.some(let url)),(.some(let url),_):
             var request = URLRequest(url:url)
             request.httpMethod = "GET"
             

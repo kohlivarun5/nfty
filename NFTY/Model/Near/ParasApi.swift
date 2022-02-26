@@ -344,6 +344,17 @@ struct ParasApi {
     return Impl.fetch(path:"/token", params: params)
   }
   
+  static func token_for_sale(
+    owner_id:String) -> Promise<Token>
+  {
+    
+    var params : [String : String] = [:]
+    params["owner_id"] = owner_id
+    params["min_price"] = "0"
+    
+    return Impl.fetch(path:"/token", params: params)
+  }
+  
   
 }
 

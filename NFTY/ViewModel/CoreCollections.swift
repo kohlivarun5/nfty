@@ -852,7 +852,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                 return after(seconds: 0.2).then { _ in
                   accu.then { accuTokens -> Promise<[NFTToken]> in
                     if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
-                      Promise.value(accuTokens)
+                      return Promise.value(accuTokens)
                     }
                     return Promise { seal in
                       var tokens : [NFTWithLazyPrice] = []

@@ -30,19 +30,35 @@ struct TokenTradeView: View {
     VStack {
       
       VStack(spacing:0) {
-        NftImage(
-          nft:nft,
-          sample:collection.info.sample,
-          themeColor:collection.info.themeColor,
-          themeLabelColor:collection.info.themeLabelColor,
-          size:.medium,
-          resolution:.hd,
-          favButton:.bottomRight
-        )
-          .frame(height:height)
-          .padding(.top,isSheet ? 10 : 40)
-          .padding(.bottom,10)
-          .background(collection.info.themeColor)
+        ZStack {
+          NftImage(
+            nft:nft,
+            sample:collection.info.sample,
+            themeColor:collection.info.themeColor,
+            themeLabelColor:collection.info.themeLabelColor,
+            size:.medium,
+            resolution:.hd,
+            favButton:.bottomRight
+          )
+            .frame(height:height)
+            .padding(.top,isSheet ? 10 : 40)
+            .padding(.bottom,10)
+            .background(collection.info.themeColor)
+          
+          VStack(alignment: .leading) {
+            Spacer()
+            switch isSheet {
+            case true:
+              EmptyView()
+            case false:
+              HStack {
+                OwnerProfileLinkButton(nft:nft,color:collection.info.themeLabelColor, collection: collection)
+                Spacer()
+              }
+            }
+          }
+          .padding()
+        }
         
         HStack {
           NFTNameIdRank(collection:collection, nft:nft,rank:rank,floorPrice:floorPrice,isSheet: isSheet)
