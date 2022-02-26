@@ -12,6 +12,7 @@ struct PrivateCollectionView: View {
   @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   @State private var friendName : String? = nil
+  @State private var fallbackName : String? = nil
   
   @State private var showDialog = false
   
@@ -94,9 +95,10 @@ struct PrivateCollectionView: View {
       guard let key = key() else { return }
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       self.friendName = friends?[key]
+      self.fallbackName = friendName ?? account.nearAccount
     }
     .alert(isPresented: $showDialog,
-           TextAlert(title: "Enter friend name",message:"") { result in
+           TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
       if let text = result {
         self.setFriend(text)
       }

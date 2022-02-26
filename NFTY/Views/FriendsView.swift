@@ -19,6 +19,15 @@ struct FriendsView: View {
     self.isLoading = false
   }
   
+  private func account(_ address:String) -> UserAccount {
+    if address.hasSuffix(".near") {
+      return UserAccount(ethAddress: nil, nearAccount: address)
+    } else {
+      return UserAccount(ethAddress: try? EthereumAddress(hex:address, eip55: true), nearAccount: nil)
+      
+    }
+  }
+  
   var body: some View {
     
     VStack {
@@ -31,7 +40,7 @@ struct FriendsView: View {
       case false:
         
         List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
-          NavigationLink(destination: PrivateCollectionView(account:UserAccount(ethAddress: try! EthereumAddress(hex:address, eip55: true), nearAccount: nil))){
+          NavigationLink(destination: PrivateCollectionView(account:account(address))){
             HStack() {
               Text(name)
                 .font(.title3)

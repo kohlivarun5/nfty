@@ -65,7 +65,7 @@ struct UserAccountOffers {
             .map { (result:ParasApi.Offers) -> [NFTToken] in
               
               result.data.results.compactMap { token in
-                guard let tokenId = UInt(token.token_series_id) else { return nil }
+                guard let tokenId = UInt(token.token_id) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,

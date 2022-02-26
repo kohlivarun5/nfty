@@ -13,6 +13,7 @@ public struct TextAlert {
   public var title: String // Title of the dialog
   public var message: String // Dialog message
   public var placeholder: String = "" // Placeholder text for the TextField
+  public var text: String = "" // text for the TextField
   public var accept: String = "OK" // The left-most button label
   public var cancel: String? = "Cancel" // The optional cancel (right-most) button label
   public var secondaryActionTitle: String? = nil // The optional center button label
@@ -25,6 +26,7 @@ extension UIAlertController {
   convenience init(alert: TextAlert) {
     self.init(title: alert.title, message: alert.message, preferredStyle: .alert)
     addTextField {
+      $0.text = alert.text
       $0.placeholder = alert.placeholder
       $0.keyboardType = alert.keyboardType
     }

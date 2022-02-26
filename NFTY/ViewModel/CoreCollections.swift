@@ -863,8 +863,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     self.state = self.state == .notLoaded ? .loading : .loadingMore
     
     DispatchQueue.main.async {
-      
-      _ = self.openseaTokens()
+      self.openseaTokens()
         .then { openSeaTokens -> Promise<[NFTToken]> in
           switch(self.account.nearAccount) {
           case .none:
@@ -873,7 +872,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: self.limit)
               .map { (results:ParasApi.Token) -> [NFTToken] in
                 results.data.results.compactMap { token -> NFTToken? in
-                  guard let tokenId = UInt(token.token_series_id) else { return nil }
+                  guard let tokenId = UInt(token.token_id) else { return nil }
                   let collection = NearCollection(address:token.contract_id)
                   return NFTToken(
                     collection:collection,
@@ -886,7 +885,6 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           
           print("Found tokens count=\($0.count)")
           
-          self.state = .loaded
           self.foundMax = self.foundMax || $0.isEmpty
           
           $0.forEach { token in
@@ -899,9 +897,13 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             }
           }
         }
+        .catch { print($0) }
+        .finally(on:.main) {
+          self.state = .loaded
+          self.openSeaOffset = self.openSeaOffset + self.limit
+          self.parasOffset = self.parasOffset + self.limit
+        }
       
-      self.openSeaOffset = self.openSeaOffset + self.limit
-      self.parasOffset = self.parasOffset + self.limit
     }
   }
   

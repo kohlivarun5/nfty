@@ -30,12 +30,14 @@ struct TokenListPagedView: View {
       switch(nfts.error,isLoading) {
       case (.some(let error),_):
         VStack(spacing:20) {
+          Spacer()
           Image(systemName: "exclamationmark.triangle")
             .font(.title)
             .foregroundColor(.accentColor)
           Text(error)
             .font(.subheadline)
             .foregroundColor(.secondary)
+          Spacer()
         }
       case (.none,true):
         VStack {
