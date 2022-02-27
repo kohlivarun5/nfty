@@ -102,7 +102,7 @@ struct WalletTokensView: View {
             .padding()
             .onAppear {
               DispatchQueue.main.async {
-                tokens.load()
+                tokens.load({})
               }
             }
           Spacer()
