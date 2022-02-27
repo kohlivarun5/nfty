@@ -39,6 +39,13 @@ class UserWallet: ObservableObject {
       self.walletEthAddress = nil
     }
     
+    if let nearAccount = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
+                                                            .nearAccount.rawValue) {
+      self.walletNearAddress = nearAccount
+    } else {
+      self.walletNearAddress = nil
+    }
+    
     if let oldSessionObject = UserDefaults.standard.object(forKey: walletConnectKey) as? Data {
       self.walletConnectSession = try? JSONDecoder().decode(Session.self, from: oldSessionObject)
     }
@@ -53,6 +60,14 @@ class UserWallet: ObservableObject {
     DispatchQueue.main.async {
       self.walletEthAddress = address
       self.signIn()
+    }
+    WidgetCenter.shared.reloadAllTimelines()
+  }
+  
+  func saveNearAccount(account:String) {
+    NSUbiquitousKeyValueStore.default.set(account, forKey:CloudDefaultStorageKeys.nearAccount.rawValue)
+    DispatchQueue.main.async {
+      self.walletNearAddress = account
     }
     WidgetCenter.shared.reloadAllTimelines()
   }

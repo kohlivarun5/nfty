@@ -23,7 +23,7 @@ struct WalletOverview: View {
         
         HStack() {
           VStack(alignment:.leading) {
-            Text("Address")
+            Text("ETH")
               .font(.title3)
           }
           Spacer()
@@ -31,13 +31,18 @@ struct WalletOverview: View {
         }
       }
       
+      account.nearAccount.map { _ in
+        Divider()
+      }
+      
       account.nearAccount.map { account in
-        
         HStack() {
+          VStack(alignment:.leading) {
+            Text("NEAR")
+              .font(.title3)
+          }
           Spacer()
-          Text(account)
-            .font(.title3)
-          Spacer()
+          AddressLabel(address: account, maxLen: 25)
         }
       }
       
