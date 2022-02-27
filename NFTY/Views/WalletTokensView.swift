@@ -25,6 +25,7 @@ struct WalletOverview: View {
           VStack(alignment:.leading) {
             Text("ETH")
               .font(.title3)
+              .bold()
           }
           Spacer()
           AddressLabelWithShare(address:address.hex(eip55:true),maxLen:25)
@@ -40,6 +41,7 @@ struct WalletOverview: View {
           VStack(alignment:.leading) {
             Text("NEAR")
               .font(.title3)
+              .bold()
           }
           Spacer()
           AddressLabel(address: account, maxLen: 25)

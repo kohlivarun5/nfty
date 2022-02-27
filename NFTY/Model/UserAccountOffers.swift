@@ -53,7 +53,7 @@ struct UserAccountOffers {
   }
   
   static func getOffers(account:UserAccount,kind:Kind) -> Promise<[NFTToken]> {
-    print(account,kind)
+    //print(account,kind)
     return openSeaOffers(account,kind)
       .then { openSeaTokens -> Promise<[NFTToken]> in
         
