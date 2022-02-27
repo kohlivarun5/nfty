@@ -66,10 +66,23 @@ struct UserAccountOffers {
               
               result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }
+                guard let price = BigUInt(token.price) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,
-                  nft: collection.contract.getToken(tokenId))
+                  nft: NFTWithLazyPrice(
+                    nft: collection.contract.getNFT(tokenId),
+                    getPrice: {
+                      ObservablePromise<NFTPriceStatus>(
+                        resolved: NFTPriceStatus.known(
+                          NFTPriceInfo(
+                            near:price,
+                            date:nil,
+                            type:TradeEventType.bid)
+                        )
+                      )
+                    })
+                )
               } + openSeaTokens
             }
         case (.some(let account),.offers):
@@ -78,22 +91,48 @@ struct UserAccountOffers {
               
               result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }
+                guard let price = BigUInt(token.price) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,
-                  nft: collection.contract.getToken(tokenId))
+                  nft: NFTWithLazyPrice(
+                    nft: collection.contract.getNFT(tokenId),
+                    getPrice: {
+                      ObservablePromise<NFTPriceStatus>(
+                        resolved: NFTPriceStatus.known(
+                          NFTPriceInfo(
+                            near:price,
+                            date:nil,
+                            type:TradeEventType.bid)
+                        )
+                      )
+                    })
+                )
               } + openSeaTokens
             }
         case (.some(let account),.sales):
           return ParasApi.token_for_sale(owner_id: account)
             .map { (result:ParasApi.Token) -> [NFTToken] in
-              
-              result.data.results.compactMap { token in
+              print("Found \(result.data.results.count) sales for \(account)");
+              return result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }
+                guard let price = (token.price.flatMap { BigUInt($0) }) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,
-                  nft: collection.contract.getToken(tokenId))
+                  nft: NFTWithLazyPrice(
+                    nft: collection.contract.getNFT(tokenId),
+                    getPrice: {
+                      ObservablePromise<NFTPriceStatus>(
+                        resolved: NFTPriceStatus.known(
+                          NFTPriceInfo(
+                            near:price,
+                            date:nil,
+                            type:TradeEventType.ask)
+                        )
+                      )
+                    })
+                )
               } + openSeaTokens
             }
         }

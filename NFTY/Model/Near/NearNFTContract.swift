@@ -334,7 +334,7 @@ class NearNFTContract : ContractInterface {
           
           return result.data.results.compactMap { result -> NFTWithLazyPrice? in
             guard let tokenId = UInt(result.token_series_id) else { return nil }
-            guard let price = BigUInt(result.lowest_price) else { return nil }
+            guard let price = (result.lowest_price.flatMap { BigUInt($0) }) else { return nil }
             
             return NFTWithLazyPrice(
               nft: self.contract.getNFT(tokenId),
