@@ -29,9 +29,9 @@ enum PriceUnit : Codable,Comparable,Equatable {
       (.near(let x),.near(let y)):
       return x > y
     case (.wei(let wei),.near(let near)):
-      return (Double(wei) / Double(near)) > 0.005
+      return (Double(wei) * 1e6 / Double(near)) > 0.005
     case (.near(let near),wei(let wei)):
-      return (Double(wei) / Double(near)) <= 0.005
+      return (Double(wei) * 1e6 / Double(near)) <= 0.005
     }
   }
   
