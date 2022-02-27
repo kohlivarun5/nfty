@@ -32,21 +32,22 @@ struct NFTNameIdRank: View {
         }
         .font(.footnote)
         
-        
-        switch(floorPrice,rank) {
-        case (.some(let floorPrice),_):
-          Text("Floor Price: \(PriceString(price:floorPrice))")
-            .font(.footnote)
-            .foregroundColor(.secondaryLabel)
-            .animation(.default)
-        case (_,.some(let rank)):
-          Text("RarityRank: \(rank)")
-            .font(.footnote)
-            .foregroundColor(.secondaryLabel)
-        case (.none,.none):
-          Text("")
-            .font(.footnote)
-        }
+        HStack {
+          switch(floorPrice,rank) {
+          case (.some(let floorPrice),_):
+            Text("Floor Price: \(PriceString(price:floorPrice))")
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
+              .animation(.default)
+          case (_,.some(let rank)):
+            Text("RarityRank: \(rank)")
+              .font(.footnote)
+              .foregroundColor(.secondaryLabel)
+          case (.none,.none):
+            Text("")
+              .font(.footnote)
+          }
+        }.animation(.default)
       }
     }
   }
