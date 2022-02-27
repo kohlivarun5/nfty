@@ -69,7 +69,7 @@ class UserWallet: ObservableObject {
     DispatchQueue.main.async {
       self.walletNearAddress = account
     }
-    WidgetCenter.shared.reloadAllTimelines()
+    //WidgetCenter.shared.reloadAllTimelines()
   }
   
   func saveWalletConnectSession(session:Session,signature:String) {
