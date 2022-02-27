@@ -148,6 +148,8 @@
 		4F92144F271BA54C0085D238 /* JungleFreaks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */; };
 		4F921452271C62E30085D238 /* JungleFreaks_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */; };
 		4F921453271C62E30085D238 /* JungleFreaks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */; };
+		4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
+		4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
 		4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F961F79271CC12600639E85 /* NftTradeUrlView.swift */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
@@ -569,6 +571,7 @@
 		4F92144D271BA54C0085D238 /* JungleFreaks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_attributeRanks.json; sourceTree = "<group>"; };
 		4F921450271C62E30085D238 /* JungleFreaks_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_rarityRanks.json; sourceTree = "<group>"; };
 		4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_nearestTokens.json; sourceTree = "<group>"; };
+		4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerTokens.swift; sourceTree = "<group>"; };
 		4F961F79271CC12600639E85 /* NftTradeUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftTradeUrlView.swift; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
@@ -809,6 +812,7 @@
 				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
 				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
 				4F529BB427B0590900EFE626 /* TokensListPaged.swift */,
+				4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1635,6 +1639,7 @@
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
 				4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */,
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
+				4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
@@ -1777,6 +1782,7 @@
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
+				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
 				4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */,
@@ -2014,7 +2020,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2043,7 +2049,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2155,7 +2161,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2186,7 +2192,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
