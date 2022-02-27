@@ -206,7 +206,7 @@ struct ParasApi {
       struct Result : Codable {
         let contract_id : String
         let token_series_id : String
-        let lowest_price : String
+        let lowest_price : String?
       }
       let results : [Result]
     }

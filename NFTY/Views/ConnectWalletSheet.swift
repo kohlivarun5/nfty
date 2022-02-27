@@ -118,44 +118,68 @@ struct ConnectWalletSheet: View {
       }
       
       VStack {
-        Text("Add Wallet using Address")
+        Text("Add Wallet Address")
           .font(.title2)
           .fontWeight(.bold)
+          .padding(.bottom,10)
         
-        Text("")
-          .font(.title2)
-        
-        Button(action: {
-          if let string = UIPasteboard.general.string {
-            // text was found and placed in the "string" constant
-            switch(try? EthereumAddress(hex:string,eip55: false)) {
-            case .none:
-              self.badAddressError = "Invalid Address Pasted"
-            case .some(let address):
-              self.badAddressError = ""
-              userWallet.saveWalletAddress(address:address)
-              presentationMode.wrappedValue.dismiss()
+        HStack {
+          Button(action: {
+            if let string = UIPasteboard.general.string {
+              // text was found and placed in the "string" constant
+              switch(try? EthereumAddress(hex:string,eip55: false)) {
+              case .none:
+                self.badAddressError = "Invalid Address Pasted"
+              case .some(let address):
+                self.badAddressError = ""
+                userWallet.saveWalletAddress(address:address)
+                presentationMode.wrappedValue.dismiss()
+              }
             }
-          }
-        }) {
-          
-          HStack(spacing:50) {
-            Spacer()
+          }) {
+            
             VStack {
               Image(systemName: "doc.on.clipboard")
                 .font(.title)
-              Text("Paste from clipboard")
+              Text("Paste ETH address")
                 .fontWeight(.semibold)
                 .font(.subheadline)
             }
-            .frame(minWidth: 0, maxWidth: .infinity)
+            //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .foregroundColor(.black)
             .background(Color.accentColor)
             .cornerRadius(40)
-            
-            Spacer()
           }
+          
+          
+          Button(action: {
+            if let string = UIPasteboard.general.string {
+              // text was found and placed in the "string" constant
+              print("Pasted near address=\(string)")
+              if (!string.lowercased().hasSuffix("near")) {
+                self.badAddressError = "Invalid Address Pasted"
+              } else {
+                self.badAddressError = ""
+                userWallet.saveNearAccount(account:string)
+                presentationMode.wrappedValue.dismiss()
+              }
+            }
+          }) {
+            VStack {
+              Image(systemName: "doc.on.clipboard")
+                .font(.title)
+              Text("Paste NEAR address")
+                .fontWeight(.semibold)
+                .font(.subheadline)
+            }
+            //.frame(minWidth: 0, maxWidth: .infinity)
+            .padding()
+            .foregroundColor(.black)
+            .background(Color.accentColor)
+            .cornerRadius(40)
+          }
+          
         }
         
         Text(badAddressError)
