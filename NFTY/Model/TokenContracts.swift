@@ -320,7 +320,9 @@ class CryptoKittiesAuction : ContractInterface {
       request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
       
       print("calling \(request.url!)")
+      ImageLoadingSemaphore.wait()
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        ImageLoadingSemaphore.signal()
         if let e = error { return seal.reject(e) }
         do {
           let jsonDecoder = JSONDecoder()
@@ -343,7 +345,9 @@ class CryptoKittiesAuction : ContractInterface {
       request.addValue("Uci2BC2E8vloA_Lmm43gGPXtXhvrSu6AYbac5GmTGy8",forHTTPHeaderField:"x-api-token")
       
       print("calling \(request.url!)")
+      ImageLoadingSemaphore.wait()
       URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+        ImageLoadingSemaphore.signal()
         do {
           let jsonDecoder = JSONDecoder()
           let kittyInfo = try jsonDecoder.decode(Kitty.self, from: data!)
@@ -820,7 +824,9 @@ class UserEthRate {
         request.httpMethod = "GET"
         
         print("Calling coinbae api for \(localCurrencyCode)")
+        ImageLoadingSemaphore.wait()
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
+          ImageLoadingSemaphore.signal()
           print("Got response from coinbase")
           do {
             let jsonDecoder = JSONDecoder()
@@ -849,3 +855,15 @@ class UserEthRate {
 }
 
 var EthSpot = UserEthRate()
+
+let ImageLoadingSemaphore = DispatchSemaphore(value: 2)
+
+func ipfsUrl(_ url:String) -> String {
+  return url
+    .replacingOccurrences(
+      of: "ipfs://",
+      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
+    .replacingOccurrences(
+      of: "https://ipfs.io/ipfs/",
+      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
+}

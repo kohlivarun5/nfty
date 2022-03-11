@@ -68,20 +68,16 @@ class UrlCollectionContract : ContractInterface {
   
   func image(_ tokenId:BigUInt) -> Promise<Data?> {
     return Promise { seal in
-      var request = URLRequest(
-        url:URL(
-          string:
-            tokenUri(UInt(tokenId))
-            .replacingOccurrences(
-              of: "ipfs://",
-              with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
-        )!)
+      let url = URL(string:ipfsUrl(tokenUri(UInt(tokenId))))!
+      var request = URLRequest(url:url)
       
-      request.httpMethod = "GET"
+      request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
+      
+      ImageLoadingSemaphore.wait()
       print("calling \(request.url!)")
       URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
         // print(data,response,error)
-        
+        ImageLoadingSemaphore.signal()
         // Compress these images on download, as they cause jitter in UI scrolling
         seal.fulfill(data)
       }).resume()
