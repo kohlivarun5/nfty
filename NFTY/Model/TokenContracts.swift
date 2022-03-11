@@ -866,4 +866,7 @@ func ipfsUrl(_ url:String) -> String {
     .replacingOccurrences(
       of: "https://ipfs.io/ipfs/",
       with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
+    .replacingOccurrences(
+      of: "https://gateway.pinata.cloud/ipfs/",
+      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
 }
