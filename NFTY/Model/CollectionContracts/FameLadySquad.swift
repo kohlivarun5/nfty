@@ -60,10 +60,11 @@ class FameLadySquad_Contract : ContractInterface {
         var request = URLRequest(url:url)
         request.httpMethod = "GET"
         
+        ImageLoadingSemaphore.wait()
         print("calling \(request.url!)")
         URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
           // print(data,response,error)
-          
+          ImageLoadingSemaphore.signal()
           // Compress these images on download, as they cause jitter in UI scrolling
           seal.fulfill(data)
         }).resume()

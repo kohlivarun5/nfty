@@ -56,7 +56,7 @@ enum NftImageResolution {
 
 struct NftIpfsImageView: View {
   
-  @ObservedObject var image : ObservablePromise<Media.IpfsImage?>
+  @StateObject var image : ObservablePromise<Media.IpfsImage?>
   
   let resolution : NftImageResolution
   

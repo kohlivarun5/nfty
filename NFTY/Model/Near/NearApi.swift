@@ -11,6 +11,7 @@ import BigInt
 
 struct NearApi {
   
+  static var Semaphore = DispatchSemaphore(value: 5)
   
   struct Impl {
     enum HTTPError: Error {
@@ -24,6 +25,8 @@ struct NearApi {
     
     static func fetch<Result:Decodable>(url: URL, params: [String: Any]?) -> Promise<Result> {
       
+      NearApi.Semaphore.wait()
+      
       var request = URLRequest(url: url)
       request.httpMethod = params.flatMap {_ in "POST"} ?? "GET"
       request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -31,6 +34,9 @@ struct NearApi {
       return Promise.init { seal in
         print("Calling \(request.url!) with body = \(request.httpBody.map { String(decoding: $0,as:UTF8.self) } ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+          
+          NearApi.Semaphore.signal()
+          
           if let error = error { return seal.reject(error) }
           // print(data)
           // print(String(decoding:data!,as:UTF8.self))

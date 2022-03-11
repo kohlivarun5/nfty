@@ -51,8 +51,10 @@ class GenesisBlockContract : ContractInterface {
         request.httpMethod = "GET"
         
         print("calling \(request.url!)")
+        ImageLoadingSemaphore.wait()
         URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
           // print(data,response,error)
+          ImageLoadingSemaphore.signal()
           do {
             switch(data) {
             case .some(let data):
@@ -81,8 +83,10 @@ class GenesisBlockContract : ContractInterface {
           request.httpMethod = "GET"
           
           print("calling \(request.url!)")
+          ImageLoadingSemaphore.wait()
           URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
             // print(data,response,error)
+            ImageLoadingSemaphore.signal()
             seal.fulfill(data)
           }).resume()
         }

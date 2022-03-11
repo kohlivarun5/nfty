@@ -39,16 +39,15 @@ class ZunksContract : ContractInterface {
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
           return Promise { seal in
-            
-            var request = URLRequest(
-              url:URL(string: uri.replacingOccurrences(
-                of: "ipfs://",
-                with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
+            let url = URL(string: ipfsUrl(uri))!
+            var request = URLRequest(url:url)
+            request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
             
             print("calling \(request.url!)")
+            ImageLoadingSemaphore.wait()
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
+              ImageLoadingSemaphore.signal()
               do {
                 switch(data) {
                 case .some(let data):
@@ -72,14 +71,16 @@ class ZunksContract : ContractInterface {
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
-            
+            let url = URL(string:ipfsUrl(uriData.image_url))!
             var request = URLRequest(
-              url:URL(string:uriData.image_url.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))!)
-            request.httpMethod = "GET"
+              url:url)
+            request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
             
             print("calling \(request.url!)")
+            ImageLoadingSemaphore.wait()
             URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
               // print(data,response,error)
+              ImageLoadingSemaphore.signal()
               seal.fulfill(data)
             }).resume()
           }

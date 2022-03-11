@@ -41,19 +41,17 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-            switch(
-              URL(
-                string: uri.replacingOccurrences(
-                  of: "ipfs://",
-                  with: "https://ipfs.infura.io:5001/api/v0/cat?arg="))) {
+            switch(URL(string: ipfsUrl(uri))) {
             case .none:
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
             case .some(let url):
               var request = URLRequest(url:url)
-              request.httpMethod = "GET"
+              request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
+              ImageLoadingSemaphore.wait()
               print("calling \(request.url!)")
               URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+                ImageLoadingSemaphore.signal()
                 // print(data,response,error)
                 do {
                   switch(data) {
@@ -69,7 +67,7 @@ class IpfsCollectionContract : ContractInterface {
                     seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
                   }
                 } catch {
-                  // print(data,response,error)
+                  print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
                   seal.reject(error)
                 }
               }).resume()
@@ -79,20 +77,24 @@ class IpfsCollectionContract : ContractInterface {
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
+            let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
+            
             switch(
-              (uriData.image == nil ? uriData.image_url : uriData.image)
-                .map { $0.replacingOccurrences(of: "ipfs://", with: "https://ipfs.infura.io:5001/api/v0/cat?arg=") }
+              uri
+                .map(ipfsUrl)
                 .flatMap { URL(string:$0) }
             ) {
             case .none:
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
             case .some(let url):
               var request = URLRequest(url:url)
-              request.httpMethod = "GET"
+              request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
+              ImageLoadingSemaphore.wait()
               print("calling \(request.url!)")
               URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
                 // print(data,response,error)
+                ImageLoadingSemaphore.signal()
                 seal.fulfill(data)
               }).resume()
             }
