@@ -87,7 +87,7 @@ class LogsFetcher {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
-
+    
     return web3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
@@ -112,15 +112,16 @@ class LogsFetcher {
   }
   
   func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-
-    return web3.eth.getLogs(
-      params:EthereumGetLogParams(
-        fromBlock:.block(self.fromBlock),
-        toBlock: self.toBlock,
-        address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
-        topics: self.topics
-      )
-    ) { result in
+    
+    let params = EthereumGetLogParams(
+      fromBlock:.block(self.fromBlock),
+      toBlock: self.toBlock,
+      address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
+      topics: self.topics
+    )
+    print("Logs=\(params)")
+    
+    return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock)

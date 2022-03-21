@@ -26,10 +26,8 @@ class FriendsFeedFetcher {
   ])
   
   
-  init(addresses:[EthereumAddress]) {
+  init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let fromBlock = (UserDefaults.standard.string(forKey: cacheId).flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    // create topiocs
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
       fromBlock: fromBlock,
@@ -47,18 +45,19 @@ class FriendsFeedFetcher {
   }
   
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
-    var events_p : [Promise<Void>] = []
+    var prev : Promise<Void> = Promise.value(())
     
     self.logsFetcher.fetch(onDone: {
-      when(fulfilled:events_p)
-        .done { onDone() }
+      prev.done { onDone() }
     }) { log in
       
-      let p = collectionsFactory.getByAddress(log.address.hex(eip55: true))
+      let p = prev.then { collectionsFactory.getByAddress(log.address.hex(eip55: true)) }
         .map  { collection -> Void in
           
+          print("Address=\(collection.contract.contractAddressHex)")
+          
           let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-          let tokenId = UInt(res["tokenId"] as! BigUInt);
+          guard let tokenId = ((res["tokenId"] as? BigUInt).flatMap { UInt($0) }) else { return }
           // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
           
           return response(
@@ -85,8 +84,11 @@ class FriendsFeedFetcher {
                        type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
                        }
                        */
+        }.recover { error -> Promise<Void> in
+          print(error)
+          return Promise.value(())
         }
-      events_p.append(p)
+      prev = p
     }
   }
   

@@ -24,9 +24,9 @@ struct OpenSeaApiCore {
     let external_url : URL?
   }
   
-  static private var collectionCache = try! DiskStorage<String, CollectionInfo>(
+  static private var collectionCache = try! DiskStorage<String, CollectionInfo?>(
     config: DiskConfig(name: "OpenSeaApi/api/v1/asset_contract",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: CollectionInfo.self))
+    transformer: TransformerFactory.forCodable(ofType: CollectionInfo?.self))
   
   static func getCollectionInfo(contract:String) -> Promise<CollectionInfo> {
     return Promise { seal in
@@ -51,13 +51,19 @@ struct OpenSeaApiCore {
             let jsonDecoder = JSONDecoder()
             // print(data)
             struct Data : Codable {
-              let collection : CollectionInfo
+              let collection : CollectionInfo?
+              let schema_name : String
             }
             
-            let info = try jsonDecoder.decode(Data.self, from: data!).collection
-            try collectionCache.setObject(info,forKey: contract)
+            let info = try jsonDecoder.decode(Data.self, from: data!)
+            if (info.schema_name != "ERC721" || info.collection == nil) {
+              try collectionCache.setObject(CollectionInfo?.none,forKey: contract)
+              seal.reject(NSError(domain:"", code:404, userInfo:nil))
+            } else {
+              try collectionCache.setObject(info.collection,forKey: contract)
+              seal.fulfill(info.collection!)
+            }
             
-            seal.fulfill(info)
           } catch {
             print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
             seal.reject(NSError(domain:"", code:404, userInfo:nil))

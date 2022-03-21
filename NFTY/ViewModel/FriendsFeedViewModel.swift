@@ -7,6 +7,7 @@
 
 import Foundation
 import Web3
+import PromiseKit
 
 class FriendsFeedViewModel : ObservableObject {
   
@@ -17,10 +18,10 @@ class FriendsFeedViewModel : ObservableObject {
   private var isLoading = false
   private var isLoadingLatest = false
   
-  private var fetcher : FriendsFeedFetcher
+  private var fetcher : Promise<FriendsFeedFetcher>
   
   init(addresses:[EthereumAddress]) {
-    self.fetcher = FriendsFeedFetcher(addresses: addresses)
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: fromBlock.quantity) }
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
@@ -28,14 +29,17 @@ class FriendsFeedViewModel : ObservableObject {
       return
     }
     self.isLoading = true
-    fetcher.getRecentEvents(
-      onDone:{
-        self.isLoading = false;
-        callback();
-      }) { nft in
-        DispatchQueue.main.async {
-          self.recentEvents.append(nft)
-        }
+    self.fetcher
+      .done { fetcher in
+        fetcher.getRecentEvents(
+          onDone:{
+            self.isLoading = false;
+            callback();
+          }) { nft in
+            DispatchQueue.main.async {
+              self.recentEvents.append(nft)
+            }
+          }
       }
   }
   
@@ -57,14 +61,17 @@ class FriendsFeedViewModel : ObservableObject {
       return
     }
     self.isLoadingLatest = true;
-    fetcher.refreshLatestEvents(
-      onDone:{
-        self.isLoadingLatest = false;
-        callback();
-      }) { nft in
-        DispatchQueue.main.async {
-          self.recentEvents.insert(nft,at:0)
-        }
+    self.fetcher
+      .done { fetcher in
+        fetcher.refreshLatestEvents(
+          onDone:{
+            self.isLoadingLatest = false;
+            callback();
+          }) { nft in
+            DispatchQueue.main.async {
+              self.recentEvents.insert(nft,at:0)
+            }
+          }
       }
   }
   
