@@ -18,19 +18,41 @@ class LogsFetcher {
   
   let event : SolidityEvent
   var fromBlock : BigUInt
-  var address : String
-  var topics : [String?]
+  var address : String?
+  
+  var topics : [EthereumGetLogTopics]
+  
+  let cacheId : String
   
   init(event:SolidityEvent,fromBlock:BigUInt,address:String,indexedTopics:[String?],blockDecrements:BigUInt?) {
     self.event = event;
     self.fromBlock = fromBlock;
     self.address = address
-    self.topics = [
-      web3.eth.abi.encodeEventSignature(self.event)
+    var topics = [
+      EthereumGetLogTopics.and(web3.eth.abi.encodeEventSignature(self.event))
     ]
-    self.topics.append(contentsOf: indexedTopics)
+    indexedTopics.forEach {
+      topics.append(EthereumGetLogTopics.and($0))
+    }
+    self.topics = topics
     self.searchBlocks = 500
     self.blockDecrements = blockDecrements ?? 500 * 4
+    self.cacheId = "\(address).initFromBlock"
+  }
+  
+  init(event:SolidityEvent,fromBlock:BigUInt,address:String?,cacheId:String,topics:[EthereumGetLogTopics],blockDecrements:BigUInt?) {
+    self.event = event;
+    self.fromBlock = fromBlock;
+    self.address = address
+    self.topics = [
+      .and(web3.eth.abi.encodeEventSignature(self.event))
+    ]
+    self.topics.append(contentsOf: topics)
+    self.searchBlocks = 500
+    self.blockDecrements = blockDecrements ?? 500 * 4
+    
+    self.cacheId = cacheId
+    
   }
   
   private func updateMostRecent(_ blockNumber:EthereumQuantity?) {
@@ -46,11 +68,11 @@ class LogsFetcher {
       
       switch (self.mostRecentBlock.tagType) {
       case .block(let seen):
-        switch (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) {
+        switch (UserDefaults.standard.string(forKey: cacheId).flatMap { BigUInt($0)}) {
         case .some(let prev):
-          UserDefaults.standard.set(String(max(prev,seen - searchBlocks)),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(max(prev,seen - searchBlocks)),forKey: cacheId)
         case .none:
-          UserDefaults.standard.set(String(seen - searchBlocks),forKey: "\(address).initFromBlock")
+          UserDefaults.standard.set(String(seen - searchBlocks),forKey: cacheId)
         }
       default:
         break
@@ -70,7 +92,7 @@ class LogsFetcher {
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
         toBlock: EthereumQuantityTag.latest,
-        address:try! EthereumAddress(hex: self.address, eip55: false),
+        address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
         topics: self.topics
       )
     ) { result in
@@ -95,7 +117,7 @@ class LogsFetcher {
       params:EthereumGetLogParams(
         fromBlock:.block(self.fromBlock),
         toBlock: self.toBlock,
-        address:try! EthereumAddress(hex: self.address, eip55: false),
+        address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
         topics: self.topics
       )
     ) { result in
@@ -128,7 +150,7 @@ class LogsFetcher {
       params:EthereumGetLogParams(
         fromBlock:.block(0),
         toBlock: .latest,
-        address:try! EthereumAddress(hex: self.address, eip55: false),
+        address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
         topics: self.topics
       )
     ) { result in

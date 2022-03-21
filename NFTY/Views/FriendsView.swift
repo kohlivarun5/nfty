@@ -19,6 +19,13 @@ struct FriendsView: View {
     self.isLoading = false
   }
   
+  enum Page : Int {
+    case feed
+    case list
+  }
+  
+  @State private var page : Page = .feed
+  
   private func account(_ address:String) -> UserAccount {
     if address.hasSuffix(".near") {
       return UserAccount(ethAddress: nil, nearAccount: address)
@@ -30,29 +37,57 @@ struct FriendsView: View {
   
   var body: some View {
     
-    VStack {
-      switch (isLoading) {
-      case true:
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(3,anchor: .center)
-          .padding()
-      case false:
-        
-        List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
-          NavigationLink(destination: PrivateCollectionView(account:account(address))){
-            HStack() {
-              Text(name)
-                .font(.title3)
-            }
+    
+    switch(self.page) {
+    case .list:
+      
+      VStack {
+        switch (isLoading) {
+        case true:
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .scaleEffect(3,anchor: .center)
             .padding()
+        case false:
+          
+          List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
+            NavigationLink(destination: PrivateCollectionView(account:account(address))){
+              HStack() {
+                Text(name)
+                  .font(.title3)
+              }
+              .padding()
+            }
           }
         }
+      }.onAppear {
+        let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+        updateFriends(friendDict ?? [:])
       }
-    }.onAppear {
-      let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-      updateFriends(friendDict ?? [:])
+      
+    case .feed:
+      FriendsFeedView()
     }
+    
+    Picker(selection: Binding<Int>(
+      get: { self.page.rawValue },
+      set: { tag in
+        withAnimation { // needed explicit for transitions
+          self.page = Page(rawValue: tag)!
+        }
+      }),
+           label: Text("")) {
+      Text("Feed").tag(Page.feed.rawValue)
+      Text("Friends").tag(Page.list.rawValue)
+    }
+           .pickerStyle(SegmentedPickerStyle())
+           .colorMultiply(.accentColor)
+           .padding([.trailing,.leading])
+           .padding(.top,5)
+           .padding(.bottom,7)
+    
+    
+    
   }
 }
 

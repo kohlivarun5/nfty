@@ -13,11 +13,29 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 
+public enum EthereumGetLogTopics : Decodable {
+  case or([String?])
+  case and(String?)
+}
+
+extension EthereumGetLogTopics : Encodable {
+  public func encode(to encoder: Encoder) throws {
+    switch(self) {
+    case .or(let topics):
+      var container = encoder.unkeyedContainer()
+      topics.forEach { try! container.encode($0) }
+    case .and(let topic):
+      var container = encoder.singleValueContainer()
+      try! container.encode(topic)
+    }
+  }
+}
+
 public struct EthereumGetLogParams: Codable {
   public var fromBlock: EthereumQuantityTag?
   public var toBlock: EthereumQuantityTag?
   public var address: EthereumAddress?
-  public var topics:[String?]
+  public var topics:[EthereumGetLogTopics]
 }
 
 extension Web3.Eth {
@@ -859,14 +877,12 @@ var EthSpot = UserEthRate()
 let ImageLoadingSemaphore = DispatchSemaphore(value: 2)
 
 func ipfsUrl(_ url:String) -> String {
+  
+  _ = "https://cloudflare-ipfs.com/ipfs/"
+  let infura = "https://ipfs.infura.io:5001/api/v0/cat?arg="
+  let ipfsProvider = infura
   return url
-    .replacingOccurrences(
-      of: "ipfs://",
-      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
-    .replacingOccurrences(
-      of: "https://ipfs.io/ipfs/",
-      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
-    .replacingOccurrences(
-      of: "https://gateway.pinata.cloud/ipfs/",
-      with: "https://ipfs.infura.io:5001/api/v0/cat?arg=")
+    .replacingOccurrences(of: "ipfs://",with: ipfsProvider)
+    .replacingOccurrences(of: "https://ipfs.io/ipfs/",with: ipfsProvider)
+    .replacingOccurrences(of: "https://gateway.pinata.cloud/ipfs/",with: ipfsProvider)
 }

@@ -72,6 +72,9 @@
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
+		4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */; };
+		4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */; };
+		4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
 		4F435187278239610095C88C /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
@@ -511,6 +514,9 @@
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
 		4F3582A52783A4A700D119F8 /* VaultTokensList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTokensList.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedFetcher.swift; sourceTree = "<group>"; };
+		4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
+		4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedView.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
 		4F435186278239610095C88C /* SushiSwapPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SushiSwapPool.swift; sourceTree = "<group>"; };
@@ -813,6 +819,7 @@
 				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
 				4F529BB427B0590900EFE626 /* TokensListPaged.swift */,
 				4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */,
+				4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -980,6 +987,7 @@
 				4F5F8F5D26532D9C00FAD814 /* WebView.swift */,
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
 				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
+				4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1007,6 +1015,7 @@
 				4F2EFECA27B893D400C30F3D /* Throttle.swift */,
 				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
+				4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1680,6 +1689,7 @@
 				4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
+				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
 				4FED1E4126D4757C006274CE /* WalletProvider.swift in Sources */,
@@ -1690,7 +1700,9 @@
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
+				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
+				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
