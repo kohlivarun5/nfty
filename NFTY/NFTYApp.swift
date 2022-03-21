@@ -132,6 +132,18 @@ struct NFTYApp: App {
     WindowGroup {
       TabView {
         
+        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
+          
+          NavigationView {
+            FriendsView()
+              .navigationBarTitle("Friends")
+          }
+          .tabItem {
+            Label("Friends",systemImage:"person.2.square.stack")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+        }
+        
         NavigationView {
           WalletView()
         }
@@ -158,17 +170,7 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
-          
-          NavigationView {
-            FriendsView()
-              .navigationBarTitle("Friends")
-          }
-          .tabItem {
-            Label("Friends",systemImage:"person.2.square.stack")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-        }
+        
         
         
       }

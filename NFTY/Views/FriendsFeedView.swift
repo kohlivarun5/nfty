@@ -13,9 +13,9 @@ struct FriendsFeedView: View {
   let addresses : [EthereumAddress]
   @StateObject var events : FriendsFeedViewModel
   
-  @State private var action: String? = ""
+  @State private var action: Int? = nil
   @State private var isLoading = true
-  
+
   var body: some View {
     GeometryReader { metrics in
       ScrollView {
@@ -26,14 +26,16 @@ struct FriendsFeedView: View {
           pinnedViews: [.sectionHeaders])
         {
           ForEach(events.recentEvents.indices,id:\.self) { index in
-            let nft = events.recentEvents[index]
+            let item = events.recentEvents[index]
+            let nft = item.nft.nftWithPrice
+            
             
             ZStack {
               
               RoundedImage(
                 nft:nft.nft,
                 price:nft.indicativePrice,
-                collection:nft.nft.collection,
+                collection:item.collection,
                 width: .normal,
                 resolution: .normal
               )
@@ -41,15 +43,15 @@ struct FriendsFeedView: View {
               .padding()
               .onTapGesture {
                 //perform some tasks if needed before opening Destination view
-                self.action = nft.id
+                self.action = index
               }
               
               NavigationLink(destination: NftDetail(
                 nft:nft.nft,
                 price:nft.indicativePrice,
-                collection:nft.nft.collection,
+                collection:item.collection,
                 hideOwnerLink:false,selectedProperties:[]
-              ),tag:nft.id,selection:$action) {}
+              ),tag:index,selection:$action) {}
                 .hidden()
             }.onAppear {
               DispatchQueue.global(qos:.userInitiated).async {
@@ -63,10 +65,10 @@ struct FriendsFeedView: View {
     }
     .onAppear {
       if (self.isLoading) {
-        self.trades.getRecentTrades(currentIndex: 0) {
+        self.events.getRecentEvents(currentIndex: 0) {
           DispatchQueue.main.async {
             self.isLoading = false
-            self.refreshButton = .loaded
+            //self.refreshButton = .loaded
             // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
           }
         }

@@ -10,14 +10,9 @@ import Web3
 
 class FriendsFeedViewModel : ObservableObject {
   
-  struct NFTItem {
-    let nft : NFTWithPriceAndInfo
-    let collection : Collection
-  }
-  
-  @Published var recentEvents: [NFTItem] = []
-  var recentEventsPublished: Published<[NFTItem]> { _recentEvents }
-  var recentEventsPublisher: Published<[NFTItem]>.Publisher { $recentEvents }
+  @Published var recentEvents: [FriendsFeedFetcher.NFTItem] = []
+  var recentEventsPublished: Published<[FriendsFeedFetcher.NFTItem]> { _recentEvents }
+  var recentEventsPublisher: Published<[FriendsFeedFetcher.NFTItem]>.Publisher { $recentEvents }
   
   private var isLoading = false
   private var isLoadingLatest = false

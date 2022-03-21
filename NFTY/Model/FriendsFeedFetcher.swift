@@ -8,8 +8,14 @@
 import Foundation
 import Web3
 import Web3ContractABI
+import PromiseKit
 
 class FriendsFeedFetcher {
+  
+  struct NFTItem {
+    let nft : NFTWithPriceAndInfo
+    let collection : Collection
+  }
   
   let logsFetcher : LogsFetcher
   
@@ -40,11 +46,51 @@ class FriendsFeedFetcher {
       blockDecrements: 5)
   }
   
-  func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTWithPrice) -> Void) {
-    onDone()
+  func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
+    var events_p : [Promise<Void>] = []
+    
+    self.logsFetcher.fetch(onDone: {
+      when(fulfilled:events_p)
+        .done { onDone() }
+    }) { log in
+      
+      let p = collectionsFactory.getByAddress(log.address.hex(eip55: true))
+        .map  { collection -> Void in
+          
+          let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+          let tokenId = UInt(res["tokenId"] as! BigUInt);
+          // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+          
+          return response(
+            FriendsFeedFetcher.NFTItem(
+              nft: NFTWithPriceAndInfo(
+                nftWithPrice: NFTWithPrice(
+                  nft:collection.contract.getNFT(tokenId),
+                  blockNumber: log.blockNumber.map { .ethereum($0) },
+                  indicativePrice:.lazy {
+                    ObservablePromise(resolved:NFTPriceStatus.unavailable)
+                  }),
+                info: collection.info),
+              collection: collection)
+            )
+                
+                      // TODO Fix
+                      /* self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
+                       .map {
+                       let price = priceIfNotZero($0?.value);
+                       return NFTPriceStatus.known(
+                       NFTPriceInfo(
+                       wei:price,
+                       blockNumber: log.blockNumber.map { .ethereum($0) },
+                       type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                       }
+                       */
+        }
+      events_p.append(p)
+    }
   }
   
-  func refreshLatestEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTWithPrice) -> Void) {
+  func refreshLatestEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
     onDone()
   }
   

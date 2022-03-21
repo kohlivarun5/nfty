@@ -12,11 +12,19 @@ struct FriendsView: View {
   
   @State private var friends : [String : String] = [:]
   
+  @State private var addresses : [EthereumAddress] = []
+  
   @State private var isLoading = true
   
   private func updateFriends(_ dict : [String : String]) {
     self.friends = dict
     self.isLoading = false
+    
+    self.friends.forEach { (key: String, value: String) in
+      guard let address = try? EthereumAddress(hex: key, eip55: false) else { return }
+      self.addresses.append(address)
+    }
+    
   }
   
   enum Page : Int {
@@ -66,7 +74,7 @@ struct FriendsView: View {
       }
       
     case .feed:
-      FriendsFeedView()
+      FriendsFeedView(addresses:self.addresses,events:FriendsFeedViewModel(addresses: addresses))
     }
     
     Picker(selection: Binding<Int>(
