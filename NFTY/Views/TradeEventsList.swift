@@ -186,7 +186,7 @@ struct TradeEventsList_Previews: PreviewProvider {
   static var previews: some View {
     TradeEventsList(
       collection: SampleCollection,
-      tokenId:SampleToken.tokenId
+      tokenId:UInt(SampleToken.tokenId)!
     )
   }
 }

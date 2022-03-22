@@ -75,6 +75,10 @@
 		4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */; };
 		4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */; };
 		4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */; };
+		4F3FE32A27E975B00036E46C /* ERC165Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32927E975B00036E46C /* ERC165Contract.swift */; };
+		4F3FE32C27E978340036E46C /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
+		4F3FE32D27E97DEE0036E46C /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
+		4F3FE32E27E97FE20036E46C /* ERC165Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32927E975B00036E46C /* ERC165Contract.swift */; };
 		4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153C2638EF7400C16872 /* TokenPrice.swift */; };
 		4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F43153E263E4E9500C16872 /* AsciiPunkView.swift */; };
 		4F435187278239610095C88C /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
@@ -517,6 +521,8 @@
 		4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedFetcher.swift; sourceTree = "<group>"; };
 		4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
 		4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedView.swift; sourceTree = "<group>"; };
+		4F3FE32927E975B00036E46C /* ERC165Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ERC165Contract.swift; sourceTree = "<group>"; };
+		4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeErc721Collection.swift; sourceTree = "<group>"; };
 		4F43153C2638EF7400C16872 /* TokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPrice.swift; sourceTree = "<group>"; };
 		4F43153E263E4E9500C16872 /* AsciiPunkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AsciiPunkView.swift; path = NFTY/Model/AsciiPunkView.swift; sourceTree = SOURCE_ROOT; };
 		4F435186278239610095C88C /* SushiSwapPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SushiSwapPool.swift; sourceTree = "<group>"; };
@@ -1016,6 +1022,8 @@
 				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 				4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */,
+				4F3FE32927E975B00036E46C /* ERC165Contract.swift */,
+				4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1664,6 +1672,7 @@
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
 				4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */,
 				4F8E16FF27B079B300E54BB5 /* NFTNameIdRank.swift in Sources */,
+				4F3FE32A27E975B00036E46C /* ERC165Contract.swift in Sources */,
 				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4F529BB727B0594600EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
@@ -1708,6 +1717,7 @@
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
 				4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */,
 				4FA9C62127C13D83001219F9 /* CollectionRecentView.swift in Sources */,
+				4F3FE32C27E978340036E46C /* MakeErc721Collection.swift in Sources */,
 				4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */,
 				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
@@ -1770,7 +1780,9 @@
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
 				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
 				4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */,
+				4F3FE32D27E97DEE0036E46C /* MakeErc721Collection.swift in Sources */,
 				4FDEABAE278E542E00F92160 /* CollectionVaultContract.swift in Sources */,
+				4F3FE32E27E97FE20036E46C /* ERC165Contract.swift in Sources */,
 				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,

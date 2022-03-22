@@ -114,7 +114,7 @@ class UrlCollectionContract : ContractInterface {
     return ethContract.transfer.fetch(onDone:onDone) { log in
       
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
       response(NFTWithPrice(
@@ -122,7 +122,7 @@ class UrlCollectionContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
         blockNumber: log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -145,7 +145,7 @@ class UrlCollectionContract : ContractInterface {
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
       response(NFTWithPrice(
@@ -153,7 +153,7 @@ class UrlCollectionContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download))),
+          media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
         blockNumber: log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -173,17 +173,17 @@ class UrlCollectionContract : ContractInterface {
     }
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address:self.contractAddressHex,
       tokenId:tokenId,
       name:self.name,
-      media:.ipfsImage(Media.IpfsImageLazy(tokenId:BigUInt(tokenId), download: self.download)))
+      media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download)))
   }
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(
-      nft:getNFT(tokenId),
+      nft:getNFT(BigUInt(tokenId)),
       getPrice: {
         switch(self.ethContract.pricesCache[tokenId]) {
         case .some(let p):
@@ -236,7 +236,7 @@ class UrlCollectionContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
     return ethContract.ownerOf(tokenId)
   }
   

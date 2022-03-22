@@ -31,6 +31,6 @@ struct NftTradeUrlView: View {
 
 struct NftTradeUrlView_Previews: PreviewProvider {
     static var previews: some View {
-        NftTradeUrlView(collection:SampleCollection,tokenId: SampleToken.tokenId,userWallet: UserWallet())
+        NftTradeUrlView(collection:SampleCollection,tokenId: UInt(SampleToken.tokenId)!,userWallet: UserWallet())
     }
 }

@@ -34,7 +34,7 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
                 let contract = self.collection.contract
                 
                 return NFTWithLazyPrice(
-                  nft: contract.getNFT(UInt(edge.node.asset.tokenId)!),
+                  nft: contract.getNFT(BigUInt(edge.node.asset.tokenId)!),
                   getPrice: {
                     return ObservablePromise(
                       resolved:NFTPriceStatus.known(

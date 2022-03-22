@@ -21,7 +21,7 @@ class FriendsFeedViewModel : ObservableObject {
   private var fetcher : Promise<FriendsFeedFetcher>
   
   init(addresses:[EthereumAddress]) {
-    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: fromBlock.quantity) }
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: (fromBlock.quantity - 10) ) }
   }
   
   func loadMore(_ callback : @escaping () -> Void) {

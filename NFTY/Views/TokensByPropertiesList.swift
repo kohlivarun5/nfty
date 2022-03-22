@@ -21,7 +21,7 @@ struct TokensByPropertiesList: View {
   
   @ObservedObject var nfts : TokensByPropertiesObject
   
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: BigUInt? = nil
   
   struct SheetSelection : Identifiable {
     let id : Int

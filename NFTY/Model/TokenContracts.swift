@@ -206,9 +206,9 @@ protocol ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
   
-  func getNFT(_ tokenId:UInt) -> NFT
+  func getNFT(_ tokenId:BigUInt) -> NFT
   func getToken(_ tokenId:UInt) -> NFTWithLazyPrice
-  func ownerOf(_ tokenId:UInt) -> Promise<UserAccount?>
+  func ownerOf(_ tokenId:BigUInt) -> Promise<UserAccount?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
   
   func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
@@ -404,7 +404,7 @@ class CryptoKittiesAuction : ContractInterface {
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
-          tokenId:UInt(tokenId),
+          tokenId:tokenId,
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
@@ -423,7 +423,7 @@ class CryptoKittiesAuction : ContractInterface {
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
-          tokenId:UInt(tokenId),
+          tokenId:tokenId,
           name:self.name,
           media:.image(self.getMediaImage(tokenId))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
@@ -468,18 +468,18 @@ class CryptoKittiesAuction : ContractInterface {
     }
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address:self.contractAddressHex,
-      tokenId:UInt(tokenId),
+      tokenId:tokenId,
       name:self.name,
-      media:.image(getMediaImage(BigUInt(tokenId))))
+      media:.image(getMediaImage(tokenId)))
   }
   
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(
-      nft:getNFT(tokenId),
+      nft:getNFT(BigUInt(tokenId)),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
         case .some(let p):
@@ -521,8 +521,8 @@ class CryptoKittiesAuction : ContractInterface {
       .finally { onDone() }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
-    return ethContract.kittyIndexToOwner(BigUInt(tokenId)).map { addressIfNotZero($0) }
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
+    return ethContract.kittyIndexToOwner(tokenId).map { addressIfNotZero($0) }
     .map { $0.map { UserAccount(ethAddress: $0, nearAccount: nil) } }
   }
   
@@ -601,14 +601,14 @@ class AutoglyphsContract : ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -631,14 +631,14 @@ class AutoglyphsContract : ContractInterface {
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -658,17 +658,17 @@ class AutoglyphsContract : ContractInterface {
     }
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address:self.contractAddressHex,
       tokenId:tokenId,
       name:self.name,
-      media:.autoglyph(Media.AutoglyphLazy(tokenId:BigUInt(tokenId), draw: self.draw)))
+      media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw)))
   }
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(
-      nft:getNFT(tokenId),
+      nft:getNFT(BigUInt(tokenId)),
       getPrice: {
         switch(self.ethContract.pricesCache[tokenId]) {
         case .some(let p):
@@ -721,7 +721,7 @@ class AutoglyphsContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
     return ethContract.ownerOf(tokenId)
   }
   

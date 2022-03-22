@@ -196,13 +196,13 @@ enum Media {
 struct NFT: Identifiable {
   
   let address: String
-  let tokenId: UInt
+  let tokenId: BigUInt
   let name: String
   let media: Media
   
   struct NftID : Hashable {
     let address: String
-    let tokenId: UInt
+    let tokenId: BigUInt
     
     static func < (lhs: NftID, rhs: NftID) -> Bool {
       return lhs.address > rhs.address && lhs.tokenId < rhs.tokenId
@@ -356,12 +356,12 @@ class SimilarTokensGetter {
     let percentile : Double
   }
   
-  func get(_ tokenId:UInt) -> [UInt]? {
+  func get(_ tokenId:BigUInt) -> [UInt]? {
     self.nearestTokens = self.nearestTokens ?? (nearestTokensFileName.map { load($0) } ?? [])
     return self.nearestTokens?[safe:Int(tokenId)]
   }
   
-  func getProperties(_ tokenId:UInt) -> [TokenAttributePercentile]? {
+  func getProperties(_ tokenId:BigUInt) -> [TokenAttributePercentile]? {
     return self.properties?[safe:Int(tokenId)]
   }
   
@@ -390,7 +390,7 @@ class SimilarTokensGetter {
 
 protocol RarityRanking {
   var sortedTokenIds :  [UInt] { get }
-  func getRank(_ tokenId:UInt) -> UInt?
+  func getRank(_ tokenId:BigUInt) -> UInt?
 }
 
 class RarityRankingImpl : RarityRanking {
@@ -406,7 +406,7 @@ class RarityRankingImpl : RarityRanking {
     self.sortedTokenIds = indexed.map { UInt($0.0) }
   }
   
-  func getRank(_ tokenId:UInt) -> UInt? { return ranks[safe:Int(tokenId)] }
+  func getRank(_ tokenId:BigUInt) -> UInt? { return ranks[safe:Int(tokenId)] }
 }
 
 struct CollectionInfo {

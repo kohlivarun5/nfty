@@ -57,7 +57,7 @@ class FriendsFeedFetcher {
           print("Address=\(collection.contract.contractAddressHex)")
           
           let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-          guard let tokenId = ((res["tokenId"] as? BigUInt).flatMap { UInt($0) }) else { return }
+          guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
           // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
           
           return response(

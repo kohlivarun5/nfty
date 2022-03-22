@@ -132,16 +132,16 @@ class CryptoPunksContract : ContractInterface {
   
   struct TradeActions : TradeActionsInterface {
     let ethContract : EthContract
-    func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+    func submitBid(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting enterBidForPunk")
-      return wallet.sendTransaction(tx:
-                                      ethContract.enterBidForPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
+      return wallet.sendTransaction(
+        tx:ethContract.enterBidForPunk(tokenId:tokenId,wei: wei,from: wallet.ethAddress))
     }
     
-    func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+    func acceptOffer(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting buyPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.buyPunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
+                                      ethContract.buyPunk(tokenId:tokenId,wei: wei,from: wallet.ethAddress))
     }
   }
   
@@ -153,10 +153,10 @@ class CryptoPunksContract : ContractInterface {
     
     let ethContract : EthContract
     
-    func getBidAsk(_ tokenId: UInt,_ side:Side?) -> Promise<BidAsk> {
+    func getBidAsk(_ tokenId: BigUInt,_ side:Side?) -> Promise<BidAsk> {
       
-      let bidPrice = side != .ask ? ethContract.punkBids(BigUInt(tokenId)) : Promise.value(nil)
-      let askPrice = side != .bid ? ethContract.punksOfferedForSale(BigUInt(tokenId)) : Promise.value(nil)
+      let bidPrice = side != .ask ? ethContract.punkBids(tokenId) : Promise.value(nil)
+      let askPrice = side != .bid ? ethContract.punksOfferedForSale(tokenId) : Promise.value(nil)
       
       return bidPrice.then { bidPrice in
         askPrice.map { askPrice in
@@ -170,7 +170,7 @@ class CryptoPunksContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
       return getBidAskSerial(tokenIds: tokenIds,side,wait:0.0005, getter: self.getBidAsk)
     }
   }
@@ -184,7 +184,7 @@ class CryptoPunksContract : ContractInterface {
     tradeActions = TradeInterface(ethContract:ethContract)
   }
   
-  private func imageUrl(_ tokenId:UInt) -> URL? {
+  private func imageUrl(_ tokenId:BigUInt) -> URL? {
     return URL(string:"https://www.larvalabs.com/public/images/cryptopunks/punk\(String(format: "%04d", Int(tokenId))).png")
   }
   
@@ -207,9 +207,10 @@ class CryptoPunksContract : ContractInterface {
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
-          tokenId:UInt(tokenId),
+          tokenId:tokenId,
           name:self.name,
-          media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
+          media:.image(MediaImageEager(self.imageUrl(tokenId)!))
+        ),
         blockNumber: blockNumber.map { .ethereum($0) },
         indicativePrice:.eager(
           NFTPriceInfo(
@@ -221,9 +222,9 @@ class CryptoPunksContract : ContractInterface {
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
-          tokenId:UInt(tokenId),
+          tokenId:tokenId,
           name:self.name,
-          media:.image(MediaImageEager(self.imageUrl(UInt(tokenId))!))),
+          media:.image(MediaImageEager(self.imageUrl(tokenId)!))),
         blockNumber: blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -353,7 +354,7 @@ class CryptoPunksContract : ContractInterface {
     }
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address:self.contractAddressHex,
       tokenId:tokenId,
@@ -363,7 +364,7 @@ class CryptoPunksContract : ContractInterface {
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(
-      nft:getNFT(tokenId),
+      nft:getNFT(BigUInt(tokenId)),
       getPrice: {
         
         switch(self.pricesCache[tokenId]) {
@@ -538,8 +539,8 @@ class CryptoPunksContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
-    return ethContract.punkIndexToAddress(BigUInt(tokenId)).map { addressIfNotZero($0) }
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
+    return ethContract.punkIndexToAddress(tokenId).map { addressIfNotZero($0) }
     .map { $0.map { UserAccount(ethAddress: $0, nearAccount: nil) } }
   }
   

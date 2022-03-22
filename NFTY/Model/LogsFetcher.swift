@@ -119,7 +119,7 @@ class LogsFetcher {
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
-    print("Logs=\(params)")
+    // print("Logs=\(params)")
     
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {

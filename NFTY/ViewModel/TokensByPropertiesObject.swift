@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 
 class TokensByPropertiesObject : ObservableObject {
@@ -13,7 +14,7 @@ class TokensByPropertiesObject : ObservableObject {
   var eventsPublished: Published<[NFTWithLazyPrice]> { _tokens }
   var eventsPublisher: Published<[NFTWithLazyPrice]>.Publisher { $tokens }
   
-  @Published var tokenAsks : [UInt : BidAsk] = [:]
+  @Published var tokenAsks : [BigUInt : BidAsk] = [:]
   
   private let loadingChunk = 20
   private var isLoading = false

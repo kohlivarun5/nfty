@@ -48,7 +48,7 @@ func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UII
   return nil
 }
 
-func downloadImageToLocalDisk(collection:Collection,tokenId:UInt) -> Promise<URL?> {
+func downloadImageToLocalDisk(collection:Collection,tokenId:BigUInt) -> Promise<URL?> {
   let notificationImagesFolder = "NotificationImages"
   switch(collection.contract.getNFT(tokenId).media) {
   case .ipfsImage(let image):
