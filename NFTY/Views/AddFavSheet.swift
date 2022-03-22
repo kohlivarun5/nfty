@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Introspect
+import BigInt
 
 struct AddFavSheet: View {
   
@@ -48,7 +49,7 @@ struct AddFavSheet: View {
   
   private func onChange() {
     nft.update(address:collectionAddress,tokenId:UInt(tokenId))
-    guard let tokenId = UInt(tokenId) else { return }
+    guard let tokenId = BigUInt(tokenId) else { return }
     collectionsFactory.getByAddress(collectionAddress)
       .done(on:.main) { collection in
         self.rank = collection.info.rarityRanking?.getRank(tokenId)

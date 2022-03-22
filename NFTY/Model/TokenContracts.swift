@@ -211,7 +211,7 @@ protocol ContractInterface {
   func ownerOf(_ tokenId:BigUInt) -> Promise<UserAccount?>
   func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
   
-  func getEventsFetcher(_ tokenId:UInt) -> TokenEventsFetcher?
+  func getEventsFetcher(_ tokenId:BigUInt) -> TokenEventsFetcher?
   
   func indicativeFloor() -> Promise<PriceUnit?>
   
@@ -250,7 +250,7 @@ class CryptoKittiesAuction : ContractInterface {
   
   var tradeActions: TokenTradeInterface? = nil
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return nil }
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? { return nil }
   
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
@@ -579,7 +579,7 @@ class AutoglyphsContract : ContractInterface {
   
   private var ethContract = GlyphContract(contractAddress:"0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782")
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? { return ethContract.getEventsFetcher(tokenId) }
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? { return ethContract.getEventsFetcher(tokenId) }
   
   
   private func draw(_ tokenId:BigUInt) -> ObservablePromise<Media.Autoglyph?> {

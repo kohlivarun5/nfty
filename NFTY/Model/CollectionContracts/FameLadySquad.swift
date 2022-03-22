@@ -99,7 +99,7 @@ class FameLadySquad_Contract : ContractInterface {
   
   let ethContract = IpfsImageEthContract(address:"0xf3E6DbBE461C6fa492CeA7Cb1f5C5eA660EB1B47")
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return ethContract.getEventsFetcher(tokenId)
   }
   

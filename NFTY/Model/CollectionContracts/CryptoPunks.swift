@@ -473,8 +473,8 @@ class CryptoPunksContract : ContractInterface {
     
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
-    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
+    let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(tokenId))
     let punkBoughtFetcher = LogsFetcher(
       event:self.PunkBought,
       fromBlock:self.initFromBlock,

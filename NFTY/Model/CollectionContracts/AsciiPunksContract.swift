@@ -96,7 +96,7 @@ class AsciiPunksContract : ContractInterface {
   private var ethContract = EthContract()
   private var erc721Contract = Erc721Contract(address:"0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC")
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return erc721Contract.getEventsFetcher(tokenId)
   }
   

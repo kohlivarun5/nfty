@@ -113,7 +113,7 @@ class GenesisBlockContract : ContractInterface {
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return ethContract.getEventsFetcher(tokenId)
   }
   

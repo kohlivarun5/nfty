@@ -176,7 +176,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.getOwnerTokens(address: address, onDone: onDone, response)
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return collectionContract.getEventsFetcher(tokenId)
   }
   

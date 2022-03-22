@@ -154,7 +154,7 @@ struct TradeEventsList: View {
     }
   }
   let collection : Collection
-  let tokenId : UInt
+  let tokenId : BigUInt
   
   var body: some View {
     switch(collection.contract.getEventsFetcher(tokenId)) {

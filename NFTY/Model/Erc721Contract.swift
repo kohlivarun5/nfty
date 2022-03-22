@@ -245,7 +245,7 @@ class Erc721Contract {
     }
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
-    return EventsFetcher(tokenId:BigUInt(tokenId),contractAddressHex:self.contractAddressHex,initFromBlock:self.initFromBlock)
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
+    return EventsFetcher(tokenId:tokenId,contractAddressHex:self.contractAddressHex,initFromBlock:self.initFromBlock)
   }
 }

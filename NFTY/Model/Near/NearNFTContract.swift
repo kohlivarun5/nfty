@@ -221,7 +221,7 @@ class NearNFTContract : ContractInterface {
     onDone()
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     
     struct ParasEventsFetcher : TokenEventsFetcher {
       

@@ -135,7 +135,7 @@ class IpfsCollectionContract : ContractInterface {
     self.indicativePriceSource = indicativePriceSource
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return ethContract.getEventsFetcher(tokenId)
   }
   
