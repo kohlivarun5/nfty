@@ -28,9 +28,3 @@ struct NftTradeUrlView: View {
       isSheet: true)
   }
 }
-
-struct NftTradeUrlView_Previews: PreviewProvider {
-    static var previews: some View {
-        NftTradeUrlView(collection:SampleCollection,tokenId: UInt(SampleToken.tokenId)!,userWallet: UserWallet())
-    }
-}

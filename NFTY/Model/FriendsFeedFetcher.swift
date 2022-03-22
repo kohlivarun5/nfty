@@ -51,8 +51,10 @@ class FriendsFeedFetcher {
       prev.done { onDone() }
     }) { log in
       
-      let p = prev.then { collectionsFactory.getByAddress(log.address.hex(eip55: true)) }
-        .map  { collection -> Void in
+      let p = prev.then { collectionsFactory.getByAddressOpt(log.address.hex(eip55: true)) }
+        .map  { collectionOpt -> Void in
+          
+          guard let collection = collectionOpt else { return }
           
           print("Address=\(collection.contract.contractAddressHex)")
           

@@ -32,7 +32,11 @@ struct MakeErc721Collection {
           return nameOpt
         }
         
-      }.map { name -> Collection? in
+      }
+      .recover { e -> Promise<String?> in
+        return Promise.value(nil)
+      }
+      .map { name -> Collection? in
         
         name.map { name in
         

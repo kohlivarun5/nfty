@@ -30,7 +30,7 @@ func reduce_p<Element,Result>(_ items:Array<Element>,
   })
 }
 
-func createLocalFile(folder:String,collection:Collection,tokenId:UInt,image: UIImage) -> URL? {
+func createLocalFile(folder:String,collection:Collection,tokenId:BigUInt,image: UIImage) -> URL? {
   let fileManager = FileManager.default
   let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
     .appendingPathComponent(folder, isDirectory: true)
@@ -71,7 +71,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
   
   struct Order : Codable {
     let contract_address : String
-    let token_id : UInt
+    let token_id : BigUInt
     let price : PriceUnit
     let expiration_time : UInt?
   }
@@ -83,8 +83,8 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       let (address,tokens) = item
       return collectionsFactory.getByAddress(address).then { collection -> Promise<[(Collection,[Order])]> in
         
-        let tokenIds = tokens.compactMap { (tokenId,isFav) -> UInt? in
-          if (isFav) { return UInt(tokenId) }
+        let tokenIds = tokens.compactMap { (tokenId,isFav) -> BigUInt? in
+          if (isFav) { return BigUInt(tokenId) }
           else { return nil }
         }
         
@@ -96,7 +96,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
           case .some(let tradeActions):
             return after(seconds:0.3).then { // throttle
               tradeActions.getBidAsk(tokenIds,.ask)
-                .map { (bidAsks:[(tokenId:UInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
+                .map { (bidAsks:[(tokenId:BigUInt,bidAsk:BidAsk)]) -> (Collection,[Order]) in
                   (collection,
                    bidAsks.compactMap { (tokenId,bidAsk) -> Order? in
                     bidAsk.ask.map {
@@ -299,7 +299,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
               
               let (collection,order) = result
               
-              guard let tokenId = UInt(order.asset.token_id) else { return Promise.value(accu) }
+              guard let tokenId = BigUInt(order.asset.token_id) else { return Promise.value(accu) }
               
               return downloadImageToLocalDisk(collection: collection, tokenId:tokenId)
                 .map { imageUrl in

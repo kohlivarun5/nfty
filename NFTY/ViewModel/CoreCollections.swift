@@ -784,6 +784,31 @@ class CollectionsFactory {
     }
   }
   
+  func getByAddressOpt(_ address:String) -> Promise<Collection?> {
+    switch(collections[address.lowercased()]) {
+    case .some(let x):
+      return Promise.value(x)
+    case .none:
+      // Add some throttle here
+      return after(seconds: 0.2).then { _ -> Promise<Collection?> in
+        if (address.hasSuffix(".near")) {
+          return Promise.value(NearCollection(address: address))
+        } else {
+          return erc721Collection(address: address)
+            .map { collectionOpt -> Collection? in
+              switch(collectionOpt) {
+              case .some(let collection):
+                self.collections[address.lowercased()] = collection;
+                return collection
+              case .none:
+                return collectionOpt
+              }
+            }
+        }
+      }
+    }
+  }
+  
 }
 
 let collectionsFactory = CollectionsFactory()

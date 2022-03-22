@@ -9,20 +9,18 @@ import Foundation
 import PromiseKit
 import Web3
 
-
+func erc721Collection(address:String) -> Promise<Collection?> {
+  switch(try? EthereumAddress(hex: address, eip55: false)) {
+  case .some(let ethAddress):
+    return MakeErc721Collection.ofAddress(address: ethAddress)
+  case .none:
+    return Promise.value(nil)
+  }
+}
 
 func openSeaCollection(address:String) -> Promise<Collection> {
 
-  func erc721(address:String) -> Promise<Collection?> {
-    switch(try? EthereumAddress(hex: address, eip55: false)) {
-    case .some(let ethAddress):
-      return MakeErc721Collection.ofAddress(address: ethAddress)
-    case .none:
-      return Promise.value(nil)
-    }
-  }
-  
-  return erc721(address: address)
+  return erc721Collection(address: address)
     .then { collectionOpt -> Promise<Collection> in
       switch(collectionOpt) {
       case .some(let x):
