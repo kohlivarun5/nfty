@@ -21,7 +21,7 @@ class FriendsFeedViewModel : ObservableObject {
   private var fetcher : Promise<FriendsFeedFetcher>
   
   init(addresses:[EthereumAddress]) {
-    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: (fromBlock.quantity - 10) ) }
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: (fromBlock.quantity - 5) ) }
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
@@ -38,6 +38,8 @@ class FriendsFeedViewModel : ObservableObject {
           }) { nft in
             DispatchQueue.main.async {
               self.recentEvents.append(nft)
+              print("events=\(self.recentEvents.count)")
+              self.isLoading = false;
             }
           }
       }

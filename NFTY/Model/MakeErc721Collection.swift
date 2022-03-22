@@ -11,6 +11,24 @@ import PromiseKit
 
 struct MakeErc721Collection {
   
+  static func ofName(name:String,address:EthereumAddress) -> Collection {
+    return  Collection(
+      info: CollectionInfo(
+        address: address.hex(eip55: true),
+        sample: "SAMPLE_ABS",
+        name: name,
+        webLink: nil,
+        themeColor: .gunmetal,
+        themeLabelColor: .white,
+        disableRecentTrades: true,
+        similarTokens: nil,
+        rarityRanking: nil),
+      contract: IpfsCollectionContract(
+        name: name,
+        address: address.hex(eip55: true), indicativePriceSource: .openSea)
+      )
+  }
+  
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
     
     // Confirm if it allows name, tokenUri, supportsInterface
@@ -39,24 +57,7 @@ struct MakeErc721Collection {
       .map { name -> Collection? in
         
         name.map { name in
-        
-          Collection(
-            info: CollectionInfo(
-              address: address.hex(eip55: true),
-              sample: "SAMPLE_ABS",
-              name: name,
-              webLink: nil,
-              themeColor: .gunmetal,
-              themeLabelColor: .white,
-              disableRecentTrades: true,
-              similarTokens: nil,
-              rarityRanking: nil),
-            contract: IpfsCollectionContract(
-              name: name,
-              address: address.hex(eip55: true), indicativePriceSource: .openSea
-            )
-          )
-          
+          return MakeErc721Collection.ofName(name: name, address: address)
         }
         
       }

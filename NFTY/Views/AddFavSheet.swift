@@ -70,14 +70,19 @@ struct AddFavSheet: View {
               HStack {
                 Text("Select Collection")
                   .foregroundColor(.accentColor)
-                Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
+                Text("\(collectionsDict[collectionAddress]??.info.name ?? "")")
                   .foregroundColor(.secondary)
               }
             ,
             content: {
-              ForEach(collectionsDict.map{$0}.sorted { $0.1.info.name < $1.1.info.name }, id: \.self.0, content: { (key,collection) in
-                Text(collection.info.name)
-              })
+              ForEach(
+                collectionsDict
+                  .map{ $0 }
+                  .compactMap { (key,value) in value.map { (key,$0) }}
+                  .sorted { $0.1.info.name < $1.1.info.name },
+                id: \.self.0, content: { (key,collection) in
+                  Text(collection.info.name)
+                })
             }
           )
             .pickerStyle(MenuPickerStyle())

@@ -11,7 +11,7 @@ import Web3
 struct FriendsFeedView: View {
   
   let addresses : [EthereumAddress]
-  @StateObject var events : FriendsFeedViewModel
+  @ObservedObject var events : FriendsFeedViewModel
   
   @State private var action: Int? = nil
   @State private var isLoading = true
