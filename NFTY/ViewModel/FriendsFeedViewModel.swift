@@ -46,7 +46,6 @@ class FriendsFeedViewModel : ObservableObject {
           }) { nft in
             DispatchQueue.main.async {
               self.recentEvents.append(nft)
-              self.isLoading = false;
               self.isInitialized = true
             }
           }
