@@ -67,10 +67,10 @@ func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
 class TxFetcher {
   
   struct TxInfo : Codable {
-    var value : BigUInt
-    var blockNumber : EthereumQuantity
+    let from: EthereumAddress
+    let value : BigUInt
+    let blockNumber : EthereumQuantity
   }
-  
   private var txCache = try! DiskStorage<EthereumData, TxInfo>(
     config: DiskConfig(name: "TxFetcher.txCache",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: TxInfo.self))
@@ -86,7 +86,7 @@ class TxFetcher {
           switch(tx.value.quantity,tx.blockNumber) {
           case (_,.none): return nil
           case (let value,.some(let blockNumber)):
-            return TxInfo(value:value,blockNumber: blockNumber)
+            return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
           }
         }
       }

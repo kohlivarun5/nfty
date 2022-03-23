@@ -9,6 +9,7 @@ import Foundation
 import BigInt
 import Web3
 import Web3ContractABI
+import PromiseKit
 
 class LogsFetcher {
   private let blockDecrements : BigUInt
@@ -152,6 +153,56 @@ class LogsFetcher {
           print(result)
         }
         onDone()
+      }
+    }
+  }
+  
+  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
+    
+    let params = EthereumGetLogParams(
+      fromBlock:.block(self.fromBlock),
+      toBlock: self.toBlock,
+      address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
+      topics: self.topics
+    )
+    // print("Logs=\(params)")
+    
+    return web3.eth.getLogs(params:params) { result in
+      DispatchQueue.global(qos:.userInteractive).async {
+        if case let logs? = result.result {
+          self.toBlock = EthereumQuantityTag.block(self.fromBlock)
+          self.fromBlock = self.fromBlock - self.blockDecrements
+          
+          print("Found \(logs.count) logs")
+          logs.sorted {
+            switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
+            case (.some(let x),.some(let y)):
+              return x > y
+            case (.some,.none):
+              return true
+            case (.none,.some):
+              return false
+            case (.none,.none):
+              return false
+            }
+          }.forEach { log in
+            response(log)
+            self.updateMostRecent(log.blockNumber)
+          }
+          
+          onDone(retries <= 0)
+            .map { processed in
+              print(processed,retries)
+              let isEmpty = (processed == 0)
+              if (isEmpty && retries > 0) {
+                self.fetchWithPromise(onDone:onDone,retries:retries-1,response);
+              }
+            }
+        } else {
+          print(result)
+          onDone(retries <= 0)
+        }
+        
       }
     }
   }

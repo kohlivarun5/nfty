@@ -25,10 +25,11 @@ class FriendsFeedFetcher {
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
+  let addresses : [EthereumAddress]
   
   init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(200)
+    let blockDecrements = BigUInt(500)
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
       fromBlock: fromBlock - blockDecrements,
@@ -43,44 +44,67 @@ class FriendsFeedFetcher {
         )
       ],
       blockDecrements: blockDecrements)
+    self.addresses = addresses
   }
   
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
-    var prev : Promise<Void> = Promise.value(())
+    var processed : Promise<Int> = Promise.value(0)
     
-    self.logsFetcher.fetch(onDone: {
-      prev.done {
-        print("done")
-        onDone()
+    self.logsFetcher.fetchWithPromise(onDone: { (isFinal:Bool) in
+      return processed.map { processed in
+        if (isFinal || processed != 0) {
+          print("done")
+          onDone()
+        }
+        return processed
       }
     },retries: 10) { log in
-      let p = prev.then { () -> Promise<Void> in
+      let p = processed.then { processed -> Promise<Int> in
         
         //print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-        .map  { collectionOpt -> Void in
+        .then  { collectionOpt -> Promise<Int> in
           
-          guard let collection = collectionOpt else { return }
+          guard let collection = collectionOpt else { return Promise.value(processed) }
           
           let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
           
           // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
           
-          guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
+          guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
           // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
           
-          return response(
-            FriendsFeedFetcher.NFTItem(
-              nft: NFTWithPriceAndInfo(
-                nftWithPrice: NFTWithPrice(
-                  nft:collection.contract.getNFT(tokenId),
-                  blockNumber: log.blockNumber.map { .ethereum($0) },
-                  indicativePrice:.lazy {
-                    ObservablePromise(resolved:NFTPriceStatus.unavailable) // TODO
-                  }),
-                info: collection.info),
-              collection: collection)
-          )
+          return txFetcher.eventOfTx(transactionHash: log.transactionHash)
+            .map { txInfo -> Int in
+              
+              guard let txInfo = txInfo else { return processed }
+              
+              guard let price = priceIfNotZero(txInfo.value) else { return processed }
+              //if (price == nil && self.addresses.first(where: { $0 == txInfo.from }) == nil) { return }
+              
+              response(
+                FriendsFeedFetcher.NFTItem(
+                  nft: NFTWithPriceAndInfo(
+                    nftWithPrice: NFTWithPrice(
+                      nft:collection.contract.getNFT(tokenId),
+                      blockNumber: log.blockNumber.map { .ethereum($0) },
+                      indicativePrice:.lazy {
+                        ObservablePromise(
+                          resolved:NFTPriceStatus.known(
+                            NFTPriceInfo(
+                              wei: price,
+                              blockNumber:.ethereum(txInfo.blockNumber),
+                              type: .transfer
+                            )
+                          )
+                        ) // TODO
+                      }),
+                    info: collection.info),
+                  collection: collection)
+              )
+              return processed + 1
+              
+            }
           
           // TODO Fix
           /* self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
@@ -93,12 +117,12 @@ class FriendsFeedFetcher {
            type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
            }
            */
-        }.recover { error -> Promise<Void> in
+        }.recover { error -> Promise<Int> in
           print(error)
-          return Promise.value(())
+          return Promise.value(processed)
         }
       }
-      prev = p
+      processed = p
     }
   }
   
