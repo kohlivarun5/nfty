@@ -29,10 +29,9 @@ class ERC165Contract : EthereumContract {
     
     return method.invoke(Data(hexString:interfaceId,length: 4)!).call()
       .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        print("Supports \(interfaceId) = \((outputs["isSupport"] as? Bool) ?? false)")
         return (outputs["isSupport"] as? Bool) ?? false
       }.recover { e-> Promise<Bool> in
-        //print("Address=\(self.address?.hex(eip55: true) ?? "nil"),e=\(e)")
+        print("Address=\(self.address?.hex(eip55: true) ?? "nil") errored for supportsInterface \(e)")
         return Promise.value(false)
       }
   }

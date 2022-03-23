@@ -13,6 +13,24 @@ struct FriendsFeedView: View {
   @StateObject var events : FriendsFeedViewModel
   @State private var action: NFT.NftID? = nil
   
+  enum RefreshButton {
+    case hidden
+    case loading
+    case loaded
+  }
+  @State private var refreshButton : RefreshButton = .hidden
+  
+  private func triggerRefresh() {
+    self.refreshButton = .loading
+    self.events.loadLatest() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+      
+      // trigger refresh again after 30 seconds
+      // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+    }
+  }
+  
+  
   var body: some View {
     
     switch(self.events.isInitialized) {
@@ -57,6 +75,11 @@ struct FriendsFeedView: View {
         
         GeometryReader { metrics in
           ScrollView {
+            PullToRefresh(coordinateSpaceName: "RefreshControl") {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
             LazyVGrid(
               columns: Array(
                 repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
@@ -98,8 +121,30 @@ struct FriendsFeedView: View {
               }
               .textCase(nil)
             }
-          }
+          }.coordinateSpace(name: "RefreshControl")
         }
+        .navigationBarItems(
+          trailing:
+            HStack {
+              switch refreshButton {
+              case .hidden:
+                EmptyView()
+              case .loading:
+                ProgressView()
+              case .loaded:
+                Button(action: {
+                  self.triggerRefresh()
+                  let impactMed = UIImpactFeedbackGenerator(style: .light)
+                  impactMed.impactOccurred()
+                }) {
+                  Image(systemName:"arrow.clockwise.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(.accentColor)
+                    .padding(10)
+                }
+              }
+            }
+        )
       }
     }
   }
