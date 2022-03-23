@@ -119,7 +119,7 @@ class LogsFetcher {
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
-    print("Logs=\(params)")
+    // print("Logs=\(params)")
     
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
@@ -128,13 +128,12 @@ class LogsFetcher {
           self.fromBlock = self.fromBlock - self.blockDecrements
           
           print("Found \(logs.count) logs")
-          logs.indices.forEach { index in
-            let log = logs[index];
+          logs.forEach { log in
             response(log)
             self.updateMostRecent(log.blockNumber)
           }
           
-          if (logs.count == 0 && retries > 0) {
+          if (logs.isEmpty && retries > 0) {
             return self.fetch(onDone:onDone,retries:retries-1,response);
           }
           

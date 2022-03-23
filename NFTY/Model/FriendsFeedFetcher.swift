@@ -28,9 +28,10 @@ class FriendsFeedFetcher {
   
   init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
+    let blockDecrements = BigUInt(5000)
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
-      fromBlock: fromBlock,
+      fromBlock: fromBlock - blockDecrements,
       address: nil,
       cacheId : cacheId,
       topics: [
@@ -41,7 +42,7 @@ class FriendsFeedFetcher {
           }
         )
       ],
-      blockDecrements: 5)
+      blockDecrements: blockDecrements)
   }
   
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
@@ -52,10 +53,14 @@ class FriendsFeedFetcher {
         print("done")
         onDone()
       }
-    }) { log in
-      
+    },retries: 10) { log in
       let p = prev.then { () -> Promise<Void> in
-        // print("Log for Address=\(log.address.hex(eip55: true))");
+        
+        if (log.address.hex(eip55: true) != "0xAF90D15098275db315979B00F8a308c8C0bB980F") {
+          return Promise.value(())
+        }
+        
+        print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
         .map  { collectionOpt -> Void in
           
@@ -63,7 +68,7 @@ class FriendsFeedFetcher {
           
           let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
           
-          print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt)")
+          // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
           
           guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
           // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!

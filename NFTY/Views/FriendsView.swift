@@ -17,16 +17,14 @@ struct FriendsView: View {
   @State private var isLoading = true
   
   private func updateFriends(_ dict : [String : String]) {
-    self.friends = dict
-    self.isLoading = false
     
-    print(self.friends)
-    
-    self.friends.forEach { (key: String, value: String) in
-      guard let address = try? EthereumAddress(hex: key, eip55: true) else { return }
-      self.addresses.append(address)
+    DispatchQueue.main.async {
+      self.friends = dict
+      self.addresses = self.friends.compactMap { (key: String, value: String) in
+        try? EthereumAddress(hex: key, eip55: true)
+      }
+      self.isLoading = false
     }
-    
   }
   
   enum Page : Int {
@@ -46,59 +44,56 @@ struct FriendsView: View {
   }
   
   var body: some View {
-    VStack {
+    
+    switch(self.isLoading) {
+    case true:
+      ProgressView()
+        .progressViewStyle(CircularProgressViewStyle())
+        .scaleEffect(3,anchor: .center)
+        .padding()
+        .onAppear {
+          let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+          updateFriends(friendDict ?? [:])
+        }
+    case false:
       
-      switch(self.page) {
-      case .list:
-        
-        VStack {
-          switch (isLoading) {
-          case true:
-            ProgressView()
-              .progressViewStyle(CircularProgressViewStyle())
-              .scaleEffect(3,anchor: .center)
-              .padding()
-          case false:
-            
-            List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
-              NavigationLink(destination: PrivateCollectionView(account:account(address))){
-                HStack() {
-                  Text(name)
-                    .font(.title3)
-                }
-                .padding()
+      VStack {
+        switch(self.page,self.addresses.isEmpty) {
+        case (.list,_),(_,true):
+          List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
+            NavigationLink(destination: PrivateCollectionView(account:account(address))){
+              HStack() {
+                Text(name)
+                  .font(.title3)
               }
+              .padding()
             }
           }
+        case (.feed,false):
+          FriendsFeedView(events:FriendsFeedViewModel(addresses: self.addresses))
         }
         
-      case .feed:
-        FriendsFeedView(addresses:self.addresses,events:FriendsFeedViewModel(addresses: addresses))
-      }
-      
-      Picker(selection: Binding<Int>(
-        get: { self.page.rawValue },
-        set: { tag in
-          withAnimation { // needed explicit for transitions
-            self.page = Page(rawValue: tag)!
+        if (!self.addresses.isEmpty) {
+          Picker(selection: Binding<Int>(
+            get: { self.page.rawValue },
+            set: { tag in
+              withAnimation { // needed explicit for transitions
+                self.page = Page(rawValue: tag)!
+              }
+            }),
+                 label: Text("")) {
+            Text("Feed").tag(Page.feed.rawValue)
+            Text("Friends").tag(Page.list.rawValue)
           }
-        }),
-             label: Text("")) {
-        Text("Feed").tag(Page.feed.rawValue)
-        Text("Friends").tag(Page.list.rawValue)
+                 .pickerStyle(SegmentedPickerStyle())
+                 .colorMultiply(.accentColor)
+                 .padding([.trailing,.leading])
+                 .padding(.top,5)
+                 .padding(.bottom,7)
+        }
+        
       }
-             .pickerStyle(SegmentedPickerStyle())
-             .colorMultiply(.accentColor)
-             .padding([.trailing,.leading])
-             .padding(.top,5)
-             .padding(.bottom,7)
-      
     }
-    .onAppear {
-      let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-      updateFriends(friendDict ?? [:])
-    }
-    
   }
 }
 

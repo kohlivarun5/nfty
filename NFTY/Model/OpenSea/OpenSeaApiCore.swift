@@ -52,7 +52,7 @@ struct OpenSeaApiCore {
             // print(data)
             struct Data : Codable {
               let collection : CollectionInfo?
-              let schema_name : String
+              let schema_name : String?
             }
             
             let info = try jsonDecoder.decode(Data.self, from: data!)

@@ -762,13 +762,13 @@ let COLLECTIONS : [Collection] = CompositeCollection.loaders.map { $0.collection
 
 class CollectionsFactory {
   
-  var collections : [String : Collection?] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address.lowercased(),$0) })
+  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address.lowercased(),$0) })
   
   func getByAddress(_ address:String) -> Promise<Collection> {
     switch(collections[address.lowercased()]) {
-    case .some(.some(let x)):
+    case .some(let x):
       return Promise.value(x)
-    default:
+    case .none:
       // Add some throttle here
       return after(seconds: 0.2).then { _ -> Promise<Collection> in
         if (address.hasSuffix(".near")) {
@@ -796,8 +796,13 @@ class CollectionsFactory {
         } else {
           return erc721Collection(address: address)
             .map { collectionOpt -> Collection? in
-              self.collections[address.lowercased()] = collectionOpt;
-              return collectionOpt
+              switch(collectionOpt) {
+              case .some(let collection):
+                self.collections[address.lowercased()] = collection;
+                return collection
+              case .none:
+                return collectionOpt
+              }
             }
         }
       }

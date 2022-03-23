@@ -14,6 +14,8 @@ class FriendsFeedViewModel : ObservableObject {
   @Published var recentEvents: [FriendsFeedFetcher.NFTItem] = []
   var recentEventsPublished: Published<[FriendsFeedFetcher.NFTItem]> { _recentEvents }
   var recentEventsPublisher: Published<[FriendsFeedFetcher.NFTItem]>.Publisher { $recentEvents }
+
+  @Published var isInitialized = false
   
   private var isLoading = false
   private var isLoadingLatest = false
@@ -21,7 +23,7 @@ class FriendsFeedViewModel : ObservableObject {
   private var fetcher : Promise<FriendsFeedFetcher>
   
   init(addresses:[EthereumAddress]) {
-    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock: (fromBlock.quantity - 5) ) }
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock:fromBlock.quantity ) }
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
@@ -29,17 +31,21 @@ class FriendsFeedViewModel : ObservableObject {
       return
     }
     self.isLoading = true
+    
     self.fetcher
       .done { fetcher in
+        print("Loading events")
         fetcher.getRecentEvents(
           onDone:{
             self.isLoading = false;
             callback();
+            self.isInitialized = true
+            print("Done loading events")
           }) { nft in
             DispatchQueue.main.async {
               self.recentEvents.append(nft)
-              print("events=\(self.recentEvents.count)")
               self.isLoading = false;
+              self.isInitialized = true
             }
           }
       }
