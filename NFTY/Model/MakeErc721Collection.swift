@@ -38,9 +38,10 @@ struct MakeErc721Collection {
     return erc165.supportsInterface(interfaceId: "0x01ffc9a7") // https://eips.ethereum.org/EIPS/eip-165 : ERC165
       .then { supportsSupportsInterface -> Promise<Bool> in
         if (!supportsSupportsInterface) { return Promise.value(false) }
-        
         return erc165.supportsInterface(interfaceId:"0x5b5e139f") // https://eips.ethereum.org/EIPS/eip-721 : ERC721Metadata
-        
+      }.then { isErc721 -> Promise<Bool> in
+        if (!isErc721) { return Promise.value(false) }
+        return erc165.supportsInterface(interfaceId:"0x80ac58cd") // https://eips.ethereum.org/EIPS/eip-721 : ERC721
       }.then { isErc721 -> Promise<String?> in
         if (!isErc721) { return Promise.value(nil) }
         

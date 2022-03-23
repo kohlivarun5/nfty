@@ -885,4 +885,5 @@ func ipfsUrl(_ url:String) -> String {
     .replacingOccurrences(of: "ipfs://",with: ipfsProvider)
     .replacingOccurrences(of: "https://ipfs.io/ipfs/",with: ipfsProvider)
     .replacingOccurrences(of: "https://gateway.pinata.cloud/ipfs/",with: ipfsProvider)
+    .replacingOccurrences(of: "http://",with: "https://")
 }

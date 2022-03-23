@@ -28,7 +28,7 @@ class FriendsFeedFetcher {
   
   init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(5000)
+    let blockDecrements = BigUInt(200)
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
       fromBlock: fromBlock - blockDecrements,
@@ -56,11 +56,7 @@ class FriendsFeedFetcher {
     },retries: 10) { log in
       let p = prev.then { () -> Promise<Void> in
         
-        if (log.address.hex(eip55: true) != "0xAF90D15098275db315979B00F8a308c8C0bB980F") {
-          return Promise.value(())
-        }
-        
-        print("Log for Address=\(log.address.hex(eip55: true))");
+        //print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
         .map  { collectionOpt -> Void in
           

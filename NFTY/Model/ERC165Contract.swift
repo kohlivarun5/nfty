@@ -25,11 +25,11 @@ class ERC165Contract : EthereumContract {
     let inputs = [SolidityFunctionParameter(name: "interfaceId", type: .bytes(length: 4))]
     let outputs = [SolidityFunctionParameter(name: "isSupport", type: .bool)]
     let method = SolidityConstantFunction(name: "supportsInterface", inputs: inputs, outputs: outputs, handler: self)
-    print("calling supportsInterface for \(interfaceId). interface=\(method.signature)")
+    print("calling supportsInterface on \(self.address?.hex(eip55: true) ?? "?") for \(interfaceId)")
     
     return method.invoke(Data(hexString:interfaceId,length: 4)!).call()
       .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-        //print(outputs)
+        print("Supports \(interfaceId) = \((outputs["isSupport"] as? Bool) ?? false)")
         return (outputs["isSupport"] as? Bool) ?? false
       }.recover { e-> Promise<Bool> in
         //print("Address=\(self.address?.hex(eip55: true) ?? "nil"),e=\(e)")

@@ -39,7 +39,9 @@ class FriendsFeedViewModel : ObservableObject {
           onDone:{
             self.isLoading = false;
             callback();
-            self.isInitialized = true
+            DispatchQueue.main.async {
+              self.isInitialized = true
+            }
             print("Done loading events")
           }) { nft in
             DispatchQueue.main.async {

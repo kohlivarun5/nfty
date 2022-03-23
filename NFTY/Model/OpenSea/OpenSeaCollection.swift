@@ -11,7 +11,7 @@ import Web3
 import Cache
 
 private var collectionNameCache = try! DiskStorage<String, String>(
-  config: DiskConfig(name: "erc721CollectionNameCache",expiry: .never),
+  config: DiskConfig(name: "erc721NameCache",expiry: .never),
   transformer:TransformerFactory.forCodable(ofType:String.self))
 
 func erc721Collection(address:String) -> Promise<Collection?> {

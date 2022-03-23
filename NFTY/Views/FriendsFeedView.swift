@@ -63,7 +63,8 @@ struct FriendsFeedView: View {
                 count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
               pinnedViews: [.sectionHeaders])
             {
-              ForEach(self.events.recentEvents,id:\.self.nft.id) { item in
+              ForEach(self.events.recentEvents.indices,id:\.self) { index in
+                let item = self.events.recentEvents[index]
                 let nft = item.nft.nftWithPrice
                 
                 ZStack {
@@ -91,7 +92,7 @@ struct FriendsFeedView: View {
                     .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {
-                    //self.events.getRecentEvents(currentIndex:index) {}
+                    self.events.getRecentEvents(currentIndex:index) {}
                   }
                 }
               }
