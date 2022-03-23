@@ -44,7 +44,7 @@ struct FriendsFeedView: View {
             self.events.getRecentEvents(currentIndex: 0) {
               DispatchQueue.main.async {
                 print("Done isinitialized")
-                //self.refreshButton = .loaded
+                self.refreshButton = .loaded
                 // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
               }
             }
@@ -64,7 +64,7 @@ struct FriendsFeedView: View {
               self.events.loadMore {
                 DispatchQueue.main.async {
                   print("Done isinitialized")
-                  //self.refreshButton = .loaded
+                  self.refreshButton = .loaded
                   // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
                 }
               }

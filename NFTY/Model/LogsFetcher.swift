@@ -128,7 +128,18 @@ class LogsFetcher {
           self.fromBlock = self.fromBlock - self.blockDecrements
           
           print("Found \(logs.count) logs")
-          logs.forEach { log in
+          logs.sorted {
+            switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
+            case (.some(let x),.some(let y)):
+              return x > y
+            case (.some,.none):
+              return true
+            case (.none,.some):
+              return false
+            case (.none,.none):
+              return false
+            }
+          }.forEach { log in
             response(log)
             self.updateMostRecent(log.blockNumber)
           }
@@ -157,8 +168,18 @@ class LogsFetcher {
     ) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
-          logs.indices.forEach { index in
-            let log = logs[index];
+          logs.sorted {
+            switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
+            case (.some(let x),.some(let y)):
+              return x > y
+            case (.some,.none):
+              return true
+            case (.none,.some):
+              return false
+            case (.none,.none):
+              return false
+            }
+          }.forEach { log in
             response(log)
           }
         } else {

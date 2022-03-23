@@ -110,7 +110,7 @@ class FriendsFeedFetcher {
         print("done")
         onDone()
       }
-    },retries: 10) { log in
+    }) { (index,log) in
       let p = prev.then { () -> Promise<Void> in
         
         //print("Log for Address=\(log.address.hex(eip55: true))");
