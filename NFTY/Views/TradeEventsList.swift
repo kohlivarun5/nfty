@@ -99,7 +99,7 @@ struct TradeEventsList: View {
       case false:
         ScrollView {
           
-          ForEach(events.events.filter { $0.type != .transfer},id:\.self.blockNumber.id) { event in
+          ForEach(events.events.filter { $0.type != .transfer && $0.value != .wei(0) },id:\.self.blockNumber.id) { event in
             
             VStack {
               
