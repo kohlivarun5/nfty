@@ -192,7 +192,7 @@ class LogsFetcher {
           
           onDone(retries <= 0)
             .map { processed in
-              print(processed,retries)
+              print("Done with ",processed,retries)
               let isEmpty = (processed == 0)
               if (isEmpty && retries > 0) {
                 self.fetchWithPromise(onDone:onDone,retries:retries-1,response);

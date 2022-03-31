@@ -29,19 +29,19 @@ class FriendsFeedFetcher {
   
   init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(500)
+    let blockDecrements = BigUInt(2000)
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
       fromBlock: fromBlock - blockDecrements,
       address: nil,
       cacheId : cacheId,
       topics: [
-        EthereumGetLogTopics.and(nil),
         EthereumGetLogTopics.or(
           addresses.map {
             try! ABI.encodeParameter(SolidityWrappedValue.address($0))
           }
-        )
+        ),
+        EthereumGetLogTopics.and(nil),
       ],
       blockDecrements: blockDecrements)
     self.addresses = addresses
@@ -80,7 +80,7 @@ class FriendsFeedFetcher {
               guard let txInfo = txInfo else { return processed }
               
               guard let price = priceIfNotZero(txInfo.value) else { return processed }
-              //if (price == nil && self.addresses.first(where: { $0 == txInfo.from }) == nil) { return }
+              // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
               
               response(
                 FriendsFeedFetcher.NFTItem(

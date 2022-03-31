@@ -790,21 +790,19 @@ class CollectionsFactory {
       return Promise.value(x)
     case .none:
       // Add some throttle here
-      return after(seconds: 0.2).then { _ -> Promise<Collection?> in
-        if (address.hasSuffix(".near")) {
-          return Promise.value(NearCollection(address: address))
-        } else {
-          return erc721Collection(address: address)
-            .map { collectionOpt -> Collection? in
-              switch(collectionOpt) {
-              case .some(let collection):
-                self.collections[address.lowercased()] = collection;
-                return collection
-              case .none:
-                return collectionOpt
-              }
+      if (address.hasSuffix(".near")) {
+        return Promise.value(NearCollection(address: address))
+      } else {
+        return erc721Collection(address: address)
+          .map { collectionOpt -> Collection? in
+            switch(collectionOpt) {
+            case .some(let collection):
+              self.collections[address.lowercased()] = collection;
+              return collection
+            case .none:
+              return collectionOpt
             }
-        }
+          }
       }
     }
   }
