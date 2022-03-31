@@ -46,7 +46,6 @@ class FriendsFeedViewModel : ObservableObject {
           }) { nft in
             DispatchQueue.main.async {
               self.recentEvents.append(nft)
-              self.isInitialized = true
             }
           }
       }
@@ -58,6 +57,7 @@ class FriendsFeedViewModel : ObservableObject {
       return
     }
     let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -5)
+    // print("getRecentEvents",thresholdIndex,index)
     if index >= thresholdIndex {
       loadMore(callback)
     } else {
