@@ -34,6 +34,15 @@ struct FriendsView: View {
   
   @State private var page : Page = .feed
   
+  private func title(_ page:Page) -> String {
+    switch(page) {
+    case .feed:
+      return "Activity"
+    case .list:
+      return "Friends"
+    }
+  }
+  
   private func account(_ address:String) -> UserAccount {
     if address.hasSuffix(".near") {
       return UserAccount(ethAddress: nil, nearAccount: address)
@@ -82,7 +91,7 @@ struct FriendsView: View {
               }
             }),
                  label: Text("")) {
-            Text("Feed").tag(Page.feed.rawValue)
+            Text("Activity").tag(Page.feed.rawValue)
             Text("Friends").tag(Page.list.rawValue)
           }
                  .pickerStyle(SegmentedPickerStyle())
@@ -92,7 +101,8 @@ struct FriendsView: View {
                  .padding(.bottom,7)
         }
         
-      }
+      }.navigationBarTitle(title(self.page),displayMode: .inline)
+      
     }
   }
 }

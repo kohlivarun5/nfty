@@ -136,7 +136,6 @@ struct NFTYApp: App {
           
           NavigationView {
             FriendsView()
-              .navigationBarTitle("Friends")
           }
           .tabItem {
             Label("Friends",systemImage:"person.2.square.stack")
