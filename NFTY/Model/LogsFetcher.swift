@@ -157,7 +157,7 @@ class LogsFetcher {
     }
   }
   
-  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
+  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
@@ -170,7 +170,7 @@ class LogsFetcher {
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
-          self.toBlock = EthereumQuantityTag.block(self.fromBlock)
+          self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - self.blockDecrements
           
           print("Found \(logs.count) logs")
@@ -186,16 +186,15 @@ class LogsFetcher {
               return false
             }
           }.forEach { log in
-            response(log)
             self.updateMostRecent(log.blockNumber)
+            response(log)
           }
           
           onDone(retries <= 0)
             .map { processed in
               print("Done with ",processed,retries)
-              let isEmpty = (processed == 0)
-              if (isEmpty && retries > 0) {
-                self.fetchWithPromise(onDone:onDone,retries:retries-1,response);
+              if (processed < limit && retries > 0) {
+                self.fetchWithPromise(onDone:onDone,limit:limit,retries:retries-1,response);
               }
             }
         } else {
