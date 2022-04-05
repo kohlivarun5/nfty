@@ -44,8 +44,8 @@ struct UserWalletConnectorView : View {
                 (title:"Rainbow",image:"RainbowWallet",color:Color(red:200/255,green:230/255,blue:80/255),scheme:"rainbow:"),
               ];
               
-              ForEach(config.indices) { index in
-                let (title,image,color,scheme) = config[index];
+              ForEach(config,id:\.self.title) { item in
+                let (title,image,color,scheme) = item;
                 Button(action:{
                   UIImpactFeedbackGenerator(style: .light)
                     .impactOccurred()

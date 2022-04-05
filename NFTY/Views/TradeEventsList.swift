@@ -99,7 +99,13 @@ struct TradeEventsList: View {
       case false:
         ScrollView {
           
-          ForEach(events.events.filter { $0.type != .transfer && $0.value != .wei(0) },id:\.self.blockNumber.id) { event in
+          ForEach(
+            events.events
+              .enumerated()
+              .filter { (index,event) in
+                index == 0 || (event.type != .transfer && event.value != .wei(0) && event.value != .near(0))
+              }.map { (_,event) in event },
+            id:\.self.blockNumber.id) { event in
             
             VStack {
               
