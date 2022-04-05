@@ -220,7 +220,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
         orders,
         false, { accu,order -> Promise<Bool> in
           
-          let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
+          guard let collectionAddress = try? EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true) else{ return Promise.value(accu) }
           
           return collectionsFactory.getByAddress(collectionAddress)
             .then { collection -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in
