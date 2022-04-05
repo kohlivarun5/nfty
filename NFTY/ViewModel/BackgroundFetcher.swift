@@ -125,7 +125,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       $0,
       false, { accu,result -> Promise<Bool> in
         let (collection,orders) = result
-        print(orders)
+        // print(orders)
         
         let filtered =
         orders
@@ -220,7 +220,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
         orders,
         false, { accu,order -> Promise<Bool> in
           
-          let collectionAddress = try! EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true)
+          guard let collectionAddress = try? EthereumAddress(hex:order.asset.asset_contract.address,eip55:false).hex(eip55:true) else{ return Promise.value(accu) }
           
           return collectionsFactory.getByAddress(collectionAddress)
             .then { collection -> Promise<(Collection,OpenSeaApi.AssetOrder)?> in

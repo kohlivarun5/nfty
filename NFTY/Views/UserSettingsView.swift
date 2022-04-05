@@ -22,8 +22,8 @@ struct UserSettingsView: View {
         Form {
           Section(header: Text("Preferences")) {
             Picker(selection: $dappBrowserIndex, label: Text("Dapp Browser")) {
-              ForEach(0 ..< UserSettings.DappBrowser.allCases.count) {
-                Text(UserSettings.DappBrowser.allCases[$0].rawValue)
+              ForEach(UserSettings.DappBrowser.allCases,id:\.self.rawValue) { item in
+                Text(item.rawValue)
               }
             }
             .onChange(of: dappBrowserIndex) { tag in
@@ -35,8 +35,8 @@ struct UserSettingsView: View {
             VStack {
               Text("Display Price In")
               Picker(selection: $quoteTypeIndex,label:Text("Display Price In")) {
-                ForEach(0 ..< UserSettings.QuoteType.allCases.count) {
-                  Text(UserSettings.QuoteType.allCases[$0].rawValue)
+                ForEach(UserSettings.QuoteType.allCases,id:\.self.rawValue) { item in
+                  Text(item.rawValue)
                 }
               }
               .pickerStyle(SegmentedPickerStyle())
@@ -53,8 +53,8 @@ struct UserSettingsView: View {
               selection: $offerNotificationIndex,
               label:Text("Offer Notification Limit")) {
                 
-                ForEach(0 ..< UserSettings.OfferNotificationMinimumType.allCases.count) {
-                  Text(UserSettings.OfferNotificationMinimumType.allCases[$0].rawValue)
+                ForEach(UserSettings.OfferNotificationMinimumType.allCases,id:\.self.rawValue) { item in
+                  Text(item.rawValue)
                 }
               }
               .onChange(of: offerNotificationIndex) { tag in
