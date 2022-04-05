@@ -125,7 +125,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       $0,
       false, { accu,result -> Promise<Bool> in
         let (collection,orders) = result
-        print(orders)
+        // print(orders)
         
         let filtered =
         orders
