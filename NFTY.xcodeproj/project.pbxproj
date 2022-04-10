@@ -248,6 +248,7 @@
 		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
 		4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */; };
+		4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */; };
 		4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */; };
 		4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */; };
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
@@ -673,6 +674,7 @@
 		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
 		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
 		4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSummaryView.swift; sourceTree = "<group>"; };
+		4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NFTYWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -997,6 +999,7 @@
 				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
 				4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */,
 				4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */,
+				4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1736,6 +1739,7 @@
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
+				4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */,
 				4F2EFECB27B893D400C30F3D /* Throttle.swift in Sources */,
 				4F673CA02697E5F400CA6918 /* TradeEventsList.swift in Sources */,
 				4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */,
@@ -2048,7 +2052,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2077,7 +2081,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;

@@ -155,7 +155,7 @@ struct TokenListPagedView: View {
         userWallet:userWallet,
         isSheet:true)
         .ignoresSafeArea(edges:.bottom)
-        .preferredColorScheme(.dark)
+        // .preferredColorScheme(.dark)
         .accentColor(.orange)
     }
   }

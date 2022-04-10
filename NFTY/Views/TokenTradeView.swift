@@ -122,7 +122,7 @@ struct TokenTradeView: View {
         themeColor:collection.info.themeColor,
         themeLabelColor:collection.info.themeLabelColor
       )
-      .preferredColorScheme(.dark)
+      // .preferredColorScheme(.dark)
       .accentColor(.orange)
     })
     .font(.subheadline)

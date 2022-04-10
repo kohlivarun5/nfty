@@ -194,7 +194,7 @@ struct FavoritesView: View {
     }) {
       AddFavSheet()
         .accentColor(.orange)
-        .preferredColorScheme(.dark)
+        // .preferredColorScheme(.dark)
     }
     .onAppear {
       if (self.isLoading) {
