@@ -236,8 +236,7 @@ struct NftDetail: View {
           themeColor:collection.info.themeColor,
           themeLabelColor:collection.info.themeLabelColor
         )
-          // .preferredColorScheme(.dark)
-          .accentColor(.orange)
+        .themeStyle()
       })
       
       .ignoresSafeArea(edges: .top)

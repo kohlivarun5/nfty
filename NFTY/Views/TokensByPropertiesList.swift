@@ -140,8 +140,7 @@ struct TokensByPropertiesList: View {
         userWallet:userWallet,
         isSheet:true)
         .ignoresSafeArea(edges:.bottom)
-        // .preferredColorScheme(.dark)
-        .accentColor(.orange)
+        .themeStyle()
     }
     .navigationBarTitle(collection.info.name,displayMode: .inline)
     .navigationBarBackButtonHidden(true)

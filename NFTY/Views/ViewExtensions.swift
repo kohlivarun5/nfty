@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+
+struct Theme: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      //.preferredColorScheme(.dark)
+      .accentColor(Color.orange)
+  }
+}
+
+
 extension View {
   /// Applies the given transform if the given condition evaluates to `true`.
   /// - Parameters:
@@ -19,5 +29,9 @@ extension View {
     } else {
       self
     }
+  }
+  
+  func themeStyle() -> some View {
+    modifier(Theme())
   }
 }

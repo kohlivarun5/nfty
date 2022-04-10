@@ -207,8 +207,7 @@ struct WalletTokensView: View {
               userWallet:userWallet,
               isSheet:true)
               .ignoresSafeArea(edges:.bottom)
-              // .preferredColorScheme(.dark)
-              .accentColor(.orange)
+              .themeStyle()
           }
         }
       }

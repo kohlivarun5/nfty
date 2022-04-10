@@ -92,8 +92,7 @@ struct WalletView: View {
     )
     .sheet(isPresented: $showSettings) {
       UserSettingsView(userWallet: userWallet)
-        // .preferredColorScheme(.dark)
-        .accentColor(.orange)
+        .themeStyle()
     }
   }
 }
