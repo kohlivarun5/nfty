@@ -108,7 +108,8 @@ struct RoundedImage: View {
                                        tl: 5, tr: 5, bl: 5, br: 5))
             .padding([.leading,.trailing],15)
             .if( colorScheme == .dark) { $0.colorMultiply(.accentColor) }
-            .if(colorScheme != .dark) { $0.shadow(color:.accentColor.opacity(0.75),radius:1) }
+            .shadow(color: (colorScheme != .dark ? Color.accentColor : .systemBackground).opacity(0.75),
+                    radius:1)
           }
           .padding(.bottom,2)
         }
