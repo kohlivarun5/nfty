@@ -16,7 +16,7 @@ class UserSettings: ObservableObject {
   }
   
   let userSettingsDappBrowserKey = "dappBrowser"
-  @Published var dappBrowser : DappBrowser?
+  @Published var dappBrowser : DappBrowser
   
   let userSettingsQuoteTypeKey = "quoteType"
   
@@ -44,7 +44,7 @@ class UserSettings: ObservableObject {
   init() {
     dappBrowser =
       UserDefaults.standard.string(forKey: userSettingsDappBrowserKey)
-      .flatMap { DappBrowser(rawValue: $0) }
+      .flatMap { DappBrowser(rawValue: $0) } ?? DappBrowser.Native
     
     quoteType = (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.quoteType.rawValue) as? String)
       .flatMap { QuoteType(rawValue: $0) } ?? .Both
