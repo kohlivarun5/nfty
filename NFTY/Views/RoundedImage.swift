@@ -101,15 +101,8 @@ struct RoundedImage: View {
             }
             .padding([.top,.bottom],2)
             .font(Font.callout)
-            .if(colorScheme != .dark) { $0.colorMultiply(.accentColor) }
-            .background(RoundedCorners(color:colorScheme == .dark
-                                       ? .tertiarySystemBackground.opacity(0.75)
-                                       : .systemBackground.opacity(0.7),
-                                       tl: 5, tr: 5, bl: 5, br: 5))
+            .modifier(PriceOverlay())
             .padding([.leading,.trailing],15)
-            .if( colorScheme == .dark) { $0.colorMultiply(.accentColor) }
-            .shadow(color: (colorScheme != .dark ? Color.accentColor : .systemBackground).opacity(0.75),
-                    radius:1)
           }
           .padding(.bottom,2)
         }

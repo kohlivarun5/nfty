@@ -60,9 +60,8 @@ struct NFTNameIdRank: View {
   let isSheet : Bool
   
   var body: some View {
-    
-    switch(isSheet,self.collection.contract.floorFetcher(collection)) {
-    case (false,.none),(true,_):
+    switch isSheet {
+    case true:
       NFTNameIdRankImpl(
         collection: collection,
         nft: nft,
@@ -70,14 +69,14 @@ struct NFTNameIdRank: View {
         floorPrice: floorPrice,
         isExternalLink:true)
       
-    case (false,.some):
+    case false:
       NavigationLink(
         destination:
           CollectionView(
             collection:collection,
             info:collection.info,
             loader: CompositeCollection.getLoader(collection: collection),
-            page:.floor)
+            page:self.collection.contract.floorFetcher(collection).map { _ in .floor } ?? .recent)
       ) {
         NFTNameIdRankImpl(
           collection: collection,

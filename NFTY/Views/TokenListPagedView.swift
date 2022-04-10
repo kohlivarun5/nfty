@@ -111,15 +111,7 @@ struct TokenListPagedView: View {
                         .padding([.top,.bottom],2)
                         .padding([.leading,.trailing],20)
                         .font(.caption2)
-                        .foregroundColor(colorScheme == .dark ? .label : .white)
-                        .background(
-                          RoundedCorners(
-                            color:colorScheme == .dark
-                            ? .tertiarySystemBackground.opacity(0.75)
-                            : .secondary,
-                            tl: 5, tr: 5, bl: 5, br: 5))
-                        .colorMultiply(.accentColor)
-                        .shadow(radius: 5)
+                        .modifier(PriceOverlay())
                       Spacer()
                     }
                     .padding(.top,11)

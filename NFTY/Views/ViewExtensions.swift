@@ -16,6 +16,20 @@ struct Theme: ViewModifier {
   }
 }
 
+struct PriceOverlay : ViewModifier {
+  @Environment(\.colorScheme) var colorScheme
+  func body(content:Content) -> some View {
+    content
+      .if(colorScheme != .dark) { $0.colorMultiply(.accentColor) }
+      .background(RoundedCorners(color:colorScheme == .dark
+                                 ? .tertiarySystemBackground.opacity(0.75)
+                                 : .systemBackground.opacity(0.7),
+                                 tl: 5, tr: 5, bl: 5, br: 5))
+      .if( colorScheme == .dark) { $0.colorMultiply(.accentColor) }
+      .shadow(color: (colorScheme != .dark ? Color.accentColor : .systemBackground).opacity(0.75),
+              radius:1)
+  }
+}
 
 extension View {
   /// Applies the given transform if the given condition evaluates to `true`.
