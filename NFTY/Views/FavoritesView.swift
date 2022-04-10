@@ -193,8 +193,7 @@ struct FavoritesView: View {
       updateFavorites(favorites ?? [:])
     }) {
       AddFavSheet()
-        .accentColor(.orange)
-        .preferredColorScheme(.dark)
+        .themeStyle()
     }
     .onAppear {
       if (self.isLoading) {

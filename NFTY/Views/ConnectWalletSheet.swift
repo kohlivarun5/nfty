@@ -141,9 +141,15 @@ struct ConnectWalletSheet: View {
             VStack {
               Image(systemName: "doc.on.clipboard")
                 .font(.title)
-              Text("Paste ETH address")
-                .fontWeight(.semibold)
-                .font(.subheadline)
+              VStack(spacing:0) {
+                Text("Paste")
+                  .fontWeight(.semibold)
+                  .font(.subheadline)
+                Text("ETH address")
+                  .fontWeight(.semibold)
+                  .font(.subheadline)
+              }
+              
             }
             //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()
@@ -169,9 +175,15 @@ struct ConnectWalletSheet: View {
             VStack {
               Image(systemName: "doc.on.clipboard")
                 .font(.title)
-              Text("Paste NEAR address")
-                .fontWeight(.semibold)
-                .font(.subheadline)
+              VStack(spacing:0) {
+                Text("Paste")
+                  .fontWeight(.semibold)
+                  .font(.subheadline)
+                Text("NEAR address")
+                  .fontWeight(.semibold)
+                  .font(.subheadline)
+              }
+              
             }
             //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()

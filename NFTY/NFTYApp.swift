@@ -171,8 +171,7 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         
       }
-      // .preferredColorScheme(.dark)
-      .accentColor(.orange)
+      .themeStyle()
       .onAppear {
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
@@ -234,8 +233,7 @@ struct NFTYApp: App {
               }
             )
           }
-          .preferredColorScheme(.dark)
-          .accentColor(Color.orange)
+          .themeStyle()
         case .nftTrade(let address,let tokenId):
           ObservedPromiseView(
             data: ObservablePromise(
@@ -251,14 +249,11 @@ struct NFTYApp: App {
           )
         case .user(let address,let friendName):
           UserUrlView(account:UserAccount(ethAddress: address, nearAccount: nil),friendName:friendName)
-            .preferredColorScheme(.dark)
-            .accentColor(Color.orange)
+            .themeStyle()
         }
       }
       .animation(.none)
-      .preferredColorScheme(.dark)
-      .accentColor(Color.orange)
-      
+      .themeStyle()
       .environmentObject(userWallet)
     }
   }

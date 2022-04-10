@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavButton: View {
   @State private var isFavorite : Bool = false
-   
+  
   enum Size {
     case large
     case medium
@@ -26,10 +26,10 @@ struct FavButton: View {
   
   private func fontOfSize(_ size:Size) -> Font {
     switch(self.size) {
-      case .large:
-        return .largeTitle
-      case .medium:
-        return .title
+    case .large:
+      return .largeTitle
+    case .medium:
+      return .title
     }
   }
   
@@ -40,51 +40,31 @@ struct FavButton: View {
       .frame(width: 44, height: 44)
       .onTapGesture(count:self.isFavorite ? 2 : 1) {
         self.isFavorite = !self.isFavorite
-        switch (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]) {
+        var favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]] ?? [:]
+        let address = nft.address
+        switch (favorites[address]) {
         case .none:
-          var favorites : [String : [String : Bool]] = [:]
           if (self.isFavorite) {
-            favorites[nft.address] = [:]
-            favorites[nft.address]![String(nft.tokenId)] = true
+            favorites[address] = [String(nft.tokenId):true]
           }
-          
-          // cleanup & filter
-          favorites.forEach { address,items in
-            items.forEach { tokenId,isFav in
-              if(!isFav) { favorites[address]!.removeValue(forKey: tokenId) }
-            }
-            if (favorites[address]!.isEmpty) {
-              favorites.removeValue(forKey: address)
-            }
+        case .some:
+          if (self.isFavorite) {
+            favorites[address]![String(nft.tokenId)] = true
+          } else {
+            favorites[address]!.removeValue(forKey: String(nft.tokenId))
           }
-          
-          NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
-        case .some(var favorites):
-          switch (favorites[nft.address]) {
-          case .none:
-            if (self.isFavorite) {
-              favorites[nft.address] = [String(nft.tokenId):true]
-            }
-          case .some:
-            if (self.isFavorite) {
-              favorites[nft.address]![String(nft.tokenId)] = true
-            } else {
-              favorites[nft.address]!.removeValue(forKey: String(nft.tokenId))
-            }
-          }
-          
-          // cleanup & filter
-          favorites.forEach { address,items in
-            items.forEach { tokenId,isFav in
-              if(!isFav) { favorites[address]!.removeValue(forKey: tokenId) }
-            }
-            if (favorites[address]!.isEmpty) {
-              favorites.removeValue(forKey: address)
-            }
-          }
-          
-          NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
         }
+        
+        // cleanup & filter
+        favorites.forEach { address,items in
+          items.forEach { tokenId,isFav in
+            if(!isFav) { favorites[address]!.removeValue(forKey: tokenId) }
+          }
+          if (favorites[address]!.isEmpty) {
+            favorites.removeValue(forKey: address)
+          }
+        }
+        NSUbiquitousKeyValueStore.default.set(favorites,forKey:CloudDefaultStorageKeys.favoritesDict.rawValue)
         let impactMed = UIImpactFeedbackGenerator(style: .light)
         impactMed.impactOccurred()
       }

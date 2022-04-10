@@ -66,7 +66,7 @@ struct FriendsView: View {
         }
     case false:
       
-      VStack {
+      VStack(spacing:0) {
         switch(self.page,self.addresses.isEmpty) {
         case (.list,_),(_,true):
           List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
