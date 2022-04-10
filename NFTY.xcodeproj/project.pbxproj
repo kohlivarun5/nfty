@@ -247,6 +247,7 @@
 		4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
 		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */; };
 		4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */; };
 		4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */; };
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
@@ -671,6 +672,7 @@
 		4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
 		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
+		4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSummaryView.swift; sourceTree = "<group>"; };
 		4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NFTYWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -994,6 +996,7 @@
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
 				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
 				4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */,
+				4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1712,6 +1715,7 @@
 				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
+				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,

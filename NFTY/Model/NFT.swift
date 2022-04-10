@@ -298,10 +298,27 @@ enum TokenPriceType {
   case lazy(() -> ObservablePromise<NFTPriceStatus>)
 }
 
+struct Action {
+  let account : UserAccount
+  
+  enum ActionType {
+    case sold
+  }
+  let action : ActionType
+}
+
 struct NFTWithPrice : Identifiable {
   let nft : NFT
   let blockNumber : BlockNumber?
   let indicativePrice : TokenPriceType
+  let action : Action?
+  
+  init(nft:NFT,blockNumber:BlockNumber?,indicativePrice:TokenPriceType,action:Action?=nil) {
+    self.nft = nft
+    self.blockNumber = blockNumber
+    self.indicativePrice = indicativePrice
+    self.action = action
+  }
   
   var id : NFT.NftID {
     return nft.id
