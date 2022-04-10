@@ -34,10 +34,7 @@ struct WalletTokensCollectionHeaderImpl: View {
     }
     .padding([.leading,.trailing],10)
     .padding(5)
-    .foregroundColor(.accentColor)
-    .background(Color.systemBackground.opacity(0.9))
-    .clipShape(RoundedRectangle(cornerRadius:10, style: .continuous))
-    .shadow(color:.accentColor,radius:3)
+    .modifier(PriceOverlay())
     .padding(.top,1)
     .padding([.leading,.trailing],20)
   }
