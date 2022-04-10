@@ -44,7 +44,7 @@ extension Web3.Eth {
     params: EthereumGetLogParams,
     response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
   ) {
-    print("calling web3.eth.getLogs with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
+    print("calling web3.eth.getLogs")// with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
     let req = RPCRequest<[EthereumGetLogParams]>(
       id: properties.rpcId,
       jsonrpc: Web3.jsonrpc,

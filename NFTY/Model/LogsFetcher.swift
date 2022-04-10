@@ -159,6 +159,7 @@ class LogsFetcher {
   
   func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
+    // print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
       toBlock: self.toBlock,
@@ -171,9 +172,10 @@ class LogsFetcher {
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
-          self.fromBlock = self.fromBlock - self.blockDecrements
+          self.fromBlock = self.fromBlock - 1 - self.blockDecrements
+          // print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
-          print("Found \(logs.count) logs")
+          // print("Found \(logs.count) logs")
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
@@ -190,16 +192,16 @@ class LogsFetcher {
             response(log)
           }
           
-          onDone(retries <= 0)
+          _ = onDone(retries <= 0)
             .map { processed in
-              print("Done with ",processed,retries)
+              // print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
                 self.fetchWithPromise(onDone:onDone,limit:limit,retries:retries-1,response);
               }
             }
         } else {
           print(result)
-          onDone(retries <= 0)
+          _ = onDone(retries <= 0)
         }
         
       }

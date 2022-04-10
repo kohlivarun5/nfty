@@ -32,17 +32,17 @@ class FriendsFeedViewModel : ObservableObject {
     }
     self.isLoading = true
     
-    self.fetcher
+    _ = self.fetcher
       .done { fetcher in
-        print("Loading events")
+        print("Loading friend events")
         fetcher.getRecentEvents(
           onDone:{
-            self.isLoading = false;
             callback();
             DispatchQueue.main.async {
+              self.isLoading = false;
               self.isInitialized = true
             }
-            print("Done loading events")
+            print("Done loading friend events")
           }) { nft in
             DispatchQueue.main.async {
               self.recentEvents.append(nft)
@@ -70,7 +70,7 @@ class FriendsFeedViewModel : ObservableObject {
       return
     }
     self.isLoadingLatest = true;
-    self.fetcher
+    _ = self.fetcher
       .done { fetcher in
         fetcher.refreshLatestEvents(
           onDone:{
