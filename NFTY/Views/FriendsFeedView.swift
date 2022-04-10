@@ -1,0 +1,152 @@
+//
+//  FriendsFeedView.swift
+//  NFTY
+//
+//  Created by Varun Kohli on 3/20/22.
+//
+
+import SwiftUI
+import Web3
+
+struct FriendsFeedView: View {
+  let friends : [String : String]
+  @StateObject var events : FriendsFeedViewModel
+  @State private var action: NFT.NftID? = nil
+  
+  enum RefreshButton {
+    case hidden
+    case loading
+    case loaded
+  }
+  @State private var refreshButton : RefreshButton = .hidden
+  
+  private func triggerRefresh() {
+    self.refreshButton = .loading
+    self.events.loadLatest() {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
+      
+      // trigger refresh again after 30 seconds
+      // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+    }
+  }
+  
+  
+  var body: some View {
+    
+    switch(self.events.isInitialized) {
+    case false:
+      VStack {
+        Spacer()
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle())
+          .scaleEffect(2.0, anchor: .center)
+          .onAppear {
+            self.events.getRecentEvents(currentIndex: 0) {
+              DispatchQueue.main.async {
+                print("Done isinitialized")
+                self.refreshButton = .loaded
+                // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+              }
+            }
+          }
+        Spacer()
+      }
+    case true:
+      
+      switch(self.events.recentEvents.isEmpty) {
+      case true:
+        VStack {
+          Spacer()
+          Text("No events")
+            .font(.title)
+            .foregroundColor(.secondary)
+            .onAppear {
+              self.events.loadMore {
+                DispatchQueue.main.async {
+                  print("Done isinitialized")
+                  self.refreshButton = .loaded
+                  // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+                }
+              }
+            }
+          Spacer()
+        }
+      case false:
+        
+        GeometryReader { metrics in
+          ScrollView {
+            PullToRefresh(coordinateSpaceName: "RefreshControl") {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
+            LazyVGrid(
+              columns: Array(
+                repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
+                count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+              pinnedViews: [.sectionHeaders])
+            {
+              ForEach(self.events.recentEvents.indices,id:\.self) { index in
+                let item = self.events.recentEvents[index]
+                let nft = item.nft.nftWithPrice
+                
+                ZStack {
+                  
+                  RoundedImage(
+                    nft:nft.nft,
+                    price:nft.indicativePrice,
+                    collection:item.collection,
+                    width: .normal,
+                    resolution: .normal,
+                    action:nft.action
+                  )
+                  .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
+                  .padding()
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.action = nft.id
+                  }
+                  
+                  NavigationLink(destination: NftDetail(
+                    nft:nft.nft,
+                    price:nft.indicativePrice,
+                    collection:item.collection,
+                    hideOwnerLink:false,selectedProperties:[]
+                  ),tag:nft.id,selection:$action) {}
+                    .hidden()
+                }.onAppear {
+                  DispatchQueue.global(qos:.userInitiated).async {
+                    self.events.getRecentEvents(currentIndex:index) {}
+                  }
+                }
+              }
+              .textCase(nil)
+            }
+          }.coordinateSpace(name: "RefreshControl")
+        }
+        .navigationBarItems(
+          trailing:
+            HStack {
+              switch refreshButton {
+              case .hidden:
+                EmptyView()
+              case .loading:
+                ProgressView()
+              case .loaded:
+                Button(action: {
+                  self.triggerRefresh()
+                  let impactMed = UIImpactFeedbackGenerator(style: .light)
+                  impactMed.impactOccurred()
+                }) {
+                  Image(systemName:"arrow.clockwise.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(.accentColor)
+                    .padding(10)
+                }
+              }
+            }
+        )
+      }
+    }
+  }
+}

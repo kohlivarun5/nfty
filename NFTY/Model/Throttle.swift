@@ -9,12 +9,14 @@ import Foundation
 
 class UrlTaskThrottle {
   
-  let queue:DispatchQueue
+  let queue : DispatchQueue
   let deadline:DispatchTimeInterval
+  let urlSession : URLSession
   
   init(queue:DispatchQueue,deadline:DispatchTimeInterval) {
     self.queue = queue
     self.deadline = deadline
+    self.urlSession = URLSession(configuration:URLSessionConfiguration.default)
   }
   
   struct Task {
@@ -40,7 +42,8 @@ class UrlTaskThrottle {
       let task = self.tasks.removeFirst()
       self.queue.asyncAfter(deadline:.now() + self.deadline) {
         print("Calling \(task.request.url!)")
-        URLSession.shared.dataTask(with: task.request, completionHandler: { data, response, error in
+        
+        self.urlSession.dataTask(with: task.request, completionHandler: { data, response, error in
           self.queue.async {
             self.isPending = false
             self.next()

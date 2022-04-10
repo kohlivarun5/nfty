@@ -19,7 +19,7 @@ struct FavoritesView: View {
   
   @State private var showSorted = false
   @State private var filterZeros = false
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: BigUInt? = nil
   @State private var isLoading = true
   
   func updateFavorites(_ dict:[String : [String : Bool]]) -> Void {

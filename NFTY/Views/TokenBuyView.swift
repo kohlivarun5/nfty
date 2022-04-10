@@ -94,7 +94,7 @@ struct TokenBuyView: View {
             Spacer()
           }
           HStack {
-            Text("#\(nft.tokenId)")
+            Text("#\(String(nft.tokenId))")
               .font(.footnote)
             Spacer()
             

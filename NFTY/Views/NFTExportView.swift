@@ -48,15 +48,13 @@ struct NFTExportView: View {
         Spacer()
         VStack {
           image
-            .frame(maxWidth:300)
-          /* VStack {
+          VStack {
             Text(nft.name)
               .font(.headline)
-            Text("#\(nft.tokenId)")
+            Text("#\(String(nft.tokenId))")
               .font(.subheadline)
           }
           .foregroundColor(themeLabelColor)
- */
         }
         
         Spacer()

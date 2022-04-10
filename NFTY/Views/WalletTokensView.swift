@@ -83,7 +83,7 @@ struct WalletTokensView: View {
   @EnvironmentObject var userWallet: UserWallet
   
   @ObservedObject var tokens : NftOwnerTokens
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: BigUInt? = nil
   
   @State private var sheetSelectedIndex: NFTToken? = nil
   

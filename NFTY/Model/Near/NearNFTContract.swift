@@ -50,7 +50,7 @@ class NearNFTContract : ContractInterface {
         result.data.results.map { result in
           
           guard let price = result.price?.numberDecimal else { return }
-          guard let tokenId = UInt(result.token_id) else { return }
+          guard let tokenId = BigUInt(result.token_id) else { return }
           
           response(
             NFTWithPrice(
@@ -151,21 +151,21 @@ class NearNFTContract : ContractInterface {
     })
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address: self.contractAddressHex,
       tokenId: tokenId,
       name: name,
       media: .ipfsImage(
         Media.IpfsImageLazy(
-          tokenId:BigUInt(tokenId),
+          tokenId:tokenId,
           download : self.download)
       )
     )
   }
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
-    NFTWithLazyPrice(nft: self.getNFT(tokenId), getPrice: {
+    NFTWithLazyPrice(nft: self.getNFT(BigUInt(tokenId)), getPrice: {
       ObservablePromise(
         promise:
           ParasApi.activities(contract_id: self.account_id, token_id: String(tokenId),eventType:nil,offset:nil,limit:nil)
@@ -201,8 +201,8 @@ class NearNFTContract : ContractInterface {
     })
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
-    return self.nearContract.nft_token(token_id: BigUInt(tokenId))
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
+    return self.nearContract.nft_token(token_id: tokenId)
       .map { UserAccount(ethAddress:nil, nearAccount:$0.owner_id) }
   }
   
@@ -221,7 +221,7 @@ class NearNFTContract : ContractInterface {
     onDone()
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     
     struct ParasEventsFetcher : TokenEventsFetcher {
       
@@ -266,7 +266,7 @@ class NearNFTContract : ContractInterface {
   struct TradeInterface : TokenTradeInterface {
     let contract_id : String
     
-    private func getAsk(_ tokenId:UInt,_ side:Side?) -> Promise<AskInfo?> {
+    private func getAsk(_ tokenId:BigUInt,_ side:Side?) -> Promise<AskInfo?> {
       switch(side) {
       case .some(.ask),.none:
         return ParasApi.token(contract_id: self.contract_id, token_id: String(tokenId))
@@ -281,7 +281,7 @@ class NearNFTContract : ContractInterface {
       }
     }
     
-    private func getBid(_ tokenId:UInt,_ side:Side?) -> Promise<BidInfo?> {
+    private func getBid(_ tokenId:BigUInt,_ side:Side?) -> Promise<BidInfo?> {
       switch(side) {
       case .some(.bid),.none:
         return ParasApi.offers(contract_id: self.contract_id, token_id: String(tokenId))
@@ -297,7 +297,7 @@ class NearNFTContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenId:UInt,_ side:Side?) -> Promise<BidAsk> {
+    func getBidAsk(_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk> {
       let ask = self.getAsk(tokenId,side)
       let bid = self.getBid(tokenId,side)
       
@@ -308,7 +308,7 @@ class NearNFTContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
       return getBidAskSerial(tokenIds: tokenIds,side,wait:0.005, getter: self.getBidAsk)
     }
     var actions : TradeActionsInterface? = nil
@@ -336,7 +336,7 @@ class NearNFTContract : ContractInterface {
           self.offset = self.offset + self.limit
           
           return result.data.results.compactMap { result -> NFTWithLazyPrice? in
-            guard let tokenId = UInt(result.token_series_id) else { return nil }
+            guard let tokenId = BigUInt(result.token_series_id) else { return nil }
             guard let price = (result.lowest_price.flatMap { BigUInt($0) }) else { return nil }
             
             return NFTWithLazyPrice(

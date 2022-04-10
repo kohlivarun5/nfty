@@ -26,6 +26,15 @@ struct TokenTradeView: View {
   
   @State var floorPrice : PriceUnit?
   
+  enum ShareSheetPicker : Int,Identifiable {
+    var id: Int { self.rawValue }
+    
+    case post
+    case wallpaper
+  }
+  
+  @State var sharePicker : ShareSheetPicker? = nil
+  
   var body: some View {
     VStack {
       
@@ -44,6 +53,10 @@ struct TokenTradeView: View {
             .padding(.top,isSheet ? 10 : 40)
             .padding(.bottom,10)
             .background(collection.info.themeColor)
+            .onTapGesture {
+              UIImpactFeedbackGenerator(style:.medium).impactOccurred()
+              self.sharePicker = .post
+            }
           
           VStack(alignment: .leading) {
             Spacer()
@@ -100,6 +113,18 @@ struct TokenTradeView: View {
       
       
     }
+    .sheet(item: $sharePicker,
+           onDismiss: { self.sharePicker = nil},
+           content: { sharePicker in
+      NFTExportView(
+        nft: nft,
+        sample:collection.info.sample,
+        themeColor:collection.info.themeColor,
+        themeLabelColor:collection.info.themeLabelColor
+      )
+      .preferredColorScheme(.dark)
+      .accentColor(.orange)
+    })
     .font(.subheadline)
     .navigationBarTitle("",displayMode:.large)
     .navigationBarBackButtonHidden(true)

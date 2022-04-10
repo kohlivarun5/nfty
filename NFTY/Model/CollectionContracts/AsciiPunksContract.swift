@@ -96,7 +96,7 @@ class AsciiPunksContract : ContractInterface {
   private var ethContract = EthContract()
   private var erc721Contract = Erc721Contract(address:"0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC")
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return erc721Contract.getEventsFetcher(tokenId)
   }
   
@@ -150,7 +150,7 @@ class AsciiPunksContract : ContractInterface {
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
       response(NFTWithPrice(
@@ -158,7 +158,7 @@ class AsciiPunksContract : ContractInterface {
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:tokenId, draw: self.draw))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -181,14 +181,14 @@ class AsciiPunksContract : ContractInterface {
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
     return transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-      let tokenId = UInt(res["tokenId"] as! BigUInt);
+      let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
           tokenId:tokenId,
           name:self.name,
-          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw))),
+          media:.asciiPunk(Media.AsciiPunkLazy(tokenId:tokenId, draw: self.draw))),
         blockNumber:log.blockNumber.map { .ethereum($0) },
         indicativePrice:.lazy {
           ObservablePromise(
@@ -253,18 +253,18 @@ class AsciiPunksContract : ContractInterface {
     }
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     NFT(
       address:self.contractAddressHex,
       tokenId:tokenId,
       name:self.name,
-      media:.asciiPunk(Media.AsciiPunkLazy(tokenId:BigUInt(tokenId), draw: self.draw)))
+      media:.asciiPunk(Media.AsciiPunkLazy(tokenId:tokenId, draw: self.draw)))
   }
   
   
   func getToken(_ tokenId: UInt) -> NFTWithLazyPrice {
     NFTWithLazyPrice(
-      nft:getNFT(tokenId),
+      nft:getNFT(BigUInt(tokenId)),
       getPrice: {
         switch(self.pricesCache[tokenId]) {
         case .some(let p):
@@ -317,8 +317,8 @@ class AsciiPunksContract : ContractInterface {
       }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
-    return ethContract.ownerOf(BigUInt(tokenId))
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
+    return ethContract.ownerOf(tokenId)
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {

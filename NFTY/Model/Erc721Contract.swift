@@ -35,6 +35,17 @@ class Erc721Contract {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
     }
     
+    func name() -> Promise<String> {
+      let inputs : [SolidityFunctionParameter] = []
+      let outputs = [SolidityFunctionParameter(name: "name", type: .string)]
+      let method = SolidityConstantFunction(name: "name", inputs: inputs, outputs: outputs, handler: self)
+      print("calling name")
+      return method.invoke().call()
+        .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
+          return outputs["name"] as! String
+        }
+    }
+    
     func balanceOf(address:EthereumAddress) -> Promise<BigUInt> {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
@@ -66,7 +77,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "tokenId", type: .uint256)]
       let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
       let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
-      print("calling tokenURI @ \(address?.hex(eip55:true) ?? "?")")
+      print("calling tokenURI @ \(address?.hex(eip55:true) ?? "?") for tokenId=\(tokenId)")
       return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["tokenURI"] as! String
@@ -165,8 +176,8 @@ class Erc721Contract {
     }
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
-    return ethContract.ownerOf(BigUInt(tokenId))
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
+    return ethContract.ownerOf(tokenId)
   }
   
   class EventsFetcher : TokenEventsFetcher {
@@ -234,7 +245,7 @@ class Erc721Contract {
     }
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
-    return EventsFetcher(tokenId:BigUInt(tokenId),contractAddressHex:self.contractAddressHex,initFromBlock:self.initFromBlock)
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
+    return EventsFetcher(tokenId:tokenId,contractAddressHex:self.contractAddressHex,initFromBlock:self.initFromBlock)
   }
 }

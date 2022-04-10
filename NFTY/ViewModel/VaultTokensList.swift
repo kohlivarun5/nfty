@@ -31,7 +31,7 @@ class VaultTokensList : ObservableObject {
     
     rankings.map { rankings in
       self.allHoldings.sort { left,right in
-        switch(rankings.getRank(UInt(left)),rankings.getRank(UInt(right))) {
+        switch(rankings.getRank(left),rankings.getRank(right)) {
         case (.some(let leftRank),.some(let rightRank)):
           return leftRank < rightRank
         default:

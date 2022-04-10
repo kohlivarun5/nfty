@@ -21,7 +21,7 @@ struct NFTNameIdRank: View {
       VStack(alignment:.leading) {
         Text(nft.name)
         HStack {
-          Text("#\(nft.tokenId)")
+          Text("#\(String(nft.tokenId))")
           switch(isExternalLink) {
           case true:
             DappLink(destination: DappLink.openSeaPath(nft: nft))

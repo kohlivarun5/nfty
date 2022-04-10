@@ -132,13 +132,26 @@ struct NFTYApp: App {
     WindowGroup {
       TabView {
         
+        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
+          
+          NavigationView {
+            FriendsView()
+          }
+          .tabItem {
+            Label("Friends",systemImage:"person.2.square.stack")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+        }
+        
         NavigationView {
-          WalletView()
+          FeedView(trades:CompositeCollection)
+            .navigationBarTitle("Recent")
         }
         .tabItem {
-          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
+          Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        
         
         NavigationView {
           FavoritesView()
@@ -150,26 +163,12 @@ struct NFTYApp: App {
         .navigationViewStyle(StackNavigationViewStyle())
         
         NavigationView {
-          FeedView(trades:CompositeCollection)
-            .navigationBarTitle("Recent")
+          WalletView()
         }
         .tabItem {
-          Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
+          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        
-        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
-          
-          NavigationView {
-            FriendsView()
-              .navigationBarTitle("Friends")
-          }
-          .tabItem {
-            Label("Friends",systemImage:"person.2.square.stack")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-        }
-        
         
       }
       // .preferredColorScheme(.dark)

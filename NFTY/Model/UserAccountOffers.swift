@@ -71,7 +71,7 @@ struct UserAccountOffers {
                 return NFTToken(
                   collection:collection,
                   nft: NFTWithLazyPrice(
-                    nft: collection.contract.getNFT(tokenId),
+                    nft: collection.contract.getNFT(BigUInt(tokenId)),
                     getPrice: {
                       ObservablePromise<NFTPriceStatus>(
                         resolved: NFTPriceStatus.known(
@@ -96,7 +96,7 @@ struct UserAccountOffers {
                 return NFTToken(
                   collection:collection,
                   nft: NFTWithLazyPrice(
-                    nft: collection.contract.getNFT(tokenId),
+                    nft: collection.contract.getNFT(BigUInt(tokenId)),
                     getPrice: {
                       ObservablePromise<NFTPriceStatus>(
                         resolved: NFTPriceStatus.known(
@@ -121,7 +121,7 @@ struct UserAccountOffers {
                 return NFTToken(
                   collection:collection,
                   nft: NFTWithLazyPrice(
-                    nft: collection.contract.getNFT(tokenId),
+                    nft: collection.contract.getNFT(BigUInt(tokenId)),
                     getPrice: {
                       ObservablePromise<NFTPriceStatus>(
                         resolved: NFTPriceStatus.known(

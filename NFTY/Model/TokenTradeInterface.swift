@@ -26,9 +26,9 @@ struct BidAsk {
 }
 
 protocol TradeActionsInterface {
-  func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
+  func submitBid(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
   
-  func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
+  func acceptOffer(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
 }
 
 enum Side {
@@ -37,12 +37,12 @@ enum Side {
 }
 
 protocol TokenTradeInterface {
-  func getBidAsk(_ tokenId:UInt,_ side:Side?) -> Promise<BidAsk>
-  func getBidAsk(_ tokenIds:[UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]>
+  func getBidAsk(_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk>
+  func getBidAsk(_ tokenIds:[BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]>
   var actions : TradeActionsInterface? { get }
 }
 
-func getBidAskSerial(tokenIds:[UInt],_ side:Side?,wait:Double,getter: @escaping (_ tokenId:UInt,_ side:Side?) -> Promise<BidAsk>) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+func getBidAskSerial(tokenIds:[BigUInt],_ side:Side?,wait:Double,getter: @escaping (_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk>) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
   return tokenIds.reduce(Promise.value([]), { (accu,tokenId) in
     accu.then { accu in
       getter(tokenId,side)

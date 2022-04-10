@@ -63,7 +63,7 @@ struct OpenSeaApi {
     let orders : [AssetOrder]
   }
   
-  static func getOrders(contract:String?,tokenIds:[UInt]?,user:QueryAddress?,side:Side?) -> Promise<[AssetOrder]> {
+  static func getOrders(contract:String?,tokenIds:[BigUInt]?,user:QueryAddress?,side:Side?) -> Promise<[AssetOrder]> {
     
     var components = URLComponents()
     components.scheme = "https"
@@ -149,11 +149,11 @@ struct OpenSeaApi {
     }
   }
   
-  static func getBidAsk(contract:String,tokenIds:[UInt],side:Side?) -> Promise<[UInt:BidAsk]> {
+  static func getBidAsk(contract:String,tokenIds:[BigUInt],side:Side?) -> Promise<[BigUInt:BidAsk]> {
     OpenSeaApi.getOrders(contract: contract, tokenIds: tokenIds, user: nil, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { orders in
         
-        var dict : [UInt:[AssetOrder]] = [:]
+        var dict : [BigUInt:[AssetOrder]] = [:]
         tokenIds.forEach { id in
           dict[id] = orders.filter { $0.asset.token_id == String(id) }
         }
@@ -184,7 +184,7 @@ struct OpenSeaApi {
       }
   }
   
-  static func getBidAsk(contract:String,tokenId:UInt,side:Side?) -> Promise<BidAsk> {
+  static func getBidAsk(contract:String,tokenId:BigUInt,side:Side?) -> Promise<BidAsk> {
     OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
         
@@ -242,7 +242,7 @@ struct OpenSeaApi {
               .map { collection -> NFTToken? in
                 
                 UInt(order.asset.token_id)
-                  .map { collection.contract.getNFT($0) }
+                  .map { collection.contract.getNFT(BigUInt($0)) }
                   .flatMap { nft in
                     switch(order.payment_token,Double(order.current_price).map { BigUInt($0) }) {
                     case (ETH_ADDRESS,.some(let wei)),
@@ -427,7 +427,7 @@ struct OpenSeaTradeApi : TokenTradeInterface {
     }
   }
   
-  func getBidAsk(_ tokenId: UInt,_ side:Side?) -> Promise<BidAsk> {
+  func getBidAsk(_ tokenId: BigUInt,_ side:Side?) -> Promise<BidAsk> {
     
     return OpenSeaApi.getBidAsk(
       contract: contract.hex(eip55: true),
@@ -436,7 +436,7 @@ struct OpenSeaTradeApi : TokenTradeInterface {
     )
   }
   
-  func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId: UInt, bidAsk: BidAsk)]> {
+  func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId: BigUInt, bidAsk: BidAsk)]> {
     return OpenSeaApi.getBidAsk(
       contract: contract.hex(eip55: true),
       tokenIds: tokenIds,

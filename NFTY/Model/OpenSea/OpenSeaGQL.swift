@@ -62,7 +62,7 @@ struct OpenSeaGQL {
       let edges : [Edge]
       
       struct PageInfo : Decodable {
-        let endCursor : String
+        let endCursor : String?
         let hasNextPage : Bool
       }
       let pageInfo : PageInfo
@@ -132,19 +132,23 @@ struct OpenSeaGQL {
           let data : ResponseData
         }
         
-        // print(String(decoding:data!,as:UTF8.self))
-        switch(data.flatMap { try? JSONDecoder().decode(Response.self, from: $0) }?.data.query ) {
-        case .some(let result):
-          seal.fulfill(result)
-          //seal.reject(HTTPError.unknown)
-        case .none:
-          if let httpResponse = response as? HTTPURLResponse {
-            let error = HTTPError.error(status: httpResponse.statusCode,
-                                        message: data.flatMap({ String(data: $0, encoding: .utf8) }))
-            seal.reject(error)
-          } else {
-            seal.reject(HTTPError.unknown)
+        do {
+          switch(try data.map { try JSONDecoder().decode(Response.self, from: $0) }?.data.query ) {
+          case .some(let result):
+            seal.fulfill(result)
+            //seal.reject(HTTPError.unknown)
+          case .none:
+            if let httpResponse = response as? HTTPURLResponse {
+              let error = HTTPError.error(status: httpResponse.statusCode,
+                                          message: data.flatMap({ String(data: $0, encoding: .utf8) }))
+              seal.reject(error)
+            } else {
+              seal.reject(HTTPError.unknown)
+            }
           }
+        } catch {
+          print(String(decoding:data!,as:UTF8.self))
+          seal.reject(error)
         }
       })
     }

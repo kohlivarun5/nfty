@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import BigInt
 
 struct StaticTokenListView: View {
   
   @State var tokens : [NFTToken]
-  @State private var selectedTokenId: UInt? = nil
+  @State private var selectedTokenId: BigUInt? = nil
   
   var body: some View {
     GeometryReader { metrics in

@@ -91,16 +91,16 @@ class PhunksContract : ContractInterface {
   
   struct TradeActions : TradeActionsInterface {
     let ethContract : EthContract
-    func submitBid(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+    func submitBid(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting enterBidForPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.enterBidForPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
+                                      ethContract.enterBidForPhunk(tokenId:tokenId,wei: wei,from: wallet.ethAddress))
     }
     
-    func acceptOffer(tokenId: UInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
+    func acceptOffer(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject> {
       print("submitting buyPunk")
       return wallet.sendTransaction(tx:
-                                      ethContract.buyPhunk(tokenId:BigUInt(tokenId),wei: wei,from: wallet.ethAddress))
+                                      ethContract.buyPhunk(tokenId:tokenId,wei: wei,from: wallet.ethAddress))
     }
   }
   
@@ -112,10 +112,10 @@ class PhunksContract : ContractInterface {
     
     let ethContract : EthContract
     
-    func getBidAsk(_ tokenId: UInt,_ side:Side?) -> Promise<BidAsk> {
+    func getBidAsk(_ tokenId: BigUInt,_ side:Side?) -> Promise<BidAsk> {
       
-      let bidPrice = side != .ask ? ethContract.phunkBids(BigUInt(tokenId)) : Promise.value(nil)
-      let askPrice = side != .bid ? ethContract.phunksOfferedForSale(BigUInt(tokenId)) : Promise.value(nil)
+      let bidPrice = side != .ask ? ethContract.phunkBids(tokenId) : Promise.value(nil)
+      let askPrice = side != .bid ? ethContract.phunksOfferedForSale(tokenId) : Promise.value(nil)
       
       return bidPrice.then { bidPrice in
         askPrice.map { askPrice in
@@ -129,7 +129,7 @@ class PhunksContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenIds: [UInt],_ side:Side?) -> Promise<[(tokenId:UInt,bidAsk:BidAsk)]> {
+    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
       return getBidAskSerial(tokenIds: tokenIds,side,wait:0.0005, getter: self.getBidAsk)
     }
   }
@@ -160,7 +160,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.refreshLatestTrades(onDone: onDone, response)
   }
   
-  func getNFT(_ tokenId: UInt) -> NFT {
+  func getNFT(_ tokenId: BigUInt) -> NFT {
     return collectionContract.getNFT(tokenId)
   }
   
@@ -168,7 +168,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.getToken(tokenId)
   }
   
-  func ownerOf(_ tokenId: UInt) -> Promise<UserAccount?> {
+  func ownerOf(_ tokenId: BigUInt) -> Promise<UserAccount?> {
     return collectionContract.ownerOf(tokenId)
   }
   
@@ -176,7 +176,7 @@ class PhunksContract : ContractInterface {
     return collectionContract.getOwnerTokens(address: address, onDone: onDone, response)
   }
   
-  func getEventsFetcher(_ tokenId: UInt) -> TokenEventsFetcher? {
+  func getEventsFetcher(_ tokenId: BigUInt) -> TokenEventsFetcher? {
     return collectionContract.getEventsFetcher(tokenId)
   }
   

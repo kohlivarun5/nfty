@@ -27,9 +27,3 @@ struct NftUrlView: View {
     )
   }
 }
-
-struct NftUrlView_Previews: PreviewProvider {
-  static var previews: some View {
-    NftUrlView(collection:SampleCollection,tokenId: SampleToken.tokenId)
-  }
-}
