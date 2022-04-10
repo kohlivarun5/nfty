@@ -32,7 +32,7 @@ struct ActionSummaryView: View {
   private func labelOfAction(action:Action.ActionType) -> String {
     switch(action) {
     case .sold:
-      return "Sold"
+      return "sold"
     }
   }
   
