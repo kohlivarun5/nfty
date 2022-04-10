@@ -93,7 +93,7 @@ struct RoundedImage: View {
           EmptyView()
         case .some(let action):
           VStack {
-            
+            Spacer()
             HStack {
               Spacer()
               ActionSummaryView(action: action)
