@@ -100,7 +100,7 @@ class FriendsFeedFetcher {
                           )
                         ) // TODO
                       },
-                      action:Action(account: UserAccount(ethAddress: res["from"] as! EthereumAddress, nearAccount: nil),
+                      action:Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
                                     action: .sold)
                     ),
                     info: collection.info),

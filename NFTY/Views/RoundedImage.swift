@@ -9,25 +9,29 @@ import SwiftUI
 import BigInt
 
 struct RoundedImage: View {
+  @Environment(\.colorScheme) var colorScheme
   @EnvironmentObject var userWallet: UserWallet
   
-  var nft:NFT
-  var price:TokenPriceType
+  let nft:NFT
+  let price:TokenPriceType
   let collection : Collection
-  var rank : UInt?
+  let rank : UInt?
   
   enum Width {
     case normal
     case narrow
   }
-  var width : Width
+  let width : Width
   let resolution : NftImageResolution
+  
+  let action : Action?
   
   init(nft:NFT,
        price:TokenPriceType,
        collection:Collection,
        width:Width,
-       resolution:NftImageResolution)
+       resolution:NftImageResolution,
+       action:Action? = nil)
   {
     
     self.nft = nft
@@ -36,6 +40,7 @@ struct RoundedImage: View {
     self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)
     self.width = width
     self.resolution = resolution
+    self.action = action
   }
   
   static let NormalSize = 250.0
@@ -71,14 +76,41 @@ struct RoundedImage: View {
   var body: some View {
     
     VStack(spacing:0) {
-      NftImage(
-        nft:nft,
-        sample:collection.info.sample,
-        themeColor:collection.info.themeColor,
-        themeLabelColor:collection.info.themeLabelColor,
-        size:mediaSize(width),
-        resolution:resolution,
-        favButton:.topRight)
+      
+      ZStack {
+        
+        NftImage(
+          nft:nft,
+          sample:collection.info.sample,
+          themeColor:collection.info.themeColor,
+          themeLabelColor:collection.info.themeLabelColor,
+          size:mediaSize(width),
+          resolution:resolution,
+          favButton:.topRight)
+        
+        switch(action) {
+        case .none:
+          EmptyView()
+        case .some(let action):
+          VStack {
+            
+            HStack {
+              Spacer()
+              ActionSummaryView(action: action)
+              Spacer()
+            }
+            .padding([.top,.bottom],2)
+            .font(Font.callout)
+            .foregroundColor(colorScheme == .dark ? .label : .white)
+            .background(RoundedCorners(color:colorScheme == .dark ? .tertiarySystemBackground.opacity(0.9) : .secondary, tl: 5, tr: 5, bl: 5, br: 5))
+            .colorMultiply(.accentColor)
+            .shadow(radius: 5)
+            .padding([.leading,.trailing],15)
+          }
+          //.padding(.bottom,0)
+        }
+        
+      }
       
       switch(width) {
       case .narrow:

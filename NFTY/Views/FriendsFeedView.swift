@@ -92,21 +92,19 @@ struct FriendsFeedView: View {
                 
                 ZStack {
                   
-                  VStack {
-                    nft.action.map { ActionSummaryView(friends:friends,action: $0) }
-                    RoundedImage(
-                      nft:nft.nft,
-                      price:nft.indicativePrice,
-                      collection:item.collection,
-                      width: .normal,
-                      resolution: .normal
-                    )
-                    .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
-                    .padding()
-                    .onTapGesture {
-                      //perform some tasks if needed before opening Destination view
-                      self.action = nft.id
-                    }
+                  RoundedImage(
+                    nft:nft.nft,
+                    price:nft.indicativePrice,
+                    collection:item.collection,
+                    width: .normal,
+                    resolution: .normal,
+                    action:nft.action
+                  )
+                  .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
+                  .padding()
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.action = nft.id
                   }
                   
                   NavigationLink(destination: NftDetail(

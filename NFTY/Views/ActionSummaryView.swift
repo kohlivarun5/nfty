@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ActionSummaryView: View {
-  let friends : [String : String]
   let action : Action
   
   private func key(account:UserAccount) -> String? {
@@ -24,7 +23,10 @@ struct ActionSummaryView: View {
   
   private func labelOfAccount(account:UserAccount) -> String? {
     let key = key(account: account)
-    return key.flatMap { friends[$0] ?? account.nearAccount }
+    return key.flatMap {
+      let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+      return friends?[$0] ?? account.nearAccount
+    }
   }
   
   private func labelOfAction(action:Action.ActionType) -> String {
