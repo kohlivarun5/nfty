@@ -249,6 +249,7 @@
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
 		4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */; };
 		4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */; };
+		4FD5292D280650EB00ABD7F3 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FD5292C280650EB00ABD7F3 /* SVGKit */; };
 		4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */; };
 		4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */; };
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
@@ -739,6 +740,7 @@
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
+				4FD5292D280650EB00ABD7F3 /* SVGKit in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1245,6 +1247,7 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
+				4FD5292C280650EB00ABD7F3 /* SVGKit */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1361,6 +1364,7 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				4FD5292B280650EA00ABD7F3 /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -2052,7 +2056,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2081,7 +2085,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2193,7 +2197,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2224,7 +2228,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2364,6 +2368,14 @@
 				minimumVersion = 0.5.3;
 			};
 		};
+		4FD5292B280650EA00ABD7F3 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2421,6 +2433,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3;
+		};
+		4FD5292C280650EB00ABD7F3 /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FD5292B280650EA00ABD7F3 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
 		};
 		4FDEAB93278E53C100F92160 /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;

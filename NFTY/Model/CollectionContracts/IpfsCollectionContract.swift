@@ -35,9 +35,21 @@ class IpfsCollectionContract : ContractInterface {
         }
     }
     
+    private static let base64JsonPrefix = "data:application/json;base64,"
+    private static let base64SvgXmlPrefix = "data:image/svg+xml;base64,"
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
+          
+          if (uri.hasPrefix(IpfsImageEthContract.base64JsonPrefix)) {
+            var index = uri.firstIndex(of: ",")!
+            uri.formIndex(after: &index)
+            let str : String = String(uri.suffix(from:index))
+            print("string",str)
+            let data =  Data(base64Encoded: str)!
+            print("json=",String(data:data,encoding:.ascii))
+            return  Promise.value(try JSONDecoder().decode(TokenUriData.self, from: data));
+          }
           
           return Promise { seal in
             
@@ -76,8 +88,20 @@ class IpfsCollectionContract : ContractInterface {
           
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
+          let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
+          
+          // svg kit https://developer.apple.com/forums/thread/119331
+          if (uri!.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix)) {
+            var index = uri!.firstIndex(of: ",")!
+            uri!.formIndex(after: &index)
+            let str : String = String(uri!.suffix(from:index))
+            print("string",str)
+            let data =  Data(base64Encoded: str)!
+            print("json=",String(data:data,encoding:.ascii))
+            return  Promise.value(nil)//try JSONDecoder().decode(TokenUriData.self, from: data));
+          }
+          
           return Promise { seal in
-            let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
             
             switch(
               uri
