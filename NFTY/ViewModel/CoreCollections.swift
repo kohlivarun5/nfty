@@ -332,7 +332,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:CYPHER_CITY_Contract),
   
-  Collection(
+  /* Collection(
     info:CollectionInfo(
       address:CCB_Contract.contractAddressHex,
       sample:SAMPLE_CCB[0],
@@ -347,7 +347,7 @@ let CompositeCollection = CompositeRecentTradesObject([
         propertiesJsonFileName:"CryptoCannabisClub_attributeScores.json"),
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
-    contract:CCB_Contract),
+    contract:CCB_Contract), */
   Collection(
     info:CollectionInfo(
       address:CoolCats_Contract.contractAddressHex,
