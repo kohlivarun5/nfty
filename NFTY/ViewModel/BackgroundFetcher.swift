@@ -178,7 +178,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               content.userInfo = [
                 "sheetState": "nftTrade",
                 "address" : collection.info.address,
-                "tokenId" : String(order.token_id) // Needs to be string as BigUInt doesn't conform to secure encoding 
+                "tokenId" : String(order.token_id) // Needs to be string as BigUInt doesn't conform to secure encoding https://github.com/kohlivarun5/nfty/pull/320
               ]
               print(content)
               
@@ -324,10 +324,11 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                     content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
                   }
                   
+                  guard let tokenId = try? String(order.asset.token_id) else { return accu }
                   content.userInfo = [
                     "sheetState": "nftTrade",
                     "address" : collection.info.address,
-                    "tokenId" : UInt(order.asset.token_id)!
+                    "tokenId" : tokenId
                   ]
                   
                   // show this notification five seconds from now
