@@ -33,7 +33,7 @@ let CROWNS_Contract = IpfsCollectionContract(
 let CCB_Contract = UrlCollectionContract(
   name: "NFTokers",
   address: "0x80a4B80C653112B789517eb28aC111519b608b19",
-  tokenUri: { "https://api.cryptocannabisclub.com/image/\($0)"},
+  tokenUri: { "http://api.cryptocannabisclub.com/image/\($0)"},
   indicativePriceSource: .openSea)
 
 let Birdhouse_Contract = UrlCollectionContract(
@@ -332,7 +332,7 @@ let CompositeCollection = CompositeRecentTradesObject([
     ),
     contract:CYPHER_CITY_Contract),
   
-  /* Collection(
+  Collection(
     info:CollectionInfo(
       address:CCB_Contract.contractAddressHex,
       sample:SAMPLE_CCB[0],
@@ -347,7 +347,7 @@ let CompositeCollection = CompositeRecentTradesObject([
         propertiesJsonFileName:"CryptoCannabisClub_attributeScores.json"),
       rarityRanking : RarityRankingImpl(CCD_rarityRanks)
     ),
-    contract:CCB_Contract), */
+    contract:CCB_Contract),
   Collection(
     info:CollectionInfo(
       address:CoolCats_Contract.contractAddressHex,
