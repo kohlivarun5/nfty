@@ -180,7 +180,6 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                 "address" : collection.info.address,
                 "tokenId" : String(order.token_id) // Needs to be string as BigUInt doesn't conform to secure encoding https://github.com/kohlivarun5/nfty/pull/320
               ]
-              print(content)
               
               // show this notification five seconds from now
               let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -188,7 +187,6 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
               
               // add our notification request
-              print(request)
               UNUserNotificationCenter.current().add(request)
               return (accu || true)
             }
