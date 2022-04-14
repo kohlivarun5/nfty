@@ -105,9 +105,13 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
     if let sheetState = userInfo["sheetState"] as? String {
       switch(sheetState) {
       case "nft":
-        AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nft(userInfo["address"] as! String,userInfo["tokenId"] as! UInt))
+        (userInfo["tokenId"] as? String).flatMap { UInt($0) }.map {
+          AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nft(userInfo["address"] as! String,$0))
+        }
       case "nftTrade":
-        AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nftTrade(userInfo["address"] as! String,userInfo["tokenId"] as! UInt))
+        (userInfo["tokenId"] as? String).flatMap { UInt($0) }.map {
+          AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nftTrade(userInfo["address"] as! String,$0))
+        }
       default:
         print("Do not know how to display sheetState=\(sheetState)")
       }

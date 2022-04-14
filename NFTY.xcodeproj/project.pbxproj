@@ -820,16 +820,16 @@
 		4F74AA452688C4E4000C7A7C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
-				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
-				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
-				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
-				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
 				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
-				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
-				4F529BB427B0590900EFE626 /* TokensListPaged.swift */,
-				4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */,
+				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */,
+				4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */,
+				4FC744692630F9130060FC6D /* TokenProtocols.swift */,
+				4FAB56DA26DB51D3007076BE /* TokensByPropertiesObject.swift */,
+				4F529BB427B0590900EFE626 /* TokensListPaged.swift */,
+				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
+				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
+				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1007,29 +1007,29 @@
 		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4F529BB127B054F400EFE626 /* OpenSea */,
-				4FFAE79227A32AD5002129E9 /* Near */,
-				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
+				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
+				4F3FE32927E975B00036E46C /* ERC165Contract.swift */,
 				4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */,
+				4F0FB83626A50BF000AD5165 /* Extensions.swift */,
+				4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */,
 				4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */,
+				4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */,
 				4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */,
+				4FFAE79227A32AD5002129E9 /* Near */,
 				4FB9A7F2262B3A5700C58AF9 /* NFT.swift */,
 				4F667F6D264B291000E7A214 /* ObservablePromise.swift */,
-				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
-				4F0FB83626A50BF000AD5165 /* Extensions.swift */,
-				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
-				4FED1E4226D5ED52006274CE /* SECP256K1.swift */,
-				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
-				4F435186278239610095C88C /* SushiSwapPool.swift */,
-				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
+				4F529BB127B054F400EFE626 /* OpenSea */,
 				4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */,
+				4FED1E4226D5ED52006274CE /* SECP256K1.swift */,
+				4F435186278239610095C88C /* SushiSwapPool.swift */,
 				4F2EFECA27B893D400C30F3D /* Throttle.swift */,
+				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
+				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
 				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
-				4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */,
-				4F3FE32927E975B00036E46C /* ERC165Contract.swift */,
-				4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */,
+				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
+				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
