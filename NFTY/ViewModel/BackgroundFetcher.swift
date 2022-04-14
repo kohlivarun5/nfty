@@ -169,8 +169,10 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
               }
               print("ImageUrl=\(String(describing:imageUrl))")
               
-              imageUrl.map {
-                content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.token_id)", url: $0, options: .none)]
+              imageUrl.flatMap {
+                try? UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.token_id)", url: $0, options: .none)
+              }.map {
+                content.attachments = [$0]
               }
               
               content.userInfo = [
