@@ -818,6 +818,7 @@ class BlockFetcherImpl {
 
 var BlocksFetcher = BlockFetcherImpl()
 
+let ImageLoadingSemaphore = DispatchSemaphore(value: 2)
 
 class UserEthRate {
   private var cache : ObservablePromise<Double?>? = nil
@@ -838,7 +839,10 @@ class UserEthRate {
       return Promise.value(nil)
     case .some(let localCurrencyCode):
       return Promise { seal in
-        var request = URLRequest(url: URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot")!)
+        guard let url = URL(string: "https://api.coinbase.com/v2/prices/ETH-\(localCurrencyCode)/spot") else {
+          seal.fulfill(nil); return
+        }
+        var request = URLRequest(url:url)
         request.httpMethod = "GET"
         
         print("Calling coinbae api for \(localCurrencyCode)")
@@ -846,12 +850,17 @@ class UserEthRate {
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error -> Void in
           ImageLoadingSemaphore.signal()
           print("Got response from coinbase")
+          guard let data = data else {
+            print("Empty data calling \(url), error=\(String(describing: error))")
+            seal.fulfill(nil)
+            return
+          }
           do {
             let jsonDecoder = JSONDecoder()
-            let response = try jsonDecoder.decode(SpotResponse.self, from: data!)
+            let response = try jsonDecoder.decode(SpotResponse.self, from: data)
             seal.fulfill(Double(response.data.amount))
           } catch {
-            print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "" )")
+            print("JSON Serialization error:\(error), json=\(String(decoding:data, as: UTF8.self))")
             seal.fulfill(nil)
           }
         }).resume()
@@ -873,8 +882,6 @@ class UserEthRate {
 }
 
 var EthSpot = UserEthRate()
-
-let ImageLoadingSemaphore = DispatchSemaphore(value: 2)
 
 func ipfsUrl(_ url:String) -> String {
   
