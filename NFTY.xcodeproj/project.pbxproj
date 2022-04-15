@@ -17,6 +17,8 @@
 		4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
 		4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
 		4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
+		4F118982280A35D2001FCCCD /* AWSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F118981280A35D2001FCCCD /* AWSCache.swift */; };
+		4F118983280A35D2001FCCCD /* AWSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F118981280A35D2001FCCCD /* AWSCache.swift */; };
 		4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76927978C6600938036 /* FloorWidgetView.swift */; };
 		4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */; };
 		4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */; };
@@ -35,6 +37,10 @@
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
 		4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
+		4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188262280A33A100748561 /* AWSClientRuntime */; };
+		4F188265280A33A100748561 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188264280A33A100748561 /* AWSS3 */; };
+		4F188268280A33DE00748561 /* AWSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F188267280A33DE00748561 /* AWSCore.swift */; };
+		4F188269280A33DE00748561 /* AWSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F188267280A33DE00748561 /* AWSCore.swift */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -473,6 +479,7 @@
 		4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_rarityRanks.json; sourceTree = "<group>"; };
 		4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_nearestTokens.json; sourceTree = "<group>"; };
 		4F0FB83626A50BF000AD5165 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4F118981280A35D2001FCCCD /* AWSCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSCache.swift; sourceTree = "<group>"; };
 		4F11C76927978C6600938036 /* FloorWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorWidgetView.swift; sourceTree = "<group>"; };
 		4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYWidgetModel.swift; sourceTree = "<group>"; };
 		4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuationWidgetView.swift; sourceTree = "<group>"; };
@@ -491,6 +498,7 @@
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
 		4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_nearestTokens.json; sourceTree = "<group>"; };
+		4F188267280A33DE00748561 /* AWSCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSCore.swift; sourceTree = "<group>"; };
 		4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeRanks.json; sourceTree = "<group>"; };
 		4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeScores.json; sourceTree = "<group>"; };
 		4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_nearestTokens.json; sourceTree = "<group>"; };
@@ -736,9 +744,11 @@
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
+				4F188265280A33A100748561 /* AWSS3 in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
+				4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -773,6 +783,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F118980280A34D4001FCCCD /* AWS */ = {
+			isa = PBXGroup;
+			children = (
+				4F188267280A33DE00748561 /* AWSCore.swift */,
+				4F118981280A35D2001FCCCD /* AWSCache.swift */,
+			);
+			path = AWS;
+			sourceTree = "<group>";
+		};
 		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXGroup;
 			children = (
@@ -1030,6 +1049,7 @@
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
+				4F118980280A34D4001FCCCD /* AWS */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1245,6 +1265,8 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
+				4F188262280A33A100748561 /* AWSClientRuntime */,
+				4F188264280A33A100748561 /* AWSS3 */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1361,6 +1383,7 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1719,6 +1742,8 @@
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
+				4F188268280A33DE00748561 /* AWSCore.swift in Sources */,
+				4F118982280A35D2001FCCCD /* AWSCache.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
@@ -1818,9 +1843,11 @@
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
 				4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */,
+				4F118983280A35D2001FCCCD /* AWSCache.swift in Sources */,
 				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
 				4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,
+				4F188269280A33DE00748561 /* AWSCore.swift in Sources */,
 				4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,
 				4FDEABA3278E540800F92160 /* ModelData.swift in Sources */,
 				4FDEABAD278E542A00F92160 /* SushiSwapPool.swift in Sources */,
@@ -2052,7 +2079,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2062,7 +2089,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2081,7 +2108,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2091,7 +2118,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2193,7 +2220,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2205,7 +2232,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2224,7 +2251,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2236,7 +2263,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2324,6 +2351,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.3;
+			};
+		};
 		4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -2367,6 +2402,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F188262280A33A100748561 /* AWSClientRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSClientRuntime;
+		};
+		4F188264280A33A100748561 /* AWSS3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSS3;
+		};
 		4F27A7BF267F9000008CCB0A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */;
