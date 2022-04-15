@@ -24,8 +24,7 @@ struct TokenListView: View {
             count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
           pinnedViews: [.sectionHeaders])
         {
-          ForEach(nfts.tokens.indices,id:\.self) { index in
-            let nft = nfts.tokens[index];
+          ForEachWithIndex(nfts.tokens) { index,nft in
             ZStack {
               RoundedImage(
                 nft:nft.nft,

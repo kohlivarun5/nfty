@@ -19,8 +19,7 @@ struct SimilarTokensView: View {
     GeometryReader { metrics in
       ScrollView(.horizontal) {
         LazyHStack {
-          ForEach(nfts.indices,id: \.self) { index in
-            let nft = nfts[index];
+          ForEachWithIndex(nfts) { index,nft in
             ZStack {
               NftImage(
                 nft:nft.nft,
