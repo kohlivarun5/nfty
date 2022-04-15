@@ -141,32 +141,28 @@ struct FeedView: View {
                 count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
               pinnedViews: [.sectionHeaders])
             {
-              ForEach(trades.recentTrades.indices,id:\.self) { index in
-                let item = trades.recentTrades[index]
-                let nft = item.nft.nftWithPrice
-                
+              ForEachWithIndex(trades.recentTrades,id:\.self.nft.id) { index,item in
                 ZStack {
-                  
                   RoundedImage(
-                    nft:nft.nft,
-                    price:nft.indicativePrice,
+                    nft:item.nft.nftWithPrice.nft,
+                    price:item.nft.nftWithPrice.indicativePrice,
                     collection:item.collection,
                     width: .normal,
                     resolution: .normal
                   )
-                    .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
+                    .shadow(color:.accentColor,radius:0)
                     .padding()
                     .onTapGesture {
                       //perform some tasks if needed before opening Destination view
-                      self.action = "\(nft.nft.address):\(nft.nft.tokenId)"
+                      self.action = "\(item.nft.nftWithPrice.nft.address):\(item.nft.nftWithPrice.nft.tokenId)"
                     }
                   
                   NavigationLink(destination: NftDetail(
-                    nft:nft.nft,
-                    price:nft.indicativePrice,
+                    nft:item.nft.nftWithPrice.nft,
+                    price:item.nft.nftWithPrice.indicativePrice,
                     collection:item.collection,
                     hideOwnerLink:false,selectedProperties:[]
-                  ),tag:"\(nft.nft.address):\(nft.nft.tokenId)",selection:$action) {}
+                  ),tag:"\(item.nft.nftWithPrice.nft.address):\(item.nft.nftWithPrice.nft.tokenId)",selection:$action) {}
                   .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {

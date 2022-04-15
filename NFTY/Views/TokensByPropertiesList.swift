@@ -49,10 +49,8 @@ struct TokensByPropertiesList: View {
               ? min(4,Int(metrics.size.width / RoundedImage.NarrowSize) - 1)
               : 2)
           ) {
-            ForEach(nfts.tokens.indices,id:\.self) { index in
-              let nft = nfts.tokens[index];
-              let info = collection.info
-              
+            let info = collection.info
+            ForEachWithIndex(nfts.tokens) { index,nft in
               ZStack {
                 
                 NftImage(

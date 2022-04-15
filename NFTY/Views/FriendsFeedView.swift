@@ -86,33 +86,30 @@ struct FriendsFeedView: View {
                 count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
               pinnedViews: [.sectionHeaders])
             {
-              ForEach(self.events.recentEvents.indices,id:\.self) { index in
-                let item = self.events.recentEvents[index]
-                let nft = item.nft.nftWithPrice
-                
-                ZStack {
+              ForEachWithIndex(self.events.recentEvents,id:\.self.nft.id) { index,item in
+              ZStack {
                   
                   RoundedImage(
-                    nft:nft.nft,
-                    price:nft.indicativePrice,
+                    nft:item.nft.nftWithPrice.nft,
+                    price:item.nft.nftWithPrice.indicativePrice,
                     collection:item.collection,
                     width: .normal,
                     resolution: .normal,
-                    action:nft.action
+                    action:item.nft.nftWithPrice.action
                   )
                   .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
                   .padding()
                   .onTapGesture {
                     //perform some tasks if needed before opening Destination view
-                    self.action = nft.id
+                    self.action = item.nft.nftWithPrice.id
                   }
                   
                   NavigationLink(destination: NftDetail(
-                    nft:nft.nft,
-                    price:nft.indicativePrice,
+                    nft:item.nft.nftWithPrice.nft,
+                    price:item.nft.nftWithPrice.indicativePrice,
                     collection:item.collection,
                     hideOwnerLink:false,selectedProperties:[]
-                  ),tag:nft.id,selection:$action) {}
+                  ),tag:item.nft.nftWithPrice.id,selection:$action) {}
                     .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {

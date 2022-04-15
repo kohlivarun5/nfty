@@ -47,8 +47,7 @@ struct CollectionRecentView: View {
           pinnedViews: [.sectionHeaders])
         {
           let data = sorted(recentTrades.recentTrades);
-          ForEach(data.indices,id: \.self) { index in
-            let nft = data[index];
+          ForEachWithIndex(data) { index,nft in
             ZStack {
               RoundedImage(
                 nft:nft.nft,

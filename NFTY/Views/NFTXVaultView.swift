@@ -36,12 +36,9 @@ struct NFTXVaultView: View {
               ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
               : 2)
           ) {
-                ForEach(nfts.tokens.indices,id:\.self) { index in
-                  let nft = nfts.tokens[index];
-                  let info = collection.info
-                  
+            let info = collection.info
+            ForEachWithIndex(nfts.tokens,id:\.self.id) { index,nft in
                   ZStack {
-                    
                     if (UIDevice.current.userInterfaceIdiom == .pad) {
                       
                       RoundedImage(

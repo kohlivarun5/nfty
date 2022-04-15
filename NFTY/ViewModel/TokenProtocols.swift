@@ -87,7 +87,6 @@ class CompositeRecentTradesObject : ObservableObject {
   
   struct NFTItem {
     let nft : NFTWithPriceAndInfo
-    var isNew : Bool
     let collection : Collection
   }
   
@@ -137,7 +136,7 @@ class CompositeRecentTradesObject : ObservableObject {
   private func onDone(_ onDone : @escaping () -> Void) {
     if (loadedItems.count == 0) { onDone() }
     
-    var items = self.recentTrades.map { NFTItem(nft: $0.nft,isNew:false,collection:$0.collection) }
+    var items = self.recentTrades.map { NFTItem(nft: $0.nft,collection:$0.collection) }
     items.append(contentsOf: self.loadedItems)
     
     self.loadedItems = []
@@ -154,16 +153,7 @@ class CompositeRecentTradesObject : ObservableObject {
         return false;
       }
     }
-    
-    /*
      
-     _ = sorted.first.map { item in
-      sorted[0] = NFTItem(nft: item.nft, isNew: true)
-     }
-     
-     */
-    
-    
     self.preload(list:sorted,index: 0, onDone: {
       self.preload(list:sorted,index: 1, onDone: {
         DispatchQueue.main.async {
@@ -191,7 +181,7 @@ class CompositeRecentTradesObject : ObservableObject {
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
                 self?.loadedItems.append(
-                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: false,collection:collection)
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),collection:collection)
                 )
               }
             }
@@ -199,7 +189,7 @@ class CompositeRecentTradesObject : ObservableObject {
             DispatchQueue.main.async {
               if (!collection.info.disableRecentTrades) {
                 self?.loadedItems.append(
-                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),isNew: true,collection:collection)
+                  NFTItem(nft: NFTWithPriceAndInfo(nftWithPrice:nft,info:collection.info),collection:collection)
                 )
               }
             }
