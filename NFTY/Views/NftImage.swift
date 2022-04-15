@@ -74,6 +74,8 @@ struct NftIpfsImageView: View {
             .padding(padding ?? 0)
             .colorMultiply(.accentColor)
             .blur(radius:20)
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: .accentColor))
         }
       },
       view: { ipfs in
@@ -245,7 +247,6 @@ struct NftImage: View {
           .padding(.bottom,autoglypPaddingBottom(size))
       case .ipfsImage(let ipfs):
         NftIpfsImageView(image:ipfs.image,resolution:resolution,padding:imagePadding(size), sample:sample)
-        
       }
       
       HStack {

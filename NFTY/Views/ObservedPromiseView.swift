@@ -10,12 +10,12 @@ import PromiseKit
 
 struct ObservedPromiseView<T,ProgressView,ResolvedView> : View where ProgressView:View, ResolvedView : View {
   
-  @ObservedObject var data : ObservablePromise<T>
+  @StateObject var data : ObservablePromise<T>
   private let view : (T) -> ResolvedView
   private let progress : () -> ProgressView
   
   init(data:ObservablePromise<T>,@ViewBuilder progress:@escaping () -> ProgressView,@ViewBuilder view: @escaping (T) -> ResolvedView) {
-    self.data = data
+    _data = StateObject(wrappedValue: data)
     self.progress = progress
     self.view = view
   }
