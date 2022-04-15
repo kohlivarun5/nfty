@@ -78,10 +78,8 @@ class Erc721Contract {
       let outputs = [SolidityFunctionParameter(name: "tokenURI", type: .string)]
       let method = SolidityConstantFunction(name: "tokenURI", inputs: inputs, outputs: outputs, handler: self)
       print("calling tokenURI @ \(address?.hex(eip55:true) ?? "?") for tokenId=\(tokenId)")
-      ImageLoadingSemaphore.wait()
       return method.invoke(tokenId).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-          ImageLoadingSemaphore.signal()
           return outputs["tokenURI"] as! String
         }
     }
