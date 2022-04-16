@@ -123,14 +123,8 @@ class IpfsCollectionContract : ContractInterface {
   init(name:String,address:String,indicativePriceSource:IndicativePrice) {
     self.name = name
     self.contractAddressHex = address
-    let bucket = "collections/\(contractAddressHex)/images"
-    self.firebaseCache = FirebaseImageCache(
-      bucket: bucket,
-      imageCache: try! DiskStorage<BigUInt, Media.IpfsImage>(
-        config: DiskConfig(name: bucket,expiry: .never),
-        transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage)),
-      fallback:self.image)
     self.ethContract = IpfsImageEthContract(address:address)
+    self.firebaseCache = FirebaseImageCache(bucket: "collections/\(contractAddressHex)/images",fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
   }
@@ -140,28 +134,7 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    return ObservablePromise(promise: Promise { seal in
-      DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
-        case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
-        case (.none,_),(_,.none):
-          self.ethContract.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .background)) {
-              let image = IpfsImageEthContract.imageOfData($0)
-              image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
-              }
-              seal.fulfill(image)
-            }
-            .catch {
-              print($0)
-              seal.fulfill(nil)
-            }
-        }
-      }
-    })
+    return firebaseCache.image(tokenId)
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {

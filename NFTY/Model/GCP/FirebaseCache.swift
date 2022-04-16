@@ -13,18 +13,24 @@ import PromiseKit
 
 struct FirebaseImageCache {
   
-  struct Images {
-    let sd : UIImage
-    let hd : UIImage
-  }
-  
   let bucket : String
+  let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
   
   private let firebase = FirebaseCore()
+  private var imageCache : DiskStorage<BigUInt,UIImage>
+  private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   
-  private var imageCache : DiskStorage<BigUInt,Media.IpfsImage>
+  init(bucket:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
+    self.bucket = bucket
+    self.fallback = fallback
+    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+    self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+  }
   
-  let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
   
   private func path(_ tokenId:BigUInt) -> String {
     return "\(bucket)/\(tokenId)"
@@ -42,25 +48,29 @@ struct FirebaseImageCache {
         }
       }
   }
-
-  func image(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
-    switch(try? self.imageCache.object(forKey:tokenId)) {
-    case .some(let image):
-      return Promise.value(image)
-    case .none:
-      return firebase.getObject(path:self.path(tokenId))
-        .then { (data:Data?) -> Promise<Media.IpfsImage?> in
-          switch(data) {
-          case .none:
-            return onCacheMiss(tokenId)
-          case .some(let data):
-            return Promise.value(Media.IpfsImage.makeOpt(data))
-          }
-        }.map {
-          $0.map { try? imageCache.setObject($0, forKey: tokenId) }
-          return $0
-        }
-    }
-  }
   
+  func image(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
+    return ObservablePromise(promise: Promise { seal in
+      DispatchQueue.global(qos:.userInteractive).async {
+        switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
+        case (.some(let image),.some(let image_hd)):
+          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+        case (.none,_),(_,.none):
+          _ = firebase.getObject(path:self.path(tokenId))
+            .then { (data:Data?) -> Promise<Media.IpfsImage?> in
+              switch(data) {
+              case .none:
+                return onCacheMiss(tokenId)
+              case .some(let data):
+                return Promise.value(Media.IpfsImage.makeOpt(data))
+              }
+            }.done {
+              $0.map { try? imageCache.setObject($0.image, forKey: tokenId) }
+              $0.map { try? imageCacheHD.setObject($0.image_hd, forKey: tokenId) }
+              seal.fulfill($0)
+            }
+        }
+      }
+    })
+  }
 }
