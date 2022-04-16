@@ -45,8 +45,13 @@ class AppDelegateState: ObservableObject {
   @Published var sheetState : SheetState? = nil
 }
 
+import Firebase
+
 class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    
+    FirebaseApp.configure()
+    
     // UIApplication.backgroundFetchIntervalMinimum = 0s
     UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     
