@@ -1,17 +1,15 @@
 //
-//  AWSCache.swift
+//  FirebaseCache.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 4/15/22.
+//  Created by Varun Kohli on 4/16/22.
 //
 
 import Foundation
-import UIKit
 import Cache
-import PromiseKit
-import BigInt
 
-struct AWSImageCache {
+
+struct FirebaseImageCache {
   
   struct Images {
     let sd : UIImage
@@ -20,7 +18,7 @@ struct AWSImageCache {
   
   let bucket : String
   
-  private let awsClient = AWSClient()
+  private let awsClient = FirebaseCore()
   
   private var imageCache : DiskStorage<BigUInt,Media.IpfsImage>
   

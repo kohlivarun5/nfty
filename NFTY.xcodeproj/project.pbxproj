@@ -17,8 +17,6 @@
 		4F0FB83426A49C8E00AD5165 /* FameLadySquad_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */; };
 		4F0FB83526A49C8E00AD5165 /* FameLadySquad_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */; };
 		4F0FB83726A50BF000AD5165 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
-		4F118982280A35D2001FCCCD /* AWSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F118981280A35D2001FCCCD /* AWSCache.swift */; };
-		4F118983280A35D2001FCCCD /* AWSCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F118981280A35D2001FCCCD /* AWSCache.swift */; };
 		4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76927978C6600938036 /* FloorWidgetView.swift */; };
 		4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */; };
 		4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */; };
@@ -39,8 +37,6 @@
 		4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
 		4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188262280A33A100748561 /* AWSClientRuntime */; };
 		4F188265280A33A100748561 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188264280A33A100748561 /* AWSS3 */; };
-		4F188268280A33DE00748561 /* AWSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F188267280A33DE00748561 /* AWSCore.swift */; };
-		4F188269280A33DE00748561 /* AWSCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F188267280A33DE00748561 /* AWSCore.swift */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -392,6 +388,11 @@
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
 		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
+		4FFA5D67280AB01000059A20 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D66280AB01000059A20 /* FirebaseAuth */; };
+		4FFA5D69280AB01000059A20 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D68280AB01000059A20 /* FirebaseDatabase */; };
+		4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D6A280AB01000059A20 /* FirebaseStorage */; };
+		4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */; };
+		4FFA5D70280AB2A300059A20 /* FirebaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */; };
 		4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
 		4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
 		4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */; };
@@ -479,7 +480,6 @@
 		4F0FB83226A49C8E00AD5165 /* FameLadySquad_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_rarityRanks.json; sourceTree = "<group>"; };
 		4F0FB83326A49C8E00AD5165 /* FameLadySquad_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FameLadySquad_nearestTokens.json; sourceTree = "<group>"; };
 		4F0FB83626A50BF000AD5165 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		4F118981280A35D2001FCCCD /* AWSCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSCache.swift; sourceTree = "<group>"; };
 		4F11C76927978C6600938036 /* FloorWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorWidgetView.swift; sourceTree = "<group>"; };
 		4F11C76B27978C8300938036 /* NFTYWidgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYWidgetModel.swift; sourceTree = "<group>"; };
 		4F11C76D27978D5D00938036 /* ValuationWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValuationWidgetView.swift; sourceTree = "<group>"; };
@@ -498,7 +498,6 @@
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
 		4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_nearestTokens.json; sourceTree = "<group>"; };
-		4F188267280A33DE00748561 /* AWSCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSCore.swift; sourceTree = "<group>"; };
 		4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeRanks.json; sourceTree = "<group>"; };
 		4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeScores.json; sourceTree = "<group>"; };
 		4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_nearestTokens.json; sourceTree = "<group>"; };
@@ -706,6 +705,8 @@
 		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
 		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
+		4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCore.swift; sourceTree = "<group>"; };
+		4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCache.swift; sourceTree = "<group>"; };
 		4FFAE79327A32AD5002129E9 /* NearApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearApi.swift; sourceTree = "<group>"; };
 		4FFAE79527A32AD5002129E9 /* NearNFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearNFT.swift; sourceTree = "<group>"; };
 		4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearNFTContract.swift; sourceTree = "<group>"; };
@@ -742,12 +743,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
+				4FFA5D67280AB01000059A20 /* FirebaseAuth in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4F188265280A33A100748561 /* AWSS3 in Frameworks */,
+				4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
+				4FFA5D69280AB01000059A20 /* FirebaseDatabase in Frameworks */,
 				4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
@@ -783,15 +787,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F118980280A34D4001FCCCD /* AWS */ = {
-			isa = PBXGroup;
-			children = (
-				4F188267280A33DE00748561 /* AWSCore.swift */,
-				4F118981280A35D2001FCCCD /* AWSCache.swift */,
-			);
-			path = AWS;
-			sourceTree = "<group>";
-		};
 		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXGroup;
 			children = (
@@ -1049,7 +1044,7 @@
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
-				4F118980280A34D4001FCCCD /* AWS */,
+				4FFA5D6E280AB03900059A20 /* GCP */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1171,6 +1166,15 @@
 			path = NFTYWidget;
 			sourceTree = "<group>";
 		};
+		4FFA5D6E280AB03900059A20 /* GCP */ = {
+			isa = PBXGroup;
+			children = (
+				4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */,
+				4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */,
+			);
+			path = GCP;
+			sourceTree = "<group>";
+		};
 		4FFAE79227A32AD5002129E9 /* Near */ = {
 			isa = PBXGroup;
 			children = (
@@ -1267,6 +1271,9 @@
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
 				4F188262280A33A100748561 /* AWSClientRuntime */,
 				4F188264280A33A100748561 /* AWSS3 */,
+				4FFA5D66280AB01000059A20 /* FirebaseAuth */,
+				4FFA5D68280AB01000059A20 /* FirebaseDatabase */,
+				4FFA5D6A280AB01000059A20 /* FirebaseStorage */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1384,6 +1391,7 @@
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
 				4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
+				4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1687,6 +1695,7 @@
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
+				4FFA5D70280AB2A300059A20 /* FirebaseCache.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
@@ -1735,6 +1744,7 @@
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
+				4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */,
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
@@ -1742,8 +1752,6 @@
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
-				4F188268280A33DE00748561 /* AWSCore.swift in Sources */,
-				4F118982280A35D2001FCCCD /* AWSCache.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
@@ -1843,11 +1851,9 @@
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
 				4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */,
-				4F118983280A35D2001FCCCD /* AWSCache.swift in Sources */,
 				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
 				4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,
-				4F188269280A33DE00748561 /* AWSCore.swift in Sources */,
 				4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,
 				4FDEABA3278E540800F92160 /* ModelData.swift in Sources */,
 				4FDEABAD278E542A00F92160 /* SushiSwapPool.swift in Sources */,
@@ -2399,6 +2405,14 @@
 				minimumVersion = 0.5.3;
 			};
 		};
+		4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2486,6 +2500,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3PromiseKit;
+		};
+		4FFA5D66280AB01000059A20 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		4FFA5D68280AB01000059A20 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		4FFA5D6A280AB01000059A20 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
