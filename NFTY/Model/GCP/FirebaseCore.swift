@@ -29,8 +29,8 @@ struct FirebaseCore {
   func getObject(path:String) -> Promise<Data?> {
     return Promise { seal in
       getStorage().reference(withPath:path).getData(maxSize:maxSize) { data, error in
-        if let error = error {
-          print(error)
+        if let _ = error {
+          // print(error)
           seal.fulfill(nil)
         } else {
           seal.fulfill(data)

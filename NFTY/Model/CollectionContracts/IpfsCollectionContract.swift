@@ -22,20 +22,8 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
     }
     
-    static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
-      return data
-        .flatMap {
-          UIImage(data:$0)
-            .flatMap { image_hd in
-              image_hd
-                .jpegData(compressionQuality: 0.1)
-                .flatMap { UIImage(data:$0) }
-                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
-            }
-        }
-    }
     
-    func image(_ tokenId:BigUInt) -> Promise<Data?> {
+    func tokenUri(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
@@ -74,7 +62,12 @@ class IpfsCollectionContract : ContractInterface {
             }
           }
           
-        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
+        }
+    }
+    
+    func image(_ tokenId:BigUInt) -> Promise<Data?> {
+      return tokenUri(tokenId)
+        .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
             let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
