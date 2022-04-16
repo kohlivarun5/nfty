@@ -38,7 +38,7 @@ struct FirebaseImageCache {
   
   private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Data?> {
     return self.fallback(tokenId)
-      .then { data -> Promise<Data?> in
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Data?> in
         switch(data) {
         case .none:
           return Promise.value(nil)
@@ -70,14 +70,14 @@ struct FirebaseImageCache {
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
         case (.none,_),(_,.none):
           _ = firebase.getObject(path:self.path(tokenId))
-            .then { (data:Data?) -> Promise<Data?> in
+            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Data?> in
               switch(data) {
               case .none:
                 return onCacheMiss(tokenId)
               case .some(let data):
                 return Promise.value(data)
               }
-            }.done {
+            }.done(on:DispatchQueue.global(qos:.userInteractive)) {
               let image = imageOfData($0)
               image.map { try? imageCache.setObject($0.image, forKey: tokenId) }
               image.map { try? imageCacheHD.setObject($0.image_hd, forKey: tokenId) }
