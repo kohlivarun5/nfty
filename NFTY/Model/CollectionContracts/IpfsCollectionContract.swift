@@ -103,8 +103,7 @@ class IpfsCollectionContract : ContractInterface {
     }
   }
   
-  private var imageCache : DiskStorage<BigUInt,UIImage>
-  private var imageCacheHD : DiskStorage<BigUInt,UIImage>
+  private var firebaseCache : FirebaseImageCache
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -124,12 +123,13 @@ class IpfsCollectionContract : ContractInterface {
   init(name:String,address:String,indicativePriceSource:IndicativePrice) {
     self.name = name
     self.contractAddressHex = address
-    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
-      config: DiskConfig(name: "\(contractAddressHex).ImageCache",expiry: .never),
-      transformer: TransformerFactory.forImage())
-    self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
-      config: DiskConfig(name: "\(contractAddressHex).ImageCacheHD",expiry: .never),
-      transformer: TransformerFactory.forImage())
+    let bucket = "collections/\(contractAddressHex)/images"
+    self.firebaseCache = FirebaseImageCache(
+      bucket: bucket,
+      imageCache: try! DiskStorage<BigUInt, Media.IpfsImage>(
+        config: DiskConfig(name: bucket,expiry: .never),
+        transformer: TransformerFactory.forCodable(ofType: Media.IpfsImage)),
+      fallback:self.image)
     self.ethContract = IpfsImageEthContract(address:address)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource

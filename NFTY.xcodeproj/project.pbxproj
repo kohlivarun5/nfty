@@ -393,6 +393,9 @@
 		4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D6A280AB01000059A20 /* FirebaseStorage */; };
 		4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */; };
 		4FFA5D70280AB2A300059A20 /* FirebaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */; };
+		4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */; };
+		4FFA5D72280AB87600059A20 /* FirebaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */; };
+		4FFA5D74280AB89E00059A20 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D73280AB89E00059A20 /* FirebaseStorage */; };
 		4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
 		4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
 		4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */; };
@@ -779,6 +782,7 @@
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
+				4FFA5D74280AB89E00059A20 /* FirebaseStorage in Frameworks */,
 				4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */,
 				4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */,
 			);
@@ -1333,6 +1337,7 @@
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
+				4FFA5D73280AB89E00059A20 /* FirebaseStorage */,
 			);
 			productName = NFTYWidgetExtension;
 			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
@@ -1817,6 +1822,7 @@
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
+				4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
 				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
@@ -1827,6 +1833,7 @@
 				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
+				4FFA5D72280AB87600059A20 /* FirebaseCache.swift in Sources */,
 				4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */,
 				4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */,
 				4FFAE79E27A33391002129E9 /* NearNFTContract.swift in Sources */,
@@ -2512,6 +2519,11 @@
 			productName = FirebaseDatabase;
 		};
 		4FFA5D6A280AB01000059A20 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		4FFA5D73280AB89E00059A20 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
