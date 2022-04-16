@@ -24,7 +24,7 @@ class IpfsCollectionContract : ContractInterface {
     
     static let UrlSession = UrlTaskThrottle(
       queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
-      deadline:DispatchTimeInterval.milliseconds(100))
+      deadline:DispatchTimeInterval.milliseconds(50))
     
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
