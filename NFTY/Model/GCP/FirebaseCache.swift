@@ -36,31 +36,26 @@ struct FirebaseImageCache {
     return "\(bucket)/\(tokenId)"
   }
   
-  private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Data?> {
-    return self.fallback(tokenId)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Data?> in
-        switch(data) {
-        case .none:
-          return Promise.value(nil)
-        case .some(let data):
-          return firebase.putObject(path:self.path(tokenId), data)
-            .map { return data }
-        }
+  private func imageOfData(_ data:Data) -> Media.IpfsImage? {
+    return UIImage(data:data)
+      .flatMap { image_hd in
+        image_hd
+          .jpegData(compressionQuality: 0.1)
+          .flatMap { UIImage(data:$0) }
+          .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
       }
   }
   
-  private func imageOfData(_ data:Data?) -> Media.IpfsImage? {
-    return data
-      .flatMap {
-        UIImage(data:$0)
-          .flatMap { image_hd in
-            image_hd
-              .jpegData(compressionQuality: 0.1)
-              .flatMap { UIImage(data:$0) }
-              .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
-          }
+  private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
+    return self.fallback(tokenId)
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Media.IpfsImage?> in
+        guard let data = data else { return Promise.value(nil) }
+        guard let image = imageOfData(data) else { return Promise.value(nil) }
+        return firebase.putObject(path:self.path(tokenId), data)
+            .map { return image }
       }
   }
+  
   
   func image(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     return ObservablePromise(promise: Promise { seal in
@@ -70,18 +65,15 @@ struct FirebaseImageCache {
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
         case (.none,_),(_,.none):
           _ = firebase.getObject(path:self.path(tokenId))
-            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Data?> in
+            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Media.IpfsImage?> in
               switch(data) {
               case .none:
                 return onCacheMiss(tokenId)
               case .some(let data):
-                return Promise.value(data)
+                return Promise.value(imageOfData(data))
               }
             }.done(on:DispatchQueue.global(qos:.userInteractive)) {
-              let image = imageOfData($0)
-              image.map { try? imageCache.setObject($0.image, forKey: tokenId) }
-              image.map { try? imageCacheHD.setObject($0.image_hd, forKey: tokenId) }
-              seal.fulfill(image)
+              seal.fulfill($0)
             }
         }
       }

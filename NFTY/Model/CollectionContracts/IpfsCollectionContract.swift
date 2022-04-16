@@ -22,6 +22,10 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
     }
     
+    static let UrlSession = UrlTaskThrottle(
+      queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
+      deadline:DispatchTimeInterval.milliseconds(100))
+    
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
@@ -35,10 +39,8 @@ class IpfsCollectionContract : ContractInterface {
               var request = URLRequest(url:url)
               request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
-              ImageLoadingSemaphore.wait()
               print("calling \(request.url!)")
-              URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-                ImageLoadingSemaphore.signal()
+              IpfsImageEthContract.UrlSession.enqueue(with: request,completionHandler:{ data, response, error -> Void in
                 // print(data,response,error)
                 do {
                   switch(data) {
@@ -57,7 +59,7 @@ class IpfsCollectionContract : ContractInterface {
                   print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
                   seal.reject(error)
                 }
-              }).resume()
+              })
             }
           }
           

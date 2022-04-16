@@ -35,8 +35,6 @@
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
 		4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
-		4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188262280A33A100748561 /* AWSClientRuntime */; };
-		4F188265280A33A100748561 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F188264280A33A100748561 /* AWSS3 */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -749,13 +747,11 @@
 				4FFA5D67280AB01000059A20 /* FirebaseAuth in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
-				4F188265280A33A100748561 /* AWSS3 in Frameworks */,
 				4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4FFA5D69280AB01000059A20 /* FirebaseDatabase in Frameworks */,
-				4F188263280A33A100748561 /* AWSClientRuntime in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1273,8 +1269,6 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
-				4F188262280A33A100748561 /* AWSClientRuntime */,
-				4F188264280A33A100748561 /* AWSS3 */,
 				4FFA5D66280AB01000059A20 /* FirebaseAuth */,
 				4FFA5D68280AB01000059A20 /* FirebaseDatabase */,
 				4FFA5D6A280AB01000059A20 /* FirebaseStorage */,
@@ -1395,7 +1389,6 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
-				4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 				4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
@@ -2364,14 +2357,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
-			};
-		};
 		4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -2423,16 +2408,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F188262280A33A100748561 /* AWSClientRuntime */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSClientRuntime;
-		};
-		4F188264280A33A100748561 /* AWSS3 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F188261280A33A000748561 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSS3;
-		};
 		4F27A7BF267F9000008CCB0A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */;

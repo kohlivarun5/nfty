@@ -109,7 +109,7 @@ struct OpenSeaApi {
       
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         do {
-          
+
           if let e = error { return seal.reject(e) }
           
           let jsonDecoder = JSONDecoder()
