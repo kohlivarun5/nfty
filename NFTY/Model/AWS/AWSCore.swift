@@ -12,38 +12,24 @@ import AWSClientRuntime
 
 
 struct AWSClient {
-  private let s3Client = try S3Client(region: "us-west-1")
-  func putObject(bucket:String,key:String, _ dataToUpload:Data) {
-    let body = ByteStream.from(data: dataToUpload)
-    s3Client.putObject(input: PutObjectInput(body: body, bucket: bucket,
-                                             key: key, metadata: metadata)) { result in
-      switch(result) {
-      case .success(let response):
-        if let eTag = response.eTag {
-          print("Successfully uploaded the file with the etag: \(eTag)")
-        }
-      case .failure(let err):
-        print(err)
-      }
-    }
+  
+  private func getClient() async -> S3Client? {
+    return try? await S3Client(region: "us-west-1")
   }
   
-  func getObject(bucket:String,key:String) {
-    
-    s3Client.getObject(input: GetObjectInput(bucket: bucket,
-                                             key: key)) { result in
-      switch(result) {
-      case .success(let response):
-        guard let body = response.body else {
-          return
-        }
-        let data = body.toBytes().toData()
-        writeToFile(data: data)
-      case .failure(let err):
-        print(err)
-      }
-    }
-    
+  func putObject(bucket:String,key:String, _ dataToUpload:Data) async -> () {
+    guard let s3Client = await getClient() else { return }
+    let body = ByteStream.from(data: dataToUpload)
+    guard let _ = try? await s3Client.putObject(input: PutObjectInput(body: body, bucket: bucket,
+                                                                key: key, metadata: nil)) else { return }
+  }
+  
+  func getObject(bucket:String,key:String) async -> Data? {
+    guard let s3Client = await getClient() else { return nil }
+    guard let result = try? await s3Client.getObject(input: GetObjectInput(bucket: bucket,
+                                                                           key: key)) else { return nil }
+    guard let body = result.body else { return nil }
+    return body.toBytes().toData()
   }
   
   
