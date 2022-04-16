@@ -287,7 +287,8 @@ class NearNFTContract : ContractInterface {
         return ParasApi.offers(contract_id: self.contract_id, token_id: String(tokenId))
           .map { (response:ParasApi.Offers) -> BidInfo? in
             response.data.results
-              .compactMap { BigUInt($0.price) }
+            .compactMap { $0.price }
+            .compactMap { BigUInt($0) }
               .sorted { $0 > $1 }
               .first
               .map { BidInfo(price:.near($0),expiration_time: nil) }
