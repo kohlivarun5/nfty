@@ -22,8 +22,7 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
     }
     
-    
-    func tokenUri(_ tokenId:BigUInt) -> Promise<Data?> {
+    func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
@@ -62,12 +61,7 @@ class IpfsCollectionContract : ContractInterface {
             }
           }
           
-        }
-    }
-    
-    func image(_ tokenId:BigUInt) -> Promise<Data?> {
-      return tokenUri(tokenId)
-        .then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
+        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
             let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
