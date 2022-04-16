@@ -52,7 +52,7 @@ struct FirebaseImageCache {
         guard let data = data else { return Promise.value(nil) }
         guard let image = imageOfData(data) else { return Promise.value(nil) }
         return firebase.putObject(path:self.path(tokenId), data)
-            .map { return image }
+          .map { return image }
       }
   }
   
@@ -73,6 +73,10 @@ struct FirebaseImageCache {
                 return Promise.value(imageOfData(data))
               }
             }.done(on:DispatchQueue.global(qos:.userInteractive)) {
+              $0.map {
+                try? self.imageCache.setObject($0.image, forKey: tokenId)
+                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+              }
               seal.fulfill($0)
             }
         }
