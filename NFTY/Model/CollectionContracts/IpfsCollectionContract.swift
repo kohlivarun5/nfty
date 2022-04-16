@@ -111,7 +111,7 @@ class IpfsCollectionContract : ContractInterface {
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
-    self.firebaseCache = FirebaseImageCache(bucket: "collections/\(contractAddressHex)/images",fallback:self.ethContract.image)
+    self.firebaseCache = FirebaseImageCache(bucket: "collections/\(contractAddressHex.lowercased())/images",fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
   }
