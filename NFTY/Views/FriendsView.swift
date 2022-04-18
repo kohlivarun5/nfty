@@ -79,7 +79,7 @@ struct FriendsView: View {
             }
           }
         case (.feed,false):
-          FriendsFeedView(friends:friends,events:FriendsFeedViewModel(addresses: self.addresses))
+          FriendsFeedView(events:FriendsFeedViewModel(addresses: self.addresses))
         }
         
         if (!self.addresses.isEmpty) {
