@@ -12,8 +12,6 @@ import PromiseKit
 
 struct FavoritesView: View {
   
-  @State private var showAddFavSheet = false
-  
   typealias FavoritesDict = [String : (Collection,[String : NFTWithLazyPrice])]
   @State private var favorites : FavoritesDict = [:]
   
@@ -179,22 +177,13 @@ struct FavoritesView: View {
     }
     .navigationBarItems(
       trailing:
-        Button(action: {
-          self.showAddFavSheet = true
-        }) {
+        NavigationLink(destination: AddFavSheet()) {
           Image(systemName:"magnifyingglass.circle.fill")
             .font(.title3)
             .foregroundColor(.accentColor)
             .padding(10)
         }
     )
-    .sheet(isPresented: $showAddFavSheet,onDismiss: {
-      let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
-      updateFavorites(favorites ?? [:])
-    }) {
-      AddFavSheet()
-        .themeStyle()
-    }
     .onAppear {
       if (self.isLoading) {
         let favorites = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.favoritesDict.rawValue) as? [String : [String : Bool]]
