@@ -102,8 +102,6 @@ class CompositeRecentTradesObject : ObservableObject {
     var recentTrades: NftRecentTradesObject
   }
   
-  
-  
   private func loadPrice(_ trade:NFTWithPriceAndInfo,onDone: @escaping () -> Void) {
     switch(trade.nftWithPrice.indicativePrice) {
     case .lazy(let promise):
@@ -134,7 +132,7 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func onDone(_ onDone : @escaping () -> Void) {
-    if (loadedItems.count == 0) { onDone() }
+    if (loadedItems.count == 0) { onDone(); return }
     
     var items = self.recentTrades.map { NFTItem(nft: $0.nft,collection:$0.collection) }
     items.append(contentsOf: self.loadedItems)
@@ -242,7 +240,9 @@ class CompositeRecentTradesObject : ObservableObject {
     if index >= thresholdIndex {
       loadMore(onDone)
     } else {
-      onDone()
+      self.preload(list:self.recentTrades,index:index+1,onDone:{
+        self.preload(list:self.recentTrades,index:index+2,onDone:onDone)
+      })
     }
   }
   
