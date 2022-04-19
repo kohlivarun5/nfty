@@ -417,6 +417,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
+  /*
   Collection(
     info:CollectionInfo(
       address:GBLOCKS_Contract.contractAddressHex,
@@ -434,6 +435,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:GBLOCKS_Contract),
+   */
   Collection(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
