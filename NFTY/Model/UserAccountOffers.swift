@@ -66,7 +66,9 @@ struct UserAccountOffers {
               
               result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }
-                guard let price = BigUInt(token.price) else { return nil }
+                guard let price = (token.price.flatMap { (price:String) -> BigUInt? in
+                  return BigUInt(price)
+                }) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,
@@ -91,7 +93,9 @@ struct UserAccountOffers {
               
               result.data.results.compactMap { token in
                 guard let tokenId = UInt(token.token_id) else { return nil }
-                guard let price = BigUInt(token.price) else { return nil }
+                guard let price = (token.price.flatMap { (price:String) -> BigUInt? in
+                  return BigUInt(price)
+                }) else { return nil }
                 let collection = NearCollection(address:token.contract_id)
                 return NFTToken(
                   collection:collection,

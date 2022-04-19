@@ -9,7 +9,6 @@ import SwiftUI
 import Web3
 
 struct FriendsFeedView: View {
-  let friends : [String : String]
   @StateObject var events : FriendsFeedViewModel
   @State private var action: NFT.NftID? = nil
   

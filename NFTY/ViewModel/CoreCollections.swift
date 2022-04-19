@@ -417,6 +417,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
+  /*
   Collection(
     info:CollectionInfo(
       address:GBLOCKS_Contract.contractAddressHex,
@@ -434,6 +435,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:GBLOCKS_Contract),
+   */
   Collection(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
@@ -485,6 +487,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:ON1_Force_Contract),
+  /*
   Collection(
     info:CollectionInfo(
       address:DJs_Contract.contractAddressHex,
@@ -501,6 +504,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json"))
     ),
     contract:DJs_Contract),
+   */
   Collection(
     info:CollectionInfo(
       address:WABC_Contract.contractAddressHex,

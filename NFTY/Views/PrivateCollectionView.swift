@@ -19,11 +19,17 @@ struct PrivateCollectionView: View {
   let account : UserAccount
   
   enum TokensPage : Int {
+    case activity
     case owned
     case sales
   }
   
-  @State private var tokensPage : TokensPage = .owned
+  @State private var tokensPage : TokensPage
+  
+  init(account:UserAccount) {
+    self.account = account
+    _tokensPage = State(initialValue: self.account.ethAddress == nil ? .owned : .activity)
+  }
   
   private func key() -> String? {
     switch(account.ethAddress,account.nearAccount) {
@@ -67,6 +73,10 @@ struct PrivateCollectionView: View {
     VStack(spacing:0) {
       
       switch(self.tokensPage) {
+      case .activity:
+        FriendsFeedView(
+          events:FriendsFeedViewModel(
+            addresses: account.ethAddress.map { [$0] } ?? []))
       case .owned:
         WalletTokensView(tokens: getOwnerTokens(account))
       case .sales:
@@ -81,6 +91,9 @@ struct PrivateCollectionView: View {
           }
         }),
              label: Text("")) {
+        if (self.account.ethAddress != nil) {
+          Text("Activity").tag(TokensPage.activity.rawValue)
+        }
         Text("Owned").tag(TokensPage.owned.rawValue)
         Text("Sales").tag(TokensPage.sales.rawValue)
       }

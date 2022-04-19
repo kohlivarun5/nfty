@@ -22,18 +22,9 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
     }
     
-    static func imageOfData(_ data:Data?) -> Media.IpfsImage? {
-      return data
-        .flatMap {
-          UIImage(data:$0)
-            .flatMap { image_hd in
-              image_hd
-                .jpegData(compressionQuality: 0.1)
-                .flatMap { UIImage(data:$0) }
-                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
-            }
-        }
-    }
+    static let UrlSession = UrlTaskThrottle(
+      queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
+      deadline:DispatchTimeInterval.milliseconds(50))
     
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
@@ -48,10 +39,8 @@ class IpfsCollectionContract : ContractInterface {
               var request = URLRequest(url:url)
               request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
-              ImageLoadingSemaphore.wait()
               print("calling \(request.url!)")
-              URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-                ImageLoadingSemaphore.signal()
+              IpfsImageEthContract.UrlSession.enqueue(with: request,completionHandler:{ data, response, error -> Void in
                 // print(data,response,error)
                 do {
                   switch(data) {
@@ -70,7 +59,7 @@ class IpfsCollectionContract : ContractInterface {
                   print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
                   seal.reject(error)
                 }
-              }).resume()
+              })
             }
           }
           
@@ -103,8 +92,7 @@ class IpfsCollectionContract : ContractInterface {
     }
   }
   
-  private var imageCache : DiskStorage<BigUInt,UIImage>
-  private var imageCacheHD : DiskStorage<BigUInt,UIImage>
+  private var firebaseCache : FirebaseImageCache
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -124,13 +112,8 @@ class IpfsCollectionContract : ContractInterface {
   init(name:String,address:String,indicativePriceSource:IndicativePrice) {
     self.name = name
     self.contractAddressHex = address
-    self.imageCache = try! DiskStorage<BigUInt, UIImage>(
-      config: DiskConfig(name: "\(contractAddressHex).ImageCache",expiry: .never),
-      transformer: TransformerFactory.forImage())
-    self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
-      config: DiskConfig(name: "\(contractAddressHex).ImageCacheHD",expiry: .never),
-      transformer: TransformerFactory.forImage())
     self.ethContract = IpfsImageEthContract(address:address)
+    self.firebaseCache = FirebaseImageCache(bucket: "collections/\(contractAddressHex.lowercased())/images",fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
   }
@@ -140,28 +123,7 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    return ObservablePromise(promise: Promise { seal in
-      DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
-        case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
-        case (.none,_),(_,.none):
-          self.ethContract.image(tokenId)
-            .done(on:DispatchQueue.global(qos: .background)) {
-              let image = IpfsImageEthContract.imageOfData($0)
-              image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
-              }
-              seal.fulfill(image)
-            }
-            .catch {
-              print($0)
-              seal.fulfill(nil)
-            }
-        }
-      }
-    })
+    return firebaseCache.image(tokenId)
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {

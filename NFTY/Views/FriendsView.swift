@@ -69,7 +69,7 @@ struct FriendsView: View {
       VStack(spacing:0) {
         switch(self.page,self.addresses.isEmpty) {
         case (.list,_),(_,true):
-          List(friends.sorted(by: { $0.key > $1.key }), id: \.key) { address,name in
+          List(friends.sorted(by: { $0.value.lowercased() < $1.value.lowercased() }), id: \.key) { address,name in
             NavigationLink(destination: PrivateCollectionView(account:account(address))){
               HStack() {
                 Text(name)
@@ -79,7 +79,7 @@ struct FriendsView: View {
             }
           }
         case (.feed,false):
-          FriendsFeedView(friends:friends,events:FriendsFeedViewModel(addresses: self.addresses))
+          FriendsFeedView(events:FriendsFeedViewModel(addresses: self.addresses))
         }
         
         if (!self.addresses.isEmpty) {

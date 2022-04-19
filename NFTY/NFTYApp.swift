@@ -45,8 +45,22 @@ class AppDelegateState: ObservableObject {
   @Published var sheetState : SheetState? = nil
 }
 
+import Firebase
+import FirebaseAppCheck
+
+class NFTYAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
+  func createProvider(with app: FirebaseApp) -> AppCheckProvider? {
+    return AppAttestProvider(app: app)
+  }
+}
+
 class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    
+    let providerFactory = NFTYAppCheckProviderFactory()
+    AppCheck.setAppCheckProviderFactory(providerFactory)
+    FirebaseApp.configure()
+    
     // UIApplication.backgroundFetchIntervalMinimum = 0s
     UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
     

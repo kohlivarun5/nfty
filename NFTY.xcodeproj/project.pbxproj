@@ -60,6 +60,8 @@
 		4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
 		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
+		4F2A9C74280E3C440088D50C /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A9C73280E3C440088D50C /* FirebaseAppCheck */; };
+		4F2A9C76280E3C520088D50C /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2A9C75280E3C520088D50C /* FirebaseAppCheck */; };
 		4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2D6B2927C84C26009908C5 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
@@ -386,6 +388,12 @@
 		4FF70503271D9E78007AE80D /* Doodles_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */; };
 		4FF70504271D9E78007AE80D /* Doodles_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */; };
 		4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF84E52269512CE0079039E /* TradableTokenPrice.swift */; };
+		4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D6A280AB01000059A20 /* FirebaseStorage */; };
+		4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */; };
+		4FFA5D70280AB2A300059A20 /* FirebaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */; };
+		4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */; };
+		4FFA5D72280AB87600059A20 /* FirebaseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */; };
+		4FFA5D74280AB89E00059A20 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFA5D73280AB89E00059A20 /* FirebaseStorage */; };
 		4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79327A32AD5002129E9 /* NearApi.swift */; };
 		4FFAE79827A32AD5002129E9 /* NearNFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79527A32AD5002129E9 /* NearNFT.swift */; };
 		4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */; };
@@ -698,6 +706,8 @@
 		4FF70501271D9E78007AE80D /* Doodles_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeScores.json; sourceTree = "<group>"; };
 		4FF70502271D9E78007AE80D /* Doodles_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Doodles_attributeRanks.json; sourceTree = "<group>"; };
 		4FF84E52269512CE0079039E /* TradableTokenPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradableTokenPrice.swift; sourceTree = "<group>"; };
+		4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCore.swift; sourceTree = "<group>"; };
+		4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCache.swift; sourceTree = "<group>"; };
 		4FFAE79327A32AD5002129E9 /* NearApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearApi.swift; sourceTree = "<group>"; };
 		4FFAE79527A32AD5002129E9 /* NearNFT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearNFT.swift; sourceTree = "<group>"; };
 		4FFAE79927A32AEA002129E9 /* NearNFTContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearNFTContract.swift; sourceTree = "<group>"; };
@@ -736,9 +746,11 @@
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
+				4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
+				4F2A9C76280E3C520088D50C /* FirebaseAppCheck in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,10 +773,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2A9C74280E3C440088D50C /* FirebaseAppCheck in Frameworks */,
 				4FDEAB94278E53C100F92160 /* Cache in Frameworks */,
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
+				4FFA5D74280AB89E00059A20 /* FirebaseStorage in Frameworks */,
 				4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */,
 				4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */,
 			);
@@ -1030,6 +1044,7 @@
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
+				4FFA5D6E280AB03900059A20 /* GCP */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1151,6 +1166,15 @@
 			path = NFTYWidget;
 			sourceTree = "<group>";
 		};
+		4FFA5D6E280AB03900059A20 /* GCP */ = {
+			isa = PBXGroup;
+			children = (
+				4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */,
+				4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */,
+			);
+			path = GCP;
+			sourceTree = "<group>";
+		};
 		4FFAE79227A32AD5002129E9 /* Near */ = {
 			isa = PBXGroup;
 			children = (
@@ -1245,6 +1269,8 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
+				4FFA5D6A280AB01000059A20 /* FirebaseStorage */,
+				4F2A9C75280E3C520088D50C /* FirebaseAppCheck */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1304,6 +1330,8 @@
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
+				4FFA5D73280AB89E00059A20 /* FirebaseStorage */,
+				4F2A9C73280E3C440088D50C /* FirebaseAppCheck */,
 			);
 			productName = NFTYWidgetExtension;
 			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
@@ -1361,6 +1389,7 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1664,6 +1693,7 @@
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
+				4FFA5D70280AB2A300059A20 /* FirebaseCache.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
@@ -1712,6 +1742,7 @@
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
+				4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */,
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
@@ -1784,6 +1815,7 @@
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
+				4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
 				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
@@ -1794,6 +1826,7 @@
 				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
+				4FFA5D72280AB87600059A20 /* FirebaseCache.swift in Sources */,
 				4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */,
 				4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */,
 				4FFAE79E27A33391002129E9 /* NearNFTContract.swift in Sources */,
@@ -2052,7 +2085,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2062,7 +2095,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2081,7 +2114,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2091,7 +2124,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2193,7 +2226,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2205,7 +2238,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2224,7 +2257,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2236,7 +2269,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2364,6 +2397,14 @@
 				minimumVersion = 0.5.3;
 			};
 		};
+		4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2376,6 +2417,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
 			productName = Cache;
+		};
+		4F2A9C73280E3C440088D50C /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		4F2A9C75280E3C520088D50C /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
 		};
 		4F468F6B2646D63E00CA6525 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -2441,6 +2492,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3PromiseKit;
+		};
+		4FFA5D6A280AB01000059A20 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		4FFA5D73280AB89E00059A20 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFA5D65280AB01000059A20 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

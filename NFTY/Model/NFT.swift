@@ -171,6 +171,20 @@ enum Media {
   struct IpfsImage {
     let image : UIImage // let data : Data
     let image_hd : UIImage // let data : Data
+    
+    static func makeOpt(_ data:Data?) -> Media.IpfsImage? {
+      return data
+        .flatMap {
+          UIImage(data:$0)
+            .flatMap { image_hd in
+              image_hd
+                .jpegData(compressionQuality: 0.1)
+                .flatMap { UIImage(data:$0) }
+                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+            }
+        }
+    }
+    
   }
   
   struct IpfsImageLazy {

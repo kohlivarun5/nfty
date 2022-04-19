@@ -29,7 +29,7 @@ class FriendsFeedFetcher {
   
   init(addresses:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(5000)
+    let blockDecrements = BigUInt(addresses.count <= 1 ? 10000: 5000)
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
       fromBlock: fromBlock - blockDecrements,
@@ -58,7 +58,7 @@ class FriendsFeedFetcher {
         }
         return processed
       }
-    },limit:2,retries: 10) { log in
+    },limit:2,retries:addresses.count <= 1 ? 100 : 10) { log in
       let p = processed.then { processed -> Promise<Int> in
         
         //print("Log for Address=\(log.address.hex(eip55: true))");

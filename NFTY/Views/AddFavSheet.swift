@@ -16,8 +16,8 @@ struct AddFavSheet: View {
     enum State {
       case empty
       case notFound
-      case loading(CollectionInfo)
-      case loaded(CollectionInfo,NFTWithLazyPrice)
+      case loading(Collection)
+      case loaded(Collection,NFTWithLazyPrice)
     }
     
     @Published var state : State = .empty
@@ -30,9 +30,9 @@ struct AddFavSheet: View {
       case .some(let token):
         collectionsFactory.getByAddress(address)
           .done(on:.main) { collection in
-            self.state = .loading(collection.info)
+            self.state = .loading(collection)
             let nftWithPrice = collection.contract.getToken(token)
-            self.state = .loaded(collection.info,nftWithPrice)
+            self.state = .loaded(collection,nftWithPrice)
           }
           .catch { print($0) }
       }
@@ -57,108 +57,109 @@ struct AddFavSheet: View {
   }
   
   var body: some View {
+    
     VStack {
-      VStack {
-        Text("Search NFT")
-          .font(.title2)
-          .fontWeight(.bold)
-        HStack {
-          Spacer()
-          Picker(
-            selection:$collectionAddress,
-            label:
-              HStack {
-                Text("Select Collection")
-                  .foregroundColor(.accentColor)
-                Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
-                  .foregroundColor(.secondary)
-              }
-            ,
-            content: {
-              ForEach(collectionsDict.map{$0}.sorted { $0.1.info.name < $1.1.info.name }, id: \.self.0, content: { (key,collection) in
-                Text(collection.info.name)
-              })
+      HStack {
+        Spacer()
+        Picker(
+          selection:$collectionAddress,
+          label:
+            HStack {
+              Text("Select Collection")
+                .foregroundColor(.accentColor)
+              Text("\(collectionsDict[collectionAddress]?.info.name ?? "")")
+                .foregroundColor(.secondary)
             }
-          )
-            .pickerStyle(MenuPickerStyle())
-            .onChange(of: collectionAddress) { tag in self.onChange() }
-          Spacer()
+          ,
+          content: {
+            ForEach(collectionsDict.map{$0}.sorted { $0.1.info.name < $1.1.info.name }, id: \.self.0, content: { (key,collection) in
+              Text(collection.info.name)
+            })
+          }
+        )
+        .pickerStyle(MenuPickerStyle())
+        .onChange(of: collectionAddress) { tag in self.onChange() }
+        Spacer()
+      }
+      .animation(.none)
+      .padding(.bottom,5)
+      
+      TextField("Token",text:$tokenId)
+        .textContentType(.oneTimeCode)
+        .keyboardType(.numberPad)
+        .multilineTextAlignment(.center)
+        .textFieldStyle(RoundedBorderTextFieldStyle())
+        .introspectTextField { textField in
+          textField.becomeFirstResponder()
         }
-        .animation(.none)
-        .padding(.bottom,5)
-        
-        TextField("Token",text:$tokenId)
-          .textContentType(.oneTimeCode)
-          .keyboardType(.numberPad)
-          .multilineTextAlignment(.center)
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .introspectTextField { textField in
-            textField.becomeFirstResponder()
+        .onChange(of: tokenId) { val in
+          self.onChange()
+        }
+      
+      switch(nft.state) {
+      case .loaded(let collection,let nftWithPrice):
+        ZStack {
+          GeometryReader { metrics in
+            NftImage(nft:nftWithPrice.nft,
+                     sample:collection.info.sample,
+                     themeColor:collection.info.themeColor,
+                     themeLabelColor:collection.info.themeLabelColor,
+                     size:metrics.size.height < 700 ? .small : .medium,
+                     resolution:.hd,
+                     favButton:.bottomRight)
+            .frame(minHeight: 250)
+            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
           }
-          .onChange(of: tokenId) { val in
-            self.onChange()
-          }
-        
-        switch(nft.state) {
-        case .loaded(let info,let nftWithPrice):
-          ZStack {
-            GeometryReader { metrics in
-              NftImage(nft:nftWithPrice.nft,
-                       sample:info.sample,
-                       themeColor:info.themeColor,
-                       themeLabelColor:info.themeLabelColor,
-                       size:metrics.size.height < 700 ? .small : .medium,
-                       resolution:.hd,
-                       favButton:.bottomRight)
-                .frame(minHeight: 250)
-                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-            }
-            VStack {
-              HStack {
-                VStack {
-                  Text(rank.map { "RarityRank: \($0)" } ?? "")
-                    .font(.footnote)
-                    .foregroundColor(Color.gray)
-                  Text("")
-                    .font(.footnote)
-                }
-                .padding()
-                
-                Spacer()
+          VStack {
+            HStack {
+              VStack {
+                Text(rank.map { "RarityRank: \($0)" } ?? "")
+                  .font(.footnote)
+                  .foregroundColor(Color.gray)
+                Text("")
+                  .font(.footnote)
               }
+              .padding()
+              
               Spacer()
             }
-          }
-          .padding()
-          
-        case .loading(let info):
-          
-          VStack {
             Spacer()
-            ZStack {
-              
-              Image(info.sample)
-                .interpolation(.none)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding()
-                .background(info.themeColor)
-                .blur(radius:20)
-              ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: info.themeColor))
-                .scaleEffect(2.0, anchor: .center)
-              
-            }
-            Spacer()
+            HStack {
+              OwnerProfileLinkButton(nft:nftWithPrice.nft,color:collection.info.themeLabelColor, collection: collection)
+              Spacer()
+            }.padding([.leading,.trailing],15)
           }
-        default:
+        }
+        .padding()
+        
+      case .loading(let collection):
+        
+        VStack {
+          Spacer()
+          ZStack {
+            
+            Image(collection.info.sample)
+              .interpolation(.none)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .padding()
+              .background(collection.info.themeColor)
+              .blur(radius:20)
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle(tint: collection.info.themeColor))
+              .scaleEffect(2.0, anchor: .center)
+            
+          }
           Spacer()
         }
-        
+      default:
+        Spacer()
       }
-      .padding()
-      .animation(.easeIn)
+      
     }
+    .padding()
+    .animation(.easeIn)
+    .navigationBarTitle("Search",displayMode: .inline)
   }
 }
 
