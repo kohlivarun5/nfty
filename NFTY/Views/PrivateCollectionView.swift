@@ -109,6 +109,13 @@ struct PrivateCollectionView: View {
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       self.friendName = friends?[key]
       self.fallbackName = friendName ?? account.nearAccount
+      
+      if (self.friendName == nil) {
+        guard let address = self.account.ethAddress else { return }
+        ENSContract.nameOfOwner(address, eth: web3.eth)
+          .done(on:.main) { self.friendName = $0 }
+      }
+      
     }
     .alert(isPresented: $showDialog,
            TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
