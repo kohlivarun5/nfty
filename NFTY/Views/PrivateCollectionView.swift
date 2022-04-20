@@ -110,11 +110,9 @@ struct PrivateCollectionView: View {
       self.friendName = friends?[key]
       self.fallbackName = friendName ?? account.nearAccount
       
-      if (self.friendName == nil) {
-        guard let address = self.account.ethAddress else { return }
-        ENSContract.nameOfOwner(address, eth: web3.eth)
-          .done(on:.main) { self.friendName = $0 }
-      }
+      guard let address = self.account.ethAddress else { return }
+      ENSContract.nameOfOwner(address, eth: web3.eth)
+        .done(on:.main) { $0.map { self.friendName = $0 } }
       
     }
     .alert(isPresented: $showDialog,
