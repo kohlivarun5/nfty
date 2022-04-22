@@ -56,7 +56,7 @@ struct FriendsFeedView: View {
       case true:
         VStack {
           Spacer()
-          Text("No events")
+          Text("No Recent events")
             .font(.title)
             .foregroundColor(.secondary)
             .onAppear {

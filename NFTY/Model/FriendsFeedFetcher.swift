@@ -25,6 +25,9 @@ class FriendsFeedFetcher {
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
+  let limit : Int
+  let retries : Int
+  
   let addressesFilter : [EthereumAddress]?
   
   let action : Action.ActionType
@@ -43,6 +46,8 @@ class FriendsFeedFetcher {
   init(from:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
     let blockDecrements = BigUInt(5000)
+    self.limit = 2
+    self.retries = 10
     self.addressesFilter = nil
     self.action = .sold
     self.logsFetcher = LogsFetcher(
@@ -51,11 +56,13 @@ class FriendsFeedFetcher {
       address: nil,
       cacheId : cacheId,
       topics: [
-          EthereumGetLogTopics.or(
-            from.map {
-              try! ABI.encodeParameter(SolidityWrappedValue.address($0))
-            }
-          ),
+        from.count == 1
+        ? EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.address(from[0])))
+        : EthereumGetLogTopics.or(
+          from.map {
+            try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+          }
+        ),
        EthereumGetLogTopics.and(nil),
       ],
       blockDecrements: blockDecrements)
@@ -63,7 +70,9 @@ class FriendsFeedFetcher {
   
   init(to:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(5000)
+    let blockDecrements = BigUInt(1000)
+    self.limit = 1
+    self.retries = 5
     self.addressesFilter = to
     self.action = .bought
     self.logsFetcher = LogsFetcher(
@@ -73,7 +82,9 @@ class FriendsFeedFetcher {
       cacheId : cacheId,
       topics: [
         EthereumGetLogTopics.and(nil),
-        EthereumGetLogTopics.or(
+        to.count == 1
+        ? EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.address(to[0])))
+        : EthereumGetLogTopics.or(
           to.map {
             try! ABI.encodeParameter(SolidityWrappedValue.address($0))
           }
@@ -94,10 +105,10 @@ class FriendsFeedFetcher {
         }
         return processed
       }
-    },limit:2,retries:10) { log in
+    },limit:self.limit,retries:self.retries) { log in
       let p = processed.then { processed -> Promise<Int> in
         
-        print("Log for Address=\(log.address.hex(eip55: true))");
+        // print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
           .then  { collectionOpt -> Promise<Int> in
             
@@ -115,11 +126,11 @@ class FriendsFeedFetcher {
             
             guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
             
-            print("eventOfTx for ",transactionHash.hex())
+            // print("eventOfTx for ",transactionHash.hex())
             return txFetcher.eventOfTx(transactionHash:transactionHash)
               .map { txInfo -> Int in
                   
-                print("txInfo",txInfo)
+                // print("txInfo",txInfo)
                 guard let txInfo = txInfo else { return processed }
                 
                 switch(self.addressesFilter) {

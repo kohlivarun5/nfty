@@ -28,17 +28,16 @@ class FriendsFeedViewModel : ObservableObject {
     }
   }
   
-  init(owner:EthereumAddress) {
-    
+  init(from:EthereumAddress) {
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      [FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity )]
-      //[FriendsFeedFetcher(to: [owner],fromBlock:fromBlock.quantity )]
-      /* [
-       FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity ),
-       FriendsFeedFetcher(to:[owner],fromBlock:fromBlock.quantity )
-       ] */
+      [ FriendsFeedFetcher(from: [from],fromBlock:fromBlock.quantity ) ]
     }
-    
+  }
+  
+  init(to:EthereumAddress) {
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in
+      [ FriendsFeedFetcher(to: [to],fromBlock:fromBlock.quantity ) ]
+    }
   }
   
   func loadMore(_ callback : @escaping () -> Void) {

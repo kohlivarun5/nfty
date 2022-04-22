@@ -70,6 +70,8 @@
 		4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */; };
 		4F2EFECB27B893D400C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
+		4F3548C728126AED00B89943 /* FirebaseJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3548C628126AED00B89943 /* FirebaseJSONCache.swift */; };
+		4F3548C828126AED00B89943 /* FirebaseJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3548C628126AED00B89943 /* FirebaseJSONCache.swift */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
@@ -524,6 +526,7 @@
 		4F2D6B2827C84C26009908C5 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountOffers.swift; sourceTree = "<group>"; };
 		4F2EFECA27B893D400C30F3D /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
+		4F3548C628126AED00B89943 /* FirebaseJSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseJSONCache.swift; sourceTree = "<group>"; };
 		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
 		4F3582A52783A4A700D119F8 /* VaultTokensList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTokensList.swift; sourceTree = "<group>"; };
@@ -1171,6 +1174,7 @@
 			children = (
 				4FFA5D6C280AB03500059A20 /* FirebaseCore.swift */,
 				4FFA5D6F280AB2A300059A20 /* FirebaseCache.swift */,
+				4F3548C628126AED00B89943 /* FirebaseJSONCache.swift */,
 			);
 			path = GCP;
 			sourceTree = "<group>";
@@ -1681,6 +1685,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FE2CB68278B7B8300930FD8 /* WalletTokensCollectionHeader.swift in Sources */,
+				4F3548C728126AED00B89943 /* FirebaseJSONCache.swift in Sources */,
 				4F0FB826269AA26900AD5165 /* UIKitUtils.swift in Sources */,
 				4F2D6B2F27C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */,
@@ -1815,6 +1820,7 @@
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
+				4F3548C828126AED00B89943 /* FirebaseJSONCache.swift in Sources */,
 				4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,

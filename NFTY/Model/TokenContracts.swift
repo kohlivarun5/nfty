@@ -29,50 +29,42 @@ class TxFetcher {
     let value : BigUInt
     let blockNumber : EthereumQuantity
   }
-  private var txCache = try! DiskStorage<EthereumData, TxInfo>(
-    config: DiskConfig(name: "TxFetcher.txCache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: TxInfo.self))
   
-  private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
+  static private func eventOfTx(transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
     print("getTransactionByHash");
     return web3.eth.getTransactionByHash(blockHash:transactionHash)
-      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
-        switch(txData) {
-        case .none:
-          return nil
-        case .some(let tx):
-          switch(tx.value.quantity,tx.blockNumber) {
-          case (_,.none): return nil
-          case (let value,.some(let blockNumber)):
-            return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
-          }
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> EthereumTransactionObject? in
+        switch(txData?.blockNumber) {
+        case .none: return nil
+        case .some: return txData
         }
       }
   }
+  
+  static private func fallback(_ key:String) -> Promise<EthereumTransactionObject?> {
+    return eventOfTx(transactionHash:try! EthereumData.string(key))
+  }
+  
+  private var jsonCache = FirebaseJSONCache(bucket: "transactions", fallback: TxFetcher.fallback)
   
   func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
     switch transactionHash {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      return Promise { seal in
-        DispatchQueue.global(qos:.userInteractive).async {
-          switch (try? self.txCache.object(forKey:txHash)) {
-          case .some(let p):
-            seal.fulfill(p)
+      return jsonCache.get(txHash.hex())
+        .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
+          switch(txData) {
           case .none:
-            let p = self.eventOfTx(transactionHash: txHash)
-            p.done(on:DispatchQueue.global(qos:.userInteractive)) {
-              $0.flatMap { try? self.txCache.setObject($0, forKey: txHash) }
-              seal.fulfill($0)
-            }
-            .catch {
-              print($0)
-              seal.fulfill(nil)
+            return nil
+          case .some(let tx):
+            switch(tx.value.quantity,tx.blockNumber) {
+            case (_,.none): return nil
+            case (let value,.some(let blockNumber)):
+              return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
             }
           }
         }
-      }
     }
   }
 }
