@@ -8,7 +8,7 @@
 import Foundation
 import Cache
 import PromiseKit
-import FirebaseFirestore
+import FirebaseDatabase
 
 struct FirebaseJSONCache<Output:Codable> {
   
@@ -16,10 +16,10 @@ struct FirebaseJSONCache<Output:Codable> {
   let fallback : (_ in:String) -> Promise<Output?>
   private var diskCache : DiskStorage<String,Output>
   
-  let firebase = Firestore
+  let firebase : DatabaseReference!
   
   init(bucket:String,fallback:@escaping (_ in:String) -> Promise<Output?>) {
-    self.firebase = Firestore.firestore()
+    self.firebase = Database.database().reference()
     self.bucket = bucket
     self.fallback = fallback
     self.diskCache = try! DiskStorage<String, Output>(
@@ -36,7 +36,9 @@ struct FirebaseJSONCache<Output:Codable> {
     return self.fallback(key)
       .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Output?> in
         guard let data = data else { return Promise.value(nil) }
-        self.firebase.document(self.path(key)).setData(try! JSONEncoder().encode(data))
+        let jsonData = try JSONEncoder().encode(data)
+        let dict = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments)
+        self.firebase.child(self.path(key)).setValue(dict)
         return Promise.value(data)
       }
   }
@@ -50,13 +52,13 @@ struct FirebaseJSONCache<Output:Codable> {
           return seal.fulfill(data)
         case .none:
           Promise { seal in
-            self.firebase.document(self.path(key)).getDocument { (document, error) in
-              if let document = document, document.exists {
-                seal.fulfill(try? JSONDecoder().decode(Output.self, from: document.data()))
-              } else {
-                seal.fulfill(nil)
-              }
-            }
+            self.firebase.child(self.path(key)).getData(completion:  { error, snapshot in
+              guard error == nil else { return seal.fulfill(nil) }
+              guard let json = snapshot.value as? [String:Any] else { return seal.fulfill(nil) }
+              guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return seal.fulfill(nil) }
+              let value = try? JSONDecoder().decode(Output.self, from: jsonData)
+              seal.fulfill(value)
+            })
           }
           .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
             switch(data) {
