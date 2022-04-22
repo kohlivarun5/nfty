@@ -37,11 +37,16 @@ struct ActionSummaryView: View {
   }
   
   var body: some View {
-    HStack {
-      labelOfAccount(account: action.account)
-        .map { AnyView(Text($0)) }
-      ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
-      Text(labelOfAction(action:action.action))
+    
+    NavigationLink(
+      destination:PrivateCollectionView(account:action.account)
+    ) {
+      HStack {
+        labelOfAccount(account: action.account)
+          .map { AnyView(Text($0)) }
+        ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
+        Text(labelOfAction(action:action.action))
+      }
     }
   }
 }

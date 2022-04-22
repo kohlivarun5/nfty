@@ -58,7 +58,7 @@ class FriendsFeedFetcher {
         }
         return processed
       }
-    },limit:2,retries:addresses.count <= 1 ? 100 : 10) { log in
+    },limit:2,retries:addresses.count <= 1 ? 20 : 10) { log in
       let p = processed.then { processed -> Promise<Int> in
         
         //print("Log for Address=\(log.address.hex(eip55: true))");

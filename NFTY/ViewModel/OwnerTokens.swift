@@ -16,7 +16,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   private var openSeaOffset : UInt = 0
   private var parasOffset : UInt = 0
  
-  private let limit : UInt = 40
+  private let limit : UInt = 10
   private var loadedFromChain = false
   
   enum LoadingState {
