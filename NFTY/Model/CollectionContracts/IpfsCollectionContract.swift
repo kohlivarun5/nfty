@@ -34,11 +34,11 @@ class IpfsCollectionContract : ContractInterface {
           
           if (uri.hasPrefix(IpfsImageEthContract.base64JsonPrefix)) {
             do {
-            var index = uri.firstIndex(of: ",")!
-            uri.formIndex(after: &index)
-            let str : String = String(uri.suffix(from:index))
-            let data = Data(base64Encoded: str)!
-            return Promise.value(try JSONDecoder().decode(TokenUriData.self, from: data))
+              var index = uri.firstIndex(of: ",")!
+              uri.formIndex(after: &index)
+              let str : String = String(uri.suffix(from:index))
+              let data = Data(base64Encoded: str)!
+              return Promise.value(try JSONDecoder().decode(TokenUriData.self, from: data))
             } catch {
               return Promise(error: error)
             }
@@ -56,7 +56,7 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-           
+            
             
             switch(URL(string: ipfsUrl(uri))) {
             case .none:
@@ -234,7 +234,7 @@ class IpfsCollectionContract : ContractInterface {
           return p
         case .none:
           let p =
-            self.ethContract.getTokenHistory(tokenId)
+          self.ethContract.getTokenHistory(tokenId)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -263,7 +263,7 @@ class IpfsCollectionContract : ContractInterface {
             fulfilled:
               Array(0...tokensNum-1).map { index -> Promise<Void> in
                 return
-                  self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
                   .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {
