@@ -11,6 +11,48 @@ import Web3
 import Web3ContractABI
 import PromiseKit
 
+public enum EthereumGetLogTopics : Decodable {
+  case or([String?])
+  case and(String?)
+}
+
+extension EthereumGetLogTopics : Encodable {
+  public func encode(to encoder: Encoder) throws {
+    switch(self) {
+    case .or(let topics):
+      var container = encoder.unkeyedContainer()
+      topics.forEach { try! container.encode($0) }
+    case .and(let topic):
+      var container = encoder.singleValueContainer()
+      try! container.encode(topic)
+    }
+  }
+}
+
+public struct EthereumGetLogParams: Codable {
+  public var fromBlock: EthereumQuantityTag?
+  public var toBlock: EthereumQuantityTag?
+  public var address: EthereumAddress?
+  public var topics:[EthereumGetLogTopics]
+}
+
+extension Web3.Eth {
+  public typealias Web3ResponseCompletion<Result: Codable> = (_ resp: Web3Response<Result>) -> Void
+  public func getLogs(
+    params: EthereumGetLogParams,
+    response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
+  ) {
+    print("calling web3.eth.getLogs")// with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
+    let req = RPCRequest<[EthereumGetLogParams]>(
+      id: properties.rpcId,
+      jsonrpc: Web3.jsonrpc,
+      method: "eth_getLogs",
+      params: [params]
+    )
+    properties.provider.send(request: req, response: response)
+  }
+}
+
 class LogsFetcher {
   private let blockDecrements : BigUInt
   private let searchBlocks : BigUInt
@@ -113,22 +155,22 @@ class LogsFetcher {
   }
   
   func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-    
+    print("Logs.fetch")
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
       toBlock: self.toBlock,
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
-    // print("Logs=\(params)")
     
+    // print("Logs=\(params)")
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock)
           self.fromBlock = self.fromBlock - self.blockDecrements
           
-          print("Found \(logs.count) logs")
+          // print("Found \(logs.count) logs")
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
@@ -159,17 +201,19 @@ class LogsFetcher {
   
   func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
-    // print("fetchWithPromise",self.fromBlock,self.toBlock)
+    print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
       toBlock: self.toBlock,
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
+    
     // print("Logs=\(params)")
     
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
+        // print("fetchWithPromise",result.result?.count)
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements

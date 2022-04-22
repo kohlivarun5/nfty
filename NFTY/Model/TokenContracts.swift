@@ -13,48 +13,6 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 
-public enum EthereumGetLogTopics : Decodable {
-  case or([String?])
-  case and(String?)
-}
-
-extension EthereumGetLogTopics : Encodable {
-  public func encode(to encoder: Encoder) throws {
-    switch(self) {
-    case .or(let topics):
-      var container = encoder.unkeyedContainer()
-      topics.forEach { try! container.encode($0) }
-    case .and(let topic):
-      var container = encoder.singleValueContainer()
-      try! container.encode(topic)
-    }
-  }
-}
-
-public struct EthereumGetLogParams: Codable {
-  public var fromBlock: EthereumQuantityTag?
-  public var toBlock: EthereumQuantityTag?
-  public var address: EthereumAddress?
-  public var topics:[EthereumGetLogTopics]
-}
-
-extension Web3.Eth {
-  public typealias Web3ResponseCompletion<Result: Codable> = (_ resp: Web3Response<Result>) -> Void
-  public func getLogs(
-    params: EthereumGetLogParams,
-    response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
-  ) {
-    print("calling web3.eth.getLogs")// with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
-    let req = RPCRequest<[EthereumGetLogParams]>(
-      id: properties.rpcId,
-      jsonrpc: Web3.jsonrpc,
-      method: "eth_getLogs",
-      params: [params]
-    )
-    properties.provider.send(request: req, response: response)
-  }
-}
-
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
   if (address == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
@@ -71,50 +29,42 @@ class TxFetcher {
     let value : BigUInt
     let blockNumber : EthereumQuantity
   }
-  private var txCache = try! DiskStorage<EthereumData, TxInfo>(
-    config: DiskConfig(name: "TxFetcher.txCache",expiry: .never),
-    transformer: TransformerFactory.forCodable(ofType: TxInfo.self))
   
-  private func eventOfTx(transactionHash:EthereumData) -> Promise<TxInfo?> {
+  static private func eventOfTx(transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
     print("getTransactionByHash");
     return web3.eth.getTransactionByHash(blockHash:transactionHash)
-      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
-        switch(txData) {
-        case .none:
-          return nil
-        case .some(let tx):
-          switch(tx.value.quantity,tx.blockNumber) {
-          case (_,.none): return nil
-          case (let value,.some(let blockNumber)):
-            return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
-          }
+      .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> EthereumTransactionObject? in
+        switch(txData?.blockNumber) {
+        case .none: return nil
+        case .some: return txData
         }
       }
   }
+  
+  static private func fallback(_ key:String) -> Promise<EthereumTransactionObject?> {
+    return eventOfTx(transactionHash:try! EthereumData.string(key))
+  }
+  
+  private var jsonCache = FirebaseJSONCache(bucket: "transactions", fallback: TxFetcher.fallback)
   
   func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
     switch transactionHash {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      return Promise { seal in
-        DispatchQueue.global(qos:.userInteractive).async {
-          switch (try? self.txCache.object(forKey:txHash)) {
-          case .some(let p):
-            seal.fulfill(p)
+      return jsonCache.get(txHash.hex())
+        .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
+          switch(txData) {
           case .none:
-            let p = self.eventOfTx(transactionHash: txHash)
-            p.done(on:DispatchQueue.global(qos:.userInteractive)) {
-              $0.flatMap { try? self.txCache.setObject($0, forKey: txHash) }
-              seal.fulfill($0)
-            }
-            .catch {
-              print($0)
-              seal.fulfill(nil)
+            return nil
+          case .some(let tx):
+            switch(tx.value.quantity,tx.blockNumber) {
+            case (_,.none): return nil
+            case (let value,.some(let blockNumber)):
+              return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
             }
           }
         }
-      }
     }
   }
 }
@@ -192,8 +142,20 @@ class WETHFetcher {
 
 var wethFetcher = WETHFetcher()
 
+func infuraSessionConfig() -> URLSessionConfiguration {
+  let infuraSessionConfig = URLSessionConfiguration.default
+  infuraSessionConfig.timeoutIntervalForRequest = 3.0
+  infuraSessionConfig.timeoutIntervalForResource = 5.0
+  return infuraSessionConfig
+}
 
-var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+var web3 = Web3(
+  provider: Web3HttpProvider(
+    rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921",
+    session: URLSession(configuration:infuraSessionConfig())
+  )
+)
+
 var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
 
 protocol TokenEventsFetcher {

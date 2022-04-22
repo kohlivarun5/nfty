@@ -33,15 +33,23 @@ struct ActionSummaryView: View {
     switch(action) {
     case .sold:
       return "sold"
+    case .bought:
+      return "bought"
     }
   }
   
   var body: some View {
-    HStack {
-      labelOfAccount(account: action.account)
-        .map { AnyView(Text($0)) }
-      ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
-      Text(labelOfAction(action:action.action))
+    
+    NavigationLink(
+      destination:PrivateCollectionView(account:action.account)
+    ) {
+      HStack(spacing:0) {
+        labelOfAccount(account: action.account)
+          .map { AnyView(Text($0)) }
+        ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
+        Text(" \(labelOfAction(action:action.action))")
+        Image(systemName: "arrow.right.square.fill").padding(.leading,5)
+      }
     }
   }
 }
