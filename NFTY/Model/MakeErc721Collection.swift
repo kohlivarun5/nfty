@@ -77,6 +77,7 @@ struct MakeErc721Collection {
       .map { (info:Erc721ContractInfo?) -> Collection? in
         switch (info?.name) {
         case .none: return nil
+        case .some(""): return nil
         case .some(MakeErc721Collection.KnownUnsupportedName): return nil
         case .some(let name): return MakeErc721Collection.ofName(name: name, address: address)
         }

@@ -72,7 +72,7 @@ class FriendsFeedFetcher {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
     let blockDecrements = BigUInt(1000)
     self.limit = 1
-    self.retries = 5
+    self.retries = 10
     self.addressesFilter = to
     self.action = .bought
     self.logsFetcher = LogsFetcher(
