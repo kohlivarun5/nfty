@@ -13,3 +13,4 @@
 <img src="https://github.com/EtherTix/nftygo.com/blob/main/images/Screenshots/5.5in.007.png" height="400">  <img src="https://github.com/EtherTix/nftygo.com/blob/main/images/Screenshots/5.5in.008.png" height="400">  <img src="https://github.com/EtherTix/nftygo.com/blob/main/images/Screenshots/5.5in.009.png" height="400">
 
 - App Icon Maker : https://easyappicon.com
+- If you get missing `ENSContract` error, copy [this gist](https://gist.github.com/kohlivarun5/a767680f91394eeec34588e96bed812c) into `NFTY/Model`
