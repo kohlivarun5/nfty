@@ -33,6 +33,8 @@ struct ActionSummaryView: View {
     switch(action) {
     case .sold:
       return "sold"
+    case .bought:
+      return "bought"
     }
   }
   
@@ -41,11 +43,11 @@ struct ActionSummaryView: View {
     NavigationLink(
       destination:PrivateCollectionView(account:action.account)
     ) {
-      HStack {
+      HStack(spacing:0) {
         labelOfAccount(account: action.account)
           .map { AnyView(Text($0)) }
         ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
-        Text(labelOfAction(action:action.action))
+        Text(" \(labelOfAction(action:action.action))")
         Image(systemName: "arrow.right.square.fill")
       }
     }

@@ -14,34 +14,27 @@ class FriendsFeedViewModel : ObservableObject {
   @Published var recentEvents: [FriendsFeedFetcher.NFTItem] = []
   var recentEventsPublished: Published<[FriendsFeedFetcher.NFTItem]> { _recentEvents }
   var recentEventsPublisher: Published<[FriendsFeedFetcher.NFTItem]>.Publisher { $recentEvents }
-
+  
   @Published var isInitialized = false
   
   private var isLoading = false
   private var isLoadingLatest = false
   
-  struct Fetchers {
-    var fromFetcher : FriendsFeedFetcher?
-    var toFetcher : FriendsFeedFetcher?
-  }
-  
-  private var fetcher : Promise<Fetchers>
+  private var fetcher : Promise<[FriendsFeedFetcher]>
   
   init(from:[EthereumAddress]) {
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      Fetchers(
-        fromFetcher: FriendsFeedFetcher(from: from,to:nil,fromBlock:fromBlock.quantity ),
-        toFetcher: nil)
+      [FriendsFeedFetcher(from: from,fromBlock:fromBlock.quantity )]
     }
   }
   
   init(owner:EthereumAddress) {
     
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      Fetchers(
-        fromFetcher: FriendsFeedFetcher(from: [owner],to:nil,fromBlock:fromBlock.quantity ),
-        toFetcher: FriendsFeedFetcher(from: nil,to:[owner],fromBlock:fromBlock.quantity )
-      )
+      [
+        FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity ),
+        FriendsFeedFetcher(to:[owner],fromBlock:fromBlock.quantity )
+      ]
     }
     
   }
@@ -58,30 +51,11 @@ class FriendsFeedViewModel : ObservableObject {
         
         var pendingCount = 0
         
-        fetcher.fromFetcher.map {
-          pendingCount = pendingCount + 1
-          $0.getRecentEvents(
-          onDone:{
-            pendingCount = pendingCount - 1
-            if (pendingCount == 0) {
-            callback();
-            DispatchQueue.main.async {
-              self.isLoading = false;
-              self.isInitialized = true
-            }
-            }
-            print("Done loading friend events")
-          }) { nft in
-            DispatchQueue.main.async {
-              self.recentEvents.append(nft)
-            }
-          }
-        }
-        
-        fetcher.toFetcher.map {
+        fetcher.forEach {
           pendingCount = pendingCount + 1
           $0.getRecentEvents(
             onDone:{
+              print("pendingCount",pendingCount)
               pendingCount = pendingCount - 1
               if (pendingCount == 0) {
                 callback();
@@ -97,8 +71,6 @@ class FriendsFeedViewModel : ObservableObject {
               }
             }
         }
-        
-        
       }
   }
   
@@ -126,23 +98,7 @@ class FriendsFeedViewModel : ObservableObject {
         
         var pendingCount = 0
         
-        fetcher.fromFetcher.map {
-          pendingCount = pendingCount + 1
-          $0.refreshLatestEvents(
-            onDone:{
-              pendingCount = pendingCount - 1
-              if (pendingCount == 0) {
-                self.isLoadingLatest = false;
-                callback();
-              }
-            }) { nft in
-              DispatchQueue.main.async {
-                self.recentEvents.insert(nft,at:0)
-              }
-            }
-        }
-        
-        fetcher.toFetcher.map {
+        fetcher.forEach {
           pendingCount = pendingCount + 1
           $0.refreshLatestEvents(
             onDone:{

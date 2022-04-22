@@ -100,7 +100,7 @@ struct RoundedImage: View {
               Spacer()
             }
             .padding([.top,.bottom],2)
-            .font(.caption)
+            .font(.footnote)
             .modifier(PriceOverlay())
             .padding([.leading,.trailing],15)
           }

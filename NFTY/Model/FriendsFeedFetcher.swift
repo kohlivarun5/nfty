@@ -25,37 +25,49 @@ class FriendsFeedFetcher {
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
-  init(from:[EthereumAddress]?,to:[EthereumAddress]?,fromBlock:BigUInt) {
+  let addressesFilter : [EthereumAddress]?
+  let action : Action.ActionType
+  
+  init(from:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    var blockDecrements = 5000
-    switch(from,to) {
-    case (.some(let addresses),.none),(.none,.some(let addresses)):
-      blockDecrements = addresses.count <= 1 ? 10000 : 5000
-    case (.none,.none):
-      blockDecrements = 1000
-    case (.some(_), .some(_)):
-      blockDecrements = 1000
-    }
+    let blockDecrements = BigUInt(5000)
+    self.addressesFilter = nil
+    self.action = .sold
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
-      fromBlock: fromBlock - BigUInt(blockDecrements),
+      fromBlock: fromBlock - blockDecrements,
       address: nil,
       cacheId : cacheId,
       topics: [
-        from.map {
           EthereumGetLogTopics.or(
-            $0.map {
+            from.map {
               try! ABI.encodeParameter(SolidityWrappedValue.address($0))
             }
-          )} ?? EthereumGetLogTopics.and(nil),
-        to.map {
-          EthereumGetLogTopics.or(
-            $0.map {
-              try! ABI.encodeParameter(SolidityWrappedValue.address($0))
-            }
-          )} ?? EthereumGetLogTopics.and(nil),
+          ),
+       EthereumGetLogTopics.and(nil),
       ],
-      blockDecrements: BigUInt(blockDecrements))
+      blockDecrements: blockDecrements)
+  }
+  
+  init(to:[EthereumAddress],fromBlock:BigUInt) {
+    let cacheId = "FriendsFeedFetcher.initFromBlock"
+    let blockDecrements = BigUInt(5000)
+    self.addressesFilter = to
+    self.action = .bought
+    self.logsFetcher = LogsFetcher(
+      event: self.Transfer,
+      fromBlock: fromBlock - blockDecrements,
+      address: nil,
+      cacheId : cacheId,
+      topics: [
+        EthereumGetLogTopics.and(nil),
+        EthereumGetLogTopics.or(
+          to.map {
+            try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+          }
+        )
+      ],
+      blockDecrements: blockDecrements)
   }
   
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
@@ -90,8 +102,17 @@ class FriendsFeedFetcher {
                 
                 guard let txInfo = txInfo else { return processed }
                 
+                switch(self.addressesFilter) {
+                case .some(let filter):
+                  if (filter.first(where: { $0 == txInfo.from }) == nil) {
+                    // tx from is not one of requested addresses, skip such as can be spam
+                    // return processed
+                  }
+                case .none:
+                  break
+                }
+                
                 guard let price = priceIfNotZero(txInfo.value) else { return processed }
-                // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
                 // TODO Fix : Bring price from tx /WETH
                 // print("log=",tokenId,log.transactionHash?.hex())
                 response(
@@ -112,7 +133,7 @@ class FriendsFeedFetcher {
                           ) // TODO
                         },
                         action:Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
-                                      action: .sold)
+                                      action:self.action)
                       ),
                       info: collection.info),
                     collection: collection)
