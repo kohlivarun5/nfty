@@ -137,7 +137,7 @@ class FriendsFeedFetcher {
                 case .some(let filter):
                   if (filter.first(where: { $0 == txInfo.from }) == nil) {
                     // tx from is not one of requested addresses, skip such as can be spam
-                    // return processed
+                    return processed
                   }
                 case .none:
                   break
