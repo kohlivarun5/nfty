@@ -8,16 +8,18 @@
 import Foundation
 import Cache
 import PromiseKit
+import FirebaseFirestore
 
 struct FirebaseJSONCache<Output:Codable> {
   
   let bucket : String
   let fallback : (_ in:String) -> Promise<Output?>
-  
-  private let firebase = FirebaseCore()
   private var diskCache : DiskStorage<String,Output>
   
+  let firebase = Firestore
+  
   init(bucket:String,fallback:@escaping (_ in:String) -> Promise<Output?>) {
+    self.firebase = Firestore.firestore()
     self.bucket = bucket
     self.fallback = fallback
     self.diskCache = try! DiskStorage<String, Output>(
@@ -34,7 +36,7 @@ struct FirebaseJSONCache<Output:Codable> {
     return self.fallback(key)
       .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Output?> in
         guard let data = data else { return Promise.value(nil) }
-        let _ = firebase.putObject(path:self.path(key), try! JSONEncoder().encode(data))
+        self.firebase.document(self.path(key)).setData(try! JSONEncoder().encode(data))
         return Promise.value(data)
       }
   }
@@ -47,23 +49,28 @@ struct FirebaseJSONCache<Output:Codable> {
         case .some(let data):
           return seal.fulfill(data)
         case .none:
-          firebase.getObject(path:self.path(key))
-            .map(on:DispatchQueue.global(qos:.userInteractive)) {
-              $0.flatMap { try? JSONDecoder().decode(Output.self, from: $0) }
-            }
-            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
-              switch(data) {
-              case .some(let data):
-                return Promise.value(data)
-              case .none:
-                return onCacheMiss(key)
+          Promise { seal in
+            self.firebase.document(self.path(key)).getDocument { (document, error) in
+              if let document = document, document.exists {
+                seal.fulfill(try? JSONDecoder().decode(Output.self, from: document.data()))
+              } else {
+                seal.fulfill(nil)
               }
-            }.map(on:DispatchQueue.global(qos:.userInteractive)) {
-              let _ = $0.flatMap { try? self.diskCache.setObject($0, forKey:key) }
-              return $0
             }
-            .done(seal.fulfill)
-            .catch(seal.reject)
+          }
+          .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
+            switch(data) {
+            case .some(let data):
+              return Promise.value(data)
+            case .none:
+              return onCacheMiss(key)
+            }
+          }.map(on:DispatchQueue.global(qos:.userInteractive)) {
+            let _ = $0.flatMap { try? self.diskCache.setObject($0, forKey:key) }
+            return $0
+          }
+          .done(seal.fulfill)
+          .catch(seal.reject)
         }
       }
     }
