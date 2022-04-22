@@ -20,24 +20,28 @@ struct FirebaseCore {
   func putObject(path:String, _ data:Data) -> Promise<Void>{
     return Promise { seal in
       // Upload the file to the path "images/rivers.jpg"
-      print("Calling firebase for PUT:\(path)")
-      getStorage().reference(withPath:path).putData(data, metadata: nil) { (metadata, error) in
-        seal.fulfill(())
-      }.resume()
+      DispatchQueue.global(qos:.userInteractive).async {
+        print("Calling firebase for PUT:\(path)")
+        getStorage().reference(withPath:path).putData(data, metadata: nil) { (metadata, error) in
+          seal.fulfill(())
+        }.resume()
+      }
     }
   }
   
   func getObject(path:String) -> Promise<Data?> {
     return Promise { seal in
-      print("Calling firebase for GET:\(path)")
-      getStorage().reference(withPath:path).getData(maxSize:maxSize) { data, error in
-        if let _ = error {
-          // print(error)
-          seal.fulfill(nil)
-        } else {
-          seal.fulfill(data)
-        }
-      }.resume()
+      DispatchQueue.global(qos:.userInitiated).async {
+        print("Calling firebase for GET:\(path)")
+        getStorage().reference(withPath:path).getData(maxSize:maxSize) { data, error in
+          if let _ = error {
+            // print(error)
+            seal.fulfill(nil)
+          } else {
+            seal.fulfill(data)
+          }
+        }.resume()
+      }
     }
   }
 }

@@ -10,29 +10,9 @@ import PromiseKit
 import Web3
 import Cache
 
-private var collectionNameCache = try! DiskStorage<String, String>(
-  config: DiskConfig(name: "erc721NameCache",expiry: .never),
-  transformer:TransformerFactory.forCodable(ofType:String.self))
-
 func erc721Collection(address:String) -> Promise<Collection?> {
-  
   guard let ethAddress = try? EthereumAddress(hex: address, eip55: false) else { return Promise<Collection?>.value(nil) }
-  
-  switch(try? collectionNameCache.object(forKey: address)) {
-  case .some(let name):
-    switch(name) {
-    case "":
-      return Promise.value(nil)
-    default:
-      return Promise.value(MakeErc721Collection.ofName(name: name, address: ethAddress))
-    }
-  default:
-    return MakeErc721Collection.ofAddress(address: ethAddress)
-      .map {
-        try? collectionNameCache.setObject($0?.info.name ?? "", forKey: address)
-        return $0
-      }
-  }
+  return MakeErc721Collection.ofAddress(address: ethAddress)
 }
 
 func openSeaCollection(address:String) -> Promise<Collection> {

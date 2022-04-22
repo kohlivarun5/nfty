@@ -26,11 +26,37 @@ class IpfsCollectionContract : ContractInterface {
       queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
       deadline:DispatchTimeInterval.milliseconds(50))
     
+    private static let base64JsonPrefix = "data:application/json;base64,"
+    private static let utf8JsonPrefix = "data:application/json;utf8,"
     func image(_ tokenId:BigUInt) -> Promise<Data?> {
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
+          if (uri.hasPrefix(IpfsImageEthContract.base64JsonPrefix)) {
+            do {
+              var index = uri.firstIndex(of: ",")!
+              uri.formIndex(after: &index)
+              let str : String = String(uri.suffix(from:index))
+              let data = Data(base64Encoded: str)!
+              return Promise.value(try JSONDecoder().decode(TokenUriData.self, from: data))
+            } catch {
+              return Promise(error: error)
+            }
+          }  else if(uri.hasPrefix(IpfsImageEthContract.utf8JsonPrefix)){
+            do {
+              var index = uri.firstIndex(of: ",")!
+              uri.formIndex(after: &index)
+              let str : String = String(uri.suffix(from:index))
+              let data = str.data(using:.utf8)!
+              return Promise.value(try JSONDecoder().decode(TokenUriData.self, from: data))
+            } catch {
+              return Promise(error: error)
+            }
+          }
+          
           return Promise { seal in
+            
+            
             
             switch(URL(string: ipfsUrl(uri))) {
             case .none:
@@ -82,6 +108,7 @@ class IpfsCollectionContract : ContractInterface {
               ImageLoadingSemaphore.wait()
               print("calling \(request.url!)")
               URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
+                if let error = error { return seal.reject(error) }
                 // print(data,response,error)
                 ImageLoadingSemaphore.signal()
                 seal.fulfill(data)
@@ -207,7 +234,7 @@ class IpfsCollectionContract : ContractInterface {
           return p
         case .none:
           let p =
-            self.ethContract.getTokenHistory(tokenId)
+          self.ethContract.getTokenHistory(tokenId)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -236,7 +263,7 @@ class IpfsCollectionContract : ContractInterface {
             fulfilled:
               Array(0...tokensNum-1).map { index -> Promise<Void> in
                 return
-                  self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
                   .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {
