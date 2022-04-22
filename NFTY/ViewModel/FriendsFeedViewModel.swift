@@ -31,10 +31,12 @@ class FriendsFeedViewModel : ObservableObject {
   init(owner:EthereumAddress) {
     
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      [
-        FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity ),
-        FriendsFeedFetcher(to:[owner],fromBlock:fromBlock.quantity )
-      ]
+      [FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity )]
+      //[FriendsFeedFetcher(to: [owner],fromBlock:fromBlock.quantity )]
+      /* [
+       FriendsFeedFetcher(from: [owner],fromBlock:fromBlock.quantity ),
+       FriendsFeedFetcher(to:[owner],fromBlock:fromBlock.quantity )
+       ] */
     }
     
   }
@@ -55,16 +57,16 @@ class FriendsFeedViewModel : ObservableObject {
           pendingCount = pendingCount + 1
           $0.getRecentEvents(
             onDone:{
-              print("pendingCount",pendingCount)
-              pendingCount = pendingCount - 1
-              if (pendingCount == 0) {
-                callback();
-                DispatchQueue.main.async {
+              DispatchQueue.main.async {
+                print("pendingCount",pendingCount)
+                pendingCount = pendingCount - 1
+                if (pendingCount <= 0) {
+                  callback();
                   self.isLoading = false;
                   self.isInitialized = true
+                  print("Done loading friend events")
                 }
               }
-              print("Done loading friend events")
             }) { nft in
               DispatchQueue.main.async {
                 self.recentEvents.append(nft)
@@ -102,10 +104,12 @@ class FriendsFeedViewModel : ObservableObject {
           pendingCount = pendingCount + 1
           $0.refreshLatestEvents(
             onDone:{
-              pendingCount = pendingCount - 1
-              if (pendingCount == 0) {
-                self.isLoadingLatest = false;
-                callback();
+              DispatchQueue.main.async {
+                pendingCount = pendingCount - 1
+                if (pendingCount <= 0) {
+                  self.isLoadingLatest = false;
+                  callback();
+                }
               }
             }) { nft in
               DispatchQueue.main.async {

@@ -26,7 +26,19 @@ class FriendsFeedFetcher {
   ])
   
   let addressesFilter : [EthereumAddress]?
+  
   let action : Action.ActionType
+  
+  private func actionOfLog(res:[String : Any]) -> Action {
+    switch(self.action) {
+    case .sold:
+      return Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
+                    action:self.action)
+    case .bought:
+      return Action(account: UserAccount(ethAddress: res["to"] as? EthereumAddress, nearAccount: nil),
+                    action:self.action)
+    }
+  }
   
   init(from:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
@@ -73,6 +85,7 @@ class FriendsFeedFetcher {
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
     var processed : Promise<Int> = Promise.value(0)
     
+    print("getRecentEvents")
     self.logsFetcher.fetchWithPromise(onDone: { (isFinal:Bool) in
       return processed.map { processed in
         if (isFinal || processed != 0) {
@@ -81,10 +94,10 @@ class FriendsFeedFetcher {
         }
         return processed
       }
-    },limit:2,retries:20) { log in
+    },limit:2,retries:10) { log in
       let p = processed.then { processed -> Promise<Int> in
         
-        //print("Log for Address=\(log.address.hex(eip55: true))");
+        print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
           .then  { collectionOpt -> Promise<Int> in
             
@@ -96,10 +109,17 @@ class FriendsFeedFetcher {
             
             guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
             // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+
+            guard let removed = log.removed else { return Promise.value(processed) }
+            if (removed) { return Promise.value(processed) }
             
-            return txFetcher.eventOfTx(transactionHash: log.transactionHash)
+            guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
+            
+            print("eventOfTx for ",transactionHash.hex())
+            return txFetcher.eventOfTx(transactionHash:transactionHash)
               .map { txInfo -> Int in
-                
+                  
+                print("txInfo",txInfo)
                 guard let txInfo = txInfo else { return processed }
                 
                 switch(self.addressesFilter) {
@@ -132,8 +152,7 @@ class FriendsFeedFetcher {
                             )
                           ) // TODO
                         },
-                        action:Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
-                                      action:self.action)
+                        action:self.actionOfLog(res:res)
                       ),
                       info: collection.info),
                     collection: collection)
@@ -153,6 +172,7 @@ class FriendsFeedFetcher {
   func refreshLatestEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
     var prev : Promise<Void> = Promise.value(())
     
+    print("refreshLatestEvents")
     self.logsFetcher.updateLatest(onDone: {
       _ = prev.done { onDone() }
     }) { (index,log) in

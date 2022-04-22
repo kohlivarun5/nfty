@@ -150,8 +150,20 @@ class WETHFetcher {
 
 var wethFetcher = WETHFetcher()
 
+func infuraSessionConfig() -> URLSessionConfiguration {
+  let infuraSessionConfig = URLSessionConfiguration.default
+  infuraSessionConfig.timeoutIntervalForRequest = 3.0
+  infuraSessionConfig.timeoutIntervalForResource = 5.0
+  return infuraSessionConfig
+}
 
-var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+var web3 = Web3(
+  provider: Web3HttpProvider(
+    rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921",
+    session: URLSession(configuration:infuraSessionConfig())
+  )
+)
+
 var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
 
 protocol TokenEventsFetcher {

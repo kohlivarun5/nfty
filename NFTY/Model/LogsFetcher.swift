@@ -155,15 +155,16 @@ class LogsFetcher {
   }
   
   func fetch(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
-    
+    print("self.fetch")
+    assert(false)
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
       toBlock: self.toBlock,
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
-    // print("Logs=\(params)")
     
+    print("Logs=\(params)")
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
@@ -201,23 +202,25 @@ class LogsFetcher {
   
   func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
-    // print("fetchWithPromise",self.fromBlock,self.toBlock)
+    print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
       fromBlock:.block(self.fromBlock),
       toBlock: self.toBlock,
       address:self.address.map { try! EthereumAddress(hex: $0, eip55: false) },
       topics: self.topics
     )
+    
     // print("Logs=\(params)")
     
     return web3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
+        print("fetchWithPromise",result.result?.count)
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements
-          // print("fetchWithPromise after",self.fromBlock,self.toBlock)
+          print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
-          // print("Found \(logs.count) logs")
+          print("Found \(logs.count) logs")
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
@@ -236,7 +239,7 @@ class LogsFetcher {
           
           _ = onDone(retries <= 0)
             .map { processed in
-              // print("Done with ",processed,limit,retries)
+              print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
                 self.fetchWithPromise(onDone:onDone,limit:limit,retries:retries-1,response);
               }

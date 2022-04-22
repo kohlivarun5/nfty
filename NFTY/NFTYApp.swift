@@ -193,9 +193,9 @@ struct NFTYApp: App {
       .onAppear {
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
-          CompositeCollection.getRecentTrades(currentIndex: 0) {
+          /* CompositeCollection.getRecentTrades(currentIndex: 0) {
             print("Loaded feed")
-          }
+          } */
         }
         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
         /*
