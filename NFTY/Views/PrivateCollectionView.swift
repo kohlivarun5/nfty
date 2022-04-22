@@ -74,9 +74,9 @@ struct PrivateCollectionView: View {
       
       switch(self.tokensPage) {
       case .activity:
-        FriendsFeedView(
-          events:FriendsFeedViewModel(
-            addresses: account.ethAddress.map { [$0] } ?? []))
+        account.ethAddress.map {
+          FriendsFeedView(events:FriendsFeedViewModel(owner:$0))
+        }
       case .owned:
         WalletTokensView(tokens: getOwnerTokens(account))
       case .sales:

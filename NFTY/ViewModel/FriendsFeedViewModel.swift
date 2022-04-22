@@ -20,10 +20,30 @@ class FriendsFeedViewModel : ObservableObject {
   private var isLoading = false
   private var isLoadingLatest = false
   
-  private var fetcher : Promise<FriendsFeedFetcher>
+  struct Fetchers {
+    var fromFetcher : FriendsFeedFetcher?
+    var toFetcher : FriendsFeedFetcher?
+  }
   
-  init(addresses:[EthereumAddress]) {
-    self.fetcher = web3.eth.blockNumber().map { fromBlock in FriendsFeedFetcher(addresses: addresses,fromBlock:fromBlock.quantity ) }
+  private var fetcher : Promise<Fetchers>
+  
+  init(from:[EthereumAddress]) {
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in
+      Fetchers(
+        fromFetcher: FriendsFeedFetcher(from: from,to:nil,fromBlock:fromBlock.quantity ),
+        toFetcher: nil)
+    }
+  }
+  
+  init(owner:EthereumAddress) {
+    
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in
+      Fetchers(
+        fromFetcher: FriendsFeedFetcher(from: [owner],to:nil,fromBlock:fromBlock.quantity ),
+        toFetcher: FriendsFeedFetcher(from: nil,to:[owner],fromBlock:fromBlock.quantity )
+      )
+    }
+    
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
@@ -35,12 +55,20 @@ class FriendsFeedViewModel : ObservableObject {
     _ = self.fetcher
       .done { fetcher in
         print("Loading friend events")
-        fetcher.getRecentEvents(
+        
+        var pendingCount = 0
+        
+        fetcher.fromFetcher.map {
+          pendingCount = pendingCount + 1
+          $0.getRecentEvents(
           onDone:{
+            pendingCount = pendingCount - 1
+            if (pendingCount == 0) {
             callback();
             DispatchQueue.main.async {
               self.isLoading = false;
               self.isInitialized = true
+            }
             }
             print("Done loading friend events")
           }) { nft in
@@ -48,6 +76,29 @@ class FriendsFeedViewModel : ObservableObject {
               self.recentEvents.append(nft)
             }
           }
+        }
+        
+        fetcher.toFetcher.map {
+          pendingCount = pendingCount + 1
+          $0.getRecentEvents(
+            onDone:{
+              pendingCount = pendingCount - 1
+              if (pendingCount == 0) {
+                callback();
+                DispatchQueue.main.async {
+                  self.isLoading = false;
+                  self.isInitialized = true
+                }
+              }
+              print("Done loading friend events")
+            }) { nft in
+              DispatchQueue.main.async {
+                self.recentEvents.append(nft)
+              }
+            }
+        }
+        
+        
       }
   }
   
@@ -72,15 +123,41 @@ class FriendsFeedViewModel : ObservableObject {
     self.isLoadingLatest = true;
     _ = self.fetcher
       .done { fetcher in
-        fetcher.refreshLatestEvents(
-          onDone:{
-            self.isLoadingLatest = false;
-            callback();
-          }) { nft in
-            DispatchQueue.main.async {
-              self.recentEvents.insert(nft,at:0)
+        
+        var pendingCount = 0
+        
+        fetcher.fromFetcher.map {
+          pendingCount = pendingCount + 1
+          $0.refreshLatestEvents(
+            onDone:{
+              pendingCount = pendingCount - 1
+              if (pendingCount == 0) {
+                self.isLoadingLatest = false;
+                callback();
+              }
+            }) { nft in
+              DispatchQueue.main.async {
+                self.recentEvents.insert(nft,at:0)
+              }
             }
-          }
+        }
+        
+        fetcher.toFetcher.map {
+          pendingCount = pendingCount + 1
+          $0.refreshLatestEvents(
+            onDone:{
+              pendingCount = pendingCount - 1
+              if (pendingCount == 0) {
+                self.isLoadingLatest = false;
+                callback();
+              }
+            }) { nft in
+              DispatchQueue.main.async {
+                self.recentEvents.insert(nft,at:0)
+              }
+            }
+        }
+        
       }
   }
   

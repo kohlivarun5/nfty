@@ -13,48 +13,6 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 
-public enum EthereumGetLogTopics : Decodable {
-  case or([String?])
-  case and(String?)
-}
-
-extension EthereumGetLogTopics : Encodable {
-  public func encode(to encoder: Encoder) throws {
-    switch(self) {
-    case .or(let topics):
-      var container = encoder.unkeyedContainer()
-      topics.forEach { try! container.encode($0) }
-    case .and(let topic):
-      var container = encoder.singleValueContainer()
-      try! container.encode(topic)
-    }
-  }
-}
-
-public struct EthereumGetLogParams: Codable {
-  public var fromBlock: EthereumQuantityTag?
-  public var toBlock: EthereumQuantityTag?
-  public var address: EthereumAddress?
-  public var topics:[EthereumGetLogTopics]
-}
-
-extension Web3.Eth {
-  public typealias Web3ResponseCompletion<Result: Codable> = (_ resp: Web3Response<Result>) -> Void
-  public func getLogs(
-    params: EthereumGetLogParams,
-    response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
-  ) {
-    print("calling web3.eth.getLogs")// with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
-    let req = RPCRequest<[EthereumGetLogParams]>(
-      id: properties.rpcId,
-      jsonrpc: Web3.jsonrpc,
-      method: "eth_getLogs",
-      params: [params]
-    )
-    properties.provider.send(request: req, response: response)
-  }
-}
-
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
   if (address == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {

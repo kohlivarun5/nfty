@@ -25,26 +25,37 @@ class FriendsFeedFetcher {
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
   ])
   
-  let addresses : [EthereumAddress]
-  
-  init(addresses:[EthereumAddress],fromBlock:BigUInt) {
+  init(from:[EthereumAddress]?,to:[EthereumAddress]?,fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(addresses.count <= 1 ? 10000: 5000)
+    var blockDecrements = 5000
+    switch(from,to) {
+    case (.some(let addresses),.none),(.none,.some(let addresses)):
+      blockDecrements = addresses.count <= 1 ? 10000 : 5000
+    case (.none,.none):
+      blockDecrements = 1000
+    case (.some(_), .some(_)):
+      blockDecrements = 1000
+    }
     self.logsFetcher = LogsFetcher(
       event: self.Transfer,
-      fromBlock: fromBlock - blockDecrements,
+      fromBlock: fromBlock - BigUInt(blockDecrements),
       address: nil,
       cacheId : cacheId,
       topics: [
-        EthereumGetLogTopics.or(
-          addresses.map {
-            try! ABI.encodeParameter(SolidityWrappedValue.address($0))
-          }
-        ),
-        EthereumGetLogTopics.and(nil),
+        from.map {
+          EthereumGetLogTopics.or(
+            $0.map {
+              try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+            }
+          )} ?? EthereumGetLogTopics.and(nil),
+        to.map {
+          EthereumGetLogTopics.or(
+            $0.map {
+              try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+            }
+          )} ?? EthereumGetLogTopics.and(nil),
       ],
-      blockDecrements: blockDecrements)
-    self.addresses = addresses
+      blockDecrements: BigUInt(blockDecrements))
   }
   
   func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (NFTItem) -> Void) {
@@ -63,56 +74,56 @@ class FriendsFeedFetcher {
         
         //print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-        .then  { collectionOpt -> Promise<Int> in
-          
-          guard let collection = collectionOpt else { return Promise.value(processed) }
-          
-          let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-          
-          // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
-          
-          guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
-          // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
-          
-          return txFetcher.eventOfTx(transactionHash: log.transactionHash)
-            .map { txInfo -> Int in
-              
-              guard let txInfo = txInfo else { return processed }
-              
-              guard let price = priceIfNotZero(txInfo.value) else { return processed }
-              // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
-              // TODO Fix : Bring price from tx /WETH
-              // print("log=",tokenId,log.transactionHash?.hex())
-              response(
-                FriendsFeedFetcher.NFTItem(
-                  nft: NFTWithPriceAndInfo(
-                    nftWithPrice: NFTWithPrice(
-                      nft:collection.contract.getNFT(tokenId),
-                      blockNumber: log.blockNumber.map { .ethereum($0) },
-                      indicativePrice:.lazy {
-                        ObservablePromise(
-                          resolved:NFTPriceStatus.known(
-                            NFTPriceInfo(
-                              wei: price,
-                              blockNumber:.ethereum(txInfo.blockNumber),
-                              type: .transfer
+          .then  { collectionOpt -> Promise<Int> in
+            
+            guard let collection = collectionOpt else { return Promise.value(processed) }
+            
+            let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+            
+            // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
+            
+            guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
+            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+            
+            return txFetcher.eventOfTx(transactionHash: log.transactionHash)
+              .map { txInfo -> Int in
+                
+                guard let txInfo = txInfo else { return processed }
+                
+                guard let price = priceIfNotZero(txInfo.value) else { return processed }
+                // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
+                // TODO Fix : Bring price from tx /WETH
+                // print("log=",tokenId,log.transactionHash?.hex())
+                response(
+                  FriendsFeedFetcher.NFTItem(
+                    nft: NFTWithPriceAndInfo(
+                      nftWithPrice: NFTWithPrice(
+                        nft:collection.contract.getNFT(tokenId),
+                        blockNumber: log.blockNumber.map { .ethereum($0) },
+                        indicativePrice:.lazy {
+                          ObservablePromise(
+                            resolved:NFTPriceStatus.known(
+                              NFTPriceInfo(
+                                wei: price,
+                                blockNumber:.ethereum(txInfo.blockNumber),
+                                type: .transfer
+                              )
                             )
-                          )
-                        ) // TODO
-                      },
-                      action:Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
-                                    action: .sold)
-                    ),
-                    info: collection.info),
-                  collection: collection)
-              )
-              return processed + 1
-              
-            }
-        }.recover { error -> Promise<Int> in
-          print(error)
-          return Promise.value(processed)
-        }
+                          ) // TODO
+                        },
+                        action:Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
+                                      action: .sold)
+                      ),
+                      info: collection.info),
+                    collection: collection)
+                )
+                return processed + 1
+                
+              }
+          }.recover { error -> Promise<Int> in
+            print(error)
+            return Promise.value(processed)
+          }
       }
       processed = p
     }
