@@ -46,6 +46,8 @@ struct ActionSummaryView: View {
           .map { AnyView(Text($0)) }
         ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
         Text(labelOfAction(action:action.action))
+        Image(systemName: "arrow.right.square.fill")
+          .foregroundColor(.tertiaryLabel)
       }
     }
   }
