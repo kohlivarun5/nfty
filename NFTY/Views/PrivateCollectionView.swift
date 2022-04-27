@@ -121,7 +121,7 @@ struct PrivateCollectionView: View {
       guard let address = self.account.ethAddress else { return }
       ENSContract.nameOfOwner(address, eth: web3.eth)
         .done(on:.main) { $0.map { self.friendName = $0 } }
-      
+        .catch { print($0) }
     }
     .alert(isPresented: $showDialog,
            TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
