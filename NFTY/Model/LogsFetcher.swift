@@ -236,16 +236,17 @@ class LogsFetcher {
             response(log)
           }
           
-          _ = onDone(retries <= 0)
+          onDone(retries <= 0)
             .map { processed in
               // print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
                 self.fetchWithPromise(onDone:onDone,limit:limit,retries:retries-1,response);
               }
             }
+            .catch { print($0) }
         } else {
           print(result)
-          _ = onDone(retries <= 0)
+          onDone(retries <= 0).catch { print($0) }
         }
         
       }

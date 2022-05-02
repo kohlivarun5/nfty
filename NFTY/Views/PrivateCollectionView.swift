@@ -96,12 +96,8 @@ struct PrivateCollectionView: View {
           }
         }),
              label: Text("")) {
-        if (self.account.ethAddress != nil) {
-          Text("Sold").tag(TokensPage.sold.rawValue)
-        }
-        if (self.account.ethAddress != nil) {
-          Text("Bought").tag(TokensPage.bought.rawValue)
-        }
+        if (self.account.ethAddress != nil) { Text("Sold").tag(TokensPage.sold.rawValue) }
+        // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
         Text("Owned").tag(TokensPage.owned.rawValue)
         Text("Sales").tag(TokensPage.sales.rawValue)
       }

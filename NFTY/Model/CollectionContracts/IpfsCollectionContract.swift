@@ -24,7 +24,9 @@ class IpfsCollectionContract : ContractInterface {
     
     static let UrlSession = UrlTaskThrottle(
       queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
-      deadline:DispatchTimeInterval.milliseconds(50))
+      deadline:DispatchTimeInterval.milliseconds(50),
+      timeoutIntervalForRequest:5.0,
+      timeoutIntervalForResource: 10.0)
     
     private static let base64JsonPrefix = "data:application/json;base64,"
     private static let utf8JsonPrefix = "data:application/json;utf8,"
@@ -65,27 +67,29 @@ class IpfsCollectionContract : ContractInterface {
               var request = URLRequest(url:url)
               request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
-              print("calling \(request.url!)")
-              IpfsImageEthContract.UrlSession.enqueue(with: request,completionHandler:{ data, response, error -> Void in
-                // print(data,response,error)
-                do {
-                  switch(data) {
-                  case .some(let data):
-                    if (data.isEmpty) {
+              IpfsImageEthContract.UrlSession.enqueue(
+                with: request,
+                completionHandler:{ data, response, error -> Void in
+                  // print(data,response,error)
+                  do {
+                    switch(data) {
+                    case .some(let data):
+                      if (data.isEmpty) {
+                        // print(data,response,error)
+                        seal.reject(NSError(domain:"", code:404, userInfo:nil))
+                      } else {
+                        seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                      }
+                    case .none:
                       // print(data,response,error)
-                      seal.reject(NSError(domain:"", code:404, userInfo:nil))
-                    } else {
-                      seal.fulfill(try JSONDecoder().decode(TokenUriData.self, from: data))
+                      seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
                     }
-                  case .none:
-                    // print(data,response,error)
-                    seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
+                  } catch {
+                    print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
+                    seal.reject(error)
                   }
-                } catch {
-                  print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
-                  seal.reject(error)
                 }
-              })
+              )
             }
           }
           
@@ -105,14 +109,14 @@ class IpfsCollectionContract : ContractInterface {
               var request = URLRequest(url:url)
               request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
               
-              ImageLoadingSemaphore.wait()
-              print("calling \(request.url!)")
-              URLSession.shared.dataTask(with: request,completionHandler:{ data, response, error -> Void in
-                if let error = error { return seal.reject(error) }
-                // print(data,response,error)
-                ImageLoadingSemaphore.signal()
-                seal.fulfill(data)
-              }).resume()
+              IpfsImageEthContract.UrlSession.enqueue(
+                with: request,
+                completionHandler:{ data, response, error -> Void in
+                  if let error = error { return seal.reject(error) }
+                  // print(data,response,error)
+                  seal.fulfill(data)
+                }
+              )
             }
           }
         }
