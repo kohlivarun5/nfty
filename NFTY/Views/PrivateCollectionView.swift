@@ -96,12 +96,8 @@ struct PrivateCollectionView: View {
           }
         }),
              label: Text("")) {
-        if (self.account.ethAddress != nil) {
-          Text("Sold").tag(TokensPage.sold.rawValue)
-        }
-        if (self.account.ethAddress != nil) {
-          Text("Bought").tag(TokensPage.bought.rawValue)
-        }
+        if (self.account.ethAddress != nil) { Text("Sold").tag(TokensPage.sold.rawValue) }
+        // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
         Text("Owned").tag(TokensPage.owned.rawValue)
         Text("Sales").tag(TokensPage.sales.rawValue)
       }
@@ -117,6 +113,11 @@ struct PrivateCollectionView: View {
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       self.friendName = friends?[key]
       self.fallbackName = friendName ?? account.nearAccount
+      
+      guard let address = self.account.ethAddress else { return }
+      ENSContract.nameOfOwner(address, eth: web3.eth)
+        .done(on:.main) { $0.map { self.friendName = $0 } }
+        .catch { print($0) }
     }
     .alert(isPresented: $showDialog,
            TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in

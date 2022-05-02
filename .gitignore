@@ -1,3 +1,4 @@
 DownloadCryptoPunks/Images/**
 *_small.json
 data
+./NFTY/Model/ENSContract.swift

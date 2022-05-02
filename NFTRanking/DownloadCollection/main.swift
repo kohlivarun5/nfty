@@ -67,10 +67,45 @@ let downloaders = [
   )
 ]
 
-// exit
 
-let fetcher = OpenSeaGQL.floorFetcher(collection:try! EthereumAddress(hex: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e", eip55: true))
-try! hang(fetcher.fetchNext(offset:0,limit:40))
+var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
+
+let hash = ENSContract.namehash("chilluminati.eth")
+let contract = ENSContract(eth: web3.eth)
+
+print(try? hang(
+  ENSContract.nameToOwner("chilluminati.eth", eth: web3.eth)
+    .then { (address:EthereumAddress?) -> Promise<String?> in
+      print("Owner=",address?.hex(eip55: true));
+      switch(address) {
+      case .some(let address):
+        return ENSContract.nameOfOwner(address, eth: web3.eth)
+          .map {
+            print("name=",$0);
+            return $0
+          }
+      case .none:
+        return Promise.value(nil)
+      }
+    }
+  )
+      )
+
+
+// print(ENSContract.namehash("chilluminati.eth"))
+
+// https://etherscan.io/address/0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e#readContract
+// -> resolver for namehash
+// resolver : https://etherscan.io/address/0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41#readProxyContract
+// -> add for namehash
+
+// print(ENSContract.namehash("Ae71923d145ec0eAEDb2CF8197A08f12525Bddf4.addr.reverse".lowercased()))
+// https://etherscan.io/address/0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e#readContract
+// -> resolver for namehash (lowercased address +++)
+// resolver : https://etherscan.io/address/0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41#readProxyContract
+// -> add for namehash
+
+
 
 //
 // THIS IS DEPRECATED, Use ipget to download directly

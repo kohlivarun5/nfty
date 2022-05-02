@@ -170,7 +170,7 @@ class CryptoPunksContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
+    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
       return getBidAskSerial(tokenIds: tokenIds,side,wait:0.0005, getter: self.getBidAsk)
     }
   }

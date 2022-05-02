@@ -13,13 +13,13 @@ class UrlTaskThrottle {
   let deadline:DispatchTimeInterval
   let urlSession : URLSession
   
-  init(queue:DispatchQueue,deadline:DispatchTimeInterval) {
+  init(queue:DispatchQueue,deadline:DispatchTimeInterval,timeoutIntervalForRequest:Double,timeoutIntervalForResource:Double) {
     self.queue = queue
     self.deadline = deadline
     
     let configuration = URLSessionConfiguration.default
-    configuration.timeoutIntervalForRequest = 3.0
-    configuration.timeoutIntervalForResource = 5.0
+    configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
+    configuration.timeoutIntervalForResource = timeoutIntervalForResource
     
     self.urlSession = URLSession(configuration:configuration)
   }

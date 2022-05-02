@@ -309,7 +309,7 @@ class NearNFTContract : ContractInterface {
       }
     }
     
-    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
+    func getBidAsk(_ tokenIds: [BigUInt],_ side:Side) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
       return getBidAskSerial(tokenIds: tokenIds,side,wait:0.005, getter: self.getBidAsk)
     }
     var actions : TradeActionsInterface? = nil

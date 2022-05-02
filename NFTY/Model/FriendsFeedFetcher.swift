@@ -45,7 +45,7 @@ class FriendsFeedFetcher {
   
   init(from:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(5000)
+    let blockDecrements = BigUInt(1000)
     self.limit = 2
     self.retries = 10
     self.addressesFilter = nil
@@ -63,7 +63,7 @@ class FriendsFeedFetcher {
             try! ABI.encodeParameter(SolidityWrappedValue.address($0))
           }
         ),
-       EthereumGetLogTopics.and(nil),
+        EthereumGetLogTopics.and(nil),
       ],
       blockDecrements: blockDecrements)
   }
@@ -108,42 +108,42 @@ class FriendsFeedFetcher {
     },limit:self.limit,retries:self.retries) { log in
       let p = processed.then { processed -> Promise<Int> in
         
-        // print("Log for Address=\(log.address.hex(eip55: true))");
-        return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-          .then  { collectionOpt -> Promise<Int> in
+        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+        
+        // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
+        
+        guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
+        // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+        
+        guard let removed = log.removed else { return Promise.value(processed) }
+        if (removed) { return Promise.value(processed) }
+        
+        guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
+        
+        // print("eventOfTx for ",transactionHash.hex())
+        return txFetcher.eventOfTx(transactionHash:transactionHash)
+          .then { txInfo -> Promise<Int> in
             
-            guard let collection = collectionOpt else { return Promise.value(processed) }
+            guard let txInfo = txInfo else { return Promise.value(processed) }
             
-            let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+            switch(self.addressesFilter) {
+            case .some(let filter):
+              if (filter.first(where: { $0 == txInfo.from }) == nil) {
+                // tx from is not one of requested addresses, skip such as can be spam
+                return Promise.value(processed)
+              }
+            case .none:
+              break
+            }
             
-            // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
+            guard let price = priceIfNotZero(txInfo.value) else { return Promise.value(processed) }
             
-            guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
-            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
-
-            guard let removed = log.removed else { return Promise.value(processed) }
-            if (removed) { return Promise.value(processed) }
-            
-            guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
-            
-            // print("eventOfTx for ",transactionHash.hex())
-            return txFetcher.eventOfTx(transactionHash:transactionHash)
-              .map { txInfo -> Int in
-                  
-                // print("txInfo",txInfo)
-                guard let txInfo = txInfo else { return processed }
+            // print("Log for Address=\(log.address.hex(eip55: true))");
+            return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
+              .map  { collectionOpt -> Int in
                 
-                switch(self.addressesFilter) {
-                case .some(let filter):
-                  if (filter.first(where: { $0 == txInfo.from }) == nil) {
-                    // tx from is not one of requested addresses, skip such as can be spam
-                    return processed
-                  }
-                case .none:
-                  break
-                }
+                guard let collection = collectionOpt else { return processed }
                 
-                guard let price = priceIfNotZero(txInfo.value) else { return processed }
                 // TODO Fix : Bring price from tx /WETH
                 // print("log=",tokenId,log.transactionHash?.hex())
                 response(
@@ -185,7 +185,7 @@ class FriendsFeedFetcher {
     
     print("refreshLatestEvents")
     self.logsFetcher.updateLatest(onDone: {
-      _ = prev.done { onDone() }
+      prev.done { onDone() }.catch { print($0); onDone() }
     }) { (index,log) in
       let p = prev.then { () -> Promise<Void> in
         
@@ -202,7 +202,7 @@ class FriendsFeedFetcher {
             guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
             // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
             // TODO Fix : Bring price from tx /WETH
-            _ = txFetcher.eventOfTx(transactionHash: log.transactionHash)
+            txFetcher.eventOfTx(transactionHash: log.transactionHash)
               .map { txInfo in
                 
                 guard let txInfo = txInfo else { return }
@@ -231,6 +231,7 @@ class FriendsFeedFetcher {
                     collection: collection)
                 )
               }
+              .catch { print($0) }
           }.recover { error -> Promise<Void> in
             print(error)
             return Promise.value(())
