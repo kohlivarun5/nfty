@@ -38,11 +38,11 @@ enum Side {
 
 protocol TokenTradeInterface {
   func getBidAsk(_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk>
-  func getBidAsk(_ tokenIds:[BigUInt],_ side:Side?) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]>
+  func getBidAsk(_ tokenIds:[BigUInt],_ side:Side) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]>
   var actions : TradeActionsInterface? { get }
 }
 
-func getBidAskSerial(tokenIds:[BigUInt],_ side:Side?,wait:Double,getter: @escaping (_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk>) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
+func getBidAskSerial(tokenIds:[BigUInt],_ side:Side,wait:Double,getter: @escaping (_ tokenId:BigUInt,_ side:Side?) -> Promise<BidAsk>) -> Promise<[(tokenId:BigUInt,bidAsk:BidAsk)]> {
   return tokenIds.reduce(Promise.value([]), { (accu,tokenId) in
     accu.then { accu in
       getter(tokenId,side)
