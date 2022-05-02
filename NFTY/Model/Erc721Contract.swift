@@ -199,20 +199,16 @@ class Erc721Contract {
     }
     
     func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void) {
-      var reachedMint = false
-      
       return transferFetcher.fetchAllLogs(onDone: {
-        if (reachedMint) { onDone() }
+        onDone()
       }) { log in
+        
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
         let from = res["from"] as! EthereumAddress
-        
         var type : TradeEventType? = nil
         
-        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
-          reachedMint = true
-          type = .minted
-        }
+        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000"))
+        { type = .minted }
           
         txFetcher.eventOfTx(transactionHash: log.transactionHash)
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
@@ -240,7 +236,7 @@ class Erc721Contract {
             }
           }
           .done { response($0) }
-          .catch { print($0) }
+          .catch { print("Errored on event",$0) }
       }
     }
   }
