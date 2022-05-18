@@ -94,7 +94,6 @@ struct WalletTokensView: View {
       switch (tokens.state) {
       case .notLoaded,.loading:
         VStack {
-          WalletOverview(account:tokens.account)
           Spacer()
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
@@ -110,7 +109,6 @@ struct WalletTokensView: View {
       case .loaded,.loadingMore:
         if (tokens.tokens.isEmpty) {
           VStack {
-            WalletOverview(account:tokens.account)
             Spacer()
             Text("No Collectibles in Wallet")
               .font(.title)
@@ -120,8 +118,6 @@ struct WalletTokensView: View {
         } else {
           GeometryReader { metrics in
             ScrollView {
-              WalletOverview(account:tokens.account)
-              
               LazyVGrid(
                 columns: Array(
                   repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : min(200,(metrics.size.width - 40) / Double(2)))),

@@ -45,6 +45,7 @@ struct WalletView: View {
         ConnectWalletSheet(userWallet:userWallet)
       case .some(let account):
         VStack(spacing:0) {
+          WalletOverview(account:account)
           switch(self.tokensPage) {
           case .owned:
             WalletTokensView(tokens: getOwnerTokens(account))

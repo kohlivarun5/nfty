@@ -20,16 +20,16 @@ struct PrivateCollectionView: View {
   
   enum TokensPage : Int {
     case bought
-    case sold
-    case owned
     case sales
+    case owned
+    case for_sale
   }
   
   @State private var tokensPage : TokensPage
   
   init(account:UserAccount) {
     self.account = account
-    _tokensPage = State(initialValue: self.account.ethAddress == nil ? .owned : .sold)
+    _tokensPage = State(initialValue: self.account.ethAddress == nil ? .owned : .sales)
   }
   
   private func key() -> String? {
@@ -73,20 +73,11 @@ struct PrivateCollectionView: View {
     
     VStack(spacing:0) {
       
-      switch(self.tokensPage) {
-      case .bought:
-        account.ethAddress.map {
-          FriendsFeedView(events:FriendsFeedViewModel(to:$0))
-        }
-      case .sold:
-        account.ethAddress.map {
-          FriendsFeedView(events:FriendsFeedViewModel(from:$0))
-        }
-      case .owned:
-        WalletTokensView(tokens: getOwnerTokens(account))
-      case .sales:
-        ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
-      }
+      ProfileViewHeader(name:friendName,account:account)
+        .padding(.top,-40)
+        .padding([.leading,.trailing],60)
+        .padding(.bottom,10)
+        .navigationBarTitle("",displayMode:.inline)
       
       Picker(selection: Binding<Int>(
         get: { self.tokensPage.rawValue },
@@ -96,16 +87,29 @@ struct PrivateCollectionView: View {
           }
         }),
              label: Text("")) {
-        if (self.account.ethAddress != nil) { Text("Sold").tag(TokensPage.sold.rawValue) }
+        if (self.account.ethAddress != nil) { Text("Sales").tag(TokensPage.sales.rawValue) }
         // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
         Text("Owned").tag(TokensPage.owned.rawValue)
-        Text("Sales").tag(TokensPage.sales.rawValue)
+        Text("For Sale").tag(TokensPage.for_sale.rawValue)
       }
              .pickerStyle(SegmentedPickerStyle())
              .colorMultiply(.accentColor)
              .padding([.trailing,.leading])
-             .padding(.top,5)
-             .padding(.bottom,7)
+      
+      switch(self.tokensPage) {
+      case .bought:
+        account.ethAddress.map {
+          FriendsFeedView(events:FriendsFeedViewModel(to:$0))
+        }
+      case .sales:
+        account.ethAddress.map {
+          FriendsFeedView(events:FriendsFeedViewModel(from:$0))
+        }
+      case .owned:
+        WalletTokensView(tokens: getOwnerTokens(account))
+      case .for_sale:
+        ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
+      }
       
     }
     .onAppear {
@@ -125,7 +129,7 @@ struct PrivateCollectionView: View {
         self.setFriend(text)
       }
     })
-    .navigationBarTitle(friendName ?? "Private Collection",displayMode: .inline)
+    //.navigationBarTitle(friendName ?? "Private Collection",displayMode: .inline)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
       leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
@@ -141,5 +145,6 @@ struct PrivateCollectionView: View {
           .renderingMode(.original)
       })
     )
+    .ignoresSafeArea(edges:.top)
   }
 }
