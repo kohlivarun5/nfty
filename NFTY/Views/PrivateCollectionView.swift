@@ -71,12 +71,11 @@ struct PrivateCollectionView: View {
   
   var body: some View {
     
-    VStack(spacing:0) {
+    VStack(spacing:10) {
       
       ProfileViewHeader(name:friendName,account:account)
         .padding(.top,-40)
         .padding([.leading,.trailing],60)
-        .padding(.bottom,10)
         .navigationBarTitle("",displayMode:.inline)
       
       Picker(selection: Binding<Int>(
