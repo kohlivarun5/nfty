@@ -11,7 +11,6 @@ import PromiseKit
 
 struct NftDetail: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   @EnvironmentObject var userWallet: UserWallet
   
   let nft:NFT
@@ -209,11 +208,7 @@ struct NftDetail: View {
         }
       }
       .navigationBarTitle("",displayMode:.large)
-      .navigationBarBackButtonHidden(true)
       .navigationBarItems(
-        leading:
-          Button(action: {presentationMode.wrappedValue.dismiss()},
-                 label: { BackButton() }),
         trailing: Menu(
           content: {
             Button("Export", action: { self.sharePicker = .post })
@@ -223,7 +218,6 @@ struct NftDetail: View {
           label: {
             Image(systemName: "arrowshape.turn.up.forward.circle")
               .foregroundColor(collection.info.themeLabelColor)
-              .font(.title3)
           }
         )
       )

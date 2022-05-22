@@ -9,7 +9,6 @@ import SwiftUI
 import Web3
 
 struct PrivateCollectionView: View {
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
   @State private var friendName : String? = nil
   @State private var fallbackName : String? = nil
@@ -129,9 +128,7 @@ struct PrivateCollectionView: View {
       }
     })
     .navigationBarTitle("",displayMode:.inline)
-    .navigationBarBackButtonHidden(true)
     .navigationBarItems(
-      leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
       trailing: Button(action: {
         switch (self.friendName) {
         case .none:

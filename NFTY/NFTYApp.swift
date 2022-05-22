@@ -146,6 +146,15 @@ struct NFTYApp: App {
   
   @StateObject var userWallet = UserWallet()
   
+  init() {
+    if let image = UIImage(systemName: "chevron.backward.circle.fill") {
+      UINavigationBar.appearance().backIndicatorImage = image
+      UINavigationBar.appearance().backIndicatorTransitionMaskImage = image
+    }
+    
+    UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
+  }
+  
   var body: some Scene {
     WindowGroup {
       TabView {

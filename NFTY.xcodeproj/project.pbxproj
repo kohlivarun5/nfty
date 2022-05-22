@@ -95,7 +95,6 @@
 		4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */; };
 		4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C6981264F6483005B9A23 /* AutoglyphView.swift */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
-		4F4CA8062635D813001534A6 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8052635D813001534A6 /* BackButton.swift */; };
 		4F4DD21B265DDE3C00AD320D /* NftUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */; };
 		4F4DD21D265DF1F400AD320D /* UserUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21C265DF1F400AD320D /* UserUrlView.swift */; };
 		4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */; };
@@ -548,7 +547,6 @@
 		4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerProfileLinkButton.swift; sourceTree = "<group>"; };
 		4F4C6981264F6483005B9A23 /* AutoglyphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoglyphView.swift; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
-		4F4CA8052635D813001534A6 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		4F4DD21A265DDE3C00AD320D /* NftUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftUrlView.swift; sourceTree = "<group>"; };
 		4F4DD21C265DF1F400AD320D /* UserUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUrlView.swift; sourceTree = "<group>"; };
 		4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabelWithShare.swift; sourceTree = "<group>"; };
@@ -975,7 +973,6 @@
 				4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
 				4F4C6981264F6483005B9A23 /* AutoglyphView.swift */,
-				4F4CA8052635D813001534A6 /* BackButton.swift */,
 				4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */,
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
@@ -1749,7 +1746,6 @@
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
 				4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
-				4F4CA8062635D813001534A6 /* BackButton.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
