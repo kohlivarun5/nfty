@@ -75,8 +75,8 @@ struct PrivateCollectionView: View {
       
       ProfileViewHeader(name:friendName,account:account)
         .padding(.top,-40)
-        .padding([.leading,.trailing],60)
-        .navigationBarTitle("",displayMode:.inline)
+        .padding(.leading,25)
+        .padding(.trailing,55)
       
       Picker(selection: Binding<Int>(
         get: { self.tokensPage.rawValue },
@@ -128,7 +128,7 @@ struct PrivateCollectionView: View {
         self.setFriend(text)
       }
     })
-    //.navigationBarTitle(friendName ?? "Private Collection",displayMode: .inline)
+    .navigationBarTitle("",displayMode:.inline)
     .navigationBarBackButtonHidden(true)
     .navigationBarItems(
       leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
