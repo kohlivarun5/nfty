@@ -15,21 +15,15 @@ struct PrivateCollectionView: View {
   
   @State private var showDialog = false
   
-  let account : UserAccount
-  
   enum TokensPage : Int {
     case bought
     case sales
     case owned
     case for_sale
   }
+  @State private var tokensPage : TokensPage = .owned
   
-  @State private var tokensPage : TokensPage
-  
-  init(account:UserAccount) {
-    self.account = account
-    _tokensPage = State(initialValue: self.account.ethAddress == nil ? .owned : .sales)
-  }
+  let account : UserAccount
   
   private func key() -> String? {
     switch(account.ethAddress,account.nearAccount) {
@@ -73,9 +67,20 @@ struct PrivateCollectionView: View {
     VStack(spacing:10) {
       
       ProfileViewHeader(name:friendName,account:account)
-        .padding(.top,-40)
+        //.padding(.top,40)
         .padding(.leading,25)
-        .padding(.trailing,55)
+        .padding(.trailing,10)
+        .onAppear {
+          guard let key = key() else { return }
+          let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+          self.friendName = friends?[key]
+          self.fallbackName = friendName ?? account.nearAccount
+          
+          guard let address = self.account.ethAddress else { return }
+          ENSContract.nameOfOwner(address, eth: web3.eth)
+            .done(on:.main) { $0.map { self.friendName = $0 } }
+            .catch { print($0) }
+        }
       
       Picker(selection: Binding<Int>(
         get: { self.tokensPage.rawValue },
@@ -85,9 +90,9 @@ struct PrivateCollectionView: View {
           }
         }),
              label: Text("")) {
+        Text("Owned").tag(TokensPage.owned.rawValue)
         if (self.account.ethAddress != nil) { Text("Sales").tag(TokensPage.sales.rawValue) }
         // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
-        Text("Owned").tag(TokensPage.owned.rawValue)
         Text("For Sale").tag(TokensPage.for_sale.rawValue)
       }
              .pickerStyle(SegmentedPickerStyle())
@@ -110,24 +115,8 @@ struct PrivateCollectionView: View {
       }
       
     }
-    .onAppear {
-      guard let key = key() else { return }
-      let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
-      self.friendName = friends?[key]
-      self.fallbackName = friendName ?? account.nearAccount
-      
-      guard let address = self.account.ethAddress else { return }
-      ENSContract.nameOfOwner(address, eth: web3.eth)
-        .done(on:.main) { $0.map { self.friendName = $0 } }
-        .catch { print($0) }
-    }
-    .alert(isPresented: $showDialog,
-           TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
-      if let text = result {
-        self.setFriend(text)
-      }
-    })
     .navigationBarTitle("",displayMode:.inline)
+    .ignoresSafeArea(edges: .top)
     .navigationBarItems(
       trailing: Button(action: {
         switch (self.friendName) {
@@ -141,6 +130,12 @@ struct PrivateCollectionView: View {
           .renderingMode(.original)
       })
     )
-    .ignoresSafeArea(edges:.top)
+    .alert(isPresented: $showDialog,
+           TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
+      if let text = result {
+        self.setFriend(text)
+      }
+    })
+    
   }
 }

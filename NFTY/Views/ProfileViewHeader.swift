@@ -33,7 +33,7 @@ struct ProfileViewHeader: View {
       .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
       .shadow(color:.accentColor,radius:0)
       
-      VStack(spacing:5) {
+      VStack(alignment:.leading,spacing:5) {
         name.map { name in
           HStack {
             Text(name)
@@ -43,17 +43,10 @@ struct ProfileViewHeader: View {
         }
         
         balance.map { wei in
-          HStack {
-            Spacer()
-            UsdEthVText(price:.wei(wei.quantity),fontWeight: .semibold,alignment:.trailing)
-              .foregroundColor(.secondary)
-          }
+          UsdEthVText(price:.wei(wei.quantity),fontWeight: .semibold,alignment:.leading)
+            .foregroundColor(.secondary)
         }
-        
       }
-      .padding(10)
-      .background(Color.secondarySystemBackground)
-      .cornerRadius(10)
     }
     
     .onAppear {
