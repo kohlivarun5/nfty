@@ -62,14 +62,18 @@ struct PrivateCollectionView: View {
     }
   }
   
+  let nft = SampleToken
+  let collection = SampleCollection
+  
   var body: some View {
     
-    VStack(spacing:10) {
+    
+    VStack(spacing:0) {
       
       ProfileViewHeader(name:friendName,account:account)
-        //.padding(.top,40)
-        .padding(.leading,25)
-        .padding(.trailing,10)
+        .padding(.top,50)
+        .padding(.bottom,10)
+        .background(Color.secondarySystemBackground)
         .onAppear {
           guard let key = key() else { return }
           let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
@@ -82,40 +86,46 @@ struct PrivateCollectionView: View {
             .catch { print($0) }
         }
       
-      Picker(selection: Binding<Int>(
-        get: { self.tokensPage.rawValue },
-        set: { tag in
-          withAnimation { // needed explicit for transitions
-            self.tokensPage = TokensPage(rawValue: tag)!
+      VStack(spacing:0) {
+        
+        Picker(selection: Binding<Int>(
+          get: { self.tokensPage.rawValue },
+          set: { tag in
+            withAnimation { // needed explicit for transitions
+              self.tokensPage = TokensPage(rawValue: tag)!
+            }
+          }),
+               label: Text("")) {
+          Text("Owned").tag(TokensPage.owned.rawValue)
+          if (self.account.ethAddress != nil) { Text("Activity").tag(TokensPage.sales.rawValue) }
+          // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
+          Text("Sales").tag(TokensPage.sales.rawValue)
+        }
+               .pickerStyle(SegmentedPickerStyle())
+               .colorMultiply(.accentColor)
+               .padding([.trailing,.leading])
+               .padding(.top,5)
+               .padding(.bottom,7)
+        
+        switch(self.tokensPage) {
+        case .bought:
+          account.ethAddress.map {
+            FriendsFeedView(events:FriendsFeedViewModel(to:$0))
           }
-        }),
-             label: Text("")) {
-        Text("Owned").tag(TokensPage.owned.rawValue)
-        if (self.account.ethAddress != nil) { Text("Sales").tag(TokensPage.sales.rawValue) }
-        // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
-        Text("For Sale").tag(TokensPage.for_sale.rawValue)
-      }
-             .pickerStyle(SegmentedPickerStyle())
-             .colorMultiply(.accentColor)
-             .padding([.trailing,.leading])
-      
-      switch(self.tokensPage) {
-      case .bought:
-        account.ethAddress.map {
-          FriendsFeedView(events:FriendsFeedViewModel(to:$0))
+        case .sales:
+          account.ethAddress.map {
+            FriendsFeedView(events:FriendsFeedViewModel(from:$0))
+          }
+        case .owned:
+          WalletTokensView(tokens: getOwnerTokens(account))
+        case .for_sale:
+          ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
         }
-      case .sales:
-        account.ethAddress.map {
-          FriendsFeedView(events:FriendsFeedViewModel(from:$0))
-        }
-      case .owned:
-        WalletTokensView(tokens: getOwnerTokens(account))
-      case .for_sale:
-        ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
+        
       }
       
     }
-    .navigationBarTitle("",displayMode:.inline)
+    .navigationBarTitle("",displayMode:.large)
     .ignoresSafeArea(edges: .top)
     .navigationBarItems(
       trailing: Button(action: {
@@ -130,12 +140,5 @@ struct PrivateCollectionView: View {
           .renderingMode(.original)
       })
     )
-    .alert(isPresented: $showDialog,
-           TextAlert(title: "Enter friend name",message:"",text:self.fallbackName ?? "") { result in
-      if let text = result {
-        self.setFriend(text)
-      }
-    })
-    
   }
 }

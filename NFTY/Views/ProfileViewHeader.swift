@@ -43,8 +43,11 @@ struct ProfileViewHeader: View {
         }
         
         balance.map { wei in
-          UsdEthVText(price:.wei(wei.quantity),fontWeight: .semibold,alignment:.leading)
-            .foregroundColor(.secondary)
+          HStack {
+            UsdEthVText(price:.wei(wei.quantity),fontWeight: .semibold,alignment:.leading)
+              .foregroundColor(.secondary)
+            Spacer()
+          }
         }
       }
     }

@@ -89,7 +89,7 @@ struct NftDetail: View {
               resolution:.hd,
               favButton:.bottomRight
             )
-              .frame(minHeight: min(metrics.size.height-260,400))
+            .frame(minHeight: min(metrics.size.height-260,400))
             
             VStack(alignment: .leading) {
               Spacer()
@@ -171,26 +171,23 @@ struct NftDetail: View {
             case (.some(let tokens),.some(let properties)):
               VStack(spacing:0) {
                 
-                ZStack {
-                  
-                  Picker(selection: Binding<Int>(
-                    get: { self.similarSectionPage.rawValue },
-                    set: { tag in
-                      withAnimation { // needed explicit for transitions
-                        self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
-                      }
-                    }),
-                         label: Text("")) {
-                    Text("Attributes")
-                      .tag(SimilarSectionPage.attributes.rawValue)
-                    Text("Similar \(collection.info.similarTokens?.label ?? "Tokens")")
-                      .tag(SimilarSectionPage.similar.rawValue)
-                  }
-                         .pickerStyle(SegmentedPickerStyle())
-                         .colorMultiply(.accentColor)
-                         .font(.caption)
-                         .padding([.trailing,.leading])
+                Picker(selection: Binding<Int>(
+                  get: { self.similarSectionPage.rawValue },
+                  set: { tag in
+                    withAnimation { // needed explicit for transitions
+                      self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                    }
+                  }),
+                       label: Text("")) {
+                  Text("Attributes")
+                    .tag(SimilarSectionPage.attributes.rawValue)
+                  Text("Similar \(collection.info.similarTokens?.label ?? "Tokens")")
+                    .tag(SimilarSectionPage.similar.rawValue)
                 }
+                       .pickerStyle(SegmentedPickerStyle())
+                       .colorMultiply(.accentColor)
+                       .font(.caption)
+                       .padding([.trailing,.leading])
                 
                 switch(self.similarSectionPage) {
                 case .similar:
