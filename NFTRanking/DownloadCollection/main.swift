@@ -9,6 +9,7 @@ import Foundation
 import PromiseKit
 import BigInt
 import Web3
+import Web3ContractABI
 
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/c2b9ecfefe934b1ba89dc49532f44bf5")
 
@@ -71,6 +72,7 @@ let downloaders = [
 var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 
 let hash = ENSContract.namehash("chilluminati.eth")
+print("chilluminati namehash=\(try! ABI.encodeParameter(hash))")
 let contract = ENSContract(eth: web3.eth)
 
 print(try? hang(
@@ -79,7 +81,7 @@ print(try? hang(
       print("Owner=",address?.hex(eip55: true));
       switch(address) {
       case .some(let address):
-        return ENSContract.nameOfOwner(address, eth: web3.eth)
+        return ENSContract.avatarOfOwner("chilluminati.eth", eth: web3.eth)
           .map {
             print("name=",$0);
             return $0
