@@ -119,7 +119,9 @@ struct TokenPropertiesGrid: View {
         }
       }
     }
+    .animation(.none)
   }
+  
 }
 
 struct TokenPropertiesGrid_Previews: PreviewProvider {

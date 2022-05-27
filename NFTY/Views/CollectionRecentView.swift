@@ -80,6 +80,7 @@ struct CollectionRecentView: View {
         }
       }
     }
+    .animation(.none)
     .onAppear {
       self.recentTrades.getRecentTrades(currentIndex: nil) {}
     }

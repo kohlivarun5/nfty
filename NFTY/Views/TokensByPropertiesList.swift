@@ -107,6 +107,7 @@ struct TokensByPropertiesList: View {
           }
         }
       }
+      .animation(.none)
       
       VStack(spacing:0) {
         HStack {

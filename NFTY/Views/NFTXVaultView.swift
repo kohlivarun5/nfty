@@ -102,6 +102,7 @@ struct NFTXVaultView: View {
         }
       }
     }
+    .animation(.none)
     .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) {
       let nft = nfts.tokens[$0.id]
       TokenTradeView(

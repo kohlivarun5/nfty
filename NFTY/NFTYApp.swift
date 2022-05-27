@@ -282,6 +282,7 @@ struct NFTYApp: App {
       }
       .themeStyle()
       .environmentObject(userWallet)
+      .animation(.default)
     }
   }
   

@@ -53,6 +53,7 @@ struct TokenListView: View {
           }
         }.onAppear {self.nfts.loadMore {}}
       }
+      .animation(.none)
     }
   }
 }

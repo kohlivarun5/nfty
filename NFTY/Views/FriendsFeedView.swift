@@ -120,6 +120,7 @@ struct FriendsFeedView: View {
             }
           }.coordinateSpace(name: "RefreshControl")
         }
+        .animation(.none)
         .navigationBarItems(
           trailing:
             HStack {
