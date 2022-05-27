@@ -22,7 +22,7 @@ func openSeaCollection(address:String) -> Promise<Collection> {
       Collection(
         info: CollectionInfo(
           address: address,
-          sample: "SAMPLE_ABS",
+          sample: "glyph178",
           name: info.name,
           webLink: info.external_url,
           themeColor: .gunmetal,

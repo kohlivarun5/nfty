@@ -23,7 +23,6 @@ struct NftImageImpl: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .padding()
-          .opacity(0.5)
           .colorMultiply(.tertiarySystemBackground)
           .blur(radius:20)
       }
@@ -36,7 +35,6 @@ struct NftImageImpl: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding()
-            .opacity(0.5)
             .colorMultiply(.tertiarySystemBackground)
             .blur(radius:20)
         }
@@ -74,7 +72,6 @@ struct NftIpfsImageView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(padding ?? 0)
-            .opacity(0.5)
             .colorMultiply(.tertiarySystemBackground)
             .blur(radius:20)
           ProgressView()
@@ -89,7 +86,6 @@ struct NftIpfsImageView: View {
               .resizable()
               .aspectRatio(contentMode: .fit)
               .padding(padding ?? 0)
-              .opacity(0.5)
               .colorMultiply(.tertiarySystemBackground)
               .blur(radius:20)
           }

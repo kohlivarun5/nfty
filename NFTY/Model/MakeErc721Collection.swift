@@ -15,7 +15,7 @@ struct MakeErc721Collection {
     return  Collection(
       info: CollectionInfo(
         address: address.hex(eip55: true),
-        sample: "SAMPLE_ABS",
+        sample: "glyph178",
         name: name,
         webLink: nil,
         themeColor: .gunmetal,
