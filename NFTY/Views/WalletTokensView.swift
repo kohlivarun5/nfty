@@ -195,7 +195,6 @@ struct WalletTokensView: View {
               }
             }
           }
-          .animation(.none)
           .sheet(item: $sheetSelectedIndex, onDismiss: { self.sheetSelectedIndex = nil }) { token in
             TokenTradeView(
               nft: token.nft.nft,

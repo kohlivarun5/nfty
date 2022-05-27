@@ -74,7 +74,6 @@ struct CollectionsView: View {
         }
       }
     }
-    .animation(.none)
     .navigationBarItems(
       trailing:
         NavigationLink(destination: AddFavSheet()) {

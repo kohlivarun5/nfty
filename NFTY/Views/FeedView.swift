@@ -176,7 +176,6 @@ struct FeedView: View {
         }
       }
     }
-    .animation(.none)
     .navigationBarItems(
       trailing:
         HStack {

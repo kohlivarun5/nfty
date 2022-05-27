@@ -54,7 +54,6 @@ struct SimilarTokensView: View {
           }
         }
       }
-      .animation(.none)
       .onAppear {
         DispatchQueue.global(qos:.userInteractive).async {
           tokens.forEach { tokenId in

@@ -168,7 +168,6 @@ struct TradeEventsList: View {
       Text("Unavailable")
     case .some(let fetcher):
       TradeEventsListImpl(events: NftRecentEventsObject(fetcher: fetcher))
-        .animation(.none)
     }
   }
 }

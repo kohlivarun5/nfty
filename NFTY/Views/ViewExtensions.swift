@@ -13,7 +13,6 @@ struct Theme: ViewModifier {
     content
       //.preferredColorScheme(.dark)
       .accentColor(Color.orange)
-      //.animation(.default)
   }
 }
 

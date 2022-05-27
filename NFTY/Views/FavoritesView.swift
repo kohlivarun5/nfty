@@ -175,7 +175,6 @@ struct FavoritesView: View {
       }
       
     }
-    .animation(.none)
     .navigationBarItems(
       trailing:
         NavigationLink(destination: AddFavSheet()) {
