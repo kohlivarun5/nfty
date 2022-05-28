@@ -107,7 +107,7 @@ struct ProfileViewHeader: View {
         
         account.ethAddress.map { address in
           HStack {
-            AddressLabel(address:address.hex(eip55:true),maxLen:10)
+            AddressLabel(address:address.hex(eip55:true),maxLen:15)
             Spacer()
           }
         }
