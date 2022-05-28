@@ -45,17 +45,8 @@ struct WalletView: View {
         ConnectWalletSheet(userWallet:userWallet)
       case .some(let account):
         VStack(spacing:0) {
-          WalletOverview(account:account)
-          switch(self.tokensPage) {
-          case .owned:
-            WalletTokensView(tokens: getOwnerTokens(account))
-          case .bids:
-            ActivityView(account:account,kind:UserAccountOffers.Kind.bids,emptyMessage:"No Active Bids")
-          case .sales:
-            ActivityView(account:account,kind:UserAccountOffers.Kind.sales,emptyMessage:"No Active Sales")
-          case .offers:
-            ActivityView(account:account,kind:UserAccountOffers.Kind.offers,emptyMessage:"No Active Offers")
-          }
+          ProfileViewHeader(account: account)
+          //WalletOverview(account:account)
           
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
@@ -73,14 +64,25 @@ struct WalletView: View {
           .pickerStyle(SegmentedPickerStyle())
           .colorMultiply(.accentColor)
           .padding([.trailing,.leading])
-          .padding(.top,5)
-          .padding(.bottom,7)
+          .padding([.top,.bottom],5)
+          
+          switch(self.tokensPage) {
+          case .owned:
+            WalletTokensView(tokens: getOwnerTokens(account))
+          case .bids:
+            ActivityView(account:account,kind:UserAccountOffers.Kind.bids,emptyMessage:"No Active Bids")
+          case .sales:
+            ActivityView(account:account,kind:UserAccountOffers.Kind.sales,emptyMessage:"No Active Sales")
+          case .offers:
+            ActivityView(account:account,kind:UserAccountOffers.Kind.offers,emptyMessage:"No Active Offers")
+          }
           
         }
         
       }
     }
-    .navigationBarTitle(title(self.tokensPage),displayMode: .inline)
+    .navigationBarTitle("",displayMode:.large)
+    .ignoresSafeArea(edges: .top)
     .navigationBarItems(
       trailing:
         Button(action: {

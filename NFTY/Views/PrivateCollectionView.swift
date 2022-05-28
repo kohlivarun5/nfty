@@ -29,9 +29,6 @@ struct PrivateCollectionView: View {
     VStack(spacing:0) {
       
       ProfileViewHeader(account:account)
-        .padding(.top,50)
-        .padding(.bottom,10)
-        .background(Color.secondarySystemBackground)
       
       VStack(spacing:0) {
         

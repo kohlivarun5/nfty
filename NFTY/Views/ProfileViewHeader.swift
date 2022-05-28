@@ -73,6 +73,7 @@ struct ProfileViewHeader: View {
           resolution:.hd,
           favButton:.none)
         .frame(height:120)
+        .colorMultiply(.tertiarySystemBackground)
         .blur(radius: 10)
         .border(Color.secondary)
         .clipShape(Circle())
@@ -136,6 +137,9 @@ struct ProfileViewHeader: View {
         
       }
     }
+    .padding(.top,50)
+    .padding(.bottom,10)
+    .background(Color.secondarySystemBackground)
     /* .alert(isPresented: $showDialog,
      TextAlert(title: "Enter friend name",message:"",text:self.friendName ?? "") { result in
      if let text = result {
@@ -168,6 +172,7 @@ struct ProfileViewHeader: View {
                   let prefix = "eip155:1/erc721:"
                   if !avatar.hasPrefix(prefix) {
                     print("Avatar prefix mistmatch for \(avatar)")
+                    return
                   }
                   
                   print("Avatar follows eip155: \(avatar)")
