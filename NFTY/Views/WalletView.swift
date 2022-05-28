@@ -46,7 +46,6 @@ struct WalletView: View {
       case .some(let account):
         VStack(spacing:0) {
           ProfileViewHeader(account: account)
-          //WalletOverview(account:account)
           
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
