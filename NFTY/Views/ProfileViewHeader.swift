@@ -19,6 +19,8 @@ struct ProfileViewHeader: View {
   @State private var friendName : String?
   @State private var showDialog = false
   
+  @State private var nftInfo : (Collection,NFT)? = nil
+  
   private func setFriend(_ name:String) {
     
     guard let key = key() else { return }
@@ -60,19 +62,38 @@ struct ProfileViewHeader: View {
     
     HStack(spacing:0) {
       
-      NftImage(
-        nft:SampleToken,
-        sample:SAMPLE_PUNKS[0],
-        themeColor:SampleCollection.info.themeColor,
-        themeLabelColor:SampleCollection.info.themeLabelColor,
-        size:.xxsmall,
-        resolution:.hd,
-        favButton:.none)
-      .frame(height:120)
-      .border(Color.secondary)
-      .clipShape(Circle())
-      .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-      .shadow(color:.accentColor,radius:0)
+      switch (nftInfo) {
+      case .none:
+        NftImage(
+          nft:SampleToken,
+          sample:SAMPLE_PUNKS[0],
+          themeColor:SampleCollection.info.themeColor,
+          themeLabelColor:SampleCollection.info.themeLabelColor,
+          size:.xxsmall,
+          resolution:.hd,
+          favButton:.none)
+        .frame(height:120)
+        .blur(radius: 10)
+        .border(Color.secondary)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+        .shadow(color:.accentColor,radius:0)
+      case .some(let info):
+        let (collection,nft) = info
+        NftImage(
+          nft:nft,
+          sample:collection.info.sample,
+          themeColor:collection.info.themeColor,
+          themeLabelColor:collection.info.themeLabelColor,
+          size:.xxsmall,
+          resolution:.hd,
+          favButton:.none)
+        .frame(height:120)
+        .border(Color.secondary)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+        .shadow(color:.accentColor,radius:0)
+      }
       
       VStack(alignment:.leading,spacing:5) {
         friendName.map { name in
@@ -137,7 +158,47 @@ struct ProfileViewHeader: View {
       if let address = account.ethAddress {
         
         ENSContract.nameOfOwner(address, eth: web3.eth)
-          .done(on:.main) { $0.map { self.friendName = $0 } }
+          .done(on:.main) { $0.map {
+            self.friendName = $0
+            
+            // Also do avatar loading
+            ENSContract.avatarOfOwner($0, eth: web3.eth)
+              .done(on:.main) {
+                $0.map { avatar in
+                  let prefix = "eip155:1/erc721:"
+                  if !avatar.hasPrefix(prefix) {
+                    print("Avatar prefix mistmatch for \(avatar)")
+                  }
+                  
+                  print("Avatar follows eip155: \(avatar)")
+                  
+                  let str : String = String(avatar.suffix(from:avatar.index(after:avatar.lastIndex(of: ":")!)))
+                  let index = str.firstIndex(of: "/")!
+                  let addressStr : String = String(str.prefix(upTo: index))
+                  print("address = \(addressStr)")
+                  let tokenIdStr : String = String(str.suffix(from: str.index(after: index)))
+                  print("tokenId = \(tokenIdStr)")
+                  
+                  
+                  
+                  let address = try? EthereumAddress(hex: addressStr, eip55: false)
+                  guard let address = address else { print("Address not a match \(addressStr)"); return }
+                  
+                  let tokenId = (try? BigUInt(tokenIdStr))
+                  guard let tokenId = tokenId else { print("TokenId not a match \(tokenIdStr)"); return }
+                  
+                  collectionsFactory.getByAddressOpt(address.hex(eip55: true))
+                    .map  { collectionOpt in
+                      guard let collection : Collection = collectionOpt else { return }
+                      let nft = collection.contract.getNFT(tokenId)
+                      self.nftInfo = (collection,nft)
+                    }
+                    .catch { print($0) }
+                }
+              }
+              .catch { print($0) }
+            
+          } }
           .catch { print($0) }
         
         web3.eth.getBalance(address: address, block:.latest)
