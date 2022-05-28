@@ -101,7 +101,8 @@ struct FriendsView: View {
                  .padding(.bottom,7)
         }
         
-      }.navigationBarTitle(title(self.page),displayMode: .inline)
+      }
+      .navigationBarTitle(title(self.page),displayMode: .inline)
       
     }
   }
