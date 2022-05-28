@@ -105,6 +105,13 @@ struct ProfileViewHeader: View {
           }
         }
         
+        account.ethAddress.map { address in
+          HStack {
+            AddressLabel(address:address.hex(eip55:true),maxLen:10)
+            Spacer()
+          }
+        }
+        
         balance.map { wei in
           HStack {
             UsdEthVText(price:.wei(wei.quantity),fontWeight: .semibold,alignment:.leading)
@@ -162,48 +169,55 @@ struct ProfileViewHeader: View {
       if let address = account.ethAddress {
         
         ENSContract.nameOfOwner(address, eth: web3.eth)
-          .done(on:.main) { $0.map {
-            self.friendName = $0
+          .done(on:.main) {
             
-            // Also do avatar loading
-            ENSContract.avatarOfOwner($0, eth: web3.eth)
-              .done(on:.main) {
-                $0.map { avatar in
-                  let prefix = "eip155:1/erc721:"
-                  if !avatar.hasPrefix(prefix) {
-                    print("Avatar prefix mistmatch for \(avatar)")
-                    return
-                  }
-                  
-                  print("Avatar follows eip155: \(avatar)")
-                  
-                  let str : String = String(avatar.suffix(from:avatar.index(after:avatar.lastIndex(of: ":")!)))
-                  let index = str.firstIndex(of: "/")!
-                  let addressStr : String = String(str.prefix(upTo: index))
-                  print("address = \(addressStr)")
-                  let tokenIdStr : String = String(str.suffix(from: str.index(after: index)))
-                  print("tokenId = \(tokenIdStr)")
-                  
-                  
-                  
-                  let address = try? EthereumAddress(hex: addressStr, eip55: false)
-                  guard let address = address else { print("Address not a match \(addressStr)"); return }
-                  
-                  let tokenId = (try? BigUInt(tokenIdStr))
-                  guard let tokenId = tokenId else { print("TokenId not a match \(tokenIdStr)"); return }
-                  
-                  collectionsFactory.getByAddressOpt(address.hex(eip55: true))
-                    .map  { collectionOpt in
-                      guard let collection : Collection = collectionOpt else { return }
-                      let nft = collection.contract.getNFT(tokenId)
-                      self.nftInfo = (collection,nft)
+            if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
+              self.friendName = self.account.nearAccount
+            }
+            
+            $0.map {
+              self.friendName = $0
+              
+              
+              // Also do avatar loading
+              ENSContract.avatarOfOwner($0, eth: web3.eth)
+                .done(on:.main) {
+                  $0.map { avatar in
+                    let prefix = "eip155:1/erc721:"
+                    if !avatar.hasPrefix(prefix) {
+                      print("Avatar prefix mistmatch for \(avatar)")
+                      return
                     }
-                    .catch { print($0) }
+                    
+                    print("Avatar follows eip155: \(avatar)")
+                    
+                    let str : String = String(avatar.suffix(from:avatar.index(after:avatar.lastIndex(of: ":")!)))
+                    let index = str.firstIndex(of: "/")!
+                    let addressStr : String = String(str.prefix(upTo: index))
+                    print("address = \(addressStr)")
+                    let tokenIdStr : String = String(str.suffix(from: str.index(after: index)))
+                    print("tokenId = \(tokenIdStr)")
+                    
+                    
+                    
+                    let address = try? EthereumAddress(hex: addressStr, eip55: false)
+                    guard let address = address else { print("Address not a match \(addressStr)"); return }
+                    
+                    let tokenId = (try? BigUInt(tokenIdStr))
+                    guard let tokenId = tokenId else { print("TokenId not a match \(tokenIdStr)"); return }
+                    
+                    collectionsFactory.getByAddressOpt(address.hex(eip55: true))
+                      .map  { collectionOpt in
+                        guard let collection : Collection = collectionOpt else { return }
+                        let nft = collection.contract.getNFT(tokenId)
+                        self.nftInfo = (collection,nft)
+                      }
+                      .catch { print($0) }
+                  }
                 }
-              }
-              .catch { print($0) }
-            
-          } }
+                .catch { print($0) }
+              
+            } }
           .catch { print($0) }
         
         web3.eth.getBalance(address: address, block:.latest)

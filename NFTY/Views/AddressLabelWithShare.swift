@@ -13,7 +13,6 @@ struct AddressLabelWithShare: View {
   
   var body: some View {
     HStack {
-      Spacer()
       AddressLabel(address: address, maxLen: maxLen)
       
       Button(action: {
@@ -44,7 +43,7 @@ struct AddressLabelWithShare: View {
       }, label: {
         Image(systemName: "arrowshape.turn.up.forward.circle")
           .foregroundColor(.secondary)
-      }).padding(.leading)
+      }).padding(.leading,10)
     }
   }
 }
