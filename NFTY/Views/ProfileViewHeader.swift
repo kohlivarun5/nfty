@@ -134,7 +134,7 @@ struct ProfileViewHeader: View {
           .padding([.top,.bottom],5)
           .padding([.leading,.trailing])
           .background(.ultraThinMaterial, in: Capsule())
-          .padding(.top)
+          .padding(.top,10)
           .padding(.trailing)
           .foregroundColor(isFollowing ? .accentColor : .label)
           .if(!isFollowing){
