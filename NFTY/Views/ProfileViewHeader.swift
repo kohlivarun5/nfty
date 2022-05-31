@@ -84,8 +84,8 @@ struct ProfileViewHeader: View {
           .shadow(color:.accentColor,radius:0)
           
           Image(systemName: "camera.metering.unknown")
-            .foregroundColor(.label)
-            .opacity(0.75)
+            .foregroundColor(.white)
+            .opacity(0.5)
             .scaleEffect(4,anchor: .center)
         }
           
