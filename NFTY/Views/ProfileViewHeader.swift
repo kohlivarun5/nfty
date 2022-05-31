@@ -64,21 +64,31 @@ struct ProfileViewHeader: View {
       
       switch (nftInfo) {
       case .none:
-        NftImage(
-          nft:SampleToken,
-          sample:SAMPLE_PUNKS[0],
-          themeColor:SampleCollection.info.themeColor,
-          themeLabelColor:SampleCollection.info.themeLabelColor,
-          size:.xxsmall,
-          resolution:.hd,
-          favButton:.none)
-        .frame(height:120)
-        .colorMultiply(.tertiarySystemBackground)
-        .blur(radius: 10)
-        .border(Color.secondary)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-        .shadow(color:.accentColor,radius:0)
+        
+        ZStack {
+          
+          NftImage(
+            nft:SampleToken,
+            sample:SAMPLE_PUNKS[0],
+            themeColor:SampleCollection.info.themeColor,
+            themeLabelColor:SampleCollection.info.themeLabelColor,
+            size:.xxsmall,
+            resolution:.hd,
+            favButton:.none)
+          .frame(height:120)
+          .colorMultiply(.tertiarySystemBackground)
+          .blur(radius: 10)
+          .border(Color.secondary)
+          .clipShape(Circle())
+          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+          .shadow(color:.accentColor,radius:0)
+          
+          Image(systemName: "camera.metering.unknown")
+            .foregroundColor(.label)
+            .opacity(0.75)
+            .scaleEffect(4,anchor: .center)
+        }
+          
       case .some(let info):
         let (collection,nft) = info
         NftImage(
