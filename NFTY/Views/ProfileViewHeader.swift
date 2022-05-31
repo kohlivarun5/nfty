@@ -11,6 +11,7 @@ import Web3
 struct ProfileViewHeader: View {
   
   let account : UserAccount
+  let isOwnerView : Bool
   
   @State private var balance : EthereumQuantity? = nil
   
@@ -88,22 +89,34 @@ struct ProfileViewHeader: View {
             .opacity(0.5)
             .scaleEffect(4,anchor: .center)
         }
-          
+        
       case .some(let info):
         let (collection,nft) = info
-        NftImage(
-          nft:nft,
-          sample:collection.info.sample,
-          themeColor:collection.info.themeColor,
-          themeLabelColor:collection.info.themeLabelColor,
-          size:.xxsmall,
-          resolution:.hd,
-          favButton:.none)
-        .frame(height:120)
-        .border(Color.secondary)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-        .shadow(color:.accentColor,radius:0)
+        
+        NavigationLink(
+          destination: NftDetail(
+            nft: nft,
+            price: TokenPriceType.lazy({
+              ObservablePromise<NFTPriceStatus>(resolved:NFTPriceStatus.unavailable)
+            }),
+            collection: collection,
+            hideOwnerLink: true,
+            selectedProperties: [])
+        ) {
+          NftImage(
+            nft:nft,
+            sample:collection.info.sample,
+            themeColor:collection.info.themeColor,
+            themeLabelColor:collection.info.themeLabelColor,
+            size:.xxsmall,
+            resolution:.hd,
+            favButton:.none)
+          .frame(height:120)
+          .border(Color.secondary)
+          .clipShape(Circle())
+          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+          .shadow(color:.accentColor,radius:0)
+        }
       }
       
       VStack(alignment:.leading,spacing:5) {
@@ -144,7 +157,8 @@ struct ProfileViewHeader: View {
           }
         }
         
-        friendName.map { name in
+        switch(isOwnerView,friendName) {
+        case (false,.some(let name)):
           Button(action: {
             setFriend(name)
           }) {
@@ -164,6 +178,8 @@ struct ProfileViewHeader: View {
           .if(!isFollowing){
             $0.colorMultiply(.accentColor)
           }
+        case (true,.none),(true,.some),(false,.none):
+          EmptyView()
         }
         
       }
@@ -234,7 +250,9 @@ struct ProfileViewHeader: View {
                       .map  { collectionOpt in
                         guard let collection : Collection = collectionOpt else { return }
                         let nft = collection.contract.getNFT(tokenId)
-                        self.nftInfo = (collection,nft)
+                        withAnimation {
+                          self.nftInfo = (collection,nft)
+                        }
                       }
                       .catch { print($0) }
                   }

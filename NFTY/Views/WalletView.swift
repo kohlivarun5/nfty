@@ -45,7 +45,7 @@ struct WalletView: View {
         ConnectWalletSheet(userWallet:userWallet)
       case .some(let account):
         VStack(spacing:0) {
-          ProfileViewHeader(account: account)
+          ProfileViewHeader(account: account,isOwnerView: true)
           
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
