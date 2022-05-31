@@ -105,6 +105,20 @@ struct ProfileViewHeader: View {
           }
         }
         
+        switch(account.nearAccount == friendName) {
+        case true:
+          EmptyView()
+        case false:
+          account.nearAccount.map { name in
+            HStack {
+              Text(name)
+                .font(.headline)
+                .foregroundColor(.secondary)
+              Spacer()
+            }
+          }
+        }
+        
         account.ethAddress.map { address in
           HStack {
             AddressLabel(address:address.hex(eip55:true),maxLen:15)
