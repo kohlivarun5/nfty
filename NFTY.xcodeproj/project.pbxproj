@@ -78,6 +78,7 @@
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
+		4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */; };
 		4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */; };
 		4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */; };
 		4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */; };
@@ -533,6 +534,7 @@
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
 		4F3582A52783A4A700D119F8 /* VaultTokensList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTokensList.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensSelector.swift; sourceTree = "<group>"; };
 		4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedFetcher.swift; sourceTree = "<group>"; };
 		4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
 		4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedView.swift; sourceTree = "<group>"; };
@@ -1022,6 +1024,7 @@
 				4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */,
 				4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */,
 				4F51EA2128348D71008C610F /* ProfileViewHeader.swift */,
+				4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1726,6 +1729,7 @@
 				4F529BBD27B0648E00EFE626 /* OpenSeaApiCore.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
+				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
