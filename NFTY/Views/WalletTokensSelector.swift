@@ -16,7 +16,7 @@ struct WalletTokensSelector: View {
   let enableNavLinks : Bool
   @State private var selectedTokenId: BigUInt? = nil
   
-  @Binding var selectedToken: NFTToken?
+  @Binding var selectedToken: NFTTokenEquatable?
   
   
   var body: some View {
@@ -103,7 +103,7 @@ struct WalletTokensSelector: View {
                           }
                           .onLongPressGesture(minimumDuration: 0.1) {
                             UIImpactFeedbackGenerator(style:.medium).impactOccurred()
-                            self.selectedToken = token
+                            self.selectedToken = NFTTokenEquatable(token:token)
                           }
                         }
                         NavigationLink(destination: NftDetail(

@@ -16,15 +16,15 @@ struct WalletTokensView: View {
   
   @ObservedObject var tokens : NftOwnerTokens
   
-  @State private var selectedToken: NFTToken? = nil
+  @State private var selectedToken: NFTTokenEquatable? = nil
   
   var body: some View {
     WalletTokensSelector(tokens: tokens, enableNavLinks: true,selectedToken:$selectedToken)
-      .sheet(item: $selectedToken, onDismiss: { self.selectedToken = nil }) { token in
+      .sheet(item: $selectedToken, onDismiss: { self.selectedToken = nil }) { selected in
         TokenTradeView(
-          nft: token.nft.nft,
-          price:.lazy(token.nft.indicativePrice),
-          collection:token.collection,
+          nft: selected.token.nft.nft,
+          price:.lazy(selected.token.nft.indicativePrice),
+          collection:selected.token.collection,
           userWallet:userWallet,
           isSheet:true)
         .ignoresSafeArea(edges:.bottom)

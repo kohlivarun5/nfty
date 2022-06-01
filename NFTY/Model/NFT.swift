@@ -294,10 +294,21 @@ struct NFTPriceInfo {
 }
 
 struct NFTToken : Identifiable {
+  
   let collection : Collection
   let nft : NFTWithLazyPrice
   
   var id : NFT.NftID { return self.nft.id }
+}
+
+struct NFTTokenEquatable : Identifiable,Equatable {
+  let token : NFTToken
+  
+  var id : NFT.NftID { return self.token.id }
+  
+  static func == (lhs: NFTTokenEquatable, rhs: NFTTokenEquatable) -> Bool {
+    return lhs.token.id == rhs.token.id
+  }
 }
 
 enum NFTPriceStatus {
