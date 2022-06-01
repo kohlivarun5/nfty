@@ -15,10 +15,8 @@ struct WalletTokensView: View {
   @EnvironmentObject var userWallet: UserWallet
   
   @ObservedObject var tokens : NftOwnerTokens
-  @State private var selectedTokenId: BigUInt? = nil
   
   @State private var selectedToken: NFTToken? = nil
-  
   
   var body: some View {
     WalletTokensSelector(tokens: tokens, enableNavLinks: true,selectedToken:$selectedToken)

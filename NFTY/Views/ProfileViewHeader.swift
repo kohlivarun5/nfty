@@ -22,6 +22,8 @@ struct ProfileViewHeader: View {
   
   @State private var nftInfo : (Collection,NFT)? = nil
   
+  @State private var selectedAvatarToken: NFTToken? = nil
+  
   private func setFriend(_ name:String) {
     
     guard let key = key() else { return }
@@ -67,7 +69,6 @@ struct ProfileViewHeader: View {
       case .none:
         
         ZStack {
-          
           NftImage(
             nft:SampleToken,
             sample:SAMPLE_PUNKS[0],
@@ -87,7 +88,7 @@ struct ProfileViewHeader: View {
           Image(systemName: "camera.metering.unknown")
             .foregroundColor(.white)
             .opacity(0.5)
-            .scaleEffect(4,anchor: .center)
+            .scaleEffect(3,anchor: .center)
         }
         
       case .some(let info):
@@ -96,9 +97,7 @@ struct ProfileViewHeader: View {
         NavigationLink(
           destination: NftDetail(
             nft: nft,
-            price: TokenPriceType.lazy({
-              ObservablePromise<NFTPriceStatus>(resolved:NFTPriceStatus.unavailable)
-            }),
+            price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
             collection: collection,
             hideOwnerLink: true,
             selectedProperties: [])
@@ -178,7 +177,31 @@ struct ProfileViewHeader: View {
           .if(!isFollowing){
             $0.colorMultiply(.accentColor)
           }
-        case (true,.none),(true,.some),(false,.none):
+        case (true,.some):
+          
+          NavigationLink(
+            destination:WalletTokensSelector(
+              tokens: getOwnerTokens(account),
+              enableNavLinks: false,
+              selectedToken: $selectedAvatarToken)
+            .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
+          ) {
+            HStack {
+              Spacer()
+              Text("Change Avatar")
+                .font(.caption).bold()
+              Spacer()
+            }
+          }
+          .padding([.top,.bottom],5)
+          .padding([.leading,.trailing])
+          .background(.ultraThinMaterial, in: Capsule())
+          .padding(.top,10)
+          .padding(.trailing)
+          .foregroundColor(.label)
+          .colorMultiply(.accentColor)
+          
+        case (true,.none),(false,.none):
           EmptyView()
         }
         
