@@ -24,6 +24,8 @@ struct ProfileViewHeader: View {
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
+  @State private var avatarNavLinkActive : Bool = false
+  
   private func setFriend(_ name:String) {
     
     guard let key = key() else { return }
@@ -187,7 +189,14 @@ struct ProfileViewHeader: View {
             .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
             .onChange(of: selectedAvatarToken) { selectedToken in
               print("Avatar selected \(selectedToken)")
-            }
+              
+              // TODO
+              /* self.nftInfo = selectedToken.map { info in
+                (info.token.collection,info.token.nft.nft)
+              } */
+              avatarNavLinkActive = false
+            },
+            isActive: $avatarNavLinkActive
           ) {
             HStack {
               Spacer()

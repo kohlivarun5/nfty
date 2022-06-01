@@ -81,6 +81,7 @@ struct WalletTokensSelector: View {
                           .onTapGesture {
                             //perform some tasks if needed before opening Destination view
                             if (enableNavLinks) { self.selectedTokenId = token.nft.nft.tokenId }
+                            else { self.selectedToken = NFTTokenEquatable(token:token) }
                           }
                           
                         } else {
@@ -100,6 +101,7 @@ struct WalletTokensSelector: View {
                           .onTapGesture {
                             //perform some tasks if needed before opening Destination view
                             if (enableNavLinks) { self.selectedTokenId = token.nft.nft.tokenId }
+                            else { self.selectedToken = NFTTokenEquatable(token:token) }
                           }
                           .onLongPressGesture(minimumDuration: 0.1) {
                             UIImpactFeedbackGenerator(style:.medium).impactOccurred()
