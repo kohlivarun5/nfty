@@ -200,7 +200,7 @@ struct ProfileViewHeader: View {
           ) {
             HStack {
               Spacer()
-              Text("Change Avatar")
+              Text("Update Avatar")
                 .font(.caption).bold()
               Spacer()
             }
@@ -210,8 +210,7 @@ struct ProfileViewHeader: View {
           .background(.ultraThinMaterial, in: Capsule())
           .padding(.top,10)
           .padding(.trailing)
-          .foregroundColor(.label)
-          .colorMultiply(.accentColor)
+          .foregroundColor(.accentColor)
           
         case (true,.none),(false,.none):
           EmptyView()
@@ -222,12 +221,6 @@ struct ProfileViewHeader: View {
     .padding(.top,50)
     .padding(.bottom,10)
     .background(Color.secondarySystemBackground)
-    /* .alert(isPresented: $showDialog,
-     TextAlert(title: "Enter friend name",message:"",text:self.friendName ?? "") { result in
-     if let text = result {
-     self.setFriend(text)
-     }
-     }) */
     .onAppear {
       
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
