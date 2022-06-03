@@ -220,7 +220,7 @@ struct ProfileViewHeader: View {
     }
     .padding(.top,50)
     .padding(.bottom,10)
-    .background(Color.secondarySystemBackground)
+    .background(.ultraThickMaterial)
     .onAppear {
       
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
