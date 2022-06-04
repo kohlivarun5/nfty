@@ -189,10 +189,6 @@ struct FavoritesView: View {
                               .font(.caption2)
                               .modifier(PriceOverlay())
                             Spacer()
-                            HStack {
-                              Spacer()
-                              FavButton(nft: nft.nft, size: .medium, color: collection.info.themeLabelColor)
-                            }
                           }
                           .padding(.top,11)
                           
