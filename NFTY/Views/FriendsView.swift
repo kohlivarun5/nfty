@@ -70,7 +70,7 @@ struct FriendsView: View {
         switch(self.page,self.addresses.isEmpty) {
         case (.list,_),(_,true):
           List(friends.sorted(by: { $0.value.lowercased() < $1.value.lowercased() }), id: \.key) { address,name in
-            NavigationLink(destination: PrivateCollectionView(account:account(address))){
+            NavigationLink(destination: PrivateCollectionView(account:account(address)) ){
               HStack() {
                 Text(name)
                   .font(.title3)
@@ -78,6 +78,15 @@ struct FriendsView: View {
               .padding()
             }
           }
+          .navigationBarItems(
+            trailing:
+              NavigationLink(destination: AddFriendSheet()) {
+                Image(systemName:"magnifyingglass.circle.fill")
+                  .font(.title3)
+                  .foregroundColor(.accentColor)
+                  .padding(10)
+              }
+          )
         case (.feed,false):
           FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses))
         }
@@ -92,7 +101,7 @@ struct FriendsView: View {
             }),
                  label: Text("")) {
             Text("Activity").tag(Page.feed.rawValue)
-            Text("Friends").tag(Page.list.rawValue)
+            Text("Following").tag(Page.list.rawValue)
           }
                  .pickerStyle(SegmentedPickerStyle())
                  .colorMultiply(.accentColor)
@@ -101,7 +110,8 @@ struct FriendsView: View {
                  .padding(.bottom,7)
         }
         
-      }.navigationBarTitle(title(self.page),displayMode: .inline)
+      }
+      .navigationBarTitle(title(self.page),displayMode: .inline)
       
     }
   }

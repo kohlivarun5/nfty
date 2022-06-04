@@ -11,8 +11,6 @@ import Web3
 
 struct TokenTradeView: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
   let nft:NFT
   let price:TokenPriceType
   let collection : Collection
@@ -126,12 +124,6 @@ struct TokenTradeView: View {
     })
     .font(.subheadline)
     .navigationBarTitle("",displayMode:.large)
-    .navigationBarBackButtonHidden(true)
-    .navigationBarItems(
-      leading:
-        Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
-    )
     .ignoresSafeArea(edges: .top)
     .onAppear {
       self.rank = collection.info.rarityRanking?.getRank(nft.tokenId)

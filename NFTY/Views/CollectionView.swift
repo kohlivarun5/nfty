@@ -16,7 +16,6 @@ struct VisualEffectView: UIViewRepresentable {
 
 struct CollectionView: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   @Environment(\.openURL) var openURL
   
   @StateObject var userSettings = UserSettings()
@@ -106,9 +105,7 @@ struct CollectionView: View {
       
     }
     .navigationBarTitle(info.name,displayMode: .inline)
-    .navigationBarBackButtonHidden(true)
     .navigationBarItems(
-      leading:Button(action: {presentationMode.wrappedValue.dismiss()}, label: { BackButton() }),
       trailing:Button(action: {
         openURL(
           self.collection.info.webLink

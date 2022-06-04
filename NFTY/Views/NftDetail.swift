@@ -11,7 +11,6 @@ import PromiseKit
 
 struct NftDetail: View {
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   @EnvironmentObject var userWallet: UserWallet
   
   let nft:NFT
@@ -90,7 +89,7 @@ struct NftDetail: View {
               resolution:.hd,
               favButton:.bottomRight
             )
-              .frame(minHeight: min(metrics.size.height-260,400))
+            .frame(minHeight: min(metrics.size.height-260,400))
             
             VStack(alignment: .leading) {
               Spacer()
@@ -172,26 +171,23 @@ struct NftDetail: View {
             case (.some(let tokens),.some(let properties)):
               VStack(spacing:0) {
                 
-                ZStack {
-                  
-                  Picker(selection: Binding<Int>(
-                    get: { self.similarSectionPage.rawValue },
-                    set: { tag in
-                      withAnimation { // needed explicit for transitions
-                        self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
-                      }
-                    }),
-                         label: Text("")) {
-                    Text("Attributes")
-                      .tag(SimilarSectionPage.attributes.rawValue)
-                    Text("Similar \(collection.info.similarTokens?.label ?? "Tokens")")
-                      .tag(SimilarSectionPage.similar.rawValue)
-                  }
-                         .pickerStyle(SegmentedPickerStyle())
-                         .colorMultiply(.accentColor)
-                         .font(.caption)
-                         .padding([.trailing,.leading])
+                Picker(selection: Binding<Int>(
+                  get: { self.similarSectionPage.rawValue },
+                  set: { tag in
+                    withAnimation { // needed explicit for transitions
+                      self.similarSectionPage = SimilarSectionPage(rawValue: tag)!
+                    }
+                  }),
+                       label: Text("")) {
+                  Text("Attributes")
+                    .tag(SimilarSectionPage.attributes.rawValue)
+                  Text("Similar \(collection.info.similarTokens?.label ?? "Tokens")")
+                    .tag(SimilarSectionPage.similar.rawValue)
                 }
+                       .pickerStyle(SegmentedPickerStyle())
+                       .colorMultiply(.accentColor)
+                       .font(.caption)
+                       .padding([.trailing,.leading])
                 
                 switch(self.similarSectionPage) {
                 case .similar:
@@ -209,11 +205,7 @@ struct NftDetail: View {
         }
       }
       .navigationBarTitle("",displayMode:.large)
-      .navigationBarBackButtonHidden(true)
       .navigationBarItems(
-        leading:
-          Button(action: {presentationMode.wrappedValue.dismiss()},
-                 label: { BackButton() }),
         trailing: Menu(
           content: {
             Button("Export", action: { self.sharePicker = .post })
@@ -223,7 +215,6 @@ struct NftDetail: View {
           label: {
             Image(systemName: "arrowshape.turn.up.forward.circle")
               .foregroundColor(collection.info.themeLabelColor)
-              .font(.title3)
           }
         )
       )

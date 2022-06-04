@@ -58,11 +58,11 @@ struct FavoritesView: View {
         }
       }
     })
-      .done(on:.main) {
-        self.isLoading = false
-        self.favorites = $0
-      }
-      .catch {print ($0) }
+    .done(on:.main) {
+      self.isLoading = false
+      self.favorites = $0
+    }
+    .catch {print ($0) }
   }
   
   struct FillAll: View {
@@ -91,12 +91,14 @@ struct FavoritesView: View {
             .foregroundColor(.secondary)
         case false:
           GeometryReader { metrics in
+            
             ScrollView {
-              
               LazyVGrid(
                 columns: Array(
-                  repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
-                  count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : min(200,(metrics.size.width - 20) / Double(2)))),
+                  count:UIDevice.current.userInterfaceIdiom == .pad
+                  ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
+                  : 2),
                 pinnedViews: [.sectionHeaders])
               {
                 ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in
@@ -107,7 +109,7 @@ struct FavoritesView: View {
                       .onAppear {
                         DispatchQueue.global(qos:.userInteractive).async {
                           guard let asks = (collection.contract.tradeActions
-                                              .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }) else { return }
+                            .map { $0.getBidAsk(tokens.map { $0.value.id.tokenId },.ask) }) else { return }
                           
                           asks.done { asks in
                             DispatchQueue.main.async {
@@ -142,27 +144,63 @@ struct FavoritesView: View {
                     ForEach(tokens.map { ($0.key,$0.value)}.sorted(by: { $0.0 < $1.0 }),id:\.0) { token_info in
                       let nft = token_info.1;
                       
+                      
                       ZStack {
-                        RoundedImage(
-                          nft:nft.nft,
-                          price:.lazy(nft.indicativePrice),
-                          collection:collection,
-                          width: .normal,
-                          resolution: .normal
-                        )
+                        
+                        if (UIDevice.current.userInterfaceIdiom == .pad) {
+                          
+                          RoundedImage(
+                            nft:nft.nft,
+                            price:.lazy(nft.indicativePrice),
+                            collection:collection,
+                            width: .normal,
+                            resolution: .normal
+                          )
                           .shadow(color:.accentColor,radius:0)
                           .padding()
                           .onTapGesture {
                             //perform some tasks if needed before opening Destination view
                             self.selectedTokenId = nft.nft.tokenId
                           }
+                          
+                        } else {
+                          
+                          NftImage(
+                            nft:nft.nft,
+                            sample:collection.info.sample,
+                            themeColor:collection.info.themeColor,
+                            themeLabelColor:collection.info.themeLabelColor,
+                            size:.small,
+                            resolution:.normal,
+                            favButton:.none
+                          )
+                          .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                          .shadow(color:.secondary,radius:5)
+                          .padding(10)
+                          .onTapGesture {
+                            //perform some tasks if needed before opening Destination view
+                            self.selectedTokenId = nft.nft.tokenId
+                          }
+                          
+                          VStack {
+                            TokenPrice(price: TokenPriceType.lazy(nft.indicativePrice), color: .label,hideIcon:true)
+                              .padding([.top,.bottom],2)
+                              .padding([.leading,.trailing],20)
+                              .font(.caption2)
+                              .modifier(PriceOverlay())
+                            Spacer()
+                          }
+                          .padding(.top,11)
+                          
+                        }
+                        
                         NavigationLink(destination: NftDetail(
                           nft:nft.nft,
                           price:.lazy(nft.indicativePrice),
                           collection:collection,
                           hideOwnerLink:false,selectedProperties:[]
                         ),tag:nft.nft.tokenId,selection:$selectedTokenId) {}
-                        .hidden()
+                          .hidden()
                       }
                       
                     }

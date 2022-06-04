@@ -146,6 +146,15 @@ struct NFTYApp: App {
   
   @StateObject var userWallet = UserWallet()
   
+  init() {
+    if let image = UIImage(systemName: "chevron.backward.circle.fill") {
+      UINavigationBar.appearance().backIndicatorImage = image
+      UINavigationBar.appearance().backIndicatorTransitionMaskImage = image
+    }
+    
+    UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
+  }
+  
   var body: some Scene {
     WindowGroup {
       TabView {
@@ -153,10 +162,18 @@ struct NFTYApp: App {
         if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
           NavigationView {
+            WalletView()
+          }
+          .tabItem {
+            Label("Profile",systemImage:"person.crop.circle")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
+          NavigationView {
             FriendsView()
           }
           .tabItem {
-            Label("Friends",systemImage:"person.2.square.stack")
+            Label("Following",systemImage:"person.2.square.stack")
           }
           .navigationViewStyle(StackNavigationViewStyle())
         }
@@ -180,24 +197,20 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        NavigationView {
-          WalletView()
-        }
-        .tabItem {
-          Label("Wallet",systemImage:"lock.rectangle.stack.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+        
         
       }
       .themeStyle()
       .onAppear {
         
-        /*
+        
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
           CompositeCollection.getRecentTrades(currentIndex: 0) {
             print("Loaded feed")
           }
         }
+        
+        /*
         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
         
          DispatchQueue.global(qos:.utility).async {
@@ -271,7 +284,6 @@ struct NFTYApp: App {
             .themeStyle()
         }
       }
-      .animation(.none)
       .themeStyle()
       .environmentObject(userWallet)
     }

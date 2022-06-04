@@ -47,7 +47,7 @@ struct NFTNameIdRank: View {
             Text("")
               .font(.footnote)
           }
-        }//.animation(.default)
+        }
       }
     }
   }

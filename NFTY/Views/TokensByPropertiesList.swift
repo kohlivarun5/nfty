@@ -12,8 +12,6 @@ struct TokensByPropertiesList: View {
   
   @Environment(\.colorScheme) var colorScheme
   
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-  
   let properties : [SimilarTokensGetter.TokenAttributePercentile]
   let collection : Collection
   
@@ -138,12 +136,6 @@ struct TokensByPropertiesList: View {
         .themeStyle()
     }
     .navigationBarTitle(collection.info.name,displayMode: .inline)
-    .navigationBarBackButtonHidden(true)
-    .navigationBarItems(
-      leading:
-        Button(action: {presentationMode.wrappedValue.dismiss()},
-               label: { BackButton() })
-    )
   }
   
 }
