@@ -28,7 +28,7 @@ struct PrivateCollectionView: View {
     
     VStack(spacing:0) {
       
-      ProfileViewHeader(account:account,isOwnerView: false)
+      ProfileViewHeader(account:account,isOwnerView: false,addTopPadding:true)
       
       VStack(spacing:0) {
         

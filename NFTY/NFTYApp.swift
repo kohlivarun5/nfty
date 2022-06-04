@@ -165,7 +165,7 @@ struct NFTYApp: App {
             WalletView()
           }
           .tabItem {
-            Label("Wallet",systemImage:"lock.rectangle.stack.fill")
+            Label("Profile",systemImage:"person.crop.circle")
           }
           .navigationViewStyle(StackNavigationViewStyle())
           
@@ -173,7 +173,7 @@ struct NFTYApp: App {
             FriendsView()
           }
           .tabItem {
-            Label("Friends",systemImage:"person.2.square.stack")
+            Label("Following",systemImage:"person.2.square.stack")
           }
           .navigationViewStyle(StackNavigationViewStyle())
         }

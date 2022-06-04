@@ -78,6 +78,15 @@ struct FriendsView: View {
               .padding()
             }
           }
+          .navigationBarItems(
+            trailing:
+              NavigationLink(destination: AddFriendSheet()) {
+                Image(systemName:"magnifyingglass.circle.fill")
+                  .font(.title3)
+                  .foregroundColor(.accentColor)
+                  .padding(10)
+              }
+          )
         case (.feed,false):
           FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses))
         }
@@ -92,7 +101,7 @@ struct FriendsView: View {
             }),
                  label: Text("")) {
             Text("Activity").tag(Page.feed.rawValue)
-            Text("Friends").tag(Page.list.rawValue)
+            Text("Following").tag(Page.list.rawValue)
           }
                  .pickerStyle(SegmentedPickerStyle())
                  .colorMultiply(.accentColor)
