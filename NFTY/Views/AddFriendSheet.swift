@@ -56,7 +56,7 @@ struct AddFriendSheet: View {
           textField.becomeFirstResponder()
         }
         .onChange(of: ensName) { val in
-          self.userAccountState.update(ensName: "\(val).eth")
+          self.userAccountState.update(ensName: "\(val.lowercased()).eth")
         }
       
       switch(userAccountState.state) {
@@ -76,7 +76,7 @@ struct AddFriendSheet: View {
       case .notFound:
         VStack {
           Spacer()
-          Text("No user found for name\n\(ensName).eth")
+          Text("No user found for name\n\(ensName.lowercased()).eth")
             .font(.title)
             .foregroundColor(.secondary)
             .multilineTextAlignment(.center)
