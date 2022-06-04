@@ -47,6 +47,9 @@ struct MakeErc721Collection {
       }.then { isErc721 -> Promise<Bool> in
         if (!isErc721) { return Promise.value(false) }
         return erc165.supportsInterface(interfaceId:"0x80ac58cd") // https://eips.ethereum.org/EIPS/eip-721 : ERC721
+      }.then { isErc721 -> Promise<Bool> in
+        if (!isErc721) { return Promise.value(false) }
+        return erc165.supportsInterface(interfaceId:"0x780e9d63") // https://eips.ethereum.org/EIPS/eip-721 : ERC721Enumerable
       }.then { isErc721 -> Promise<String?> in
         if (!isErc721) { return Promise.value(nil) }
         
@@ -71,8 +74,7 @@ struct MakeErc721Collection {
   }
   
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
-        
-    let cache = FirebaseJSONCache(bucket: "erc721Contracts", fallback:MakeErc721Collection.validateAddress)
+    let cache = FirebaseJSONCache(bucket: "erc721EnumerableContracts", fallback:MakeErc721Collection.validateAddress)
     return cache.get(address.hex(eip55: true))
       .map { (info:Erc721ContractInfo?) -> Collection? in
         switch (info?.name) {

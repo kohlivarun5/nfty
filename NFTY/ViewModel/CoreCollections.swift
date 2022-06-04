@@ -826,4 +826,6 @@ enum CloudDefaultStorageKeys : String {
   case friendsDict = "friendsDict"
   case quoteType = "quoteType"
   case offerNotificationMinimum = "offerNotificationMinimum"
+  case knownOwnerCollections = "knownOwnerCollections"
+  
 }

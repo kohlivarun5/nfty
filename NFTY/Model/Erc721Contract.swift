@@ -68,6 +68,7 @@ class Erc721Contract {
       return
         method.invoke(address,index).call()
         .map(on:DispatchQueue.global(qos:.userInitiated)) { outputs in
+          print(outputs["tokenId"],self.address?.hex(eip55: true),index)
           return outputs["tokenId"] as! BigUInt
         }
     }

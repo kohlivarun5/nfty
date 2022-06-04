@@ -107,7 +107,7 @@ struct OpenSeaApi {
       
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         do {
-
+          
           if let e = error { return seal.reject(e) }
           
           let jsonDecoder = JSONDecoder()
@@ -407,6 +407,59 @@ struct OpenSeaApi {
       }
   }
   
+  static func collections(owner:EthereumAddress) -> Promise<[String]> {
+    
+    //   curl --request GET   --url 'https://api.opensea.io/api/v1/collections?asset_owner=0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4&offset=0&limit=300' --header 'Accept: application/json'
+    
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/api/v1/collections"
+    components.queryItems = [
+      URLQueryItem(name: "asset_owner", value: owner.hex(eip55: true)),
+      URLQueryItem(name: "limit", value: String(300))
+    ]
+    
+    return Promise { seal in
+      var request = URLRequest(url:components.url!)
+      //request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      
+      request.httpMethod = "GET"
+      
+      OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          
+          if let e = error { return seal.reject(e) }
+          
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          
+          struct PrimaryContract : Decodable {
+            let address : String
+            let schema_name : String
+          }
+          
+          struct Results : Decodable {
+            let primary_asset_contracts : [PrimaryContract]
+          }
+          
+          // print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          
+          let contracts = try! jsonDecoder.decode([Results].self, from: data!)
+          let collections = contracts.flatMap {
+            
+            $0.primary_asset_contracts.compactMap { (contract:PrimaryContract) -> String? in
+              if (contract.schema_name != "ERC721")
+              { return nil }
+              return contract.address
+            }
+          }
+          seal.fulfill(collections)
+        }
+      })
+    }
+  }
+  
 }
 
 
@@ -452,6 +505,6 @@ struct OpenSeaTradeApi : TokenTradeInterface {
       tokenIds: tokenIds,
       side:mapSide(side)
     )
-      .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
+    .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
   }
 }
