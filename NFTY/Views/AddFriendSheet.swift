@@ -48,8 +48,6 @@ struct AddFriendSheet: View {
     VStack {
       
       TextField("ENS Name",text:$ensName)
-      //.textContentType(.oneTimeCode)
-      //.keyboardType(.numberPad)
         .multilineTextAlignment(.center)
         .textFieldStyle(RoundedBorderTextFieldStyle())
         .introspectTextField { textField in
@@ -63,12 +61,16 @@ struct AddFriendSheet: View {
       case .loaded(let account):
         VStack {
           Spacer()
-          ProfileViewHeader(account: account, isOwnerView: false,addTopPadding:false)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay(
-              RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
-            .shadow(color:.accentColor,radius:0)
-            .padding(10)
+          NavigationLink(
+            destination:PrivateCollectionView(account:account)
+          ) {
+            ProfileViewHeader(account: account, isOwnerView: false,addTopPadding:false)
+              .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+              .overlay(
+                RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
+              .shadow(color:.accentColor,radius:0)
+              .padding(10)
+          }
           Spacer()
         }
       case .empty:
