@@ -148,6 +148,7 @@
 		4F7CF7E926C8264700394FA2 /* BirdHouse_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */; };
 		4F7EFAE2284B1FEF00E354D1 /* PromiseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7EFAE1284B1FEF00E354D1 /* PromiseUtils.swift */; };
 		4F7EFAE3284B1FEF00E354D1 /* PromiseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7EFAE1284B1FEF00E354D1 /* PromiseUtils.swift */; };
+		4F7EFAE7284EDE0D00E354D1 /* AddFriendSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7EFAE6284EDE0D00E354D1 /* AddFriendSheet.swift */; };
 		4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */; };
 		4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BE02632B57E00BB5E07 /* FavoritesView.swift */; };
@@ -592,6 +593,7 @@
 		4F7CF7E626C8264700394FA2 /* BirdHouse_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_nearestTokens.json; sourceTree = "<group>"; };
 		4F7CF7E726C8264700394FA2 /* BirdHouse_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BirdHouse_rarityRanks.json; sourceTree = "<group>"; };
 		4F7EFAE1284B1FEF00E354D1 /* PromiseUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseUtils.swift; sourceTree = "<group>"; };
+		4F7EFAE6284EDE0D00E354D1 /* AddFriendSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendSheet.swift; sourceTree = "<group>"; };
 		4F856BB72632620400BB5E07 /* TokenContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenContracts.swift; sourceTree = "<group>"; };
 		4F856BCF2632B30C00BB5E07 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F856BE02632B57E00BB5E07 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
@@ -972,6 +974,7 @@
 		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4F7EFAE6284EDE0D00E354D1 /* AddFriendSheet.swift */,
 				4FA0B2B226C2260F00821413 /* ActivityView.swift */,
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
 				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
@@ -1765,6 +1768,7 @@
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
 				4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */,
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
+				4F7EFAE7284EDE0D00E354D1 /* AddFriendSheet.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
 				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
