@@ -12,6 +12,7 @@ struct ProfileViewHeader: View {
   
   let account : UserAccount
   let isOwnerView : Bool
+  let addTopPadding : Bool
   
   @State private var balance : EthereumQuantity? = nil
   
@@ -101,7 +102,7 @@ struct ProfileViewHeader: View {
             nft: nft,
             price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
             collection: collection,
-            hideOwnerLink: true,
+            hideOwnerLink: false,
             selectedProperties: [])
         ) {
           NftImage(
@@ -179,7 +180,7 @@ struct ProfileViewHeader: View {
           .if(!isFollowing){
             $0.colorMultiply(.accentColor)
           }
-        case (true,.some):
+        case (true,.some)/* : // TODO : Support update avatar with wallet connect
           
           NavigationLink(
             destination:WalletTokensSelector(
@@ -212,13 +213,13 @@ struct ProfileViewHeader: View {
           .padding(.trailing)
           .foregroundColor(.accentColor)
           
-        case (true,.none),(false,.none):
+        case */,(true,.none),(false,.none):
           EmptyView()
         }
         
       }
     }
-    .padding(.top,50)
+    .padding(.top, addTopPadding ? 50 : 10)
     .padding(.bottom,10)
     .background(.ultraThickMaterial)
     .onAppear {
