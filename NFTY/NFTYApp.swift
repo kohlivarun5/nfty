@@ -193,7 +193,7 @@ struct NFTYApp: App {
             .navigationBarTitle("Favorites",displayMode: .inline)
         }
         .tabItem {
-          Label("Favorites",systemImage:"heart.fill")
+          Label("Saved",systemImage:"bookmark.circle.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
