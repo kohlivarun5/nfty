@@ -84,14 +84,17 @@ struct CKImageCacheCore {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
-        case (.none,_),(_,.none):
-          database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:self.recordName(tokenId)))
+         case (.none,_),(_,.none):
+          let recordName = self.recordName(tokenId)
+          print("Fetching for record=\(recordName)")
+          database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
               print("Fetch returned with \(result)")
               let (record,_) = result
               
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
+                print("Record \(record) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
                 return Promise.value(imageOfData(data))
