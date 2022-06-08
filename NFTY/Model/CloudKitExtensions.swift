@@ -1,0 +1,26 @@
+//
+//  CloudKitExtensions.swift
+//  NFTY
+//
+//  Created by Varun Kohli on 6/7/22.
+//
+
+import Foundation
+import CloudKit
+import PromiseKit
+
+
+// https://github.com/JunDang/WeatherApp/blob/2d4e3db0df6f15fe5f688391a2eda647be3f9cb1/Carthage/Checkouts/PromiseKit/Categories/CloudKit/CKDatabase%2BPromise.swift#L17
+
+
+extension CKDatabase {
+  public func fetchRecordWithID(recordID: CKRecord.ID) -> Promise<CKRecord?,Error?> {
+    return Promise.init(resolver: { seal in
+      fetchRecordWithID(recordID, completionHandler: seal.fulfill)
+    })
+  }
+  
+  public func save(record: CKRecord) -> Promise<CKRecord> {
+    return Promise { saveRecord(record, completionHandler: $0) }
+  }
+}

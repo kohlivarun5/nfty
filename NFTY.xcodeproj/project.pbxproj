@@ -211,6 +211,12 @@
 		4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */; };
 		4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
+		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
+		4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
+		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
+		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
+		4FB7E9DE28502CCF001CB086 /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */; };
+		4FB7E9DF28502CCF001CB086 /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */; };
 		4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */; };
 		4FB9A7B5262B28A400C58AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
@@ -645,6 +651,9 @@
 		4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensByPropertiesList.swift; sourceTree = "<group>"; };
 		4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_rarityRanks.json; sourceTree = "<group>"; };
 		4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_nearestTokens.json; sourceTree = "<group>"; };
+		4FB7E9D12850284F001CB086 /* CKImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKImageCache.swift; sourceTree = "<group>"; };
+		4FB7E9D4285028AE001CB086 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
 		4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunks.swift; sourceTree = "<group>"; };
 		4FB9A7AD262B28A300C58AF9 /* NFTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB9A7B0262B28A300C58AF9 /* NFTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYApp.swift; sourceTree = "<group>"; };
@@ -760,6 +769,7 @@
 				4FFA5D6B280AB01000059A20 /* FirebaseStorage in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
+				4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4F2A9C76280E3C520088D50C /* FirebaseAppCheck in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
@@ -789,6 +799,7 @@
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
+				4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */,
 				4FFA5D74280AB89E00059A20 /* FirebaseStorage in Frameworks */,
 				4F3548D728128DD600B89943 /* FirebaseDatabase in Frameworks */,
 				4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */,
@@ -837,6 +848,7 @@
 		4F58A06C2636942200E258C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FB7E9D4285028AE001CB086 /* CloudKit.framework */,
 				4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */,
 				4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */,
 			);
@@ -1060,6 +1072,8 @@
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
 				4FFA5D6E280AB03900059A20 /* GCP */,
 				4FD95B93280FA0D9009EA52F /* ENSContract.swift */,
+				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
+				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1721,6 +1735,7 @@
 				4F0A170826C616FF0025259F /* DappLink.swift in Sources */,
 				4F4DD21F265F480A00AD320D /* AddressLabelWithShare.swift in Sources */,
 				4FAA1E2226BA26E900102174 /* UserSettingsModel.swift in Sources */,
+				4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */,
 				4FAA1E2026BA24C200102174 /* UserSettingsView.swift in Sources */,
 				4FC7446A2630F9130060FC6D /* TokenProtocols.swift in Sources */,
 				4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */,
@@ -1730,6 +1745,7 @@
 				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4F529BB727B0594600EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
+				4FB7E9DE28502CCF001CB086 /* CloudKitExtensions.swift in Sources */,
 				4F529BBD27B0648E00EFE626 /* OpenSeaApiCore.swift in Sources */,
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
@@ -1834,6 +1850,7 @@
 				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
+				4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4F3548D328128D6600B89943 /* FirebaseJSONCache.swift in Sources */,
@@ -1874,6 +1891,7 @@
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
 				4F8E16FB27B06FB000E54BB5 /* OpenSeaApiCore.swift in Sources */,
 				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
+				4FB7E9DF28502CCF001CB086 /* CloudKitExtensions.swift in Sources */,
 				4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,
 				4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,

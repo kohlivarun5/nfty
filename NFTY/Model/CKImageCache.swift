@@ -1,26 +1,41 @@
 //
-//  FirebaseCache.swift
+//  CKImageCache.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 4/16/22.
+//  Created by Varun Kohli on 6/7/22.
 //
 
 import Foundation
-import Cache
-import SwiftUI
+import CloudKit
 import BigInt
 import PromiseKit
+import Cache
+import UIKit
 
-struct FirebaseImageCache {
+struct CKImageCacheCore {
   
+  
+  private func createLocalFile(path:String,data: Data) -> URL {
+    let fileManager = FileManager.default
+    let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
+    
+    let fileURL = tmpSubFolderURL.appendingPathComponent(path)
+    data.write(to: fileURL)
+    return fileURL
+    
+  }
+  
+  let database : CKDatabase
   let bucket : String
   let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
   
-  private let firebase = FirebaseCore()
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   
-  init(bucket:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
+  private let assetKey = "image"
+  
+  init(database:CKDatabase,bucket:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
+    self.database = database
     self.bucket = bucket
     self.fallback = fallback
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
@@ -32,8 +47,8 @@ struct FirebaseImageCache {
   }
   
   
-  private func path(_ tokenId:BigUInt) -> String {
-    return "\(bucket)/\(tokenId)"
+  private func path(_ tokenId:BigUInt) -> CKRecord.ID {
+    return CKRecord.ID.init(recordName:"\(bucket)/\(tokenId)")
   }
   
   private func imageOfData(_ data:Data) -> Media.IpfsImage? {
@@ -48,13 +63,17 @@ struct FirebaseImageCache {
   
   private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
     return self.fallback(tokenId)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Media.IpfsImage?> in
-        guard let data = data else { return Promise.value(nil) }
-        guard let image = imageOfData(data) else { return Promise.value(nil) }
-        return firebase.putObject(path:self.path(tokenId), data)
-          .map { return image }
+      .map(on:DispatchQueue.global(qos:.userInteractive)) { data -> Media.IpfsImage? in
+        guard let data = data else { return nil }
+        guard let image = imageOfData(data) else { return nil }
+        let recordId = self.path(tokenId)
+        let record = CKRecord.init(recordType: "TokenImageCache", recordID:recordId)
+        record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:"\(recordId)",data:data))])
+        database.save(record:record)
+        return image
       }
   }
+  
   
   func image(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     return ObservablePromise(promise: Promise { seal in
@@ -63,9 +82,9 @@ struct FirebaseImageCache {
         case (.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
         case (.none,_),(_,.none):
-          _ = firebase.getObject(path:self.path(tokenId))
-            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Media.IpfsImage?> in
-              switch(data) {
+          database.fetchRecordWithID(recordID:self.path(tokenId))
+            .then(on:DispatchQueue.global(qos:.userInteractive)) { record -> Promise<Media.IpfsImage?> in
+              switch((record[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
                 return onCacheMiss(tokenId)
               case .some(let data):
