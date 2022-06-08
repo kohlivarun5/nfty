@@ -855,6 +855,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4F675C35285040F7009C1210 /* CloudKit */ = {
+			isa = PBXGroup;
+			children = (
+				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
+				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
+			);
+			path = CloudKit;
+			sourceTree = "<group>";
+		};
 		4F74AA452688C4E4000C7A7C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1072,8 +1081,7 @@
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
 				4FFA5D6E280AB03900059A20 /* GCP */,
 				4FD95B93280FA0D9009EA52F /* ENSContract.swift */,
-				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
-				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
+				4F675C35285040F7009C1210 /* CloudKit */,
 			);
 			path = Model;
 			sourceTree = "<group>";
