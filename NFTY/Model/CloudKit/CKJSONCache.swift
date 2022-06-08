@@ -78,21 +78,21 @@ struct CKJSONCache<Output:Codable> {
               let value = try? JSONDecoder().decode(Output.self, from: jsonData)
               return value
             }
-          .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
-            switch(data) {
-            case .some(let data):
-              return Promise.value(data)
-            case .none:
-              return onCacheMiss(key)
+            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
+              switch(data) {
+              case .some(let data):
+                return Promise.value(data)
+              case .none:
+                return onCacheMiss(key)
+              }
+            }.map(on:DispatchQueue.global(qos:.userInteractive)) { data in
+              DispatchQueue.global(qos:.background).async {
+                data.flatMap { try? self.diskCache.setObject($0, forKey:key) }
+              }
+              return data
             }
-          }.map(on:DispatchQueue.global(qos:.userInteractive)) { data in
-            DispatchQueue.global(qos:.background).async {
-              data.flatMap { try? self.diskCache.setObject($0, forKey:key) }
-            }
-            return data
-          }
-          .done(seal.fulfill)
-          .catch(seal.reject)
+            .done(seal.fulfill)
+            .catch(seal.reject)
         }
       }
     }
