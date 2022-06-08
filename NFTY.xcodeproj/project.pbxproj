@@ -164,6 +164,7 @@
 		4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
 		4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
 		4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F961F79271CC12600639E85 /* NftTradeUrlView.swift */; };
+		4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
@@ -610,6 +611,7 @@
 		4F921451271C62E30085D238 /* JungleFreaks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = JungleFreaks_nearestTokens.json; sourceTree = "<group>"; };
 		4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerTokens.swift; sourceTree = "<group>"; };
 		4F961F79271CC12600639E85 /* NftTradeUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftTradeUrlView.swift; sourceTree = "<group>"; };
+		4F99B5172851621D0012A3FF /* CKJSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKJSONCache.swift; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
 		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 			children = (
 				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
+				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -1759,6 +1762,7 @@
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
 				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
+				4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */,

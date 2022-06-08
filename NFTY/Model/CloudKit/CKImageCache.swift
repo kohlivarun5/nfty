@@ -16,7 +16,6 @@ struct CKImageCacheCore {
   
   
   private func createLocalFile(path:String,data: Data) -> URL {
-    let fileManager = FileManager.default
     let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
     let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
     try! data.write(to: fileURL)
@@ -65,14 +64,18 @@ struct CKImageCacheCore {
       .map(on:DispatchQueue.global(qos:.userInteractive)) { data -> Media.IpfsImage? in
         guard let data = data else { return nil }
         guard let image = imageOfData(data) else { return nil }
-        let recordId = self.recordName(tokenId)
-        let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
-        record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
-        print("Saving recordId=\(recordId)")
-        database.save(record:record)
-          .done { result in
-            print("Save returned for \(recordId)")
-          }
+        
+        DispatchQueue.global(qos:.background).async {
+          let recordId = self.recordName(tokenId)
+          let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
+          record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
+          print("Saving recordId=\(recordId)")
+          database.save(record:record)
+            .done { result in
+              print("Save returned for \(recordId)")
+            }
+            .catch { print($0) }
+        }
         return image
       }
   }
@@ -89,12 +92,12 @@ struct CKImageCacheCore {
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
-              print("Fetch returned with \(result)")
-              let (record,_) = result
+              let (record,error) = result
+              print("Fetch returned with error=\(String(describing: error))")
               
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
-                print("Record \(record) did not return asset")
+                print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
                 return Promise.value(imageOfData(data))
@@ -106,6 +109,7 @@ struct CKImageCacheCore {
               }
               seal.fulfill($0)
             }
+            .catch { print($0) }
         }
       }
     })
