@@ -8,6 +8,7 @@
 import Foundation
 import Web3
 import PromiseKit
+import CloudKit
 
 struct MakeErc721Collection {
   
@@ -72,7 +73,10 @@ struct MakeErc721Collection {
   
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
         
-    let cache = FirebaseJSONCache(bucket: "erc721Contracts", fallback:MakeErc721Collection.validateAddress)
+    let cache = CKJSONCache(
+      database:CKContainer.default().publicCloudDatabase,
+      bucket: "erc721Contracts",
+      fallback:MakeErc721Collection.validateAddress)
     return cache.get(address.hex(eip55: true))
       .map { (info:Erc721ContractInfo?) -> Collection? in
         switch (info?.name) {

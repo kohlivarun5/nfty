@@ -12,6 +12,7 @@ import Cache
 import Web3
 import Web3PromiseKit
 import Web3ContractABI
+import CloudKit
 
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
@@ -45,7 +46,10 @@ class TxFetcher {
     return eventOfTx(transactionHash:try! EthereumData.string(key))
   }
   
-  private var jsonCache = FirebaseJSONCache(bucket: "transactions", fallback: TxFetcher.fallback)
+  private var jsonCache =  CKJSONCache(
+    database:CKContainer.default().publicCloudDatabase,
+    bucket: "transactions",
+    fallback: TxFetcher.fallback)
   
   func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
     switch transactionHash {
