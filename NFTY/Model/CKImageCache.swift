@@ -68,10 +68,10 @@ struct CKImageCacheCore {
         let recordId = self.recordName(tokenId)
         let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
         record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
-        print("Saving record=\(record)")
+        print("Saving recordId=\(recordId)")
         database.save(record:record)
           .done { result in
-            print("Save returned with \(result)")
+            print("Save returned for \(recordId)")
           }
         return image
       }
