@@ -18,9 +18,8 @@ struct CKImageCacheCore {
   private func createLocalFile(path:String,data: Data) -> URL {
     let fileManager = FileManager.default
     let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
-    
-    let fileURL = tmpSubFolderURL.appendingPathComponent(path)
-    try? data.write(to: fileURL)
+    let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
+    try! data.write(to: fileURL)
     return fileURL
     
   }
@@ -47,8 +46,8 @@ struct CKImageCacheCore {
   }
   
   
-  private func path(_ tokenId:BigUInt) -> CKRecord.ID {
-    return CKRecord.ID.init(recordName:"\(bucket)/\(tokenId)")
+  private func recordName(_ tokenId:BigUInt) -> String {
+    return "\(bucket)/\(tokenId)"
   }
   
   private func imageOfData(_ data:Data) -> Media.IpfsImage? {
@@ -66,10 +65,14 @@ struct CKImageCacheCore {
       .map(on:DispatchQueue.global(qos:.userInteractive)) { data -> Media.IpfsImage? in
         guard let data = data else { return nil }
         guard let image = imageOfData(data) else { return nil }
-        let recordId = self.path(tokenId)
-        let record = CKRecord.init(recordType: "TokenImageCache", recordID:recordId)
-        record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:"\(recordId)",data:data))])
+        let recordId = self.recordName(tokenId)
+        let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
+        record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
+        print("Saving record=\(record)")
         database.save(record:record)
+          .done { result in
+            print("Save returned with \(result)")
+          }
         return image
       }
   }
@@ -82,9 +85,11 @@ struct CKImageCacheCore {
         case (.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
         case (.none,_),(_,.none):
-          database.fetchRecordWithID(recordID:self.path(tokenId))
+          database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:self.recordName(tokenId)))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
+              print("Fetch returned with \(result)")
               let (record,_) = result
+              
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
                 return onCacheMiss(tokenId)
