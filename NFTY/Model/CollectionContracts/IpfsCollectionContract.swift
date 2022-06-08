@@ -11,6 +11,7 @@ import Web3PromiseKit
 import Web3ContractABI
 import Cache
 import UIKit
+import CloudKit
 
 
 class IpfsCollectionContract : ContractInterface {
@@ -123,7 +124,7 @@ class IpfsCollectionContract : ContractInterface {
     }
   }
   
-  private var firebaseCache : FirebaseImageCache
+  private var imageCache : CKImageCacheCore
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -144,7 +145,10 @@ class IpfsCollectionContract : ContractInterface {
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
-    self.firebaseCache = FirebaseImageCache(bucket: "collections/\(contractAddressHex.lowercased())/images",fallback:self.ethContract.image)
+    self.imageCache = CKImageCacheCore(
+      database: CKContainer.default().publicCloudDatabase,
+      bucket: "collections/\(contractAddressHex.lowercased())/images",
+      fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
   }
@@ -154,7 +158,7 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
-    return firebaseCache.image(tokenId)
+    return imageCache.image(tokenId)
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
