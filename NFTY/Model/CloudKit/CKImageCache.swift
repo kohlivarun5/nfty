@@ -102,12 +102,14 @@ struct CKImageCacheCore {
               case .some(let data):
                 return Promise.value(imageOfData(data))
               }
-            }.done(on:DispatchQueue.global(qos:.userInteractive)) {
-              $0.map {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+            }.done(on:DispatchQueue.global(qos:.userInteractive)) { image in
+              DispatchQueue.global(qos:.background).async {
+                image.map {
+                  try? self.imageCache.setObject($0.image, forKey: tokenId)
+                  try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+                }
               }
-              seal.fulfill($0)
+              seal.fulfill(image)
             }
             .catch { print($0) }
         }

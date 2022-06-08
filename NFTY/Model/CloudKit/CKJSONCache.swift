@@ -17,10 +17,10 @@ struct CKJSONCache<Output:Codable> {
   let fallback : (_ in:String) -> Promise<Output?>
   private var diskCache : DiskStorage<String,Output>
   
-  let databse : CKDatabase
+  let database : CKDatabase
   
   init(database:CKDatabase,bucket:String,fallback:@escaping (_ in:String) -> Promise<Output?>) {
-    self.databse = database
+    self.database = database
     self.bucket = bucket
     self.fallback = fallback
     self.diskCache = try! DiskStorage<String, Output>(
@@ -42,11 +42,11 @@ struct CKJSONCache<Output:Codable> {
         let jsonData = try JSONEncoder().encode(data)
         
         DispatchQueue.global(qos:.background).async {
-          let recordId = self.path(tokenId)
+          let recordId = self.path(key)
           let record = CKRecord.init(recordType: "GenericJSONCache", recordID:CKRecord.ID.init(recordName:recordId))
           record.setValuesForKeys([jsonKey: jsonData])
           print("Saving recordId=\(recordId)")
-          database.save(record:record)
+          self.database.save(record:record)
             .done { result in
               print("Save returned for \(recordId)")
             }
@@ -64,20 +64,20 @@ struct CKJSONCache<Output:Codable> {
         case .some(let data):
           return seal.fulfill(data)
         case .none:
-          Promise { seal in
-            database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
-              .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
-                let (record,error) = result
-                print("Fetch returned with error=\(String(describing: error))")
-                
-                guard error == nil else { return nil }
-                
-                guard let json = record[jsonKey] as? Data else { return nil }
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return nil }
-                let value = try? JSONDecoder().decode(Output.self, from: jsonData)
-                return value
-              }
-          }
+          
+          let recordName = self.path(key)
+          database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
+            .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
+              let (record,error) = result
+              print("Fetch returned with error=\(String(describing: error))")
+              
+              guard error == nil else { return nil }
+              
+              guard let json = record?[jsonKey] as? Data else { return nil }
+              guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return nil }
+              let value = try? JSONDecoder().decode(Output.self, from: jsonData)
+              return value
+            }
           .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
             switch(data) {
             case .some(let data):
@@ -85,9 +85,11 @@ struct CKJSONCache<Output:Codable> {
             case .none:
               return onCacheMiss(key)
             }
-          }.map(on:DispatchQueue.global(qos:.userInteractive)) {
-            let _ = $0.flatMap { try? self.diskCache.setObject($0, forKey:key) }
-            return $0
+          }.map(on:DispatchQueue.global(qos:.userInteractive)) { data in
+            DispatchQueue.global(qos:.background).async {
+              data.flatMap { try? self.diskCache.setObject($0, forKey:key) }
+            }
+            return data
           }
           .done(seal.fulfill)
           .catch(seal.reject)
