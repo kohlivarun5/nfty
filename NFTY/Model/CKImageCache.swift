@@ -20,7 +20,7 @@ struct CKImageCacheCore {
     let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
     
     let fileURL = tmpSubFolderURL.appendingPathComponent(path)
-    data.write(to: fileURL)
+    try? data.write(to: fileURL)
     return fileURL
     
   }
@@ -83,8 +83,9 @@ struct CKImageCacheCore {
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
         case (.none,_),(_,.none):
           database.fetchRecordWithID(recordID:self.path(tokenId))
-            .then(on:DispatchQueue.global(qos:.userInteractive)) { record -> Promise<Media.IpfsImage?> in
-              switch((record[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
+            .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
+              let (record,_) = result
+              switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
                 return onCacheMiss(tokenId)
               case .some(let data):

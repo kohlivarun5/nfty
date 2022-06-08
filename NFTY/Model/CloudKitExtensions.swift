@@ -14,13 +14,15 @@ import PromiseKit
 
 
 extension CKDatabase {
-  public func fetchRecordWithID(recordID: CKRecord.ID) -> Promise<CKRecord?,Error?> {
+  public func fetchRecordWithID(recordID: CKRecord.ID) -> Promise<(CKRecord?,Error?)> {
     return Promise.init(resolver: { seal in
-      fetchRecordWithID(recordID, completionHandler: seal.fulfill)
+      fetch(withRecordID: recordID, completionHandler: { record,error in seal.fulfill((record,error)) } )
     })
   }
   
-  public func save(record: CKRecord) -> Promise<CKRecord> {
-    return Promise { saveRecord(record, completionHandler: $0) }
+  public func save(record: CKRecord) -> Promise<(CKRecord?,Error?)> {
+    return Promise.init(resolver: { seal in
+      save(record, completionHandler: { record,error in seal.fulfill((record,error)) } )
+    })
   }
 }
