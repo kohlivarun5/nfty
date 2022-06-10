@@ -47,9 +47,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     }
   }
   
-  private func openseaTokens(address:EthereumAddress) -> Promise<[NFTToken]> {
+  private func openseaTokens(address:EthereumAddress,collectionAddress:String) -> Promise<[NFTToken]> {
     
-    return OpenSeaApi.getOwnerTokens(address: address,offset:self.openSeaOffset,limit:limit)
+    return OpenSeaApi.getOwnerTokens(address: address,collectionAddress:collectionAddress,offset:self.openSeaOffset,limit:limit)
       .recover { error -> Promise<[NFTToken]> in
         print("OpenSea Error=\(error)")
         self.foundMax = true
@@ -96,20 +96,21 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     case .none:
       return Promise.value(())
     case .some(let address):
-      return after(seconds:0.5).then {
-        self.openseaTokens(address: address)
-          .then { (tokens:[NFTToken]) -> Promise<Void> in
-            CKOwnerTokensFetcher.saveOwnerTokens(
-              database: self.database,
-              owner: address,
-              tokens: tokens)
-            
-            if (tokens.isEmpty) {
-              return Promise.value(())
-            } else {
-              self.openSeaOffset = self.openSeaOffset + self.limit
-              return self.refreshTokensFromOpensea()
-            }
+      return after(seconds:1).then {
+        OpenSeaApi.collections(owner: address)
+          .then {
+            reduce_p($0,(),{ _,collection in
+              
+              after(seconds:1).then {
+                self.openseaTokens(address: address,collectionAddress: collection)
+                  .map { (tokens:[NFTToken]) -> Void in
+                    CKOwnerTokensFetcher.saveOwnerTokens(
+                      database: self.database,
+                      owner: address,
+                      tokens: tokens)
+                  }
+              }
+            })
           }
       }
     }
@@ -119,12 +120,12 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     print("State=\(state)")
     if (state == .loading || state == .loadingMore || foundMax) { return onDone() }
     
-    if (self.state == .notLoaded) {
-      after(seconds:30).then {
+    /* if (self.state == .notLoaded) {
+      after(seconds:0.1).then {
         self.refreshTokensFromOpensea()
-          .catch { print($0) }
       }
-    }
+      .catch { print($0) }
+    } */
     
     self.state = self.state == .notLoaded ? .loading : .loadingMore
     
