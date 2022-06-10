@@ -168,6 +168,8 @@
 		4F99B519285165100012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
 		4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
 		4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
+		4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */; };
+		4F99B51F2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
@@ -616,6 +618,7 @@
 		4F961F79271CC12600639E85 /* NftTradeUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftTradeUrlView.swift; sourceTree = "<group>"; };
 		4F99B5172851621D0012A3FF /* CKJSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKJSONCache.swift; sourceTree = "<group>"; };
 		4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseKitExtensions.swift; sourceTree = "<group>"; };
+		4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKOwnerTokens.swift; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
 		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
@@ -867,6 +870,7 @@
 				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
+				4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -1786,6 +1790,7 @@
 				4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */,
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
 				4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */,
+				4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
@@ -1871,6 +1876,7 @@
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
+				4F99B51F2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4F3548D328128D6600B89943 /* FirebaseJSONCache.swift in Sources */,
 				4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */,
