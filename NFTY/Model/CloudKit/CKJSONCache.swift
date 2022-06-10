@@ -13,6 +13,14 @@ import CloudKit
 
 struct CKJSONCache<Output:Codable> {
   
+  private func createLocalFile(path:String,data: Data) -> URL {
+    let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
+    let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
+    try! data.write(to: fileURL)
+    return fileURL
+    
+  }
+  
   let bucket : String
   let fallback : (_ in:String) -> Promise<Output?>
   private var diskCache : DiskStorage<String,Output>
@@ -44,7 +52,7 @@ struct CKJSONCache<Output:Codable> {
         DispatchQueue.global(qos:.background).async {
           let recordId = self.path(key)
           let record = CKRecord.init(recordType: "GenericJSONCache", recordID:CKRecord.ID.init(recordName:recordId))
-          record.setValuesForKeys([jsonKey: jsonData])
+          record.setValuesForKeys([jsonKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:jsonData))])
           print("Saving recordId=\(recordId)")
           self.database.save(record:record)
             .done { result in
@@ -73,7 +81,8 @@ struct CKJSONCache<Output:Codable> {
               
               guard error == nil else { return nil }
               
-              guard let json = record?[jsonKey] as? Data else { return nil }
+              guard let json = ((record?[jsonKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) else { return nil }
+              
               guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return nil }
               let value = try? JSONDecoder().decode(Output.self, from: jsonData)
               return value
