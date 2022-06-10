@@ -430,7 +430,6 @@ struct OpenSeaApi {
       request.httpMethod = "GET"
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         if let e = error { return seal.reject(e) }
-        x
         struct PrimaryContract : Decodable {
           let address : String
           let schema_name : String
