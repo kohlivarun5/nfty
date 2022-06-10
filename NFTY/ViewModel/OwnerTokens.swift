@@ -96,16 +96,15 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     case .none:
       return Promise.value([])
     case .some(let address):
-      return after(seconds:1).then {
-        self.openseaTokens(address: address,collectionAddress: nil)
-          .map { (tokens:[NFTToken]) -> [NFTToken] in
-            CKOwnerTokensFetcher.saveOwnerTokens(
-              database: self.database,
-              owner: address,
-              tokens: tokens)
-            return tokens
-          }
-      }
+      self.openseaTokens(address: address,collectionAddress: nil)
+        .map { (tokens:[NFTToken]) -> [NFTToken] in
+          CKOwnerTokensFetcher.saveOwnerTokens(
+            database: self.database,
+            owner: address,
+            tokens: tokens)
+          return tokens
+        }
+      
     }
   }
   
@@ -185,9 +184,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
 var OwnerTokensCache : [String:NftOwnerTokens] = [:]
 func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
   switch (account.ethAddress.flatMap { OwnerTokensCache[$0.hex(eip55: true)] },account.nearAccount.flatMap { OwnerTokensCache[$0] }) {
-    case (.some(let tokens),_),(_,.some(let tokens)):
-     return tokens
-     case (.none,.none):
+  case (.some(let tokens),_),(_,.some(let tokens)):
+    return tokens
+  case (.none,.none):
     let tokens = NftOwnerTokens(account:account)
     switch(account.ethAddress,account.nearAccount) {
     case (.some(let ethAddress),.some(let nearAccount)):
