@@ -110,7 +110,6 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   
   func load(_ onDone: @escaping () -> Void) {
-    print("State=\(state)")
     if (state == .loading || state == .loadingMore || foundMax) { return onDone() }
     
     self.state = self.state == .notLoaded ? .loading : .loadingMore
@@ -118,7 +117,6 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     DispatchQueue.main.async {
       self.ckLoader?.fetch()
         .then { results -> Promise<[NFTToken]> in
-          print("CK results=\(results)")
           var tokens : [NFTToken] = []
           results.forEach { (_,list) in tokens.append(contentsOf: list) }
           
@@ -144,7 +142,6 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                     nft: collection.contract.getToken(tokenId))
                 } + tokens
               }.recover { error -> Promise<[NFTToken]> in
-                print("Pras failed with \(error)");
                 return Promise.value(tokens)
               }
           }
@@ -169,9 +166,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
         }
         .catch { print("Failed to fetch owner tokens\($0)") }
         .finally(on:.main) {
-          print("Updating state")
           self.state = .loaded
-          print("State=\(self.state)")
           self.parasOffset = self.parasOffset + self.limit
           onDone()
         }
