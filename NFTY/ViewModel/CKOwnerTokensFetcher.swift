@@ -42,7 +42,7 @@ struct CKOwnerTokensFetcher {
     let database : CKDatabase
     let owner : EthereumAddress
     private var state : State = .uninitialized
-    private let limit : Int = 5
+    private let limit : Int = 4
     
     init(database:CKDatabase,owner:EthereumAddress) {
       self.database = database
@@ -81,7 +81,14 @@ struct CKOwnerTokensFetcher {
                   return Promise.value(accu)
                 case .success(let record):
                   let record = CKOwnerTokens.Record(record: record)
-                  return record.toNFT().map { nfts in accu + [nfts] }
+                  return record.toNFT().map {
+                    switch($0) {
+                      case .none:
+                        return accu
+                    case .some(let nfts):
+                        return accu + [nfts]
+                    }
+                  }
                 }
               })
               .done { seal.fulfill($0) }
@@ -112,7 +119,14 @@ struct CKOwnerTokensFetcher {
                   return Promise.value(accu)
                 case .success(let record):
                   let record = CKOwnerTokens.Record(record: record)
-                  return record.toNFT().map { nfts in accu + [nfts] }
+                  return record.toNFT().map {
+                    switch($0) {
+                    case .none:
+                      return accu
+                    case .some(let nfts):
+                      return accu + [nfts]
+                    }
+                  }
                 }
               })
               .done { seal.fulfill($0) }
