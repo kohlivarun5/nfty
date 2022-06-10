@@ -185,9 +185,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
 var OwnerTokensCache : [String:NftOwnerTokens] = [:]
 func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
   switch (account.ethAddress.flatMap { OwnerTokensCache[$0.hex(eip55: true)] },account.nearAccount.flatMap { OwnerTokensCache[$0] }) {
-    /* case (.some(let tokens),_),(_,.some(let tokens)):
+    case (.some(let tokens),_),(_,.some(let tokens)):
      return tokens
-     case (.none,.none):*/ default:
+     case (.none,.none):
     let tokens = NftOwnerTokens(account:account)
     switch(account.ethAddress,account.nearAccount) {
     case (.some(let ethAddress),.some(let nearAccount)):
