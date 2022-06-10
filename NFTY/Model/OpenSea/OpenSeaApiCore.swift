@@ -43,7 +43,7 @@ struct OpenSeaApiCore {
         components.path = "/api/v1/asset_contract/\(contract)"
         
         var request = URLRequest(url:components.url!)
-        // request.setValue(OpenSeaApiCore.API_KEY, forHTTPHeaderField:"x-api-key")
+        request.setValue(OpenSeaApiCore.API_KEY, forHTTPHeaderField:"x-api-key")
         
         request.httpMethod = "GET"
         

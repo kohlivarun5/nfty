@@ -101,13 +101,13 @@ struct OpenSeaApi {
     
     return Promise { seal in
       var request = URLRequest(url:components.url!)
-      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
       request.httpMethod = "GET"
       
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         do {
-
+          
           if let e = error { return seal.reject(e) }
           
           let jsonDecoder = JSONDecoder()
@@ -298,11 +298,13 @@ struct OpenSeaApi {
       
       var request = URLRequest(url: components.url!)
       request.httpMethod = "GET"
-      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
-      // request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36", forHTTPHeaderField:"User-Agent")
+      request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
+                       forHTTPHeaderField:"User-Agent")
       
-      // request.setValue("https://api.opensea.io/api/v1/assets", forHTTPHeaderField:"referrer")
+      request.setValue("https://api.opensea.io/api/v1/assets",
+                       forHTTPHeaderField:"referrer")
       
       
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
@@ -368,7 +370,7 @@ struct OpenSeaApi {
               components.path = "/api/v1/collection/\(slug)"
               
               var request = URLRequest(url:components.url!)
-              // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+              request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
               
               request.httpMethod = "GET"
               
@@ -426,41 +428,35 @@ struct OpenSeaApi {
       //request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
       request.httpMethod = "GET"
-      
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
-        do {
-          
-          if let e = error { return seal.reject(e) }
-          
-          let jsonDecoder = JSONDecoder()
-          // print(data)
-          
-          struct PrimaryContract : Decodable {
-            let address : String
-            let schema_name : String
-          }
-          
-          struct Results : Decodable {
-            let primary_asset_contracts : [PrimaryContract]
-          }
-          
-          // print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
-          
-          let contracts = try! jsonDecoder.decode([Results].self, from: data!)
-          let collections = contracts.flatMap {
-            
-            $0.primary_asset_contracts.compactMap { (contract:PrimaryContract) -> String? in
-              if (contract.schema_name != "ERC721")
-              { return nil }
-              return contract.address
-            }
-          }
-          seal.fulfill(collections)
+        if let e = error { return seal.reject(e) }
+        
+        let jsonDecoder = JSONDecoder()
+        struct PrimaryContract : Decodable {
+          let address : String
+          let schema_name : String
         }
+        
+        struct Results : Decodable {
+          let primary_asset_contracts : [PrimaryContract]
+        }
+        
+        let jsonDecoder = JSONDecoder()
+        // print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+        
+        let contracts = try! jsonDecoder.decode([Results].self, from: data!)
+        let collections = contracts.flatMap {
+          
+          $0.primary_asset_contracts.compactMap { (contract:PrimaryContract) -> String? in
+            if (contract.schema_name != "ERC721")
+            { return nil }
+            return contract.address
+          }
+        }
+        seal.fulfill(collections)
       })
     }
   }
-  
 }
 
 
@@ -506,6 +502,6 @@ struct OpenSeaTradeApi : TokenTradeInterface {
       tokenIds: tokenIds,
       side:mapSide(side)
     )
-      .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
+    .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
   }
 }
