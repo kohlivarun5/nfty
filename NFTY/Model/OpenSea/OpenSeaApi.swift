@@ -430,8 +430,7 @@ struct OpenSeaApi {
       request.httpMethod = "GET"
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
         if let e = error { return seal.reject(e) }
-        
-        let jsonDecoder = JSONDecoder()
+        x
         struct PrimaryContract : Decodable {
           let address : String
           let schema_name : String
@@ -442,7 +441,6 @@ struct OpenSeaApi {
         }
         
         let jsonDecoder = JSONDecoder()
-        // print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
         
         let contracts = try! jsonDecoder.decode([Results].self, from: data!)
         let collections = contracts.flatMap {
