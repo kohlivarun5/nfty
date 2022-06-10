@@ -762,11 +762,10 @@ let SampleToken = NFT(
 
 let SampleCollection = CompositeCollection.loaders[0].collection
 
-let COLLECTIONS : [Collection] = CompositeCollection.loaders.map { $0.collection }
-
 class CollectionsFactory {
   
-  var collections : [String : Collection] = Dictionary(uniqueKeysWithValues: COLLECTIONS.map{ ($0.info.address.lowercased(),$0) })
+  var collections : [String : Collection] = Dictionary(
+    uniqueKeysWithValues: CompositeCollection.loaders.map { $0.collection }.map{ ($0.info.address.lowercased(),$0) })
   
   func getByAddress(_ address:String) -> Promise<Collection> {
     switch(collections[address.lowercased()]) {
@@ -809,6 +808,10 @@ class CollectionsFactory {
           }
       }
     }
+  }
+  
+  func getAll() -> [Collection] {
+    collections.map { _,value in value }
   }
   
 }

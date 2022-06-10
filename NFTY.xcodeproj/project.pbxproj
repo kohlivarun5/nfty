@@ -166,6 +166,12 @@
 		4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F961F79271CC12600639E85 /* NftTradeUrlView.swift */; };
 		4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
 		4F99B519285165100012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
+		4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
+		4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
+		4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */; };
+		4F99B51F2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */; };
+		4F99B5212852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5202852F2CA0012A3FF /* CKOwnerTokensFetcher.swift */; };
+		4F99B5222852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5202852F2CA0012A3FF /* CKOwnerTokensFetcher.swift */; };
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
@@ -613,6 +619,9 @@
 		4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnerTokens.swift; sourceTree = "<group>"; };
 		4F961F79271CC12600639E85 /* NftTradeUrlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftTradeUrlView.swift; sourceTree = "<group>"; };
 		4F99B5172851621D0012A3FF /* CKJSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKJSONCache.swift; sourceTree = "<group>"; };
+		4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseKitExtensions.swift; sourceTree = "<group>"; };
+		4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKOwnerTokens.swift; sourceTree = "<group>"; };
+		4F99B5202852F2CA0012A3FF /* CKOwnerTokensFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKOwnerTokensFetcher.swift; sourceTree = "<group>"; };
 		4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPropertiesGrid.swift; sourceTree = "<group>"; };
 		4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeScores.json; sourceTree = "<group>"; };
 		4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoCannabisClub_attributeRanks.json; sourceTree = "<group>"; };
@@ -864,6 +873,7 @@
 				4FB7E9D12850284F001CB086 /* CKImageCache.swift */,
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
+				4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -881,6 +891,7 @@
 				4FAA1E2126BA26E900102174 /* UserSettingsModel.swift */,
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
+				4F99B5202852F2CA0012A3FF /* CKOwnerTokensFetcher.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1086,6 +1097,7 @@
 				4FFA5D6E280AB03900059A20 /* GCP */,
 				4FD95B93280FA0D9009EA52F /* ENSContract.swift */,
 				4F675C35285040F7009C1210 /* CloudKit */,
+				4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1762,6 +1774,7 @@
 				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
 				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
+				4F99B5212852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
 				4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
@@ -1782,6 +1795,7 @@
 				4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */,
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
 				4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */,
+				4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
@@ -1795,6 +1809,7 @@
 				4FFA5D6D280AB03500059A20 /* FirebaseCore.swift in Sources */,
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
 				4F435187278239610095C88C /* SushiSwapPool.swift in Sources */,
+				4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
 				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
@@ -1866,6 +1881,7 @@
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
+				4F99B51F2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4F3548D328128D6600B89943 /* FirebaseJSONCache.swift in Sources */,
 				4FFA5D71280AB87000059A20 /* FirebaseCore.swift in Sources */,
@@ -1892,10 +1908,12 @@
 				4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */,
 				4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */,
 				4F8E16FC27B06FB500E54BB5 /* OpenSeaFloorFetcher.swift in Sources */,
+				4F99B5222852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
 				4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */,
 				4FFAE79F27A333B2002129E9 /* NearNFT.swift in Sources */,
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
+				4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
@@ -2139,7 +2157,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2168,7 +2186,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2280,7 +2298,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2311,7 +2329,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;

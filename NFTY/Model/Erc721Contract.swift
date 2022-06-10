@@ -50,7 +50,7 @@ class Erc721Contract {
       let inputs = [SolidityFunctionParameter(name: "owner", type: .address)]
       let outputs = [SolidityFunctionParameter(name: "tokens", type: .uint256)]
       let method = SolidityConstantFunction(name: "balanceOf", inputs: inputs, outputs: outputs, handler: self)
-      print("calling balanceOf")
+      print("calling balanceOf for \(self.address?.hex(eip55:true) ?? "0x")")
       return
         method.invoke(address).call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in

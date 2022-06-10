@@ -14,7 +14,7 @@ struct WalletTokensView: View {
   
   @EnvironmentObject var userWallet: UserWallet
   
-  @ObservedObject var tokens : NftOwnerTokens
+  @StateObject var tokens : NftOwnerTokens
   
   @State private var selectedToken: NFTTokenEquatable? = nil
   

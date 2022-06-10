@@ -534,6 +534,7 @@ class CryptoPunksContract : ContractInterface {
         return tokenIds.map { response(self.getToken($0)) }
       }.catch {
         print ($0)
+        onDone()
       }.finally {
         onDone()
       }

@@ -12,7 +12,7 @@ import Web3
 
 struct WalletTokensSelector: View {
   
-  @ObservedObject var tokens : NftOwnerTokens
+  @StateObject var tokens : NftOwnerTokens
   let enableNavLinks : Bool
   @State private var selectedTokenId: BigUInt? = nil
   
