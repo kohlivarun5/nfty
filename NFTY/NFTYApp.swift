@@ -102,7 +102,6 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
         print($0)
         completionHandler(.failed)
       }
-    
   }
   
   // This function will be called right after user tap on the notification

@@ -96,7 +96,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     case .none:
       return Promise.value(())
     case .some(let address):
-      return after(seconds:1).then {
+      return after(seconds:0.5).then {
         self.openseaTokens(address: address)
           .then { (tokens:[NFTToken]) -> Promise<Void> in
             CKOwnerTokensFetcher.saveOwnerTokens(
@@ -120,8 +120,10 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     if (state == .loading || state == .loadingMore || foundMax) { return onDone() }
     
     if (self.state == .notLoaded) {
-      self.refreshTokensFromOpensea()
-        .catch { print($0) }
+      after(seconds:30).then {
+        self.refreshTokensFromOpensea()
+          .catch { print($0) }
+      }
     }
     
     self.state = self.state == .notLoaded ? .loading : .loadingMore
@@ -172,6 +174,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
         }
         .catch { print("Failed to fetch owner tokens\($0)") }
         .finally(on:.main) {
+          print("Updating state")
           self.state = .loaded
           print("State=\(self.state)")
           self.parasOffset = self.parasOffset + self.limit

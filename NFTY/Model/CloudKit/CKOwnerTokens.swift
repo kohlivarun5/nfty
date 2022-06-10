@@ -48,28 +48,18 @@ struct CKOwnerTokens {
         .getByAddress(
           try! EthereumAddress(hex: self.collectionAddress, eip55: false)
             .hex(eip55: true))
-        .then { collection -> Promise<(Collection,[NFTToken])> in
+        .map { collection -> (Collection,[NFTToken]) in
           
           let tokenIds = self.tokenIds
             .compactMap { UInt($0) }
           
-          let tokens_p = reduce_p(tokenIds, [], { accu,tokenId -> Promise<[UInt]> in
-            return collection.contract.ownerOf(BigUInt(tokenId))
-              .map {
-                if (self.owner == $0?.ethAddress?.hex(eip55: true)) { return accu + [tokenId] }
-                else { return accu }
-              }
-          })
-          
-          let tokens = tokens_p.map {
-            $0.map {
-              NFTToken(
-                collection: collection,
-                nft: collection.contract.getToken($0))
-            }
+          let tokens = tokenIds.map {
+            NFTToken(
+              collection: collection,
+              nft: collection.contract.getToken($0))
           }
           
-          return tokens.map { (collection,$0) }
+          return (collection,tokens)
         }
     }
   }
