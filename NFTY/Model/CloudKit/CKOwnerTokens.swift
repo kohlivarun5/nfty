@@ -13,9 +13,18 @@ import Web3
 struct CKOwnerTokens {
   
   struct Record {
+    
+    static let recordType : String = "OwnerTokens"
+    
     let owner : String
     let collectionAddress : String
     let tokenIds : [String]
+    
+    init(owner:String,collectionAddress:String,tokenIds:[String]) {
+      self.owner = owner
+      self.collectionAddress = collectionAddress
+      self.tokenIds = tokenIds
+    }
     
     init(record:CKRecord) {
       self.owner = record["owner"] as! String
@@ -24,7 +33,7 @@ struct CKOwnerTokens {
     }
     
     func toCKRecord() -> CKRecord {
-      let record = CKRecord.init(recordType: "OwnerTokens")
+      let record = CKRecord.init(recordType: Record.recordType)
       record.setValuesForKeys([
         "owner" : owner,
         "collectionAddress" : collectionAddress,
@@ -38,17 +47,30 @@ struct CKOwnerTokens {
         .getByAddress(
           try! EthereumAddress(hex: self.collectionAddress, eip55: false)
             .hex(eip55: true))
-        .map { collection -> (Collection,[NFTToken]) in
+        .then { collection -> Promise<(Collection,[NFTToken])> in
           
-          let tokens = self.tokenIds
+          let tokenIds = self.tokenIds
             .compactMap { UInt($0) }
-            .map {
+          
+          let tokens_p = reduce_p(tokenIds, [], { accu,tokenId -> Promise<[UInt]> in
+            return collection.contract.ownerOf(BigUInt(tokenId))
+              .map {
+                if (self.owner == $0?.ethAddress?.hex(eip55: true)) { return accu + [tokenId] }
+                else { return accu }
+              }
+          })
+          
+          let tokens = tokens_p.map {
+            $0.map {
               NFTToken(
                 collection: collection,
                 nft: collection.contract.getToken($0))
             }
-          return (collection,tokens)
+          }
+          
+          return tokens.map { (collection,$0) }
         }
     }
   }
+  
 }

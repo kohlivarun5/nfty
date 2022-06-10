@@ -7,6 +7,8 @@
 
 import Foundation
 import PromiseKit
+import CloudKit
+import Web3
 
 class NftOwnerTokens : ObservableObject,Identifiable {
   
@@ -15,7 +17,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   private var openSeaOffset : UInt = 0
   private var parasOffset : UInt = 0
- 
+  
+  private var ckLoader : CKOwnerTokensFetcher.Loader?
+  
   private let limit : UInt = 10
   private var loadedFromChain = false
   
@@ -29,72 +33,101 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   let account : UserAccount
   private let collections : [Collection]
+  private let database : CKDatabase
   
   private var pendingCount = 0
   
   init(account:UserAccount) {
     self.account = account
     self.collections = COLLECTIONS
+    let database = CKContainer.default().publicCloudDatabase
+    self.database = database
+    self.ckLoader = self.account.ethAddress.map {
+      CKOwnerTokensFetcher.Loader(
+        database: database,
+        owner: $0)
+    }
   }
   
-  private func openseaTokens() -> Promise<[NFTToken]> {
-    switch(self.account.ethAddress) {
-    case .none:
-      return Promise.value([])
-    case .some(let address):
-      return OpenSeaApi.getOwnerTokens(address: address,offset:self.openSeaOffset,limit:limit)
-        .recover { error -> Promise<[NFTToken]> in
-          print("OpenSea Error=\(error)")
-          self.foundMax = true
-          return Promise.value([])
-        }.then { openSeaTokens -> Promise<[NFTToken]> in
-          // Open sea errored, lets recover from known collections
-          if (self.loadedFromChain) {
-            return Promise.value(openSeaTokens)
-          } else {
-            self.loadedFromChain = true
-            return COLLECTIONS
-              .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
-                if (collection.info.disableRecentTrades) {
-                  return accu
-                }
-                return after(seconds: 0.2).then { _ in
-                  accu.then { accuTokens -> Promise<[NFTToken]> in
-                    if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
-                      return Promise.value(accuTokens)
-                    }
-                    return Promise { seal in
-                      var tokens : [NFTWithLazyPrice] = []
-                      collection.contract.getOwnerTokens(
-                        address: address,
-                        onDone: {
-                          seal.fulfill(tokens.map { NFTToken(collection: collection, nft: $0) } + accuTokens)
-                        },
-                        { token in
-                          if (!accuTokens.contains { $0.id == token.id }) {
-                            tokens.append(token)
-                          }
-                        })
-                    }
+  private func openseaTokens(address:EthereumAddress) -> Promise<[NFTToken]> {
+    
+    return OpenSeaApi.getOwnerTokens(address: address,offset:self.openSeaOffset,limit:limit)
+      .recover { error -> Promise<[NFTToken]> in
+        print("OpenSea Error=\(error)")
+        self.foundMax = true
+        return Promise.value([])
+      }.then { openSeaTokens -> Promise<[NFTToken]> in
+        // Open sea errored, lets recover from known collections
+        if (self.loadedFromChain) {
+          return Promise.value(openSeaTokens)
+        } else {
+          self.loadedFromChain = true
+          return COLLECTIONS
+            .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
+              if (collection.info.disableRecentTrades) {
+                return accu
+              }
+              return after(seconds: 0.2).then { _ in
+                accu.then { accuTokens -> Promise<[NFTToken]> in
+                  if (accuTokens.contains { $0.collection.contract.contractAddressHex == collection.contract.contractAddressHex}) {
+                    return Promise.value(accuTokens)
+                  }
+                  return Promise { seal in
+                    var tokens : [NFTWithLazyPrice] = []
+                    collection.contract.getOwnerTokens(
+                      address: address,
+                      onDone: {
+                        seal.fulfill(tokens.map { NFTToken(collection: collection, nft: $0) } + accuTokens)
+                      },
+                      { token in
+                        if (!accuTokens.contains { $0.id == token.id }) {
+                          tokens.append(token)
+                        }
+                      })
                   }
                 }
-              })
-          }
+              }
+            })
         }
-    }
+      }
+  }
+  
+  private func refreshTokensFromOpensea() {
+    
+    switch self.account.ethAddress {
+    case .none:
+      return
+    case .some(let address):
+      self.openseaTokens(address: address)
+        .done {
+          CKOwnerTokensFetcher.saveOwnerTokens(
+            database: self.database,
+            owner: address,
+            tokens: $0)
+        }
+        .catch { print($0) }
+      }
   }
   
   func load(_ onDone: @escaping () -> Void) {
     if (state == .loading || state == .loadingMore || foundMax) { return onDone() }
     
+    if (self.state == .notLoaded) {
+      self.refreshTokensFromOpensea()
+    }
+    
     self.state = self.state == .notLoaded ? .loading : .loadingMore
     
     DispatchQueue.main.async {
-      self.openseaTokens()
-        .then { openSeaTokens -> Promise<[NFTToken]> in
+      self.ckLoader?.fetch()
+        .then { results -> Promise<[NFTToken]> in
+          
+          var tokens : [NFTToken] = []
+          results.forEach { (_,list) in tokens.append(contentsOf: list) }
+          
           switch(self.account.nearAccount) {
           case .none:
-            return Promise.value(openSeaTokens)
+            return Promise.value(tokens)
           case .some(let nearAddress):
             return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: self.limit)
               .map { (results:ParasApi.Token) -> [NFTToken] in
@@ -104,7 +137,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                   return NFTToken(
                     collection:collection,
                     nft: collection.contract.getToken(tokenId))
-                } + openSeaTokens
+                } + tokens
               }
           }
         }
