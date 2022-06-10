@@ -13,7 +13,6 @@ import CloudKit
 
 struct CKJSONCache<Output:Codable> {
   
-<<<<<<< HEAD
   private func createLocalFile(path:String,data: Data) -> URL {
     let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
     let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
@@ -22,8 +21,6 @@ struct CKJSONCache<Output:Codable> {
     
   }
   
-=======
->>>>>>> 3b6850f3c45175a94724bb923f7e7d45e4cdfebd
   let bucket : String
   let fallback : (_ in:String) -> Promise<Output?>
   private var diskCache : DiskStorage<String,Output>
