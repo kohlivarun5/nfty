@@ -32,14 +32,12 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   @Published var state : LoadingState = .notLoaded
   
   let account : UserAccount
-  private let collections : [Collection]
   private let database : CKDatabase
   
   private var pendingCount = 0
   
   init(account:UserAccount) {
     self.account = account
-    self.collections = COLLECTIONS
     let database = CKContainer.default().publicCloudDatabase
     self.database = database
     self.ckLoader = self.account.ethAddress.map {
@@ -62,7 +60,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           return Promise.value(openSeaTokens)
         } else {
           self.loadedFromChain = true
-          return COLLECTIONS
+          return collectionsFactory.getAll()
             .reduce(Promise<[NFTToken]>.value(openSeaTokens), { accu,collection in
               if (collection.info.disableRecentTrades) {
                 return accu
@@ -92,28 +90,38 @@ class NftOwnerTokens : ObservableObject,Identifiable {
       }
   }
   
-  private func refreshTokensFromOpensea() {
+  func refreshTokensFromOpensea() -> Promise<Void> {
     
     switch self.account.ethAddress {
     case .none:
-      return
+      return Promise.value(())
     case .some(let address):
-      self.openseaTokens(address: address)
-        .done {
-          CKOwnerTokensFetcher.saveOwnerTokens(
-            database: self.database,
-            owner: address,
-            tokens: $0)
-        }
-        .catch { print($0) }
+      return after(seconds:1).then {
+        self.openseaTokens(address: address)
+          .then { (tokens:[NFTToken]) -> Promise<Void> in
+            CKOwnerTokensFetcher.saveOwnerTokens(
+              database: self.database,
+              owner: address,
+              tokens: tokens)
+            
+            if (tokens.isEmpty) {
+              return Promise.value(())
+            } else {
+              self.openSeaOffset = self.openSeaOffset + self.limit
+              return self.refreshTokensFromOpensea()
+            }
+          }
       }
+    }
   }
   
   func load(_ onDone: @escaping () -> Void) {
+    print("State=\(state)")
     if (state == .loading || state == .loadingMore || foundMax) { return onDone() }
     
     if (self.state == .notLoaded) {
       self.refreshTokensFromOpensea()
+        .catch { print($0) }
     }
     
     self.state = self.state == .notLoaded ? .loading : .loadingMore
@@ -121,7 +129,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     DispatchQueue.main.async {
       self.ckLoader?.fetch()
         .then { results -> Promise<[NFTToken]> in
-          
+          print("CK results=\(results)")
           var tokens : [NFTToken] = []
           results.forEach { (_,list) in tokens.append(contentsOf: list) }
           
@@ -138,6 +146,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
                     collection:collection,
                     nft: collection.contract.getToken(tokenId))
                 } + tokens
+              }.recover { error -> Promise<[NFTToken]> in
+                print("Pras failed with \(error)");
+                return Promise.value(tokens)
               }
           }
         }
@@ -159,10 +170,10 @@ class NftOwnerTokens : ObservableObject,Identifiable {
             }
           }
         }
-        .catch { print($0) }
+        .catch { print("Failed to fetch owner tokens\($0)") }
         .finally(on:.main) {
           self.state = .loaded
-          self.openSeaOffset = self.openSeaOffset + self.limit
+          print("State=\(self.state)")
           self.parasOffset = self.parasOffset + self.limit
           onDone()
         }
@@ -181,9 +192,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
 var OwnerTokensCache : [String:NftOwnerTokens] = [:]
 func getOwnerTokens(_ account:UserAccount) -> NftOwnerTokens {
   switch (account.ethAddress.flatMap { OwnerTokensCache[$0.hex(eip55: true)] },account.nearAccount.flatMap { OwnerTokensCache[$0] }) {
-  case (.some(let tokens),_),(_,.some(let tokens)):
-    return tokens
-  case (.none,.none):
+    /* case (.some(let tokens),_),(_,.some(let tokens)):
+     return tokens
+     case (.none,.none):*/ default:
     let tokens = NftOwnerTokens(account:account)
     switch(account.ethAddress,account.nearAccount) {
     case (.some(let ethAddress),.some(let nearAccount)):

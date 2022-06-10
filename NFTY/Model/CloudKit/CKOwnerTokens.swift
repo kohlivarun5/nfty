@@ -14,7 +14,7 @@ struct CKOwnerTokens {
   
   struct Record {
     
-    static let recordType : String = "OwnerTokens"
+    static let recordType : String = "OwnerCollectionTokens"
     
     let owner : String
     let collectionAddress : String
@@ -33,7 +33,8 @@ struct CKOwnerTokens {
     }
     
     func toCKRecord() -> CKRecord {
-      let record = CKRecord.init(recordType: Record.recordType)
+      let recordId = CKRecord.ID(recordName: "\(owner)/\(collectionAddress)")
+      let record = CKRecord.init(recordType: Record.recordType,recordID: recordId)
       record.setValuesForKeys([
         "owner" : owner,
         "collectionAddress" : collectionAddress,

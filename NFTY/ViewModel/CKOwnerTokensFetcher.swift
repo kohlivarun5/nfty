@@ -24,8 +24,9 @@ struct CKOwnerTokensFetcher {
     }
     
     reduce_p(records, (), { _,record in
-      database.save(record:record.toCKRecord())
-        .map { result in print("Saved record=\(record) with result=\(result)") }
+      let ckRecord = record.toCKRecord()
+      return database.save(record:ckRecord)
+        .map { result in print("Saved record=\(ckRecord) with result=\(result)") }
     })
     .catch { print($0) }
     return ()
@@ -49,14 +50,18 @@ struct CKOwnerTokensFetcher {
     }
     
     func fetch() -> Promise<[(Collection,[NFTToken])]> {
+      print("State=\(self.state)")
       switch state {
       case .uninitialized:
         let query = CKQuery(
           recordType: CKOwnerTokens.Record.recordType,
           predicate: NSPredicate(format: "owner == %@",owner.hex(eip55: true)))
         
+        print("Running query=\(query)")
+        
         return Promise { seal in
           database.fetch(withQuery: query, inZoneWith: nil, desiredKeys: nil, resultsLimit: limit) { result in
+            print("got results=\(result)")
             switch result {
             case .failure(let error):
               seal.reject(error)
@@ -67,6 +72,7 @@ struct CKOwnerTokensFetcher {
               case .none:
                 self.state = .finished
               }
+              print("State=\(self.state)")
               
               reduce_p(results, [], { accu,result in
                 let (_,result) = result
@@ -86,6 +92,7 @@ struct CKOwnerTokensFetcher {
       case .cursor(let cursor):
         return Promise { seal in
           database.fetch(withCursor: cursor, desiredKeys: nil, resultsLimit: limit) { result in
+            print("got results=\(result)")
             switch result {
             case .failure(let error):
               seal.reject(error)
@@ -96,6 +103,7 @@ struct CKOwnerTokensFetcher {
               case .none:
                 self.state = .finished
               }
+              print("State=\(self.state)")
               
               reduce_p(results, [], { accu,result in
                 let (_,result) = result
