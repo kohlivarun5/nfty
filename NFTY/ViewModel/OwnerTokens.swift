@@ -96,7 +96,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
     case .none:
       return Promise.value([])
     case .some(let address):
-      self.openseaTokens(address: address,collectionAddress: nil)
+      return self.openseaTokens(address: address,collectionAddress: nil)
         .map { (tokens:[NFTToken]) -> [NFTToken] in
           CKOwnerTokensFetcher.saveOwnerTokens(
             database: self.database,
