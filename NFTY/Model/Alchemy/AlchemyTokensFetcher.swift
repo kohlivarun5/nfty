@@ -45,6 +45,11 @@ class AlchemyTokensFetcher {
                 return accu
               }
               
+              if (tokenId.bitWidth > UInt.bitWidth) {
+                print("Could fit in Uint \(ownedNft.id.tokenId)")
+                return accu
+              }
+              
               return accu + [
                 NFTToken(
                   collection: collection,
