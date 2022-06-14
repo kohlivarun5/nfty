@@ -37,6 +37,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   private var pendingCount = 0
   
+  private var alchemyFetcher : AlchemyTokensFetcher?
+  
   init(account:UserAccount) {
     self.account = account
     let database = CKContainer.default().publicCloudDatabase
@@ -45,6 +47,9 @@ class NftOwnerTokens : ObservableObject,Identifiable {
       CKOwnerTokensFetcher.Loader(
         database: database,
         owner: $0)
+    }
+    self.alchemyFetcher = self.account.ethAddress.map {
+      AlchemyTokensFetcher(owner: $0)
     }
   }
   
@@ -91,21 +96,15 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   
   func refreshTokensFromOpensea() -> Promise<[NFTToken]> {
-    
-    switch self.account.ethAddress {
-    case .none:
-      return Promise.value([])
-    case .some(let address):
-      return self.openseaTokens(address: address,collectionAddress: nil)
-        .map { (tokens:[NFTToken]) -> [NFTToken] in
-          CKOwnerTokensFetcher.saveOwnerTokens(
-            database: self.database,
-            owner: address,
-            tokens: tokens)
-          return tokens
-        }
-      
-    }
+    guard let fetcher = self.alchemyFetcher else { return Promise.value([]) }
+    return fetcher.fetch()
+      .map { (tokens:[NFTToken]) -> [NFTToken] in
+        CKOwnerTokensFetcher.saveOwnerTokens(
+          database: self.database,
+          owner: fetcher.owner,
+          tokens: tokens)
+        return tokens
+      }
   }
   
   func load(_ onDone: @escaping () -> Void) {
@@ -119,8 +118,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           var tokens : [NFTToken] = []
           results.forEach { (_,list) in tokens.append(contentsOf: list) }
           
-          if (tokens.isEmpty && !self.loadedOpenSea) {
-            self.loadedOpenSea = true
+          if (tokens.isEmpty && self.alchemyFetcher?.done() != .some(true)) {
             return self.refreshTokensFromOpensea()
           } else {
             return Promise.value(tokens)
@@ -174,7 +172,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   }
   
   func loadMore(_ index:Int) {
-    if (index > (self.tokens.count - 3)) {
+    print("Loadmore for index=\(index),count=\(self.tokens.count)")
+    if (index > (self.tokens.count - 5)) {
       DispatchQueue.main.async { self.load({}) }
     }
   }

@@ -97,7 +97,7 @@ struct CKImageCacheCore {
               
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
-                print("Record \(recordName) did not return asset")
+                // print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
                 return Promise.value(imageOfData(data))

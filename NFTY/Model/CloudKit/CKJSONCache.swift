@@ -77,7 +77,7 @@ struct CKJSONCache<Output:Codable> {
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
               let (record,error) = result
-              print("Fetch returned with error=\(String(describing: error))")
+              // print("Fetch returned with error=\(String(describing: error))")
               
               guard error == nil else { return nil }
               
