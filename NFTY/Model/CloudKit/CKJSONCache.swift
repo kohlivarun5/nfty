@@ -55,7 +55,7 @@ struct CKJSONCache<Output:Codable> {
           record.setValuesForKeys([jsonKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:jsonData))])
           print("Saving recordId=\(recordId)")
           self.database.save(record:record)
-            .done { result in
+            .done(on:.global(qos: .background)) { result in
               print("Save returned for \(recordId)")
             }
             .catch { print($0) }
@@ -77,7 +77,7 @@ struct CKJSONCache<Output:Codable> {
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
               let (record,error) = result
-              print("Fetch returned with error=\(String(describing: error))")
+              // print("Fetch returned with error=\(String(describing: error))")
               
               guard error == nil else { return nil }
               

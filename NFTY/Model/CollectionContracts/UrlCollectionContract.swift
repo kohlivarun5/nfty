@@ -241,8 +241,7 @@ class UrlCollectionContract : ContractInterface {
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {
-    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-      .map { stats in stats?.floor_price }
+    return AlchemyApi.GetFloor.indicativeFloor(self.contractAddressHex)
   }
   
   lazy var vaultContract: CollectionVaultContract? = {

@@ -48,7 +48,7 @@ struct CKOwnerTokens {
         .getByAddressOpt(
           try! EthereumAddress(hex: self.collectionAddress, eip55: false)
             .hex(eip55: true))
-        .map { collection -> (Collection,[NFTToken])? in
+        .map(on:.global(qos: .userInteractive)) { collection -> (Collection,[NFTToken])? in
           
           guard let collection = collection else { return nil }
           

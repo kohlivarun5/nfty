@@ -71,7 +71,7 @@ struct CKImageCacheCore {
           record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
           print("Saving recordId=\(recordId)")
           database.save(record:record)
-            .done { result in
+            .done(on:.global(qos: .background)) { result in
               print("Save returned for \(recordId)")
             }
             .catch { print($0) }
@@ -97,7 +97,7 @@ struct CKImageCacheCore {
               
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:
-                print("Record \(recordName) did not return asset")
+                // print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
                 return Promise.value(imageOfData(data))
