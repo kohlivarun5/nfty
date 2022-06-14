@@ -71,7 +71,7 @@ struct CKImageCacheCore {
           record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
           print("Saving recordId=\(recordId)")
           database.save(record:record)
-            .done { result in
+            .done(on:.global(qos: .background)) { result in
               print("Save returned for \(recordId)")
             }
             .catch { print($0) }

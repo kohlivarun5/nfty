@@ -55,7 +55,7 @@ struct CKJSONCache<Output:Codable> {
           record.setValuesForKeys([jsonKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:jsonData))])
           print("Saving recordId=\(recordId)")
           self.database.save(record:record)
-            .done { result in
+            .done(on:.global(qos: .background)) { result in
               print("Save returned for \(recordId)")
             }
             .catch { print($0) }
