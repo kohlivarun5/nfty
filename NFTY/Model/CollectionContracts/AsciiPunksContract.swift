@@ -322,8 +322,7 @@ class AsciiPunksContract : ContractInterface {
   }
   
   func indicativeFloor() -> Promise<PriceUnit?> {
-    return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-      .map { stats in stats?.floor_price }
+    return AlchemyApi.GetFloor.indicativeFloor(self.contractAddressHex)
   }
   
   var vaultContract : CollectionVaultContract? = nil

@@ -183,8 +183,7 @@ class PhunksContract : ContractInterface {
   func indicativeFloor() -> Promise<PriceUnit?> {
     switch(self.collectionContract.indicativePriceSource) {
     case .openSea:
-      return OpenSeaApi.getCollectionStats(contract:self.contractAddressHex)
-        .map { stats in stats?.floor_price }
+      return AlchemyApi.GetFloor.indicativeFloor(self.contractAddressHex)
     case .swapPoolContract(let address,_):
       return SushiSwapPool(address:address).priceInEth()
     case .swapPoolContractReversed(let address,_):

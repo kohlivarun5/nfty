@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 import Web3
-
+import Cache
 
 struct AlchemyApi {
   
@@ -30,7 +30,7 @@ struct AlchemyApi {
           
           if let error = error { return seal.reject(error) }
           // print(data)
-          print(String(decoding:data!,as:UTF8.self))
+          // print(String(decoding:data!,as:UTF8.self))
           switch(data.flatMap { try? JSONDecoder().decode(Result.self, from: $0) }) {
           case .some(let result):
             seal.fulfill(result)
@@ -85,4 +85,55 @@ struct AlchemyApi {
       return AlchemyApi.Impl.fetch(url: components.url!, params: nil)
     }
   }
+  
+  struct GetFloor {
+    
+    struct Result : Decodable {
+      struct FloorPrice : Decodable {
+        let marketplace : String?
+        let floorPrice : Double?
+        let priceCurrency : String?
+      }
+      let floorPrices : [FloorPrice]
+    }
+    
+    static func get(contractAddress:String) -> Promise<Result> {
+      
+      // curl 'https://eth-mainnet.g.alchemy.com/nft/v2/demo/getFloorPrice?contractAddress=0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'
+      
+      var components = URLComponents()
+      components.scheme = "https"
+      components.host = "eth-mainnet.g.alchemy.com"
+      components.path = "/nft/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc/getFloorPrice"
+      components.queryItems = [
+        URLQueryItem(name: "contractAddress", value: contractAddress)
+      ]
+      return AlchemyApi.Impl.fetch(url: components.url!, params: nil)
+    }
+    
+    static private var indicativeFloorCache = try! DiskStorage<String, Double>(
+      config: DiskConfig(name: "AlchemyApi.GetFloor.indicativeFloor",expiry: .seconds(120)),
+      transformer: TransformerFactory.forCodable(ofType: Double.self))
+    
+    static func indicativeFloor(_ contractAddress:String) -> Promise<PriceUnit?> {
+      
+      try? indicativeFloorCache.removeExpiredObjects()
+      switch(try? indicativeFloorCache.object(forKey:contractAddress)) {
+      case .some(let floor):
+        return Promise.value(PriceUnit.wei(BigUInt(floor * 1e18)))
+      case .none:
+        return GetFloor.get(contractAddress: contractAddress)
+          .map {
+            $0.floorPrices.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
+              .filter { $0.floorPrice != .none }
+              .first
+              .map {
+                try! indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)
+                return PriceUnit.wei(BigUInt($0.floorPrice! * 1e18))
+              }
+          }
+      }
+    }
+  }
+  
 }
