@@ -117,21 +117,28 @@ struct AlchemyApi {
     
     static func indicativeFloor(_ contractAddress:String) -> Promise<PriceUnit?> {
       
-      try? indicativeFloorCache.removeExpiredObjects()
-      switch(try? indicativeFloorCache.object(forKey:contractAddress)) {
-      case .some(let floor):
-        return Promise.value(PriceUnit.wei(BigUInt(floor * 1e18)))
-      case .none:
-        return GetFloor.get(contractAddress: contractAddress)
-          .map {
-            $0.floorPrices.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
-              .filter { $0.floorPrice != .none }
-              .first
-              .map {
-                try! indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)
-                return PriceUnit.wei(BigUInt($0.floorPrice! * 1e18))
+      return Promise { seal in
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+          try? indicativeFloorCache.removeExpiredObjects()
+          switch(try? indicativeFloorCache.object(forKey:contractAddress)) {
+          case .some(let floor):
+            seal.fulfill(PriceUnit.wei(BigUInt(floor * 1e18)))
+          case .none:
+            GetFloor.get(contractAddress: contractAddress)
+              .map(on:.global(qos: .userInteractive)) {
+                $0.floorPrices.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
+                  .filter { $0.floorPrice != .none }
+                  .first
+                  .map {
+                    try! indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)
+                    return PriceUnit.wei(BigUInt($0.floorPrice! * 1e18))
+                  }
               }
+              .done(on:.global(qos: .userInteractive)) { seal.fulfill($0) }
+              .catch { seal.reject($0) }
           }
+        }
       }
     }
   }
