@@ -95,16 +95,33 @@ class NftOwnerTokens : ObservableObject,Identifiable {
       }
   }
   
-  func refreshTokensFromOpensea() -> Promise<[NFTToken]> {
-    guard let fetcher = self.alchemyFetcher else { return Promise.value([]) }
-    return fetcher.fetch()
-      .map { (tokens:[NFTToken]) -> [NFTToken] in
-        CKOwnerTokensFetcher.saveOwnerTokens(
-          database: self.database,
-          owner: fetcher.owner,
-          tokens: tokens)
-        return tokens
+  func refreshTokensFromOpensea(onTokens: @escaping (_ tokens:[NFTToken]) -> Void) -> Promise<Void> {
+    guard let fetcher = self.alchemyFetcher else { return Promise.value(()) }
+    return fetcher.fetch(onTokens:{ tokens in
+      onTokens(tokens)
+      CKOwnerTokensFetcher.saveOwnerTokens(
+        database: self.database,
+        owner: fetcher.owner,
+        tokens: tokens)
+    })
+  }
+  
+  private func addTokens(_ tokens:[NFTToken]) {
+    
+    DispatchQueue.main.async {
+      self.state = .loadingMore
+      
+      tokens.forEach { token in
+        switch(self.tokens.firstIndex { $0.0.info.address == token.collection.info.address }) {
+        case .some(let index):
+          if (!self.tokens[index].1.contains { $0.id == token.id}) {
+            self.tokens[index].1.append(token)
+          }
+        case .none:
+          self.tokens.append((token.collection,[token]))
+        }
       }
+    }
   }
   
   func load(_ onDone: @escaping () -> Void) {
@@ -119,7 +136,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           results.forEach { (_,list) in tokens.append(contentsOf: list) }
           
           if (tokens.isEmpty && self.alchemyFetcher?.done() != .some(true)) {
-            return self.refreshTokensFromOpensea()
+            return self.refreshTokensFromOpensea(onTokens:self.addTokens)
+              .map { return tokens }
           } else {
             return Promise.value(tokens)
           }
@@ -144,22 +162,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           }
         }
         .done(on:.main) {
-          
-          print("Found tokens count=\($0.count)")
-          
-          self.foundMax = self.foundMax || $0.isEmpty
-          
-          $0.forEach { token in
-            
-            switch(self.tokens.firstIndex { $0.0.info.address == token.collection.info.address }) {
-            case .some(let index):
-              if (!self.tokens[index].1.contains { $0.id == token.id}) {
-                self.tokens[index].1.append(token)
-              }
-            case .none:
-              self.tokens.append((token.collection,[token]))
-            }
-          }
+          self.foundMax = self.foundMax || ($0.isEmpty && (self.alchemyFetcher?.done() ?? true))
+          self.addTokens($0)
         }
         .catch { print("Failed to fetch owner tokens\($0)") }
         .finally(on:.main) {

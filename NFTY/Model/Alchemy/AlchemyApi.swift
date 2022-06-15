@@ -131,7 +131,7 @@ struct AlchemyApi {
                   .filter { $0.floorPrice != .none }
                   .first
                   .map {
-                    try! indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)
+                    try? indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)
                     return PriceUnit.wei(BigUInt($0.floorPrice! * 1e18))
                   }
               }
