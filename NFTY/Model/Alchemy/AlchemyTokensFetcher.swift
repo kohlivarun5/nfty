@@ -24,39 +24,46 @@ class AlchemyTokensFetcher {
   
   func done() -> Bool { return self._done }
   
-  func fetch() -> Promise<[NFTToken]> {
+  func fetch(onTokens: @escaping (_ tokens:[NFTToken]) -> Void,onDone: @escaping () -> Void) -> Void {
     
-    if (self._done) { return Promise.value([]) }
+    if (self._done) { return onDone() }
     
     return AlchemyApi.GetNFTs.get(owner: self.owner, pageKey: self._pageKey)
-      .then(on:DispatchQueue.global(qos:.userInitiated)) { (result:AlchemyApi.GetNFTs.Result) -> Promise<[NFTToken]> in
+      .then(on:DispatchQueue.global(qos:.userInitiated)) { (result:AlchemyApi.GetNFTs.Result) -> Promise<Void> in
         self._pageKey = result.pageKey
         if (result.pageKey == .none) {
           self._done = true
         }
-        return reduce_p(result.ownedNfts, [], { accu, ownedNft in
-          collectionsFactory.getByAddressOpt(ownedNft.contract.address)
-            .map { collection in
+        
+        let groupDict = Dictionary(grouping: result.ownedNfts, by: { $0.contract.address })
+        
+        return reduce_p(groupDict.map { ($0.key,$0.value) }, (), { _, collection_tokens in
+          let (collection_address,tokens) = collection_tokens
+          return collectionsFactory.getByAddressOpt(collection_address)
+            .map(on:.global(qos: .userInitiated)) { collection -> Void in
+              guard let collection = collection else { return () }
               
-              guard let collection = collection else { return accu }
-              
-              guard let tokenId = try? ABI.decodeParameter(type: .uint256, from: ownedNft.id.tokenId) as? BigUInt else {
-                print("Could not hex parse \(ownedNft.id.tokenId)")
-                return accu
-              }
-              
-              if (tokenId.bitWidth > UInt.bitWidth) {
-                print("Could fit in Uint \(ownedNft.id.tokenId)")
-                return accu
-              }
-              
-              return accu + [
-                NFTToken(
+              let nfts = tokens.compactMap { ownedNft -> NFTToken? in
+                
+                guard let tokenId = try? ABI.decodeParameter(type: .uint256, from: ownedNft.id.tokenId) as? BigUInt else {
+                  print("Could not hex parse \(ownedNft.id.tokenId)")
+                  return nil
+                }
+                
+                if (tokenId.bitWidth > UInt.bitWidth) {
+                  print("Could fit in Uint \(ownedNft.id.tokenId)")
+                  return nil
+                }
+                
+                return NFTToken(
                   collection: collection,
                   nft: collection.contract.getToken(UInt(tokenId)))
-              ]
+              }
+              return onTokens(nfts)
             }
         })
       }
+      .catch { print($0) }
+      .finally { onDone() }
   }
 }
