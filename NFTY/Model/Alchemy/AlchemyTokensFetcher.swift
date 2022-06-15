@@ -24,12 +24,16 @@ class AlchemyTokensFetcher {
   
   func done() -> Bool { return self._done }
   
-  func fetch(onTokens: @escaping (_ tokens:[NFTToken]) -> Void,onDone: @escaping () -> Void) -> Void {
+  func fetch(onTokens: @escaping (_ tokens:[NFTToken]) -> Void) -> Promise<Void> {
     
-    if (self._done) { return onDone() }
+    if (self._done) {
+      print("Alchemy Fetch called but tokens done")
+      return Promise.value(())
+    }
     
     return AlchemyApi.GetNFTs.get(owner: self.owner, pageKey: self._pageKey)
       .then(on:DispatchQueue.global(qos:.userInitiated)) { (result:AlchemyApi.GetNFTs.Result) -> Promise<Void> in
+        print("Alchemy returned with count=\(result.totalCount),\(result.ownedNfts.count), pageKey=\(result.pageKey)")
         self._pageKey = result.pageKey
         if (result.pageKey == .none) {
           self._done = true
@@ -63,7 +67,5 @@ class AlchemyTokensFetcher {
             }
         })
       }
-      .catch { print($0) }
-      .finally { onDone() }
   }
 }

@@ -95,15 +95,15 @@ class NftOwnerTokens : ObservableObject,Identifiable {
       }
   }
   
-  func refreshTokensFromOpensea(onTokens: @escaping (_ tokens:[NFTToken]) -> Void,onDone: @escaping () -> Void) -> Void {
-    guard let fetcher = self.alchemyFetcher else { return onDone() }
-    fetcher.fetch(onTokens:{ tokens in
+  func refreshTokensFromOpensea(onTokens: @escaping (_ tokens:[NFTToken]) -> Void) -> Promise<Void> {
+    guard let fetcher = self.alchemyFetcher else { return Promise.value(()) }
+    return fetcher.fetch(onTokens:{ tokens in
       onTokens(tokens)
       CKOwnerTokensFetcher.saveOwnerTokens(
         database: self.database,
         owner: fetcher.owner,
         tokens: tokens)
-    },onDone:onDone)
+    })
   }
   
   private func addTokens(_ tokens:[NFTToken]) {
@@ -136,9 +136,8 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           results.forEach { (_,list) in tokens.append(contentsOf: list) }
           
           if (tokens.isEmpty && self.alchemyFetcher?.done() != .some(true)) {
-            return Promise { seal in
-              self.refreshTokensFromOpensea(onTokens:self.addTokens,onDone:{ seal.fulfill(tokens) })
-            }
+            return self.refreshTokensFromOpensea(onTokens:self.addTokens)
+              .map { return tokens }
           } else {
             return Promise.value(tokens)
           }
@@ -163,7 +162,6 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           }
         }
         .done(on:.main) {
-          print("Found tokens count=\($0.count)")
           self.foundMax = self.foundMax || ($0.isEmpty && (self.alchemyFetcher?.done() ?? true))
           self.addTokens($0)
         }
