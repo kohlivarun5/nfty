@@ -80,10 +80,8 @@ struct CKJSONCache<Output:Codable> {
               // print("Fetch returned with error=\(String(describing: error))")
               
               guard error == nil else { return nil }
-              
               guard let json = ((record?[jsonKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) else { return nil }
-              guard let jsonData = (try? JSONSerialization.data(withJSONObject: json, options: [])) else { return nil }
-              let value = try? JSONDecoder().decode(Output.self, from: jsonData)
+              let value = try JSONDecoder().decode(Output.self, from: json)
               return value
             }
             .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in

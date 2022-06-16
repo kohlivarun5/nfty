@@ -41,20 +41,19 @@ func fetchStats() -> Promise<[CollectionFloorData]> {
   
   let account = storage.userAccount()
   
+  print("fetchStats account=\(account)")
   return fetchAllOwnerTokens(tokens:getOwnerTokens(account))
     .map { $0.map { ($0.0,$0.1.count) } }
-    .then {
-      // Fetch floor for each collection
-      $0.reduce(Promise<[(Collection,Int,PriceUnit?)]>.value([]), { accu,item in
+    .then { items -> Promise<[(Collection,Int,PriceUnit?)]> in
+      return reduce_p(items,[], { accu,item in
         let (collection,count) = item;
-        return accu
-          .then { accu in
-            collection.contract.indicativeFloor().then { floor in
-              after(seconds: 0.5).map { _ in accu + [(collection,count,floor)] }
-            }.recover { error -> Promise<[(Collection,Int,PriceUnit?)]> in
-              print(error)
-              return Promise.value(accu)
-            }
+        return after(seconds: 0.2).then { _ -> Promise<PriceUnit?> in
+            collection.contract.indicativeFloor()
+          }.map { floor in
+            accu + [(collection,count,floor)]
+          }.recover { error -> Promise<[(Collection,Int,PriceUnit?)]> in
+            print(error)
+            return Promise.value(accu)
           }
       })
     }

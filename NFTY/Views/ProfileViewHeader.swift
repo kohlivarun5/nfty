@@ -88,10 +88,6 @@ struct ProfileViewHeader: View {
           .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
           .shadow(color:.accentColor,radius:0)
           
-          Image(systemName: "camera.metering.unknown")
-            .foregroundColor(.white)
-            .opacity(0.5)
-            .scaleEffect(3,anchor: .center)
         }
         
       case .some(let info):
