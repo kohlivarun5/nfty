@@ -13,6 +13,7 @@ class WidgetStorage {
   var nearAccount : String?
   
   init() {
+    print("Initialize WidgetStorage")
     if let addr = NSUbiquitousKeyValueStore.default.string(forKey: CloudDefaultStorageKeys
                                                             .walletAddress.rawValue) {
       self.walletAddress = try? EthereumAddress(hex:addr,eip55: false)
