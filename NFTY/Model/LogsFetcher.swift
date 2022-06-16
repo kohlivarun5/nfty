@@ -72,7 +72,7 @@ class LogsFetcher {
     self.fromBlock = fromBlock;
     self.address = address
     var topics = [
-      EthereumGetLogTopics.and(web3.eth.abi.encodeEventSignature(self.event))
+      EthereumGetLogTopics.and(alchemyWeb3.eth.abi.encodeEventSignature(self.event))
     ]
     indexedTopics.forEach {
       topics.append(EthereumGetLogTopics.and($0))
@@ -88,7 +88,7 @@ class LogsFetcher {
     self.fromBlock = fromBlock;
     self.address = address
     self.topics = [
-      .and(web3.eth.abi.encodeEventSignature(self.event))
+      .and(alchemyWeb3.eth.abi.encodeEventSignature(self.event))
     ]
     self.topics.append(contentsOf: topics)
     self.searchBlocks = 500
@@ -131,7 +131,7 @@ class LogsFetcher {
       return onDone()
     }
     
-    return web3.eth.getLogs(
+    return alchemyWeb3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:self.mostRecentBlock,
         toBlock: EthereumQuantityTag.latest,
@@ -164,7 +164,7 @@ class LogsFetcher {
     )
     
     // print("Logs=\(params)")
-    return web3.eth.getLogs(params:params) { result in
+    return alchemyWeb3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock)
@@ -211,7 +211,7 @@ class LogsFetcher {
     
     // print("Logs=\(params)")
     
-    return web3.eth.getLogs(params:params) { result in
+    return alchemyWeb3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         // print("fetchWithPromise",result.result?.count)
         if case let logs? = result.result {
@@ -255,7 +255,7 @@ class LogsFetcher {
   
   func fetchAllLogs(onDone: @escaping () -> Void,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
     
-    web3.eth.getLogs(
+    alchemyWeb3.eth.getLogs(
       params:EthereumGetLogParams(
         fromBlock:.block(0),
         toBlock: .latest,

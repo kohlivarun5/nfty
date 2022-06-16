@@ -160,6 +160,10 @@ var web3 = Web3(
   )
 )
 
+var alchemyWeb3 = Web3(
+  provider: Web3HttpProvider(rpcURL: "https://eth-mainnet.alchemyapi.io/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc")
+)
+
 var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
 
 protocol TokenEventsFetcher {
