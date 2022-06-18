@@ -41,11 +41,16 @@ class FriendsFeedViewModel : ObservableObject {
   
   func loadMore(_ callback : @escaping () -> Void) {
     
+    var initialCount = 10
+    let initialTotal = 100
+    
     switch(self.loadMoreState) {
     case .loading:
       return callback()
     case .uninitialized,.notLoading:
-      self.loadMoreState = .loading(nil)
+      DispatchQueue.main.async {
+        self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
+      }
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
@@ -60,7 +65,13 @@ class FriendsFeedViewModel : ObservableObject {
               callback()
               print("Done loading friend events")
             }
+          },{
+            initialCount = initialCount+1
+            DispatchQueue.main.async {
+              self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
+            }
           }) { (progress,nft) in
+            initialCount = initialCount+1
             newItems.append(nft)
             DispatchQueue.main.async {
               self.loadMoreState = .loading(progress)
@@ -85,11 +96,17 @@ class FriendsFeedViewModel : ObservableObject {
   }
   
   func loadLatest(_ callback : @escaping () -> Void) {
+    
+    var initialCount = 10
+    let initialTotal = 100
+    
     switch(self.loadRecentState) {
     case .loading:
       return callback()
     case .uninitialized,.notLoading:
-      self.loadRecentState = .loading(nil)
+      DispatchQueue.main.async {
+        self.loadRecentState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
+      }
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
@@ -103,6 +120,7 @@ class FriendsFeedViewModel : ObservableObject {
               callback()
             }
           }) { (progress,nft) in
+            initialCount = initialCount+1
             DispatchQueue.main.async {
               newItems.append(nft)
               self.loadRecentState = .loading(progress)

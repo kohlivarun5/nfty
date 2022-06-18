@@ -52,6 +52,13 @@ struct FriendsFeedView: View {
       }
     case (let loadMoreState,let loadRecentState):
       
+      switch (loadRecentState) {
+      case .uninitialized,.notLoading:
+        EmptyView()
+      case .loading(let progress):
+        ProgressView(value: Double(progress.current), total:Double(progress.total))
+      }
+        
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
@@ -142,6 +149,13 @@ struct FriendsFeedView: View {
               }
             }
         )
+      }
+      
+      switch (loadMoreState) {
+      case .uninitialized,.notLoading:
+        EmptyView()
+      case .loading(let progress):
+        ProgressView(value: Double(progress.current), total:Double(progress.total))
       }
     }
   }

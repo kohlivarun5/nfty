@@ -45,7 +45,7 @@ class FriendsFeedFetcher {
   
   init(from:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(1000)
+    let blockDecrements = BigUInt(500)
     self.limit = 2
     self.retries = 10
     self.addressesFilter = nil
@@ -70,7 +70,7 @@ class FriendsFeedFetcher {
   
   init(to:[EthereumAddress],fromBlock:BigUInt) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(1000)
+    let blockDecrements = BigUInt(500)
     self.limit = 1
     self.retries = 10
     self.addressesFilter = to
@@ -93,7 +93,7 @@ class FriendsFeedFetcher {
       blockDecrements: blockDecrements)
   }
   
-  func getRecentEvents(onDone: @escaping () -> Void, _ response: @escaping (LoadingProgress,NFTItem) -> Void) {
+  func getRecentEvents(onDone: @escaping () -> Void,_ onRetry: @escaping () -> Void, _ response: @escaping (LoadingProgress,NFTItem) -> Void) {
     var processed : Promise<Int> = Promise.value(0)
     
     print("getRecentEvents")
@@ -105,7 +105,7 @@ class FriendsFeedFetcher {
         }
         return processed
       }
-    },limit:self.limit,retries:self.retries) { progress,log in
+    },onRetry:onRetry,limit:self.limit,retries:self.retries) { progress,log in
       let p = processed.then { processed -> Promise<Int> in
         
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);

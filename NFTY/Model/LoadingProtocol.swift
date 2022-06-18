@@ -16,5 +16,5 @@ struct LoadingProgress {
 enum LoadingState {
   case uninitialized
   case notLoading
-  case loading(LoadingProgress?)
+  case loading(LoadingProgress)
 }

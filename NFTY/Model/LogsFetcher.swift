@@ -141,6 +141,7 @@ class LogsFetcher {
     ) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
+          print("Found \(logs.count) logs")
           let total = logs.count
           logs.enumerated().forEach { (index,log) in
             response(LoadingProgress(current: index, total: total),log)
@@ -167,10 +168,10 @@ class LogsFetcher {
     return alchemyWeb3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
+          print("Found \(logs.count) logs")
           self.toBlock = EthereumQuantityTag.block(self.fromBlock)
           self.fromBlock = self.fromBlock - self.blockDecrements
           
-          // print("Found \(logs.count) logs")
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
@@ -199,7 +200,7 @@ class LogsFetcher {
     }
   }
   
-  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (LoadingProgress,EthereumLogObject) -> Void) {
+  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,onRetry: @escaping () -> Void,limit:Int,retries:Int = 0,_ response: @escaping (LoadingProgress,EthereumLogObject) -> Void) {
     
     print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
@@ -215,11 +216,12 @@ class LogsFetcher {
       DispatchQueue.global(qos:.userInteractive).async {
         // print("fetchWithPromise",result.result?.count)
         if case let logs? = result.result {
+          print("Found \(logs.count) logs")
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements
           // print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
-          // print("Found \(logs.count) logs")
+          
           let total = logs.count
           
           logs.sorted {
@@ -244,7 +246,8 @@ class LogsFetcher {
             .map { processed in
               // print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
-                self.fetchWithPromise(onDone:onDone,limit:limit,retries:retries-1,response);
+                onRetry()
+                self.fetchWithPromise(onDone:onDone,onRetry:onRetry,limit:limit,retries:retries-1,response);
               }
             }
             .catch { print($0) }
@@ -269,6 +272,7 @@ class LogsFetcher {
     ) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
+          print("Found \(logs.count) logs")
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
