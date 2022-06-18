@@ -32,8 +32,8 @@ struct FriendsFeedView: View {
   
   var body: some View {
     
-    switch(self.events.isInitialized) {
-    case false:
+    switch(self.events.loadMoreState,self.events.loadRecentState) {
+    case (.uninitialized,.uninitialized):
       VStack {
         Spacer()
         ProgressView()
@@ -50,7 +50,7 @@ struct FriendsFeedView: View {
           }
         Spacer()
       }
-    case true:
+    case (let loadMoreState,let loadRecentState):
       
       switch(self.events.recentEvents.isEmpty) {
       case true:

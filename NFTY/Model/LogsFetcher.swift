@@ -126,7 +126,7 @@ class LogsFetcher {
     }
   }
   
-  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (Int,EthereumLogObject) -> Void) {
+  func updateLatest(onDone: @escaping () -> Void,_ response: @escaping (LoadingProgress,EthereumLogObject) -> Void) {
     if (self.mostRecentBlock == .latest) {
       return onDone()
     }
@@ -141,9 +141,9 @@ class LogsFetcher {
     ) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
-          logs.indices.forEach { index in
-            let log = logs[index];
-            response(index,log)
+          let total = logs.count
+          logs.enumerated().forEach { (index,log) in
+            response(LoadingProgress(current: index, total: total),log)
             self.updateMostRecent(log.blockNumber)
           }
         } else {
@@ -199,7 +199,7 @@ class LogsFetcher {
     }
   }
   
-  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (EthereumLogObject) -> Void) {
+  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,limit:Int,retries:Int = 0,_ response: @escaping (LoadingProgress,EthereumLogObject) -> Void) {
     
     print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
@@ -220,6 +220,8 @@ class LogsFetcher {
           // print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
           // print("Found \(logs.count) logs")
+          let total = logs.count
+          
           logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
@@ -231,9 +233,11 @@ class LogsFetcher {
             case (.none,.none):
               return false
             }
-          }.forEach { log in
+          }
+          .enumerated()
+          .forEach { (index,log) in
             self.updateMostRecent(log.blockNumber)
-            response(log)
+            response(LoadingProgress(current: index, total: total), log)
           }
           
           onDone(retries <= 0)

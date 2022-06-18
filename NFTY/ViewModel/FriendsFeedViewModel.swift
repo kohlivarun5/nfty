@@ -8,6 +8,7 @@
 import Foundation
 import Web3
 import PromiseKit
+import SwiftUI
 
 class FriendsFeedViewModel : ObservableObject {
   
@@ -15,10 +16,8 @@ class FriendsFeedViewModel : ObservableObject {
   var recentEventsPublished: Published<[FriendsFeedFetcher.NFTItem]> { _recentEvents }
   var recentEventsPublisher: Published<[FriendsFeedFetcher.NFTItem]>.Publisher { $recentEvents }
   
-  @Published var isInitialized = false
-  
-  private var isLoading = false
-  private var isLoadingLatest = false
+  @Published var loadMoreState : LoadingState = .uninitialized
+  @Published var loadRecentState : LoadingState = .uninitialized
   
   private var fetcher : Promise<FriendsFeedFetcher>
   
@@ -41,24 +40,31 @@ class FriendsFeedViewModel : ObservableObject {
   }
   
   func loadMore(_ callback : @escaping () -> Void) {
-    guard !isLoading else {
-      return
-    }
-    self.isLoading = true
     
+    switch(self.loadMoreState) {
+    case .loading:
+      return callback()
+    case .uninitialized,.notLoading:
+      self.loadMoreState = .loading(nil)
+    }
+    
+    var newItems : [FriendsFeedFetcher.NFTItem] = []
     self.fetcher
       .done { fetcher in
         print("Loading friend events")
         fetcher.getRecentEvents(
           onDone:{
             DispatchQueue.main.async {
-              callback();
-              self.isLoading = false;
-              self.isInitialized = true
+              self.recentEvents.append(contentsOf: newItems)
+              self.loadMoreState = .notLoading
+              callback()
               print("Done loading friend events")
             }
-          }) { nft in
-            DispatchQueue.main.async { self.recentEvents.append(nft) }
+          }) { (progress,nft) in
+            newItems.append(nft)
+            DispatchQueue.main.async {
+              self.loadMoreState = .loading(progress)
+            }
           }
       }
       .catch { print($0) }
@@ -79,21 +85,27 @@ class FriendsFeedViewModel : ObservableObject {
   }
   
   func loadLatest(_ callback : @escaping () -> Void) {
-    guard !isLoadingLatest else {
-      return
+    switch(self.loadRecentState) {
+    case .loading:
+      return callback()
+    case .uninitialized,.notLoading:
+      self.loadRecentState = .loading(nil)
     }
-    self.isLoadingLatest = true;
+    
+    var newItems : [FriendsFeedFetcher.NFTItem] = []
     self.fetcher
       .done { fetcher in
         fetcher.refreshLatestEvents(
           onDone:{
             DispatchQueue.main.async {
-              self.isLoadingLatest = false;
-              callback();
+              self.recentEvents.insert(contentsOf:newItems,at:0)
+              self.loadRecentState = .notLoading
+              callback()
             }
-          }) { nft in
+          }) { (progress,nft) in
             DispatchQueue.main.async {
-              self.recentEvents.insert(nft,at:0)
+              newItems.append(nft)
+              self.loadRecentState = .loading(progress)
             }
           }
       }
