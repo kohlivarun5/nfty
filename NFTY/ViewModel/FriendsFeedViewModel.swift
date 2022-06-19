@@ -48,9 +48,7 @@ class FriendsFeedViewModel : ObservableObject {
     case .loading:
       return callback()
     case .uninitialized,.notLoading:
-      DispatchQueue.main.async {
-        self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
-      }
+      self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
@@ -83,13 +81,13 @@ class FriendsFeedViewModel : ObservableObject {
   
   func getRecentEvents(currentIndex:Int?,_ callback : @escaping () -> Void) {
     guard let index = currentIndex else {
-      loadMore(callback)
+      DispatchQueue.main.async { self.loadMore(callback) }
       return
     }
     let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -5)
     // print("getRecentEvents",thresholdIndex,index)
     if index >= thresholdIndex {
-      loadMore(callback)
+      DispatchQueue.main.async { self.loadMore(callback) }
     } else {
       callback()
     }

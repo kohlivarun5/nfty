@@ -33,7 +33,7 @@ class AlchemyTokensFetcher {
     
     return AlchemyApi.GetNFTs.get(owner: self.owner, pageKey: self._pageKey)
       .then(on:DispatchQueue.global(qos:.userInitiated)) { (result:AlchemyApi.GetNFTs.Result) -> Promise<Void> in
-        print("Alchemy returned with count=\(result.totalCount),\(result.ownedNfts.count), pageKey=\(result.pageKey)")
+        print("Alchemy returned with count=\(result.totalCount),\(result.ownedNfts.count), pageKey=\(result.pageKey ?? "None")")
         self._pageKey = result.pageKey
         if (result.pageKey == .none) {
           self._done = true

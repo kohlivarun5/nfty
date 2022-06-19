@@ -59,7 +59,7 @@ struct FriendsFeedView: View {
           ProgressView(value: Double(progress.current), total:Double(progress.total))
         }
       }
-    case (_,let loadMoreState,let loadRecentState):
+    case (true,let loadMoreState,let loadRecentState):
       
       switch (loadRecentState) {
       case .uninitialized,.notLoading:
