@@ -110,7 +110,7 @@ class FriendsFeedFetcher {
         
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
         
-        // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
+        print("Processing log \(progress)")
         
         guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
         // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
@@ -120,10 +120,11 @@ class FriendsFeedFetcher {
         
         guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
         
-        // print("eventOfTx for ",transactionHash.hex())
+        print("eventOfTx for ",transactionHash.hex())
         return txFetcher.eventOfTx(transactionHash:transactionHash)
           .then { txInfo -> Promise<Int> in
-            
+        
+            print("txInfo=\(txInfo)")
             guard let txInfo = txInfo else { return Promise.value(processed) }
             
             switch(self.addressesFilter) {
@@ -138,9 +139,10 @@ class FriendsFeedFetcher {
             
             guard let price = priceIfNotZero(txInfo.value) else { return Promise.value(processed) }
             
-            // print("Log for Address=\(log.address.hex(eip55: true))");
+            print("Log for Address=\(log.address.hex(eip55: true))");
             return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
               .map  { collectionOpt -> Int in
+                print("collectionOpt=\(collectionOpt)")
                 
                 guard let collection = collectionOpt else { return processed }
                 

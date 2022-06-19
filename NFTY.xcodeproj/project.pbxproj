@@ -70,6 +70,10 @@
 		4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F343D73285E79E6009FFB6D /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
 		4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
+		4F343D76285E93B0009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D75285E93B0009FFB6D /* CoreDataManager.swift */; };
+		4F343D77285E93B0009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D75285E93B0009FFB6D /* CoreDataManager.swift */; };
+		4F343D7A285E99FE009FFB6D /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D78285E99FE009FFB6D /* CoreDataModel.xcdatamodeld */; };
+		4F343D7B285E99FE009FFB6D /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D78285E99FE009FFB6D /* CoreDataModel.xcdatamodeld */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
@@ -540,6 +544,8 @@
 		4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountOffers.swift; sourceTree = "<group>"; };
 		4F2EFECA27B893D400C30F3D /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
 		4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProtocol.swift; sourceTree = "<group>"; };
+		4F343D75285E93B0009FFB6D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		4F343D79285E99FE009FFB6D /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		4F3548D128128CDD00B89943 /* FirebaseJSONCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseJSONCache.swift; sourceTree = "<group>"; };
 		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
@@ -866,6 +872,7 @@
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
 				4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */,
+				4F343D75285E93B0009FFB6D /* CoreDataManager.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -935,6 +942,7 @@
 		4FB9A7A4262B28A300C58AF9 = {
 			isa = PBXGroup;
 			children = (
+				4F343D78285E99FE009FFB6D /* CoreDataModel.xcdatamodeld */,
 				4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */,
 				4FB72E4626A8DF250083F255 /* NFTRanking */,
 				4FDEAB7F278E3F5500F92160 /* NFTYWidget */,
@@ -1786,6 +1794,7 @@
 				4F51EA2228348D71008C610F /* ProfileViewHeader.swift in Sources */,
 				4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
+				4F343D76285E93B0009FFB6D /* CoreDataManager.swift in Sources */,
 				4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */,
@@ -1799,6 +1808,7 @@
 				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
 				4FED1E4126D4757C006274CE /* WalletProvider.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
+				4F343D7A285E99FE009FFB6D /* CoreDataModel.xcdatamodeld in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
@@ -1873,6 +1883,7 @@
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
 				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
+				4F343D77285E93B0009FFB6D /* CoreDataManager.swift in Sources */,
 				4F99B519285165100012A3FF /* CKJSONCache.swift in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
@@ -1899,6 +1910,7 @@
 				4FDEABA5278E540F00F92160 /* ObservablePromise.swift in Sources */,
 				4FDEABA2278E540500F92160 /* LogsFetcher.swift in Sources */,
 				4F99B534285804540012A3FF /* AlchemyTokensFetcher.swift in Sources */,
+				4F343D7B285E99FE009FFB6D /* CoreDataModel.xcdatamodeld in Sources */,
 				4FDEABAC278E542700F92160 /* Web3Utils.swift in Sources */,
 				4FDEABA9278E541C00F92160 /* TokenTradeInterface.swift in Sources */,
 				4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */,
@@ -2545,6 +2557,19 @@
 			productName = Web3PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		4F343D78285E99FE009FFB6D /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4F343D79285E99FE009FFB6D /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 4F343D79285E99FE009FFB6D /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4FB9A7A5262B28A300C58AF9 /* Project object */;
 }

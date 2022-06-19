@@ -9,6 +9,7 @@ import Foundation
 
 import Cache
 import PromiseKit
+import CoreData
 import CloudKit
 
 struct CKJSONCache<Output:Codable> {
@@ -23,7 +24,10 @@ struct CKJSONCache<Output:Codable> {
   
   let bucket : String
   let fallback : (_ in:String) -> Promise<Output?>
-  private var diskCache : DiskStorage<String,Output>
+  
+  // Replace disk cache with CoreDataCache
+  // https://iosapptemplates.com/blog/ios-development/data-persistence-ios-swift
+  private var persistentStore : CoreDataManager
   
   let database : CKDatabase
   
@@ -31,9 +35,7 @@ struct CKJSONCache<Output:Codable> {
     self.database = database
     self.bucket = bucket
     self.fallback = fallback
-    self.diskCache = try! DiskStorage<String, Output>(
-      config: DiskConfig(name: "\(bucket).diskCache",expiry: .never),
-      transformer: TransformerFactory.forCodable(ofType: Output.self))
+    self.persistentStore = CoreDataManager()
   }
   
   private let jsonKey = "json"
@@ -64,43 +66,42 @@ struct CKJSONCache<Output:Codable> {
       }
   }
   
-  
   func get(_ key:String) -> Promise<Output?> {
+    print("Getting for key=\(key)")
+    
+    let mainContext = self.persistentStore.mainContext
+    let recordName = self.path(key)
+    
     return Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.diskCache.object(forKey:key)) {
-        case .some(let data):
-          return seal.fulfill(data)
-        case .none:
-          
-          let recordName = self.path(key)
-          database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
-            .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
-              let (record,error) = result
-              // print("Fetch returned with error=\(String(describing: error))")
-              
-              guard error == nil else { return nil }
-              guard let json = ((record?[jsonKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) else { return nil }
-              let value = try JSONDecoder().decode(Output.self, from: json)
-              return value
-            }
-            .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
-              switch(data) {
-              case .some(let data):
-                return Promise.value(data)
-              case .none:
-                return onCacheMiss(key)
-              }
-            }.map(on:DispatchQueue.global(qos:.userInteractive)) { data in
-              DispatchQueue.global(qos:.background).async {
-                data.flatMap { try? self.diskCache.setObject($0, forKey:key) }
-              }
-              return data
-            }
-            .done(seal.fulfill)
-            .catch(seal.reject)
+        do {
+          // Get the object by ID from the NSManagedObjectContext
+          let object : GenericJSONData? = try? mainContext.existingObject(
+            with: NSManagedObjectID( recordName
+          ) as? GenericJSONData
+          switch(object?.json) {
+          case .none:
+            seal.fulfill(nil)
+          case .some(let json):
+            seal.fulfill(try JSONDecoder().decode(Output.self, from: json))
+          }
+        } catch {
+          seal.reject(error)
         }
       }
+    }
+    .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
+      switch(data) {
+      case .some(let data):
+        return Promise.value(data)
+      case .none:
+        return onCacheMiss(key)
+      }
+    }.map(on:DispatchQueue.global(qos:.userInteractive)) { data in
+      DispatchQueue.global(qos:.background).async {
+        //data.flatMap { try? self.diskCache.setObject($0, forKey:key) }
+      }
+      return data
     }
   }
 }

@@ -246,6 +246,7 @@ class LogsFetcher {
             .map { processed in
               // print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
+                print("Calling onRetry")
                 onRetry()
                 self.fetchWithPromise(onDone:onDone,onRetry:onRetry,limit:limit,retries:retries-1,response);
               }
