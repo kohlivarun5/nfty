@@ -12,6 +12,8 @@ struct FriendsFeedView: View {
   @StateObject var events : FriendsFeedViewModel
   @State private var action: NFT.NftID? = nil
   
+  @State private var isInitialized : Bool = false
+  
   enum RefreshButton {
     case hidden
     case loading
@@ -32,8 +34,8 @@ struct FriendsFeedView: View {
   
   var body: some View {
     
-    switch(self.events.isInitialized) {
-    case false:
+    switch(self.isInitialized,self.events.loadMoreState,self.events.loadRecentState) {
+    case (false,_,_),(true,.uninitialized,.uninitialized):
       VStack {
         Spacer()
         ProgressView()
@@ -44,14 +46,30 @@ struct FriendsFeedView: View {
               DispatchQueue.main.async {
                 print("Done isinitialized")
                 self.refreshButton = .loaded
+                self.isInitialized = true
                 // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
               }
             }
           }
         Spacer()
+        switch (self.events.loadMoreState) {
+        case .uninitialized,.notLoading:
+          EmptyView()
+        case .loading(let progress):
+          ProgressView(value: Double(progress.current), total:Double(progress.total))
+            .animation(.linear, value: self.events.loadMoreState)
+        }
       }
-    case true:
+    case (true,let loadMoreState,let loadRecentState):
       
+      switch (loadRecentState) {
+      case .uninitialized,.notLoading:
+        EmptyView()
+      case .loading(let progress):
+        ProgressView(value: Double(progress.current), total:Double(progress.total))
+          .animation(.linear, value: self.events.loadRecentState)
+      }
+        
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
@@ -142,6 +160,14 @@ struct FriendsFeedView: View {
               }
             }
         )
+      }
+      
+      switch (loadMoreState) {
+      case .uninitialized,.notLoading:
+        EmptyView()
+      case .loading(let progress):
+        ProgressView(value: Double(progress.current), total:Double(progress.total))
+          .animation(.linear, value: self.events.loadMoreState)
       }
     }
   }
