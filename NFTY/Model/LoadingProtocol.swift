@@ -8,12 +8,12 @@
 import Foundation
 
 
-struct LoadingProgress {
+struct LoadingProgress : Equatable {
   let current : Int
   let total : Int
 }
 
-enum LoadingState {
+enum LoadingState : Equatable {
   case uninitialized
   case notLoading
   case loading(LoadingProgress)

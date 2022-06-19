@@ -57,6 +57,7 @@ struct FriendsFeedView: View {
           EmptyView()
         case .loading(let progress):
           ProgressView(value: Double(progress.current), total:Double(progress.total))
+            .animation(.linear, value: self.events.loadMoreState)
         }
       }
     case (true,let loadMoreState,let loadRecentState):
@@ -66,6 +67,7 @@ struct FriendsFeedView: View {
         EmptyView()
       case .loading(let progress):
         ProgressView(value: Double(progress.current), total:Double(progress.total))
+          .animation(.linear, value: self.events.loadRecentState)
       }
         
       switch(self.events.recentEvents.isEmpty) {
@@ -165,6 +167,7 @@ struct FriendsFeedView: View {
         EmptyView()
       case .loading(let progress):
         ProgressView(value: Double(progress.current), total:Double(progress.total))
+          .animation(.linear, value: self.events.loadMoreState)
       }
     }
   }
