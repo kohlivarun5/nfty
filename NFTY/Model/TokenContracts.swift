@@ -104,12 +104,10 @@ class WETHFetcher {
         case .some(let tx):
           let sum = tx.logs
             .compactMap { log in
-              print(log.address.hex(eip55:false))
               if (log.address.hex(eip55:false) != WETH_ADDRESS) {
                 return nil
               }
               
-              print(log.topics)
               if (!log.topics.contains(
                 try! EthereumData.string(
                   "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")

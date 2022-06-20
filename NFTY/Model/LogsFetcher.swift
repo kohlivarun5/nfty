@@ -148,7 +148,7 @@ class LogsFetcher {
             self.updateMostRecent(log.blockNumber)
           }
         } else {
-          print(result)
+          print("Got logs without results\(result)")
         }
         onDone()
       }
@@ -193,7 +193,7 @@ class LogsFetcher {
           }
           
         } else {
-          print(result)
+          print("Got logs without results\(result)")
         }
         onDone()
       }
@@ -252,7 +252,7 @@ class LogsFetcher {
             }
             .catch { print($0) }
         } else {
-          print(result)
+          print("Got logs without results\(result)")
           onDone(retries <= 0).catch { print($0) }
         }
         
@@ -288,7 +288,7 @@ class LogsFetcher {
             response(log)
           }
         } else {
-          print(result)
+          print("Got logs without results\(result)")
         }
         onDone()
       }

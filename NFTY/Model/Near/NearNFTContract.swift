@@ -107,7 +107,7 @@ class NearNFTContract : ContractInterface {
               .flatMap { return URL(string:$0) }
             ,token.metadata.media.flatMap { $0.hasPrefix("http") || $0.hasPrefix("ipfs") ? $0 : nil}.flatMap { URL(string:$0) }) {
           case (.none,.none):
-            print(uri as Any,metadata,token)
+            // print(uri as Any,metadata,token)
             seal.reject(NSError(domain:"", code:404, userInfo:nil))
           case (_,.some(let url)),(.some(let url),_):
             var request = URLRequest(url:url)
