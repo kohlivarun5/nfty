@@ -18,10 +18,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   let fallback : (_ in:Key, _ output:Output) -> Promise<Output?>
   let keyToString : (_ in:Key) -> String
   let database : CKDatabase
-<<<<<<< HEAD
   let backgroundContext : NSManagedObjectContext
-=======
->>>>>>> 3a106140a2bf38eafaddbbf38a823368b83820ea
   
   init(
     database:CKDatabase,
