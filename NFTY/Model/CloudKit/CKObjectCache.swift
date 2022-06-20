@@ -18,6 +18,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   let fallback : (_ in:Key, _ output:Output) -> Promise<Output?>
   let keyToString : (_ in:Key) -> String
   let database : CKDatabase
+  let backgroundContext : NSManagedObjectContext
   
   init(
     database:CKDatabase,
@@ -31,16 +32,17 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
     self.keyField = keyField
     self.fallback = fallback
     self.keyToString = keyToString
+    self.backgroundContext = CoreDataManager.shared.persistentContainer.newBackgroundContext()
   }
   
   private func onCacheMiss(_ key:Key) -> Promise<Output?> {
     
-    let output = Output(context: CoreDataManager.shared.managedContext)
+    let output = Output(context:self.backgroundContext)
     return self.fallback(key,output)
       .then(on:DispatchQueue.global(qos:.userInteractive)) { output -> Promise<Output?> in
         guard let output = output else { return Promise.value(nil) }
         
-        try? CoreDataManager.shared.managedContext.save()
+        try? self.backgroundContext.save()
         
         DispatchQueue.global(qos:.background).async {
           let key = self.keyToString(key)
@@ -70,7 +72,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
     let keyStr = self.keyToString(key)
     let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
     request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
-    let results = try? CoreDataManager.shared.managedContext.fetch(request)
+    let results = try? backgroundContext.fetch(request)
     // print("Got results=\(String(describing: results)) for query=\(request)")
     
     if let data = results?.first {
@@ -84,14 +86,14 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
         guard error == nil else { return nil }
         guard let record = record else { return nil }
         
-        let output = Output(context: CoreDataManager.shared.managedContext)
+        let output = Output(context: self.backgroundContext)
         output.setValuesForKeys(
           Dictionary(
             uniqueKeysWithValues:
               record.allKeys().map { ($0,record[$0] as! String?) }
           )
         )
-        try? CoreDataManager.shared.managedContext.save()
+        try? backgroundContext.save()
         return output
       }
       .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
