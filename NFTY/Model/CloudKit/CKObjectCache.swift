@@ -72,7 +72,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
     let keyStr = self.keyToString(key)
     let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
     request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
-    let results = try? backgroundContext.fetch(request)
+    let results = try? CoreDataManager.shared.managedContext.fetch(request)
     // print("Got results=\(String(describing: results)) for query=\(request)")
     
     if let data = results?.first {
