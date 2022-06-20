@@ -46,30 +46,20 @@ class TxFetcher {
     database: CKContainer.default().publicCloudDatabase,
     entityName: "EthereumTransactionData",
     keyField: "txHash",
-    fallback: { txHash in
+    fallback: { (txHash:EthereumData,output:EthereumTransactionData) in
       return TxFetcher.eventOfTx(txHash)
         .map {
           guard let tx = $0 else { return nil }
           let key = txHash.hex()
-          let record = CKRecord.init(recordType: "EthereumTransactionData", recordID:CKRecord.ID.init(recordName:key))
-          record.setValuesForKeys([
-            "txHash" : key,
-            "from" : tx.from.hex(eip55: true),
-            "to": tx.to?.hex(eip55: true),
-            "value" : tx.value.hex(),
-            "blockNumber" : tx.blockNumber?.hex()
-            ])
-          return record
+          output.txHash = tx.hash.hex()
+          output.from = tx.from.hex(eip55: true)
+          output.to = tx.to?.hex(eip55: true)
+          output.value = tx.value.hex()
+          output.blockNumber = tx.blockNumber?.hex()
+          return output
         }
     },
-    keyToString: { $0.hex() },
-    set : { (record,output:EthereumTransactionData) in
-      output.from = record["from"] as? String
-      output.txHash = record["txHash"]  as? String
-      output.to = record["to"]  as? String
-      output.value = record["value"]  as? String
-      output.blockNumber = record["blockNumber"]  as? String
-    }
+    keyToString: { $0.hex() }
   )
   
   static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {

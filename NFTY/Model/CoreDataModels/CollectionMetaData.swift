@@ -15,6 +15,8 @@ public struct Erc721ContractInfo : Codable {
   let name : String
 }
 
+/*
+
 extension CollectionMetaData {
   public func set(address:EthereumAddress,name:String) {
     self.name = name
@@ -26,7 +28,7 @@ extension CollectionMetaData {
     let request: NSFetchRequest<CollectionMetaData> = CollectionMetaData.fetchRequest()
     request.predicate = NSPredicate(format: "address == %@", addressStr)
     let results = try? CKPublicDataManager.shared.managedContext.fetch(request)
-    print("Got results=\(results) for query=\(request)")
+    print("Got results=\(String(describing: results)) for query=\(request)")
     switch(results?.first) {
     case .some(let data):
       return Promise.value(data)
@@ -55,3 +57,4 @@ extension CollectionMetaData {
     }
   }
 }
+ */

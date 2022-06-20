@@ -15,34 +15,51 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   
   let entityName : String
   let keyField : String
-  let fallback : (_ in:Key) -> Promise<CKRecord?>
+  let fallback : (_ in:Key, _ output:Output) -> Promise<Output?>
   let keyToString : (_ in:Key) -> String
-  let set : (_ in:CKRecord,_ out:Output) -> Void
   let database : CKDatabase
   
-  init(database:CKDatabase,entityName:String,keyField:String,fallback:@escaping (_ in:Key) -> Promise<CKRecord?>,keyToString: @escaping (_ in:Key) -> String, set:@escaping (_ in:CKRecord,_ out:Output) -> Void) {
+  init(
+    database:CKDatabase,
+    entityName:String,
+    keyField:String,
+    fallback:@escaping (_ in:Key, _ output:Output) -> Promise<Output?>,
+    keyToString: @escaping (_ in:Key) -> String)
+  {
     self.database = database
     self.entityName = entityName
     self.keyField = keyField
     self.fallback = fallback
     self.keyToString = keyToString
-    self.set = set
   }
   
   private func onCacheMiss(_ key:Key) -> Promise<Output?> {
-    return self.fallback(key)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { record -> Promise<Output?> in
-        guard let record = record else { return Promise.value(nil) }
+    
+    let output = Output(context: CoreDataManager.shared.managedContext)
+    return self.fallback(key,output)
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { output -> Promise<Output?> in
+        guard let output = output else { return Promise.value(nil) }
         
-        let output = Output(context: CoreDataManager.shared.managedContext)
-        self.set(record,output)
+        let key = self.keyToString(key)
+        let record = CKRecord(recordType: self.entityName, recordID:CKRecord.ID.init(recordName:key))
+        // traverse and set record
+        
+        record.setValuesForKeys(
+          Dictionary(
+            uniqueKeysWithValues:
+              output.entity.attributesByName.keys
+              .map {
+                ($0,output.value(forKey: $0) as! String?)
+              }
+            )
+          )
         
         DispatchQueue.global(qos:.background).async {
-          print("Saving recordId=\(self.keyToString(key))")
+          print("Saving recordId=\(key)")
           try? CoreDataManager.shared.managedContext.save()
           self.database.save(record:record)
             .done(on:.global(qos: .background)) { result in
-              print("Save returned for recordId=\(self.keyToString(key))")
+              print("Save returned for recordId=\(key))")
             }
             .catch { print($0) }
         }
@@ -52,7 +69,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   
   func get(_ key:Key) -> Promise<Output?> {
     let keyStr = self.keyToString(key)
-    let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName) as! NSFetchRequest<Output>
+    let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName) 
     request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
     let results = try? CoreDataManager.shared.managedContext.fetch(request)
     print("Got results=\(String(describing: results)) for query=\(request)")
@@ -69,7 +86,12 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
         guard let record = record else { return nil }
         
         let output = Output(context: CoreDataManager.shared.managedContext)
-        self.set(record,output)
+        output.setValuesForKeys(
+          Dictionary(
+            uniqueKeysWithValues:
+              record.allKeys().map { ($0,record[$0] as! String?) }
+          )
+        )
         try? CoreDataManager.shared.managedContext.save()
         return output
       }

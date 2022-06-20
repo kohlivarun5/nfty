@@ -11,6 +11,7 @@ import CoreData
 import PromiseKit
 import CloudKit
 
+/*
 extension EthereumTransactionData {
   public func set(_ tx:EthereumTransactionObject) {
     self.txHash = tx.hash.hex()
@@ -61,3 +62,5 @@ extension EthereumTransactionData {
     }
   }
 }
+ 
+ */

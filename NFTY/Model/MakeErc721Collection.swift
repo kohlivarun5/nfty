@@ -71,23 +71,16 @@ struct MakeErc721Collection {
     database: CKContainer.default().publicCloudDatabase,
     entityName: "CollectionMetaData",
     keyField: "address",
-    fallback: { address in
+    fallback: { (address:String,output:CollectionMetaData) in
       return MakeErc721Collection.validateAddress(address)
         .map {
           guard let info = $0 else { return nil }
-          let record = CKRecord.init(recordType: "CollectionMetaData", recordID:CKRecord.ID.init(recordName:address))
-          record.setValuesForKeys([
-            "address" : address,
-            "name" : info.name
-          ])
-          return record
+          output.address = address
+          output.name = info.name
+          return output
         }
     },
-    keyToString: { $0 },
-    set : { (record,output:CollectionMetaData) in
-      output.address = record["address"] as? String
-      output.name = record["name"]  as? String
-    }
+    keyToString: { $0 }
   )
   
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
