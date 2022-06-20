@@ -34,6 +34,10 @@ struct MakeErc721Collection {
   
   private static var cache : [String:Erc721ContractInfo] = [:]
   
+  public struct Erc721ContractInfo : Codable {
+    let name : String
+  }
+  
   static private func validateAddress(_ addressStr:String) -> Promise<Erc721ContractInfo?> {
     let address = try! EthereumAddress(hex: addressStr, eip55: true)
     let ethContract = Erc721Contract.EthContract(address.hex(eip55: true))

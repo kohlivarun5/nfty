@@ -11,10 +11,6 @@ import CoreData
 import PromiseKit
 import CloudKit
 
-public struct Erc721ContractInfo : Codable {
-  let name : String
-}
-
 /*
 
 extension CollectionMetaData {

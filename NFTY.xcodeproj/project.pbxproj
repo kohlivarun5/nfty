@@ -72,12 +72,6 @@
 		4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
 		4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */; };
 		4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */; };
-		4F343D82285FEAB5009FFB6D /* EthereumTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */; };
-		4F343D83285FEAB5009FFB6D /* EthereumTransactionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */; };
-		4F343D85285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */; };
-		4F343D86285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */; };
-		4F343D8828600B75009FFB6D /* CollectionMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8728600B75009FFB6D /* CollectionMetaData.swift */; };
-		4F343D8928600B75009FFB6D /* CollectionMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8728600B75009FFB6D /* CollectionMetaData.swift */; };
 		4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
 		4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
 		4F343D8E28601E03009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
@@ -1777,7 +1771,6 @@
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
-				4F343D8828600B75009FFB6D /* CollectionMetaData.swift in Sources */,
 				4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F99B52B2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
@@ -1808,8 +1801,6 @@
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */,
-				4F343D85285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */,
-				4F343D82285FEAB5009FFB6D /* EthereumTransactionData.swift in Sources */,
 				4F6D395D262BD76E007E79BB /* CollectionsView.swift in Sources */,
 				4F6AC08226AE1134000A7539 /* TokenTradeActions.swift in Sources */,
 				4F529BB527B0590900EFE626 /* TokensListPaged.swift in Sources */,
@@ -1908,7 +1899,6 @@
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
 				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
-				4F343D83285FEAB5009FFB6D /* EthereumTransactionData.swift in Sources */,
 				4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
@@ -1951,10 +1941,8 @@
 				4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
-				4F343D86285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */,
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
-				4F343D8928600B75009FFB6D /* CollectionMetaData.swift in Sources */,
 				4F99B52C2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,

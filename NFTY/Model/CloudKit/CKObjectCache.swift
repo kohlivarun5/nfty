@@ -40,23 +40,22 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
       .then(on:DispatchQueue.global(qos:.userInteractive)) { output -> Promise<Output?> in
         guard let output = output else { return Promise.value(nil) }
         
-        let key = self.keyToString(key)
-        let record = CKRecord(recordType: self.entityName, recordID:CKRecord.ID.init(recordName:key))
-        // traverse and set record
-        
-        record.setValuesForKeys(
-          Dictionary(
-            uniqueKeysWithValues:
-              output.entity.attributesByName.keys
-              .map {
-                ($0,output.value(forKey: $0) as! String?)
-              }
-            )
-          )
+        try? CoreDataManager.shared.managedContext.save()
         
         DispatchQueue.global(qos:.background).async {
-          print("Saving recordId=\(key)")
-          try? CoreDataManager.shared.managedContext.save()
+          let key = self.keyToString(key)
+          let record = CKRecord(recordType: self.entityName, recordID:CKRecord.ID.init(recordName:key))
+          
+          record.setValuesForKeys(
+            Dictionary(
+              uniqueKeysWithValues:
+                output.entity.attributesByName.keys
+                .map {
+                  ($0,output.value(forKey: $0) as! String?)
+                }
+            )
+          )
+          
           self.database.save(record:record)
             .done(on:.global(qos: .background)) { result in
               print("Save returned for recordId=\(key))")
@@ -69,7 +68,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   
   func get(_ key:Key) -> Promise<Output?> {
     let keyStr = self.keyToString(key)
-    let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName) 
+    let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
     request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
     let results = try? CoreDataManager.shared.managedContext.fetch(request)
     // print("Got results=\(String(describing: results)) for query=\(request)")
@@ -103,6 +102,6 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
           return onCacheMiss(key)
         }
       }
-      
+    
   }
 }
