@@ -109,7 +109,7 @@ class Erc721Contract {
   }
   
   func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
-    return txFetcher.eventOfTx(transactionHash: transactionHash)
+    return TxFetcher.eventOfTx(transactionHash: transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
         switch(txData) {
         case .none: return nil
@@ -210,7 +210,7 @@ class Erc721Contract {
         if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000"))
         { type = .minted }
           
-        txFetcher.eventOfTx(transactionHash: log.transactionHash)
+        TxFetcher.eventOfTx(transactionHash: log.transactionHash)
           .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:TxFetcher.TxInfo?) in
             switch(txData) {
             case .none:

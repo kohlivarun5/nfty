@@ -190,7 +190,7 @@ class CryptoPunksContract : ContractInterface {
   
   private func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
     
-    txFetcher.eventOfTx(transactionHash: transactionHash)
+    TxFetcher.eventOfTx(transactionHash: transactionHash)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { (txData:TxFetcher.TxInfo?) in
         switch(txData) {
         case .none: return nil
