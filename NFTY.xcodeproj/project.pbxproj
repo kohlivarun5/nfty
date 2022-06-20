@@ -78,6 +78,10 @@
 		4F343D86285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */; };
 		4F343D8828600B75009FFB6D /* CollectionMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8728600B75009FFB6D /* CollectionMetaData.swift */; };
 		4F343D8928600B75009FFB6D /* CollectionMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8728600B75009FFB6D /* CollectionMetaData.swift */; };
+		4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
+		4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
+		4F343D8E28601E03009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
+		4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
@@ -550,6 +554,8 @@
 		4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionData.swift; sourceTree = "<group>"; };
 		4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPublicDataManager.swift; sourceTree = "<group>"; };
 		4F343D8728600B75009FFB6D /* CollectionMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMetaData.swift; sourceTree = "<group>"; };
+		4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKObjectCache.swift; sourceTree = "<group>"; };
+		4F343D8D28601E03009FFB6D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		4F3548D128128CDD00B89943 /* FirebaseJSONCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseJSONCache.swift; sourceTree = "<group>"; };
 		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
@@ -854,6 +860,7 @@
 				4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */,
 				4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */,
 				4F343D8728600B75009FFB6D /* CollectionMetaData.swift */,
+				4F343D8D28601E03009FFB6D /* CoreDataManager.swift */,
 			);
 			path = CoreDataModels;
 			sourceTree = "<group>";
@@ -887,6 +894,7 @@
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
 				4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */,
+				4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -1832,6 +1840,7 @@
 				4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
 				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
+				4F343D8E28601E03009FFB6D /* CoreDataManager.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
@@ -1846,6 +1855,7 @@
 				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4FED1E4326D5ED53006274CE /* SECP256K1.swift in Sources */,
+				4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */,
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
@@ -1938,10 +1948,12 @@
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
 				4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
+				4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F343D86285FECBF009FFB6D /* CKPublicDataManager.swift in Sources */,
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
+				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F343D8928600B75009FFB6D /* CollectionMetaData.swift in Sources */,
 				4F99B52C2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,

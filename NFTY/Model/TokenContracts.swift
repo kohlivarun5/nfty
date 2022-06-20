@@ -42,12 +42,42 @@ class TxFetcher {
       }
   }
   
+  private static var cache = CKObjectCache(
+    database: CKContainer.default().publicCloudDatabase,
+    entityName: "EthereumTransactionData",
+    keyField: "txHash",
+    fallback: { txHash in
+      return TxFetcher.eventOfTx(txHash)
+        .map {
+          guard let tx = $0 else { return nil }
+          let key = txHash.hex()
+          let record = CKRecord.init(recordType: "EthereumTransactionData", recordID:CKRecord.ID.init(recordName:key))
+          record.setValuesForKeys([
+            "txHash" : key,
+            "from" : tx.from.hex(eip55: true),
+            "to": tx.to?.hex(eip55: true),
+            "value" : tx.value.hex(),
+            "blockNumber" : tx.blockNumber?.hex()
+            ])
+          return record
+        }
+    },
+    keyToString: { $0.hex() },
+    set : { (record,output:EthereumTransactionData) in
+      output.from = record["from"] as? String
+      output.txHash = record["txHash"]  as? String
+      output.to = record["to"]  as? String
+      output.value = record["value"]  as? String
+      output.blockNumber = record["blockNumber"]  as? String
+    }
+  )
+  
   static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
     switch transactionHash {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      return EthereumTransactionData.fetch(transactionHash: txHash, TxFetcher.eventOfTx)
+      return cache.get(txHash)
         .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionData?) -> TxInfo? in
           switch(txData) {
           case .none:

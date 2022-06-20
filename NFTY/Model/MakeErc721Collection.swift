@@ -67,6 +67,29 @@ struct MakeErc721Collection {
     }
   }
   
+  private static var collectionCache = CKObjectCache(
+    database: CKContainer.default().publicCloudDatabase,
+    entityName: "CollectionMetaData",
+    keyField: "address",
+    fallback: { address in
+      return MakeErc721Collection.validateAddress(address)
+        .map {
+          guard let info = $0 else { return nil }
+          let record = CKRecord.init(recordType: "CollectionMetaData", recordID:CKRecord.ID.init(recordName:address))
+          record.setValuesForKeys([
+            "address" : address,
+            "name" : info.name
+          ])
+          return record
+        }
+    },
+    keyToString: { $0 },
+    set : { (record,output:CollectionMetaData) in
+      output.address = record["address"] as? String
+      output.name = record["name"]  as? String
+    }
+  )
+  
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
     
     let addressStr = address.hex(eip55: true)
@@ -75,7 +98,7 @@ struct MakeErc721Collection {
       return Promise.value(MakeErc721Collection.ofName(name:info.name,address: address))
     }
     
-    return CollectionMetaData.fetch(address: address,MakeErc721Collection.validateAddress)
+    return collectionCache.get(addressStr)
       .map { (info:CollectionMetaData?) -> Collection? in
         switch (info?.name) {
         case .none: return nil
