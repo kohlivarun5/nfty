@@ -70,6 +70,12 @@
 		4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F343D73285E79E6009FFB6D /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
 		4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
+		4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */; };
+		4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */; };
+		4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
+		4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
+		4F343D8E28601E03009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
+		4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
 		4F3582A027839A6700D119F8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
 		4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */; };
 		4F3582A62783A4A700D119F8 /* VaultTokensList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3582A52783A4A700D119F8 /* VaultTokensList.swift */; };
@@ -160,8 +166,6 @@
 		4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
 		4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F926EAA27CB079B00A94B38 /* OwnerTokens.swift */; };
 		4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F961F79271CC12600639E85 /* NftTradeUrlView.swift */; };
-		4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
-		4F99B519285165100012A3FF /* CKJSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B5172851621D0012A3FF /* CKJSONCache.swift */; };
 		4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
 		4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */; };
 		4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */; };
@@ -540,6 +544,12 @@
 		4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountOffers.swift; sourceTree = "<group>"; };
 		4F2EFECA27B893D400C30F3D /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
 		4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProtocol.swift; sourceTree = "<group>"; };
+		4F343D7D285FE8AC009FFB6D /* CKPublicObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CKPublicObjects.xcdatamodel; sourceTree = "<group>"; };
+		4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumTransactionData.swift; sourceTree = "<group>"; };
+		4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKPublicDataManager.swift; sourceTree = "<group>"; };
+		4F343D8728600B75009FFB6D /* CollectionMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMetaData.swift; sourceTree = "<group>"; };
+		4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKObjectCache.swift; sourceTree = "<group>"; };
+		4F343D8D28601E03009FFB6D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		4F3548D128128CDD00B89943 /* FirebaseJSONCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseJSONCache.swift; sourceTree = "<group>"; };
 		4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionVaultContract.swift; sourceTree = "<group>"; };
 		4F3582A32783A33D00D119F8 /* NFTXVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTXVaultView.swift; sourceTree = "<group>"; };
@@ -837,6 +847,18 @@
 			path = CollectionContracts;
 			sourceTree = "<group>";
 		};
+		4F343D80285FE8B3009FFB6D /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */,
+				4F343D81285FEAB5009FFB6D /* EthereumTransactionData.swift */,
+				4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */,
+				4F343D8728600B75009FFB6D /* CollectionMetaData.swift */,
+				4F343D8D28601E03009FFB6D /* CoreDataManager.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
 		4F529BB127B054F400EFE626 /* OpenSea */ = {
 			isa = PBXGroup;
 			children = (
@@ -866,6 +888,7 @@
 				4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */,
 				4F99B5172851621D0012A3FF /* CKJSONCache.swift */,
 				4F99B51D2852EAD30012A3FF /* CKOwnerTokens.swift */,
+				4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -1101,6 +1124,7 @@
 				4F99B51A2852E9400012A3FF /* PromiseKitExtensions.swift */,
 				4F99B5292857FB7E0012A3FF /* Alchemy */,
 				4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */,
+				4F343D80285FE8B3009FFB6D /* CoreDataModels */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1747,6 +1771,7 @@
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
+				4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F99B52B2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
 				4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */,
@@ -1773,7 +1798,6 @@
 				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
 				4F99B5212852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
-				4F99B5182851621D0012A3FF /* CKJSONCache.swift in Sources */,
 				4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */,
 				4F0E798026E0777F009EC174 /* NFTExportView.swift in Sources */,
 				4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */,
@@ -1807,6 +1831,7 @@
 				4F99B51B2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
 				4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */,
 				4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */,
+				4F343D8E28601E03009FFB6D /* CoreDataManager.swift in Sources */,
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
@@ -1821,6 +1846,7 @@
 				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4FED1E4326D5ED53006274CE /* SECP256K1.swift in Sources */,
+				4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */,
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
@@ -1873,7 +1899,7 @@
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
 				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
-				4F99B519285165100012A3FF /* CKJSONCache.swift in Sources */,
+				4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
 				4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */,
@@ -1912,9 +1938,11 @@
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
 				4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
+				4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */,
 				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
+				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F99B52C2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
@@ -2154,7 +2182,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2183,7 +2211,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2295,7 +2323,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2326,7 +2354,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2545,6 +2573,19 @@
 			productName = Web3PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4F343D7D285FE8AC009FFB6D /* CKPublicObjects.xcdatamodel */,
+			);
+			currentVersion = 4F343D7D285FE8AC009FFB6D /* CKPublicObjects.xcdatamodel */;
+			path = CKPublicObjects.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4FB9A7A5262B28A300C58AF9 /* Project object */;
 }

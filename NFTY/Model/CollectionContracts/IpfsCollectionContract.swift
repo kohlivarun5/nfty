@@ -86,7 +86,7 @@ class IpfsCollectionContract : ContractInterface {
                       seal.reject(error ?? NSError(domain:"", code:404, userInfo:nil))
                     }
                   } catch {
-                    print(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData",error)
+                    print("Error parsing image\(data.map { String(decoding:$0,as:UTF8.self) } ?? "EmptyData")",error)
                     seal.reject(error)
                   }
                 }

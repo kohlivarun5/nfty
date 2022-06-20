@@ -30,13 +30,13 @@ struct MakeErc721Collection {
     )
   }
   
-  struct Erc721ContractInfo : Codable {
-    let name : String
-  }
-  
   static private let KnownUnsupportedName = "com.nftygo.unsupported"
   
   private static var cache : [String:Erc721ContractInfo] = [:]
+  
+  public struct Erc721ContractInfo : Codable {
+    let name : String
+  }
   
   static private func validateAddress(_ addressStr:String) -> Promise<Erc721ContractInfo?> {
     let address = try! EthereumAddress(hex: addressStr, eip55: true)
@@ -71,6 +71,22 @@ struct MakeErc721Collection {
     }
   }
   
+  private static var collectionCache = CKObjectCache(
+    database: CKContainer.default().publicCloudDatabase,
+    entityName: "CollectionMetaData",
+    keyField: "address",
+    fallback: { (address:String,output:CollectionMetaData) in
+      return MakeErc721Collection.validateAddress(address)
+        .map {
+          guard let info = $0 else { return nil }
+          output.address = address
+          output.name = info.name
+          return output
+        }
+    },
+    keyToString: { $0 }
+  )
+  
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
     
     let addressStr = address.hex(eip55: true)
@@ -79,12 +95,8 @@ struct MakeErc721Collection {
       return Promise.value(MakeErc721Collection.ofName(name:info.name,address: address))
     }
     
-    let cache = CKJSONCache(
-      database:CKContainer.default().publicCloudDatabase,
-      bucket: "erc721Contracts",
-      fallback:MakeErc721Collection.validateAddress)
-    return cache.get(addressStr)
-      .map { (info:Erc721ContractInfo?) -> Collection? in
+    return collectionCache.get(addressStr)
+      .map { (info:CollectionMetaData?) -> Collection? in
         switch (info?.name) {
         case .none: return nil
         case .some(""): return nil

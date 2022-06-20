@@ -121,7 +121,7 @@ class FriendsFeedFetcher {
         guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
         
         // print("eventOfTx for ",transactionHash.hex())
-        return txFetcher.eventOfTx(transactionHash:transactionHash)
+        return TxFetcher.eventOfTx(transactionHash:transactionHash)
           .then { txInfo -> Promise<Int> in
             
             guard let txInfo = txInfo else { return Promise.value(processed) }
@@ -203,7 +203,7 @@ class FriendsFeedFetcher {
             guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
             // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
             // TODO Fix : Bring price from tx /WETH
-            txFetcher.eventOfTx(transactionHash: log.transactionHash)
+            TxFetcher.eventOfTx(transactionHash: log.transactionHash)
               .map { txInfo in
                 
                 guard let txInfo = txInfo else { return }

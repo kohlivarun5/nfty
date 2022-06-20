@@ -31,7 +31,7 @@ class TxFetcher {
     let blockNumber : EthereumQuantity
   }
   
-  static private func eventOfTx(transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
+  static private func eventOfTx(_ transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
     print("getTransactionByHash");
     return web3.eth.getTransactionByHash(blockHash:transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> EthereumTransactionObject? in
@@ -42,38 +42,46 @@ class TxFetcher {
       }
   }
   
-  static private func fallback(_ key:String) -> Promise<EthereumTransactionObject?> {
-    return eventOfTx(transactionHash:try! EthereumData.string(key))
-  }
+  private static var cache = CKObjectCache(
+    database: CKContainer.default().publicCloudDatabase,
+    entityName: "EthereumTransactionData",
+    keyField: "txHash",
+    fallback: { (txHash:EthereumData,output:EthereumTransactionData) in
+      return TxFetcher.eventOfTx(txHash)
+        .map {
+          guard let tx = $0 else { return nil }
+          let key = txHash.hex()
+          output.txHash = tx.hash.hex()
+          output.from = tx.from.hex(eip55: true)
+          output.to = tx.to?.hex(eip55: true)
+          output.value = tx.value.hex()
+          output.blockNumber = tx.blockNumber?.hex()
+          return output
+        }
+    },
+    keyToString: { $0.hex() }
+  )
   
-  private var jsonCache =  CKJSONCache(
-    database:CKContainer.default().publicCloudDatabase,
-    bucket: "transactions",
-    fallback: TxFetcher.fallback)
-  
-  func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
+  static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
     switch transactionHash {
     case .none:
       return Promise.value(nil)
     case .some(let txHash):
-      return jsonCache.get(txHash.hex())
-        .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> TxInfo? in
+      return cache.get(txHash)
+        .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionData?) -> TxInfo? in
           switch(txData) {
           case .none:
             return nil
           case .some(let tx):
-            switch(tx.value.quantity,tx.blockNumber) {
-            case (_,.none): return nil
-            case (let value,.some(let blockNumber)):
-              return TxInfo(from:tx.from,value:value,blockNumber: blockNumber)
-            }
+            guard let blockNumber = (tx.blockNumber.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
+            guard let value = (tx.value.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
+            guard let from = (tx.from.flatMap { try? EthereumAddress(hex: $0, eip55: true) }) else { return nil }
+            return TxInfo(from:from,value:value.quantity,blockNumber: blockNumber)
           }
         }
     }
   }
 }
-
-var txFetcher = TxFetcher()
 
 class WETHFetcher {
   
@@ -96,12 +104,10 @@ class WETHFetcher {
         case .some(let tx):
           let sum = tx.logs
             .compactMap { log in
-              print(log.address.hex(eip55:false))
               if (log.address.hex(eip55:false) != WETH_ADDRESS) {
                 return nil
               }
               
-              print(log.topics)
               if (!log.topics.contains(
                 try! EthereumData.string(
                   "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")
@@ -125,9 +131,9 @@ class WETHFetcher {
       return Promise { seal in
         DispatchQueue.global(qos:.userInteractive).async {
           switch (try? self.cache.object(forKey:txHash)) {
-            case .some(let p):
-             seal.fulfill(p)
-             case .none:
+          case .some(let p):
+            seal.fulfill(p)
+          case .none:
             let p = self.valueOfTx(transactionHash: txHash)
             p.done(on:DispatchQueue.global(qos:.userInteractive)) {
               $0.flatMap { try? self.cache.setObject($0, forKey: txHash) }

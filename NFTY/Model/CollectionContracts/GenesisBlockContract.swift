@@ -63,7 +63,7 @@ class GenesisBlockContract : ContractInterface {
                 seal.reject(NSError(domain:"", code:404, userInfo:nil))
               } else {
                 let url = URL(string:try JSONDecoder().decode(TokenUriData.self, from: data).image)!
-                print(url)
+                // print(url)
                 seal.fulfill(url)
               }
             case .none:
