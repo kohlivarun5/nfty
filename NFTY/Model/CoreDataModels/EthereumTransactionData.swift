@@ -37,13 +37,17 @@ extension EthereumTransactionData {
           guard let tx = tx else { return nil }
           
           let txHash = tx.hash.hex()
+          
+          let data = EthereumTransactionData(context: CKPublicDataManager.shared.managedContext)
+          data.set(tx)
+          
           let record = CKRecord.init(recordType: "EthereumTransactionData", recordID:CKRecord.ID.init(recordName:txHash))
           record.setValuesForKeys([
-            "txHash" : txHash,
-            "value" : tx.value.hex(),
-            "to" : (tx.to?.hex(eip55: true) : String?),
-            "from" : (tx.from.hex(eip55: true) : String?),
-            "blockNumber" : tx.blockNumber?.hex()
+            "txHash" : data.txHash,
+            "value" : data.value,
+            "to" : data.to,
+            "from" : data.from,
+            "blockNumber" : data.blockNumber
           ])
           print("Saving recordId=\(txHash)")
           CKContainer.default().publicCloudDatabase.save(record:record)
@@ -51,8 +55,7 @@ extension EthereumTransactionData {
               print("Save returned for \(txHash)")
             }
             .catch { print($0) }
-          let data = EthereumTransactionData(context: CKPublicDataManager.shared.managedContext)
-          data.set(tx)
+          
           return data
         }
     }

@@ -30,10 +30,6 @@ struct MakeErc721Collection {
     )
   }
   
-  struct Erc721ContractInfo : Codable {
-    let name : String
-  }
-  
   static private let KnownUnsupportedName = "com.nftygo.unsupported"
   
   private static var cache : [String:Erc721ContractInfo] = [:]
@@ -79,12 +75,8 @@ struct MakeErc721Collection {
       return Promise.value(MakeErc721Collection.ofName(name:info.name,address: address))
     }
     
-    let cache = CKJSONCache(
-      database:CKContainer.default().publicCloudDatabase,
-      bucket: "erc721Contracts",
-      fallback:MakeErc721Collection.validateAddress)
-    return cache.get(addressStr)
-      .map { (info:Erc721ContractInfo?) -> Collection? in
+    return CollectionMetaData.fetch(address: address,MakeErc721Collection.validateAddress)
+      .map { (info:CollectionMetaData?) -> Collection? in
         switch (info?.name) {
         case .none: return nil
         case .some(""): return nil
