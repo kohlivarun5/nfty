@@ -242,6 +242,8 @@
 		4FB9A803262B435400C58AF9 /* punks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A802262B435400C58AF9 /* punks.json */; };
 		4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A810262B508700C58AF9 /* UsdText.swift */; };
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
+		4FBB70BD28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */; };
+		4FBB70BE28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */; };
 		4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
 		4FBD029926F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */; };
 		4FBD029A26F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */; };
@@ -692,6 +694,7 @@
 		4FB9A802262B435400C58AF9 /* punks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = punks.json; sourceTree = "<group>"; };
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
+		4FBB70BC28652E0F00682845 /* ImmutableObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImmutableObjects.xcdatamodel; sourceTree = "<group>"; };
 		4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisBlockContract.swift; sourceTree = "<group>"; };
 		4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeScores.json; sourceTree = "<group>"; };
 		4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeRanks.json; sourceTree = "<group>"; };
@@ -855,6 +858,7 @@
 				4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */,
 				4F343D8728600B75009FFB6D /* CollectionMetaData.swift */,
 				4F343D8D28601E03009FFB6D /* CoreDataManager.swift */,
+				4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */,
 			);
 			path = CoreDataModels;
 			sourceTree = "<group>";
@@ -1817,6 +1821,7 @@
 				4F36013A2640CD99005D7587 /* FeedView.swift in Sources */,
 				4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
+				4FBB70BD28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
@@ -1898,6 +1903,7 @@
 			files = (
 				4FFAE7A027A333B5002129E9 /* NearApi.swift in Sources */,
 				4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */,
+				4FBB70BE28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */,
 				4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */,
 				4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
@@ -2182,7 +2188,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2211,7 +2217,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2323,7 +2329,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2354,7 +2360,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2582,6 +2588,16 @@
 			);
 			currentVersion = 4F343D7D285FE8AC009FFB6D /* CKPublicObjects.xcdatamodel */;
 			path = CKPublicObjects.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4FBB70BC28652E0F00682845 /* ImmutableObjects.xcdatamodel */,
+			);
+			currentVersion = 4FBB70BC28652E0F00682845 /* ImmutableObjects.xcdatamodel */;
+			path = ImmutableObjects.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

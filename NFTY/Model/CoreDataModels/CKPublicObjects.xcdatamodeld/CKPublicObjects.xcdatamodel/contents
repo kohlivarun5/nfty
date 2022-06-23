@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CollectionMetaData" representedClassName="CollectionMetaData" syncable="YES" codeGenerationType="class">
-        <attribute name="address" optional="YES" attributeType="String"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-    </entity>
-    <entity name="EthereumTransactionData" representedClassName="EthereumTransactionData" syncable="YES" codeGenerationType="class">
-        <attribute name="blockNumber" optional="YES" attributeType="String"/>
-        <attribute name="from" optional="YES" attributeType="String"/>
-        <attribute name="to" optional="YES" attributeType="String"/>
-        <attribute name="txHash" optional="YES" attributeType="String"/>
-        <attribute name="value" optional="YES" attributeType="String"/>
-    </entity>
-    <elements>
-        <element name="EthereumTransactionData" positionX="-54" positionY="-9" width="128" height="104"/>
-        <element name="CollectionMetaData" positionX="-36" positionY="45" width="128" height="59"/>
-    </elements>
+    <elements/>
 </model>

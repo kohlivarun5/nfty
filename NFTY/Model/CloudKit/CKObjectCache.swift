@@ -70,6 +70,9 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
   
   func get(_ key:Key) -> Promise<Output?> {
     let keyStr = self.keyToString(key)
+    
+    
+    print("Fetching from coreData \(entityName):\(keyStr)")
     let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
     request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
     let results = try? CoreDataManager.shared.managedContext.fetch(request)
@@ -79,6 +82,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
       return Promise.value(data)
     }
     
+    print("Failed to find in coredata \(entityName):\(keyStr)")
     return database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:keyStr))
       .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
         let (record,error) = result
