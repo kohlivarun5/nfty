@@ -63,6 +63,7 @@ class TxFetcher {
   )
   
   static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
+    print("Getting eventOfTx for \(transactionHash?.hex())")
     switch transactionHash {
     case .none:
       return Promise.value(nil)
