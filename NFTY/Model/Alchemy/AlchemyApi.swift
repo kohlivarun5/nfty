@@ -94,10 +94,11 @@ struct AlchemyApi {
         let floorPrice : Double?
         let priceCurrency : String?
       }
-      let floorPrices : [FloorPrice]
+      
+      typealias FloorPrices = [String:FloorPrice]
     }
     
-    static func get(contractAddress:String) -> Promise<Result> {
+    static func get(contractAddress:String) -> Promise<Result.FloorPrices> {
       
       // curl 'https://eth-mainnet.g.alchemy.com/nft/v2/demo/getFloorPrice?contractAddress=0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'
       
@@ -127,7 +128,7 @@ struct AlchemyApi {
           case .none:
             GetFloor.get(contractAddress: contractAddress)
               .map(on:.global(qos: .userInteractive)) {
-                $0.floorPrices.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
+                $0.values.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
                   .filter { $0.floorPrice != .none }
                   .first
                   .map {
