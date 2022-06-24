@@ -228,10 +228,12 @@ class CompositeRecentTradesObject : ObservableObject {
         }
       }
     case .none:
-      DispatchQueue.main.async {
-        self.loadMoreState = .notLoading
+      self.onDone{
+        DispatchQueue.main.async {
+          self.loadMoreState = .notLoading
+        }
+        onDone()
       }
-      self.onDone(onDone)
     }
   }
   
@@ -278,10 +280,12 @@ class CompositeRecentTradesObject : ObservableObject {
         }
       }
     case .none:
-      DispatchQueue.main.async {
-        self.loadRecentState = .notLoading
+      self.onDone {
+        DispatchQueue.main.async {
+          self.loadRecentState = .notLoading
+        }
+        onDone()
       }
-      self.onDone(onDone)
     }
   }
   
