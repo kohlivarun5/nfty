@@ -162,7 +162,7 @@ struct NFTYApp: App {
         
         NavigationView {
           FeedView(trades:CompositeCollection)
-            .navigationBarTitle("Recent")
+            .navigationBarTitle("Recent",displayMode: .inline)
         }
         .tabItem {
           Label("Recent",systemImage:"sparkles.rectangle.stack.fill")

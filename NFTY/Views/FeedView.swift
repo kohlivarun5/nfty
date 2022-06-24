@@ -60,7 +60,7 @@ struct FeedView: View {
   }
   @State private var refreshButton : RefreshButton = .hidden
   @State private var action: String? = ""
-  @State private var isLoading = true
+  @State private var isInitialized = false
   
   init(trades:CompositeRecentTradesObject) {
     self.trades = trades;
@@ -79,56 +79,83 @@ struct FeedView: View {
   var body: some View {
     
     VStack {
-      switch(isLoading) {
-      case true:
-        ScrollView {
-          LazyVStack {
-            let sampleInfos = [
-              CompositeCollection.loaders[0].collection.info,
-              CompositeCollection.loaders[3].collection.info,
-              CompositeCollection.loaders[4].collection.info,
-              CompositeCollection.loaders[5].collection.info,
-            ]
-            
-            ForEach(sampleInfos.indices,id:\.self) { index in
-              let info = sampleInfos[index]
-              ZStack {
-                
-                VStack {
-                  ZStack {
+      switch(isInitialized,self.trades.loadMoreState,self.trades.loadRecentState) {
+      case (false,_,_),(true,.uninitialized,.uninitialized):
+        VStack {
+          switch (self.trades.loadMoreState) {
+          case .uninitialized,.notLoading:
+            EmptyView()
+          case .loading(let progress):
+            ProgressView(value: Double(progress.current), total:Double(progress.total))
+              .animation(.linear, value: self.trades.loadRecentState)
+          }
+          
+          ScrollView {
+            LazyVStack {
+              let sampleInfos = [
+                CompositeCollection.loaders[0].collection.info,
+                CompositeCollection.loaders[3].collection.info,
+                CompositeCollection.loaders[4].collection.info,
+                CompositeCollection.loaders[5].collection.info,
+              ]
+              
+              ForEach(sampleInfos.indices,id:\.self) { index in
+                let info = sampleInfos[index]
+                ZStack {
+                  
+                  VStack {
+                    ZStack {
+                      
+                      Image(info.sample)
+                        .interpolation(.none)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                        .background(info.themeColor)
+                        .blur(radius:20)
+                      ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: info.themeColor))
+                        .scaleEffect(2.0, anchor: .center)
+                      
+                    }
                     
-                    Image(info.sample)
-                      .interpolation(.none)
-                      .resizable()
-                      .aspectRatio(contentMode: .fit)
-                      .padding()
-                      .background(info.themeColor)
-                      .blur(radius:20)
-                    ProgressView()
-                      .progressViewStyle(CircularProgressViewStyle(tint: info.themeColor))
-                      .scaleEffect(2.0, anchor: .center)
-                    
+                    HStack {
+                      Spacer()
+                    }
+                    .font(.subheadline)
+                    .padding()
                   }
                   
-                  HStack {
-                    Spacer()
-                  }
-                  .font(.subheadline)
-                  .padding()
+                  .border(Color.secondary)
+                  .frame(width:250)
+                  .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                  .overlay(
+                    RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
                 }
-                
-                .border(Color.secondary)
-                .frame(width:250)
-                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-                .overlay(
-                  RoundedRectangle(cornerRadius:20, style: .continuous).stroke(Color.secondary, lineWidth: 2))
+                .padding()
               }
-              .padding()
+            }
+            .onAppear {
+              self.trades.getRecentTrades(currentIndex: 0) {
+                DispatchQueue.main.async {
+                  self.isInitialized = true
+                  self.refreshButton = .loaded
+                  // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+                }
+              }
             }
           }
+          
         }
-      case false:
+      case (true,let loadMoreState,let loadRecentState):
         GeometryReader { metrics in
+          switch (loadRecentState) {
+          case .uninitialized,.notLoading:
+            EmptyView()
+          case .loading(let progress):
+            ProgressView(value: Double(progress.current), total:Double(progress.total))
+              .animation(.linear, value: self.trades.loadRecentState)
+          }
           ScrollView {
             PullToRefresh(coordinateSpaceName: "RefreshControl") {
               self.triggerRefresh()
@@ -150,12 +177,12 @@ struct FeedView: View {
                     width: .normal,
                     resolution: .normal
                   )
-                    .shadow(color:.accentColor,radius:0)
-                    .padding()
-                    .onTapGesture {
-                      //perform some tasks if needed before opening Destination view
-                      self.action = "\(item.nft.nftWithPrice.nft.address):\(item.nft.nftWithPrice.nft.tokenId)"
-                    }
+                  .shadow(color:.accentColor,radius:0)
+                  .padding()
+                  .onTapGesture {
+                    //perform some tasks if needed before opening Destination view
+                    self.action = "\(item.nft.nftWithPrice.nft.address):\(item.nft.nftWithPrice.nft.tokenId)"
+                  }
                   
                   NavigationLink(destination: NftDetail(
                     nft:item.nft.nftWithPrice.nft,
@@ -163,7 +190,7 @@ struct FeedView: View {
                     collection:item.collection,
                     hideOwnerLink:false,selectedProperties:[]
                   ),tag:"\(item.nft.nftWithPrice.nft.address):\(item.nft.nftWithPrice.nft.tokenId)",selection:$action) {}
-                  .hidden()
+                    .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {
                     self.trades.getRecentTrades(currentIndex:index) {}
@@ -173,6 +200,13 @@ struct FeedView: View {
               .textCase(nil)
             }
           }.coordinateSpace(name: "RefreshControl")
+          switch (loadMoreState) {
+          case .uninitialized,.notLoading:
+            EmptyView()
+          case .loading(let progress):
+            ProgressView(value: Double(progress.current), total:Double(progress.total))
+              .animation(.linear, value: self.trades.loadMoreState)
+          }
         }
       }
     }
@@ -198,17 +232,6 @@ struct FeedView: View {
           }
         }
     )
-    .onAppear {
-      if (self.isLoading) {
-        self.trades.getRecentTrades(currentIndex: 0) {
-          DispatchQueue.main.async {
-            self.isLoading = false
-            self.refreshButton = .loaded
-            // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
-          }
-        }
-      }
-    }
     
   }
 }
