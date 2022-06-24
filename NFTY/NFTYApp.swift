@@ -139,7 +139,6 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
 struct NFTYApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
-  
   @ObservedObject var appDelegateState = AppDelegateState.shared
   
   @StateObject var userWallet = UserWallet()
