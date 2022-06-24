@@ -23,7 +23,7 @@ struct FriendsView: View {
       self.addresses = self.friends.compactMap { (key: String, value: String) in
         try? EthereumAddress(hex: key, eip55: true)
       }
-      self.feedModel = FriendsFeedViewModel(from: self.addresses)
+      self.feedModel = FriendsFeedViewModel(from: self.addresses,limit:2)
       self.isLoading = false
     }
   }
@@ -38,7 +38,7 @@ struct FriendsView: View {
   @State private var feedModel : FriendsFeedViewModel
   
   init() {
-    self.feedModel = FriendsFeedViewModel(from: [])
+    self.feedModel = FriendsFeedViewModel(from: [],limit:2)
   }
   
   private func title(_ page:Page) -> String {
