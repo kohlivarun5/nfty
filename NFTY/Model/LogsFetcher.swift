@@ -253,7 +253,14 @@ class LogsFetcher {
             .catch { print($0) }
         } else {
           print("Got logs without results\(result)")
-          onDone(retries <= 0).catch { print($0) }
+          onDone(retries <= 0).map { processed in
+            // print("Done with ",processed,limit,retries)
+            if (processed < limit && retries > 0) {
+              onRetry()
+              self.fetchWithPromise(onDone:onDone,onRetry:onRetry,limit:limit,retries:retries-1,response);
+            }
+          }
+          .catch { print($0) }
         }
         
       }
