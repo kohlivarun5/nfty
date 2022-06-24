@@ -32,7 +32,7 @@ class TxFetcher {
   }
   
   static private func eventOfTx(_ transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
-    print("getTransactionByHash");
+    print("getTransactionByHash \(transactionHash.hex())");
     return web3.eth.getTransactionByHash(blockHash:transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> EthereumTransactionObject? in
         switch(txData?.blockNumber) {
@@ -63,7 +63,7 @@ class TxFetcher {
   )
   
   static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
-    print("Getting eventOfTx for \(transactionHash?.hex())")
+    // print("Getting eventOfTx for \(transactionHash?.hex() ?? "")")
     switch transactionHash {
     case .none:
       return Promise.value(nil)

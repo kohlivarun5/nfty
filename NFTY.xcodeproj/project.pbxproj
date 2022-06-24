@@ -695,6 +695,7 @@
 		4FB9A810262B508700C58AF9 /* UsdText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsdText.swift; sourceTree = "<group>"; };
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
 		4FBB70BC28652E0F00682845 /* ImmutableObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImmutableObjects.xcdatamodel; sourceTree = "<group>"; };
+		4FBB70BF286534AD00682845 /* FriendsFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFetcher.swift; sourceTree = "<group>"; };
 		4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisBlockContract.swift; sourceTree = "<group>"; };
 		4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeScores.json; sourceTree = "<group>"; };
 		4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeRanks.json; sourceTree = "<group>"; };
@@ -911,6 +912,7 @@
 				4FAA1E1D26B7628700102174 /* UserWalletModel.swift */,
 				4F3582A52783A4A700D119F8 /* VaultTokensList.swift */,
 				4F99B5202852F2CA0012A3FF /* CKOwnerTokensFetcher.swift */,
+				4FBB70BF286534AD00682845 /* FriendsFetcher.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2188,7 +2190,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2217,7 +2219,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2329,7 +2331,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2360,7 +2362,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
