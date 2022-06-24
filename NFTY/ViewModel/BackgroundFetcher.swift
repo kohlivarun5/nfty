@@ -328,21 +328,98 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
     }
 }
 
+func loadFeed() -> Promise<Bool> {
+  
+  let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String] ?? [:]
+  
+  let friends = friendDict.keys.compactMap { try? EthereumAddress(hex: $0, eip55: true) }
+  print("Loading feed for \(friends.map { $0.hex(eip55:true) })")
+  let feed = FriendsFeedViewModel(from: friends)
+  
+  return Promise { seal in
+    feed.getRecentEvents(currentIndex: nil, {
+      reduce_p(feed.recentEvents,(),{ (accu,event) in
+        return Promise { seal in
+          
+          switch(event.nft.nftWithPrice.nft.media) {
+          case .ipfsImage(let image):
+            image.image.loadMore { seal.fulfill(()) }
+          case .image(let image):
+            image.url.loadMore { seal.fulfill(()) }
+          case .asciiPunk,.autoglyph:
+            seal.fulfill(())
+          }
+        }
+      })
+      .done { seal.fulfill(true) }
+      .catch {
+        print($0)
+        seal.fulfill(false)
+      }
+    })
+  }
+}
+
+func loadRecentsFeed() -> Promise<Bool> {
+  
+  return Promise { seal in
+    CompositeCollection.loadLatest {
+      reduce_p(CompositeCollection.recentTrades,(),{ (accu,event) in
+        return Promise { seal in
+          switch(event.nft.nftWithPrice.nft.media) {
+          case .ipfsImage(let image):
+            image.image.loadMore { seal.fulfill(()) }
+          case .image(let image):
+            image.url.loadMore { seal.fulfill(()) }
+          case .asciiPunk,.autoglyph:
+            seal.fulfill(())
+          }
+        }
+      })
+      .done { seal.fulfill(true) }
+      .catch {
+        print($0)
+        seal.fulfill(false)
+      }
+    }
+  }
+}
 
 func performBackgroundFetch() -> Promise<Bool> {
   // Dispatch to multiple fetchers
   
-  UserEthRate.getLiveRate().then { spot in
-    fetchOffers(spot)
-      .recover { error -> Promise<Bool> in
-        print("FetchOffers Failed with:\(error)")
-        return Promise.value(false)
-      }
-      .then { foundOffers in
-        fetchFavoriteSales(spot)
-          .map { foundFavs in
-            return foundOffers || foundFavs
+  return loadFeed()
+    .recover { error -> Promise<Bool> in
+      print("LoadFeed Failed with:\(error)")
+      return Promise.value(false)
+    }
+    .then { loadedFeed -> Promise<Bool> in
+      loadRecentsFeed()
+        .recover { error -> Promise<Bool> in
+          print("LoadRecents Failed with:\(error)")
+          return Promise.value(false)
+        }
+        .map { loadedRecents -> Bool in
+          return loadedFeed || loadedRecents
+        }
+    }.then { loadedFeed -> Promise<Bool> in
+      
+      return UserEthRate.getLiveRate().then { spot in
+        fetchOffers(spot)
+          .recover { error -> Promise<Bool> in
+            print("FetchOffers Failed with:\(error)")
+            return Promise.value(false)
+          }
+          .then { foundOffers in
+            fetchFavoriteSales(spot)
+              .recover { error -> Promise<Bool> in
+                print("FetchFavorites Failed with:\(error)")
+                return Promise.value(false)
+              }
+              .map { foundFavs in
+                return loadedFeed || foundOffers || foundFavs
+              }
           }
       }
-  }
+    }
 }
