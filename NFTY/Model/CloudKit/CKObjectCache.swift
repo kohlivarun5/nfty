@@ -81,6 +81,7 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
       return Promise.value(data)
     }
     
+    print("Failed to find in coredata \(entityName):\(keyStr)")
     return database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:keyStr))
       .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
         let (record,error) = result
