@@ -334,7 +334,7 @@ func loadFeed() -> Promise<Bool> {
   
   let friends = friendDict.keys.compactMap { try? EthereumAddress(hex: $0, eip55: true) }
   print("Loading feed for \(friends.map { $0.hex(eip55:true) })")
-  let feed = FriendsFeedViewModel(from: friends)
+  let feed = FriendsFeedViewModel(from: friends,limit:20)
   
   return Promise { seal in
     feed.getRecentEvents(currentIndex: nil, {

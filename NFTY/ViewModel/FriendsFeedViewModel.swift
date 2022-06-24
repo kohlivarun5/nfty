@@ -21,15 +21,15 @@ class FriendsFeedViewModel : ObservableObject {
   
   private var fetcher : Promise<FriendsFeedFetcher>
   
-  init(from:[EthereumAddress]) {
+  init(from:[EthereumAddress],limit:Int) {
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      FriendsFeedFetcher(from: from,fromBlock:fromBlock.quantity )
+      FriendsFeedFetcher(from: from,fromBlock:fromBlock.quantity, limit:limit)
     }
   }
   
-  init(from:EthereumAddress) {
+  init(from:EthereumAddress,limit:Int) {
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
-      FriendsFeedFetcher(from: [from],fromBlock:fromBlock.quantity )
+      FriendsFeedFetcher(from: [from],fromBlock:fromBlock.quantity,limit:limit )
     }
   }
   

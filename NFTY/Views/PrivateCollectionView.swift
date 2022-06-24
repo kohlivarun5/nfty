@@ -58,7 +58,7 @@ struct PrivateCollectionView: View {
           }
         case .sales:
           account.ethAddress.map {
-            FriendsFeedView(events:FriendsFeedViewModel(from:$0))
+            FriendsFeedView(events:FriendsFeedViewModel(from:$0,limit:2))
           }
         case .owned:
           WalletTokensView(tokens: getOwnerTokens(account))
