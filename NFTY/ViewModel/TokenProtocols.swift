@@ -44,11 +44,11 @@ class NftRecentTradesObject : ObservableObject {
         self.isLoading = false;
         callback();
       }) { nft in
-      DispatchQueue.main.async {
-        self.recentTrades.append(nft)
-        self.parentOnTrade(nft)
+        DispatchQueue.main.async {
+          self.recentTrades.append(nft)
+          self.parentOnTrade(nft)
+        }
       }
-    }
   }
   
   func getRecentTrades(currentIndex:Int?,_ callback : @escaping () -> Void) {
@@ -74,11 +74,11 @@ class NftRecentTradesObject : ObservableObject {
         self.isLoadingLatest = false;
         callback();
       }) { nft in
-      DispatchQueue.main.async {
-        self.recentTrades.insert(nft,at:0)
-        self.parentOnLatest(nft)
+        DispatchQueue.main.async {
+          self.recentTrades.insert(nft,at:0)
+          self.parentOnLatest(nft)
+        }
       }
-    }
   }
   
 }
@@ -92,8 +92,11 @@ class CompositeRecentTradesObject : ObservableObject {
   
   @Published var recentTrades: [NFTItem] = []
   
+  @Published var loadMoreState : LoadingState = .uninitialized
+  @Published var loadRecentState : LoadingState = .uninitialized
+  
   private var loadedItems: [NFTItem] = []
-    
+  
   var recentTradesPublished: Published<[NFTItem]> { _recentTrades }
   var recentTradesPublisher: Published<[NFTItem]>.Publisher { $recentTrades }
   
@@ -151,7 +154,7 @@ class CompositeRecentTradesObject : ObservableObject {
         return false;
       }
     }
-     
+    
     self.preload(list:sorted,index: 0, onDone: {
       self.preload(list:sorted,index: 1, onDone: {
         DispatchQueue.main.async {
@@ -167,7 +170,7 @@ class CompositeRecentTradesObject : ObservableObject {
   init(_ collections:[Collection]) {
     self.collections = collections
   }
- 
+  
   lazy var loaders : [CollectionLoader] = {
     return collections.map { [weak self] collection in
       return CollectionLoader(
@@ -212,6 +215,9 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
+    DispatchQueue.main.async {
+      self.loadMoreState = .loading(LoadingProgress(current:index,total:self.loaders.count))
+    }
     switch(self.loaders[safe:index]) {
     case .some(let loader):
       if (loader.collection.info.disableRecentTrades) {
@@ -222,12 +228,24 @@ class CompositeRecentTradesObject : ObservableObject {
         }
       }
     case .none:
+      DispatchQueue.main.async {
+        self.loadMoreState = .notLoading
+      }
       self.onDone(onDone)
     }
   }
   
   func loadMore(_ onDone : @escaping () -> Void) {
-    loadMoreIndex(index: 0,onDone: onDone)
+    DispatchQueue.main.async {
+      switch(self.loadMoreState) {
+      case .loading:
+        return
+      case .uninitialized,.notLoading:
+        self.loadMoreState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+      }
+      
+      self.loadMoreIndex(index: 0,onDone: onDone)
+    }
   }
   
   func getRecentTrades(currentIndex:Int?,_ onDone : @escaping () -> Void) {
@@ -247,7 +265,9 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func loadLatestIndex(index:Int,onDone : @escaping () -> Void) {
-    
+    DispatchQueue.main.async {
+      self.loadRecentState = .loading(LoadingProgress(current:index,total:self.loaders.count))
+    }
     switch(self.loaders[safe:index]) {
     case .some(let loader):
       if (loader.collection.info.disableRecentTrades) {
@@ -258,12 +278,23 @@ class CompositeRecentTradesObject : ObservableObject {
         }
       }
     case .none:
+      DispatchQueue.main.async {
+        self.loadRecentState = .notLoading
+      }
       self.onDone(onDone)
     }
   }
   
   func loadLatest(_ onDone : @escaping () -> Void) {
-    loadLatestIndex(index:0,onDone: onDone)
+    DispatchQueue.main.async {
+      switch(self.loadRecentState) {
+      case .loading:
+        return onDone()
+      case .uninitialized,.notLoading:
+        self.loadRecentState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+      }
+      self.loadLatestIndex(index:0,onDone: onDone)
+    }
   }
   
 }
@@ -290,13 +321,13 @@ class NftRecentEventsObject : ObservableObject {
         // print(self.events.count)
         callback();
       }) { event in
-      DispatchQueue.main.async {
-        self.events.append(event)
-        self.events.sort { left, right in
-          return left.blockNumber > right.blockNumber
+        DispatchQueue.main.async {
+          self.events.append(event)
+          self.events.sort { left, right in
+            return left.blockNumber > right.blockNumber
+          }
         }
       }
-    }
   }
   
   func getEvents(currentIndex:Int?) {
