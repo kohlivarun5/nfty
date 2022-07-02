@@ -92,8 +92,8 @@ struct CKImageCacheCore {
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
-              let (record,error) = result
-              print("Fetch returned with error=\(String(describing: error))")
+              let (record,_) = result
+              // print("Fetch returned with error=\(String(describing: error))")
               
               switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
               case .none:

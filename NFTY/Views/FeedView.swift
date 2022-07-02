@@ -8,44 +8,6 @@
 import SwiftUI
 import BigInt
 
-// https://prafullkumar77.medium.com/how-to-making-pure-swiftui-pull-to-refresh-b497d3639ee5
-// https://stackoverflow.com/a/65100922
-struct PullToRefresh: View {
-  
-  var coordinateSpaceName: String
-  var onRefresh: ()->Void
-  
-  @State var needRefresh: Bool = false
-  
-  var body: some View {
-    GeometryReader { geo in
-      if (geo.frame(in: .named(coordinateSpaceName)).midY > 50) {
-        Spacer()
-          .onAppear {
-            needRefresh = true
-          }
-      } else if (geo.frame(in: .named(coordinateSpaceName)).maxY < 10) {
-        Spacer()
-          .onAppear {
-            if needRefresh {
-              needRefresh = false
-              onRefresh()
-            }
-          }
-      }
-      HStack {
-        Spacer()
-        if needRefresh {
-          ProgressView()
-            .scaleEffect(1.5, anchor: .center)
-        } else {
-          EmptyView()
-        }
-        Spacer()
-      }
-    }.padding(.top, -50)
-  }
-}
 
 struct FeedView: View {
   
@@ -157,11 +119,6 @@ struct FeedView: View {
               .animation(.linear, value: self.trades.loadRecentState)
           }
           ScrollView {
-            PullToRefresh(coordinateSpaceName: "RefreshControl") {
-              self.triggerRefresh()
-              let impactMed = UIImpactFeedbackGenerator(style: .light)
-              impactMed.impactOccurred()
-            }
             LazyVGrid(
               columns: Array(
                 repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
@@ -199,7 +156,12 @@ struct FeedView: View {
               }
               .textCase(nil)
             }
-          }.coordinateSpace(name: "RefreshControl")
+            .refreshable {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
+          }
           switch (loadMoreState) {
           case .uninitialized,.notLoading:
             EmptyView()

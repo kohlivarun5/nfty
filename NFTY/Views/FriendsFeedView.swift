@@ -92,11 +92,6 @@ struct FriendsFeedView: View {
         
         GeometryReader { metrics in
           ScrollView {
-            PullToRefresh(coordinateSpaceName: "RefreshControl") {
-              self.triggerRefresh()
-              let impactMed = UIImpactFeedbackGenerator(style: .light)
-              impactMed.impactOccurred()
-            }
             LazyVGrid(
               columns: Array(
                 repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
@@ -136,7 +131,12 @@ struct FriendsFeedView: View {
               }
               .textCase(nil)
             }
-          }.coordinateSpace(name: "RefreshControl")
+            .refreshable {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
+          }
         }
         .navigationBarItems(
           trailing:
