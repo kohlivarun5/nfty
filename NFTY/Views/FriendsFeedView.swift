@@ -43,12 +43,10 @@ struct FriendsFeedView: View {
           .scaleEffect(2.0, anchor: .center)
           .onAppear {
             self.events.getRecentEvents(currentIndex: 0) {
-              DispatchQueue.main.async {
-                print("Done isinitialized")
-                self.refreshButton = .loaded
-                self.isInitialized = true
-                // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
-              }
+              print("Done isinitialized")
+              self.refreshButton = .loaded
+              self.isInitialized = true
+              // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
             }
           }
         Spacer()
@@ -69,7 +67,7 @@ struct FriendsFeedView: View {
         ProgressView(value: Double(progress.current), total:Double(progress.total))
           .animation(.linear, value: self.events.loadRecentState)
       }
-        
+      
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
@@ -99,7 +97,7 @@ struct FriendsFeedView: View {
               pinnedViews: [.sectionHeaders])
             {
               ForEachWithIndex(self.events.recentEvents,id:\.self.nft.id) { index,item in
-              ZStack {
+                ZStack {
                   
                   RoundedImage(
                     nft:item.nft.nftWithPrice.nft,
@@ -124,9 +122,7 @@ struct FriendsFeedView: View {
                   ),tag:item.nft.nftWithPrice.id,selection:$action) {}
                     .hidden()
                 }.onAppear {
-                  DispatchQueue.global(qos:.userInitiated).async {
-                    self.events.getRecentEvents(currentIndex:index) {}
-                  }
+                  self.events.getRecentEvents(currentIndex:index) {}
                 }
               }
               .textCase(nil)

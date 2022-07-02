@@ -337,7 +337,7 @@ func loadFeed() -> Promise<Bool> {
   let feed = FriendsFeedViewModel(from: friends,limit:20)
   
   return Promise { seal in
-    feed.getRecentEvents(currentIndex: nil, {
+    feed.getRecentEvents(currentIndex: 0, {
       reduce_p(feed.recentEvents,(),{ (accu,event) in
         return Promise { seal in
           
