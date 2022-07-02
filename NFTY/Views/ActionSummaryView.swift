@@ -30,14 +30,7 @@ struct ActionSummaryView: View {
   }
   
   private func labelOfAction(action:Action.ActionType) -> String {
-    switch(action) {
-    case .sold:
-      return "sold"
-    case .bought:
-      return "bought"
-    case .minted:
-      return "minted"
-    }
+    return action.rawValue
   }
   
   var body: some View {
