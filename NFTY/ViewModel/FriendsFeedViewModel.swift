@@ -52,6 +52,7 @@ class FriendsFeedViewModel : ObservableObject {
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
+    print("loadMore")
     self.fetcher
       .done { fetcher in
         print("Loading friend events")
