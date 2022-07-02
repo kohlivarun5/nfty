@@ -79,14 +79,10 @@ class FriendsFeedViewModel : ObservableObject {
       .catch { print($0) }
   }
   
-  func getRecentEvents(currentIndex:Int?,_ callback : @escaping () -> Void) {
-    guard let index = currentIndex else {
-      DispatchQueue.main.async { self.loadMore(callback) }
-      return
-    }
+  func getRecentEvents(currentIndex:Int,_ callback : @escaping () -> Void) {
     let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -2)
     // print("getRecentEvents",thresholdIndex,index)
-    if index >= thresholdIndex {
+    if currentIndex >= thresholdIndex {
       DispatchQueue.main.async { self.loadMore(callback) }
     } else {
       callback()

@@ -99,7 +99,7 @@ class FriendsFeedFetcher {
     print("getRecentEvents")
     self.logsFetcher.fetchWithPromise(onDone: { (isFinal:Bool) in
       return processed.map { processed in
-        if (isFinal || processed != 0) {
+        if (isFinal || processed >= self.limit) {
           // print("done")
           onDone()
         }

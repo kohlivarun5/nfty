@@ -104,7 +104,6 @@
 		4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A37276378B30020C5FA /* CryptoPunksOnChain.swift */; };
 		4F4F9A3C276388EB0020C5FA /* CryptoPunks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */; };
 		4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */; };
-		4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4C276641D80020C5FA /* ZunksContract.swift */; };
 		4F51EA2228348D71008C610F /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F51EA2128348D71008C610F /* ProfileViewHeader.swift */; };
 		4F529BB327B0551200EFE626 /* OpenSeaGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */; };
 		4F529BB527B0590900EFE626 /* TokensListPaged.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB427B0590900EFE626 /* TokensListPaged.swift */; };
@@ -244,7 +243,6 @@
 		4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */; };
 		4FBB70BD28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */; };
 		4FBB70BE28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */; };
-		4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
 		4FBD029926F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */; };
 		4FBD029A26F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */; };
 		4FBD449126B4B56F0045DCD5 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
@@ -293,9 +291,7 @@
 		4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB82F26A4890300AD5165 /* FameLadySquad.swift */; };
 		4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
 		4FDEAB9D278E53F500F92160 /* AsciiPunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */; };
-		4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */; };
 		4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */; };
-		4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F9A4C276641D80020C5FA /* ZunksContract.swift */; };
 		4FDEABA1278E540100F92160 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
 		4FDEABA2278E540500F92160 /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4FDEABA3278E540800F92160 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
@@ -578,7 +574,6 @@
 		4F4F9A37276378B30020C5FA /* CryptoPunksOnChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPunksOnChain.swift; sourceTree = "<group>"; };
 		4F4F9A3B276388EB0020C5FA /* CryptoPunks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_attributeScores.json; sourceTree = "<group>"; };
 		4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhunksContract.swift; sourceTree = "<group>"; };
-		4F4F9A4C276641D80020C5FA /* ZunksContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZunksContract.swift; sourceTree = "<group>"; };
 		4F51EA2128348D71008C610F /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaGQL.swift; sourceTree = "<group>"; };
 		4F529BB427B0590900EFE626 /* TokensListPaged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensListPaged.swift; sourceTree = "<group>"; };
@@ -696,7 +691,6 @@
 		4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftDetail.swift; sourceTree = "<group>"; };
 		4FBB70BC28652E0F00682845 /* ImmutableObjects.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImmutableObjects.xcdatamodel; sourceTree = "<group>"; };
 		4FBB70BF286534AD00682845 /* FriendsFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFetcher.swift; sourceTree = "<group>"; };
-		4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenesisBlockContract.swift; sourceTree = "<group>"; };
 		4FBD029726F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeScores.json; sourceTree = "<group>"; };
 		4FBD029826F7AAF400BF58F0 /* GenesisBlocks_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenesisBlocks_attributeRanks.json; sourceTree = "<group>"; };
 		4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaApi.swift; sourceTree = "<group>"; };
@@ -844,9 +838,7 @@
 				4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */,
 				4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */,
 				4FCB495F26D179A500696F91 /* AsciiPunksContract.swift */,
-				4FBD029526F6860F00BF58F0 /* GenesisBlockContract.swift */,
 				4F4F9A4A2763D9FE0020C5FA /* PhunksContract.swift */,
-				4F4F9A4C276641D80020C5FA /* ZunksContract.swift */,
 			);
 			path = CollectionContracts;
 			sourceTree = "<group>";
@@ -1794,12 +1786,10 @@
 				4F0606D5270BE34300C4CDC9 /* BackgroundFetcher.swift in Sources */,
 				4F8E16FF27B079B300E54BB5 /* NFTNameIdRank.swift in Sources */,
 				4F3FE32A27E975B00036E46C /* ERC165Contract.swift in Sources */,
-				4F4F9A4D276641D80020C5FA /* ZunksContract.swift in Sources */,
 				4F529BB727B0594600EFE626 /* PagedTokensFetcher.swift in Sources */,
 				4FED1E4526D5F3DC006274CE /* Web3Utils.swift in Sources */,
 				4FB7E9DE28502CCF001CB086 /* CloudKitExtensions.swift in Sources */,
 				4F529BBD27B0648E00EFE626 /* OpenSeaApiCore.swift in Sources */,
-				4FBD029626F6860F00BF58F0 /* GenesisBlockContract.swift in Sources */,
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
 				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
 				4F99B5212852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
@@ -1947,7 +1937,6 @@
 				4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
 				4F343D8F28601E03009FFB6D /* CoreDataManager.swift in Sources */,
-				4FDEABA0278E53FE00F92160 /* ZunksContract.swift in Sources */,
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
@@ -1958,7 +1947,6 @@
 				4FDEAB9C278E53F200F92160 /* UrlCollectionContract.swift in Sources */,
 				4FB7E9DF28502CCF001CB086 /* CloudKitExtensions.swift in Sources */,
 				4F529BBA27B05D3000EFE626 /* PagedTokensFetcher.swift in Sources */,
-				4FDEAB9E278E53F800F92160 /* GenesisBlockContract.swift in Sources */,
 				4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */,
 				4FDEABA3278E540800F92160 /* ModelData.swift in Sources */,
 				4FDEABAD278E542A00F92160 /* SushiSwapPool.swift in Sources */,
@@ -2190,7 +2178,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2219,7 +2207,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2331,7 +2319,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2362,7 +2350,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NFTYWidget/Info.plist;
@@ -2490,8 +2478,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.0;
+				kind = exactVersion;
+				version = 1.6.0;
 			};
 		};
 		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {

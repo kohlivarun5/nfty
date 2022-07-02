@@ -174,7 +174,7 @@ class UserWallet: ObservableObject {
                        key: try! randomKey())
     let clientMeta = Session.ClientMeta(name: "NFTYgo",
                                         description: "NFTYgo",
-                                        icons: [],
+                                        icons: [URL(string:"https://nftygo.com/images/favicons/favicon.ico")!],
                                         url: URL(string: "www.nftygo.com")!)
     let dAppInfo = Session.DAppInfo(peerId: UUID().uuidString, peerMeta: clientMeta)
     let client = Client(delegate: self, dAppInfo: dAppInfo)

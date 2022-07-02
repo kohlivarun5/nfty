@@ -130,6 +130,7 @@ struct AlchemyApi {
               .map(on:.global(qos: .userInteractive)) {
                 $0.values.filter { $0.priceCurrency == "ETH" || $0.priceCurrency == "WETH" }
                   .filter { $0.floorPrice != .none }
+                  .sorted { $0.floorPrice! < $1.floorPrice! }
                   .first
                   .map {
                     try? indicativeFloorCache.setObject($0.floorPrice!,forKey: contractAddress)

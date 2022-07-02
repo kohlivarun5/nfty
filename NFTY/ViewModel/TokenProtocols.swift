@@ -250,18 +250,13 @@ class CompositeRecentTradesObject : ObservableObject {
     }
   }
   
-  func getRecentTrades(currentIndex:Int?,_ onDone : @escaping () -> Void) {
-    guard let index = currentIndex else {
-      loadMore(onDone)
-      return
-    }
-    
+  func getRecentTrades(currentIndex:Int,_ onDone : @escaping () -> Void) {
     let thresholdIndex = self.recentTrades.index(self.recentTrades.endIndex, offsetBy: -5)
-    if index >= thresholdIndex {
+    if currentIndex >= thresholdIndex {
       loadMore(onDone)
     } else {
-      self.preload(list:self.recentTrades,index:index+1,onDone:{
-        self.preload(list:self.recentTrades,index:index+2,onDone:onDone)
+      self.preload(list:self.recentTrades,index:currentIndex+1,onDone:{
+        self.preload(list:self.recentTrades,index:currentIndex+2,onDone:onDone)
       })
     }
   }

@@ -102,7 +102,6 @@ struct TokenTradeView: View {
         collection:collection,
         size: .small,
         userWallet:userWallet)
-        .animation(.default)
         .padding(.bottom,isSheet ? 12 : 0)
         .background(
           RoundedCorners(

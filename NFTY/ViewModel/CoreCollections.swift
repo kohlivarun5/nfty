@@ -62,12 +62,6 @@ let DeadFellaz_Contract = IpfsCollectionContract(
   indicativePriceSource: .openSea
 )
 
-let DJs_Contract = IpfsCollectionContract(
-  name: "DJENERATES",
-  address: "0x7d05c8D8cC1baC936eA09308a9E94823986f8321",
-  indicativePriceSource: .openSea
-)
-
 let ON1_Force_Contract = IpfsCollectionContract(
   name: "0N1 Force",
   address: "0x3bf2922f4520a8BA0c2eFC3D2a1539678DaD5e9D",
@@ -92,12 +86,6 @@ let MAYC_Contract = IpfsCollectionContract(
     vault:"0x94c9cEb2F9741230FAD3a62781b27Cc79a9460d4"
   )
 )
-
-let KILLAZ_Contract = UrlCollectionContract(
-  name: "KILLAz",
-  address: "0x21850dCFe24874382B12d05c5B189F5A2ACF0E5b",
-  tokenUri: { "https://killaznft.com/api/images/\($0)"},
-  indicativePriceSource: .openSea)
 
 let ABS_Contract = IpfsCollectionContract(
   name: "AdamBombSquad",
@@ -150,14 +138,6 @@ let FRWC_Contract = IpfsCollectionContract(
 
 let PHUNKS_Contract = PhunksContract()
 
-let GBLOCKS_Contract = GenesisBlockContract(
-  name: "GenesisBlocks",
-  address: "0x26b925EEf82525f514C0414DB5cF65953d30a4CA")
-
-let ZUNKS_Contract = ZunksContract(
-  name: "CryptoZunks",
-  address: "0x031920cc2D9F5c10B444FD44009cd64F829E7be2")
-
 let PUDGY_Contract = IpfsCollectionContract(
   name: "PudgyPenguins",
   address: "0xBd3531dA5CF5857e7CfAA92426877b022e612cf8",
@@ -166,19 +146,9 @@ let PUDGY_Contract = IpfsCollectionContract(
     vault:"0xAbeA7663c472648d674bd3403D94C858dFeEF728")
 )
 
-let SSFU_Contract = IpfsCollectionContract(
-  name: "SSFU",
-  address: "0x4503e3C58377a9d2A9ec3c9eD42a8a6a241Cb4e2",
-  indicativePriceSource: .openSea)
-
 let ILLUMINATI_Contract = IpfsCollectionContract(
   name: "Illuminati",
   address: "0x26BAdF693F2b103B021c670c852262b379bBBE8A",
-  indicativePriceSource: .openSea)
-
-let CHUBBI_FRENS_Contract = IpfsCollectionContract(
-  name: "Chubbiverse Frens",
-  address: "0x42f1654B8eeB80C96471451B1106b63D0B1a9fe1",
   indicativePriceSource: .openSea)
 
 let XAPES_Contract = IpfsCollectionContract(
@@ -275,7 +245,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Ladies",
         nearestTokensFileName:"FameLadySquad_nearestTokens.json",
@@ -292,7 +262,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cryptohodlers.io/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Hodlers",
         nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
@@ -309,7 +279,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://fameladysquad.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens: nil,
       rarityRanking: nil
     ),
@@ -322,7 +292,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cyphercity.io/home")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Cyphers",
         nearestTokensFileName:"CypherCity_nearestTokens.json",
@@ -340,7 +310,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://cryptocannabisclub.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"NFTokers",
         nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json",
@@ -408,7 +378,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.cryptodadsnft.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Dads",
         nearestTokensFileName:"Dads_nearestTokens.json",
@@ -417,25 +387,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
     ),
     contract:DADS_Contract),
-  /*
-  Collection(
-    info:CollectionInfo(
-      address:GBLOCKS_Contract.contractAddressHex,
-      sample:"SAMPLE_GBLOCK",
-      name:GBLOCKS_Contract.name,
-      webLink: URL(string:"https://genesisblocks.art")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Blocks",
-        nearestTokensFileName:nil,
-        propertiesJsonFileName:"GenesisBlocks_attributeScores.json"
-      ),
-      rarityRanking : nil//RarityRankingImpl(load("Dads_rarityRanks.json"))
-    ),
-    contract:GBLOCKS_Contract),
-   */
   Collection(
     info:CollectionInfo(
       address:DeadFellaz_Contract.contractAddressHex,
@@ -461,7 +412,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://thebirdhouse.app")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Birds",
         nearestTokensFileName:"BirdHouse_nearestTokens.json",
@@ -478,7 +429,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://www.0n1force.com/")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : nil/*SimilarTokensGetter(
                           label:"Birds",
                           nearestTokensFileName:"BirdHouse_nearestTokens.json",
@@ -487,24 +438,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
     ),
     contract:ON1_Force_Contract),
-  /*
-  Collection(
-    info:CollectionInfo(
-      address:DJs_Contract.contractAddressHex,
-      sample:"SAMPLE_DJ",
-      name:DJs_Contract.name,
-      webLink: URL(string:"https://djenerates.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"DJENERATES",
-        nearestTokensFileName:"DJENERATES_nearestTokens.json",
-        propertiesJsonFileName:"DJENERATES_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("DJENERATES_rarityRanks.json"))
-    ),
-    contract:DJs_Contract),
-   */
   Collection(
     info:CollectionInfo(
       address:WABC_Contract.contractAddressHex,
@@ -513,7 +446,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://wickedapes.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Apes",
         nearestTokensFileName:"WickedApes_nearestTokens.json",
@@ -529,7 +462,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       webLink: URL(string:"https://wickedcranium.com")!,
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
-      disableRecentTrades:false,
+      disableRecentTrades:true,
       similarTokens : SimilarTokensGetter(
         label:"Craniums",
         nearestTokensFileName:"Craniums_nearestTokens.json",
@@ -537,22 +470,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
     ),
     contract:Craniums_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:KILLAZ_Contract.contractAddressHex,
-      sample:"SAMPLE_KILLAZ",
-      name:KILLAZ_Contract.name,
-      webLink: URL(string:"https://crashcitykillaz.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Killaz",
-        nearestTokensFileName:"Killaz_nearestTokens.json",
-        propertiesJsonFileName:"Killaz_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("Killaz_rarityRanks.json"))
-    ),
-    contract:KILLAZ_Contract),
   Collection(
     info:CollectionInfo(
       address:MORIES_Contract.contractAddressHex,
@@ -640,19 +557,6 @@ let CompositeCollection = CompositeRecentTradesObject([
     contract:PHUNKS_Contract),
   Collection(
     info:CollectionInfo(
-      address:ZUNKS_Contract.contractAddressHex,
-      sample:"SAMPLE_ZUNK",
-      name:ZUNKS_Contract.name,
-      webLink: URL(string:"https://www.cryptozunks.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : nil,
-      rarityRanking : nil
-    ),
-    contract:ZUNKS_Contract),
-  Collection(
-    info:CollectionInfo(
       address:PUDGY_Contract.contractAddressHex,
       sample:"SAMPLE_PUDGY",
       name:PUDGY_Contract.name,
@@ -679,19 +583,6 @@ let CompositeCollection = CompositeRecentTradesObject([
     contract:ILLUMINATI_Contract),
   Collection(
     info:CollectionInfo(
-      address:CHUBBI_FRENS_Contract.contractAddressHex,
-      sample:"SAMPLE_CHUBBI_FRENS",
-      name:CHUBBI_FRENS_Contract.name,
-      webLink: URL(string:"https://www.chubbiverse.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : nil,
-      rarityRanking : nil
-    ),
-    contract:CHUBBI_FRENS_Contract),
-  Collection(
-    info:CollectionInfo(
       address:XAPES_Contract.contractAddressHex,
       sample:"SAMPLE_XAPES",
       name:XAPES_Contract.name,
@@ -707,20 +598,6 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:XAPES_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:SSFU_Contract.contractAddressHex,
-      sample:"SAMPLE_SSFU",
-      name:SSFU_Contract.name,
-      webLink: URL(string:"https://www.spikyspacefish.com/home")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : nil,
-      rarityRanking : nil
-    ),
-    contract:SSFU_Contract),
-  
   Collection(
     info:CollectionInfo(
       address:ASAC_Contract.contractAddressHex,
