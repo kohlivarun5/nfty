@@ -43,10 +43,12 @@ struct FriendsFeedView: View {
           .scaleEffect(2.0, anchor: .center)
           .onAppear {
             self.events.getRecentEvents(currentIndex: 0) {
-              print("Done isinitialized")
-              self.refreshButton = .loaded
-              self.isInitialized = true
-              // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+              DispatchQueue.main.async {
+                print("Done isinitialized")
+                self.refreshButton = .loaded
+                self.isInitialized = true
+                // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
+              }
             }
           }
         Spacer()
@@ -67,7 +69,7 @@ struct FriendsFeedView: View {
         ProgressView(value: Double(progress.current), total:Double(progress.total))
           .animation(.linear, value: self.events.loadRecentState)
       }
-      
+        
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
@@ -90,6 +92,11 @@ struct FriendsFeedView: View {
         
         GeometryReader { metrics in
           ScrollView {
+            PullToRefresh(coordinateSpaceName: "RefreshControl") {
+              self.triggerRefresh()
+              let impactMed = UIImpactFeedbackGenerator(style: .light)
+              impactMed.impactOccurred()
+            }
             LazyVGrid(
               columns: Array(
                 repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
@@ -97,7 +104,7 @@ struct FriendsFeedView: View {
               pinnedViews: [.sectionHeaders])
             {
               ForEachWithIndex(self.events.recentEvents,id:\.self.nft.id) { index,item in
-                ZStack {
+              ZStack {
                   
                   RoundedImage(
                     nft:item.nft.nftWithPrice.nft,
@@ -122,17 +129,14 @@ struct FriendsFeedView: View {
                   ),tag:item.nft.nftWithPrice.id,selection:$action) {}
                     .hidden()
                 }.onAppear {
-                  self.events.getRecentEvents(currentIndex:index) {}
+                  DispatchQueue.global(qos:.userInitiated).async {
+                    self.events.getRecentEvents(currentIndex:index) {}
+                  }
                 }
               }
               .textCase(nil)
             }
-            .refreshable {
-              self.triggerRefresh()
-              let impactMed = UIImpactFeedbackGenerator(style: .light)
-              impactMed.impactOccurred()
-            }
-          }
+          }.coordinateSpace(name: "RefreshControl")
         }
         .navigationBarItems(
           trailing:

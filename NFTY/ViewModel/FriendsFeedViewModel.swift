@@ -52,7 +52,6 @@ class FriendsFeedViewModel : ObservableObject {
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
-    print("loadMore")
     self.fetcher
       .done { fetcher in
         print("Loading friend events")
@@ -67,17 +66,13 @@ class FriendsFeedViewModel : ObservableObject {
           },{
             initialCount = initialCount+1
             DispatchQueue.main.async {
-              if (self.loadMoreState != .notLoading) {
-                self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
-              }
+              self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
             }
           }) { (progress,nft) in
             initialCount = initialCount+1
             newItems.append(nft)
             DispatchQueue.main.async {
-              if (self.loadMoreState != .notLoading) {
-                self.loadMoreState = .loading(progress)
-              }
+              self.loadMoreState = .loading(progress)
             }
           }
       }
@@ -88,7 +83,7 @@ class FriendsFeedViewModel : ObservableObject {
     let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -2)
     // print("getRecentEvents",thresholdIndex,index)
     if currentIndex >= thresholdIndex {
-      self.loadMore(callback)
+      DispatchQueue.main.async { self.loadMore(callback) }
     } else {
       callback()
     }
@@ -103,7 +98,9 @@ class FriendsFeedViewModel : ObservableObject {
     case .loading:
       return callback()
     case .uninitialized,.notLoading:
-      self.loadRecentState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
+      DispatchQueue.main.async {
+        self.loadRecentState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
+      }
     }
     
     var newItems : [FriendsFeedFetcher.NFTItem] = []
@@ -118,11 +115,9 @@ class FriendsFeedViewModel : ObservableObject {
             }
           }) { (progress,nft) in
             initialCount = initialCount+1
-            newItems.append(nft)
             DispatchQueue.main.async {
-              if (self.loadRecentState != .notLoading) {
-                self.loadRecentState = .loading(progress)
-              }
+              newItems.append(nft)
+              self.loadRecentState = .loading(progress)
             }
           }
       }

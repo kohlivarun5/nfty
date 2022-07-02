@@ -215,7 +215,7 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func loadMoreIndex(index:Int,onDone : @escaping () -> Void) {
-    if (self.loadMoreState != .notLoading) {
+    DispatchQueue.main.async {
       self.loadMoreState = .loading(LoadingProgress(current:index,total:self.loaders.count))
     }
     switch(self.loaders[safe:index]) {
@@ -224,30 +224,30 @@ class CompositeRecentTradesObject : ObservableObject {
         self.loadMoreIndex(index:index+1,onDone:onDone)
       } else {
         loader.recentTrades.loadMore() {
-          DispatchQueue.main.async {
-            self.loadMoreIndex(index:index+1,onDone:onDone)
-          }
+          self.loadMoreIndex(index:index+1,onDone:onDone)
         }
       }
     case .none:
       self.onDone{
         DispatchQueue.main.async {
           self.loadMoreState = .notLoading
-          onDone()
         }
+        onDone()
       }
     }
   }
   
   func loadMore(_ onDone : @escaping () -> Void) {
-    switch(self.loadMoreState) {
-    case .loading:
-      return
-    case .uninitialized,.notLoading:
-      self.loadMoreState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+    DispatchQueue.main.async {
+      switch(self.loadMoreState) {
+      case .loading:
+        return
+      case .uninitialized,.notLoading:
+        self.loadMoreState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+      }
+      
+      self.loadMoreIndex(index: 0,onDone: onDone)
     }
-    
-    self.loadMoreIndex(index: 0,onDone: onDone)
   }
   
   func getRecentTrades(currentIndex:Int,_ onDone : @escaping () -> Void) {
@@ -262,7 +262,7 @@ class CompositeRecentTradesObject : ObservableObject {
   }
   
   private func loadLatestIndex(index:Int,onDone : @escaping () -> Void) {
-    if (self.loadRecentState != .notLoading) {
+    DispatchQueue.main.async {
       self.loadRecentState = .loading(LoadingProgress(current:index,total:self.loaders.count))
     }
     switch(self.loaders[safe:index]) {
@@ -271,29 +271,29 @@ class CompositeRecentTradesObject : ObservableObject {
         self.loadLatestIndex(index:index+1,onDone:onDone)
       } else {
         loader.recentTrades.loadLatest() {
-          DispatchQueue.main.async {
-            self.loadLatestIndex(index:index+1,onDone:onDone)
-          }
+          self.loadLatestIndex(index:index+1,onDone:onDone)
         }
       }
     case .none:
       self.onDone {
         DispatchQueue.main.async {
           self.loadRecentState = .notLoading
-          onDone()
         }
+        onDone()
       }
     }
   }
   
   func loadLatest(_ onDone : @escaping () -> Void) {
-    switch(self.loadRecentState) {
-    case .loading:
-      return onDone()
-    case .uninitialized,.notLoading:
-      self.loadRecentState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+    DispatchQueue.main.async {
+      switch(self.loadRecentState) {
+      case .loading:
+        return onDone()
+      case .uninitialized,.notLoading:
+        self.loadRecentState = .loading(LoadingProgress(current:0,total:self.loaders.count))
+      }
+      self.loadLatestIndex(index:0,onDone: onDone)
     }
-    self.loadLatestIndex(index:0,onDone: onDone)
   }
   
 }
