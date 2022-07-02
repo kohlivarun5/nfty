@@ -326,7 +326,7 @@ enum TokenPriceType {
 struct Action {
   let account : UserAccount
   
-  enum ActionType {
+  enum ActionType : String {
     case bought
     case minted
     case sold
