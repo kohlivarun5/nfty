@@ -35,6 +35,8 @@ struct ActionSummaryView: View {
       return "sold"
     case .bought:
       return "bought"
+    case .minted:
+      return "minted"
     }
   }
   
