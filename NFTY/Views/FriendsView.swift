@@ -24,29 +24,43 @@ struct FriendsView: View {
         try? EthereumAddress(hex: key, eip55: true)
       }
       self.feedModel = FriendsFeedViewModel(from: self.addresses,limit:2)
+      self.mintedModel = FriendsFeedViewModel(
+        from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+        to : self.addresses,
+        action:.minted,
+        limit:2)
       self.isLoading = false
     }
   }
   
   enum Page : Int {
     case feed
+    case minted
     case list
   }
   
   @State private var page : Page = .feed
   
   @State private var feedModel : FriendsFeedViewModel
+  @State private var mintedModel : FriendsFeedViewModel
   
   init() {
     self.feedModel = FriendsFeedViewModel(from: [],limit:2)
+    self.mintedModel = FriendsFeedViewModel(
+      from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+      to : [],
+      action:.minted,
+      limit:2)
   }
   
   private func title(_ page:Page) -> String {
     switch(page) {
     case .feed:
-      return "Activity"
+      return "Sales"
     case .list:
       return "Friends"
+    case .minted:
+      return "Mints"
     }
   }
   
@@ -96,6 +110,8 @@ struct FriendsView: View {
           )
         case (.feed,false):
           FriendsFeedView(events:self.feedModel)
+        case (.minted,false):
+          FriendsFeedView(events:self.mintedModel)
         }
         
         if (!self.addresses.isEmpty) {
@@ -107,7 +123,8 @@ struct FriendsView: View {
               }
             }),
                  label: Text("")) {
-            Text("Activity").tag(Page.feed.rawValue)
+            Text("Mints").tag(Page.minted.rawValue)
+            Text("Sales").tag(Page.feed.rawValue)
             Text("Following").tag(Page.list.rawValue)
           }
                  .pickerStyle(SegmentedPickerStyle())

@@ -36,10 +36,13 @@ class FriendsFeedFetcher {
     switch(self.action) {
     case .sold:
       return Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
-                    action:self.action)
+                    action:.sold)
     case .bought:
       return Action(account: UserAccount(ethAddress: res["to"] as? EthereumAddress, nearAccount: nil),
-                    action:self.action)
+                    action:.bought)
+    case .minted:
+      return Action(account: UserAccount(ethAddress: res["to"] as? EthereumAddress, nearAccount: nil),
+                    action:.minted)
     }
   }
   
@@ -82,6 +85,37 @@ class FriendsFeedFetcher {
       cacheId : cacheId,
       topics: [
         EthereumGetLogTopics.and(nil),
+        to.count == 1
+        ? EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.address(to[0])))
+        : EthereumGetLogTopics.or(
+          to.map {
+            try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+          }
+        )
+      ],
+      blockDecrements: blockDecrements)
+  }
+  
+  init(from:[EthereumAddress],to:[EthereumAddress],action:Action.ActionType,fromBlock:BigUInt,limit:Int) {
+    let cacheId = "FriendsFeedFetcher.initFromBlock"
+    let blockDecrements = BigUInt(500)
+    self.limit = limit
+    self.retries = 10
+    self.addressesFilter = to
+    self.action = action
+    self.logsFetcher = LogsFetcher(
+      event: self.Transfer,
+      fromBlock: fromBlock - blockDecrements,
+      address: nil,
+      cacheId : cacheId,
+      topics: [
+        from.count == 1
+        ? EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.address(from[0])))
+        : EthereumGetLogTopics.or(
+          from.map {
+            try! ABI.encodeParameter(SolidityWrappedValue.address($0))
+          }
+        ),
         to.count == 1
         ? EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.address(to[0])))
         : EthereumGetLogTopics.or(

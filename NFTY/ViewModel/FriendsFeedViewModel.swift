@@ -39,6 +39,12 @@ class FriendsFeedViewModel : ObservableObject {
     }
   }
   
+  init(from:[EthereumAddress],to:[EthereumAddress],action:Action.ActionType,limit:Int) {
+    self.fetcher = web3.eth.blockNumber().map { fromBlock in
+      FriendsFeedFetcher(from: from,to:to,action:action,fromBlock:fromBlock.quantity, limit:limit)
+    }
+  }
+  
   func loadMore(_ callback : @escaping () -> Void) {
     
     var initialCount = 10

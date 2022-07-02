@@ -327,8 +327,9 @@ struct Action {
   let account : UserAccount
   
   enum ActionType {
-    case sold
     case bought
+    case minted
+    case sold
   }
   let action : ActionType
 }
