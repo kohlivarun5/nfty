@@ -24,8 +24,7 @@ struct ENSAvatarChangedFeedView: View {
   private func triggerRefresh() {
     self.refreshButton = .loading
     self.events.loadLatest() {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.refreshButton = .loaded }
-      
+      self.refreshButton = .loaded
       // trigger refresh again after 30 seconds
       // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
     }
@@ -62,89 +61,91 @@ struct ENSAvatarChangedFeedView: View {
       }
     case (true,let loadMoreState,let loadRecentState):
       
-      switch (loadRecentState) {
-      case .uninitialized,.notLoading:
-        EmptyView()
-      case .loading(let progress):
-        ProgressView(value: Double(progress.current), total:Double(progress.total))
-          .animation(.linear, value: self.events.loadRecentState)
-      }
-      
-      switch(self.events.recentEvents.isEmpty) {
-      case true:
-        VStack {
-          Spacer()
-          Text("No Recent events")
-            .font(.title)
-            .foregroundColor(.secondary)
-            .onAppear {
-              self.events.loadMore {
-                DispatchQueue.main.async {
-                  print("Done isinitialized")
-                  self.refreshButton = .loaded
-                  // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
-                }
-              }
-            }
-          Spacer()
-        }
-      case false:
+      VStack {
         
-        GeometryReader { metrics in
-          ScrollView {
-            PullToRefresh(coordinateSpaceName: "RefreshControl") {
-              self.triggerRefresh()
-              let impactMed = UIImpactFeedbackGenerator(style: .light)
-              impactMed.impactOccurred()
-            }
-            LazyVGrid(
-              columns: Array(
-                repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
-                count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
-              pinnedViews: [.sectionHeaders])
-            {
-              ForEachWithIndex(self.events.recentEvents,id:\.self.nft.nft.id) { index,item in
-                AvatarSetCardView(item: item)
-                  .padding(5)
-                  .onAppear {
-                    DispatchQueue.global(qos:.userInitiated).async {
-                      self.events.getRecentEvents(currentIndex:index) {}
-                    }
+        switch(self.events.recentEvents.isEmpty) {
+        case true:
+          VStack {
+            Spacer()
+            Text("No Recent events")
+              .font(.title)
+              .foregroundColor(.secondary)
+              .onAppear {
+                self.events.loadMore {
+                  DispatchQueue.main.async {
+                    print("Done isinitialized")
+                    self.refreshButton = .loaded
+                    // DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 30) { self.triggerRefresh() }
                   }
-              }
-            }
-          }.coordinateSpace(name: "RefreshControl")
-        }
-        .navigationBarItems(
-          trailing:
-            HStack {
-              switch refreshButton {
-              case .hidden:
-                EmptyView()
-              case .loading:
-                ProgressView()
-              case .loaded:
-                Button(action: {
-                  self.triggerRefresh()
-                  let impactMed = UIImpactFeedbackGenerator(style: .light)
-                  impactMed.impactOccurred()
-                }) {
-                  Image(systemName:"arrow.clockwise.circle.fill")
-                    .font(.title3)
-                    .foregroundColor(.accentColor)
-                    .padding(10)
                 }
               }
+            Spacer()
+          }
+        case false:
+          
+          GeometryReader { metrics in
+            switch (loadRecentState) {
+            case .uninitialized,.notLoading:
+              EmptyView()
+            case .loading(let progress):
+              ProgressView(value: Double(progress.current), total:Double(progress.total))
+                .animation(.linear, value: self.events.loadRecentState)
             }
-        )
-      }
-      
-      switch (loadMoreState) {
-      case .uninitialized,.notLoading:
-        EmptyView()
-      case .loading(let progress):
-        ProgressView(value: Double(progress.current), total:Double(progress.total))
-          .animation(.linear, value: self.events.loadMoreState)
+            ScrollView {
+              PullToRefresh(coordinateSpaceName: "RefreshControl") {
+                self.triggerRefresh()
+                let impactMed = UIImpactFeedbackGenerator(style: .light)
+                impactMed.impactOccurred()
+              }
+              LazyVGrid(
+                columns: Array(
+                  repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
+                  count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+                pinnedViews: [.sectionHeaders])
+              {
+                ForEachWithIndex(self.events.recentEvents,id:\.self.nft.nft.id) { index,item in
+                  AvatarSetCardView(item: item)
+                    .padding(5)
+                    .onAppear {
+                      DispatchQueue.global(qos:.userInitiated).async {
+                        self.events.getRecentEvents(currentIndex:index) {}
+                      }
+                    }
+                }
+              }
+            }.coordinateSpace(name: "RefreshControl")
+          }
+          .navigationBarItems(
+            trailing:
+              HStack {
+                switch refreshButton {
+                case .hidden:
+                  EmptyView()
+                case .loading:
+                  ProgressView()
+                case .loaded:
+                  Button(action: {
+                    self.triggerRefresh()
+                    let impactMed = UIImpactFeedbackGenerator(style: .light)
+                    impactMed.impactOccurred()
+                  }) {
+                    Image(systemName:"arrow.clockwise.circle.fill")
+                      .font(.title3)
+                      .foregroundColor(.accentColor)
+                      .padding(10)
+                  }
+                }
+              }
+          )
+        }
+        
+        switch (loadMoreState) {
+        case .uninitialized,.notLoading:
+          EmptyView()
+        case .loading(let progress):
+          ProgressView(value: Double(progress.current), total:Double(progress.total))
+            .animation(.linear, value: self.events.loadMoreState)
+        }
       }
     }
   }
