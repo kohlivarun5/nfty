@@ -61,15 +61,6 @@ struct FriendsFeedView: View {
         }
       }
     case (true,let loadMoreState,let loadRecentState):
-      
-      switch (loadRecentState) {
-      case .uninitialized,.notLoading:
-        EmptyView()
-      case .loading(let progress):
-        ProgressView(value: Double(progress.current), total:Double(progress.total))
-          .animation(.linear, value: self.events.loadRecentState)
-      }
-        
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
@@ -91,6 +82,14 @@ struct FriendsFeedView: View {
       case false:
         
         GeometryReader { metrics in
+          switch (loadRecentState) {
+          case .uninitialized,.notLoading:
+            EmptyView()
+          case .loading(let progress):
+            ProgressView(value: Double(progress.current), total:Double(progress.total))
+              .animation(.linear, value: self.events.loadRecentState)
+          }
+
           ScrollView {
             PullToRefresh(coordinateSpaceName: "RefreshControl") {
               self.triggerRefresh()
@@ -104,7 +103,7 @@ struct FriendsFeedView: View {
               pinnedViews: [.sectionHeaders])
             {
               ForEachWithIndex(self.events.recentEvents,id:\.self.nft.id) { index,item in
-              ZStack {
+                ZStack {
                   
                   RoundedImage(
                     nft:item.nft.nftWithPrice.nft,

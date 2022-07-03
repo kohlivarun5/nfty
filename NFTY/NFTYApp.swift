@@ -169,6 +169,15 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
+        NavigationView {
+          ENSAvatarChangedFeedView(events: ENSTextChangedViewModel(key: "avatar", limit: 5))
+            .navigationBarTitle("Avatars",displayMode: .inline)
+        }
+        .tabItem {
+          Label("Avatars",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
         
         NavigationView {
           FavoritesView()
