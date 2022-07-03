@@ -13,9 +13,9 @@ import SwiftUI
 
 class ENSTextChangedViewModel : ObservableObject {
   
-  @Published var recentEvents: [ENSTextChangedFeed.NFTItem] = []
-  var recentEventsPublished: Published<[ENSTextChangedFeed.NFTItem]> { _recentEvents }
-  var recentEventsPublisher: Published<[ENSTextChangedFeed.NFTItem]>.Publisher { $recentEvents }
+  @Published var recentEvents: [ENSTextChangedFeed.FeedItem] = []
+  var recentEventsPublished: Published<[ENSTextChangedFeed.FeedItem]> { _recentEvents }
+  var recentEventsPublisher: Published<[ENSTextChangedFeed.FeedItem]>.Publisher { $recentEvents }
   
   @Published var loadMoreState : LoadingState = .uninitialized
   @Published var loadRecentState : LoadingState = .uninitialized
@@ -40,7 +40,7 @@ class ENSTextChangedViewModel : ObservableObject {
       self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
     }
     
-    var newItems : [ENSTextChangedFeed.NFTItem] = []
+    var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
       .done { fetcher in
         print("Loading friend events")
@@ -92,7 +92,7 @@ class ENSTextChangedViewModel : ObservableObject {
       }
     }
     
-    var newItems : [ENSTextChangedFeed.NFTItem] = []
+    var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
       .done { fetcher in
         fetcher.refreshLatestEvents(

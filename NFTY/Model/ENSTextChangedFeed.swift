@@ -17,6 +17,11 @@ class ENSTextChangedFeed {
     let collection : Collection
   }
   
+  struct FeedItem {
+    let nft : NFTItem
+    let blockNumber : EthereumQuantity
+  }
+  
   static public func parseENSAvatar(avatar:String) -> Promise<NFTItem?> {
     
     let prefix = "eip155:1/erc721:"
@@ -81,7 +86,7 @@ class ENSTextChangedFeed {
       blockDecrements: blockDecrements)
   }
   
-  func getRecentEvents(onDone: @escaping () -> Void,_ onRetry: @escaping () -> Void, _ response: @escaping (LoadingProgress,NFTItem) -> Void) {
+  func getRecentEvents(onDone: @escaping () -> Void,_ onRetry: @escaping () -> Void, _ response: @escaping (LoadingProgress,FeedItem) -> Void) {
     var processed : Promise<Int> = Promise.value(0)
     
     print("getRecentEvents")
@@ -99,6 +104,8 @@ class ENSTextChangedFeed {
         // Use the node hash to get the value, as it is not in the event
         guard let removed = log.removed else { return Promise.value(processed) }
         if (removed) { return Promise.value(processed) }
+        
+        guard let blockNumber = log.blockNumber else { return Promise.value(processed) }
         // guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
         
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
@@ -113,7 +120,7 @@ class ENSTextChangedFeed {
             
             // TODO Fix : Bring price from tx /WETH
             // print("log=",tokenId,log.transactionHash?.hex())
-            response(progress,nftItem)
+            response(progress,ENSTextChangedFeed.FeedItem(nft:nftItem,blockNumber:blockNumber))
             return processed + 1
           }
           .recover { error -> Promise<Int> in
@@ -125,7 +132,7 @@ class ENSTextChangedFeed {
     }
   }
   
-  func refreshLatestEvents(onDone: @escaping () -> Void, _ response: @escaping (LoadingProgress,NFTItem) -> Void) {
+  func refreshLatestEvents(onDone: @escaping () -> Void, _ response: @escaping (LoadingProgress,FeedItem) -> Void) {
     var prev : Promise<Void> = Promise.value(())
     
     print("refreshLatestEvents")
@@ -133,6 +140,8 @@ class ENSTextChangedFeed {
       prev.done { onDone() }.catch { print($0); onDone() }
     }) { (progress,log) in
       let p = prev.then { () -> Promise<Void> in
+        
+        guard let blockNumber = log.blockNumber else { return Promise.value(()) }
         
         // Use the node hash to get the value, as it is not in the event
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
@@ -147,7 +156,7 @@ class ENSTextChangedFeed {
             
             // TODO Fix : Bring price from tx /WETH
             // print("log=",tokenId,log.transactionHash?.hex())
-            response(progress,nftItem)
+            response(progress,ENSTextChangedFeed.FeedItem(nft:nftItem,blockNumber:blockNumber))
           }
           .recover { error -> Promise<Void> in
             print(error)

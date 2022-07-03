@@ -103,13 +103,13 @@ struct ENSAvatarChangedFeedView: View {
                 count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
               pinnedViews: [.sectionHeaders])
             {
-              ForEachWithIndex(self.events.recentEvents,id:\.self.nft.id) { index,item in
+              ForEachWithIndex(self.events.recentEvents,id:\.self.nft.nft.id) { index,item in
                 ZStack {
                   
                   RoundedImage(
-                    nft:item.nft,
-                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .none, type: .minted)),
-                    collection:item.collection,
+                    nft:item.nft.nft,
+                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .some(.ethereum(item.blockNumber)), type: .minted)),
+                    collection:item.nft.collection,
                     width: .normal,
                     resolution: .normal,
                     action:nil
@@ -118,15 +118,15 @@ struct ENSAvatarChangedFeedView: View {
                   .padding()
                   .onTapGesture {
                     //perform some tasks if needed before opening Destination view
-                    self.action = item.nft.id
+                    self.action = item.nft.nft.id
                   }
                   
                   NavigationLink(destination: NftDetail(
-                    nft:item.nft,
-                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .none, type: .minted)),
-                    collection:item.collection,
+                    nft:item.nft.nft,
+                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .some(.ethereum(item.blockNumber)), type: .minted)),
+                    collection:item.nft.collection,
                     hideOwnerLink:false,selectedProperties:[]
-                  ),tag:item.nft.id,selection:$action) {}
+                  ),tag:item.nft.nft.id,selection:$action) {}
                     .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {
