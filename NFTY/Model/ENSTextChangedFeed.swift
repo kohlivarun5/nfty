@@ -106,61 +106,27 @@ class ENSTextChangedFeed {
     },onRetry:onRetry,limit:self.limit,retries:self.retries) { progress,log in
       let p = processed.then { processed -> Promise<Int> in
         
-        let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
-        
-        // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
-        
-        guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
-        // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
-        
+        // Use the node hash to get the value, as it is not in the event
         guard let removed = log.removed else { return Promise.value(processed) }
         if (removed) { return Promise.value(processed) }
+        // guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
         
-        guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
-        
-        // print("eventOfTx for ",transactionHash.hex())
-        return TxFetcher.eventOfTx(transactionHash:transactionHash)
-          .then { txInfo -> Promise<Int> in
+        let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
+        return ENSContract.avatarOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data),eth:web3.eth)
+          .then { avatar -> Promise<NFTItem?> in
+            guard let avatar = avatar else { return Promise.value(nil) }
+            return ENSTextChangedFeed.parseENSAvatar(avatar: avatar)
+          }
+          .map  { nftItem -> Int in
             
-            guard let txInfo = txInfo else { return Promise.value(processed) }
+            guard let nftItem = nftItem else { return processed }
             
-            guard let price = priceIfNotZero(txInfo.value) else { return Promise.value(processed) }
-            
-            // print("Log for Address=\(log.address.hex(eip55: true))");
-            return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-              .map  { collectionOpt -> Int in
-                
-                guard let collection = collectionOpt else { return processed }
-                
-                // TODO Fix : Bring price from tx /WETH
-                // print("log=",tokenId,log.transactionHash?.hex())
-                response(
-                  progress,
-                  FriendsFeedFetcher.NFTItem(
-                    nft: NFTWithPriceAndInfo(
-                      nftWithPrice: NFTWithPrice(
-                        nft:collection.contract.getNFT(tokenId),
-                        blockNumber: log.blockNumber.map { .ethereum($0) },
-                        indicativePrice:.lazy {
-                          ObservablePromise(
-                            resolved:NFTPriceStatus.known(
-                              NFTPriceInfo(
-                                wei: price,
-                                blockNumber:.ethereum(txInfo.blockNumber),
-                                type: .transfer
-                              )
-                            )
-                          ) // TODO
-                        },
-                        action:self.actionOfLog(res:res)
-                      ),
-                      info: collection.info),
-                    collection: collection)
-                )
-                return processed + 1
-                
-              }
-          }.recover { error -> Promise<Int> in
+            // TODO Fix : Bring price from tx /WETH
+            // print("log=",tokenId,log.transactionHash?.hex())
+            response(progress,nftItem)
+            return processed + 1
+          }
+          .recover { error -> Promise<Int> in
             print(error)
             return Promise.value(processed)
           }
@@ -178,51 +144,22 @@ class ENSTextChangedFeed {
     }) { (progress,log) in
       let p = prev.then { () -> Promise<Void> in
         
-        //print("Log for Address=\(log.address.hex(eip55: true))");
-        return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-          .map  { collectionOpt -> Void in
+        // Use the node hash to get the value, as it is not in the event
+        let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
+        return ENSContract.avatarOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data),eth:web3.eth)
+          .then { avatar -> Promise<NFTItem?> in
+            guard let avatar = avatar else { return Promise.value(nil) }
+            return ENSTextChangedFeed.parseENSAvatar(avatar: avatar)
+          }
+          .map  { nftItem -> Void in
             
-            guard let collection = collectionOpt else { return }
+            guard let nftItem = nftItem else { return }
             
-            let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-            
-            // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
-            
-            guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
-            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
             // TODO Fix : Bring price from tx /WETH
-            TxFetcher.eventOfTx(transactionHash: log.transactionHash)
-              .map { txInfo in
-                
-                guard let txInfo = txInfo else { return }
-                
-                guard let price = priceIfNotZero(txInfo.value) else { return }
-                // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
-                // TODO Fix : Bring price from tx /WETH
-                response(
-                  progress,
-                  FriendsFeedFetcher.NFTItem(
-                    nft: NFTWithPriceAndInfo(
-                      nftWithPrice: NFTWithPrice(
-                        nft:collection.contract.getNFT(tokenId),
-                        blockNumber: log.blockNumber.map { .ethereum($0) },
-                        indicativePrice:.lazy {
-                          ObservablePromise(
-                            resolved:NFTPriceStatus.known(
-                              NFTPriceInfo(
-                                wei: price,
-                                blockNumber:.ethereum(txInfo.blockNumber),
-                                type: .transfer
-                              )
-                            )
-                          ) // TODO
-                        }),
-                      info: collection.info),
-                    collection: collection)
-                )
-              }
-              .catch { print($0) }
-          }.recover { error -> Promise<Void> in
+            // print("log=",tokenId,log.transactionHash?.hex())
+            response(progress,nftItem)
+          }
+          .recover { error -> Promise<Void> in
             print(error)
             return Promise.value(())
           }
@@ -230,6 +167,4 @@ class ENSTextChangedFeed {
       prev = p
     }
   }
-  
 }
-
