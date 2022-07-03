@@ -60,33 +60,23 @@ class ENSTextChangedFeed {
   let limit : Int
   let retries : Int
   
-  let action : Action.ActionType
-  
-  private func actionOfLog(ethAddress:EthereumAddress) -> Action {
-    switch(self.action) {
-    case .sold:
-      return Action(account: UserAccount(ethAddress:ethAddress, nearAccount: nil),action:.sold)
-    case .bought:
-      return Action(account: UserAccount(ethAddress:ethAddress, nearAccount: nil),action:.bought)
-    case .minted:
-      return Action(account: UserAccount(ethAddress:ethAddress, nearAccount: nil),action:.minted)
-    }
-  }
-  
   init(key:String,fromBlock:BigUInt,limit:Int) {
     let cacheId = "ENSTextChangedFeed.initFromBlock"
     let blockDecrements = BigUInt(1500)
     self.limit = limit
     self.retries = 10
-    self.action = .minted
     self.logsFetcher = LogsFetcher(
       event: self.TextChanged,
       fromBlock: fromBlock - blockDecrements,
-      address: nil,
+      address: "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41",
       cacheId : cacheId,
       topics: [
         EthereumGetLogTopics.and(nil),
-        EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.string(key)))
+        EthereumGetLogTopics.and(
+          // Strings are encoded as special in events
+          // https://docs.soliditylang.org/en/v0.8.15/abi-spec.html#indexed-event-encoding
+          "0x"+key.sha3(.keccak256)
+        )
       ],
       blockDecrements: blockDecrements)
   }
