@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Web3
+import PromiseKit
 
 struct ProfileViewHeader: View {
   
@@ -177,39 +178,39 @@ struct ProfileViewHeader: View {
             $0.colorMultiply(.accentColor)
           }
         case (true,.some)/* : // TODO : Support update avatar with wallet connect
-          
-          NavigationLink(
-            destination:WalletTokensSelector(
-              tokens: getOwnerTokens(account),
-              enableNavLinks: false,
-              selectedToken: $selectedAvatarToken)
-            .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
-            .onChange(of: selectedAvatarToken) { selectedToken in
-              print("Avatar selected \(selectedToken)")
-              
-              // TODO
-              /* self.nftInfo = selectedToken.map { info in
-                (info.token.collection,info.token.nft.nft)
-              } */
-              avatarNavLinkActive = false
-            },
-            isActive: $avatarNavLinkActive
-          ) {
-            HStack {
-              Spacer()
-              Text("Update Avatar")
-                .font(.caption).bold()
-              Spacer()
-            }
-          }
-          .padding([.top,.bottom],5)
-          .padding([.leading,.trailing])
-          .background(.ultraThinMaterial, in: Capsule())
-          .padding(.top,10)
-          .padding(.trailing)
-          .foregroundColor(.accentColor)
-          
-        case */,(true,.none),(false,.none):
+                          
+                          NavigationLink(
+                          destination:WalletTokensSelector(
+                          tokens: getOwnerTokens(account),
+                          enableNavLinks: false,
+                          selectedToken: $selectedAvatarToken)
+                          .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
+                          .onChange(of: selectedAvatarToken) { selectedToken in
+                          print("Avatar selected \(selectedToken)")
+                          
+                          // TODO
+                          /* self.nftInfo = selectedToken.map { info in
+                           (info.token.collection,info.token.nft.nft)
+                           } */
+                          avatarNavLinkActive = false
+                          },
+                          isActive: $avatarNavLinkActive
+                          ) {
+                          HStack {
+                          Spacer()
+                          Text("Update Avatar")
+                          .font(.caption).bold()
+                          Spacer()
+                          }
+                          }
+                          .padding([.top,.bottom],5)
+                          .padding([.leading,.trailing])
+                          .background(.ultraThinMaterial, in: Capsule())
+                          .padding(.top,10)
+                          .padding(.trailing)
+                          .foregroundColor(.accentColor)
+                          
+                          case */,(true,.none),(false,.none):
           EmptyView()
         }
         
@@ -243,43 +244,17 @@ struct ProfileViewHeader: View {
             $0.map {
               self.friendName = $0
               
-              
               // Also do avatar loading
               ENSContract.avatarOfOwner($0, eth: web3.eth)
+                .then(on:.main) { avatarOpt -> Promise<ENSTextChangedFeed.NFTItem?> in
+                  guard let avatar = avatarOpt else { return Promise.value(nil) }
+                  return ENSTextChangedFeed.parseENSAvatar(avatar:avatar)
+                }
                 .done(on:.main) {
-                  $0.map { avatar in
-                    let prefix = "eip155:1/erc721:"
-                    if !avatar.hasPrefix(prefix) {
-                      print("Avatar prefix mistmatch for \(avatar)")
-                      return
+                  $0.map { nftItem in
+                    withAnimation {
+                      self.nftInfo = (nftItem.collection,nftItem.nft)
                     }
-                    
-                    print("Avatar follows eip155: \(avatar)")
-                    
-                    let str : String = String(avatar.suffix(from:avatar.index(after:avatar.lastIndex(of: ":")!)))
-                    let index = str.firstIndex(of: "/")!
-                    let addressStr : String = String(str.prefix(upTo: index))
-                    print("address = \(addressStr)")
-                    let tokenIdStr : String = String(str.suffix(from: str.index(after: index)))
-                    print("tokenId = \(tokenIdStr)")
-                    
-                    
-                    
-                    let address = try? EthereumAddress(hex: addressStr, eip55: false)
-                    guard let address = address else { print("Address not a match \(addressStr)"); return }
-                    
-                    let tokenId = (try? BigUInt(tokenIdStr))
-                    guard let tokenId = tokenId else { print("TokenId not a match \(tokenIdStr)"); return }
-                    
-                    collectionsFactory.getByAddressOpt(address.hex(eip55: true))
-                      .map  { collectionOpt in
-                        guard let collection : Collection = collectionOpt else { return }
-                        let nft = collection.contract.getNFT(tokenId)
-                        withAnimation {
-                          self.nftInfo = (collection,nft)
-                        }
-                      }
-                      .catch { print($0) }
                   }
                 }
                 .catch { print($0) }
