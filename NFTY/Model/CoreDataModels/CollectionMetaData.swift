@@ -43,7 +43,7 @@ extension CollectionMetaData {
             "name" : data.name
           ])
           print("Saving recordId=\(addressStr)")
-          CKContainer.default().publicCloudDatabase.save(record:record)
+ CKPublicDataManager.defaultContainer.publicCloudDatabase.save(record:record)
             .done(on:.global(qos: .background)) { result in
               print("Save returned for \(addressStr)")
             }

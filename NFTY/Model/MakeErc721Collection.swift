@@ -72,7 +72,7 @@ struct MakeErc721Collection {
   }
   
   private static var collectionCache = CKObjectCache(
-    database: CKContainer.default().publicCloudDatabase,
+    database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
     entityName: "CollectionMetaData",
     keyField: "address",
     fallback: { (address:String,output:CollectionMetaData) in

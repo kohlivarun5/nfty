@@ -36,7 +36,8 @@ struct Provider: IntentTimelineProvider {
     transformer:TransformerFactory.forCodable(ofType:FloorPrices.self))
   
   func placeholder(in context: Context) -> SimpleEntry {
-    SimpleEntry(
+    print("Creating placeholder")
+    return SimpleEntry(
       date: Date(),
       configuration: ConfigurationIntent(),
       spot:3000,
