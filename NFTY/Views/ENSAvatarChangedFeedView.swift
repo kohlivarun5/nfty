@@ -1,15 +1,15 @@
 //
-//  FriendsFeedView.swift
+//  ENSAvatarChangedFeedView.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 3/20/22.
+//  Created by Varun Kohli on 7/3/22.
 //
 
 import SwiftUI
 import Web3
 
-struct FriendsFeedView: View {
-  @StateObject var events : FriendsFeedViewModel
+struct ENSAvatarChangedFeedView: View {
+  @StateObject var events : ENSTextChangedViewModel
   @State private var action: NFT.NftID? = nil
   
   @State private var isInitialized : Bool = false
@@ -107,26 +107,26 @@ struct FriendsFeedView: View {
                 ZStack {
                   
                   RoundedImage(
-                    nft:item.nft.nftWithPrice.nft,
-                    price:item.nft.nftWithPrice.indicativePrice,
+                    nft:item.nft,
+                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .none, type: .minted)),
                     collection:item.collection,
                     width: .normal,
                     resolution: .normal,
-                    action:item.nft.nftWithPrice.action
+                    action:nil
                   )
                   .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
                   .padding()
                   .onTapGesture {
                     //perform some tasks if needed before opening Destination view
-                    self.action = item.nft.nftWithPrice.id
+                    self.action = item.nft.id
                   }
                   
                   NavigationLink(destination: NftDetail(
-                    nft:item.nft.nftWithPrice.nft,
-                    price:item.nft.nftWithPrice.indicativePrice,
+                    nft:item.nft,
+                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .none, type: .minted)),
                     collection:item.collection,
                     hideOwnerLink:false,selectedProperties:[]
-                  ),tag:item.nft.nftWithPrice.id,selection:$action) {}
+                  ),tag:item.nft.id,selection:$action) {}
                     .hidden()
                 }.onAppear {
                   DispatchQueue.global(qos:.userInitiated).async {

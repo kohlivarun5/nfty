@@ -73,7 +73,7 @@ class ENSTextChangedFeed {
     }
   }
   
-  init(fromBlock:BigUInt,limit:Int) {
+  init(key:String,fromBlock:BigUInt,limit:Int) {
     let cacheId = "ENSTextChangedFeed.initFromBlock"
     let blockDecrements = BigUInt(1500)
     self.limit = limit
@@ -86,7 +86,7 @@ class ENSTextChangedFeed {
       cacheId : cacheId,
       topics: [
         EthereumGetLogTopics.and(nil),
-        EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.string("avatar")))
+        EthereumGetLogTopics.and(try! ABI.encodeParameter(SolidityWrappedValue.string(key)))
       ],
       blockDecrements: blockDecrements)
   }
