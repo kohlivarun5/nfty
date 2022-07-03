@@ -97,6 +97,12 @@ struct AvatarSetCardView: View {
             .font(.footnote)
             .foregroundColor(.secondary)
           
+          BlockTimestampView(
+            block:BlocksFetcher.getBlock(blockNumber:BlockNumber.ethereum(item.blockNumber))
+          )
+          .font(.caption)
+          .foregroundColor(Color.tertiaryLabel)
+          
           switch(friendName) {
           case .some(let name):
             Button(action: {
