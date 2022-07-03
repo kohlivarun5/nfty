@@ -128,7 +128,7 @@ struct AvatarSetCardView: View {
       }
     }
     .padding([.top,.bottom], 10)
-    .background(.ultraThickMaterial)
+    .background(Color.tertiarySystemBackground)
     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     .overlay(
       RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 2))
@@ -150,7 +150,7 @@ struct AvatarSetCardView: View {
       
       ENSContract.nameOfOwner(address, eth: web3.eth)
         .done(on:.main) {
-          print("Got name =\($0) for address=\(address.hex(eip55: true))")
+          print("Got name =\(String(describing: $0)) for address=\(address.hex(eip55: true))")
           $0.map { self.friendName = $0 } }
         .catch { print($0) }
       
