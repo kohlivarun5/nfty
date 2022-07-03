@@ -79,18 +79,12 @@ struct AvatarSetCardView: View {
       NavigationLink(destination: PrivateCollectionView(account:UserAccount(ethAddress: item.address, nearAccount: nil))) {
         VStack(alignment:.leading,spacing:5) {
           
-          
           switch(friendName) {
           case .some(let name):
-            HStack {
-              Text(name)
-              Spacer()
-            }
+            Text(name)
+              .lineLimit(1)
           case .none:
-            HStack {
-              AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
-              Spacer()
-            }
+            AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
           }
           
           Text(item.nft.nft.name)
