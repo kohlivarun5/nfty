@@ -104,37 +104,14 @@ struct ENSAvatarChangedFeedView: View {
               pinnedViews: [.sectionHeaders])
             {
               ForEachWithIndex(self.events.recentEvents,id:\.self.nft.nft.id) { index,item in
-                ZStack {
-                  
-                  RoundedImage(
-                    nft:item.nft.nft,
-                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .some(.ethereum(item.blockNumber)), type: .minted)),
-                    collection:item.nft.collection,
-                    width: .normal,
-                    resolution: .normal,
-                    action:nil
-                  )
-                  .shadow(color:.accentColor,radius:0) //radius:item.isNew ? 10 : 0)
-                  .padding()
-                  .onTapGesture {
-                    //perform some tasks if needed before opening Destination view
-                    self.action = item.nft.nft.id
+                AvatarSetCardView(item: item)
+                  .padding(5)
+                  .onAppear {
+                    DispatchQueue.global(qos:.userInitiated).async {
+                      self.events.getRecentEvents(currentIndex:index) {}
+                    }
                   }
-                  
-                  NavigationLink(destination: NftDetail(
-                    nft:item.nft.nft,
-                    price:TokenPriceType.eager(NFTPriceInfo(price: nil, blockNumber: .some(.ethereum(item.blockNumber)), type: .minted)),
-                    collection:item.nft.collection,
-                    hideOwnerLink:false,selectedProperties:[]
-                  ),tag:item.nft.nft.id,selection:$action) {}
-                    .hidden()
-                }.onAppear {
-                  DispatchQueue.global(qos:.userInitiated).async {
-                    self.events.getRecentEvents(currentIndex:index) {}
-                  }
-                }
               }
-              .textCase(nil)
             }
           }.coordinateSpace(name: "RefreshControl")
         }
