@@ -93,7 +93,6 @@ class ENSTextChangedFeed {
     self.logsFetcher.fetchWithPromise(onDone: { (isFinal:Bool) in
       return processed.map { processed in
         if (isFinal || processed >= self.limit) {
-          // print("done")
           onDone()
         }
         return processed

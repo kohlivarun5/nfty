@@ -35,7 +35,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     switch(self.loadMoreState) {
     case .loading:
-      return callback()
+      return
     case .uninitialized,.notLoading:
       self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
     }
@@ -85,7 +85,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     switch(self.loadRecentState) {
     case .loading:
-      return callback()
+      return
     case .uninitialized,.notLoading:
       DispatchQueue.main.async {
         self.loadRecentState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
