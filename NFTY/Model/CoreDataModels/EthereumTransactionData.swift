@@ -51,7 +51,7 @@ extension EthereumTransactionData {
             "blockNumber" : data.blockNumber
           ])
           print("Saving recordId=\(txHash)")
-          CKContainer.default().publicCloudDatabase.save(record:record)
+ CKPublicDataManager.defaultContainer.publicCloudDatabase.save(record:record)
             .done(on:.global(qos: .background)) { result in
               print("Save returned for \(txHash)")
             }

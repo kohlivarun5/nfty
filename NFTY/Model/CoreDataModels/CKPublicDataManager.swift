@@ -14,6 +14,8 @@ class CKPublicDataManager {
   
   static let shared = CKPublicDataManager()
   
+  static let defaultContainer = CKContainer(identifier: "iCloud.com.nftygo.NFTY")
+  
   // MARK: - Core Data stack
   
   lazy var persistentContainer: NSPersistentCloudKitContainer = {
