@@ -84,7 +84,10 @@ struct AvatarSetCardView: View {
             Text(name)
               .lineLimit(1)
           case .none:
-            AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
+            HStack {
+              AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
+              Spacer()
+            }
           }
           
           Text(item.nft.nft.name)
