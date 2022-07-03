@@ -125,10 +125,11 @@ struct AvatarSetCardView: View {
             EmptyView()
           }
         }
+        .padding(.trailing,10)
       }
     }
-    .padding([.top,.bottom], 10)
-    .background(Color.tertiarySystemBackground)
+    .padding([.top,.bottom])
+    .background(Color.secondarySystemBackground)
     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     .overlay(
       RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 2))
