@@ -22,11 +22,24 @@ struct ProfileViewHeader: View {
   @State private var friendName : String?
   @State private var showDialog = false
   
-  @State private var nftInfo : (Collection,NFT)? = nil
+  @State private var avatar : (Collection,NFT)? = nil
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
   @State private var avatarNavLinkActive : Bool = false
+  
+  init(account:UserAccount,isOwnerView:Bool,addTopPadding:Bool) {
+    self.account = account
+    self.isOwnerView = isOwnerView
+    self.addTopPadding = addTopPadding
+  }
+  init(account:UserAccount,isOwnerView:Bool,addTopPadding:Bool,avatar:(Collection,NFT)?,friendName:String?) {
+    self.account = account
+    self.isOwnerView = isOwnerView
+    self.addTopPadding = addTopPadding
+    self.friendName = friendName
+    self.avatar = avatar
+  }
   
   private func setFriend(_ name:String) {
     
@@ -69,7 +82,7 @@ struct ProfileViewHeader: View {
     
     HStack(spacing:0) {
       
-      switch (nftInfo) {
+      switch (avatar) {
       case .none:
         
         ZStack {
@@ -232,6 +245,13 @@ struct ProfileViewHeader: View {
         self.friendName = .none
       }
       
+      switch(self.friendName,self.avatar) {
+      case (.some,.some):
+        return
+      case (.none,_),(_,.none):
+        break
+      }
+      
       if let address = account.ethAddress {
         
         ENSContract.nameOfOwner(address, eth: web3.eth)
@@ -240,6 +260,8 @@ struct ProfileViewHeader: View {
             if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
               self.friendName = self.account.nearAccount
             }
+            
+            if let _ = avatar { return }
             
             $0.map {
               self.friendName = $0
@@ -253,7 +275,7 @@ struct ProfileViewHeader: View {
                 .done(on:.main) {
                   $0.map { nftItem in
                     withAnimation {
-                      self.nftInfo = (nftItem.collection,nftItem.nft)
+                      self.avatar = (nftItem.collection,nftItem.nft)
                     }
                   }
                 }

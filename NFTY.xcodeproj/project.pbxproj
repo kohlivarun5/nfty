@@ -157,6 +157,7 @@
 		4F881F8A2871613100CA7465 /* ENSTextChangedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F892871613100CA7465 /* ENSTextChangedViewModel.swift */; };
 		4F881F8C2871621700CA7465 /* ENSAvatarChangedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */; };
 		4F881F8E28722A6E00CA7465 /* AvatarSetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */; };
+		4F881F912874FA7A00CA7465 /* ENSCached.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8F2874F4FA00CA7465 /* ENSCached.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
 		4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */; };
@@ -621,6 +622,7 @@
 		4F881F892871613100CA7465 /* ENSTextChangedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSTextChangedViewModel.swift; sourceTree = "<group>"; };
 		4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSAvatarChangedFeedView.swift; sourceTree = "<group>"; };
 		4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSetCardView.swift; sourceTree = "<group>"; };
+		4F881F8F2874F4FA00CA7465 /* ENSCached.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSCached.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaFloorFetcher.swift; sourceTree = "<group>"; };
 		4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListPagedView.swift; sourceTree = "<group>"; };
@@ -1137,6 +1139,7 @@
 				4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */,
 				4F343D80285FE8B3009FFB6D /* CoreDataModels */,
 				4F881F872871580B00CA7465 /* ENSTextChangedFeed.swift */,
+				4F881F8F2874F4FA00CA7465 /* ENSCached.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1822,6 +1825,7 @@
 				4F51EA2228348D71008C610F /* ProfileViewHeader.swift in Sources */,
 				4FA0B2B526C228D500821413 /* StaticTokenListView.swift in Sources */,
 				4F43153F263E4E9500C16872 /* AsciiPunkView.swift in Sources */,
+				4F881F912874FA7A00CA7465 /* ENSCached.swift in Sources */,
 				4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */,
 				4F4CA8012635D806001534A6 /* FavButton.swift in Sources */,
 				4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */,
@@ -2198,7 +2202,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2227,7 +2231,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2339,7 +2343,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = "22 ";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2371,7 +2375,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = "22 ";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

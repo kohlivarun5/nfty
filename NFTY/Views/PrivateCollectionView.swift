@@ -20,15 +20,27 @@ struct PrivateCollectionView: View {
   
   let account : UserAccount
   
-  let nft = SampleToken
-  let collection = SampleCollection
+  let avatar : (Collection,NFT)?
+  let ensName : String?
+  
+  init(account:UserAccount) {
+    self.account = account
+    self.avatar = nil
+    self.ensName = nil
+  }
+  
+  init(account:UserAccount,avatar:(Collection,NFT)?,ensName:String?) {
+    self.account = account
+    self.avatar = avatar
+    self.ensName = ensName
+  }
   
   var body: some View {
     
     
     VStack(spacing:0) {
       
-      ProfileViewHeader(account:account,isOwnerView: false,addTopPadding:true)
+      ProfileViewHeader(account:account,isOwnerView: false,addTopPadding:true,avatar:self.avatar,friendName: self.ensName)
       
       VStack(spacing:0) {
         
