@@ -22,7 +22,7 @@ struct ProfileViewHeader: View {
   @State private var friendName : String?
   @State private var showDialog = false
   
-  @State private var avatar : (Collection,NFT)? = nil
+  @State private var avatar : (Collection,NFT)?
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
