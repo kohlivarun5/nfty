@@ -242,8 +242,9 @@ struct ProfileViewHeader: View {
         self.isFollowing = true
       case .none:
         self.isFollowing = false
-        self.friendName = .none
       }
+      
+      print("friendName=\(self.friendName),avatar=\(self.avatar)")
       
       switch(self.friendName,self.avatar) {
       case (.some,.some):
