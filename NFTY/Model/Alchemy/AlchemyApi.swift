@@ -28,6 +28,20 @@ struct AlchemyApi {
         print("Calling \(request.url!) with body = \(request.httpBody.map { String(decoding: $0,as:UTF8.self) } ?? "")")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
           
+          if let httpResponse = response as? HTTPURLResponse {
+            // https://docs.alchemy.com/alchemy/documentation/throughput#http
+            guard (httpResponse.statusCode != 429) else {
+              // Retry
+              let retry_ms = httpResponse.value(forHTTPHeaderField:"retry-after").flatMap { Double($0) } ?? 1000
+              print("Scheduling rety after \(retry_ms)ms")
+              DispatchQueue.global(qos:.userInitiated).asyncAfter(deadline: .now()+(retry_ms / 1000.0)) {
+                fetch(url:url,params:params)
+                  .done { seal.fulfill($0) }.catch { seal.reject($0)}
+              }
+              return
+            }
+          }
+          
           if let error = error { return seal.reject(error) }
           // print(data)
           // print(String(decoding:data!,as:UTF8.self))

@@ -158,6 +158,8 @@
 		4F881F8C2871621700CA7465 /* ENSAvatarChangedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */; };
 		4F881F8E28722A6E00CA7465 /* AvatarSetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */; };
 		4F881F912874FA7A00CA7465 /* ENSCached.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8F2874F4FA00CA7465 /* ENSCached.swift */; };
+		4F881F932876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
+		4F881F942876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
 		4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */; };
@@ -623,6 +625,7 @@
 		4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSAvatarChangedFeedView.swift; sourceTree = "<group>"; };
 		4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSetCardView.swift; sourceTree = "<group>"; };
 		4F881F8F2874F4FA00CA7465 /* ENSCached.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSCached.swift; sourceTree = "<group>"; };
+		4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3HttpProviderWithRetry.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaFloorFetcher.swift; sourceTree = "<group>"; };
 		4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListPagedView.swift; sourceTree = "<group>"; };
@@ -1140,6 +1143,7 @@
 				4F343D80285FE8B3009FFB6D /* CoreDataModels */,
 				4F881F872871580B00CA7465 /* ENSTextChangedFeed.swift */,
 				4F881F8F2874F4FA00CA7465 /* ENSCached.swift */,
+				4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1835,6 +1839,7 @@
 				4F99B51E2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4FBB70BD28652E0F00682845 /* ImmutableObjects.xcdatamodeld in Sources */,
 				4F856BE12632B57E00BB5E07 /* FavoritesView.swift in Sources */,
+				4F881F932876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
 				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
@@ -1938,6 +1943,7 @@
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
 				4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */,
+				4F881F942876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */,
 				4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */,
 				4FFAE79E27A33391002129E9 /* NearNFTContract.swift in Sources */,
 				4FDEAB9D278E53F500F92160 /* AsciiPunksContract.swift in Sources */,
