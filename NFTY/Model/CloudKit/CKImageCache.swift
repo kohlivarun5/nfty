@@ -14,13 +14,30 @@ import UIKit
 
 struct CKImageCacheCore {
   
+  enum CompressionAlgorithm : Int {
+    case lzfse
+  }
   
-  private func createLocalFile(path:String,data: Data) -> URL {
-    let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
-    let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
-    try! data.write(to: fileURL)
-    return fileURL
+  private func createLocalFile(path:String,data: Data,compressionAlgorithm:CompressionAlgorithm) -> URL {
     
+    switch(compressionAlgorithm) {
+    case .lzfse:
+      let compressedData = (try? (data as NSData).compressed(using: .lzfse)) ?? (data as NSData)
+      
+      let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
+      let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
+      try! compressedData.write(to: fileURL)
+      return fileURL
+    }
+    
+  }
+   
+  private func readLocalFile(_ url:URL,compressionAlgorithm:CompressionAlgorithm?) -> Data? {
+    guard let algorithm = compressionAlgorithm else { return try? Data(contentsOf:url) }
+    switch(algorithm) {
+    case .lzfse:
+      return try? NSData(contentsOf:url).decompressed(using: .lzfse) as Data
+    }
   }
   
   let database : CKDatabase
@@ -31,6 +48,8 @@ struct CKImageCacheCore {
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   
   private let assetKey = "image"
+  private let compressionAlgorithmKey = "compressionAlgorithm"
+  
   
   init(database:CKDatabase,bucket:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
     self.database = database
@@ -68,7 +87,11 @@ struct CKImageCacheCore {
         DispatchQueue.global(qos:.background).async {
           let recordId = self.recordName(tokenId)
           let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
-          record.setValuesForKeys([assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data))])
+          let compressionAlgorithm = CompressionAlgorithm.lzfse
+          record.setValuesForKeys([
+            assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)),
+            compressionAlgorithmKey : compressionAlgorithm
+          ])
           print("Saving recordId=\(recordId)")
           database.save(record:record)
             .done(on:.global(qos: .background)) { result in
@@ -95,7 +118,10 @@ struct CKImageCacheCore {
               let (record,_) = result
               // print("Fetch returned with error=\(String(describing: error))")
               
-              switch((record?[assetKey] as? CKAsset)?.fileURL.flatMap { try? Data(contentsOf:$0) }) {
+              let fileUrl = (record?[assetKey] as? CKAsset)?.fileURL
+              let compressionAlgorithm = (record?[compressionAlgorithmKey] as? Int).flatMap { CompressionAlgorithm(rawValue: $0) }
+              
+              switch(fileUrl.flatMap { readLocalFile($0,compressionAlgorithm: compressionAlgorithm) }) {
               case .none:
                 // print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
