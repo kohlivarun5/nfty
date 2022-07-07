@@ -157,9 +157,11 @@ var alchemyWeb3 = Web3(
   provider: Web3HttpProviderWithRetry(
     rpcURL: "https://eth-mainnet.alchemyapi.io/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc"))
 
-var web3 = Web3(
+/* var web3 = Web3(
   provider: Web3HttpProvider(
     rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921"))
+*/
+var web3 = alchemyWeb3
 
 var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
 
