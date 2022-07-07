@@ -154,7 +154,7 @@ class WETHFetcher {
 var wethFetcher = WETHFetcher()
 
 var alchemyWeb3 = Web3(
-  provider: Web3HttpProvider(
+  provider: Web3HttpProviderWithRetry(
     rpcURL: "https://eth-mainnet.alchemyapi.io/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc"))
 
 var web3 = Web3(

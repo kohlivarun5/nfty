@@ -17,7 +17,6 @@ struct AvatarSetCardView: View {
   @State private var isFollowing = false
   
   @State private var friendName : String?
-  @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
   private func setFriend(_ name:String) {
     
@@ -76,7 +75,11 @@ struct AvatarSetCardView: View {
         .shadow(color:.accentColor,radius:0)
       }
       
-      NavigationLink(destination: PrivateCollectionView(account:UserAccount(ethAddress: item.address, nearAccount: nil))) {
+      NavigationLink(destination: PrivateCollectionView(
+        account:UserAccount(ethAddress: item.address, nearAccount: nil),
+        avatar:(item.nft.collection,item.nft.nft),
+        ensName:item.ensName)
+      ) {
         VStack(alignment:.leading,spacing:5) {
           
           switch(friendName) {
@@ -150,13 +153,7 @@ struct AvatarSetCardView: View {
         self.friendName = .none
       }
       
-      let address = item.address
-      
-      ENSContract.nameOfOwner(address, eth: web3.eth)
-        .done(on:.main) {
-          print("Got name =\(String(describing: $0)) for address=\(address.hex(eip55: true))")
-          $0.map { self.friendName = $0 } }
-        .catch { print($0) }
+      if let name = self.item.ensName { self.friendName = name }
       
     }
   }

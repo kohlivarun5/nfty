@@ -15,14 +15,14 @@ struct ProfileViewHeader: View {
   let isOwnerView : Bool
   let addTopPadding : Bool
   
+  @State var friendName : String?
+  @State var avatar : (Collection,NFT)?
+  
   @State private var balance : EthereumQuantity? = nil
   
   @State private var isFollowing = false
   
-  @State private var friendName : String?
   @State private var showDialog = false
-  
-  @State private var nftInfo : (Collection,NFT)? = nil
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
@@ -69,7 +69,7 @@ struct ProfileViewHeader: View {
     
     HStack(spacing:0) {
       
-      switch (nftInfo) {
+      switch (avatar) {
       case .none:
         
         ZStack {
@@ -229,7 +229,13 @@ struct ProfileViewHeader: View {
         self.isFollowing = true
       case .none:
         self.isFollowing = false
-        self.friendName = .none
+      }
+      
+      switch(self.friendName,self.avatar) {
+      case (.some,.some):
+        return
+      case (.none,_),(_,.none):
+        break
       }
       
       if let address = account.ethAddress {
@@ -240,6 +246,8 @@ struct ProfileViewHeader: View {
             if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
               self.friendName = self.account.nearAccount
             }
+            
+            if let _ = avatar { return }
             
             $0.map {
               self.friendName = $0
@@ -253,7 +261,7 @@ struct ProfileViewHeader: View {
                 .done(on:.main) {
                   $0.map { nftItem in
                     withAnimation {
-                      self.nftInfo = (nftItem.collection,nftItem.nft)
+                      self.avatar = (nftItem.collection,nftItem.nft)
                     }
                   }
                 }
