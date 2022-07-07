@@ -160,6 +160,9 @@
 		4F881F912874FA7A00CA7465 /* ENSCached.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8F2874F4FA00CA7465 /* ENSCached.swift */; };
 		4F881F932876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
 		4F881F942876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
+		4F881F97287796AB00CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
+		4F881F98287796AB00CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
+		4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
 		4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */; };
@@ -626,6 +629,7 @@
 		4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSetCardView.swift; sourceTree = "<group>"; };
 		4F881F8F2874F4FA00CA7465 /* ENSCached.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSCached.swift; sourceTree = "<group>"; };
 		4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3HttpProviderWithRetry.swift; sourceTree = "<group>"; };
+		4F881F96287796AB00CA7465 /* PriceUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceUnit.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaFloorFetcher.swift; sourceTree = "<group>"; };
 		4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListPagedView.swift; sourceTree = "<group>"; };
@@ -925,6 +929,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		4F881F952877969900CA7465 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				4F881F96287796AB00CA7465 /* PriceUnit.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		4F99B5292857FB7E0012A3FF /* Alchemy */ = {
 			isa = PBXGroup;
 			children = (
@@ -1111,6 +1123,7 @@
 		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4F881F952877969900CA7465 /* Types */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
 				4F3FE32927E975B00036E46C /* ERC165Contract.swift */,
@@ -1746,6 +1759,7 @@
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4F99B535285804A80012A3FF /* AlchemyApi.swift in Sources */,
+				4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
@@ -1788,6 +1802,7 @@
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
+				4F881F97287796AB00CA7465 /* PriceUnit.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
@@ -1962,6 +1977,7 @@
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
 				4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
+				4F881F98287796AB00CA7465 /* PriceUnit.swift in Sources */,
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
 				4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
@@ -2208,7 +2224,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2237,7 +2253,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2349,7 +2365,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2381,7 +2397,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

@@ -71,14 +71,15 @@ let downloaders = [
 
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
 
-print(try? hang(
-  AlchemyApi.GetNFTs.get(
-    owner: EthereumAddress(
-      hex: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4",
-      eip55: true),
-    pageKey: nil)
-)
-)
+print(try! hang(
+  AlchemyApi.GetNFTMetaData.get(
+    contractAddress: EthereumAddress(
+      hex: "0x1a2f71468f656e97c2f86541e57189f59951efe7",
+      eip55: false),
+    tokenId:5067,
+    tokenType: .ERC721
+  )
+))
 
 // print(ENSContract.namehash("chilluminati.eth"))
 

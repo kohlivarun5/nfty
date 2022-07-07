@@ -45,17 +45,18 @@ struct AlchemyApi {
           if let error = error { return seal.reject(error) }
           // print(data)
           // print(String(decoding:data!,as:UTF8.self))
-          switch(data.flatMap { try? JSONDecoder().decode(Result.self, from: $0) }) {
-          case .some(let result):
-            seal.fulfill(result)
-          case .none:
-            if let httpResponse = response as? HTTPURLResponse {
-              let error = HTTPError.error(status: httpResponse.statusCode,
-                                          message: data.flatMap({ String(data: $0, encoding: .utf8) }))
-              seal.reject(error)
-            } else {
-              seal.reject(HTTPError.unknown)
-            }
+          
+          guard let data = data else {
+            let error = HTTPError.error(status: 500,message: "Data is empty")
+            seal.reject(error)
+            return
+          }
+          
+          do {
+            seal.fulfill(try JSONDecoder().decode(Result.self, from: data))
+          } catch {
+            print("JSON Serialization error:\(error), json=\(String(decoding: data, as: UTF8.self))")
+            seal.reject(error)
           }
         }
         task.resume()
@@ -156,6 +157,52 @@ struct AlchemyApi {
           }
         }
       }
+    }
+  }
+  
+  struct GetNFTMetaData {
+    
+    // Result(contract: DownloadCollection.AlchemyApi.GetNFTMetaData.Result.Contract(address: "0x1a2f71468f656e97c2f86541e57189f59951efe7"), id: DownloadCollection.AlchemyApi.GetNFTMetaData.Result.Id(tokenId: "5067"), media: [DownloadCollection.AlchemyApi.GetNFTMetaData.Result.Media(raw: "https://ipfs.io/ipfs/QmSnoLjp5nyG7w26KPM3XaPUsB6VfrFVTAkMZ2vwTFZebE", gateway: "https://res.cloudinary.com/alchemyapi/image/upload/mainnet/34ddeba4023299a30017b4ff9f4eb857.jpg", thumbnail: Optional("https://res.cloudinary.com/alchemyapi/image/upload/w_256,h_256/mainnet/34ddeba4023299a30017b4ff9f4eb857.jpg"))], metadata: DownloadCollection.AlchemyApi.GetNFTMetaData.Result.Metadata(image: "https://ipfs.io/ipfs/QmSnoLjp5nyG7w26KPM3XaPUsB6VfrFVTAkMZ2vwTFZebE", external_url: nil))
+    struct Result : Decodable {
+      struct Contract : Decodable {
+        let address : String
+      }
+      struct Id : Decodable {
+        let tokenId : String
+      }
+      struct Media : Decodable {
+        let raw : String
+        let gateway : String
+        let thumbnail : String?
+      }
+      struct Metadata : Decodable {
+        let image : String
+        let external_url : String?
+      }
+      let contract : Contract
+      let id : Id
+      let media : [Media]
+      let metadata : Metadata
+    }
+    
+    enum TokenType : String {
+      case ERC721
+      case ERC1155
+    }
+    
+    static func get(contractAddress:EthereumAddress,tokenId:BigUInt,tokenType:TokenType) -> Promise<Result> {
+      var components = URLComponents()
+      // https://eth-mainnet.alchemyapi.io/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc
+      components.scheme = "https"
+      components.host = "eth-mainnet.alchemyapi.io"
+      components.path = "/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc/getNFTMetadata"
+      components.queryItems = [
+        URLQueryItem(name: "contractAddress", value: contractAddress.hex(eip55: true)),
+        URLQueryItem(name: "tokenId", value: String(tokenId)),
+        URLQueryItem(name: "tokenType", value: tokenType.rawValue)
+      ]
+      
+      return AlchemyApi.Impl.fetch(url: components.url!, params: nil)
     }
   }
   
