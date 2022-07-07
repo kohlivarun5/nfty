@@ -40,7 +40,7 @@ struct PrivateCollectionView: View {
     
     VStack(spacing:0) {
       
-      ProfileViewHeader(account:account,isOwnerView: false,addTopPadding:true,avatar:self.avatar,friendName: self.ensName)
+      ProfileViewHeader(account:account,isOwnerView: false,addTopPadding:true,friendName: self.ensName,avatar:self.avatar)
       
       VStack(spacing:0) {
         

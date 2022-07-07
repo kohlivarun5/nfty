@@ -15,31 +15,18 @@ struct ProfileViewHeader: View {
   let isOwnerView : Bool
   let addTopPadding : Bool
   
+  @State var friendName : String?
+  @State var avatar : (Collection,NFT)?
+  
   @State private var balance : EthereumQuantity? = nil
   
   @State private var isFollowing = false
   
-  @State private var friendName : String?
   @State private var showDialog = false
-  
-  @State private var avatar : (Collection,NFT)?
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
   
   @State private var avatarNavLinkActive : Bool = false
-  
-  init(account:UserAccount,isOwnerView:Bool,addTopPadding:Bool) {
-    self.account = account
-    self.isOwnerView = isOwnerView
-    self.addTopPadding = addTopPadding
-  }
-  init(account:UserAccount,isOwnerView:Bool,addTopPadding:Bool,avatar:(Collection,NFT)?,friendName:String?) {
-    self.account = account
-    self.isOwnerView = isOwnerView
-    self.addTopPadding = addTopPadding
-    self.friendName = friendName
-    self.avatar = avatar
-  }
   
   private func setFriend(_ name:String) {
     
@@ -243,8 +230,6 @@ struct ProfileViewHeader: View {
       case .none:
         self.isFollowing = false
       }
-      
-      print("friendName=\(self.friendName),avatar=\(self.avatar)")
       
       switch(self.friendName,self.avatar) {
       case (.some,.some):
