@@ -35,14 +35,14 @@ class Erc721Contract {
       address = try? EthereumAddress(hex:addressHex, eip55: false)
     }
     
-    func name() -> Promise<String> {
+    func name() -> Promise<String?> {
       let inputs : [SolidityFunctionParameter] = []
       let outputs = [SolidityFunctionParameter(name: "name", type: .string)]
       let method = SolidityConstantFunction(name: "name", inputs: inputs, outputs: outputs, handler: self)
       print("calling name")
       return method.invoke().call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
-          return outputs["name"] as! String
+          return outputs["name"] as? String
         }
     }
     

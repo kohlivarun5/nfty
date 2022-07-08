@@ -70,16 +70,9 @@ let downloaders = [
 
 
 // var web3 = Web3(rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921")
-
-print(try? hang(
-  AlchemyApi.GetNFTs.get(
-    owner: EthereumAddress(
-      hex: "0xAe71923d145ec0eAEDb2CF8197A08f12525Bddf4",
-      eip55: true),
-    pageKey: nil)
-)
-)
-
+let imagePathURL = URL(fileURLWithPath: "/Users/vkohli/Github/NFTY/NFTY/Assets.xcassets/COOL_CATS1.imageset/COOL_CATS1.png")
+let data = try! Data(contentsOf: imagePathURL)
+print(NeuralHash.generate(image:data) { print($0) })
 // print(ENSContract.namehash("chilluminati.eth"))
 
 // https://etherscan.io/address/0x00000000000c2e074ec69a0dfb2997ba6c7d2e1e#readContract

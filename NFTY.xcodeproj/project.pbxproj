@@ -95,6 +95,9 @@
 		4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4557D026ACC0A400092AC0 /* SheetButton.swift */; };
 		4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F468F682645FECB00CA6525 /* AddFavSheet.swift */; };
 		4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 4F468F6B2646D63E00CA6525 /* Introspect */; };
+		4F493CEB2877E0CB00F42777 /* NeuralHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F493CEA2877E0CB00F42777 /* NeuralHash.swift */; };
+		4F493CEC2877E0CB00F42777 /* NeuralHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F493CEA2877E0CB00F42777 /* NeuralHash.swift */; };
+		4F493CED2877E0CB00F42777 /* NeuralHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F493CEA2877E0CB00F42777 /* NeuralHash.swift */; };
 		4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */; };
 		4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C6981264F6483005B9A23 /* AutoglyphView.swift */; };
 		4F4CA8012635D806001534A6 /* FavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CA8002635D806001534A6 /* FavButton.swift */; };
@@ -160,6 +163,9 @@
 		4F881F912874FA7A00CA7465 /* ENSCached.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F8F2874F4FA00CA7465 /* ENSCached.swift */; };
 		4F881F932876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
 		4F881F942876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
+		4F881F97287796AB00CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
+		4F881F98287796AB00CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
+		4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F96287796AB00CA7465 /* PriceUnit.swift */; };
 		4F8A58A4263F19E200480E54 /* AsciiPunks_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */; };
 		4F8E16F827B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
 		4F8E16FA27B06EE800E54BB5 /* TokenListPagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */; };
@@ -574,6 +580,8 @@
 		4F446F2D263773EE00BE739E /* CryptoPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F4557D026ACC0A400092AC0 /* SheetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetButton.swift; sourceTree = "<group>"; };
 		4F468F682645FECB00CA6525 /* AddFavSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFavSheet.swift; sourceTree = "<group>"; };
+		4F493CE92877E07900F42777 /* nscalc-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nscalc-Bridging-Header.h"; sourceTree = "<group>"; };
+		4F493CEA2877E0CB00F42777 /* NeuralHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralHash.swift; sourceTree = "<group>"; };
 		4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerProfileLinkButton.swift; sourceTree = "<group>"; };
 		4F4C6981264F6483005B9A23 /* AutoglyphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoglyphView.swift; sourceTree = "<group>"; };
 		4F4CA8002635D806001534A6 /* FavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavButton.swift; sourceTree = "<group>"; };
@@ -626,6 +634,7 @@
 		4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSetCardView.swift; sourceTree = "<group>"; };
 		4F881F8F2874F4FA00CA7465 /* ENSCached.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSCached.swift; sourceTree = "<group>"; };
 		4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3HttpProviderWithRetry.swift; sourceTree = "<group>"; };
+		4F881F96287796AB00CA7465 /* PriceUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceUnit.swift; sourceTree = "<group>"; };
 		4F8A58A3263F19E200480E54 /* AsciiPunks_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AsciiPunks_nearestTokens.json; sourceTree = "<group>"; };
 		4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaFloorFetcher.swift; sourceTree = "<group>"; };
 		4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListPagedView.swift; sourceTree = "<group>"; };
@@ -871,6 +880,15 @@
 			path = CoreDataModels;
 			sourceTree = "<group>";
 		};
+		4F493CE82877E04600F42777 /* NeuralHash */ = {
+			isa = PBXGroup;
+			children = (
+				4F493CE92877E07900F42777 /* nscalc-Bridging-Header.h */,
+				4F493CEA2877E0CB00F42777 /* NeuralHash.swift */,
+			);
+			path = NeuralHash;
+			sourceTree = "<group>";
+		};
 		4F529BB127B054F400EFE626 /* OpenSea */ = {
 			isa = PBXGroup;
 			children = (
@@ -923,6 +941,14 @@
 				4F881F892871613100CA7465 /* ENSTextChangedViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4F881F952877969900CA7465 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				4F881F96287796AB00CA7465 /* PriceUnit.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		4F99B5292857FB7E0012A3FF /* Alchemy */ = {
@@ -1111,6 +1137,7 @@
 		4FB9A7F8262B3B1A00C58AF9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4F881F952877969900CA7465 /* Types */,
 				4F27A7C6267FE1EB008CCB0A /* CollectionContracts */,
 				4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */,
 				4F3FE32927E975B00036E46C /* ERC165Contract.swift */,
@@ -1144,6 +1171,7 @@
 				4F881F872871580B00CA7465 /* ENSTextChangedFeed.swift */,
 				4F881F8F2874F4FA00CA7465 /* ENSCached.swift */,
 				4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */,
+				4F493CE82877E04600F42777 /* NeuralHash */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1746,11 +1774,13 @@
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4F99B535285804A80012A3FF /* AlchemyApi.swift in Sources */,
+				4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
 				4FD95B95280FA1C1009EA52F /* ENSContract.swift in Sources */,
 				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
+				4F493CEC2877E0CB00F42777 /* NeuralHash.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1788,6 +1818,7 @@
 				4F961F7A271CC12600639E85 /* NftTradeUrlView.swift in Sources */,
 				4F926EAB27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */,
+				4F881F97287796AB00CA7465 /* PriceUnit.swift in Sources */,
 				4FB8445526B0FEAF005163D4 /* CryptoPunks.swift in Sources */,
 				4FF84E53269512CE0079039E /* TradableTokenPrice.swift in Sources */,
 				4F343D7E285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
@@ -1875,6 +1906,7 @@
 				4F667F70264B2C0200E7A214 /* ObservedPromiseView.swift in Sources */,
 				4F881F862871546500CA7465 /* CKPublicDataManager.swift in Sources */,
 				4FCB496026D179A500696F91 /* AsciiPunksContract.swift in Sources */,
+				4F493CEB2877E0CB00F42777 /* NeuralHash.swift in Sources */,
 				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */,
@@ -1934,6 +1966,7 @@
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
+				4F493CED2877E0CB00F42777 /* NeuralHash.swift in Sources */,
 				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
 				4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */,
 				4F3FE32D27E97DEE0036E46C /* MakeErc721Collection.swift in Sources */,
@@ -1962,6 +1995,7 @@
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
 				4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
+				4F881F98287796AB00CA7465 /* PriceUnit.swift in Sources */,
 				4FDEABAF278E544500F92160 /* WalletProvider.swift in Sources */,
 				4F343D74285E7C23009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B3027C855CD009908C5 /* UserAccountOffers.swift in Sources */,
@@ -2139,6 +2173,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "NFTY/Model/NeuralHash/nscalc-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2193,6 +2228,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "NFTY/Model/NeuralHash/nscalc-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2208,7 +2244,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2237,7 +2273,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2349,7 +2385,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2381,7 +2417,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

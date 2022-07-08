@@ -31,7 +31,34 @@ class IpfsCollectionContract : ContractInterface {
     
     private static let base64JsonPrefix = "data:application/json;base64,"
     private static let utf8JsonPrefix = "data:application/json;utf8,"
-    func image(_ tokenId:BigUInt) -> Promise<Data?> {
+    
+    func image_Alchemy(_ tokenId:BigUInt) -> Promise<Data?> {
+      return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
+        .then { result -> Promise<Data?> in
+          
+          guard let media = result.media.first else { return Promise.value(nil) }
+          
+          return Promise { seal in
+            let uri = media.gateway // ?? media.raw
+            guard let url = URL(string:uri) else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
+            
+            var request = URLRequest(url:url)
+            request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
+            
+            IpfsImageEthContract.UrlSession.enqueue(
+              with: request,
+              completionHandler:{ data, response, error -> Void in
+                if let error = error { return seal.reject(error) }
+                // print(data,response,error)
+                seal.fulfill(data)
+              }
+            )
+          }
+        }
+    }
+    
+    func image_raw(_ tokenId:BigUInt) -> Promise<Data?> {
+      
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
           
@@ -122,6 +149,22 @@ class IpfsCollectionContract : ContractInterface {
           }
         }
     }
+    
+    
+    func image(_ tokenId:BigUInt) -> Promise<Data?> {
+      self.image_Alchemy(tokenId)
+        .recover { error -> Promise<Data?> in
+          print("Alchemy Image fetch failed with \(error)")
+          return Promise.value(nil)
+        }.then { (data:Data?) -> Promise<Data?> in
+          switch (data) {
+          case .some(let data):
+            return Promise.value(data)
+          case .none:
+            return self.image_raw(tokenId)
+          }
+        }
+    }
   }
   
   private var imageCache : CKImageCacheCore
@@ -148,6 +191,7 @@ class IpfsCollectionContract : ContractInterface {
     self.imageCache = CKImageCacheCore(
       database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
       bucket: "collections/\(contractAddressHex.lowercased())/images",
+      collectionAddress: contractAddressHex,
       fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
