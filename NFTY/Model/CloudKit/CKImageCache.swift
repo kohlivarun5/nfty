@@ -90,7 +90,7 @@ struct CKImageCacheCore {
           let compressionAlgorithm = CompressionAlgorithm.lzfse
           record.setValuesForKeys([
             assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)),
-            compressionAlgorithmKey : compressionAlgorithm
+            compressionAlgorithmKey : compressionAlgorithm.rawValue
           ])
           print("Saving recordId=\(recordId)")
           database.save(record:record)
