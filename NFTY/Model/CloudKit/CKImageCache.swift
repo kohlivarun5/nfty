@@ -108,7 +108,7 @@ struct CKImageCacheCore {
               record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
             }
             if let neuralHash = neuralHash {
-              print("NeuralHash=\(neuralHash)")
+              print("NeuralHash=\(neuralHash) for \(recordId)")
               record.setValue(neuralHash, forKey: neuralHashKey)
             }
             print("Saving recordId=\(recordId)")
