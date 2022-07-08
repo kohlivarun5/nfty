@@ -18,20 +18,26 @@ struct CKImageCacheCore {
     case lzfse
   }
   
-  private func createLocalFile(path:String,data: Data,compressionAlgorithm:CompressionAlgorithm) -> URL {
-    
+  private func compressedData(data:Data,compressionAlgorithm:CompressionAlgorithm) -> (NSData,CompressionAlgorithm?) {
     switch(compressionAlgorithm) {
     case .lzfse:
-      let compressedData = (try? (data as NSData).compressed(using: .lzfse)) ?? (data as NSData)
-      
-      let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
-      let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
-      try! compressedData.write(to: fileURL)
-      return fileURL
+      switch(try? (data as NSData).compressed(using: .lzfse)) {
+      case .some(let compressed):
+        return (compressed,compressionAlgorithm)
+      case .none:
+        return ((data as NSData),nil)
+      }
     }
-    
   }
-   
+  
+  private func createLocalFile(path:String,data: Data,compressionAlgorithm:CompressionAlgorithm) -> (URL,CompressionAlgorithm?) {
+    let (data,compressionAlgorithm) = compressedData(data:data,compressionAlgorithm: compressionAlgorithm)
+    let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory())
+    let fileURL = tmpSubFolderURL.appendingPathComponent(path.replacingOccurrences(of: "/", with: "."))
+    try! data.write(to: fileURL)
+    return (fileURL,compressionAlgorithm)
+  }
+  
   private func readLocalFile(_ url:URL,compressionAlgorithm:CompressionAlgorithm?) -> Data? {
     guard let algorithm = compressionAlgorithm else { return try? Data(contentsOf:url) }
     switch(algorithm) {
@@ -43,18 +49,22 @@ struct CKImageCacheCore {
   let database : CKDatabase
   let bucket : String
   let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
+  let collectionAddress : String
   
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
   
   private let assetKey = "image"
   private let compressionAlgorithmKey = "compressionAlgorithm"
+  private let neuralHashKey = "neuralHash"
+  private let collectionAddressKey = "collectionAddress"
   
   
-  init(database:CKDatabase,bucket:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
+  init(database:CKDatabase,bucket:String,collectionAddress:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
     self.database = database
     self.bucket = bucket
     self.fallback = fallback
+    self.collectionAddress = collectionAddress
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
       transformer: TransformerFactory.forImage())
@@ -88,20 +98,51 @@ struct CKImageCacheCore {
           let recordId = self.recordName(tokenId)
           let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
           let compressionAlgorithm = CompressionAlgorithm.lzfse
-          record.setValuesForKeys([
-            assetKey: CKAsset.init(fileURL: createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)),
-            compressionAlgorithmKey : compressionAlgorithm.rawValue
-          ])
-          print("Saving recordId=\(recordId)")
-          database.save(record:record)
-            .done(on:.global(qos: .background)) { result in
-              print("Save returned for \(recordId)")
+          NeuralHash.generate(image: data) { (neuralHash:String?) in
+            let (file,compressionAlgorithm) = createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)
+            record.setValuesForKeys([
+              collectionAddressKey : self.collectionAddress,
+              assetKey: CKAsset.init(fileURL: file)
+            ])
+            if let compressionAlgorithm = compressionAlgorithm {
+              record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
             }
-            .catch { print($0) }
+            if let neuralHash = neuralHash {
+              print("NeuralHash=\(neuralHash)")
+              record.setValue(neuralHash, forKey: neuralHashKey)
+            }
+            print("Saving recordId=\(recordId)")
+            database.save(record:record)
+              .done(on:.global(qos: .background)) { result in
+                print("Save returned for \(recordId)")
+              }
+              .catch { print($0) }
+          }
         }
         return image
       }
   }
+  
+  /*
+   TokenImageCache
+   collectionAddress
+   STRING
+   Queryable
+   
+   compressionAlgorithm
+   INT(64)
+   None
+   
+   image
+   ASSET
+   None
+   
+   neuralHash
+   STRING
+   Sortable
+   
+
+   */
   
   
   func image(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
@@ -110,7 +151,7 @@ struct CKImageCacheCore {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
-         case (.none,_),(_,.none):
+        case (.none,_),(_,.none):
           let recordName = self.recordName(tokenId)
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))

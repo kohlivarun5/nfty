@@ -191,6 +191,7 @@ class IpfsCollectionContract : ContractInterface {
     self.imageCache = CKImageCacheCore(
       database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
       bucket: "collections/\(contractAddressHex.lowercased())/images",
+      collectionAddress: contractAddressHex,
       fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
     self.indicativePriceSource = indicativePriceSource
