@@ -77,7 +77,7 @@ struct UserUrlView: View {
         }
       }.padding(.top)
       
-      WalletTokensView(tokens: getOwnerTokens(account))
+      WalletTokensView(tokens: getOwnerTokens(account),redactPrice: false)
         .onAppear {
           
           guard let key = key() else { return }

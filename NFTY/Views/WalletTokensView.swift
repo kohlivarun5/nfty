@@ -15,11 +15,12 @@ struct WalletTokensView: View {
   @EnvironmentObject var userWallet: UserWallet
   
   @StateObject var tokens : NftOwnerTokens
+  let redactPrice : Bool
   
   @State private var selectedToken: NFTTokenEquatable? = nil
   
   var body: some View {
-    WalletTokensSelector(tokens: tokens, enableNavLinks: true,selectedToken:$selectedToken)
+    WalletTokensSelector(tokens: tokens, enableNavLinks: true,redactPrice:redactPrice,selectedToken:$selectedToken)
       .sheet(item: $selectedToken, onDismiss: { self.selectedToken = nil }) { selected in
         TokenTradeView(
           nft: selected.token.nft.nft,

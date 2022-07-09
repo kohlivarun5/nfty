@@ -67,7 +67,7 @@ struct WalletView: View {
           
           switch(self.tokensPage) {
           case .owned:
-            WalletTokensView(tokens: getOwnerTokens(account))
+            WalletTokensView(tokens: getOwnerTokens(account),redactPrice:true)
           case .bids:
             ActivityView(account:account,kind:UserAccountOffers.Kind.bids,emptyMessage:"No Active Bids")
           case .sales:

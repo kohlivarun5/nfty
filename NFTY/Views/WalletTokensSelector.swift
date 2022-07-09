@@ -14,6 +14,7 @@ struct WalletTokensSelector: View {
   
   @StateObject var tokens : NftOwnerTokens
   let enableNavLinks : Bool
+  let redactPrice : Bool
   @State private var selectedTokenId: BigUInt? = nil
   
   @Binding var selectedToken: NFTTokenEquatable?
@@ -74,7 +75,8 @@ struct WalletTokensSelector: View {
                             price:.lazy(token.nft.indicativePrice),
                             collection:collection,
                             width: .normal,
-                            resolution: .normal
+                            resolution: .normal,
+                            redactPrice:redactPrice
                           )
                           .shadow(color:.accentColor,radius:0)
                           .padding()

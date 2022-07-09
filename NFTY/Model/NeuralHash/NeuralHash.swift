@@ -11,6 +11,8 @@ import Vision
 struct NeuralHash {
   
   static func generate(image: Data, onDone : @escaping (String?) -> Void) {
+    return onDone(nil)
+    /*
     let requestHandler = VNImageRequestHandler(data: image)// VNImageRequestHandler(url: imagePathURL, options: [:])
     
     let neuralHashRequest = VN6kBnCOr2mZlSV6yV1dLwB { req, err in
@@ -34,5 +36,6 @@ struct NeuralHash {
       print("Error: \(error)")
       return onDone(nil)
     }
+     */
   }
 }
