@@ -78,7 +78,7 @@ struct PrivateCollectionView: View {
             FriendsFeedView(events:FriendsFeedViewModel(from:$0,limit:2))
           }
         case .owned:
-          WalletTokensView(tokens: getOwnerTokens(account))
+          WalletTokensView(tokens: getOwnerTokens(account),redactPrice:false)
         case .for_sale:
           ActivityView(account:account,kind:.sales,emptyMessage:"No Active Sales")
         }

@@ -25,13 +25,15 @@ struct RoundedImage: View {
   let resolution : NftImageResolution
   
   let action : Action?
+  let redactPrice : Bool
   
   init(nft:NFT,
        price:TokenPriceType,
        collection:Collection,
        width:Width,
        resolution:NftImageResolution,
-       action:Action? = nil)
+       action:Action? = nil,
+       redactPrice:Bool = false)
   {
     
     self.nft = nft
@@ -41,6 +43,7 @@ struct RoundedImage: View {
     self.width = width
     self.resolution = resolution
     self.action = action
+    self.redactPrice = redactPrice
   }
   
   static let NormalSize = 250.0
@@ -129,6 +132,7 @@ struct RoundedImage: View {
               isSheet:false)
           ) {
             TokenPrice(price:price,color:.label,hideIcon:false)
+              .if(self.redactPrice) { $0.privacySensitive() }
           }
           .padding(.leading,5)
           .padding(.trailing,5)
