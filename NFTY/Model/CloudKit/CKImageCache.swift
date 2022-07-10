@@ -102,11 +102,8 @@ struct CKImageCacheCore {
   
   private func imageOfData(_ data:Data) -> Media.IpfsImage? {
 #if os(macOS)
-    return UIImage(data:data)
-      .flatMap { image_hd in
-        image_hd
-          .map { Media.IpfsImage(image:$0,image_hd:$0) }
-      }
+    return NSImage(data:data)
+      .map { Media.IpfsImage(image:$0,image_hd:$0) }
 #else
     return UIImage(data:data)
       .flatMap { image_hd in

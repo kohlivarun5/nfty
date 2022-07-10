@@ -13,6 +13,23 @@ import CloudKit
 struct MakeErc721Collection {
   
   static func ofName(name:String,address:EthereumAddress) -> Collection {
+  #if os(macOS)
+    return  Collection(
+      info: CollectionInfo(
+        address: address.hex(eip55: true),
+        sample: "SAMPLE_ZUNK",
+        name: name,
+        webLink: nil,
+        themeColor: .black,
+        themeLabelColor: .white,
+        disableRecentTrades: true,
+        similarTokens: nil,
+        rarityRanking: nil),
+      contract: IpfsCollectionContract(
+        name: name,
+        address: address.hex(eip55: true), indicativePriceSource: .openSea)
+    )
+    #else
     return  Collection(
       info: CollectionInfo(
         address: address.hex(eip55: true),
@@ -28,6 +45,7 @@ struct MakeErc721Collection {
         name: name,
         address: address.hex(eip55: true), indicativePriceSource: .openSea)
     )
+    #endif
   }
   
   static private let KnownUnsupportedName = "com.nftygo.unsupported"
@@ -70,7 +88,8 @@ struct MakeErc721Collection {
       }
     }
   }
-  
+
+#if !os(macOS)
   private static var collectionCache = CKObjectCache(
     database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
     entityName: "CollectionMetaData",
@@ -86,6 +105,7 @@ struct MakeErc721Collection {
     },
     keyToString: { $0 }
   )
+
   
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
     
@@ -105,5 +125,6 @@ struct MakeErc721Collection {
         }
       }
   }
+#endif
   
 }

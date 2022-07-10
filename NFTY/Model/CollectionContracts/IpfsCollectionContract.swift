@@ -12,6 +12,10 @@ import Web3ContractABI
 import Cache
 import CloudKit
 
+#if os(macOS)
+import AppKit
+#endif
+
 
 class IpfsCollectionContract : ContractInterface {
   
@@ -20,6 +24,7 @@ class IpfsCollectionContract : ContractInterface {
     struct TokenUriData : Codable {
       let image : String?
       let image_url : String?
+      let image_data : String?
     }
     
     static let UrlSession = UrlTaskThrottle(
@@ -30,6 +35,8 @@ class IpfsCollectionContract : ContractInterface {
     
     private static let base64JsonPrefix = "data:application/json;base64,"
     private static let utf8JsonPrefix = "data:application/json;utf8,"
+    
+    private static let base64SvgXmlPrefix = "data:image/svg+xml;base64,"
     
     func image_Alchemy(_ tokenId:BigUInt) -> Promise<Data?> {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
@@ -85,8 +92,6 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-            
-            
             switch(URL(string: ipfsUrl(uri))) {
             case .none:
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
@@ -123,13 +128,25 @@ class IpfsCollectionContract : ContractInterface {
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
           
           return Promise { seal in
-            let uri = (uriData.image == nil ? uriData.image_url : uriData.image)
+            let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
             
-            switch(
-              uri
-                .map(ipfsUrl)
-                .flatMap { URL(string:$0) }
-            ) {
+            guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
+            
+            if (uri.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix)) {
+              do {
+                var index = uri.firstIndex(of: ",")!
+                uri.formIndex(after: &index)
+                let str : String = String(uri.suffix(from:index))
+                print("string",str)
+                let data =  Data(base64Encoded: str)!
+                print("json=",String(data:data,encoding:.ascii))
+                seal.fulfill(nil)
+              } catch {
+                seal.reject(error)
+              }
+            }
+            
+            switch(URL(string:ipfsUrl(uri))) {
             case .none:
               seal.reject(NSError(domain:"", code:404, userInfo:nil))
             case .some(let url):
@@ -166,7 +183,9 @@ class IpfsCollectionContract : ContractInterface {
     }
   }
   
+#if !os(macOS)
   private var imageCache : CKImageCacheCore
+#endif
   private var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
   let name : String
@@ -187,12 +206,17 @@ class IpfsCollectionContract : ContractInterface {
     self.name = name
     self.contractAddressHex = address
     self.ethContract = IpfsImageEthContract(address:address)
+    
+#if os(macOS)
+    self.tradeActions = nil
+#else
     self.imageCache = CKImageCacheCore(
       database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
       bucket: "collections/\(contractAddressHex.lowercased())/images",
       collectionAddress: contractAddressHex,
       fallback:self.ethContract.image)
     self.tradeActions = OpenSeaTradeApi(contract: try! EthereumAddress(hex: contractAddressHex, eip55: false))
+#endif
     self.indicativePriceSource = indicativePriceSource
   }
   
@@ -201,7 +225,14 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   private func download(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
+#if os(macOS)
+    return ObservablePromise(
+      promise:self.ethContract.image(tokenId)
+        .map { $0.flatMap { NSImage(data:$0).map { Media.IpfsImage(image:$0,image_hd:$0) } } }
+    )
+#else
     return imageCache.image(tokenId)
+#endif
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {

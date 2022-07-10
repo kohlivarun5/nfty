@@ -31,6 +31,17 @@
 		4F12715D26EDD43D007E6A7B /* Bombs_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */; };
 		4F12716026EDDD5D007E6A7B /* Bombs_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */; };
 		4F12716126EDDD5D007E6A7B /* Bombs_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */; };
+		4F12CE52287B9686009B26B8 /* NFTYgoMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */; };
+		4F12CE54287B9686009B26B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE53287B9686009B26B8 /* ContentView.swift */; };
+		4F12CE56287B9688009B26B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F12CE55287B9688009B26B8 /* Assets.xcassets */; };
+		4F12CE59287B9688009B26B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */; };
+		4F12CE5B287B9688009B26B8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE5A287B9688009B26B8 /* Persistence.swift */; };
+		4F12CE5E287B9688009B26B8 /* NFTYgoMac.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */; };
+		4F12CE64287B96F7009B26B8 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE63287B96F7009B26B8 /* Web3 */; };
+		4F12CE66287B96F7009B26B8 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE65287B96F7009B26B8 /* Web3ContractABI */; };
+		4F12CE68287B9704009B26B8 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE67287B9703009B26B8 /* Cache */; };
+		4F12CE69287B9710009B26B8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F196E22287B8E3B0019ACD8 /* CloudKit.framework */; };
+		4F12CE6A287B9735009B26B8 /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
 		4F12FAA32718EC9E004C3E16 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
@@ -43,16 +54,24 @@
 		4F196E0A287B88660019ACD8 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
 		4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
-		4F196E0E287B8A760019ACD8 /* CKPublicDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */; };
 		4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
 		4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F196E12287B8B560019ACD8 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
 		4F196E13287B8BBE0019ACD8 /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
 		4F196E14287B8BC90019ACD8 /* TokenTradeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */; };
-		4F196E15287B8BD80019ACD8 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
 		4F196E16287B8BE60019ACD8 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
 		4F196E17287B8BF30019ACD8 /* PagedTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */; };
+		4F196E18287B8C3F0019ACD8 /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */; };
+		4F196E19287B8C4F0019ACD8 /* OpenSeaFloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E16F727B06E8A00E54BB5 /* OpenSeaFloorFetcher.swift */; };
+		4F196E1A287B8C5D0019ACD8 /* CollectionVaultContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35829F27839A6700D119F8 /* CollectionVaultContract.swift */; };
+		4F196E1B287B8C700019ACD8 /* ImmutableObjects.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FBB70BB28652E0F00682845 /* ImmutableObjects.xcdatamodeld */; };
+		4F196E1C287B8C850019ACD8 /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
+		4F196E1D287B8CB60019ACD8 /* Web3HttpProviderWithRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F881F922876924E00CA7465 /* Web3HttpProviderWithRetry.swift */; };
+		4F196E1E287B8CC40019ACD8 /* OpenSeaApiCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BBC27B0648E00EFE626 /* OpenSeaApiCore.swift */; };
+		4F196E1F287B8CD20019ACD8 /* WalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED1E4026D4757C006274CE /* WalletProvider.swift */; };
+		4F196E20287B8CDF0019ACD8 /* LoadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D72285E79E6009FFB6D /* LoadingProtocol.swift */; };
+		4F196E21287B8CF80019ACD8 /* OpenSeaGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB227B0551200EFE626 /* OpenSeaGQL.swift */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -545,11 +564,21 @@
 		4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_attributeScores.json; sourceTree = "<group>"; };
 		4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_nearestTokens.json; sourceTree = "<group>"; };
 		4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_rarityRanks.json; sourceTree = "<group>"; };
+		4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTYgoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYgoMacApp.swift; sourceTree = "<group>"; };
+		4F12CE53287B9686009B26B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4F12CE55287B9688009B26B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4F12CE5A287B9688009B26B8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NFTYgoMac.xcdatamodel; sourceTree = "<group>"; };
+		4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYgoMac.entitlements; sourceTree = "<group>"; };
 		4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeRanks.json; sourceTree = "<group>"; };
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
 		4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_nearestTokens.json; sourceTree = "<group>"; };
 		4F196E06287B88460019ACD8 /* ContractInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInterface.swift; sourceTree = "<group>"; };
+		4F196E22287B8E3B0019ACD8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		4F196E24287B8E7E0019ACD8 /* DownloadCollection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DownloadCollection.entitlements; sourceTree = "<group>"; };
 		4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeRanks.json; sourceTree = "<group>"; };
 		4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeScores.json; sourceTree = "<group>"; };
 		4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_nearestTokens.json; sourceTree = "<group>"; };
@@ -794,6 +823,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4F12CE4C287B9686009B26B8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F12CE68287B9704009B26B8 /* Cache in Frameworks */,
+				4F12CE69287B9710009B26B8 /* CloudKit.framework in Frameworks */,
+				4F12CE66287B96F7009B26B8 /* Web3ContractABI in Frameworks */,
+				4F12CE64287B96F7009B26B8 /* Web3 in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4F1E4F3826C850B7009D27E6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -865,6 +905,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F12CE50287B9686009B26B8 /* NFTYgoMac */ = {
+			isa = PBXGroup;
+			children = (
+				4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */,
+				4F12CE53287B9686009B26B8 /* ContentView.swift */,
+				4F12CE55287B9688009B26B8 /* Assets.xcassets */,
+				4F12CE5A287B9688009B26B8 /* Persistence.swift */,
+				4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */,
+				4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */,
+				4F12CE57287B9688009B26B8 /* Preview Content */,
+			);
+			path = NFTYgoMac;
+			sourceTree = "<group>";
+		};
+		4F12CE57287B9688009B26B8 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXGroup;
 			children = (
@@ -924,6 +986,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB7E9D4285028AE001CB086 /* CloudKit.framework */,
+				4F196E22287B8E3B0019ACD8 /* CloudKit.framework */,
 				4FDEAB7B278E3F5500F92160 /* WidgetKit.framework */,
 				4FDEAB7D278E3F5500F92160 /* SwiftUI.framework */,
 			);
@@ -1019,9 +1082,11 @@
 		4FB9A7A4262B28A300C58AF9 = {
 			isa = PBXGroup;
 			children = (
+				4F196E24287B8E7E0019ACD8 /* DownloadCollection.entitlements */,
 				4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */,
 				4FB72E4626A8DF250083F255 /* NFTRanking */,
 				4FDEAB7F278E3F5500F92160 /* NFTYWidget */,
+				4F12CE50287B9686009B26B8 /* NFTYgoMac */,
 				4F58A06C2636942200E258C1 /* Frameworks */,
 				4FB9A7AF262B28A300C58AF9 /* NFTY */,
 				4FB9A7C1262B28A400C58AF9 /* NFTYTests */,
@@ -1040,6 +1105,7 @@
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */,
 				4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */,
+				4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1337,6 +1403,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4F12CE4E287B9686009B26B8 /* NFTYgoMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F12CE60287B9688009B26B8 /* Build configuration list for PBXNativeTarget "NFTYgoMac" */;
+			buildPhases = (
+				4F12CE4B287B9686009B26B8 /* Sources */,
+				4F12CE4C287B9686009B26B8 /* Frameworks */,
+				4F12CE4D287B9686009B26B8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NFTYgoMac;
+			packageProductDependencies = (
+				4F12CE63287B96F7009B26B8 /* Web3 */,
+				4F12CE65287B96F7009B26B8 /* Web3ContractABI */,
+				4F12CE67287B9703009B26B8 /* Cache */,
+			);
+			productName = NFTYgoMac;
+			productReference = 4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */;
+			productType = "com.apple.product-type.application";
+		};
 		4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */;
@@ -1490,9 +1578,12 @@
 				KnownAssetTags = (
 					TokenRanking,
 				);
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					4F12CE4E287B9686009B26B8 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					4F1E4F3A26C850B7009D27E6 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -1545,11 +1636,21 @@
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */,
 				4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */,
+				4F12CE4E287B9686009B26B8 /* NFTYgoMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4F12CE4D287B9686009B26B8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F12CE59287B9688009B26B8 /* Preview Assets.xcassets in Resources */,
+				4F12CE56287B9688009B26B8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FB9A7AB262B28A300C58AF9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1774,6 +1875,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4F12CE4B287B9686009B26B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F12CE6A287B9735009B26B8 /* MakeErc721Collection.swift in Sources */,
+				4F12CE5B287B9688009B26B8 /* Persistence.swift in Sources */,
+				4F12CE54287B9686009B26B8 /* ContentView.swift in Sources */,
+				4F12CE5E287B9688009B26B8 /* NFTYgoMac.xcdatamodeld in Sources */,
+				4F12CE52287B9686009B26B8 /* NFTYgoMacApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4F1E4F3726C850B7009D27E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1795,27 +1908,35 @@
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F196E05287B88020019ACD8 /* NFT.swift in Sources */,
 				4F196E16287B8BE60019ACD8 /* TokenContracts.swift in Sources */,
+				4F196E1B287B8C700019ACD8 /* ImmutableObjects.xcdatamodeld in Sources */,
 				4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */,
 				4F196E12287B8B560019ACD8 /* CoreDataManager.swift in Sources */,
+				4F196E1E287B8CC40019ACD8 /* OpenSeaApiCore.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
 				4F196E14287B8BC90019ACD8 /* TokenTradeInterface.swift in Sources */,
+				4F196E18287B8C3F0019ACD8 /* CloudKitExtensions.swift in Sources */,
 				4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */,
 				4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
+				4F196E1A287B8C5D0019ACD8 /* CollectionVaultContract.swift in Sources */,
 				4F99B535285804A80012A3FF /* AlchemyApi.swift in Sources */,
 				4F196E0A287B88660019ACD8 /* UserAccount.swift in Sources */,
 				4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */,
+				4F196E20287B8CDF0019ACD8 /* LoadingProtocol.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
+				4F196E1D287B8CB60019ACD8 /* Web3HttpProviderWithRetry.swift in Sources */,
+				4F196E1C287B8C850019ACD8 /* LogsFetcher.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
+				4F196E1F287B8CD20019ACD8 /* WalletProvider.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
+				4F196E21287B8CF80019ACD8 /* OpenSeaGQL.swift in Sources */,
 				4FD95B95280FA1C1009EA52F /* ENSContract.swift in Sources */,
 				4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */,
 				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
 				4F493CEC2877E0CB00F42777 /* NeuralHash.swift in Sources */,
-				4F196E15287B8BD80019ACD8 /* OpenSeaApi.swift in Sources */,
+				4F196E19287B8C4F0019ACD8 /* OpenSeaFloorFetcher.swift in Sources */,
 				4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */,
 				4F196E13287B8BBE0019ACD8 /* SushiSwapPool.swift in Sources */,
-				4F196E0E287B8A760019ACD8 /* CKPublicDataManager.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
 				4F196E17287B8BF30019ACD8 /* PagedTokensFetcher.swift in Sources */,
 			);
@@ -2076,6 +2197,66 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4F12CE61287B9688009B26B8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = NFTYgoMac/NFTYgoMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"NFTYgoMac/Preview Content\"";
+				DEVELOPMENT_TEAM = C28QWE5379;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYgoMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		4F12CE62287B9688009B26B8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_ENTITLEMENTS = NFTYgoMac/NFTYgoMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"NFTYgoMac/Preview Content\"";
+				DEVELOPMENT_TEAM = C28QWE5379;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYgoMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		4F1E4F4026C850B7009D27E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2105,11 +2286,14 @@
 		4FA10FF726A8E0E200719D22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C28QWE5379;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2118,11 +2302,13 @@
 		4FA10FF826A8E0E200719D22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = C28QWE5379;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2481,6 +2667,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4F12CE60287B9688009B26B8 /* Build configuration list for PBXNativeTarget "NFTYgoMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F12CE61287B9688009B26B8 /* Debug */,
+				4F12CE62287B9688009B26B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2599,6 +2794,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F12CE63287B96F7009B26B8 /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3;
+		};
+		4F12CE65287B96F7009B26B8 /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
+			productName = Web3ContractABI;
+		};
+		4F12CE67287B9703009B26B8 /* Cache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
+			productName = Cache;
+		};
 		4F27A7BF267F9000008CCB0A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */;
@@ -2677,6 +2887,16 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
+		4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */,
+			);
+			currentVersion = 4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */;
+			path = NFTYgoMac.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

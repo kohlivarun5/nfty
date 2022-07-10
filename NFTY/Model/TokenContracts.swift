@@ -42,6 +42,23 @@ class TxFetcher {
       }
   }
   
+#if os(macOS)
+  static func eventOfTx(transactionHash:EthereumData?) -> Promise<TxInfo?> {
+    // print("Getting eventOfTx for \(transactionHash?.hex() ?? "")")
+    switch transactionHash {
+    case .none:
+      return Promise.value(nil)
+    case .some(let txHash):
+      return TxFetcher.eventOfTx(txHash)
+        .map {
+          guard let tx = $0 else { return nil }
+          guard let blockNumber = tx.blockNumber else { return nil }
+          return TxInfo(from:tx.from,value:tx.value.quantity,blockNumber: blockNumber)
+          
+        }
+    }
+  }
+#else
   private static var cache = CKObjectCache(
     database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
     entityName: "EthereumTransactionData",
@@ -82,6 +99,8 @@ class TxFetcher {
         }
     }
   }
+#endif
+  
 }
 
 class WETHFetcher {
@@ -158,9 +177,9 @@ var alchemyWeb3 = Web3(
     rpcURL: "https://eth-mainnet.alchemyapi.io/v2/StghaadzMZpTbz5As9hHcmEMxl5Hcflc"))
 
 /* var web3 = Web3(
-  provider: Web3HttpProvider(
-    rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921"))
-*/
+ provider: Web3HttpProvider(
+ rpcURL: "https://mainnet.infura.io/v3/b4287cfd0a6b4849bd0ca79e144d3921"))
+ */
 var web3 = alchemyWeb3
 
 var INIT_BLOCK = BigUInt(13972779 - (Date.from(year:2022,month:1,day:9)!.timeIntervalSinceNow / 15))
@@ -486,8 +505,12 @@ class AutoglyphsContract : ContractInterface {
   private var name = "Autoglyph"
   
   let contractAddressHex = "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782"
+#if os(macOS)
+  var tradeActions: TokenTradeInterface? = nil
+#else
   var tradeActions: TokenTradeInterface? = OpenSeaTradeApi(contract: try!
                                                            EthereumAddress(hex: "0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782", eip55: false))
+#endif
   
   class DrawEthContract : EthereumContract {
     let eth = web3.eth
