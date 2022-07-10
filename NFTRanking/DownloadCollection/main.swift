@@ -17,7 +17,7 @@ let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290
 let collection = MakeErc721Collection.ofAddress(address: collectionAddress)
 let nft = collection.then { (collectionOpt:Collection?) -> Promise<NFT?> in
   guard let collection = collectionOpt else { return Promise.value(nil) }
-  return collection.contract.getNFT(100)
+  return Promise.return(collection.contract.getNFT(100))
 }
 
 let result = try(hang(nft))

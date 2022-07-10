@@ -101,6 +101,13 @@ struct CKImageCacheCore {
   }
   
   private func imageOfData(_ data:Data) -> Media.IpfsImage? {
+#if os(macOS)
+    return UIImage(data:data)
+      .flatMap { image_hd in
+        image_hd
+          .map { Media.IpfsImage(image:$0,image_hd:$0) }
+      }
+#else
     return UIImage(data:data)
       .flatMap { image_hd in
         image_hd
@@ -108,6 +115,7 @@ struct CKImageCacheCore {
           .flatMap { UIImage(data:$0) }
           .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
       }
+#endif
   }
   
   private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
@@ -163,7 +171,7 @@ struct CKImageCacheCore {
    STRING
    Sortable
    
-
+   
    */
   
   

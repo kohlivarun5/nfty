@@ -47,6 +47,12 @@
 		4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
 		4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
+		4F196E12287B8B560019ACD8 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
+		4F196E13287B8BBE0019ACD8 /* SushiSwapPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F435186278239610095C88C /* SushiSwapPool.swift */; };
+		4F196E14287B8BC90019ACD8 /* TokenTradeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */; };
+		4F196E15287B8BD80019ACD8 /* OpenSeaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD449026B4B56E0045DCD5 /* OpenSeaApi.swift */; };
+		4F196E16287B8BE60019ACD8 /* TokenContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F856BB72632620400BB5E07 /* TokenContracts.swift */; };
+		4F196E17287B8BF30019ACD8 /* PagedTokensFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F529BB627B0594600EFE626 /* PagedTokensFetcher.swift */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -1788,8 +1794,11 @@
 				4F196E08287B88460019ACD8 /* ContractInterface.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F196E05287B88020019ACD8 /* NFT.swift in Sources */,
+				4F196E16287B8BE60019ACD8 /* TokenContracts.swift in Sources */,
 				4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */,
+				4F196E12287B8B560019ACD8 /* CoreDataManager.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
+				4F196E14287B8BC90019ACD8 /* TokenTradeInterface.swift in Sources */,
 				4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */,
 				4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
@@ -1803,9 +1812,12 @@
 				4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */,
 				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
 				4F493CEC2877E0CB00F42777 /* NeuralHash.swift in Sources */,
+				4F196E15287B8BD80019ACD8 /* OpenSeaApi.swift in Sources */,
 				4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */,
+				4F196E13287B8BBE0019ACD8 /* SushiSwapPool.swift in Sources */,
 				4F196E0E287B8A760019ACD8 /* CKPublicDataManager.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
+				4F196E17287B8BF30019ACD8 /* PagedTokensFetcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
