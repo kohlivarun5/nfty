@@ -169,29 +169,6 @@ protocol TokenEventsFetcher {
   func getEvents(onDone: @escaping () -> Void,_ response: @escaping (TradeEvent) -> Void)
 }
 
-protocol ContractInterface {
-  
-  var contractAddressHex: String { get }
-  func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
-  func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void)
-  
-  func getNFT(_ tokenId:BigUInt) -> NFT
-  func getToken(_ tokenId:UInt) -> NFTWithLazyPrice
-  func ownerOf(_ tokenId:BigUInt) -> Promise<UserAccount?>
-  func getOwnerTokens(address:EthereumAddress,onDone: @escaping () -> Void,_ response: @escaping (NFTWithLazyPrice) -> Void)
-  
-  func getEventsFetcher(_ tokenId:BigUInt) -> TokenEventsFetcher?
-  
-  func indicativeFloor() -> Promise<PriceUnit?>
-  
-  var vaultContract : CollectionVaultContract? { get }
-  
-  var tradeActions : TokenTradeInterface? { get }
-  
-  func floorFetcher(_ collection:Collection) -> PagedTokensFetcher?
-  
-}
-
 func priceIfNotZero(_ price:BigUInt?) -> BigUInt? {
   return price.flatMap { $0 != 0 ? $0 : nil }
 }

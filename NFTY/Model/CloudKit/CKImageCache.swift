@@ -10,7 +10,14 @@ import CloudKit
 import BigInt
 import PromiseKit
 import Cache
+
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
+
+
 
 struct CKImageCacheCore {
   
@@ -51,8 +58,13 @@ struct CKImageCacheCore {
   let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
   let collectionAddress : String
   
+#if os(macOS)
+  private var imageCache : DiskStorage<BigUInt,NSImage>
+  private var imageCacheHD : DiskStorage<BigUInt,NSImage>
+#else
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
+#endif
   
   private let assetKey = "image"
   private let compressionAlgorithmKey = "compressionAlgorithm"
@@ -65,12 +77,22 @@ struct CKImageCacheCore {
     self.bucket = bucket
     self.fallback = fallback
     self.collectionAddress = collectionAddress
+    
+#if os(macOS)
+    self.imageCache = try! DiskStorage<BigUInt, NSImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+    self.imageCacheHD = try! DiskStorage<BigUInt, NSImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+#else
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
       transformer: TransformerFactory.forImage())
     self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
       transformer: TransformerFactory.forImage())
+#endif
   }
   
   

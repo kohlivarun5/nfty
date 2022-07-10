@@ -10,7 +10,6 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 import Cache
-import UIKit
 import CloudKit
 
 

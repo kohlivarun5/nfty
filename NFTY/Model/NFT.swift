@@ -25,7 +25,7 @@ enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
   public static func<(a: BlockNumber, b: BlockNumber) -> Bool {
     switch(a,b) {
     case (.ethereum(let x),.ethereum(let y)),
-         (.near(let x),.near(let y)):
+      (.near(let x),.near(let y)):
       return x.quantity < y.quantity
     case (.ethereum,.near):
       return false
@@ -37,7 +37,7 @@ enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
   public static func>(a: BlockNumber, b: BlockNumber) -> Bool {
     switch(a,b) {
     case (.ethereum(let x),.ethereum(let y)),
-         (.near(let x),.near(let y)):
+      (.near(let x),.near(let y)):
       return x.quantity > y.quantity
     case (.ethereum,.near):
       return true
@@ -127,6 +127,21 @@ enum Media {
     }
   }
   
+  
+#if os(macOS)
+  struct IpfsImage {
+    let image : NSImage // let data : Data
+    let image_hd : NSImage // let data : Data
+    
+    static func makeOpt(_ data:Data?) -> Media.IpfsImage? {
+      return data
+        .flatMap {
+          NSImage(data:$0)
+            .map { Media.IpfsImage(image:$0,image_hd:$0) }
+        }
+    }
+  }
+#else
   struct IpfsImage {
     let image : UIImage // let data : Data
     let image_hd : UIImage // let data : Data
@@ -143,8 +158,8 @@ enum Media {
             }
         }
     }
-    
   }
+#endif
   
   struct IpfsImageLazy {
     private var tokenId : BigUInt

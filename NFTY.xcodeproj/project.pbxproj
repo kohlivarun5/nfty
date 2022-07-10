@@ -35,6 +35,18 @@
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
 		4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
+		4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
+		4F196E05287B88020019ACD8 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
+		4F196E07287B88460019ACD8 /* ContractInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F196E06287B88460019ACD8 /* ContractInterface.swift */; };
+		4F196E08287B88460019ACD8 /* ContractInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F196E06287B88460019ACD8 /* ContractInterface.swift */; };
+		4F196E09287B88460019ACD8 /* ContractInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F196E06287B88460019ACD8 /* ContractInterface.swift */; };
+		4F196E0A287B88660019ACD8 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
+		4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
+		4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
+		4F196E0E287B8A760019ACD8 /* CKPublicDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D84285FECBF009FFB6D /* CKPublicDataManager.swift */; };
+		4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
+		4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
+		4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */; };
 		4F1D2DC5270914E7000AD0A0 /* LazyLions_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */; };
 		4F1D2DC827095EA2000AD0A0 /* LazyLions_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */; };
@@ -531,6 +543,7 @@
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
 		4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_nearestTokens.json; sourceTree = "<group>"; };
+		4F196E06287B88460019ACD8 /* ContractInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInterface.swift; sourceTree = "<group>"; };
 		4F1D2DC2270914E6000AD0A0 /* LazyLions_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeRanks.json; sourceTree = "<group>"; };
 		4F1D2DC3270914E6000AD0A0 /* LazyLions_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_attributeScores.json; sourceTree = "<group>"; };
 		4F1D2DC627095EA2000AD0A0 /* LazyLions_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LazyLions_nearestTokens.json; sourceTree = "<group>"; };
@@ -946,7 +959,9 @@
 		4F881F952877969900CA7465 /* Types */ = {
 			isa = PBXGroup;
 			children = (
+				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
 				4F881F96287796AB00CA7465 /* PriceUnit.swift */,
+				4F196E06287B88460019ACD8 /* ContractInterface.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -1157,7 +1172,6 @@
 				4F2EFECA27B893D400C30F3D /* Throttle.swift */,
 				4F856BB72632620400BB5E07 /* TokenContracts.swift */,
 				4F6AC08726AE1E85000A7539 /* TokenTradeInterface.swift */,
-				4F2D6B2827C84C26009908C5 /* UserAccount.swift */,
 				4F2D6B2E27C855CD009908C5 /* UserAccountOffers.swift */,
 				4FED1E4026D4757C006274CE /* WalletProvider.swift */,
 				4FED1E4426D5F3DC006274CE /* Web3Utils.swift */,
@@ -1770,17 +1784,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FFAE79C27A32E84002129E9 /* NearApi.swift in Sources */,
+				4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */,
+				4F196E08287B88460019ACD8 /* ContractInterface.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
+				4F196E05287B88020019ACD8 /* NFT.swift in Sources */,
+				4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */,
 				4F7CF7E526C823D800394FA2 /* IpfsDownloader.swift in Sources */,
+				4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */,
+				4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4F99B535285804A80012A3FF /* AlchemyApi.swift in Sources */,
+				4F196E0A287B88660019ACD8 /* UserAccount.swift in Sources */,
 				4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
 				4FA10FF526A8E0E200719D22 /* main.swift in Sources */,
 				4FD95B95280FA1C1009EA52F /* ENSContract.swift in Sources */,
+				4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */,
 				4FFAE79B27A32E79002129E9 /* NearNFT.swift in Sources */,
 				4F493CEC2877E0CB00F42777 /* NeuralHash.swift in Sources */,
+				4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */,
+				4F196E0E287B8A760019ACD8 /* CKPublicDataManager.swift in Sources */,
 				4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1844,6 +1868,7 @@
 				4FB7E9DE28502CCF001CB086 /* CloudKitExtensions.swift in Sources */,
 				4F529BBD27B0648E00EFE626 /* OpenSeaApiCore.swift in Sources */,
 				4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */,
+				4F196E07287B88460019ACD8 /* ContractInterface.swift in Sources */,
 				4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */,
 				4F99B5212852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
 				4FFAE79627A32AD5002129E9 /* NearApi.swift in Sources */,
@@ -2004,6 +2029,7 @@
 				4FDEABA6278E541200F92160 /* TokenContracts.swift in Sources */,
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
+				4F196E09287B88460019ACD8 /* ContractInterface.swift in Sources */,
 				4F99B52C2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
