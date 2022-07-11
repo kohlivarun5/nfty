@@ -92,17 +92,27 @@ struct NftIpfsImageView: View {
         case .some(let image):
           switch(resolution) {
           case .normal:
-            Image(uiImage: image.image)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .padding(padding ?? 0)
+            switch image.image {
+            case .image(let image):
+              Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .padding(padding ?? 0)
+            case .svg(let svg):
+              svg
+            }
           case .hd:
-            Image(uiImage: image.image_hd)
+            switch image.image_hd {
+            case .image(let image_hd):
+              Image(uiImage: image_hd)
               .resizable()
               .aspectRatio(contentMode: .fit)
               .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
               .padding(padding ?? 0)
+            case .svg(let svg):
+              svg
+            }
           }
         }
       })

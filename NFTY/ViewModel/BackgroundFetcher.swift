@@ -37,7 +37,12 @@ func downloadImageToLocalDisk(collection:Collection,tokenId:BigUInt) -> Promise<
   case .ipfsImage(let image):
     return image.image.promise.map { uiImage in
       uiImage.flatMap {
-        createLocalFile(folder: notificationImagesFolder, collection: collection, tokenId: tokenId, image: $0.image)
+        switch($0.image) {
+        case .image(let image):
+          return createLocalFile(folder: notificationImagesFolder, collection: collection, tokenId: tokenId, image: image)
+        case .svg:
+          return nil // TODO save svg file
+        }
       }
     }
   case .image,.asciiPunk,.autoglyph:
