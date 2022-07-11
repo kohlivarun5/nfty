@@ -136,7 +136,7 @@ enum Media {
 #if os(macOS)
   struct IpfsImage {
     enum View {
-    case svg(SVGKFastImageViewSUI)
+    case svg(NFTYgoSVGImage)
     case image(NSImage)
     }
     let image : View // let data : Data
@@ -145,7 +145,7 @@ enum Media {
 #else
   struct IpfsImage {
     enum View {
-    case svg(SVGKFastImageViewSUI)
+    case svg(NFTYgoSVGImage)
     case image(UIImage)
     }
     let image : View // let data : Data

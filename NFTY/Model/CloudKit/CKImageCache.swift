@@ -157,7 +157,8 @@ struct CKImageCacheCore {
                 .catch { print($0) }
             }
           }
-          let svg = SVGKFastImageViewSUI(data:data)
+          //let svg = NFTYgoSVGImage(data: data)// SVGKFastImageViewSUI(data:data)
+          let svg = NFTYgoSVGImage(data:DempSVG.data(using: .utf8)!)
           print(svg)
           return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
           
@@ -245,7 +246,8 @@ struct CKImageCacheCore {
                 switch((record?[imageTypeKey] as? Int).map { ImageType.init(rawValue: $0)! }) {
                 case .svg:
                   print("Image is svg:\(String(data: data, encoding: .utf8))")
-                  let svg = SVGKFastImageViewSUI(data: data)
+                  //let svg = NFTYgoSVGImage(data:data)// SVGKFastImageViewSUI(data: data)
+                  let svg = NFTYgoSVGImage(data:DempSVG.data(using: .utf8)!)
                   return Promise.value(Media.IpfsImage(image: .svg(svg), image_hd: .svg(svg)))
                 default:
                   return Promise.value(imageOfData(data))
