@@ -14,6 +14,7 @@ import CloudKit
 
 #if os(macOS)
 import AppKit
+import SVGView
 #endif
 
 
@@ -38,9 +39,9 @@ class IpfsCollectionContract : ContractInterface {
     
     private static let base64SvgXmlPrefix = "data:image/svg+xml;base64,"
     
-    func image_Alchemy(_ tokenId:BigUInt) -> Promise<Data?> {
+    func image_Alchemy(_ tokenId:BigUInt) -> Promise<Media.ImageData?> {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
-        .then { result -> Promise<Data?> in
+        .then { result -> Promise<Media.ImageData?> in
           
           guard let media = result.media.first else { return Promise.value(nil) }
           
@@ -55,15 +56,16 @@ class IpfsCollectionContract : ContractInterface {
               with: request,
               completionHandler:{ data, response, error -> Void in
                 if let error = error { return seal.reject(error) }
+                guard let data = data else { return seal.reject(NSError(domain:"Failed to get data for url=\(url)", code:404, userInfo:nil)) }
                 // print(data,response,error)
-                seal.fulfill(data)
+                seal.fulfill(Media.ImageData.image(data))
               }
             )
           }
         }
     }
     
-    func image_raw(_ tokenId:BigUInt) -> Promise<Data?> {
+    func image_raw(_ tokenId:BigUInt) -> Promise<Media.ImageData?> {
       
       return ethContract.tokenURI(tokenId:tokenId)
         .then(on: DispatchQueue.global(qos:.userInteractive)) { (uri:String) -> Promise<TokenUriData> in
@@ -125,7 +127,7 @@ class IpfsCollectionContract : ContractInterface {
             }
           }
           
-        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Data?> in
+        }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Media.ImageData?> in
           
           return Promise { seal in
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
@@ -133,17 +135,11 @@ class IpfsCollectionContract : ContractInterface {
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
             
             if (uri.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix)) {
-              do {
-                var index = uri.firstIndex(of: ",")!
-                uri.formIndex(after: &index)
-                let str : String = String(uri.suffix(from:index))
-                print("string",str)
-                let data =  Data(base64Encoded: str)!
-                print("json=",String(data:data,encoding:.ascii))
-                seal.fulfill(nil)
-              } catch {
-                seal.reject(error)
-              }
+              var index = uri.firstIndex(of: ",")!
+              uri.formIndex(after: &index)
+              let str : String = String(uri.suffix(from:index))
+              let data =  Data(base64Encoded: str)!
+              seal.fulfill(Media.ImageData.svg(data))
             }
             
             switch(URL(string:ipfsUrl(uri))) {
@@ -157,8 +153,9 @@ class IpfsCollectionContract : ContractInterface {
                 with: request,
                 completionHandler:{ data, response, error -> Void in
                   if let error = error { return seal.reject(error) }
+                  guard let data = data else { return seal.reject(NSError(domain:"Failed to get data for url=\(url)", code:404, userInfo:nil)) }
                   // print(data,response,error)
-                  seal.fulfill(data)
+                  seal.fulfill(Media.ImageData.image(data))
                 }
               )
             }
@@ -167,12 +164,12 @@ class IpfsCollectionContract : ContractInterface {
     }
     
     
-    func image(_ tokenId:BigUInt) -> Promise<Data?> {
+    func image(_ tokenId:BigUInt) -> Promise<Media.ImageData?> {
       self.image_Alchemy(tokenId)
-        .recover { error -> Promise<Data?> in
+        .recover { error -> Promise<Media.ImageData?> in
           print("Alchemy Image fetch failed with \(error)")
           return Promise.value(nil)
-        }.then { (data:Data?) -> Promise<Data?> in
+        }.then { (data:Media.ImageData?) -> Promise<Media.ImageData?> in
           switch (data) {
           case .some(let data):
             return Promise.value(data)
@@ -228,7 +225,18 @@ class IpfsCollectionContract : ContractInterface {
 #if os(macOS)
     return ObservablePromise(
       promise:self.ethContract.image(tokenId)
-        .map { $0.flatMap { NSImage(data:$0).map { Media.IpfsImage(image:$0,image_hd:$0) } } }
+        .map {
+          $0.flatMap {
+            switch($0) {
+            case .svg(let data):
+              let svg = SVGView(data:data)
+              return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
+            case .image(let data):
+              guard let image = NSImage(data:data) else { return nil }
+              return Media.IpfsImage(image:.image(image),image_hd:.image(image))
+            }
+          }
+        }
     )
 #else
     return imageCache.image(tokenId)

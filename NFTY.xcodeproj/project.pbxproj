@@ -31,17 +31,10 @@
 		4F12715D26EDD43D007E6A7B /* Bombs_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */; };
 		4F12716026EDDD5D007E6A7B /* Bombs_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */; };
 		4F12716126EDDD5D007E6A7B /* Bombs_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */; };
-		4F12CE52287B9686009B26B8 /* NFTYgoMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */; };
-		4F12CE54287B9686009B26B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE53287B9686009B26B8 /* ContentView.swift */; };
-		4F12CE56287B9688009B26B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F12CE55287B9688009B26B8 /* Assets.xcassets */; };
-		4F12CE59287B9688009B26B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */; };
-		4F12CE5B287B9688009B26B8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE5A287B9688009B26B8 /* Persistence.swift */; };
-		4F12CE5E287B9688009B26B8 /* NFTYgoMac.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */; };
-		4F12CE64287B96F7009B26B8 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE63287B96F7009B26B8 /* Web3 */; };
-		4F12CE66287B96F7009B26B8 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE65287B96F7009B26B8 /* Web3ContractABI */; };
-		4F12CE68287B9704009B26B8 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE67287B9703009B26B8 /* Cache */; };
-		4F12CE69287B9710009B26B8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F196E22287B8E3B0019ACD8 /* CloudKit.framework */; };
-		4F12CE6A287B9735009B26B8 /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
+		4F12CE6D287B9D5E009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE6C287B9D5E009B26B8 /* SVGView */; };
+		4F12CE6F287B9D69009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE6E287B9D69009B26B8 /* SVGView */; };
+		4F12CE71287BA6F9009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE70287BA6F9009B26B8 /* SVGView */; };
+		4F12CE72287BA7DA009B26B8 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4F12FAA32718EC9E004C3E16 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
@@ -276,7 +269,6 @@
 		4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
 		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
-		4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9DE28502CCF001CB086 /* CloudKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */; };
@@ -564,7 +556,6 @@
 		4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_attributeScores.json; sourceTree = "<group>"; };
 		4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_nearestTokens.json; sourceTree = "<group>"; };
 		4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_rarityRanks.json; sourceTree = "<group>"; };
-		4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NFTYgoMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYgoMacApp.swift; sourceTree = "<group>"; };
 		4F12CE53287B9686009B26B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4F12CE55287B9688009B26B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -823,17 +814,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4F12CE4C287B9686009B26B8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4F12CE68287B9704009B26B8 /* Cache in Frameworks */,
-				4F12CE69287B9710009B26B8 /* CloudKit.framework in Frameworks */,
-				4F12CE66287B96F7009B26B8 /* Web3ContractABI in Frameworks */,
-				4F12CE64287B96F7009B26B8 /* Web3 in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4F1E4F3826C850B7009D27E6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -846,6 +826,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */,
+				4F12CE6F287B9D69009B26B8 /* SVGView in Frameworks */,
 				4FA1100C26A8E7E000719D22 /* Cache in Frameworks */,
 				4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */,
 				4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */,
@@ -863,6 +844,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F12CE6D287B9D5E009B26B8 /* SVGView in Frameworks */,
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
@@ -894,6 +876,7 @@
 			files = (
 				4FDEAB94278E53C100F92160 /* Cache in Frameworks */,
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
+				4F12CE71287BA6F9009B26B8 /* SVGView in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
 				4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */,
@@ -1105,7 +1088,6 @@
 				4FA1101126A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3B26C850B7009D27E6 /* CreateAttributeScores */,
 				4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */,
-				4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1403,28 +1385,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4F12CE4E287B9686009B26B8 /* NFTYgoMac */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4F12CE60287B9688009B26B8 /* Build configuration list for PBXNativeTarget "NFTYgoMac" */;
-			buildPhases = (
-				4F12CE4B287B9686009B26B8 /* Sources */,
-				4F12CE4C287B9686009B26B8 /* Frameworks */,
-				4F12CE4D287B9686009B26B8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = NFTYgoMac;
-			packageProductDependencies = (
-				4F12CE63287B96F7009B26B8 /* Web3 */,
-				4F12CE65287B96F7009B26B8 /* Web3ContractABI */,
-				4F12CE67287B9703009B26B8 /* Cache */,
-			);
-			productName = NFTYgoMac;
-			productReference = 4F12CE4F287B9686009B26B8 /* NFTYgoMac.app */;
-			productType = "com.apple.product-type.application";
-		};
 		4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */;
@@ -1460,6 +1420,7 @@
 				4FA10FFC26A8E55F00719D22 /* Web3ContractABI */,
 				4FA1100926A8E7C800719D22 /* Web3PromiseKit */,
 				4FA1100B26A8E7E000719D22 /* Cache */,
+				4F12CE6E287B9D69009B26B8 /* SVGView */,
 			);
 			productName = DownloadCollection;
 			productReference = 4FA10FF226A8E0E200719D22 /* DownloadCollection */;
@@ -1505,6 +1466,7 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
+				4F12CE6C287B9D5E009B26B8 /* SVGView */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1564,6 +1526,7 @@
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
+				4F12CE70287BA6F9009B26B8 /* SVGView */,
 			);
 			productName = NFTYWidgetExtension;
 			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
@@ -1581,9 +1544,6 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
-					4F12CE4E287B9686009B26B8 = {
-						CreatedOnToolsVersion = 13.4.1;
-					};
 					4F1E4F3A26C850B7009D27E6 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -1624,6 +1584,7 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1636,21 +1597,11 @@
 				4FA1101026A8EA6500719D22 /* CreateRankingFiles */,
 				4F1E4F3A26C850B7009D27E6 /* CreateAttributeScores */,
 				4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */,
-				4F12CE4E287B9686009B26B8 /* NFTYgoMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4F12CE4D287B9686009B26B8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4F12CE59287B9688009B26B8 /* Preview Assets.xcassets in Resources */,
-				4F12CE56287B9688009B26B8 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4FB9A7AB262B28A300C58AF9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1875,18 +1826,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4F12CE4B287B9686009B26B8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4F12CE6A287B9735009B26B8 /* MakeErc721Collection.swift in Sources */,
-				4F12CE5B287B9688009B26B8 /* Persistence.swift in Sources */,
-				4F12CE54287B9686009B26B8 /* ContentView.swift in Sources */,
-				4F12CE5E287B9688009B26B8 /* NFTYgoMac.xcdatamodeld in Sources */,
-				4F12CE52287B9686009B26B8 /* NFTYgoMacApp.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4F1E4F3726C850B7009D27E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2118,7 +2057,6 @@
 				4F343D7F285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld in Sources */,
 				4F8E16FD27B0700F00E54BB5 /* OpenSeaGQL.swift in Sources */,
 				4F11C76A27978C6600938036 /* FloorWidgetView.swift in Sources */,
-				4FB7E9D32850284F001CB086 /* CKImageCache.swift in Sources */,
 				4F7C89712795FA6E00D5FC35 /* OpenSeaCollection.swift in Sources */,
 				4F99B51F2852EAD30012A3FF /* CKOwnerTokens.swift in Sources */,
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
@@ -2150,6 +2088,7 @@
 				4F99B5222852F2CA0012A3FF /* CKOwnerTokensFetcher.swift in Sources */,
 				4FDEABAB278E542500F92160 /* SECP256K1.swift in Sources */,
 				4FFAE79F27A333B2002129E9 /* NearNFT.swift in Sources */,
+				4F12CE72287BA7DA009B26B8 /* CKImageCache.swift in Sources */,
 				4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */,
 				4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */,
 				4F99B51C2852E9400012A3FF /* PromiseKitExtensions.swift in Sources */,
@@ -2197,66 +2136,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		4F12CE61287B9688009B26B8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_ENTITLEMENTS = NFTYgoMac/NFTYgoMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTYgoMac/Preview Content\"";
-				DEVELOPMENT_TEAM = C28QWE5379;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYgoMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		4F12CE62287B9688009B26B8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CODE_SIGN_ENTITLEMENTS = NFTYgoMac/NFTYgoMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"NFTYgoMac/Preview Content\"";
-				DEVELOPMENT_TEAM = C28QWE5379;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYgoMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		4F1E4F4026C850B7009D27E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2667,15 +2546,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4F12CE60287B9688009B26B8 /* Build configuration list for PBXNativeTarget "NFTYgoMac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4F12CE61287B9688009B26B8 /* Debug */,
-				4F12CE62287B9688009B26B8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4F1E4F3F26C850B7009D27E6 /* Build configuration list for PBXNativeTarget "CreateAttributeScores" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2751,6 +2621,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/SVGView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -2794,20 +2672,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F12CE63287B96F7009B26B8 /* Web3 */ = {
+		4F12CE6C287B9D5E009B26B8 /* SVGView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
-			productName = Web3;
+			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
+			productName = SVGView;
 		};
-		4F12CE65287B96F7009B26B8 /* Web3ContractABI */ = {
+		4F12CE6E287B9D69009B26B8 /* SVGView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
-			productName = Web3ContractABI;
+			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
+			productName = SVGView;
 		};
-		4F12CE67287B9703009B26B8 /* Cache */ = {
+		4F12CE70287BA6F9009B26B8 /* SVGView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
-			productName = Cache;
+			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
+			productName = SVGView;
 		};
 		4F27A7BF267F9000008CCB0A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
