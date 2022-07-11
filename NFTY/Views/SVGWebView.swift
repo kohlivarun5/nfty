@@ -34,7 +34,7 @@ public struct SVGWebView: View {
   
   public var body: some View {
     //WebView(html: svg)
-    WebView(html:"<div style=\"width: 100%; height: 100%;background:transparent\">\(rewriteSVGSize(svg))</div>")
+    WebView(html:"<div style=\"width: 100%; height: 100%\">\(rewriteSVGSize(svg))</div>")
   }
   
   /// A hacky way to patch the size in the SVG root tag.
