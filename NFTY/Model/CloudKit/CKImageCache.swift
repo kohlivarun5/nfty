@@ -11,13 +11,10 @@ import BigInt
 import PromiseKit
 import Cache
 
-// import SVGView
-
 #if os(macOS)
 import AppKit
 #else
 import UIKit
-//import SVGView
 #endif
 
 
@@ -157,8 +154,8 @@ struct CKImageCacheCore {
                 .catch { print($0) }
             }
           }
-          //let svg = NFTYgoSVGImage(data: data)// SVGKFastImageViewSUI(data:data)
-          let svg = NFTYgoSVGImage(svg:DempSVG)
+          let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+          //let svg = NFTYgoSVGImage(svg:DempSVG)
           print(svg)
           return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
           
@@ -247,7 +244,8 @@ struct CKImageCacheCore {
                 case .svg:
                   print("Image is svg:\(String(data: data, encoding: .utf8))")
                   //let svg = NFTYgoSVGImage(data:data)// SVGKFastImageViewSUI(data: data)
-                  let svg = NFTYgoSVGImage(svg:DempSVG)
+                  let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+                  //let svg = NFTYgoSVGImage(svg:DempSVG)
                   return Promise.value(Media.IpfsImage(image: .svg(svg), image_hd: .svg(svg)))
                 default:
                   return Promise.value(imageOfData(data))

@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Web3
 import PromiseKit
-//import SVGView
 
 enum TradeEventType {
   case ask
