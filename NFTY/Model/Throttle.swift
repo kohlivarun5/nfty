@@ -46,7 +46,7 @@ class UrlTaskThrottle {
       self.isPending = true
       let task = self.tasks.removeFirst()
       self.queue.asyncAfter(deadline:.now() + self.deadline) {
-        print("Calling \(task.request.url!)")
+        print("UrlTaskThrottle Calling url=\(task.request.url!)")
         
         self.urlSession.dataTask(with: task.request, completionHandler: { data, response, error in
           self.queue.async {

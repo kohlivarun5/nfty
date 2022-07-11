@@ -73,6 +73,10 @@ struct CKImageCacheCore {
   private let compressionAlgorithmKey = "compressionAlgorithm"
   private let neuralHashKey = "neuralHash"
   private let collectionAddressKey = "collectionAddress"
+  
+  enum ImageType : Int {
+    case svg = 0
+  }
   private let imageTypeKey = "imageType"
   
   
@@ -126,6 +130,7 @@ struct CKImageCacheCore {
         
         switch data {
         case .svg(let data):
+          print("Image is svg:\(String(data: data, encoding: .utf8))")
           DispatchQueue.global(qos:.background).async {
             let recordId = self.recordName(tokenId)
             let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
@@ -135,7 +140,7 @@ struct CKImageCacheCore {
               record.setValuesForKeys([
                 collectionAddressKey : self.collectionAddress,
                 assetKey: CKAsset.init(fileURL: file),
-                imageTypeKey: "svg"
+                imageTypeKey: ImageType.svg.rawValue
               ])
               if let compressionAlgorithm = compressionAlgorithm {
                 record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
@@ -152,7 +157,8 @@ struct CKImageCacheCore {
                 .catch { print($0) }
             }
           }
-          let svg = SVGView(data:data)
+          let svg = SVGKFastImageViewSUI(data:data)
+          print(svg)
           return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
           
         case .image(let data):
@@ -222,11 +228,12 @@ struct CKImageCacheCore {
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
-              let (record,_) = result
-              // print("Fetch returned with error=\(String(describing: error))")
+              let (record,error) = result
+              print("Fetch returned with error=\(String(describing: error))")
               
               let fileUrl = (record?[assetKey] as? CKAsset)?.fileURL
               let compressionAlgorithm = (record?[compressionAlgorithmKey] as? Int).flatMap { CompressionAlgorithm(rawValue: $0) }
+              print("fileUrl=\(fileUrl)")
               
               switch(fileUrl.flatMap { readLocalFile($0,compressionAlgorithm: compressionAlgorithm) }) {
               case .none:
@@ -234,9 +241,11 @@ struct CKImageCacheCore {
                 return onCacheMiss(tokenId)
               case .some(let data):
                 
-                switch(record?[imageTypeKey] as? String) {
-                case .some("svg"):
-                  let svg = SVGView(data: data)
+                print("fileUrl=\(fileUrl),\(record?[imageTypeKey] as? Int)")
+                switch((record?[imageTypeKey] as? Int).map { ImageType.init(rawValue: $0)! }) {
+                case .svg:
+                  print("Image is svg:\(String(data: data, encoding: .utf8))")
+                  let svg = SVGKFastImageViewSUI(data: data)
                   return Promise.value(Media.IpfsImage(image: .svg(svg), image_hd: .svg(svg)))
                 default:
                   return Promise.value(imageOfData(data))

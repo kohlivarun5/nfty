@@ -31,10 +31,13 @@
 		4F12715D26EDD43D007E6A7B /* Bombs_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */; };
 		4F12716026EDDD5D007E6A7B /* Bombs_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */; };
 		4F12716126EDDD5D007E6A7B /* Bombs_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */; };
-		4F12CE6D287B9D5E009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE6C287B9D5E009B26B8 /* SVGView */; };
-		4F12CE6F287B9D69009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE6E287B9D69009B26B8 /* SVGView */; };
-		4F12CE71287BA6F9009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE70287BA6F9009B26B8 /* SVGView */; };
 		4F12CE72287BA7DA009B26B8 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
+		4F12CE79287BC0B8009B26B8 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE78287BC0B8009B26B8 /* SVGImage.swift */; };
+		4F12CE7A287BC0BB009B26B8 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE78287BC0B8009B26B8 /* SVGImage.swift */; };
+		4F12CE82287BC1A2009B26B8 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE81287BC1A2009B26B8 /* SVGKit */; };
+		4F12CE84287BC1A2009B26B8 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE83287BC1A2009B26B8 /* SVGKitSwift */; };
+		4F12CE86287BC1B3009B26B8 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE85287BC1B3009B26B8 /* SVGKit */; };
+		4F12CE88287BC1B3009B26B8 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE87287BC1B3009B26B8 /* SVGKitSwift */; };
 		4F12FAA32718EC9E004C3E16 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
@@ -563,6 +566,7 @@
 		4F12CE5A287B9688009B26B8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NFTYgoMac.xcdatamodel; sourceTree = "<group>"; };
 		4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYgoMac.entitlements; sourceTree = "<group>"; };
+		4F12CE78287BC0B8009B26B8 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
 		4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeRanks.json; sourceTree = "<group>"; };
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
@@ -826,7 +830,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */,
-				4F12CE6F287B9D69009B26B8 /* SVGView in Frameworks */,
 				4FA1100C26A8E7E000719D22 /* Cache in Frameworks */,
 				4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */,
 				4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */,
@@ -844,13 +847,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F12CE6D287B9D5E009B26B8 /* SVGView in Frameworks */,
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
+				4F12CE84287BC1A2009B26B8 /* SVGKitSwift in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
 				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */,
+				4F12CE82287BC1A2009B26B8 /* SVGKit in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
 			);
@@ -876,11 +880,12 @@
 			files = (
 				4FDEAB94278E53C100F92160 /* Cache in Frameworks */,
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
-				4F12CE71287BA6F9009B26B8 /* SVGView in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
+				4F12CE88287BC1B3009B26B8 /* SVGKitSwift in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
 				4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */,
 				4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */,
+				4F12CE86287BC1B3009B26B8 /* SVGKit in Frameworks */,
 				4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1199,6 +1204,7 @@
 				4F7EFAE4284BFD1300E354D1 /* AddFriendSheet.swift */,
 				4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */,
 				4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */,
+				4F12CE78287BC0B8009B26B8 /* SVGImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1420,7 +1426,6 @@
 				4FA10FFC26A8E55F00719D22 /* Web3ContractABI */,
 				4FA1100926A8E7C800719D22 /* Web3PromiseKit */,
 				4FA1100B26A8E7E000719D22 /* Cache */,
-				4F12CE6E287B9D69009B26B8 /* SVGView */,
 			);
 			productName = DownloadCollection;
 			productReference = 4FA10FF226A8E0E200719D22 /* DownloadCollection */;
@@ -1466,7 +1471,8 @@
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
 				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
-				4F12CE6C287B9D5E009B26B8 /* SVGView */,
+				4F12CE81287BC1A2009B26B8 /* SVGKit */,
+				4F12CE83287BC1A2009B26B8 /* SVGKitSwift */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1526,7 +1532,8 @@
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
-				4F12CE70287BA6F9009B26B8 /* SVGView */,
+				4F12CE85287BC1B3009B26B8 /* SVGKit */,
+				4F12CE87287BC1B3009B26B8 /* SVGKitSwift */,
 			);
 			productName = NFTYWidgetExtension;
 			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
@@ -1584,7 +1591,7 @@
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
-				4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */,
+				4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -1997,6 +2004,7 @@
 				4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */,
 				4F468F692645FECB00CA6525 /* AddFavSheet.swift in Sources */,
 				4FED1E4326D5ED53006274CE /* SECP256K1.swift in Sources */,
+				4F12CE79287BC0B8009B26B8 /* SVGImage.swift in Sources */,
 				4F343D8B28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */,
 				4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */,
@@ -2102,6 +2110,7 @@
 				4F926EAC27CB079B00A94B38 /* OwnerTokens.swift in Sources */,
 				4F343D8C28601CDD009FFB6D /* CKObjectCache.swift in Sources */,
 				4F196E09287B88460019ACD8 /* ContractInterface.swift in Sources */,
+				4F12CE7A287BC0BB009B26B8 /* SVGImage.swift in Sources */,
 				4F99B52C2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F11C76E27978D5D00938036 /* ValuationWidgetView.swift in Sources */,
 				4FDEABAA278E542100F92160 /* OpenSeaApi.swift in Sources */,
@@ -2621,12 +2630,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */ = {
+		4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/SVGView.git";
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				kind = revision;
+				revision = 0a8273d8178966d67eef8bf4baa57a7fce779a28;
 			};
 		};
 		4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -2672,20 +2681,25 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F12CE6C287B9D5E009B26B8 /* SVGView */ = {
+		4F12CE81287BC1A2009B26B8 /* SVGKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
-			productName = SVGView;
+			package = 4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
 		};
-		4F12CE6E287B9D69009B26B8 /* SVGView */ = {
+		4F12CE83287BC1A2009B26B8 /* SVGKitSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
-			productName = SVGView;
+			package = 4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKitSwift;
 		};
-		4F12CE70287BA6F9009B26B8 /* SVGView */ = {
+		4F12CE85287BC1B3009B26B8 /* SVGKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F12CE6B287B9D5E009B26B8 /* XCRemoteSwiftPackageReference "SVGView" */;
-			productName = SVGView;
+			package = 4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+		4F12CE87287BC1B3009B26B8 /* SVGKitSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F12CE80287BC1A2009B26B8 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKitSwift;
 		};
 		4F27A7BF267F9000008CCB0A /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

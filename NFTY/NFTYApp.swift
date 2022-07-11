@@ -144,6 +144,23 @@ struct NFTYApp: App {
         if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
           NavigationView {
+            let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290f4C4928A430b1", eip55: true)
+            let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+            let nft = collection.contract.getNFT(100)
+
+            NftDetail(
+              nft: nft,
+              price: TokenPriceType.eager(NFTPriceInfo(near: nil, blockNumber: nil, type: .bid)),
+              collection: collection,
+              hideOwnerLink: true,
+              selectedProperties: [])
+          }
+          .tabItem {
+            Label("Test",systemImage:"person.crop.circle")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
+          NavigationView {
             WalletView()
           }
           .tabItem {
@@ -196,9 +213,7 @@ struct NFTYApp: App {
         
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
-          CompositeCollection.getRecentTrades(currentIndex: 0) {
-            print("Loaded feed")
-          }
+          // CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
         
         /*

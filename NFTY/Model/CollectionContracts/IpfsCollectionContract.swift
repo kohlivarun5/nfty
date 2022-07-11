@@ -134,12 +134,12 @@ class IpfsCollectionContract : ContractInterface {
             
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
             
-            if (uri.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix)) {
+            guard !uri.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix) else {
               var index = uri.firstIndex(of: ",")!
               uri.formIndex(after: &index)
               let str : String = String(uri.suffix(from:index))
               let data =  Data(base64Encoded: str)!
-              seal.fulfill(Media.ImageData.svg(data))
+              return seal.fulfill(Media.ImageData.svg(data))
             }
             
             switch(URL(string:ipfsUrl(uri))) {

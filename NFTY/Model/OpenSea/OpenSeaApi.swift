@@ -97,7 +97,7 @@ struct OpenSeaApi {
     
     return Promise { seal in
       var request = URLRequest(url:components.url!)
-      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
       request.httpMethod = "GET"
       
