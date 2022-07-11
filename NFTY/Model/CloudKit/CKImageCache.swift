@@ -11,13 +11,13 @@ import BigInt
 import PromiseKit
 import Cache
 
-import SVGView
+// import SVGView
 
 #if os(macOS)
 import AppKit
 #else
 import UIKit
-import SVGView
+//import SVGView
 #endif
 
 
@@ -130,7 +130,7 @@ struct CKImageCacheCore {
         
         switch data {
         case .svg(let data):
-          print("Image is svg:\(String(data: data, encoding: .utf8))")
+          print("Image is svg:\(String(data: data, encoding: .utf8)!)")
           DispatchQueue.global(qos:.background).async {
             let recordId = self.recordName(tokenId)
             let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
