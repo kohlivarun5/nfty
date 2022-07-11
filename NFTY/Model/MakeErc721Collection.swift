@@ -53,7 +53,7 @@ struct MakeErc721Collection {
   private static var cache : [String:Erc721ContractInfo] = [:]
   
   public struct Erc721ContractInfo : Codable {
-    let name : String
+    let name : String?
   }
   
   static private func validateAddress(_ addressStr:String) -> Promise<Erc721ContractInfo?> {
@@ -78,14 +78,13 @@ struct MakeErc721Collection {
       return nameOpt
     }
     .recover { e -> Promise<String?> in
+      print("Error = \(e)")
       return Promise.value(nil)
     }
     .map(on:.global(qos: .userInteractive)) {
-      $0.map {
-        let ret = Erc721ContractInfo(name:$0)
-        MakeErc721Collection.cache[addressStr] = ret
-        return ret
-      }
+      let ret = Erc721ContractInfo(name:$0)
+      MakeErc721Collection.cache[addressStr] = ret
+      return ret
     }
   }
 
@@ -112,7 +111,7 @@ struct MakeErc721Collection {
     let addressStr = address.hex(eip55: true)
     
     if let info = cache[addressStr] {
-      return Promise.value(MakeErc721Collection.ofName(name:info.name,address: address))
+      return Promise.value(info.name.map { MakeErc721Collection.ofName(name:$0,address: address) })
     }
     
     return collectionCache.get(addressStr)

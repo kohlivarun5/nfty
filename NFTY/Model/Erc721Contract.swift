@@ -39,7 +39,7 @@ class Erc721Contract {
       let inputs : [SolidityFunctionParameter] = []
       let outputs = [SolidityFunctionParameter(name: "name", type: .string)]
       let method = SolidityConstantFunction(name: "name", inputs: inputs, outputs: outputs, handler: self)
-      print("calling name")
+      print("calling name for \(self.address?.hex(eip55:true))")
       return method.invoke().call()
         .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
           return outputs["name"] as? String
