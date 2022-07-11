@@ -141,8 +141,17 @@ struct NFTYApp: App {
     WindowGroup {
       TabView {
         
+        NavigationView {
+          WalletView()
+        }
+        .tabItem {
+          Label("Profile",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
         if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
+          /*
           NavigationView {
             let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290f4C4928A430b1", eip55: true)
             let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
@@ -159,14 +168,9 @@ struct NFTYApp: App {
             Label("Test",systemImage:"person.crop.circle")
           }
           .navigationViewStyle(StackNavigationViewStyle())
+           */
           
-          NavigationView {
-            WalletView()
-          }
-          .tabItem {
-            Label("Profile",systemImage:"person.crop.circle")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
+          
           
           NavigationView {
             FriendsView()

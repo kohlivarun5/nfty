@@ -36,6 +36,8 @@
 		4F12CE8D287BCEE4009B26B8 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 4F12CE8C287BCEE4009B26B8 /* SVGView */; };
 		4F12CE8E287BCF28009B26B8 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE78287BC0B8009B26B8 /* SVGImage.swift */; };
 		4F12CE8F287BCF62009B26B8 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE78287BC0B8009B26B8 /* SVGImage.swift */; };
+		4F12CE91287BD41A009B26B8 /* SVGWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE90287BD41A009B26B8 /* SVGWebView.swift */; };
+		4F12CE93287BD41D009B26B8 /* SVGWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE90287BD41A009B26B8 /* SVGWebView.swift */; };
 		4F12FAA32718EC9E004C3E16 /* CryptoMories_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */; };
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
@@ -565,6 +567,7 @@
 		4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NFTYgoMac.xcdatamodel; sourceTree = "<group>"; };
 		4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYgoMac.entitlements; sourceTree = "<group>"; };
 		4F12CE78287BC0B8009B26B8 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
+		4F12CE90287BD41A009B26B8 /* SVGWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGWebView.swift; sourceTree = "<group>"; };
 		4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeRanks.json; sourceTree = "<group>"; };
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
@@ -1201,6 +1204,7 @@
 				4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */,
 				4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */,
 				4F12CE78287BC0B8009B26B8 /* SVGImage.swift */,
+				4F12CE90287BD41A009B26B8 /* SVGWebView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1922,6 +1926,7 @@
 				4F99B52B2857FB980012A3FF /* AlchemyApi.swift in Sources */,
 				4F6AC08826AE1E85000A7539 /* TokenTradeInterface.swift in Sources */,
 				4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */,
+				4F12CE91287BD41A009B26B8 /* SVGWebView.swift in Sources */,
 				4F7EFAE5284BFD1300E354D1 /* AddFriendSheet.swift in Sources */,
 				4F6AC08626AE1C8B000A7539 /* TokenBuyView.swift in Sources */,
 				4F4557D226ACC0A400092AC0 /* SheetButton.swift in Sources */,
@@ -2072,6 +2077,7 @@
 				4F3FE32E27E97FE20036E46C /* ERC165Contract.swift in Sources */,
 				4FDEAB9B278E53EC00F92160 /* FameLadySquad.swift in Sources */,
 				4FDEABA4278E540C00F92160 /* NFT.swift in Sources */,
+				4F12CE93287BD41D009B26B8 /* SVGWebView.swift in Sources */,
 				4FDEAB9F278E53FC00F92160 /* PhunksContract.swift in Sources */,
 				4F2EFECC27B8995900C30F3D /* Throttle.swift in Sources */,
 				4F881F942876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */,
