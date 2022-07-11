@@ -217,7 +217,10 @@ struct NFTYApp: App {
         
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
-          // CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
+          CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
+        }
+        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 40) {
+          loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
         }
         
         /*
