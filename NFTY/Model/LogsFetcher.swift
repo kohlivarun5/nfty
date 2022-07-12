@@ -79,7 +79,7 @@ class LogsFetcher {
     }
     self.topics = topics
     self.searchBlocks = 500
-    self.blockDecrements = blockDecrements ?? 500 * 4
+    self.blockDecrements = blockDecrements ?? 500 * 3
     self.cacheId = "\(address).initFromBlock"
   }
   

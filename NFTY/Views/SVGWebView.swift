@@ -28,17 +28,16 @@ import WebKit
  */
 public struct SVGWebView: View {
   
-  private let svg: String
-  
-  public init(svg: String) { self.svg = svg }
+  let svg: String
   
   public var body: some View {
-    //WebView(html: svg)
-    WebView(html:"<div style=\"width: 100%; height: 100%\">\(rewriteSVGSize(svg))</div>")
+    GeometryReader { metrics in
+      WebView(html: "<div style=\"margin:-10px;\">\(SVGWebView.rewriteSVGSize(svg,(4*min(metrics.size.height,metrics.size.width))+20.0))</div>")
+    }
   }
   
   /// A hacky way to patch the size in the SVG root tag.
-  private func rewriteSVGSize(_ string: String) -> String {
+  static private func rewriteSVGSize(_ string: String,_ dimension:Double) -> String {
     guard let startRange = string.range(of: "<svg") else { return string }
     let remainder = startRange.upperBound..<string.endIndex
     guard let endRange = string.range(of: ">", range: remainder) else {
@@ -70,16 +69,16 @@ public struct SVGWebView: View {
     if attrs["viewBox"] == nil &&
         (attrs["width"] != nil || attrs["height"] != nil)
     { // convert to viewBox
-      let w = attrs.removeValue(forKey: "width")  ?? "100%"
-      let h = attrs.removeValue(forKey: "height") ?? "100%"
+      let w = attrs.removeValue(forKey: "width")  ?? String(dimension)
+      let h = attrs.removeValue(forKey: "height") ?? String(dimension)
       let x = attrs.removeValue(forKey: "x")      ?? "0"
       let y = attrs.removeValue(forKey: "y")      ?? "0"
       attrs["viewBox"] = "\(x) \(y) \(w) \(h)"
     }
     attrs.removeValue(forKey: "x")
     attrs.removeValue(forKey: "y")
-    attrs["width"]  = "100%"
-    attrs["height"] = "100%"
+    attrs["width"]  = String(dimension)
+    attrs["height"] = String(dimension)
     
     func renderTag(_ tag: String, attributes: [ String : String ]) -> String {
       var ms = "<\(tag)"
@@ -98,6 +97,7 @@ public struct SVGWebView: View {
     }
     
     let newTag = renderTag("svg", attributes: attrs)
+    print("newTag",newTag)
     return newTag == oldTag
     ? string
     : string.replacingCharacters(in: tagRange, with: newTag)
@@ -210,7 +210,7 @@ struct SVGWebView_Previews : PreviewProvider {
 typealias NFTYgoSVGImage = SVGWebView
 
 /* let DempSVG = """
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" image-rendering="pixelated" height="336" width="336"><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVR42mNMbp32n4GGgHHUglELRi0YtWDUglELRi0YtWBoWAAAuD470bkESf4AAAAASUVORK5CYII="/></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAtUlEQVRIiWNgGAXDHjASoeY/JfoJKfhfaC+LU7L/4GOCZjARY7iUCD9WBVB5fD7EawHc8GdvPhJSRr4FlBhOlAWUAhZiFJ26/ZiBgYGBwUxVFkOMEMDlA5TUc/QZA4O5LCeKAmxi2ACuJIY3eSIDQkkVZxxANVIMcFmA00X9Bx+TZDlRkYwMiA06GBgcyRQGkIOGWJ+QZAGpwcPAQGEQEVOaEu0DHCmHYH1AaioipoJCATRPRQA6VS3JBLgqewAAAABJRU5ErkJggg==" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVRIie3NMQEAAAjDMMC/52ECvlRA00nqs3m9AwAAAAAAAJy1C7oDLddyCRYAAAAASUVORK5CYII=" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAcklEQVRIie2RQQrAMAgE15L/f9neSiir1qA9hMwpoGFWBQ7bIwCgql6PV5TnIUIbriCAa/5Qx1j9SHrpCFRgjbsCFQQ3oVihrBUBxshZ2JHz8ZMCoCg9E5SmZ4JyLEHZJLOgfD1vQQu/CVrWMwvaOIKQGwRhECvRC0yWAAAAAElFTkSuQmCC" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAL0lEQVRIiWNgGAWjYBSMAoKAkYD8fyqYQZTh/7FYhk0MAzDhkSPbZaNgFIyC4QYAovwGAIP/A58AAAAASUVORK5CYII=" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVRIie3NMQEAAAjDMMC/52ECvlRA00nqs3m9AwAAAAAAAJy1C7oDLddyCRYAAAAASUVORK5CYII=" /></foreignObject></svg>
-"""
-
-*/
+ <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" image-rendering="pixelated" height="336" width="336"><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVR42mNMbp32n4GGgHHUglELRi0YtWDUglELRi0YtWBoWAAAuD470bkESf4AAAAASUVORK5CYII="/></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAtUlEQVRIiWNgGAXDHjASoeY/JfoJKfhfaC+LU7L/4GOCZjARY7iUCD9WBVB5fD7EawHc8GdvPhJSRr4FlBhOlAWUAhZiFJ26/ZiBgYGBwUxVFkOMEMDlA5TUc/QZA4O5LCeKAmxi2ACuJIY3eSIDQkkVZxxANVIMcFmA00X9Bx+TZDlRkYwMiA06GBgcyRQGkIOGWJ+QZAGpwcPAQGEQEVOaEu0DHCmHYH1AaioipoJCATRPRQA6VS3JBLgqewAAAABJRU5ErkJggg==" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVRIie3NMQEAAAjDMMC/52ECvlRA00nqs3m9AwAAAAAAAJy1C7oDLddyCRYAAAAASUVORK5CYII=" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAcklEQVRIie2RQQrAMAgE15L/f9neSiir1qA9hMwpoGFWBQ7bIwCgql6PV5TnIUIbriCAa/5Qx1j9SHrpCFRgjbsCFQQ3oVihrBUBxshZ2JHz8ZMCoCg9E5SmZ4JyLEHZJLOgfD1vQQu/CVrWMwvaOIKQGwRhECvRC0yWAAAAAElFTkSuQmCC" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAL0lEQVRIiWNgGAWjYBSMAoKAkYD8fyqYQZTh/7FYhk0MAzDhkSPbZaNgFIyC4QYAovwGAIP/A58AAAAASUVORK5CYII=" /></foreignObject><foreignObject x="0" y="0" width="336" height="336"><img xmlns="http://www.w3.org/1999/xhtml" height="336" width="336" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAJklEQVRIie3NMQEAAAjDMMC/52ECvlRA00nqs3m9AwAAAAAAAJy1C7oDLddyCRYAAAAASUVORK5CYII=" /></foreignObject></svg>
+ """
+ 
+ */

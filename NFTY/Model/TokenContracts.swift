@@ -565,8 +565,8 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.fetch(onDone:onDone,retries:10) { log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+    return try! ethContract.transfer.wait().fetch(onDone:onDone,retries:10) { log in
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       
       response(NFTWithPrice(
@@ -595,8 +595,8 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+    return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       
       response(NFTWithPrice(

@@ -16,7 +16,7 @@ class Erc721Contract {
   // private var imagesCache : [BigUInt : ObservablePromise<URL>] = [:]
   var pricesCache : [UInt : ObservablePromise<NFTPriceStatus>] = [:]
   
-  let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
+  static let Transfer: SolidityEvent = SolidityEvent(name: "Transfer", anonymous: false, inputs: [
     SolidityEvent.Parameter(name: "from", type: .address, indexed: true),
     SolidityEvent.Parameter(name: "to", type: .address, indexed: true),
     SolidityEvent.Parameter(name: "tokenId", type: .uint256, indexed: true),
@@ -24,7 +24,7 @@ class Erc721Contract {
   
   
   let contractAddressHex : String
-  var transfer : LogsFetcher
+  var transfer : Promise<LogsFetcher>
   let initFromBlock : BigUInt
   
   class EthContract : EthereumContract {
@@ -105,7 +105,9 @@ class Erc721Contract {
     self.contractAddressHex = address
     ethContract = EthContract(address)
     initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
-    transfer = LogsFetcher(event:Transfer,fromBlock:initFromBlock,address:contractAddressHex,indexedTopics: [],blockDecrements: nil)
+    self.transfer = web3.eth.blockNumber().map { fromBlock in
+      LogsFetcher(event:Erc721Contract.Transfer,fromBlock:fromBlock.quantity,address:address,indexedTopics: [],blockDecrements: nil)
+    }
   }
   
   func eventOfTx(transactionHash:EthereumData?,eventType:TradeEventType) -> Promise<TradeEvent?> {
@@ -138,7 +140,7 @@ class Erc721Contract {
     
     let tokenIdTopic = try! ABI.encodeParameter(SolidityWrappedValue.uint(BigUInt(tokenId)))
     let fetcher = LogsFetcher(
-      event:self.Transfer,
+      event:Erc721Contract.Transfer,
       fromBlock:self.initFromBlock,
       address:self.contractAddressHex,
       indexedTopics: [nil,nil,tokenIdTopic],
@@ -153,7 +155,7 @@ class Erc721Contract {
             seal.fulfill(events.filter { $0 != nil }.map { $0! })
           }.catch { print ($0) }
       }) { log in
-        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log)
+        let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log)
         let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought))
       }
