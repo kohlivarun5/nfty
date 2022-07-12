@@ -101,8 +101,6 @@ struct NftIpfsImageView: View {
                 .padding(padding ?? 0)
             case .svg(let svg):
               svg
-                //.frame(width: 400, height: 400, alignment: .center)
-                //.resizable()
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
@@ -117,8 +115,6 @@ struct NftIpfsImageView: View {
               .padding(padding ?? 0)
             case .svg(let svg):
               svg
-                //.frame(width: 400, height: 400, alignment: .center)
-                //.resizable()
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
