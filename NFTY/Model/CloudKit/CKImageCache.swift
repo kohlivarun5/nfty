@@ -223,8 +223,8 @@ struct CKImageCacheCore {
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
             .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Media.IpfsImage?> in
-              let (record,error) = result
-              print("Fetch returned with error=\(String(describing: error))")
+              let (record,_) = result
+              // print("Fetch returned with error=\(String(describing: error))")
               
               let fileUrl = (record?[assetKey] as? CKAsset)?.fileURL
               let compressionAlgorithm = (record?[compressionAlgorithmKey] as? Int).flatMap { CompressionAlgorithm(rawValue: $0) }
