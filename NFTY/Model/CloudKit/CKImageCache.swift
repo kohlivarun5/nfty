@@ -127,7 +127,6 @@ struct CKImageCacheCore {
         
         switch data {
         case .svg(let data):
-          print("Image is svg:\(String(data: data, encoding: .utf8)!)")
           DispatchQueue.global(qos:.background).async {
             let recordId = self.recordName(tokenId)
             let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
@@ -155,8 +154,6 @@ struct CKImageCacheCore {
             }
           }
           let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
-          //let svg = NFTYgoSVGImage(svg:DempSVG)
-          print(svg)
           return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
           
         case .image(let data):

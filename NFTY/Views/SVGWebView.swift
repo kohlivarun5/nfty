@@ -97,7 +97,6 @@ public struct SVGWebView: View {
     }
     
     let newTag = renderTag("svg", attributes: attrs)
-    print("newTag",newTag)
     return newTag == oldTag
     ? string
     : string.replacingCharacters(in: tagRange, with: newTag)
