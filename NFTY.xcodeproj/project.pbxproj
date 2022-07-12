@@ -555,13 +555,6 @@
 		4F12715B26EDD43D007E6A7B /* Bombs_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_attributeScores.json; sourceTree = "<group>"; };
 		4F12715E26EDDD5C007E6A7B /* Bombs_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_nearestTokens.json; sourceTree = "<group>"; };
 		4F12715F26EDDD5C007E6A7B /* Bombs_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bombs_rarityRanks.json; sourceTree = "<group>"; };
-		4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTYgoMacApp.swift; sourceTree = "<group>"; };
-		4F12CE53287B9686009B26B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		4F12CE55287B9688009B26B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		4F12CE5A287B9688009B26B8 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NFTYgoMac.xcdatamodel; sourceTree = "<group>"; };
-		4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYgoMac.entitlements; sourceTree = "<group>"; };
 		4F12CE90287BD41A009B26B8 /* SVGWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGWebView.swift; sourceTree = "<group>"; };
 		4F12FAA12718EC9E004C3E16 /* CryptoMories_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeRanks.json; sourceTree = "<group>"; };
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
@@ -885,28 +878,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F12CE50287B9686009B26B8 /* NFTYgoMac */ = {
-			isa = PBXGroup;
-			children = (
-				4F12CE51287B9686009B26B8 /* NFTYgoMacApp.swift */,
-				4F12CE53287B9686009B26B8 /* ContentView.swift */,
-				4F12CE55287B9688009B26B8 /* Assets.xcassets */,
-				4F12CE5A287B9688009B26B8 /* Persistence.swift */,
-				4F12CE5F287B9688009B26B8 /* NFTYgoMac.entitlements */,
-				4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */,
-				4F12CE57287B9688009B26B8 /* Preview Content */,
-			);
-			path = NFTYgoMac;
-			sourceTree = "<group>";
-		};
-		4F12CE57287B9688009B26B8 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				4F12CE58287B9688009B26B8 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		4F1E4F3C26C850B7009D27E6 /* CreateAttributeScores */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,7 +1037,6 @@
 				4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */,
 				4FB72E4626A8DF250083F255 /* NFTRanking */,
 				4FDEAB7F278E3F5500F92160 /* NFTYWidget */,
-				4F12CE50287B9686009B26B8 /* NFTYgoMac */,
 				4F58A06C2636942200E258C1 /* Frameworks */,
 				4FB9A7AF262B28A300C58AF9 /* NFTY */,
 				4FB9A7C1262B28A400C58AF9 /* NFTYTests */,
@@ -2738,16 +2708,6 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		4F12CE5C287B9688009B26B8 /* NFTYgoMac.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */,
-			);
-			currentVersion = 4F12CE5D287B9688009B26B8 /* NFTYgoMac.xcdatamodel */;
-			path = NFTYgoMac.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		4F343D7C285FE8AC009FFB6D /* CKPublicObjects.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
