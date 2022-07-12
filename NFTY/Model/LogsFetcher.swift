@@ -69,7 +69,7 @@ class LogsFetcher {
   
   init(event:SolidityEvent,fromBlock:BigUInt,address:String,indexedTopics:[String?],blockDecrements:BigUInt?) {
     self.event = event;
-    self.fromBlock = fromBlock;
+    self.fromBlock = fromBlock - (blockDecrements ?? 500 * 3)
     self.address = address
     var topics = [
       EthereumGetLogTopics.and(alchemyWeb3.eth.abi.encodeEventSignature(self.event))
