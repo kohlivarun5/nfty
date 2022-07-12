@@ -13,6 +13,23 @@ import CloudKit
 struct MakeErc721Collection {
   
   static func ofName(name:String,address:EthereumAddress) -> Collection {
+  #if os(macOS)
+    return  Collection(
+      info: CollectionInfo(
+        address: address.hex(eip55: true),
+        sample: "SAMPLE_ZUNK",
+        name: name,
+        webLink: nil,
+        themeColor: .black,
+        themeLabelColor: .white,
+        disableRecentTrades: true,
+        similarTokens: nil,
+        rarityRanking: nil),
+      contract: IpfsCollectionContract(
+        name: name,
+        address: address.hex(eip55: true), indicativePriceSource: .openSea)
+    )
+    #else
     return  Collection(
       info: CollectionInfo(
         address: address.hex(eip55: true),
@@ -28,6 +45,7 @@ struct MakeErc721Collection {
         name: name,
         address: address.hex(eip55: true), indicativePriceSource: .openSea)
     )
+    #endif
   }
   
   static private let KnownUnsupportedName = "com.nftygo.unsupported"
@@ -35,7 +53,7 @@ struct MakeErc721Collection {
   private static var cache : [String:Erc721ContractInfo] = [:]
   
   public struct Erc721ContractInfo : Codable {
-    let name : String
+    let name : String?
   }
   
   static private func validateAddress(_ addressStr:String) -> Promise<Erc721ContractInfo?> {
@@ -60,17 +78,17 @@ struct MakeErc721Collection {
       return nameOpt
     }
     .recover { e -> Promise<String?> in
+      print("Error = \(e)")
       return Promise.value(nil)
     }
     .map(on:.global(qos: .userInteractive)) {
-      $0.map {
-        let ret = Erc721ContractInfo(name:$0)
-        MakeErc721Collection.cache[addressStr] = ret
-        return ret
-      }
+      let ret = Erc721ContractInfo(name:$0)
+      MakeErc721Collection.cache[addressStr] = ret
+      return ret
     }
   }
-  
+
+#if !os(macOS)
   private static var collectionCache = CKObjectCache(
     database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
     entityName: "CollectionMetaData",
@@ -86,13 +104,14 @@ struct MakeErc721Collection {
     },
     keyToString: { $0 }
   )
+
   
   static func ofAddress(address:EthereumAddress) -> Promise<Collection?> {
     
     let addressStr = address.hex(eip55: true)
     
     if let info = cache[addressStr] {
-      return Promise.value(MakeErc721Collection.ofName(name:info.name,address: address))
+      return Promise.value(info.name.map { MakeErc721Collection.ofName(name:$0,address: address) })
     }
     
     return collectionCache.get(addressStr)
@@ -105,5 +124,6 @@ struct MakeErc721Collection {
         }
       }
   }
+#endif
   
 }

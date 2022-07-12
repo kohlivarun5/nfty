@@ -52,7 +52,7 @@ struct WalletTokensCollectionHeader: View {
             collection:collection,
             info:collection.info,
             loader: CompositeCollection.getLoader(collection: collection),
-            page:.floor)
+            page:.recent)
       ) {
         WalletTokensCollectionHeaderImpl(collection: collection)
       }

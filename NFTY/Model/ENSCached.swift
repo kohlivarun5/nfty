@@ -19,9 +19,9 @@ struct ENSCached {
   }
   
   static let avatarCache = HybridStorage(
-    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig(expiry: Expiry.seconds(60))),
+    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig(expiry: Expiry.seconds(3600))),
     diskStorage: try! DiskStorage<String, Avatar>(
-      config: DiskConfig(name: "ENSCached.Avatar",expiry: Expiry.seconds(600)),
+      config: DiskConfig(name: "ENSCached.Avatar",expiry: Expiry.seconds(1200)),
       transformer:TransformerFactory.forCodable(ofType:Avatar.self))
   )
   

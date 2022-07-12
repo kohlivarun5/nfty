@@ -28,9 +28,15 @@ public struct Web3HttpProviderWithRetry: Web3Provider {
   
   public let rpcURL: String
   
-  public init(rpcURL: String, session: URLSession = URLSession(configuration: .default)) {
+  public init(rpcURL: String, timeoutIntervalForRequest:Double,timeoutIntervalForResource:Double) {
     self.rpcURL = rpcURL
-    self.session = session
+    
+    let configuration = URLSessionConfiguration.default
+    configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
+    configuration.timeoutIntervalForResource = timeoutIntervalForResource
+    
+    self.session = URLSession(configuration:configuration)
+    
     // Concurrent queue for faster concurrent requests
     self.queue = DispatchQueue(label: "Web3HttpProvider", attributes: .concurrent)
   }
@@ -71,9 +77,11 @@ public struct Web3HttpProviderWithRetry: Web3Provider {
         // https://docs.alchemy.com/alchemy/documentation/throughput#http
         guard (status != 429) else {
           // Retry
-          let retry_ms = urlResponse.value(forHTTPHeaderField:"retry-after").flatMap { Double($0) } ?? 1000
-          print("Scheduling rety after \(retry_ms)ms")
-          queue.asyncAfter(deadline: .now()+(retry_ms / 1000.0)) {
+          // print("Retry header=\(urlResponse.value(forHTTPHeaderField:"retry-after")) in url =\(urlResponse))")
+          let retry_ms = urlResponse.value(forHTTPHeaderField:"retry-after").flatMap { Double($0) } ?? 1150
+          let random_retry_ms = Double.random(in:retry_ms-100 ... retry_ms+100)
+          print("Scheduling rety after \(random_retry_ms)ms")
+          queue.asyncAfter(deadline: .now()+(random_retry_ms / 1000.0)) {
             self.send(request:request,response:response)
           }
           return

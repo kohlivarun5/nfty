@@ -10,7 +10,14 @@ import CloudKit
 import BigInt
 import PromiseKit
 import Cache
+
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
+
+
 
 struct CKImageCacheCore {
   
@@ -48,29 +55,43 @@ struct CKImageCacheCore {
   
   let database : CKDatabase
   let bucket : String
-  let fallback : (_ tokenId:BigUInt) -> Promise<Data?>
+  let fallback : (_ tokenId:BigUInt) -> Promise<Media.ImageData?>
   let collectionAddress : String
   
+#if os(macOS)
+  private var imageCache : DiskStorage<BigUInt,NSImage>
+  private var imageCacheHD : DiskStorage<BigUInt,NSImage>
+#else
   private var imageCache : DiskStorage<BigUInt,UIImage>
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
+#endif
   
   private let assetKey = "image"
   private let compressionAlgorithmKey = "compressionAlgorithm"
   private let neuralHashKey = "neuralHash"
   private let collectionAddressKey = "collectionAddress"
   
-  
-  init(database:CKDatabase,bucket:String,collectionAddress:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Data?>) {
+  init(database:CKDatabase,bucket:String,collectionAddress:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Media.ImageData?>) {
     self.database = database
     self.bucket = bucket
     self.fallback = fallback
     self.collectionAddress = collectionAddress
+    
+#if os(macOS)
+    self.imageCache = try! DiskStorage<BigUInt, NSImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+    self.imageCacheHD = try! DiskStorage<BigUInt, NSImage>(
+      config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
+      transformer: TransformerFactory.forImage())
+#else
     self.imageCache = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(bucket).ImageCacheSD",expiry: .never),
       transformer: TransformerFactory.forImage())
     self.imageCacheHD = try! DiskStorage<BigUInt, UIImage>(
       config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
       transformer: TransformerFactory.forImage())
+#endif
   }
   
   
@@ -79,47 +100,63 @@ struct CKImageCacheCore {
   }
   
   private func imageOfData(_ data:Data) -> Media.IpfsImage? {
+#if os(macOS)
+    return NSImage(data:data)
+      .map { Media.IpfsImage(image:.image($0),image_hd:.image($0)) }
+#else
     return UIImage(data:data)
       .flatMap { image_hd in
         image_hd
           .jpegData(compressionQuality: 0.1)
           .flatMap { UIImage(data:$0) }
-          .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+          .map { Media.IpfsImage(image:.image($0),image_hd:.image(image_hd)) }
       }
+#endif
   }
   
   private func onCacheMiss(_ tokenId:BigUInt) -> Promise<Media.IpfsImage?> {
     return self.fallback(tokenId)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { data -> Media.IpfsImage? in
         guard let data = data else { return nil }
-        guard let image = imageOfData(data) else { return nil }
         
-        DispatchQueue.global(qos:.background).async {
-          let recordId = self.recordName(tokenId)
-          let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
-          let compressionAlgorithm = CompressionAlgorithm.lzfse
-          NeuralHash.generate(image: data) { (neuralHash:String?) in
-            let (file,compressionAlgorithm) = createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)
-            record.setValuesForKeys([
-              collectionAddressKey : self.collectionAddress,
-              assetKey: CKAsset.init(fileURL: file)
-            ])
-            if let compressionAlgorithm = compressionAlgorithm {
-              record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
-            }
-            if let neuralHash = neuralHash {
-              print("NeuralHash=\(neuralHash) for \(recordId)")
-              record.setValue(neuralHash, forKey: neuralHashKey)
-            }
-            print("Saving recordId=\(recordId)")
-            database.save(record:record)
-              .done(on:.global(qos: .background)) { result in
-                print("Save returned for \(recordId)")
+        switch data {
+        case .svg(let data):
+          // We do not implement caching for svg
+          print("Image is svg, caching is skipped")
+          let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+          return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
+          
+        case .image(let data):
+          
+          guard let image = imageOfData(data) else { return nil }
+          
+          DispatchQueue.global(qos:.background).async {
+            let recordId = self.recordName(tokenId)
+            let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
+            let compressionAlgorithm = CompressionAlgorithm.lzfse
+            NeuralHash.generate(image: data) { (neuralHash:String?) in
+              let (file,compressionAlgorithm) = createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)
+              record.setValuesForKeys([
+                collectionAddressKey : self.collectionAddress,
+                assetKey: CKAsset.init(fileURL: file)
+              ])
+              if let compressionAlgorithm = compressionAlgorithm {
+                record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
               }
-              .catch { print($0) }
+              if let neuralHash = neuralHash {
+                print("NeuralHash=\(neuralHash) for \(recordId)")
+                record.setValue(neuralHash, forKey: neuralHashKey)
+              }
+              print("Saving recordId=\(recordId)")
+              database.save(record:record)
+                .done(on:.global(qos: .background)) { result in
+                  print("Save returned for \(recordId)")
+                }
+                .catch { print($0) }
+            }
           }
+          return image
         }
-        return image
       }
   }
   
@@ -141,7 +178,7 @@ struct CKImageCacheCore {
    STRING
    Sortable
    
-
+   
    */
   
   
@@ -150,7 +187,7 @@ struct CKImageCacheCore {
       DispatchQueue.global(qos:.userInteractive).async {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+          seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
         case (.none,_),(_,.none):
           let recordName = self.recordName(tokenId)
           print("Fetching for record=\(recordName)")
@@ -172,8 +209,18 @@ struct CKImageCacheCore {
             }.done(on:DispatchQueue.global(qos:.userInteractive)) { image in
               DispatchQueue.global(qos:.background).async {
                 image.map {
-                  try? self.imageCache.setObject($0.image, forKey: tokenId)
-                  try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+                  switch($0.image) {
+                  case .svg:
+                    break
+                  case .image(let image):
+                    try? self.imageCache.setObject(image, forKey: tokenId)
+                  }
+                  switch($0.image_hd) {
+                  case .svg:
+                    break
+                  case .image(let image_hd):
+                    try? self.imageCacheHD.setObject(image_hd, forKey: tokenId)
+                  }
                 }
               }
               seal.fulfill(image)

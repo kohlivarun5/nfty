@@ -25,7 +25,7 @@ enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
   public static func<(a: BlockNumber, b: BlockNumber) -> Bool {
     switch(a,b) {
     case (.ethereum(let x),.ethereum(let y)),
-         (.near(let x),.near(let y)):
+      (.near(let x),.near(let y)):
       return x.quantity < y.quantity
     case (.ethereum,.near):
       return false
@@ -37,7 +37,7 @@ enum BlockNumber : Codable,Comparable,Identifiable,Hashable {
   public static func>(a: BlockNumber, b: BlockNumber) -> Bool {
     switch(a,b) {
     case (.ethereum(let x),.ethereum(let y)),
-         (.near(let x),.near(let y)):
+      (.near(let x),.near(let y)):
       return x.quantity > y.quantity
     case (.ethereum,.near):
       return true
@@ -127,24 +127,30 @@ enum Media {
     }
   }
   
-  struct IpfsImage {
-    let image : UIImage // let data : Data
-    let image_hd : UIImage // let data : Data
-    
-    static func makeOpt(_ data:Data?) -> Media.IpfsImage? {
-      return data
-        .flatMap {
-          UIImage(data:$0)
-            .flatMap { image_hd in
-              image_hd
-                .jpegData(compressionQuality: 0.1)
-                .flatMap { UIImage(data:$0) }
-                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
-            }
-        }
-    }
-    
+  enum ImageData {
+    case svg(Data)
+    case image(Data)
   }
+  
+#if os(macOS)
+  struct IpfsImage {
+    enum View {
+    case svg(NFTYgoSVGImage)
+    case image(NSImage)
+    }
+    let image : View // let data : Data
+    let image_hd : View // let data : Data
+  }
+#else
+  struct IpfsImage {
+    enum View {
+    case svg(NFTYgoSVGImage)
+    case image(UIImage)
+    }
+    let image : View // let data : Data
+    let image_hd : View // let data : Data
+  }
+#endif
   
   struct IpfsImageLazy {
     private var tokenId : BigUInt

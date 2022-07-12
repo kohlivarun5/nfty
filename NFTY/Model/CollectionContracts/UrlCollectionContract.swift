@@ -61,7 +61,7 @@ class UrlCollectionContract : ContractInterface {
             image_hd
               .jpegData(compressionQuality: 0.1)
               .flatMap { UIImage(data:$0) }
-              .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+              .map { Media.IpfsImage(image:.image($0),image_hd:.image(image_hd)) }
           }
       }
   }
@@ -90,14 +90,18 @@ class UrlCollectionContract : ContractInterface {
       DispatchQueue.global(qos:.userInteractive).async {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+          seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
         case (_,.none),(.none,_):
           self.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = UrlCollectionContract.imageOfData($0)
               image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+                if case .image(let image) = $0.image {
+                  try? self.imageCache.setObject(image, forKey: tokenId)
+                }
+                if case .image(let image_hd) = $0.image_hd {
+                  try? self.imageCacheHD.setObject(image_hd, forKey: tokenId)
+                }
               }
               seal.fulfill(image)
             }
@@ -111,9 +115,8 @@ class UrlCollectionContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.fetch(onDone:onDone) { log in
-      
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+    return try! ethContract.transfer.wait().fetch(onDone:onDone) { log in
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
@@ -143,8 +146,8 @@ class UrlCollectionContract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+    return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
@@ -190,7 +193,7 @@ class UrlCollectionContract : ContractInterface {
           return p
         case .none:
           let p =
-            self.ethContract.getTokenHistory(tokenId)
+          self.ethContract.getTokenHistory(tokenId)
             .map(on:DispatchQueue.global(qos:.userInteractive)) { (event:TradeEventStatus) -> NFTPriceStatus in
               switch(event) {
               case .trade(let event):
@@ -218,8 +221,7 @@ class UrlCollectionContract : ContractInterface {
           return when(
             fulfilled:
               Array(0...tokensNum-1).map { index -> Promise<Void> in
-                return
-                  self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
+                return self.ethContract.ethContract.tokenOfOwnerByIndex(address: address,index:index)
                   .map { tokenId in
                     return self.getToken(UInt(tokenId))
                   }.done {

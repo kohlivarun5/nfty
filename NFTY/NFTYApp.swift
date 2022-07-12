@@ -46,14 +46,14 @@ class AppDelegateState: ObservableObject {
 }
 
 /*
-import Firebase
-import FirebaseAppCheck
-
-class NFTYAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
-  func createProvider(with app: FirebaseApp) -> AppCheckProvider? {
-    return AppAttestProvider(app: app)
-  }
-}
+ import Firebase
+ import FirebaseAppCheck
+ 
+ class NFTYAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
+ func createProvider(with app: FirebaseApp) -> AppCheckProvider? {
+ return AppAttestProvider(app: app)
+ }
+ }
  */
 
 class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelegate {
@@ -141,15 +141,35 @@ struct NFTYApp: App {
     WindowGroup {
       TabView {
         
-        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
+        /*
+        NavigationView {
+          let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290f4C4928A430b1", eip55: true)
+          let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+          let nft = collection.contract.getNFT(100)
           
-          NavigationView {
-            WalletView()
-          }
-          .tabItem {
-            Label("Profile",systemImage:"person.crop.circle")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
+          NftDetail(
+            nft: nft,
+            price: TokenPriceType.eager(NFTPriceInfo(near: nil, blockNumber: nil, type: .bid)),
+            collection: collection,
+            hideOwnerLink: true,
+            selectedProperties: [])
+        }
+        .tabItem {
+          Label("Test",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+         */
+        
+        
+        NavigationView {
+          WalletView()
+        }
+        .tabItem {
+          Label("Profile",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
+        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
           
           NavigationView {
             FriendsView()
@@ -196,14 +216,15 @@ struct NFTYApp: App {
         
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
-          CompositeCollection.getRecentTrades(currentIndex: 0) {
-            print("Loaded feed")
-          }
+          CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
+        }
+        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 40) {
+          loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
         }
         
         /*
-        // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
-        
+         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
+         
          DispatchQueue.global(qos:.utility).async {
          CompositeCollection.collections.forEach { collection in
          print(

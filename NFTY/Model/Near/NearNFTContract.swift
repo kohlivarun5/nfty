@@ -83,7 +83,7 @@ class NearNFTContract : ContractInterface {
             image_hd
               .jpegData(compressionQuality: 0.1)
               .flatMap { UIImage(data:$0) }
-              .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+              .map { Media.IpfsImage(image:.image($0),image_hd:.image(image_hd)) }
           }
       }
   }
@@ -131,14 +131,18 @@ class NearNFTContract : ContractInterface {
       DispatchQueue.global(qos:.userInteractive).async {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+          seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
         case (.none,_),(_,.none):
           self.fetchImage(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = NearNFTContract.imageOfData($0)
               image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+                if case .image(let image) = $0.image {
+                  try? self.imageCache.setObject(image, forKey: tokenId)
+                }
+                if case .image(let image_hd) = $0.image_hd {
+                  try? self.imageCacheHD.setObject(image_hd, forKey: tokenId)
+                }
               }
               seal.fulfill(image)
             }

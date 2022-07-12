@@ -32,9 +32,11 @@ struct AlchemyApi {
             // https://docs.alchemy.com/alchemy/documentation/throughput#http
             guard (httpResponse.statusCode != 429) else {
               // Retry
-              let retry_ms = httpResponse.value(forHTTPHeaderField:"retry-after").flatMap { Double($0) } ?? 1000
-              print("Scheduling rety after \(retry_ms)ms")
-              DispatchQueue.global(qos:.userInitiated).asyncAfter(deadline: .now()+(retry_ms / 1000.0)) {
+              // print("Retry header=\(httpResponse.value(forHTTPHeaderField:"retry-after")) in url =\(httpResponse))")
+              let retry_ms = httpResponse.value(forHTTPHeaderField:"retry-after").flatMap { Double($0) } ?? 1150
+              let random_retry_ms = Double.random(in:retry_ms-100 ... retry_ms+100)
+              print("Scheduling rety after \(random_retry_ms)ms")
+              DispatchQueue.global(qos:.userInitiated).asyncAfter(deadline: .now()+(random_retry_ms / 1000.0)) {
                 fetch(url:url,params:params)
                   .done { seal.fulfill($0) }.catch { seal.reject($0)}
               }
@@ -176,8 +178,9 @@ struct AlchemyApi {
         let thumbnail : String?
       }
       struct Metadata : Decodable {
-        let image : String
+        let image : String?
         let external_url : String?
+        let image_data : String?
       }
       let contract : Contract
       let id : Id

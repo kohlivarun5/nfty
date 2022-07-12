@@ -25,7 +25,8 @@ struct FavoritesView: View {
       let (address_in,tokens) = dict_item
       return favorites.then { favorites -> Promise<FavoritesDict> in
         
-        return collectionsFactory.getByAddress(address_in).map(on:.main) { collection -> FavoritesDict in
+        return collectionsFactory.getByAddressOpt(address_in).map(on:.main) { collection -> FavoritesDict in
+          guard let collection = collection else { return favorites }
           let address = collection.contract.contractAddressHex
           return tokens.reduce(into:favorites, { favorites,token_item in
             let (tokenId,isFav) = token_item

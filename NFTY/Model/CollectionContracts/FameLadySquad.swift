@@ -45,7 +45,7 @@ class FameLadySquad_Contract : ContractInterface {
               image_hd
                 .jpegData(compressionQuality: 0.1)
                 .flatMap { UIImage(data:$0) }
-                .map { Media.IpfsImage(image:$0,image_hd:image_hd) }
+                .map { Media.IpfsImage(image:.image($0),image_hd:.image(image_hd)) }
             }
         }
     }
@@ -77,14 +77,18 @@ class FameLadySquad_Contract : ContractInterface {
       DispatchQueue.global(qos:.userInteractive).async {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
-          seal.fulfill(Media.IpfsImage(image: image,image_hd: image_hd))
+          seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
         case (_,.none),(.none,_):
           self.ethContract.image(tokenId)
             .done(on:DispatchQueue.global(qos: .background)) {
               let image = IpfsImageEthContract.imageOfData($0)
               image.flatMap {
-                try? self.imageCache.setObject($0.image, forKey: tokenId)
-                try? self.imageCacheHD.setObject($0.image_hd, forKey: tokenId)
+                if case .image(let image) = $0.image {
+                  try? self.imageCache.setObject(image, forKey: tokenId)
+                }
+                if case .image(let image_hd) = $0.image_hd {
+                  try? self.imageCacheHD.setObject(image_hd, forKey: tokenId)
+                }
               }
               seal.fulfill(image)
             }
@@ -104,9 +108,9 @@ class FameLadySquad_Contract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.fetch(onDone:onDone) { log in
+    return try! ethContract.transfer.wait().fetch(onDone:onDone) { log in
       
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       
@@ -136,8 +140,8 @@ class FameLadySquad_Contract : ContractInterface {
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return ethContract.transfer.updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:self.ethContract.Transfer,from:log);
+    return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
+      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
       let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
       

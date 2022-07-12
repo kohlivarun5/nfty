@@ -231,6 +231,13 @@ struct ProfileViewHeader: View {
         self.isFollowing = false
       }
       
+      guard let address = account.ethAddress else { return }
+      
+      web3.eth.getBalance(address: address, block:.latest)
+        .done(on:.main) { balance in
+          self.balance = balance
+        }.catch { print($0) }
+      
       switch(self.friendName,self.avatar) {
       case (.some,.some):
         return
@@ -238,45 +245,35 @@ struct ProfileViewHeader: View {
         break
       }
       
-      if let address = account.ethAddress {
-        
-        ENSContract.nameOfOwner(address, eth: web3.eth)
-          .done(on:.main) {
+      ENSContract.nameOfOwner(address, eth: web3.eth)
+        .done(on:.main) {
+          
+          if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
+            self.friendName = self.account.nearAccount
+          }
+          
+          if let _ = avatar { return }
+          
+          $0.map {
+            self.friendName = $0
             
-            if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
-              self.friendName = self.account.nearAccount
-            }
-            
-            if let _ = avatar { return }
-            
-            $0.map {
-              self.friendName = $0
-              
-              // Also do avatar loading
-              ENSContract.avatarOfOwner($0, eth: web3.eth)
-                .then(on:.main) { avatarOpt -> Promise<ENSTextChangedFeed.NFTItem?> in
-                  guard let avatar = avatarOpt else { return Promise.value(nil) }
-                  return ENSTextChangedFeed.parseENSAvatar(avatar:avatar)
-                }
-                .done(on:.main) {
-                  $0.map { nftItem in
-                    withAnimation {
-                      self.avatar = (nftItem.collection,nftItem.nft)
-                    }
+            // Also do avatar loading
+            ENSContract.avatarOfOwner($0, eth: web3.eth)
+              .then(on:.main) { avatarOpt -> Promise<ENSTextChangedFeed.NFTItem?> in
+                guard let avatar = avatarOpt else { return Promise.value(nil) }
+                return ENSTextChangedFeed.parseENSAvatar(avatar:avatar)
+              }
+              .done(on:.main) {
+                $0.map { nftItem in
+                  withAnimation {
+                    self.avatar = (nftItem.collection,nftItem.nft)
                   }
                 }
-                .catch { print($0) }
-              
-            } }
-          .catch { print($0) }
-        
-        web3.eth.getBalance(address: address, block:.latest)
-          .done(on:.main) { balance in
-            self.balance = balance
-          }.catch { print($0) }
-        
-      }
-      
+              }
+              .catch { print($0) }
+            
+          } }
+        .catch { print($0) }
     }
   }
 }

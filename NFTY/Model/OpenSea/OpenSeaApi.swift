@@ -10,10 +10,6 @@ import Web3
 import PromiseKit
 import Cache
 
-let ETH_ADDRESS = "0x0000000000000000000000000000000000000000"
-
-let WETH_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-
 struct OpenSeaApi {
   
   static let API_KEY = OpenSeaApiCore.API_KEY
@@ -101,7 +97,7 @@ struct OpenSeaApi {
     
     return Promise { seal in
       var request = URLRequest(url:components.url!)
-      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
       
       request.httpMethod = "GET"
       
