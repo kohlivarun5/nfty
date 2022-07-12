@@ -231,21 +231,16 @@ struct CKImageCacheCore {
               
               let fileUrl = (record?[assetKey] as? CKAsset)?.fileURL
               let compressionAlgorithm = (record?[compressionAlgorithmKey] as? Int).flatMap { CompressionAlgorithm(rawValue: $0) }
-              print("fileUrl=\(fileUrl)")
               
               switch(fileUrl.flatMap { readLocalFile($0,compressionAlgorithm: compressionAlgorithm) }) {
               case .none:
                 // print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
-                
-                print("fileUrl=\(fileUrl),\(record?[imageTypeKey] as? Int)")
+
                 switch((record?[imageTypeKey] as? Int).map { ImageType.init(rawValue: $0)! }) {
                 case .svg:
-                  print("Image is svg:\(String(data: data, encoding: .utf8))")
-                  //let svg = NFTYgoSVGImage(data:data)// SVGKFastImageViewSUI(data: data)
                   let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
-                  //let svg = NFTYgoSVGImage(svg:DempSVG)
                   return Promise.value(Media.IpfsImage(image: .svg(svg), image_hd: .svg(svg)))
                 default:
                   return Promise.value(imageOfData(data))
