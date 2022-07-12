@@ -106,7 +106,7 @@ class Erc721Contract {
     ethContract = EthContract(address)
     initFromBlock = (UserDefaults.standard.string(forKey: "\(address).initFromBlock").flatMap { BigUInt($0)}) ?? INIT_BLOCK
     self.transfer = web3.eth.blockNumber().map { fromBlock in
-      LogsFetcher(event:Erc721Contract.Transfer,fromBlock:fromBlock.quantity,address:address,indexedTopics: [],blockDecrements: nil)
+      LogsFetcher(event:Erc721Contract.Transfer,fromBlock:fromBlock.quantity - 1500,address:address,indexedTopics: [],blockDecrements: nil)
     }
   }
   
