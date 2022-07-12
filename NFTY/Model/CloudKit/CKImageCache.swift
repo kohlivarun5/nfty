@@ -71,12 +71,6 @@ struct CKImageCacheCore {
   private let neuralHashKey = "neuralHash"
   private let collectionAddressKey = "collectionAddress"
   
-  enum ImageType : Int {
-    case svg = 0
-  }
-  private let imageTypeKey = "imageType"
-  
-  
   init(database:CKDatabase,bucket:String,collectionAddress:String,fallback:@escaping (_ tokenId:BigUInt) -> Promise<Media.ImageData?>) {
     self.database = database
     self.bucket = bucket
@@ -127,32 +121,8 @@ struct CKImageCacheCore {
         
         switch data {
         case .svg(let data):
-          DispatchQueue.global(qos:.background).async {
-            let recordId = self.recordName(tokenId)
-            let record = CKRecord.init(recordType: "TokenImageCache", recordID:CKRecord.ID.init(recordName:recordId))
-            let compressionAlgorithm = CompressionAlgorithm.lzfse
-            NeuralHash.generate(image: data) { (neuralHash:String?) in
-              let (file,compressionAlgorithm) = createLocalFile(path:recordId,data:data,compressionAlgorithm: compressionAlgorithm)
-              record.setValuesForKeys([
-                collectionAddressKey : self.collectionAddress,
-                assetKey: CKAsset.init(fileURL: file),
-                imageTypeKey: ImageType.svg.rawValue
-              ])
-              if let compressionAlgorithm = compressionAlgorithm {
-                record.setValue(compressionAlgorithm.rawValue, forKey: compressionAlgorithmKey)
-              }
-              if let neuralHash = neuralHash {
-                print("NeuralHash=\(neuralHash) for \(recordId)")
-                record.setValue(neuralHash, forKey: neuralHashKey)
-              }
-              print("Saving recordId=\(recordId)")
-              database.save(record:record)
-                .done(on:.global(qos: .background)) { result in
-                  print("Save returned for \(recordId)")
-                }
-                .catch { print($0) }
-            }
-          }
+          // We do not implement caching for svg
+          print("Image is svg, caching is skipped")
           let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
           return Media.IpfsImage(image:.svg(svg),image_hd: .svg(svg))
           
@@ -234,14 +204,7 @@ struct CKImageCacheCore {
                 // print("Record \(recordName) did not return asset")
                 return onCacheMiss(tokenId)
               case .some(let data):
-
-                switch((record?[imageTypeKey] as? Int).map { ImageType.init(rawValue: $0)! }) {
-                case .svg:
-                  let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
-                  return Promise.value(Media.IpfsImage(image: .svg(svg), image_hd: .svg(svg)))
-                default:
-                  return Promise.value(imageOfData(data))
-                }
+                return Promise.value(imageOfData(data))
               }
             }.done(on:DispatchQueue.global(qos:.userInteractive)) { image in
               DispatchQueue.global(qos:.background).async {
