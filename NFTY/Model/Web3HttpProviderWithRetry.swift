@@ -28,9 +28,15 @@ public struct Web3HttpProviderWithRetry: Web3Provider {
   
   public let rpcURL: String
   
-  public init(rpcURL: String, session: URLSession = URLSession(configuration: .default)) {
+  public init(rpcURL: String, timeoutIntervalForRequest:Double,timeoutIntervalForResource:Double) {
     self.rpcURL = rpcURL
-    self.session = session
+    
+    let configuration = URLSessionConfiguration.default
+    configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
+    configuration.timeoutIntervalForResource = timeoutIntervalForResource
+    
+    self.session = URLSession(configuration:configuration)
+    
     // Concurrent queue for faster concurrent requests
     self.queue = DispatchQueue(label: "Web3HttpProvider", attributes: .concurrent)
   }

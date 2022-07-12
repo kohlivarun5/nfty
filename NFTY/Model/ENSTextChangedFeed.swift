@@ -44,8 +44,7 @@ class ENSTextChangedFeed {
     let address = try? EthereumAddress(hex: addressStr, eip55: false)
     guard let address = address else { print("Address not a match \(addressStr)"); return Promise.value(nil) }
     
-    let tokenId = (try? BigUInt(tokenIdStr))
-    guard let tokenId = tokenId else { print("TokenId not a match \(tokenIdStr)"); return Promise.value(nil) }
+    guard let tokenId = BigUInt(tokenIdStr) else { print("TokenId not a match \(tokenIdStr)"); return Promise.value(nil) }
     
     return collectionsFactory.getByAddressOpt(address.hex(eip55: true))
       .map  { collectionOpt -> NFTItem? in
