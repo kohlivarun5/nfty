@@ -266,6 +266,7 @@
 		4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
 		4FAC369C287F783800A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369B287F783800A1D734 /* Cache */; };
+		4FAC369E287F8CC200A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369D287F8CC200A1D734 /* Cache */; };
 		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
@@ -863,6 +864,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
+				4FAC369E287F8CC200A1D734 /* Cache in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
 				4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */,
@@ -1486,6 +1488,7 @@
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
+				4FAC369D287F8CC200A1D734 /* Cache */,
 			);
 			productName = NFTYWidgetExtension;
 			productReference = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */;
@@ -2607,7 +2610,7 @@
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwift.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.7.0;
+				version = 1.6.0;
 			};
 		};
 		4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */ = {
@@ -2660,6 +2663,11 @@
 			productName = Web3PromiseKit;
 		};
 		4FAC369B287F783800A1D734 /* Cache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */;
+			productName = Cache;
+		};
+		4FAC369D287F8CC200A1D734 /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */;
 			productName = Cache;
