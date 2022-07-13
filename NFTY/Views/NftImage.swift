@@ -88,10 +88,11 @@ struct NftIpfsImageView: View {
               .padding(padding ?? 0)
               .colorMultiply(.tertiarySystemBackground)
               .blur(radius:20)
-            Image(systemName: "arrowshape.turn.up.forward.circle")
+            Image(systemName: "exclamationmark.triangle")
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .background(.ultraThickMaterial)
+              .padding(80)
+              .foregroundColor(.tertiaryLabel)
           }
         case .some(let image):
           switch(resolution) {
