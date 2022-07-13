@@ -84,7 +84,6 @@
 		4F1E4F4C26C858FF009D27E6 /* CoolCats_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F1E4F4A26C858FF009D27E6 /* CoolCats_attributeScores.json */; };
 		4F26243126AC0BBA00B5A208 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26243026AC0BBA00B5A208 /* TokenListView.swift */; };
 		4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7BF267F9000008CCB0A /* Kingfisher */; };
-		4F27A7C3267F9760008CCB0A /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27A7C2267F9760008CCB0A /* Cache */; };
 		4F27A7D92682D2BE008CCB0A /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
 		4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
@@ -236,7 +235,6 @@
 		4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7FA262B3BBA00C58AF9 /* ModelData.swift */; };
 		4FA1100626A8E5B800719D22 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FB83626A50BF000AD5165 /* Extensions.swift */; };
 		4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100926A8E7C800719D22 /* Web3PromiseKit */; };
-		4FA1100C26A8E7E000719D22 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA1100B26A8E7E000719D22 /* Cache */; };
 		4FA1101426A8EA6500719D22 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101326A8EA6500719D22 /* main.swift */; };
 		4FA1101A26A8EAF800719D22 /* CalculateImageDistances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1101826A8EAF800719D22 /* CalculateImageDistances.swift */; };
 		4FA1101B26A8EB0300719D22 /* NFTRankingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA10FE926A8E0AD00719D22 /* NFTRankingUtils.swift */; };
@@ -267,6 +265,7 @@
 		4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAB56DC26DB54ED007076BE /* TokensByPropertiesList.swift */; };
 		4FAB56E026DB5EC2007076BE /* WickedApes_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DE26DB5EC2007076BE /* WickedApes_rarityRanks.json */; };
 		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
+		4FAC369C287F783800A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369B287F783800A1D734 /* Cache */; };
 		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
@@ -324,9 +323,8 @@
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
 		4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FDEAB83278E3F5700F92160 /* Assets.xcassets */; };
 		4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */; };
-		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
-		4FDEAB94278E53C100F92160 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB93278E53C100F92160 /* Cache */; };
 		4FDEAB96278E53C800F92160 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB95278E53C800F92160 /* Web3 */; };
 		4FDEAB98278E53CE00F92160 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEAB97278E53CE00F92160 /* Web3ContractABI */; };
 		4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
@@ -819,7 +817,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */,
-				4FA1100C26A8E7E000719D22 /* Cache in Frameworks */,
 				4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */,
 				4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */,
 			);
@@ -837,10 +834,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F468F6C2646D63E00CA6525 /* Introspect in Frameworks */,
+				4FAC369C287F783800A1D734 /* Cache in Frameworks */,
 				4FC744752630FD7D0060FC6D /* Web3ContractABI in Frameworks */,
 				4FC744772630FD7D0060FC6D /* Web3 in Frameworks */,
 				4F6AC08026AD19FE000A7539 /* WalletConnectSwift in Frameworks */,
-				4F27A7C3267F9760008CCB0A /* Cache in Frameworks */,
 				4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */,
 				4FC744732630FD7D0060FC6D /* Web3PromiseKit in Frameworks */,
 				4F27A7C0267F9000008CCB0A /* Kingfisher in Frameworks */,
@@ -865,7 +862,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FDEAB94278E53C100F92160 /* Cache in Frameworks */,
 				4FDEAB96278E53C800F92160 /* Web3 in Frameworks */,
 				4FDEAB7E278E3F5500F92160 /* SwiftUI.framework in Frameworks */,
 				4FDEAB7C278E3F5500F92160 /* WidgetKit.framework in Frameworks */,
@@ -1387,7 +1383,6 @@
 				4FA10FFA26A8E55A00719D22 /* Web3 */,
 				4FA10FFC26A8E55F00719D22 /* Web3ContractABI */,
 				4FA1100926A8E7C800719D22 /* Web3PromiseKit */,
-				4FA1100B26A8E7E000719D22 /* Cache */,
 			);
 			productName = DownloadCollection;
 			productReference = 4FA10FF226A8E0E200719D22 /* DownloadCollection */;
@@ -1431,8 +1426,8 @@
 				4FC744762630FD7D0060FC6D /* Web3 */,
 				4F468F6B2646D63E00CA6525 /* Introspect */,
 				4F27A7BF267F9000008CCB0A /* Kingfisher */,
-				4F27A7C2267F9760008CCB0A /* Cache */,
 				4F6AC07F26AD19FE000A7539 /* WalletConnectSwift */,
+				4FAC369B287F783800A1D734 /* Cache */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -1488,7 +1483,6 @@
 			);
 			name = NFTYWidgetExtension;
 			packageProductDependencies = (
-				4FDEAB93278E53C100F92160 /* Cache */,
 				4FDEAB95278E53C800F92160 /* Web3 */,
 				4FDEAB97278E53CE00F92160 /* Web3ContractABI */,
 				4FDEABB1278E547F00F92160 /* Web3PromiseKit */,
@@ -1547,8 +1541,8 @@
 				4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */,
 				4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */,
 				4F6AC07E26AD19FD000A7539 /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */,
 			);
 			productRefGroup = 4FB9A7AE262B28A300C58AF9 /* Products */;
 			projectDirPath = "";
@@ -2096,6 +2090,7 @@
 		};
 		4FDEAB89278E3F5700F92160 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 4FDEAB79278E3F5500F92160 /* NFTYWidgetExtension */;
 			targetProxy = 4FDEAB88278E3F5700F92160 /* PBXContainerItemProxy */;
 		};
@@ -2313,7 +2308,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2327,6 +2322,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2342,7 +2338,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2356,6 +2352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2454,7 +2451,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2471,6 +2468,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2486,7 +2484,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2503,6 +2501,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nftygo.NFTY.NFTYWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2595,14 +2594,6 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hyperoslo/Cache.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.0;
-			};
-		};
 		4F468F6A2646D63D00CA6525 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
@@ -2616,7 +2607,15 @@
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwift.git";
 			requirement = {
 				kind = exactVersion;
-				version = 1.6.0;
+				version = 1.7.0;
+			};
+		};
+		4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hyperoslo/Cache";
+			requirement = {
+				kind = revision;
+				revision = b6214827d5d212b20dae03833ae18d5d147439dd;
 			};
 		};
 		4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */ = {
@@ -2634,11 +2633,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		4F27A7C2267F9760008CCB0A /* Cache */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
-			productName = Cache;
 		};
 		4F468F6B2646D63E00CA6525 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -2665,9 +2659,9 @@
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3PromiseKit;
 		};
-		4FA1100B26A8E7E000719D22 /* Cache */ = {
+		4FAC369B287F783800A1D734 /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
+			package = 4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */;
 			productName = Cache;
 		};
 		4FC744722630FD7D0060FC6D /* Web3PromiseKit */ = {
@@ -2684,11 +2678,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FC744712630FD7D0060FC6D /* XCRemoteSwiftPackageReference "Web3" */;
 			productName = Web3;
-		};
-		4FDEAB93278E53C100F92160 /* Cache */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F27A7C1267F975F008CCB0A /* XCRemoteSwiftPackageReference "Cache" */;
-			productName = Cache;
 		};
 		4FDEAB95278E53C800F92160 /* Web3 */ = {
 			isa = XCSwiftPackageProductDependency;
