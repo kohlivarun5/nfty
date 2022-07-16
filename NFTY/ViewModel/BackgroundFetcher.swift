@@ -333,6 +333,108 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
     }
 }
 
+func loadMints() -> Promise<Bool> {
+  
+  let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String] ?? [:]
+  
+  let friends = friendDict.keys.compactMap { try? EthereumAddress(hex: $0, eip55: true) }
+  print("Loading mints for friends.count=\(friends.count)")
+  let feed = FriendsFeedViewModel(
+    from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+    to : friends,
+    action:.minted,
+    limit:20)
+  
+  let lastNotifiedBlock = try! DiskStorage<String, BigUInt>(
+    config: DiskConfig(name: "MintedNotifications.LastaNotified",expiry: .never),
+    transformer: TransformerFactory.forCodable(ofType: BigUInt.self))
+  
+  let lastNotifiedBlock = try? lastNotifiedBlock.object(forKey: "")
+  
+  return Promise { seal in
+    feed.getRecentEvents(currentIndex: 0, {
+      
+      let grouped = Dictionary(
+        grouping: feed.recentEvents,
+        by: { $0.nft.nftWithPrice.action?.account.ethAddress })
+        .map { (
+          $0.key,
+          Dictionary(
+            grouping: $0.value,
+            by: { $0.collection.info.address }
+          ).map { ($0.key,$0.value)
+            
+          }
+        )}
+      
+      reduce_p(grouped,(),{ (accu,info) in
+        let (address,grouped_events) = info
+        return Promise { seal in
+          
+          guard let address = address else { return seal.fulfill() }
+          
+          grouped_events.forEach {
+            let (_,events) = 
+          }
+          
+          
+          
+          let content = UNMutableNotificationContent()
+          content.title = "New Offer"
+          //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+          print(order)
+          
+          // TODO : Handle currency tokens
+          let wei = Double(order.current_price).map { BigUInt($0) }
+          content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+          content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
+          
+          print("ImageUrl=\(String(describing:imageUrl))")
+          
+          imageUrl.map {
+            content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
+          }
+          
+          guard let tokenId = try? String(order.asset.token_id) else { return accu }
+          content.userInfo = [
+            "sheetState": "nftTrade",
+            "address" : collection.info.address,
+            "tokenId" : tokenId
+          ]
+          
+          // show this notification five seconds from now
+          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+          
+          // choose a random identifier
+          let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+          
+          // add our notification request
+          UNUserNotificationCenter.current().add(request)
+          
+          
+          
+          
+          
+          
+          switch(event.nft.nftWithPrice.nft.media) {
+          case .ipfsImage(let image):
+            image.image.loadMore { seal.fulfill(()) }
+          case .image(let image):
+            image.url.loadMore { seal.fulfill(()) }
+          case .asciiPunk,.autoglyph:
+            seal.fulfill(())
+          }
+        }
+      })
+      .done { seal.fulfill(true) }
+      .catch {
+        print($0)
+        seal.fulfill(false)
+      }
+    })
+  }
+}
+
 func loadFeed() -> Promise<Bool> {
   
   let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String] ?? [:]
