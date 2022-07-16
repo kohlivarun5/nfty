@@ -143,23 +143,20 @@ struct NFTYApp: App {
         
         /*
         NavigationView {
-          let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290f4C4928A430b1", eip55: true)
+          let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
           let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
-          let nft = collection.contract.getNFT(100)
+          let nft = collection.contract.getNFT(2347)
           
-          NftDetail(
-            nft: nft,
-            price: TokenPriceType.eager(NFTPriceInfo(near: nil, blockNumber: nil, type: .bid)),
-            collection: collection,
-            hideOwnerLink: true,
-            selectedProperties: [])
+          NftImage(nft: nft, sample: SAMPLE_CCB[0], themeColor: .black, themeLabelColor: .black, size: .medium, resolution: .hd, favButton: .none)
+          
         }
         .tabItem {
           Label("Test",systemImage:"person.crop.circle")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+         
          */
-        
+         
         
         NavigationView {
           WalletView()
@@ -214,7 +211,6 @@ struct NFTYApp: App {
       .themeStyle()
       .onAppear {
         
-        
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
           CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
@@ -222,20 +218,6 @@ struct NFTYApp: App {
           loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
         }
         
-        /*
-         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
-         
-         DispatchQueue.global(qos:.utility).async {
-         CompositeCollection.collections.forEach { collection in
-         print(
-         collection.info.name,
-         collection.info.similarTokens?.get(1)?.count,
-         collection.info.similarTokens?.getProperties(1)?.count,
-         collection.info.similarTokens?.availableProperties?.count
-         )
-         }
-         }
-         */
       }
       .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
