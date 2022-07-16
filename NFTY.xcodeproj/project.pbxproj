@@ -46,7 +46,6 @@
 		4F196E0A287B88660019ACD8 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
 		4F196E0B287B888B0019ACD8 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4F196E0D287B88920019ACD8 /* CKObjectCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8A28601CDD009FFB6D /* CKObjectCache.swift */; };
-		4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4F196E10287B8A9E0019ACD8 /* Erc721Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC639DC264F5EC000ECF7CF /* Erc721Contract.swift */; };
 		4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2EFECA27B893D400C30F3D /* Throttle.swift */; };
 		4F196E12287B8B560019ACD8 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F343D8D28601E03009FFB6D /* CoreDataManager.swift */; };
@@ -88,6 +87,9 @@
 		4F27A7DE268768FD008CCB0A /* LogsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7DD268768FD008CCB0A /* LogsFetcher.swift */; };
 		4F27A7E226876E71008CCB0A /* BoredApeYachtClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E026876E70008CCB0A /* BoredApeYachtClub_nearestTokens.json */; };
 		4F27A7E326876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F27A7E126876E71008CCB0A /* BoredApeYachtClub_rarityRanks.json */; };
+		4F2989C728835E3100DC6840 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2989C628835E3100DC6840 /* Cache */; };
+		4F2989C828835EE300DC6840 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
+		4F2989C928835EEE00DC6840 /* SVGWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F12CE90287BD41A009B26B8 /* SVGWebView.swift */; };
 		4F2D6B2627C3402E009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2D6B2727C3477A009908C5 /* ParasApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2527C3402E009908C5 /* ParasApi.swift */; };
 		4F2D6B2927C84C26009908C5 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2D6B2827C84C26009908C5 /* UserAccount.swift */; };
@@ -818,6 +820,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA10FFD26A8E55F00719D22 /* Web3ContractABI in Frameworks */,
+				4F2989C728835E3100DC6840 /* Cache in Frameworks */,
 				4FA1100A26A8E7C800719D22 /* Web3PromiseKit in Frameworks */,
 				4FA10FFB26A8E55A00719D22 /* Web3 in Frameworks */,
 			);
@@ -1385,6 +1388,7 @@
 				4FA10FFA26A8E55A00719D22 /* Web3 */,
 				4FA10FFC26A8E55F00719D22 /* Web3ContractABI */,
 				4FA1100926A8E7C800719D22 /* Web3PromiseKit */,
+				4F2989C628835E3100DC6840 /* Cache */,
 			);
 			productName = DownloadCollection;
 			productReference = 4FA10FF226A8E0E200719D22 /* DownloadCollection */;
@@ -1803,7 +1807,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FFAE79C27A32E84002129E9 /* NearApi.swift in Sources */,
-				4F196E0F287B8A820019ACD8 /* IpfsCollectionContract.swift in Sources */,
 				4F196E08287B88460019ACD8 /* ContractInterface.swift in Sources */,
 				4F4F9A38276378B30020C5FA /* CryptoPunksOnChain.swift in Sources */,
 				4F196E05287B88020019ACD8 /* NFT.swift in Sources */,
@@ -1817,6 +1820,7 @@
 				4F196E18287B8C3F0019ACD8 /* CloudKitExtensions.swift in Sources */,
 				4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */,
 				4F196E11287B8AA60019ACD8 /* Throttle.swift in Sources */,
+				4F2989C828835EE300DC6840 /* IpfsCollectionContract.swift in Sources */,
 				4FA1102626A8FB6B00719D22 /* NFTRankingUtils.swift in Sources */,
 				4F196E1A287B8C5D0019ACD8 /* CollectionVaultContract.swift in Sources */,
 				4F99B535285804A80012A3FF /* AlchemyApi.swift in Sources */,
@@ -1824,6 +1828,7 @@
 				4F881F99287796C000CA7465 /* PriceUnit.swift in Sources */,
 				4F196E20287B8CDF0019ACD8 /* LoadingProtocol.swift in Sources */,
 				4FA10FFE26A8E59300719D22 /* ObservablePromise.swift in Sources */,
+				4F2989C928835EEE00DC6840 /* SVGWebView.swift in Sources */,
 				4F196E1D287B8CB60019ACD8 /* Web3HttpProviderWithRetry.swift in Sources */,
 				4F196E1C287B8C850019ACD8 /* LogsFetcher.swift in Sources */,
 				4FA1100326A8E5AE00719D22 /* ModelData.swift in Sources */,
@@ -2636,6 +2641,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F27A7BE267F9000008CCB0A /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		4F2989C628835E3100DC6840 /* Cache */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */;
+			productName = Cache;
 		};
 		4F468F6B2646D63E00CA6525 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;

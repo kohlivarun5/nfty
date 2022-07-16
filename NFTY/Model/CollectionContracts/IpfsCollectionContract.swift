@@ -228,7 +228,7 @@ class IpfsCollectionContract : ContractInterface {
           $0.flatMap {
             switch($0) {
             case .svg(let data):
-              let svg = NFTYgoSVGImage(data:data)
+              let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
             case .image(let data):
               guard let image = NSImage(data:data) else { return nil }
