@@ -245,7 +245,7 @@ struct ProfileViewHeader: View {
         break
       }
       
-      ENSContract.nameOfOwner(address, eth: web3.eth)
+      ENSWrapper.shared.nameOfOwner(address, eth: web3.eth)
         .done(on:.main) {
           
           if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
@@ -258,7 +258,7 @@ struct ProfileViewHeader: View {
             self.friendName = $0
             
             // Also do avatar loading
-            ENSContract.avatarOfOwner($0, eth: web3.eth)
+            ENSWrapper.shared.avatarOfOwner($0, eth: web3.eth)
               .then(on:.main) { avatarOpt -> Promise<ENSTextChangedFeed.NFTItem?> in
                 guard let avatar = avatarOpt else { return Promise.value(nil) }
                 return ENSTextChangedFeed.parseENSAvatar(avatar:avatar)

@@ -26,7 +26,7 @@ struct AddFriendSheet: View {
         self.state = .empty
       case false:
         
-        ENSContract.nameToOwner(ensName, eth: web3.eth)
+        ENSWrapper.shared.nameToOwner(ensName, eth: web3.eth)
           .done(on:.main) { address in
             switch(address) {
             case .none:

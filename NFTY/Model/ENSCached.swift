@@ -33,9 +33,9 @@ struct ENSCached {
         case .some(let info):
           return seal.fulfill((info.owner,info.avatar))
         case .none:
-          ENSContract.avatarOwnerOfNamehash(nameHash, eth:eth)
+          ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar")
             .done {
-              let (owner,avatar) = $0
+              let (avatar,owner) = $0
               try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: nameHash.value.abiEncode(dynamic: false)!)
               seal.fulfill((owner,avatar))
             }
@@ -65,7 +65,7 @@ struct ENSCached {
         case .some(let info):
           return seal.fulfill(info.name)
         case .none:
-          ENSContract.nameOfOwner(address, eth: eth)
+          ENSWrapper.shared.nameOfOwner(address, eth: eth)
             .done {
               try? nameOfOwnerCache.setObject(NameOfOwner(name: $0), forKey: address)
               seal.fulfill($0)
