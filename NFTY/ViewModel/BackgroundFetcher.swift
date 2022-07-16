@@ -338,7 +338,7 @@ func loadFeed() -> Promise<Bool> {
   let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String] ?? [:]
   
   let friends = friendDict.keys.compactMap { try? EthereumAddress(hex: $0, eip55: true) }
-  print("Loading feed for \(friends.map { $0.hex(eip55:true) })")
+  print("Loading feed for friends.count=\(friends.count)")
   let feed = FriendsFeedViewModel(from: friends,limit:20)
   
   return Promise { seal in
