@@ -12,10 +12,9 @@
     {
       "identity" : "cache",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hyperoslo/Cache.git",
+      "location" : "https://github.com/hyperoslo/Cache",
       "state" : {
-        "revision" : "c7f4d633049c3bd649a353bad36f6c17e9df085f",
-        "version" : "6.0.0"
+        "revision" : "b6214827d5d212b20dae03833ae18d5d147439dd"
       }
     },
     {
