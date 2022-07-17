@@ -77,6 +77,7 @@ struct AvatarSetCardView: View {
       
       NavigationLink(destination: PrivateCollectionView(
         account:UserAccount(ethAddress: item.address, nearAccount: nil),
+        isOwnerView:false,
         avatar:(item.nft.collection,item.nft.nft),
         ensName:item.ensName,
         page:nil,

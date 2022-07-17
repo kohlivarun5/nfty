@@ -18,7 +18,7 @@ struct UserProfileButton : View {
       EmptyView()
     case .some (let account):
       NavigationLink(
-        destination:PrivateCollectionView(account:account)
+        destination:PrivateCollectionView(account:account,isOwnerView:false)
       ) {
         Image(systemName: "person.crop.circle")
           .font(.largeTitle)

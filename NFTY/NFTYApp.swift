@@ -289,7 +289,7 @@ struct NFTYApp: App {
           )
         case .user(let address,let friendName,let page):
           NavigationView {
-            PrivateCollectionView(account:UserAccount(ethAddress: address, nearAccount: nil),avatar: nil,ensName: friendName,page:page,isSheet:true)
+            PrivateCollectionView(account:UserAccount(ethAddress: address, nearAccount: nil),isOwnerView:false,avatar: nil,ensName: friendName,page:page,isSheet:true)
           }
           .themeStyle()
         }

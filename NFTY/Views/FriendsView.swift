@@ -91,7 +91,7 @@ struct FriendsView: View {
         switch(self.page,self.addresses.isEmpty) {
         case (.list,_),(_,true):
           List(friends.sorted(by: { $0.value.lowercased() < $1.value.lowercased() }), id: \.key) { address,name in
-            NavigationLink(destination: PrivateCollectionView(account:account(address)) ){
+            NavigationLink(destination: PrivateCollectionView(account:account(address),isOwnerView:false) ){
               HStack() {
                 Text(name)
                   .font(.title3)
