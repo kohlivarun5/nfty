@@ -151,7 +151,7 @@ class AsciiPunksContract : ContractInterface {
     return transfer.fetch(onDone:onDone,retries:10) { log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
       
       response(NFTWithPrice(
         nft:NFT(
@@ -182,7 +182,7 @@ class AsciiPunksContract : ContractInterface {
     return transfer.updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
       response(NFTWithPrice(
         nft:NFT(
           address:self.contractAddressHex,
@@ -231,7 +231,7 @@ class AsciiPunksContract : ContractInterface {
           }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought))
       }
     }

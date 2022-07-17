@@ -78,7 +78,9 @@ struct AvatarSetCardView: View {
       NavigationLink(destination: PrivateCollectionView(
         account:UserAccount(ethAddress: item.address, nearAccount: nil),
         avatar:(item.nft.collection,item.nft.nft),
-        ensName:item.ensName)
+        ensName:item.ensName,
+        page:nil,
+        isSheet:false)
       ) {
         VStack(alignment:.leading,spacing:5) {
           

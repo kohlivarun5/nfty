@@ -21,7 +21,7 @@ import UIKit
 
 struct CKImageCacheCore {
   
-  enum CompressionAlgorithm : Int {
+  enum CompressionAlgorithm : String {
     case lzfse
   }
   
@@ -197,7 +197,7 @@ struct CKImageCacheCore {
               // print("Fetch returned with error=\(String(describing: error))")
               
               let fileUrl = (record?[assetKey] as? CKAsset)?.fileURL
-              let compressionAlgorithm = (record?[compressionAlgorithmKey] as? Int).flatMap { CompressionAlgorithm(rawValue: $0) }
+              let compressionAlgorithm = (record?[compressionAlgorithmKey] as? String).flatMap { CompressionAlgorithm(rawValue: $0) }
               
               switch(fileUrl.flatMap { readLocalFile($0,compressionAlgorithm: compressionAlgorithm) }) {
               case .none:

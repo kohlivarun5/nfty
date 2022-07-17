@@ -25,7 +25,7 @@ class AppDelegateState: ObservableObject {
   enum SheetStateEnum {
     case nft(String,UInt)
     case nftTrade(String,UInt)
-    case user(EthereumAddress,friendName:String?)
+    case user(EthereumAddress,friendName:String?,page:PrivateCollectionView.TokensPage?)
   }
   struct SheetState : Identifiable {
     let state : SheetStateEnum
@@ -36,8 +36,8 @@ class AppDelegateState: ObservableObject {
         return "nft(\(address),\(tokenId))"
       case .nftTrade(let address,let tokenId):
         return "nftTrade(\(address),\(tokenId))"
-      case .user(let address,let friendName):
-        return "user(\(address.hex(eip55:true)),\(friendName ?? ""))"
+      case .user(let address,let friendName,let page):
+        return "user(\(address.hex(eip55:true)),\(friendName ?? ""),\(page?.rawValue ?? -1))"
       }
     }
   }
@@ -109,6 +109,15 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
         (userInfo["tokenId"] as? String).flatMap { UInt($0) }.map {
           AppDelegateState.shared.sheetState = AppDelegateState.SheetState(state:.nftTrade(userInfo["address"] as! String,$0))
         }
+      case "user":
+        (userInfo["ethereumAddress"] as? String).flatMap { try? EthereumAddress(hex: $0, eip55: false) }.map {
+          AppDelegateState.shared.sheetState = AppDelegateState.SheetState(
+            state:.user(
+              $0,
+              friendName: userInfo["friendName"] as? String,
+              page:(userInfo["page"] as? Int).flatMap { PrivateCollectionView.TokensPage(rawValue: $0) })
+          )
+        }
       default:
         print("Do not know how to display sheetState=\(sheetState)")
       }
@@ -142,22 +151,19 @@ struct NFTYApp: App {
       TabView {
         
         /*
-        NavigationView {
-          let collectionAddress = try! EthereumAddress(hex: "0xe21EBCD28d37A67757B9Bc7b290f4C4928A430b1", eip55: true)
-          let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
-          let nft = collection.contract.getNFT(100)
-          
-          NftDetail(
-            nft: nft,
-            price: TokenPriceType.eager(NFTPriceInfo(near: nil, blockNumber: nil, type: .bid)),
-            collection: collection,
-            hideOwnerLink: true,
-            selectedProperties: [])
-        }
-        .tabItem {
-          Label("Test",systemImage:"person.crop.circle")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+         NavigationView {
+         let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
+         let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+         let nft = collection.contract.getNFT(2347)
+         
+         NftImage(nft: nft, sample: SAMPLE_CCB[0], themeColor: .black, themeLabelColor: .black, size: .medium, resolution: .hd, favButton: .none)
+         
+         }
+         .tabItem {
+         Label("Test",systemImage:"person.crop.circle")
+         }
+         .navigationViewStyle(StackNavigationViewStyle())
+         
          */
         
         
@@ -214,7 +220,6 @@ struct NFTYApp: App {
       .themeStyle()
       .onAppear {
         
-        
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
           CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
@@ -222,20 +227,6 @@ struct NFTYApp: App {
           loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
         }
         
-        /*
-         // Load collections on wakeup : https://github.com/EtherTix/nfty/issues/162
-         
-         DispatchQueue.global(qos:.utility).async {
-         CompositeCollection.collections.forEach { collection in
-         print(
-         collection.info.name,
-         collection.info.similarTokens?.get(1)?.count,
-         collection.info.similarTokens?.getProperties(1)?.count,
-         collection.info.similarTokens?.availableProperties?.count
-         )
-         }
-         }
-         */
       }
       .onOpenURL { url in
         print("URL=\(url)") // comes as https://nftygo.com/nft?address=0x5283Fc3a1Aac4DaC6B9581d3Ab65f4EE2f3dE7DC&tokenId=1974
@@ -255,7 +246,12 @@ struct NFTYApp: App {
           let params = url.params()
           switch (params["address"] as? String).flatMap({ try? EthereumAddress(hex:$0,eip55:false) }) {
           case .some(let address):
-            self.appDelegateState.sheetState = AppDelegateState.SheetState(state: .user(address,friendName:params["name"] as? String))
+            self.appDelegateState.sheetState = AppDelegateState.SheetState(
+              state: .user(
+                address,
+                friendName:params["name"] as? String,
+                page:(params["page"] as? Int).flatMap { PrivateCollectionView.TokensPage(rawValue: $0) }
+              ))
           case .none:
             break
           }
@@ -291,9 +287,11 @@ struct NFTYApp: App {
                 .ignoresSafeArea(edges: .bottom)
             }
           )
-        case .user(let address,let friendName):
-          UserUrlView(account:UserAccount(ethAddress: address, nearAccount: nil),friendName:friendName)
-            .themeStyle()
+        case .user(let address,let friendName,let page):
+          NavigationView {
+            PrivateCollectionView(account:UserAccount(ethAddress: address, nearAccount: nil),avatar: nil,ensName: friendName,page:page,isSheet:true)
+          }
+          .themeStyle()
         }
       }
       .themeStyle()

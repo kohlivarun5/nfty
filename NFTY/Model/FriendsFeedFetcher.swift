@@ -147,7 +147,7 @@ class FriendsFeedFetcher {
         // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
         
         guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
-        // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+        // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
         
         guard let removed = log.removed else { return Promise.value(processed) }
         if (removed) { return Promise.value(processed) }
@@ -235,7 +235,7 @@ class FriendsFeedFetcher {
             // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
             
             guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
-            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
             // TODO Fix : Bring price from tx /WETH
             TxFetcher.eventOfTx(transactionHash: log.transactionHash)
               .map { txInfo in

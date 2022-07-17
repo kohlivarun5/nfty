@@ -118,7 +118,7 @@ class UrlCollectionContract : ContractInterface {
     return try! ethContract.transfer.wait().fetch(onDone:onDone) { log in
       let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
       
       response(NFTWithPrice(
         nft:NFT(
@@ -149,7 +149,7 @@ class UrlCollectionContract : ContractInterface {
     return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
       let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
       let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
       
       response(NFTWithPrice(
         nft:NFT(

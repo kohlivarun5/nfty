@@ -25,7 +25,7 @@ struct FriendsView: View {
       }
       self.feedModel = FriendsFeedViewModel(from: self.addresses,limit:2)
       self.mintedModel = FriendsFeedViewModel(
-        from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+        from: [EthereumAddress(hexString:ETH_ADDRESS)!],
         to : self.addresses,
         action:.minted,
         limit:2)
@@ -47,7 +47,7 @@ struct FriendsView: View {
   init() {
     self.feedModel = FriendsFeedViewModel(from: [],limit:2)
     self.mintedModel = FriendsFeedViewModel(
-      from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+      from: [EthereumAddress(hexString:ETH_ADDRESS)!],
       to : [],
       action:.minted,
       limit:2)
