@@ -161,7 +161,7 @@ class Erc721Contract {
           }.catch { print ($0) }
       }) { log in
         let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log)
-        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!
+        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
         events.append(self.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought))
       }
     }
@@ -214,7 +214,7 @@ class Erc721Contract {
         let from = res["from"] as! EthereumAddress
         var type : TradeEventType? = nil
         
-        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000"))
+        if (from == EthereumAddress(hexString:ETH_ADDRESS))
         { type = .minted }
           
         TxFetcher.eventOfTx(transactionHash: log.transactionHash)

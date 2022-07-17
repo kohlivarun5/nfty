@@ -448,7 +448,7 @@ class CryptoPunksContract : ContractInterface {
         let from = res["fromAddress"] as! EthereumAddress
         var type : TradeEventType = .bought
         
-        if (from == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+        if (from == EthereumAddress(hexString:ETH_ADDRESS)) {
           type = .minted
         }
         response(TradeEvent(type:type, value: .wei(res["value"] as! BigUInt), blockNumber:.ethereum(log.blockNumber!)))

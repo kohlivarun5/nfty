@@ -16,7 +16,7 @@ import CloudKit
 
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
-  if (address == EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")) {
+  if (address == EthereumAddress(hexString:ETH_ADDRESS)) {
     return nil
   } else {
     return .some(address)

@@ -10,7 +10,7 @@ import SwiftUI
 struct ActionSummaryView: View {
   let action : Action
   
-  private func key(account:UserAccount) -> String? {
+  static private func key(account:UserAccount) -> String? {
     switch(account.ethAddress,account.nearAccount) {
     case (.some(let address),_):
       return address.hex(eip55: true)
@@ -21,8 +21,8 @@ struct ActionSummaryView: View {
     }
   }
   
-  private func labelOfAccount(account:UserAccount) -> String? {
-    let key = key(account: account)
+  static public func labelOfAccount(account:UserAccount) -> String? {
+    let key = ActionSummaryView.key(account: account)
     return key.flatMap {
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       return friends?[$0] ?? account.nearAccount
@@ -39,7 +39,7 @@ struct ActionSummaryView: View {
       destination:PrivateCollectionView(account:action.account)
     ) {
       HStack(spacing:0) {
-        labelOfAccount(account: action.account)
+        ActionSummaryView.labelOfAccount(account: action.account)
           .map { AnyView(Text($0)) }
         ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
         Text(" \(labelOfAction(action:action.action))")

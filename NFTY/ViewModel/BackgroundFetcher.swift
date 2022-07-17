@@ -340,98 +340,104 @@ func loadMints() -> Promise<Bool> {
   let friends = friendDict.keys.compactMap { try? EthereumAddress(hex: $0, eip55: true) }
   print("Loading mints for friends.count=\(friends.count)")
   let feed = FriendsFeedViewModel(
-    from: [EthereumAddress(hexString: "0x0000000000000000000000000000000000000000")!],
+    from: [EthereumAddress(hexString:ETH_ADDRESS)!],
     to : friends,
     action:.minted,
     limit:20)
   
-  let lastNotifiedBlock = try! DiskStorage<String, BigUInt>(
+  let lastNotifiedBlockCache = try! DiskStorage<String, BigUInt>(
     config: DiskConfig(name: "MintedNotifications.LastaNotified",expiry: .never),
     transformer: TransformerFactory.forCodable(ofType: BigUInt.self))
   
-  let lastNotifiedBlock = try? lastNotifiedBlock.object(forKey: "")
+  let fakeKey = ""
+  
+  let lastNotifiedBlock = try? lastNotifiedBlockCache.object(forKey: fakeKey)
+  // print("lastNotifiedBlock=",lastNotifiedBlock)
+  
+  var newLatestBlock : BigUInt? = nil
   
   return Promise { seal in
     feed.getRecentEvents(currentIndex: 0, {
-      
-      let grouped = Dictionary(
-        grouping: feed.recentEvents,
-        by: { $0.nft.nftWithPrice.action?.account.ethAddress })
-        .map { (
-          $0.key,
-          Dictionary(
-            grouping: $0.value,
-            by: { $0.collection.info.address }
-          ).map { ($0.key,$0.value)
-            
-          }
-        )}
-      
-      reduce_p(grouped,(),{ (accu,info) in
-        let (address,grouped_events) = info
-        return Promise { seal in
-          
-          guard let address = address else { return seal.fulfill() }
-          
-          grouped_events.forEach {
-            let (_,events) = 
-          }
-          
-          
-          
-          let content = UNMutableNotificationContent()
-          content.title = "New Offer"
-          //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-          print(order)
-          
-          // TODO : Handle currency tokens
-          let wei = Double(order.current_price).map { BigUInt($0) }
-          content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
-          content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
-          
-          print("ImageUrl=\(String(describing:imageUrl))")
-          
-          imageUrl.map {
-            content.attachments = [try! UNNotificationAttachment(identifier: "\(collection.info.name) #\(order.asset.token_id)", url: $0, options: .none)]
-          }
-          
-          guard let tokenId = try? String(order.asset.token_id) else { return accu }
-          content.userInfo = [
-            "sheetState": "nftTrade",
-            "address" : collection.info.address,
-            "tokenId" : tokenId
-          ]
-          
-          // show this notification five seconds from now
-          let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-          
-          // choose a random identifier
-          let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-          
-          // add our notification request
-          UNUserNotificationCenter.current().add(request)
-          
-          
-          
-          
-          
-          
-          switch(event.nft.nftWithPrice.nft.media) {
-          case .ipfsImage(let image):
-            image.image.loadMore { seal.fulfill(()) }
-          case .image(let image):
-            image.url.loadMore { seal.fulfill(()) }
-          case .asciiPunk,.autoglyph:
-            seal.fulfill(())
-          }
-        }
-      })
-      .done { seal.fulfill(true) }
-      .catch {
-        print($0)
-        seal.fulfill(false)
-      }
+      seal.fulfill(feed.recentEvents)
     })
+  }.map {
+    
+    let grouped = Dictionary(
+      grouping: $0,
+      by: { ($0.nft.nftWithPrice.action?.account).flatMap { ActionSummaryView.labelOfAccount(account:$0) } })
+      .map { (
+        $0.key,
+        Dictionary(
+          grouping: $0.value,
+          by: { $0.collection.info.name }
+        ).map { ($0.key,$0.value) }
+      )}
+    
+    // print("Grouped=",grouped)
+    
+    grouped.forEach {
+      let (accountLabel,grouped_events) = $0
+      guard let accountLabel = accountLabel else { return }
+      grouped_events.forEach {
+        let (name,events) = $0
+        
+        let seenBlock = events
+          .compactMap { $0.nft.nftWithPrice.blockNumber?.id }
+          .max()
+        
+        guard let seenBlock = seenBlock else { return }
+        
+        // This has not been seen, lets save
+        switch(newLatestBlock) {
+        case .none:
+          newLatestBlock = seenBlock
+        case .some(let newLatestBlockVal):
+          newLatestBlock = max(newLatestBlockVal,seenBlock)
+        }
+        
+        switch(lastNotifiedBlock) {
+        case .some(let block):
+          if (block >= seenBlock) { return }
+          else { break }
+        case .none:
+          // lastNotifiedBlock is nil, lets not spam on first run
+          return
+        }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Mint Alert 🚨"
+        content.subtitle = "\(accountLabel) minted"
+        content.body = "\(name) \(events.count > 1 ? "[\(events.count) items]" : "[1 item]")"
+        
+        
+        if let ethereumAddress = events.first?.nft.nftWithPrice.action?.account.ethAddress {
+          content.userInfo = [
+            "sheetState": "user",
+            "ethereumAddress" : ethereumAddress.hex(eip55: true),
+            "friendName" : accountLabel,
+            "page" : PrivateCollectionView.TokensPage.minted.rawValue
+          ]
+        }
+        
+        // show this notification five seconds from now
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        // choose a random identifier
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        // add our notification request
+        UNUserNotificationCenter.current().add(request)
+      }
+    }
+    
+    // print("newLatestBlock=",newLatestBlock)
+    switch(newLatestBlock) {
+    case .none:
+      return false
+    case .some(let block):
+      try? lastNotifiedBlockCache.setObject(block, forKey: fakeKey)
+      return true
+    }
   }
 }
 
@@ -495,21 +501,31 @@ func loadRecentsFeed() -> Promise<Bool> {
 func performBackgroundFetch() -> Promise<Bool> {
   // Dispatch to multiple fetchers
   
-  return loadFeed()
+  return loadMints()
     .recover { error -> Promise<Bool> in
       print("LoadFeed Failed with:\(error)")
       return Promise.value(false)
     }
-    .then { loadedFeed -> Promise<Bool> in
+    .then { loadedMints -> Promise<Bool> in
+      loadFeed()
+        .recover { error -> Promise<Bool> in
+          print("LoadFeed Failed with:\(error)")
+          return Promise.value(false)
+        }
+        .map { loadedFeed -> Bool in
+          loadedMints || loadedFeed
+        }
+    }
+    .then { loaded -> Promise<Bool> in
       loadRecentsFeed()
         .recover { error -> Promise<Bool> in
           print("LoadRecents Failed with:\(error)")
           return Promise.value(false)
         }
         .map { loadedRecents -> Bool in
-          return loadedFeed || loadedRecents
+          return loaded || loadedRecents
         }
-    }.then { loadedFeed -> Promise<Bool> in
+    }.then { loaded -> Promise<Bool> in
       
       return UserEthRate.getLiveRate().then { spot in
         fetchOffers(spot)
@@ -524,7 +540,7 @@ func performBackgroundFetch() -> Promise<Bool> {
                 return Promise.value(false)
               }
               .map { foundFavs in
-                return loadedFeed || foundOffers || foundFavs
+                return loaded || foundOffers || foundFavs
               }
           }
       }
