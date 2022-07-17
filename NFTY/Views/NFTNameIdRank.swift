@@ -76,7 +76,7 @@ struct NFTNameIdRank: View {
             collection:collection,
             info:collection.info,
             loader: CompositeCollection.getLoader(collection: collection),
-            page:.recent)
+            page:.floor)
       ) {
         NFTNameIdRankImpl(
           collection: collection,
