@@ -441,6 +441,33 @@ func loadMints() -> Promise<Bool> {
   }
 }
 
+
+func loadAvatars() -> Promise<Bool> {
+  
+  let feed = ENSTextChangedViewModel(key: "avatar", limit: 20)
+  
+  return Promise { seal in
+    feed.getRecentEvents(currentIndex: 0, {
+      seal.fulfill(feed.recentEvents)
+    })
+  }.then {
+    reduce_p($0,(),{ (accu,event) in
+      return Promise { seal in
+        switch(event.nft.nft.media) {
+        case .ipfsImage(let image):
+          image.image.loadMore { seal.fulfill(()) }
+        case .image(let image):
+          image.url.loadMore { seal.fulfill(()) }
+        case .asciiPunk,.autoglyph:
+          seal.fulfill(())
+        }
+      }
+    })
+  }
+  .map { return true }
+  
+}
+
 func loadFeed() -> Promise<Bool> {
   
   let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String] ?? [:]
@@ -514,6 +541,16 @@ func performBackgroundFetch() -> Promise<Bool> {
         }
         .map { loadedFeed -> Bool in
           loadedMints || loadedFeed
+        }
+    }
+    .then { loaded -> Promise<Bool> in
+      loadAvatars()
+        .recover { error -> Promise<Bool> in
+          print("LoadAvatars Failed with:\(error)")
+          return Promise.value(false)
+        }
+        .map { loadAvatars -> Bool in
+          return loaded || loadAvatars
         }
     }
     .then { loaded -> Promise<Bool> in
