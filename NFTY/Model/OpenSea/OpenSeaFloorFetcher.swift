@@ -29,16 +29,18 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
           return OpenSeaGQL.call(query:query)
             .map(on:.global(qos: .userInteractive)) { (result:OpenSeaGQL.QueryResult) -> [NFTWithLazyPrice] in
               self.cursor = result.search.pageInfo.endCursor
-              return result.search.edges.map { (edge:OpenSeaGQL.QueryResult.Search.Edge) -> NFTWithLazyPrice in
+              return result.search.edges.compactMap { (edge:OpenSeaGQL.QueryResult.Search.Edge) -> NFTWithLazyPrice? in
                 
                 let contract = self.collection.contract
+                
+                guard let ask = edge.node.asset.orderData.bestAsk else { return nil }
                 
                 return NFTWithLazyPrice(
                   nft: contract.getNFT(BigUInt(edge.node.asset.tokenId)!),
                   getPrice: {
                     return ObservablePromise(
                       resolved:NFTPriceStatus.known(
-                        NFTPriceInfo(wei: BigUInt(edge.node.asset.orderData.bestAsk.paymentAssetQuantity.quantityInEth),
+                        NFTPriceInfo(wei: BigUInt(ask.paymentAssetQuantity.quantityInEth),
                                      date: nil,
                                      type: TradeEventType.ask)
                       )
