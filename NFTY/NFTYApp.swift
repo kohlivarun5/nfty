@@ -151,19 +151,19 @@ struct NFTYApp: App {
       TabView {
         
         /*
-         NavigationView {
-         let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
-         let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
-         let nft = collection.contract.getNFT(2347)
-         
-         NftImage(nft: nft, sample: SAMPLE_CCB[0], themeColor: .black, themeLabelColor: .black, size: .medium, resolution: .hd, favButton: .none)
-         
-         }
-         .tabItem {
-         Label("Test",systemImage:"person.crop.circle")
-         }
-         .navigationViewStyle(StackNavigationViewStyle())
-         
+        NavigationView {
+          let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
+          let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+          
+          
+          TokenListPagedView(
+            collection: collection,
+            nfts: TokensListPaged(fetcher:collection.contract.floorFetcher(collection)!))
+        }
+        .tabItem {
+          Label("Test",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
          */
         
         
