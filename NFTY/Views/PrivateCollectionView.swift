@@ -26,6 +26,9 @@ struct PrivateCollectionView: View {
   let ensName : String?
   let isSheet : Bool
   
+  private var mintedFeedModel : FriendsFeedViewModel
+  private var salesFeedModel : FriendsFeedViewModel
+  
   init(account:UserAccount,isOwnerView:Bool) {
     self.account = account
     self.isOwnerView = isOwnerView
@@ -33,6 +36,12 @@ struct PrivateCollectionView: View {
     self.ensName = nil
     self.isSheet = false
     _tokensPage = State(initialValue: .owned)
+    self.mintedFeedModel = FriendsFeedViewModel(
+      from: [EthereumAddress(hexString:ETH_ADDRESS)!],
+      to : [self.account.ethAddress!],
+      action:.minted,
+      limit:5)
+    self.salesFeedModel = FriendsFeedViewModel(from:account.ethAddress!,limit:2)
   }
   
   init(account:UserAccount,isOwnerView:Bool,avatar:(Collection,NFT)?,ensName:String?,page:TokensPage?,isSheet:Bool) {
@@ -42,6 +51,12 @@ struct PrivateCollectionView: View {
     self.ensName = ensName
     self.isSheet = isSheet
     _tokensPage = State(initialValue: page ?? .owned)
+    self.mintedFeedModel = FriendsFeedViewModel(
+      from: [EthereumAddress(hexString:ETH_ADDRESS)!],
+      to : [self.account.ethAddress!],
+      action:.minted,
+      limit:5)
+    self.salesFeedModel = FriendsFeedViewModel(from:account.ethAddress!,limit:2)
   }
   
   var body: some View {
@@ -84,19 +99,9 @@ struct PrivateCollectionView: View {
             FriendsFeedView(events:FriendsFeedViewModel(to:$0))
           }
         case .minted:
-          account.ethAddress.map {
-            FriendsFeedView(
-              events:FriendsFeedViewModel(
-                  from: [EthereumAddress(hexString:ETH_ADDRESS)!],
-                  to : [$0],
-                  action:.minted,
-                  limit:5)
-              )
-          }
+          FriendsFeedView(events:self.mintedFeedModel)
         case .sales:
-          account.ethAddress.map {
-            FriendsFeedView(events:FriendsFeedViewModel(from:$0,limit:2))
-          }
+          FriendsFeedView(events:self.salesFeedModel)
         case .owned:
           WalletTokensView(tokens: getOwnerTokens(account),redactPrice:false)
         case .for_sale:
