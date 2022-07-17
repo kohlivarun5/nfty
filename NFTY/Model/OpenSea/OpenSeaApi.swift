@@ -59,7 +59,7 @@ struct OpenSeaApi {
     let orders : [AssetOrder]
   }
   
-  static func getOrders(contract:String?,tokenIds:[BigUInt]?,user:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
+  private static func getOrders(contract:String?,tokenIds:[BigUInt]?,user:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
     
     var components = URLComponents()
     components.scheme = "https"
@@ -205,6 +205,9 @@ struct OpenSeaApi {
       }
   }
   
+  static func userAssetOrders(address:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
+    return OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
+  }
   
   static func userOrders(address:QueryAddress,side:Side) -> Promise<[NFTToken]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
