@@ -70,7 +70,7 @@ struct PrivateCollectionView: View {
           if (self.account.ethAddress != nil) { Text("Activity").tag(TokensPage.sales.rawValue) }
           if (self.account.ethAddress != nil) { Text("Minted").tag(TokensPage.minted.rawValue) }
           // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
-          Text("Sales").tag(TokensPage.sales.rawValue)
+          // Text("Sales").tag(TokensPage.for_sale.rawValue)
         }
                .pickerStyle(SegmentedPickerStyle())
                .colorMultiply(.accentColor)
