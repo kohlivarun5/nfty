@@ -87,7 +87,7 @@ struct PrivateCollectionView: View {
                   from: [EthereumAddress(hexString:ETH_ADDRESS)!],
                   to : [$0],
                   action:.minted,
-                  limit:20)
+                  limit:5)
               )
           }
         case .sales:

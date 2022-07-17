@@ -121,7 +121,6 @@ class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelega
       default:
         print("Do not know how to display sheetState=\(sheetState)")
       }
-      print("AppDelegateState.shared.sheetState=\(AppDelegateState.shared.sheetState)")
     }
     
     completionHandler()
