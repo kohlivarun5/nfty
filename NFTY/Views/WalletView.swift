@@ -49,8 +49,6 @@ struct WalletView: View {
         /*
         VStack(spacing:0) {
           ProfileViewHeader(account: account,isOwnerView: true,addTopPadding:true)
-            .padding(.bottom,5)
-          
           
           Picker(selection: Binding<Int>(
                   get: { self.tokensPage.rawValue },
