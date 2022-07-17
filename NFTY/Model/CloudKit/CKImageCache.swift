@@ -188,7 +188,7 @@ struct CKImageCacheCore {
         switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
         case (.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
-         case (.none,_),(_,.none):
+        case (.none,_),(_,.none):
           let recordName = self.recordName(tokenId)
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
