@@ -44,6 +44,9 @@ struct WalletView: View {
       case .none:
         ConnectWalletSheet(userWallet:userWallet)
       case .some(let account):
+        PrivateCollectionView(account: account, isOwnerView: true)
+        
+        /*
         VStack(spacing:0) {
           ProfileViewHeader(account: account,isOwnerView: true,addTopPadding:true)
           
@@ -64,6 +67,8 @@ struct WalletView: View {
           .colorMultiply(.accentColor)
           .padding([.trailing,.leading])
           .padding([.top,.bottom],5)
+           
+          
           
           switch(self.tokensPage) {
           case .owned:
@@ -75,9 +80,11 @@ struct WalletView: View {
           case .offers:
             ActivityView(account:account,kind:UserAccountOffers.Kind.offers,emptyMessage:"No Active Offers")
           }
+         
+         
           
         }
-        
+         */
       }
     }
     .navigationBarTitle("",displayMode:.large)

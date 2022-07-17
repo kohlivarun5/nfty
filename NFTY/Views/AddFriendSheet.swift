@@ -62,7 +62,7 @@ struct AddFriendSheet: View {
         VStack {
           Spacer()
           NavigationLink(
-            destination:PrivateCollectionView(account:account)
+            destination:PrivateCollectionView(account:account,isOwnerView:false)
           ) {
             ProfileViewHeader(account: account, isOwnerView: false,addTopPadding:false)
               .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))

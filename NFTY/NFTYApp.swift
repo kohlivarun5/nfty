@@ -151,19 +151,19 @@ struct NFTYApp: App {
       TabView {
         
         /*
-         NavigationView {
-         let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
-         let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
-         let nft = collection.contract.getNFT(2347)
-         
-         NftImage(nft: nft, sample: SAMPLE_CCB[0], themeColor: .black, themeLabelColor: .black, size: .medium, resolution: .hd, favButton: .none)
-         
-         }
-         .tabItem {
-         Label("Test",systemImage:"person.crop.circle")
-         }
-         .navigationViewStyle(StackNavigationViewStyle())
-         
+        NavigationView {
+          let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
+          let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+          
+          
+          TokenListPagedView(
+            collection: collection,
+            nfts: TokensListPaged(fetcher:collection.contract.floorFetcher(collection)!))
+        }
+        .tabItem {
+          Label("Test",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
          */
         
         
@@ -220,11 +220,12 @@ struct NFTYApp: App {
       .themeStyle()
       .onAppear {
         
-        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 30) {
-          CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
-        }
-        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 40) {
+        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 90) {
           loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
+        }
+        
+        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 120) {
+          CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
         
       }
@@ -289,7 +290,7 @@ struct NFTYApp: App {
           )
         case .user(let address,let friendName,let page):
           NavigationView {
-            PrivateCollectionView(account:UserAccount(ethAddress: address, nearAccount: nil),avatar: nil,ensName: friendName,page:page,isSheet:true)
+            PrivateCollectionView(account:UserAccount(ethAddress: address, nearAccount: nil),isOwnerView:false,avatar: nil,ensName: friendName,page:page,isSheet:true)
           }
           .themeStyle()
         }

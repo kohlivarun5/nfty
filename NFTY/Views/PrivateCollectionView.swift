@@ -20,21 +20,23 @@ struct PrivateCollectionView: View {
   @State private var tokensPage : TokensPage
   
   let account : UserAccount
-  
+  let isOwnerView : Bool
   let avatar : (Collection,NFT)?
   let ensName : String?
   let isSheet : Bool
   
-  init(account:UserAccount) {
+  init(account:UserAccount,isOwnerView:Bool) {
     self.account = account
+    self.isOwnerView = isOwnerView
     self.avatar = nil
     self.ensName = nil
     self.isSheet = false
     _tokensPage = State(initialValue: .owned)
   }
   
-  init(account:UserAccount,avatar:(Collection,NFT)?,ensName:String?,page:TokensPage?,isSheet:Bool) {
+  init(account:UserAccount,isOwnerView:Bool,avatar:(Collection,NFT)?,ensName:String?,page:TokensPage?,isSheet:Bool) {
     self.account = account
+    self.isOwnerView = isOwnerView
     self.avatar = avatar
     self.ensName = ensName
     self.isSheet = isSheet
@@ -48,7 +50,7 @@ struct PrivateCollectionView: View {
       
       ProfileViewHeader(
         account:account,
-        isOwnerView: false,
+        isOwnerView: isOwnerView,
         addTopPadding:!isSheet,
         friendName: self.ensName,
         avatar:self.avatar)
@@ -67,7 +69,7 @@ struct PrivateCollectionView: View {
           if (self.account.ethAddress != nil) { Text("Activity").tag(TokensPage.sales.rawValue) }
           if (self.account.ethAddress != nil) { Text("Minted").tag(TokensPage.minted.rawValue) }
           // if (self.account.ethAddress != nil) { Text("Bought").tag(TokensPage.bought.rawValue) }
-          Text("Sales").tag(TokensPage.sales.rawValue)
+          // Text("Sales").tag(TokensPage.sales.rawValue)
         }
                .pickerStyle(SegmentedPickerStyle())
                .colorMultiply(.accentColor)

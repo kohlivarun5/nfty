@@ -1106,21 +1106,26 @@
 		4FB9A7F7262B3B0600C58AF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4FAC369F2881A24000A1D734 /* WebView.swift */,
+				4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */,
 				4FA0B2B226C2260F00821413 /* ActivityView.swift */,
 				4F468F682645FECB00CA6525 /* AddFavSheet.swift */,
+				4F7EFAE4284BFD1300E354D1 /* AddFriendSheet.swift */,
 				4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */,
 				4F4DD21E265F480A00AD320D /* AddressLabelWithShare.swift */,
 				4F43153E263E4E9500C16872 /* AsciiPunkView.swift */,
 				4F4C6981264F6483005B9A23 /* AutoglyphView.swift */,
+				4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */,
 				4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */,
+				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
 				4F6D395C262BD76E007E79BB /* CollectionsView.swift */,
 				4F6D3961262BD8A8007E79BB /* CollectionView.swift */,
 				4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */,
 				4F0A170726C616FF0025259F /* DappLink.swift */,
+				4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */,
 				4F4CA8002635D806001534A6 /* FavButton.swift */,
 				4F856BE02632B57E00BB5E07 /* FavoritesView.swift */,
 				4F3601392640CD99005D7587 /* FeedView.swift */,
+				4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */,
 				4F08724C2651EAC0002DD748 /* FriendsView.swift */,
 				4FB9A81D262B53DE00C58AF9 /* NftDetail.swift */,
 				4F0E797F26E0777F009EC174 /* NFTExportView.swift */,
@@ -1132,10 +1137,12 @@
 				4F667F6F264B2C0200E7A214 /* ObservedPromiseView.swift */,
 				4F4A24842693B275006DBBFA /* OwnerProfileLinkButton.swift */,
 				4F08724A2651E740002DD748 /* PrivateCollectionView.swift */,
+				4F51EA2128348D71008C610F /* ProfileViewHeader.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F4557D026ACC0A400092AC0 /* SheetButton.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
 				4FA0B2B426C228D500821413 /* StaticTokenListView.swift */,
+				4F12CE90287BD41A009B26B8 /* SVGWebView.swift */,
 				4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */,
 				4F6AC08526AE1C8B000A7539 /* TokenBuyView.swift */,
 				4F8E16F927B06EE800E54BB5 /* TokenListPagedView.swift */,
@@ -1151,20 +1158,13 @@
 				4F0FB825269AA26900AD5165 /* UIKitUtils.swift */,
 				4FB9A810262B508700C58AF9 /* UsdText.swift */,
 				4FAA1E1F26BA24C200102174 /* UserSettingsView.swift */,
+				4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */,
 				4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */,
+				4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */,
 				4F55A8E72648D1DF007C8002 /* WalletTokensView.swift */,
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
+				4FAC369F2881A24000A1D734 /* WebView.swift */,
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
-				4FA9C62027C13D83001219F9 /* CollectionRecentView.swift */,
-				4F3FE32727E7EA4A0036E46C /* FriendsFeedView.swift */,
-				4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */,
-				4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */,
-				4F51EA2128348D71008C610F /* ProfileViewHeader.swift */,
-				4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */,
-				4F7EFAE4284BFD1300E354D1 /* AddFriendSheet.swift */,
-				4F881F8B2871621700CA7465 /* ENSAvatarChangedFeedView.swift */,
-				4F881F8D28722A6E00CA7465 /* AvatarSetCardView.swift */,
-				4F12CE90287BD41A009B26B8 /* SVGWebView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2312,7 +2312,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2342,7 +2342,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2455,7 +2455,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2488,7 +2488,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 33;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

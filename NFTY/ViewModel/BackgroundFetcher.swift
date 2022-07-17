@@ -195,7 +195,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   let userSettings = UserSettings()
   
   // TODO Support Near
-  let orders = OpenSeaApi.getOrders(contract:nil,tokenIds:nil,user:.owner(address),side:OpenSeaApi.Side.buy)
+  let orders = OpenSeaApi.userAssetOrders(address:.owner(address),side:OpenSeaApi.Side.buy)
   return orders
     .then { orders -> Promise<Bool> in
       

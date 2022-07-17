@@ -36,7 +36,7 @@ struct ActionSummaryView: View {
   var body: some View {
     
     NavigationLink(
-      destination:PrivateCollectionView(account:action.account)
+      destination:PrivateCollectionView(account:action.account,isOwnerView:false)
     ) {
       HStack(spacing:0) {
         ActionSummaryView.labelOfAccount(account: action.account)

@@ -11,6 +11,15 @@ import Cache
 
 struct OpenSeaApiCore {
   
+  static func setRequestHeaders(_ request: inout URLRequest) {
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36",
+                     forHTTPHeaderField:"User-Agent")
+    
+    request.setValue("https://api.opensea.io/api/v1/assets",
+                     forHTTPHeaderField:"referrer")
+  }
+  
   static let API_KEY = "5302eafecee44b198cfa1fb8bfbd5e5d"
   
   static let UrlSession = UrlTaskThrottle(
@@ -46,6 +55,7 @@ struct OpenSeaApiCore {
         // request.setValue(OpenSeaApiCore.API_KEY, forHTTPHeaderField:"x-api-key")
         
         request.httpMethod = "GET"
+        OpenSeaApiCore.setRequestHeaders(&request)
         
         OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
           if let e = error { return seal.reject(e) }

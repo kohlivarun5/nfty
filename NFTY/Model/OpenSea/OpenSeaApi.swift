@@ -59,7 +59,7 @@ struct OpenSeaApi {
     let orders : [AssetOrder]
   }
   
-  static func getOrders(contract:String?,tokenIds:[BigUInt]?,user:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
+  private static func getOrders(contract:String?,tokenIds:[BigUInt]?,user:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
     
     var components = URLComponents()
     components.scheme = "https"
@@ -97,8 +97,8 @@ struct OpenSeaApi {
     
     return Promise { seal in
       var request = URLRequest(url:components.url!)
-      request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
-      
+      // request.setValue(OpenSeaApi.API_KEY, forHTTPHeaderField:"x-api-key")
+      OpenSeaApiCore.setRequestHeaders(&request)
       request.httpMethod = "GET"
       
       OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
@@ -143,7 +143,7 @@ struct OpenSeaApi {
     }
   }
   
-  static func getBidAsk(contract:String,tokenIds:[BigUInt],side:Side) -> Promise<[BigUInt:BidAsk]> {
+  private static func getBidAsk(contract:String,tokenIds:[BigUInt],side:Side) -> Promise<[BigUInt:BidAsk]> {
     OpenSeaApi.getOrders(contract: contract, tokenIds: tokenIds, user: nil, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { orders in
         
@@ -178,7 +178,7 @@ struct OpenSeaApi {
       }
   }
   
-  static func getBidAsk(contract:String,tokenId:BigUInt,side:Side) -> Promise<BidAsk> {
+  private static func getBidAsk(contract:String,tokenId:BigUInt,side:Side) -> Promise<BidAsk> {
     OpenSeaApi.getOrders(contract: contract, tokenIds: [tokenId], user: nil, side: side)
       .map(on:DispatchQueue.global(qos:.userInteractive)) {
         
@@ -205,6 +205,9 @@ struct OpenSeaApi {
       }
   }
   
+  static func userAssetOrders(address:QueryAddress?,side:Side) -> Promise<[AssetOrder]> {
+    return OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
+  }
   
   static func userOrders(address:QueryAddress,side:Side) -> Promise<[NFTToken]> {
     OpenSeaApi.getOrders(contract: nil, tokenIds: nil, user: address, side: side)
@@ -450,8 +453,136 @@ struct OpenSeaApi {
       })
     }
   }
+  
+  struct Seaport {
+    struct Offer : Codable {
+      let current_price : String
+      let expiration_time : UInt
+    }
+  }
+  
+  static func getOffer(contract:String,tokenId:BigUInt) -> Promise<AssetOrder?> {
+    
+    //  /api/v1/asset/0x7E6Bc952d4b4bD814853301bEe48E99891424de0/8339/listings
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/api/v1/asset/\(contract)/\(tokenId)/offers"
+    
+    return Promise { seal in
+      var request = URLRequest(url:components.url!)
+      OpenSeaApiCore.setRequestHeaders(&request)
+      request.httpMethod = "GET"
+      
+      OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          
+          if let e = error { return seal.reject(e) }
+          
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          
+          struct Result : Decodable {
+            let seaport_offers : [Seaport.Offer]
+          }
+          
+          let offers = try jsonDecoder.decode(Result.self, from: data!)
+          
+          //print(orders)
+          // remove duplicates, we request ordered by highest first
+          
+          let order = offers
+            .seaport_offers
+            .sorted(by: { $0.current_price > $1.current_price} )
+            .first
+            .map {
+              AssetOrder(
+                asset:Asset(
+                  token_id:String(tokenId),
+                  asset_contract:AssetContract(
+                    address : contract,
+                    schema_name : "ERC721"
+                  ),
+                  token_metadata:nil
+                ),
+                current_price:$0.current_price,
+                payment_token:"",
+                side:.buy,
+                expiration_time:$0.expiration_time
+              )
+            }
+          
+          seal.fulfill(order)
+          
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      })
+    }
+  }
+  
+  static func getListing(contract:String,tokenId:BigUInt) -> Promise<AssetOrder?> {
+    
+    //  /api/v1/asset/0x7E6Bc952d4b4bD814853301bEe48E99891424de0/8339/listings
+    var components = URLComponents()
+    components.scheme = "https"
+    components.host = "api.opensea.io"
+    components.path = "/api/v1/asset/\(contract)/\(tokenId)/listings"
+    
+    return Promise { seal in
+      var request = URLRequest(url:components.url!)
+      OpenSeaApiCore.setRequestHeaders(&request)
+      request.httpMethod = "GET"
+      
+      OpenSeaApiCore.UrlSession.enqueue(with: request, completionHandler: { data, response, error -> Void in
+        do {
+          
+          if let e = error { return seal.reject(e) }
+          
+          let jsonDecoder = JSONDecoder()
+          // print(data)
+          
+          struct Result : Decodable {
+            let seaport_listings : [Seaport.Offer]
+          }
+          
+          let offers = try jsonDecoder.decode(Result.self, from: data!)
+          
+          //print(orders)
+          // remove duplicates, we request ordered by highest first
+          
+          let order = offers
+            .seaport_listings
+            .sorted(by: { $0.current_price > $1.current_price} )
+            .first
+            .map {
+              AssetOrder(
+                asset:Asset(
+                  token_id:String(tokenId),
+                  asset_contract:AssetContract(
+                    address : contract,
+                    schema_name : "ERC721"
+                  ),
+                  token_metadata:nil
+                ),
+                current_price:$0.current_price,
+                payment_token:"",
+                side:.buy,
+                expiration_time:$0.expiration_time
+              )
+            }
+          
+          seal.fulfill(order)
+          
+        } catch {
+          print("JSON Serialization error:\(error), json=\(data.map { String(decoding: $0, as: UTF8.self) } ?? "")")
+          seal.reject(NSError(domain:"", code:404, userInfo:nil))
+        }
+      })
+    }
+  }
 }
-
 
 struct OpenSeaTradeApi : TokenTradeInterface {
   
@@ -470,31 +601,41 @@ struct OpenSeaTradeApi : TokenTradeInterface {
   
   func getBidAsk(_ tokenId: BigUInt,_ side:Side?) -> Promise<BidAsk> {
     
-    let bidPrice = side != .ask ? OpenSeaApi.getBidAsk(
-      contract: contract.hex(eip55: true),
-      tokenId: tokenId,
-      side:.buy
-    ) : Promise.value(BidAsk(bid: nil, ask: nil))
+    let bidPrice = side != .ask ? OpenSeaApi.getOffer(
+      contract: self.contract.hex(eip55: true),
+      tokenId: tokenId
+    ) : Promise.value(nil)
     
-    let askPrice = side != .bid ? OpenSeaApi.getBidAsk(
-      contract: contract.hex(eip55: true),
-      tokenId: tokenId,
-      side:.sell
-    ) : Promise.value(BidAsk(bid: nil, ask: nil))
+    let askPrice = side != .bid ? OpenSeaApi.getListing(
+      contract: self.contract.hex(eip55: true),
+      tokenId: tokenId
+    ) : Promise.value(nil)
     
     return bidPrice.then { bidPrice in
       askPrice.map { askPrice in
-        BidAsk(bid:bidPrice.bid,ask:askPrice.ask)
+        BidAsk(
+          bid:bidPrice.flatMap { order in
+            BigUInt(order.current_price)
+              .map {
+                BidInfo(
+                  price: PriceUnit.wei($0),
+                  expiration_time: order.expiration_time)
+              }
+          },
+          ask:askPrice.flatMap { order in
+            BigUInt(order.current_price)
+              .map {
+                AskInfo(
+                  price: PriceUnit.wei($0),
+                  expiration_time: order.expiration_time)
+              }
+          }
+        )
       }
     }
   }
   
   func getBidAsk(_ tokenIds: [BigUInt],_ side:Side) -> Promise<[(tokenId: BigUInt, bidAsk: BidAsk)]> {
-    return OpenSeaApi.getBidAsk(
-      contract: contract.hex(eip55: true),
-      tokenIds: tokenIds,
-      side:mapSide(side)
-    )
-    .map { $0.map { (tokenId:$0.0,bidAsk:$0.1) } }
+    return getBidAskSerial(tokenIds: tokenIds,side,wait:0.05, getter: self.getBidAsk)
   }
 }
