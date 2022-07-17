@@ -352,7 +352,8 @@ func loadMints() -> Promise<Bool> {
   let fakeKey = ""
   
   let lastNotifiedBlock = try? lastNotifiedBlockCache.object(forKey: fakeKey)
-  // print("lastNotifiedBlock=",lastNotifiedBlock)
+  // let lastNotifiedBlock : BigUInt? = 15160111 // For testing
+  print("lastNotifiedBlock=",lastNotifiedBlock.map { String($0)} ?? "None")
   
   var newLatestBlock : BigUInt? = nil
   
@@ -430,7 +431,7 @@ func loadMints() -> Promise<Bool> {
       }
     }
     
-    // print("newLatestBlock=",newLatestBlock)
+    print("newLatestBlock=",newLatestBlock.map { String($0) } ?? "None")
     switch(newLatestBlock) {
     case .none:
       return false

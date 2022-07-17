@@ -49,7 +49,7 @@ struct OpenSeaGQL {
                 }
                 let paymentAssetQuantity : PaymentAssetQuantity
               }
-              let bestAsk : Ask
+              let bestAsk : Ask?
             }
             let orderData : OrderData
           }
