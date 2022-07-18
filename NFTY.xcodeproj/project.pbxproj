@@ -354,6 +354,8 @@
 		4FDEABB2278E547F00F92160 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FDEABB1278E547F00F92160 /* Web3PromiseKit */; };
 		4FDEABB5278E577600F92160 /* FloorFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEABB3278E577600F92160 /* FloorFetcher.swift */; };
 		4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB90278E535200F92160 /* WidgetStorage.swift */; };
+		4FE148B62884DFFC00355ABA /* SetENSAvatarConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE148B52884DFFC00355ABA /* SetENSAvatarConfirmation.swift */; };
+		4FE148B82884E3B700355ABA /* ProfileAvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE148B72884E3B700355ABA /* ProfileAvatarImage.swift */; };
 		4FE2CB68278B7B8300930FD8 /* WalletTokensCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */; };
 		4FE818102725B9EF00B7D9C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */; };
 		4FE818132725BA7B00B7D9C5 /* FRWC_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */; };
@@ -785,6 +787,8 @@
 		4FDEAB90278E535200F92160 /* WidgetStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStorage.swift; sourceTree = "<group>"; };
 		4FDEABB3278E577600F92160 /* FloorFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloorFetcher.swift; sourceTree = "<group>"; };
 		4FDEABBB278FA69500F92160 /* NFTYWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NFTYWidgetExtension.entitlements; sourceTree = "<group>"; };
+		4FE148B52884DFFC00355ABA /* SetENSAvatarConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetENSAvatarConfirmation.swift; sourceTree = "<group>"; };
+		4FE148B72884E3B700355ABA /* ProfileAvatarImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarImage.swift; sourceTree = "<group>"; };
 		4FE2CB67278B7B8300930FD8 /* WalletTokensCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensCollectionHeader.swift; sourceTree = "<group>"; };
 		4FE8180F2725B9EF00B7D9C5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FE818112725BA7B00B7D9C5 /* FRWC_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FRWC_attributeRanks.json; sourceTree = "<group>"; };
@@ -1165,6 +1169,8 @@
 				4F55A8E52648BB17007C8002 /* WalletView.swift */,
 				4FAC369F2881A24000A1D734 /* WebView.swift */,
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
+				4FE148B52884DFFC00355ABA /* SetENSAvatarConfirmation.swift */,
+				4FE148B72884E3B700355ABA /* ProfileAvatarImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1870,6 +1876,7 @@
 				4F6AC08426AE1C3C000A7539 /* TokenSellView.swift in Sources */,
 				4F3582A42783A33D00D119F8 /* NFTXVaultView.swift in Sources */,
 				4F4A24852693B275006DBBFA /* OwnerProfileLinkButton.swift in Sources */,
+				4FE148B82884E3B700355ABA /* ProfileAvatarImage.swift in Sources */,
 				4FAA1E1E26B7628700102174 /* UserWalletModel.swift in Sources */,
 				4FED1E4726D857C7006274CE /* WithWalletProviderView.swift in Sources */,
 				4FB9A811262B508700C58AF9 /* UsdText.swift in Sources */,
@@ -1950,6 +1957,7 @@
 				4F08724B2651E740002DD748 /* PrivateCollectionView.swift in Sources */,
 				4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */,
 				4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */,
+				4FE148B62884DFFC00355ABA /* SetENSAvatarConfirmation.swift in Sources */,
 				4F4F9A4B2763D9FE0020C5FA /* PhunksContract.swift in Sources */,
 				4F99B533285804540012A3FF /* AlchemyTokensFetcher.swift in Sources */,
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,

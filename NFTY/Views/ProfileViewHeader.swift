@@ -100,19 +100,8 @@ struct ProfileViewHeader: View {
             hideOwnerLink: false,
             selectedProperties: [])
         ) {
-          NftImage(
-            nft:nft,
-            sample:collection.info.sample,
-            themeColor:collection.info.themeColor,
-            themeLabelColor:collection.info.themeLabelColor,
-            size:.xxsmall,
-            resolution:.hd,
-            favButton:.none)
-          .frame(height:120)
-          .border(Color.secondary)
-          .clipShape(Circle())
-          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-          .shadow(color:.accentColor,radius:0)
+          ProfileAvatarImage(nft: nft, collection: collection, size: .xxsmall)
+            .frame(height:120)
         }
       }
       
@@ -184,7 +173,7 @@ struct ProfileViewHeader: View {
               selectedToken: $selectedAvatarToken)
             .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
             .onChange(of: selectedAvatarToken) { selectedToken in
-              print("Avatar selected \(selectedToken)")
+              print("Avatar selected \(String(describing: selectedToken))")
               if let info = selectedToken {
                 self.avatar = (info.token.collection,info.token.nft.nft)
                 self.selectedAvatarToken = info
@@ -275,14 +264,7 @@ struct ProfileViewHeader: View {
     .sheet(item: $selectedAvatarToken, onDismiss: { self.selectedAvatarToken = nil }) { (item:NFTTokenEquatable) in
       switch(self.userWallet.walletProvider) {
       case .some(let walletProvider):
-        NftImage(
-          nft: item.token.nft.nft,
-          sample: item.token.collection.info.sample,
-          themeColor: item.token.collection.info.themeColor,
-          themeLabelColor: item.token.collection.info.themeLabelColor,
-          size: .medium,
-          resolution: .hd,
-          favButton: .none)
+        SetENSAvatarConfirmation(selectedAvatarToken: item, ensName: self.friendName ?? "" /* TODO FIX */, walletProvider: walletProvider)
           .themeStyle()
       case .none:
         VStack {
