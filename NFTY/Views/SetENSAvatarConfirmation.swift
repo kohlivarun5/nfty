@@ -15,6 +15,9 @@ struct SetENSAvatarConfirmation: View {
   let walletProvider : WalletProvider
   
   private func onSaveToENS() {
+    print("Saving to ENS")
+    return wallet.sendTransaction(tx:
+                                    ethContract.enterBidForPhunk(tokenId:tokenId,wei: wei,from: wallet.ethAddress))
   }
   
   
