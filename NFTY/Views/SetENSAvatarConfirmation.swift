@@ -21,15 +21,27 @@ struct SetENSAvatarConfirmation: View {
   var body: some View {
     
     VStack {
-      Spacer()
       
       ProfileAvatarImage(nft: selectedAvatarToken.token.nft.nft, collection: selectedAvatarToken.token.collection, size: .xxsmall)
         .frame(maxWidth:400)
+        .padding(.top,40)
       
+      
+      HStack {
+        Spacer()
+        Text("@\(ensName)")
+          .font(.title2)
+          .foregroundColor(.accentColor)
+        Spacer()
+      }
       
       Form {
         Section(
-          header: Text(""),
+          header: HStack {
+            Spacer()
+            Text("Selected Avatar")
+            Spacer()
+          },
           content: {
             
             HStack {
