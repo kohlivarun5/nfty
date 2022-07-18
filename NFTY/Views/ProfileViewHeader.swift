@@ -25,8 +25,9 @@ struct ProfileViewHeader: View {
   @State private var showDialog = false
   
   @State private var selectedAvatarToken: NFTTokenEquatable? = nil
-  
   @State private var avatarNavLinkActive : Bool = false
+  
+  @StateObject var userWallet = UserWallet()
   
   private func setFriend(_ name:String) {
     
@@ -72,24 +73,21 @@ struct ProfileViewHeader: View {
       switch (avatar) {
       case .none:
         
-        ZStack {
-          NftImage(
-            nft:SampleToken,
-            sample:SAMPLE_PUNKS[0],
-            themeColor:SampleCollection.info.themeColor,
-            themeLabelColor:SampleCollection.info.themeLabelColor,
-            size:.xxsmall,
-            resolution:.hd,
-            favButton:.none)
-          .frame(height:120)
-          .colorMultiply(.tertiarySystemBackground)
-          .blur(radius: 10)
-          .border(Color.secondary)
-          .clipShape(Circle())
-          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-          .shadow(color:.accentColor,radius:0)
-          
-        }
+        NftImage(
+          nft:SampleToken,
+          sample:SAMPLE_PUNKS[0],
+          themeColor:SampleCollection.info.themeColor,
+          themeLabelColor:SampleCollection.info.themeLabelColor,
+          size:.xxsmall,
+          resolution:.hd,
+          favButton:.none)
+        .frame(height:120)
+        .colorMultiply(.tertiarySystemBackground)
+        .blur(radius: 10)
+        .border(Color.secondary)
+        .clipShape(Circle())
+        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+        .shadow(color:.accentColor,radius:0)
         
       case .some(let info):
         let (collection,nft) = info
@@ -177,40 +175,39 @@ struct ProfileViewHeader: View {
           .if(!isFollowing){
             $0.colorMultiply(.accentColor)
           }
-        case (true,.some)/* : // TODO : Support update avatar with wallet connect
-                          
-                          NavigationLink(
-                          destination:WalletTokensSelector(
-                          tokens: getOwnerTokens(account),
-                          enableNavLinks: false,
-                          selectedToken: $selectedAvatarToken)
-                          .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
-                          .onChange(of: selectedAvatarToken) { selectedToken in
-                          print("Avatar selected \(selectedToken)")
-                          
-                          // TODO
-                          /* self.nftInfo = selectedToken.map { info in
-                           (info.token.collection,info.token.nft.nft)
-                           } */
-                          avatarNavLinkActive = false
-                          },
-                          isActive: $avatarNavLinkActive
-                          ) {
-                          HStack {
-                          Spacer()
-                          Text("Update Avatar")
-                          .font(.caption).bold()
-                          Spacer()
-                          }
-                          }
-                          .padding([.top,.bottom],5)
-                          .padding([.leading,.trailing])
-                          .background(.ultraThinMaterial, in: Capsule())
-                          .padding(.top,10)
-                          .padding(.trailing)
-                          .foregroundColor(.accentColor)
-                          
-                          case */,(true,.none),(false,.none):
+        case (true,.some):
+          
+          NavigationLink(
+            destination:WalletTokensSelector(
+              tokens: getOwnerTokens(account),
+              enableNavLinks: false, redactPrice: false,
+              selectedToken: $selectedAvatarToken)
+            .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
+            .onChange(of: selectedAvatarToken) { selectedToken in
+              print("Avatar selected \(selectedToken)")
+              if let info = selectedToken {
+                self.avatar = (info.token.collection,info.token.nft.nft)
+                self.selectedAvatarToken = info
+              }
+              avatarNavLinkActive = false
+            },
+            isActive: $avatarNavLinkActive
+          ) {
+            HStack {
+              Spacer()
+              Text("Update Avatar")
+                .font(.caption).bold()
+              Spacer()
+            }
+          }
+          .padding([.top,.bottom],5)
+          .padding([.leading,.trailing])
+          .background(.ultraThinMaterial, in: Capsule())
+          .padding(.top,10)
+          .padding(.trailing)
+          .foregroundColor(.accentColor)
+          
+        case (true,.none),(false,.none):
           EmptyView()
         }
         
@@ -274,6 +271,30 @@ struct ProfileViewHeader: View {
             
           } }
         .catch { print($0) }
+    }
+    .sheet(item: $selectedAvatarToken, onDismiss: { self.selectedAvatarToken = nil }) { (item:NFTTokenEquatable) in
+      switch(self.userWallet.walletProvider) {
+      case .some(let walletProvider):
+        NftImage(
+          nft: item.token.nft.nft,
+          sample: item.token.collection.info.sample,
+          themeColor: item.token.collection.info.themeColor,
+          themeLabelColor: item.token.collection.info.themeLabelColor,
+          size: .medium,
+          resolution: .hd,
+          favButton: .none)
+          .themeStyle()
+      case .none:
+        VStack {
+          Spacer()
+          Text("Sign-In to save ENS Avatar")
+            .font(.title2)
+            .foregroundColor(.secondary)
+          UserWalletConnectorView(userWallet:userWallet)
+          Spacer()
+        }
+        .themeStyle()
+      }
     }
   }
 }
