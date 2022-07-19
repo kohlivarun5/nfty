@@ -109,7 +109,7 @@ class ENSTextChangedFeed {
         // guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
         
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
-        return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data),eth:web3.eth)
+        return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
           .then { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
             guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
             return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
@@ -154,7 +154,7 @@ class ENSTextChangedFeed {
         
         // Use the node hash to get the value, as it is not in the event
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
-        return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data),eth:web3.eth)
+        return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
           .then { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
             guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
             return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
