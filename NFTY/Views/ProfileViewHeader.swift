@@ -16,6 +16,7 @@ struct ProfileViewHeader: View {
   let addTopPadding : Bool
   
   @State var friendName : String?
+  @State var ensName : String?
   @State var avatar : (Collection,NFT)?
   
   @State private var balance : EthereumQuantity? = nil
@@ -166,35 +167,40 @@ struct ProfileViewHeader: View {
           }
         case (true,.some):
           
-          NavigationLink(
-            destination:WalletTokensSelector(
-              tokens: getOwnerTokens(account),
-              enableNavLinks: false, redactPrice: false,
-              selectedToken: $selectedAvatarToken)
-            .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
-            .onChange(of: selectedAvatarToken) { selectedToken in
-              print("Avatar selected \(String(describing: selectedToken))")
-              if let info = selectedToken {
-                self.avatar = (info.token.collection,info.token.nft.nft)
-                self.selectedAvatarToken = info
+          switch(ensName) {
+          case .none:
+            EmptyView()
+          case .some:
+            NavigationLink(
+              destination:WalletTokensSelector(
+                tokens: getOwnerTokens(account),
+                enableNavLinks: false, redactPrice: false,
+                selectedToken: $selectedAvatarToken)
+              .navigationBarTitle("Choose Avatar NFT",displayMode: .inline)
+              .onChange(of: selectedAvatarToken) { selectedToken in
+                print("Avatar selected \(String(describing: selectedToken))")
+                if let info = selectedToken {
+                  self.avatar = (info.token.collection,info.token.nft.nft)
+                  self.selectedAvatarToken = info
+                }
+                avatarNavLinkActive = false
+              },
+              isActive: $avatarNavLinkActive
+            ) {
+              HStack {
+                Spacer()
+                Text("Update Avatar")
+                  .font(.caption).bold()
+                Spacer()
               }
-              avatarNavLinkActive = false
-            },
-            isActive: $avatarNavLinkActive
-          ) {
-            HStack {
-              Spacer()
-              Text("Update Avatar")
-                .font(.caption).bold()
-              Spacer()
             }
+            .padding([.top,.bottom],5)
+            .padding([.leading,.trailing])
+            .background(.ultraThinMaterial, in: Capsule())
+            .padding(.top,10)
+            .padding(.trailing)
+            .foregroundColor(.accentColor)
           }
-          .padding([.top,.bottom],5)
-          .padding([.leading,.trailing])
-          .background(.ultraThinMaterial, in: Capsule())
-          .padding(.top,10)
-          .padding(.trailing)
-          .foregroundColor(.accentColor)
           
         case (true,.none),(false,.none):
           EmptyView()
@@ -207,35 +213,44 @@ struct ProfileViewHeader: View {
     .background(.ultraThickMaterial)
     .onAppear {
       
-      let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+      if let address = account.ethAddress {
+        web3.eth.getBalance(address: address, block:.latest)
+          .done(on:.main) { balance in
+            self.balance = balance
+          }.catch { print($0) }
+      }
       
-      switch(key().flatMap { friends?[$0] }) {
-      case .some(let name):
-        self.friendName = name
-        self.isFollowing = true
-      case .none:
-        self.isFollowing = false
+      if (!isOwnerView) {
+        // not owner, look for friend name
+        
+        let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+        
+        switch(key().flatMap { friends?[$0] }) {
+        case .some(let name):
+          self.friendName = name
+          self.isFollowing = true
+        case .none:
+          self.isFollowing = false
+        }
+        
+        switch(self.friendName,self.avatar) {
+        case (.some,.some):
+          return
+        case (.none,_),(_,.none):
+          break
+        }
+        
       }
       
       guard let address = account.ethAddress else { return }
       
-      web3.eth.getBalance(address: address, block:.latest)
-        .done(on:.main) { balance in
-          self.balance = balance
-        }.catch { print($0) }
-      
-      switch(self.friendName,self.avatar) {
-      case (.some,.some):
-        return
-      case (.none,_),(_,.none):
-        break
-      }
-      
       ENSWrapper.shared.nameOfOwner(address, eth: web3.eth)
         .done(on:.main) {
+          self.ensName = $0
           
           if ($0 == .none && self.friendName == .none && self.account.nearAccount != .none) {
             self.friendName = self.account.nearAccount
+            
           }
           
           if let _ = avatar { return }
@@ -264,7 +279,7 @@ struct ProfileViewHeader: View {
     .sheet(item: $selectedAvatarToken, onDismiss: { self.selectedAvatarToken = nil }) { (item:NFTTokenEquatable) in
       switch(self.userWallet.walletProvider) {
       case .some(let walletProvider):
-        SetENSAvatarConfirmationSheet(selectedAvatarToken: item, ensName: self.friendName ?? "" /* TODO FIX */, walletProvider: walletProvider)
+        SetENSAvatarConfirmationSheet(selectedAvatarToken: item, ensName: self.ensName ?? "", walletProvider: walletProvider)
           .themeStyle()
       case .none:
         VStack {
