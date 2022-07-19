@@ -9,7 +9,9 @@ import SwiftUI
 import Web3
 import PromiseKit
 
-struct SetENSAvatarConfirmation: View {
+struct SetENSAvatarConfirmationSheet: View {
+  
+  @Environment(\.presentationMode) var presentationMode
   
   let selectedAvatarToken : NFTTokenEquatable
   let ensName : String
@@ -56,10 +58,14 @@ struct SetENSAvatarConfirmation: View {
       } */
       .done(on:.main) { _ in
         self.txState = .submitted
+        presentationMode.wrappedValue.dismiss()
       }
       .catch {
         print("sendTransactionErrored",$0)
-        DispatchQueue.main.async { self.txState = .submitted }
+        DispatchQueue.main.async {
+          self.txState = .submitted
+          presentationMode.wrappedValue.dismiss()
+        }
       }
   }
   

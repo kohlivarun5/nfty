@@ -264,7 +264,7 @@ struct ProfileViewHeader: View {
     .sheet(item: $selectedAvatarToken, onDismiss: { self.selectedAvatarToken = nil }) { (item:NFTTokenEquatable) in
       switch(self.userWallet.walletProvider) {
       case .some(let walletProvider):
-        SetENSAvatarConfirmation(selectedAvatarToken: item, ensName: self.friendName ?? "" /* TODO FIX */, walletProvider: walletProvider)
+        SetENSAvatarConfirmationSheet(selectedAvatarToken: item, ensName: self.friendName ?? "" /* TODO FIX */, walletProvider: walletProvider)
           .themeStyle()
       case .none:
         VStack {
