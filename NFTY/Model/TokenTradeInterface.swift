@@ -26,9 +26,9 @@ struct BidAsk {
 }
 
 protocol TradeActionsInterface {
-  func submitBid(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
+  func submitBid(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumData>
   
-  func acceptOffer(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumTransactionReceiptObject>
+  func acceptOffer(tokenId: BigUInt, wei: BigUInt, wallet: WalletProvider) -> Promise<EthereumData>
 }
 
 enum Side {

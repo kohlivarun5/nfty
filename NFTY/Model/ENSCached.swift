@@ -10,6 +10,7 @@ import Web3
 import Web3ContractABI
 import Cache
 import PromiseKit
+import BigInt
 
 struct ENSCached {
   
@@ -19,24 +20,23 @@ struct ENSCached {
   }
   
   static let avatarCache = HybridStorage(
-    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig(expiry: Expiry.seconds(3600))),
+    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig()),
     diskStorage: try! DiskStorage<String, Avatar>(
-      config: DiskConfig(name: "ENSCached.Avatar",expiry: Expiry.seconds(1200)),
+      config: DiskConfig(name: "ENSCached.Avatar"),
       transformer:TransformerFactory.forCodable(ofType:Avatar.self))
   )
   
-  static public func avatarOwnerOfNamehash(_ nameHash:SolidityWrappedValue,eth:Web3.Eth) -> Promise<(EthereumAddress?,String?)> {
+  static public func avatarOwnerOfNamehash(_ nameHash:SolidityWrappedValue,block:BigUInt?,eth:Web3.Eth) -> Promise<(EthereumAddress?,String?)> {
     return Promise { seal in
       DispatchQueue.global(qos: .userInitiated).async {
-        try? avatarCache.removeExpiredObjects()
-        switch(try? avatarCache.object(forKey:nameHash.value.abiEncode(dynamic: false)!)) {
+        switch(try? avatarCache.object(forKey:"\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")) {
         case .some(let info):
           return seal.fulfill((info.owner,info.avatar))
         case .none:
-          ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar")
+          ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar",block:block)
             .done {
               let (avatar,owner) = $0
-              try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: nameHash.value.abiEncode(dynamic: false)!)
+              try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
               seal.fulfill((owner,avatar))
             }
             .catch { seal.reject($0) }
