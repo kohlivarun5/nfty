@@ -207,7 +207,7 @@ class UserWallet: ObservableObject {
     let session : Session
     let scheme : String
     
-    func sendTransaction(tx: EthereumTransaction) -> Promise<EthereumTransactionReceiptObject> {
+    func sendTransaction(tx: EthereumTransaction) -> Promise<EthereumData> {
       let transaction = Client.Transaction(
         from:tx.from!.hex(eip55: true),
         to:tx.to?.hex(eip55: true),
@@ -226,7 +226,7 @@ class UserWallet: ObservableObject {
       try! client.reconnect(to: session)
       
       
-      let p = Promise<EthereumTransactionReceiptObject> { seal in
+      let p = Promise<EthereumData> { seal in
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
           
@@ -234,9 +234,23 @@ class UserWallet: ObservableObject {
             url: session.url,
             transaction: transaction)
           { res in
-            print(res)
-            seal.reject(NSError(domain:"", code:404, userInfo:nil))
-            //seal.fulfill(Ethere
+            
+            if let error = res.error {
+              return seal.reject(error)
+            }
+            
+            // {"id":1658194250144294,"jsonrpc":"2.0","result":"0xf32a79bbf382fb7eba225fe54c1c4027c5719fb8b0a1b8d3423f338835afd607"}
+            struct Response : Decodable {
+              let result : String
+            }
+            
+            do {
+              let response = try res.result(as:Response.self)
+              let txHash = try EthereumData(ethereumValue: EthereumValue(ethereumValue: response.result))
+              seal.fulfill(txHash)
+            } catch {
+              seal.reject(error)
+            }
           }
         }
         
