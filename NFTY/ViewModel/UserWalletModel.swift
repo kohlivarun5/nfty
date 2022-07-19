@@ -240,13 +240,10 @@ class UserWallet: ObservableObject {
             }
             
             // {"id":1658194250144294,"jsonrpc":"2.0","result":"0xf32a79bbf382fb7eba225fe54c1c4027c5719fb8b0a1b8d3423f338835afd607"}
-            struct Response : Decodable {
-              let result : String
-            }
             
             do {
-              let response = try res.result(as:Response.self)
-              let txHash = try EthereumData(ethereumValue: EthereumValue(ethereumValue: response.result))
+              let result = try res.result(as:String.self)
+              let txHash = try EthereumData(ethereumValue: EthereumValue(ethereumValue: result))
               seal.fulfill(txHash)
             } catch {
               seal.reject(error)

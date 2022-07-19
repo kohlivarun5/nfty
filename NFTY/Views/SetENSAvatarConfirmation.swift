@@ -17,13 +17,11 @@ struct SetENSAvatarConfirmation: View {
   let walletProvider : WalletProvider
   
   enum TxState {
-    case errorTimedOut
-    case errorFailed
+    case submitted
     case processing
-    case processed
   }
   
-  @State var txState : TxState? = .processed
+  @State var txState : TxState?
   
   private func processTx(txHash:EthereumData,retries:Int, sleepSecs:Double) -> Promise<EthereumTransactionReceiptObject?> {
     return web3.eth.getTransactionReceipt(transactionHash: txHash)
@@ -47,23 +45,21 @@ struct SetENSAvatarConfirmation: View {
   
   private func onSaveToENS() {
     print("Saving to ENS")
+    
     ENSContract.setAvatar(ensName, from: walletProvider.ethAddress, avatar: selectedAvatarToken.token.nft.nft, eth: web3.eth)
-      .then { walletProvider.sendTransaction(tx:$0) }
-      .then(on:.main) { txHash -> Promise<EthereumTransactionReceiptObject?> in
-        self.txState = .processing
+      .then { tx -> Promise<EthereumData> in
+        DispatchQueue.main.async { self.txState = .processing }
+        return walletProvider.sendTransaction(tx:tx)
+      }
+      /* .then { txHash -> Promise<EthereumTransactionReceiptObject?> in
         return processTx(txHash: txHash, retries: 300, sleepSecs: 0.1) // 30 seconds wait
+      } */
+      .done(on:.main) { _ in
+        self.txState = .submitted
       }
-      .done(on:.main) {
-        switch($0) {
-        case .none:
-          self.txState = .errorTimedOut
-        case .some:
-          self.txState = .processed
-        }
-      }
-      .catch(on:.main) {
+      .catch {
         print("sendTransactionErrored",$0)
-        self.txState = .errorFailed
+        DispatchQueue.main.async { self.txState = .submitted }
       }
   }
   
@@ -132,7 +128,7 @@ struct SetENSAvatarConfirmation: View {
           .cornerRadius(40)
           .padding(10)
         }
-      case .some(.errorTimedOut):
+      /* case .some(.errorTimedOut):
         Text("Transaction timed-out")
           .foregroundColor(.accentColor)
           .font(.title3)
@@ -141,11 +137,11 @@ struct SetENSAvatarConfirmation: View {
         Text("Failed to process transaction")
           .foregroundColor(.accentColor)
           .font(.title3)
-          .fontWeight(.bold)
+          .fontWeight(.bold) */
       case .some(.processing):
         ProgressView("Processing transaction")
-      case .some(.processed):
-        Text("Transaction successful")
+      case .some(.submitted):
+        Text("Transaction submitted")
           .foregroundColor(.accentColor)
           .font(.title3)
           .fontWeight(.bold)
