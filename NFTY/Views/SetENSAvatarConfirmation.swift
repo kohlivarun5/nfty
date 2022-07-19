@@ -16,10 +16,10 @@ struct SetENSAvatarConfirmation: View {
   
   private func onSaveToENS() {
     print("Saving to ENS")
-    ENSContract.setText(ensName, from: walletProvider.ethAddress, avatar: selectedAvatarToken.token.nft.nft, eth: web3.eth)
+    ENSContract.setAvatar(ensName, from: walletProvider.ethAddress, avatar: selectedAvatarToken.token.nft.nft, eth: web3.eth)
       .then { walletProvider.sendTransaction(tx:$0) }
-      .done { print($0) } // TODO
-      .catch { print($0) }
+      .done { print("sendTransactionReturned",$0) } // TODO
+      .catch { print("sendTransactionErrored",$0) }
   }
   
   
