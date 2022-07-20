@@ -42,7 +42,7 @@ struct RoundedImage: View {
           maximum: UIDevice.current.userInterfaceIdiom == .pad
           ? RoundedImage.NormalSize+80 : min(200,(width - 40) / Double(2)))),
       count:UIDevice.current.userInterfaceIdiom == .pad
-      ? Int(width / RoundedImage.NormalSize) - 1
+      ? min(4,Int(width / RoundedImage.NormalSize) - 1)
       : 2)
   }
   
