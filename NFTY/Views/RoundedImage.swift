@@ -27,6 +27,14 @@ struct RoundedImage: View {
   let action : Action?
   let redactPrice : Bool
   
+  static func columns(width:Double) -> [GridItem] {
+    return Array(
+      repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
+      count: width > RoundedImage.NormalSize * 5 ? 4 :
+        width > RoundedImage.NormalSize * 4 ? 3 :
+        width > RoundedImage.NormalSize * 3 ? 2 : 1)
+  }
+  
   init(nft:NFT,
        price:TokenPriceType,
        collection:Collection,

@@ -164,9 +164,7 @@ struct FeedView: View {
                 impactMed.impactOccurred()
               }
               LazyVGrid(
-                columns: Array(
-                  repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
-                  count: metrics.size.width > RoundedImage.NormalSize * 4 ? 3 : metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1),
+                columns: RoundedImage.columns(width: metrics.size.width),
                 pinnedViews: [.sectionHeaders])
               {
                 ForEachWithIndex(trades.recentTrades,id:\.self.nft.id) { index,item in

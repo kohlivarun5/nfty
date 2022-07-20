@@ -95,11 +95,7 @@ struct FavoritesView: View {
             
             ScrollView {
               LazyVGrid(
-                columns: Array(
-                  repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NormalSize+80 : min(200,(metrics.size.width - 20) / Double(2)))),
-                  count:UIDevice.current.userInterfaceIdiom == .pad
-                  ? Int(metrics.size.width / RoundedImage.NormalSize) - 1
-                  : 2),
+                columns: RoundedImage.columns(width: metrics.size.width),
                 pinnedViews: [.sectionHeaders])
               {
                 ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in

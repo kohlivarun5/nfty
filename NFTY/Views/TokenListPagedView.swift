@@ -55,11 +55,7 @@ struct TokenListPagedView: View {
         GeometryReader { metrics in
           ScrollView {
             LazyVGrid(
-              columns: Array(
-                repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
-                count: metrics.size.width > RoundedImage.NormalSize * 5 ? 4 :
-                  metrics.size.width > RoundedImage.NormalSize * 4 ? 3 :
-                  metrics.size.width > RoundedImage.NormalSize * 3 ? 2 : 1)
+              columns: RoundedImage.columns(width: metrics.size.width)
             ) {
               let info = collection.info
               ForEachWithIndex(nfts.tokens) { index,nft in
