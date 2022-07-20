@@ -577,8 +577,12 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeColor:Color.gunmetal,
       themeLabelColor:Color.white,
       disableRecentTrades:false,
-      similarTokens : nil,
-      rarityRanking : nil
+      similarTokens : SimilarTokensGetter(
+        label:"Phunk",
+        nearestTokensFileName:nil,
+        propertiesJsonFileName:"Illuminati_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("Illuminati_attributeRanks.json"))
     ),
     contract:ILLUMINATI_Contract),
   Collection(

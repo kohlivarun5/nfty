@@ -7,12 +7,12 @@
 
 import Foundation
 
-let collectionName = "kaizofighters.tenk.near"
-let attributesDir = "bafybeie3tapnsmwdzhrq6vzb6vpo623kxgominzaiyxh7igdrskk2drdj4"
+let collectionName = "Illuminati"
+let attributesDir = "QmbBTpn7nZeAm4gZfK6DK5JGxZe9yBjqfGHvMYAFt9AXqa"
 
 let isFull = true
-let firstIndex = 1
-let lastIndex = isFull ? 4693 : 100
+let firstIndex = 0
+let lastIndex = isFull ? 8127 : 100
 
 // STAGES
 let doCalculatePercentiles = true

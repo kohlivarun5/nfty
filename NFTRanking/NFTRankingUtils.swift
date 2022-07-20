@@ -114,9 +114,6 @@ func getAttributesDirectory(collectionName:String,attributesDir:String) -> URL {
     .appendingPathComponent("../")
     .appendingPathComponent("Github")
     .appendingPathComponent("NFTY")
-    .appendingPathComponent("data")
-    .appendingPathComponent("Images")
-    .appendingPathComponent(collectionName)
     .appendingPathComponent(attributesDir)
   
 }

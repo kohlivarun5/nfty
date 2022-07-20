@@ -147,6 +147,8 @@
 		4F55A8EA2648D343007C8002 /* ConnectWalletSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */; };
 		4F55A8EC264A0642007C8002 /* BlockTimeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */; };
 		4F58A048263688C500E258C1 /* SimilarTokensView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F58A047263688C500E258C1 /* SimilarTokensView.swift */; };
+		4F5C700A28879C93005F6F7C /* Illuminati_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C700828879C93005F6F7C /* Illuminati_attributeRanks.json */; };
+		4F5C700B28879C93005F6F7C /* Illuminati_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C700928879C93005F6F7C /* Illuminati_attributeScores.json */; };
 		4F5F8F5A26531D3A00FAD814 /* TextFieldAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */; };
 		4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */; };
 		4F667F6E264B291000E7A214 /* ObservablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F667F6D264B291000E7A214 /* ObservablePromise.swift */; };
@@ -634,6 +636,8 @@
 		4F55A8E92648D343007C8002 /* ConnectWalletSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectWalletSheet.swift; sourceTree = "<group>"; };
 		4F55A8EB264A0642007C8002 /* BlockTimeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTimeLabel.swift; sourceTree = "<group>"; };
 		4F58A047263688C500E258C1 /* SimilarTokensView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarTokensView.swift; sourceTree = "<group>"; };
+		4F5C700828879C93005F6F7C /* Illuminati_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Illuminati_attributeRanks.json; sourceTree = "<group>"; };
+		4F5C700928879C93005F6F7C /* Illuminati_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Illuminati_attributeScores.json; sourceTree = "<group>"; };
 		4F5F8F5926531D3A00FAD814 /* TextFieldAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldAlertView.swift; path = "NFTY/Preview Content/MyPlayground.playground/TextFieldAlertView.swift"; sourceTree = SOURCE_ROOT; };
 		4F5F8F5F265331AB00FAD814 /* AddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLabel.swift; sourceTree = "<group>"; };
 		4F667F6D264B291000E7A214 /* ObservablePromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservablePromise.swift; sourceTree = "<group>"; };
@@ -1219,6 +1223,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F5C700828879C93005F6F7C /* Illuminati_attributeRanks.json */,
+				4F5C700928879C93005F6F7C /* Illuminati_attributeScores.json */,
 				4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */,
 				4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */,
 				4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */,
@@ -1581,6 +1587,7 @@
 				4FBF8AF9264E079D00569DCA /* AsciiPunks_rarityRanks.json in Resources */,
 				4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */,
 				4F6D3995262BFE4F007E79BB /* kitties.json in Resources */,
+				4F5C700A28879C93005F6F7C /* Illuminati_attributeRanks.json in Resources */,
 				4FCB359526E1BB1C0044BD84 /* MutantApes_rarityRanks.json in Resources */,
 				4F1E4F3626C84F82009D27E6 /* DeadFellaz_rarityRanks.json in Resources */,
 				4FE818102725B9EF00B7D9C5 /* LaunchScreen.storyboard in Resources */,
@@ -1642,6 +1649,7 @@
 				4F856BD02632B30D00BB5E07 /* GoogleService-Info.plist in Resources */,
 				4F12715526EDAA87007E6A7B /* Dads_attributeScores.json in Resources */,
 				4F12715826EDB522007E6A7B /* Dads_rarityRanks.json in Resources */,
+				4F5C700B28879C93005F6F7C /* Illuminati_attributeScores.json in Resources */,
 				4FCB359C26E1C2E40044BD84 /* Killaz_nearestTokens.json in Resources */,
 				4F11C77327A0E48600938036 /* 0xApes_attributeRanks.json in Resources */,
 				4F11C77627A0E48600938036 /* 0xApes_attributeScores.json in Resources */,
@@ -2113,7 +2121,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
+				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2125,8 +2133,9 @@
 		4F1E4F4126C850B7009D27E6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
+				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2169,11 +2178,12 @@
 		4FA1101526A8EA6500719D22 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2182,11 +2192,13 @@
 		4FA1101626A8EA6500719D22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T6H8PH94HE;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2320,7 +2332,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2350,7 +2362,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2463,7 +2475,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2496,7 +2508,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

@@ -14,3 +14,8 @@
 
 - App Icon Maker : https://easyappicon.com
 - If you get missing `ENSContract` error, copy [this gist](https://gist.github.com/kohlivarun5/a767680f91394eeec34588e96bed812c) into `NFTY/Model`
+
+## Downloading from ipfs
+
+- `./download_ipfs.sh`
+- `ipget --progress QmW8pTeaehSgKex1SwDgsTqAtkpJXao1CsWaydkdRAhkNr`
