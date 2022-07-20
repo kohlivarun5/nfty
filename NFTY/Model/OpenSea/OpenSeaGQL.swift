@@ -45,7 +45,7 @@ struct OpenSeaGQL {
                   }
                   
                   let asset : Asset
-                  let quantityInEth : String
+                  let quantityInEth : String?
                 }
                 let paymentAssetQuantity : PaymentAssetQuantity
               }

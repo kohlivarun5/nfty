@@ -35,12 +35,18 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
                 
                 guard let ask = edge.node.asset.orderData.bestAsk else { return nil }
                 
+                let quantityInEth = ask.paymentAssetQuantity.quantityInEth ?? (
+                  ask.paymentAssetQuantity.asset.symbol == "ETH" || ask.paymentAssetQuantity.asset.symbol == "WETH"
+                  ? ask.paymentAssetQuantity.quantity : nil);
+                
+                guard let quantityInEth = quantityInEth else { return nil }
+                
                 return NFTWithLazyPrice(
                   nft: contract.getNFT(BigUInt(edge.node.asset.tokenId)!),
                   getPrice: {
                     return ObservablePromise(
                       resolved:NFTPriceStatus.known(
-                        NFTPriceInfo(wei: BigUInt(ask.paymentAssetQuantity.quantityInEth),
+                        NFTPriceInfo(wei: BigUInt(quantityInEth),
                                      date: nil,
                                      type: TradeEventType.ask)
                       )
