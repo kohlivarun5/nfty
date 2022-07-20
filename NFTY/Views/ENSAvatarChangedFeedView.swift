@@ -98,7 +98,8 @@ struct ENSAvatarChangedFeedView: View {
                 impactMed.impactOccurred()
               }
               LazyVGrid(
-                columns: RoundedImage.columns(width: metrics.size.width),
+                columns: RoundedImage.columnsLargeIcons(width: metrics.size.width),
+                spacing:20,
                 pinnedViews: [.sectionHeaders])
               {
                 ForEachWithIndex(self.events.recentEvents,id:\.self.nft.nft.id) { index,item in

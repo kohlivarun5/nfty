@@ -41,7 +41,7 @@ struct CollectionRecentView: View {
     GeometryReader { metrics in
       ScrollView {
         LazyVGrid(
-          columns: RoundedImage.columns(width: metrics.size.width),
+          columns: RoundedImage.columnsLargeIcons(width: metrics.size.width),
           pinnedViews: [.sectionHeaders])
         {
           let data = sorted(recentTrades.recentTrades);

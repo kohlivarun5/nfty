@@ -95,7 +95,7 @@ struct FavoritesView: View {
             
             ScrollView {
               LazyVGrid(
-                columns: RoundedImage.columns(width: metrics.size.width),
+                columns: RoundedImage.columnsFlexIcons(width: metrics.size.width),
                 pinnedViews: [.sectionHeaders])
               {
                 ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in

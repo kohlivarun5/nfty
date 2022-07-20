@@ -27,12 +27,23 @@ struct RoundedImage: View {
   let action : Action?
   let redactPrice : Bool
   
-  static func columns(width:Double) -> [GridItem] {
+  static func columnsLargeIcons(width:Double) -> [GridItem] {
     return Array(
       repeating:GridItem(.flexible(maximum:RoundedImage.NormalSize+80)),
       count: width > RoundedImage.NormalSize * 5 ? 4 :
         width > RoundedImage.NormalSize * 4 ? 3 :
         width > RoundedImage.NormalSize * 3 ? 2 : 1)
+  }
+  
+  static func columnsFlexIcons(width:Double) -> [GridItem] {
+    return Array(
+      repeating:
+        GridItem(.flexible(
+          maximum: UIDevice.current.userInterfaceIdiom == .pad
+          ? RoundedImage.NormalSize+80 : min(200,(width - 40) / Double(2)))),
+      count:UIDevice.current.userInterfaceIdiom == .pad
+      ? Int(width / RoundedImage.NormalSize) - 1
+      : 2)
   }
   
   init(nft:NFT,
