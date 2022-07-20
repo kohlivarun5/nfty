@@ -30,7 +30,7 @@ class IpfsCollectionContract : ContractInterface {
     static let UrlSession = UrlTaskThrottle(
       queue:DispatchQueue(label: "IpfsImageEthContract.serialQueue",qos:.userInitiated),
       deadline:DispatchTimeInterval.milliseconds(50),
-      timeoutIntervalForRequest:3.0,
+      timeoutIntervalForRequest:10.0,
       timeoutIntervalForResource: 10.0)
     
     private static let base64JsonPrefix = "data:application/json;base64,"
