@@ -243,66 +243,70 @@ class IpfsCollectionContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return try! ethContract.transfer.wait().fetch(onDone:onDone) { log in
-      
-      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
-      let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
-      
-      response(NFTWithPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
-        blockNumber: log.blockNumber.map { .ethereum($0) },
-        indicativePrice:.lazy {
-          ObservablePromise(
-            promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
-              .map {
-                let price = priceIfNotZero($0?.value);
-                return NFTPriceStatus.known(
-                  NFTPriceInfo(
-                    wei:price,
-                    blockNumber: log.blockNumber.map { .ethereum($0) },
-                    type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
-              }
-          )
-        }
-      ))
-    }
+    ethContract.transfer.done {
+      $0.fetch(onDone:onDone) { log in
+        
+        let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
+        let tokenId = res["tokenId"] as! BigUInt
+        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
+        
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
+          blockNumber: log.blockNumber.map { .ethereum($0) },
+          indicativePrice:.lazy {
+            ObservablePromise(
+              promise:
+                self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
+                .map {
+                  let price = priceIfNotZero($0?.value);
+                  return NFTPriceStatus.known(
+                    NFTPriceInfo(
+                      wei:price,
+                      blockNumber: log.blockNumber.map { .ethereum($0) },
+                      type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                }
+            )
+          }
+        ))
+      }
+    }.catch { print($0); onDone() }
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
-      let tokenId = res["tokenId"] as! BigUInt
-      let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
-      
-      response(NFTWithPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
-        blockNumber: log.blockNumber.map { .ethereum($0) },
-        indicativePrice:.lazy {
-          ObservablePromise(
-            promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
-              .map {
-                let price = priceIfNotZero($0?.value);
-                return NFTPriceStatus.known(
-                  NFTPriceInfo(
-                    wei:price,
-                    blockNumber: log.blockNumber.map { .ethereum($0) },
-                    type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
-              }
-          )
-        }
-      ))
-    }
+    ethContract.transfer.done {
+      $0.updateLatest(onDone:onDone) { index,log in
+        let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
+        let tokenId = res["tokenId"] as! BigUInt
+        let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
+        
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.ipfsImage(Media.IpfsImageLazy(tokenId:tokenId, download: self.download))),
+          blockNumber: log.blockNumber.map { .ethereum($0) },
+          indicativePrice:.lazy {
+            ObservablePromise(
+              promise:
+                self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:isMint ? .minted : .bought)
+                .map {
+                  let price = priceIfNotZero($0?.value);
+                  return NFTPriceStatus.known(
+                    NFTPriceInfo(
+                      wei:price,
+                      blockNumber: log.blockNumber.map { .ethereum($0) },
+                      type: isMint ? .minted : price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                }
+            )
+          }
+        ))
+      }
+    }.catch { print($0); onDone() }
   }
   
   func getNFT(_ tokenId: BigUInt) -> NFT {
