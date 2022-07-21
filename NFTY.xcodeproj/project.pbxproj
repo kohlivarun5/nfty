@@ -224,6 +224,7 @@
 		4F9A85A126C88A5600A9B52B /* TokenPropertiesGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9A85A026C88A5600A9B52B /* TokenPropertiesGrid.swift */; };
 		4F9A85A426C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A226C88EF900A9B52B /* CryptoCannabisClub_attributeScores.json */; };
 		4F9A85A526C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F9A85A326C88EF900A9B52B /* CryptoCannabisClub_attributeRanks.json */; };
+		4F9B30E52889DD3800B67201 /* Illuminati_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C700828879C93005F6F7C /* Illuminati_attributeRanks.json */; };
 		4FA0B2A726C09B5500821413 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
 		4FA0B2AA26C09B9A00821413 /* UrlCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A926C09B9A00821413 /* UrlCollectionContract.swift */; };
 		4FA0B2B026C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FA0B2AE26C0BADF00821413 /* CryptoCannabisClub_nearestTokens.json */; };
@@ -1717,6 +1718,7 @@
 				4FEEAA33278FB72B00EA6F51 /* BirdHouse_attributeScores.json in Resources */,
 				4FEEAA34278FB72B00EA6F51 /* BirdHouse_nearestTokens.json in Resources */,
 				4FEEAA35278FB72B00EA6F51 /* BirdHouse_rarityRanks.json in Resources */,
+				4F9B30E52889DD3800B67201 /* Illuminati_attributeRanks.json in Resources */,
 				4FEEAA36278FB72B00EA6F51 /* Bombs_attributeRanks.json in Resources */,
 				4FEEAA37278FB72B00EA6F51 /* Bombs_attributeScores.json in Resources */,
 				4FEEAA38278FB72B00EA6F51 /* Bombs_nearestTokens.json in Resources */,
