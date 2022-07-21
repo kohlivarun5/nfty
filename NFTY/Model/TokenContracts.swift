@@ -568,63 +568,67 @@ class AutoglyphsContract : ContractInterface {
   }
   
   func getRecentTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return try! ethContract.transfer.wait().fetch(onDone:onDone,retries:10) { log in
-      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
-      let tokenId = res["tokenId"] as! BigUInt
-      
-      response(NFTWithPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
-        blockNumber:log.blockNumber.map { .ethereum($0) },
-        indicativePrice:.lazy {
-          ObservablePromise(
-            promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map {
-                let price = priceIfNotZero($0?.value);
-                return NFTPriceStatus.known(
-                  NFTPriceInfo(
-                    wei:price,
-                    blockNumber:log.blockNumber.map { .ethereum($0) },
-                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
-              }
-          )
-        }
-      ))
-    }
+    ethContract.transfer.done {
+      $0.fetch(onDone:onDone,retries:10) { log in
+        let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
+        let tokenId = res["tokenId"] as! BigUInt
+        
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
+          blockNumber:log.blockNumber.map { .ethereum($0) },
+          indicativePrice:.lazy {
+            ObservablePromise(
+              promise:
+                self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+                .map {
+                  let price = priceIfNotZero($0?.value);
+                  return NFTPriceStatus.known(
+                    NFTPriceInfo(
+                      wei:price,
+                      blockNumber:log.blockNumber.map { .ethereum($0) },
+                      type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                }
+            )
+          }
+        ))
+      }
+    }.catch { print($0); onDone() }
   }
   
   func refreshLatestTrades(onDone: @escaping () -> Void,_ response: @escaping (NFTWithPrice) -> Void) {
-    return try! ethContract.transfer.wait().updateLatest(onDone:onDone) { index,log in
-      let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
-      let tokenId = res["tokenId"] as! BigUInt
-      
-      response(NFTWithPrice(
-        nft:NFT(
-          address:self.contractAddressHex,
-          tokenId:tokenId,
-          name:self.name,
-          media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
-        blockNumber:log.blockNumber.map { .ethereum($0) },
-        indicativePrice:.lazy {
-          ObservablePromise(
-            promise:
-              self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
-              .map {
-                let price = priceIfNotZero($0?.value);
-                return NFTPriceStatus.known(
-                  NFTPriceInfo(
-                    wei:price,
-                    blockNumber:log.blockNumber.map { .ethereum($0) },
-                    type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
-              }
-          )
-        }
-      ))
-    }
+    ethContract.transfer.done {
+      $0.updateLatest(onDone:onDone) { index,log in
+        let res = try! web3.eth.abi.decodeLog(event:Erc721Contract.Transfer,from:log);
+        let tokenId = res["tokenId"] as! BigUInt
+        
+        response(NFTWithPrice(
+          nft:NFT(
+            address:self.contractAddressHex,
+            tokenId:tokenId,
+            name:self.name,
+            media:.autoglyph(Media.AutoglyphLazy(tokenId:tokenId, draw: self.draw))),
+          blockNumber:log.blockNumber.map { .ethereum($0) },
+          indicativePrice:.lazy {
+            ObservablePromise(
+              promise:
+                self.ethContract.eventOfTx(transactionHash:log.transactionHash,eventType:.bought)
+                .map {
+                  let price = priceIfNotZero($0?.value);
+                  return NFTPriceStatus.known(
+                    NFTPriceInfo(
+                      wei:price,
+                      blockNumber:log.blockNumber.map { .ethereum($0) },
+                      type: price.map { _ in TradeEventType.bought } ?? TradeEventType.transfer))
+                }
+            )
+          }
+        ))
+      }
+    }.catch { print($0); onDone() }
   }
   
   func getNFT(_ tokenId: BigUInt) -> NFT {
