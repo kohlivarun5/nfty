@@ -227,7 +227,7 @@ class IpfsCollectionContract : ContractInterface {
     self.tradeActions = nil
 #else
     self.imageCache = CKImageCacheCore(
-      database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
+      database: CloudKitContainers.defaultContainer.publicCloudDatabase,
       bucket: "collections/\(contractAddressHex.lowercased())/images",
       collectionAddress: contractAddressHex,
       fallback:self.ethContract.image)
@@ -261,6 +261,7 @@ class IpfsCollectionContract : ContractInterface {
         }
     )
 #else
+    /*
     return ObservablePromise(
       promise:self.ethContract.image(tokenId)
         .map {
@@ -279,7 +280,8 @@ class IpfsCollectionContract : ContractInterface {
           }
         }
     )
-    // return imageCache.image(tokenId)
+     */
+    return imageCache.image(tokenId)
 #endif
   }
   

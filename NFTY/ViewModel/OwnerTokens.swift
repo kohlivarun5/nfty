@@ -41,7 +41,7 @@ class NftOwnerTokens : ObservableObject,Identifiable {
   
   init(account:UserAccount) {
     self.account = account
-    let database = CKPublicDataManager.defaultContainer.publicCloudDatabase
+    let database = CloudKitContainers.defaultContainer.publicCloudDatabase
     self.database = database
     self.ckLoader = self.account.ethAddress.map {
       CKOwnerTokensFetcher.Loader(

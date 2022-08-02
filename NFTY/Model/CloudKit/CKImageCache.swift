@@ -11,7 +11,6 @@ import BigInt
 import PromiseKit
 import Cache
 
-
 import AVKit
 
 #if os(macOS)
@@ -19,7 +18,6 @@ import AppKit
 #else
 import UIKit
 #endif
-
 
 
 struct CKImageCacheCore {
