@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Web3
 import PromiseKit
+import AVKit
 
 enum TradeEventType {
   case ask
@@ -126,8 +127,9 @@ enum Media {
       self.draw(self.tokenId)
     }
   }
-  
+   
   enum ImageData {
+    case video(URL)
     case svg(Data)
     case image(Data)
   }
@@ -135,8 +137,9 @@ enum Media {
 #if os(macOS)
   struct IpfsImage {
     enum View {
-    case svg(NFTYgoSVGImage)
-    case image(NSImage)
+      case svg(NFTYgoSVGImage)
+      case image(NSImage)
+      case video(VideoPlayer)
     }
     let image : View // let data : Data
     let image_hd : View // let data : Data
@@ -144,8 +147,9 @@ enum Media {
 #else
   struct IpfsImage {
     enum View {
-    case svg(NFTYgoSVGImage)
-    case image(UIImage)
+      case svg(NFTYgoSVGImage)
+      case image(UIImage)
+      case video(AVPlayer)
     }
     let image : View // let data : Data
     let image_hd : View // let data : Data

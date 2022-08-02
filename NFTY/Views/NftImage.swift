@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import AVKit
 
 struct NftImageImpl: View {
   
@@ -27,24 +28,22 @@ struct NftImageImpl: View {
           .blur(radius:20)
       }
     ) { url in
-      
-      KFImage.url(url)
-        .placeholder {
-          Image(sample)
-            .interpolation(.none)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding()
-            .colorMultiply(.tertiarySystemBackground)
-            .blur(radius:20)
-        }
-        .diskCacheExpiration(.never)
-        .fade(duration: 0.001)
-        .interpolation(.none)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .padding()
-        .shadow(color:.black,radius: 10)
+      AsyncImage(url: url, content: {
+        $0
+          .interpolation(.none)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding()
+      }, placeholder: {
+        Image(sample)
+          .interpolation(.none)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .padding()
+          .colorMultiply(.tertiarySystemBackground)
+          .blur(radius:20)
+      })      
+      .shadow(color:.black,radius: 10)
     }
   }
 }
@@ -109,17 +108,27 @@ struct NftIpfsImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
+            case .video(let player):
+              VideoPlayer(player: player)
+                .aspectRatio(contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .padding(padding ?? 0)
             }
           case .hd:
             switch image.image_hd {
             case .image(let image_hd):
               Image(uiImage: image_hd)
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
-              .padding(padding ?? 0)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .padding(padding ?? 0)
             case .svg(let svg):
               svg
+                .aspectRatio(contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+                .padding(padding ?? 0)
+            case .video(let player):
+              VideoPlayer(player: player)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)

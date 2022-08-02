@@ -11,6 +11,9 @@ import BigInt
 import PromiseKit
 import Cache
 
+
+import AVKit
+
 #if os(macOS)
 import AppKit
 #else
@@ -120,6 +123,13 @@ struct CKImageCacheCore {
         guard let data = data else { return nil }
         
         switch data {
+          
+        case .video(let url):
+          // We do not implement caching for svg
+          print("Image is svg, caching is skipped")
+          let player = AVPlayer(url:url)
+          return Media.IpfsImage(image:  .video(player),image_hd: .video(player))
+          
         case .svg(let data):
           // We do not implement caching for svg
           print("Image is svg, caching is skipped")
@@ -210,13 +220,13 @@ struct CKImageCacheCore {
               DispatchQueue.global(qos:.background).async {
                 image.map {
                   switch($0.image) {
-                  case .svg:
+                  case .svg,.video:
                     break
                   case .image(let image):
                     try? self.imageCache.setObject(image, forKey: tokenId)
                   }
                   switch($0.image_hd) {
-                  case .svg:
+                  case .svg,.video:
                     break
                   case .image(let image_hd):
                     try? self.imageCacheHD.setObject(image_hd, forKey: tokenId)
