@@ -180,6 +180,7 @@ struct AlchemyApi {
       struct Metadata : Decodable {
         let image : String?
         let external_url : String?
+        let animation_url : String?
         let image_data : String?
       }
       let contract : Contract

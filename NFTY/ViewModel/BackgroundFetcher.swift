@@ -42,6 +42,8 @@ func downloadImageToLocalDisk(collection:Collection,tokenId:BigUInt) -> Promise<
           return createLocalFile(folder: notificationImagesFolder, collection: collection, tokenId: tokenId, image: image)
         case .svg:
           return nil // TODO save svg file
+        case .video:
+          return nil // TODO save video file
         }
       }
     }

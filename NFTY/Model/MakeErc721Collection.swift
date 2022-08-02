@@ -90,7 +90,7 @@ struct MakeErc721Collection {
 
 #if !os(macOS)
   private static var collectionCache = CKObjectCache(
-    database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
+    database: CloudKitContainers.defaultContainer.publicCloudDatabase,
     entityName: "CollectionMetaData",
     keyField: "address",
     fallback: { (address:String,output:CollectionMetaData) in

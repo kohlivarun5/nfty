@@ -60,7 +60,7 @@ class TxFetcher {
   }
 #else
   private static var cache = CKObjectCache(
-    database: CKPublicDataManager.defaultContainer.publicCloudDatabase,
+    database: CloudKitContainers.defaultContainer.publicCloudDatabase,
     entityName: "EthereumTransactionData",
     keyField: "txHash",
     fallback: { (txHash:EthereumData,output:EthereumTransactionData) in
