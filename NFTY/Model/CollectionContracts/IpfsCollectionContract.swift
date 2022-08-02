@@ -14,8 +14,10 @@ import CloudKit
 
 #if os(macOS)
 import AppKit
+import AVFoundation
 #endif
 
+import AVKit
 
 class IpfsCollectionContract : ContractInterface {
   
@@ -25,6 +27,7 @@ class IpfsCollectionContract : ContractInterface {
       let image : String?
       let image_url : String?
       let image_data : String?
+      let animation_url : String?
     }
     
     static let UrlSession = UrlTaskThrottle(
@@ -41,6 +44,10 @@ class IpfsCollectionContract : ContractInterface {
     func image_Alchemy(_ tokenId:BigUInt) -> Promise<Media.ImageData?> {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
         .then { result -> Promise<Media.ImageData?> in
+          
+          if let url = result.metadata.animation_url, let uri = URL(string:url) {
+            if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          }
           
           guard let media = result.media.first else { return Promise.value(nil) }
           
@@ -129,6 +136,11 @@ class IpfsCollectionContract : ContractInterface {
         }.then(on: DispatchQueue.global(qos:.userInitiated)) { (uriData:TokenUriData) -> Promise<Media.ImageData?> in
           
           return Promise { seal in
+            
+            if let url = uriData.animation_url, let uri = URL(string:url) {
+              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs") { return seal.fulfill(Media.ImageData.video(uri)) }
+            }
+            
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
             
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
@@ -230,6 +242,9 @@ class IpfsCollectionContract : ContractInterface {
             case .svg(let data):
               let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
+            case .video(let url):
+              let player = AVPlayer(url: url)
+              return Media.IpfsImage(image:.videro(player),image_hd:.video(player))
             case .image(let data):
               guard let image = NSImage(data:data) else { return nil }
               return Media.IpfsImage(image:.image(image),image_hd:.image(image))
@@ -238,7 +253,25 @@ class IpfsCollectionContract : ContractInterface {
         }
     )
 #else
-    return imageCache.image(tokenId)
+    return ObservablePromise(
+      promise:self.ethContract.image(tokenId)
+        .map {
+          $0.flatMap {
+            switch($0) {
+            case .svg(let data):
+              let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+              return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
+            case .video(let url):
+              let player = AVPlayer(url: url)
+              return Media.IpfsImage(image:.video(player),image_hd:.video(player))
+            case .image(let data):
+              guard let image = UIImage(data:data) else { return nil }
+              return Media.IpfsImage(image:.image(image),image_hd:.image(image))
+            }
+          }
+        }
+    )
+    // return imageCache.image(tokenId)
 #endif
   }
   
