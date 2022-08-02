@@ -51,6 +51,10 @@ class IpfsCollectionContract : ContractInterface {
           
           guard let media = result.media.first else { return Promise.value(nil) }
           
+          if let uri = URL(string:media.gateway) {
+            if media.gateway.hasSuffix(".mp4") && !media.gateway.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          }
+          
           return Promise { seal in
             let uri = media.gateway // ?? media.raw
             guard let url = URL(string:uri) else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
@@ -142,6 +146,10 @@ class IpfsCollectionContract : ContractInterface {
             }
             
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
+            
+            if let url = uri,let uri = URL(string:url) {
+              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return seal.fulfill(Media.ImageData.video(uri)) }
+            }
             
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
             
