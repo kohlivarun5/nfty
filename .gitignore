@@ -2,3 +2,5 @@ DownloadCryptoPunks/Images/**
 *_small.json
 data
 ./NFTY/Model/ENSContract.swift
+NFTY/Resources/*AttributePercentiles.json
+NFTY/Resources/*Features.json

@@ -603,7 +603,7 @@ let CompositeCollection = CompositeRecentTradesObject([
       similarTokens : SimilarTokensGetter(
         label:"Athlete",
         nearestTokensFileName:nil,
-        propertiesJsonFileName:"AApexAthletes_attributeScores.json"
+        propertiesJsonFileName:"ApexAthletes_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(load("ApexAthletes_attributeRanks.json"))
     ),
