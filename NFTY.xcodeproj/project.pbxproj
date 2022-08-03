@@ -112,6 +112,11 @@
 		4F36013A2640CD99005D7587 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3601392640CD99005D7587 /* FeedView.swift */; };
 		4F3856FA2899EB9700847F3D /* CloudKitContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3856F92899EB9700847F3D /* CloudKitContainers.swift */; };
 		4F3856FB2899EB9700847F3D /* CloudKitContainers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3856F92899EB9700847F3D /* CloudKitContainers.swift */; };
+		4F3856FC289A1E0300847F3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB9A7B4262B28A400C58AF9 /* Assets.xcassets */; };
+		4F3856FF289A1E1700847F3D /* ApexAthletes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F3856FD289A1E1700847F3D /* ApexAthletes_attributeRanks.json */; };
+		4F385700289A1E1700847F3D /* ApexAthletes_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F3856FD289A1E1700847F3D /* ApexAthletes_attributeRanks.json */; };
+		4F385701289A1E1700847F3D /* ApexAthletes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F3856FE289A1E1700847F3D /* ApexAthletes_attributeScores.json */; };
+		4F385702289A1E1700847F3D /* ApexAthletes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F3856FE289A1E1700847F3D /* ApexAthletes_attributeScores.json */; };
 		4F3E413A2845CCED0071F620 /* WalletTokensSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */; };
 		4F3FE32427E7E9A40036E46C /* FriendsFeedFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */; };
 		4F3FE32627E7EA360036E46C /* FriendsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */; };
@@ -606,6 +611,8 @@
 		4F3582A52783A4A700D119F8 /* VaultTokensList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTokensList.swift; sourceTree = "<group>"; };
 		4F3601392640CD99005D7587 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		4F3856F92899EB9700847F3D /* CloudKitContainers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitContainers.swift; sourceTree = "<group>"; };
+		4F3856FD289A1E1700847F3D /* ApexAthletes_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ApexAthletes_attributeRanks.json; sourceTree = "<group>"; };
+		4F3856FE289A1E1700847F3D /* ApexAthletes_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ApexAthletes_attributeScores.json; sourceTree = "<group>"; };
 		4F3E41392845CCED0071F620 /* WalletTokensSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTokensSelector.swift; sourceTree = "<group>"; };
 		4F3FE32327E7E9A40036E46C /* FriendsFeedFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedFetcher.swift; sourceTree = "<group>"; };
 		4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsFeedViewModel.swift; sourceTree = "<group>"; };
@@ -1226,6 +1233,8 @@
 		4FB9A7F9262B3B3000C58AF9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F3856FD289A1E1700847F3D /* ApexAthletes_attributeRanks.json */,
+				4F3856FE289A1E1700847F3D /* ApexAthletes_attributeScores.json */,
 				4F5C700828879C93005F6F7C /* Illuminati_attributeRanks.json */,
 				4F5C700928879C93005F6F7C /* Illuminati_attributeScores.json */,
 				4F6EB33527A33D8400E6FD9A /* asac.near_attributeRanks.json */,
@@ -1646,6 +1655,7 @@
 				4FCB496C26D1912500696F91 /* BAYC_attributeScores.json in Resources */,
 				4FCB496726D1900E00696F91 /* FameLadySquad_attributeScores.json in Resources */,
 				4FCB359026E1A7390044BD84 /* MutantApes_attributeRanks.json in Resources */,
+				4F385701289A1E1700847F3D /* ApexAthletes_attributeScores.json in Resources */,
 				4F12715426EDAA87007E6A7B /* Dads_attributeRanks.json in Resources */,
 				4FA1102526A8F7DB00719D22 /* CryptoHodlers_rarityRanks.json in Resources */,
 				4F12715D26EDD43D007E6A7B /* Bombs_attributeScores.json in Resources */,
@@ -1673,6 +1683,7 @@
 				4F1D2DC4270914E7000AD0A0 /* LazyLions_attributeRanks.json in Resources */,
 				4FA0B2B126C0BADF00821413 /* CryptoCannabisClub_rarityRanks.json in Resources */,
 				4FBD029926F7AAF400BF58F0 /* GenesisBlocks_attributeScores.json in Resources */,
+				4F3856FF289A1E1700847F3D /* ApexAthletes_attributeRanks.json in Resources */,
 				4FAB56D426DB49E6007076BE /* DJENERATES_rarityRanks.json in Resources */,
 				4FCB496F26D1925C00696F91 /* CypherCity_attributeScores.json in Resources */,
 				4FCB359B26E1C2E40044BD84 /* Killaz_rarityRanks.json in Resources */,
@@ -1758,6 +1769,7 @@
 				4FEEAA57278FB72B00EA6F51 /* Dads_nearestTokens.json in Resources */,
 				4FEEAA58278FB72B00EA6F51 /* Dads_rarityRanks.json in Resources */,
 				4FEEAA59278FB72B00EA6F51 /* DeadFellaz_attributeRanks.json in Resources */,
+				4F385702289A1E1700847F3D /* ApexAthletes_attributeScores.json in Resources */,
 				4FEEAA5A278FB72B00EA6F51 /* DeadFellaz_attributeScores.json in Resources */,
 				4FEEAA5B278FB72B00EA6F51 /* DeadFellaz_nearestTokens.json in Resources */,
 				4FEEAA5C278FB72B00EA6F51 /* DeadFellaz_rarityRanks.json in Resources */,
@@ -1774,6 +1786,7 @@
 				4FEEAA67278FB72B00EA6F51 /* JungleFreaks_attributeRanks.json in Resources */,
 				4FEEAA68278FB72B00EA6F51 /* JungleFreaks_attributeScores.json in Resources */,
 				4FEEAA69278FB72B00EA6F51 /* JungleFreaks_nearestTokens.json in Resources */,
+				4F3856FC289A1E0300847F3D /* Assets.xcassets in Resources */,
 				4FEEAA6A278FB72B00EA6F51 /* JungleFreaks_rarityRanks.json in Resources */,
 				4FEEAA6B278FB72B00EA6F51 /* Killaz_attributeRanks.json in Resources */,
 				4FEEAA6C278FB72B00EA6F51 /* Killaz_attributeScores.json in Resources */,
@@ -1781,6 +1794,7 @@
 				4FEEAA6E278FB72B00EA6F51 /* Killaz_rarityRanks.json in Resources */,
 				4FEEAA6F278FB72B00EA6F51 /* kitties.json in Resources */,
 				4FEEAA70278FB72B00EA6F51 /* LazyLions_attributeRanks.json in Resources */,
+				4F385700289A1E1700847F3D /* ApexAthletes_attributeRanks.json in Resources */,
 				4FEEAA71278FB72B00EA6F51 /* LazyLions_attributeScores.json in Resources */,
 				4FEEAA72278FB72B00EA6F51 /* LazyLions_nearestTokens.json in Resources */,
 				4FEEAA73278FB72B00EA6F51 /* LazyLions_rarityRanks.json in Resources */,
@@ -2336,7 +2350,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2366,7 +2380,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTY/NFTY.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_ASSET_PATHS = "NFTY/Preview\\ Content";
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_PREVIEWS = YES;
@@ -2479,7 +2493,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2512,7 +2526,7 @@
 				CODE_SIGN_ENTITLEMENTS = NFTYWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 42;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;

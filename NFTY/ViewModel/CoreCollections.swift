@@ -151,6 +151,12 @@ let ILLUMINATI_Contract = IpfsCollectionContract(
   address: "0x26BAdF693F2b103B021c670c852262b379bBBE8A",
   indicativePriceSource: .openSea)
 
+let APEX_Contract = IpfsCollectionContract(
+  name: "Apex Athletes",
+  address: "0xe0467b2dF6A715Ec91dD29e7e58d9F35d676968b",
+  indicativePriceSource: .openSea)
+
+
 let XAPES_Contract = IpfsCollectionContract(
   name: "0xApes",
   address: "0x22C08C358f62f35B742D023Bf2fAF67e30e5376E",
@@ -578,13 +584,30 @@ let CompositeCollection = CompositeRecentTradesObject([
       themeLabelColor:Color.white,
       disableRecentTrades:false,
       similarTokens : SimilarTokensGetter(
-        label:"Phunk",
+        label:"Illuminati",
         nearestTokensFileName:nil,
         propertiesJsonFileName:"Illuminati_attributeScores.json"
       ),
       rarityRanking : RarityRankingImpl(load("Illuminati_attributeRanks.json"))
     ),
     contract:ILLUMINATI_Contract),
+  Collection(
+    info:CollectionInfo(
+      address:APEX_Contract.contractAddressHex,
+      sample:"SAMPLE_APEX",
+      name:APEX_Contract.name,
+      webLink: URL(string:"https://apexathletes.io")!,
+      themeColor:Color.gunmetal,
+      themeLabelColor:Color.white,
+      disableRecentTrades:true,
+      similarTokens : SimilarTokensGetter(
+        label:"Athlete",
+        nearestTokensFileName:nil,
+        propertiesJsonFileName:"AApexAthletes_attributeScores.json"
+      ),
+      rarityRanking : RarityRankingImpl(load("ApexAthletes_attributeRanks.json"))
+    ),
+    contract:APEX_Contract),
   Collection(
     info:CollectionInfo(
       address:XAPES_Contract.contractAddressHex,
