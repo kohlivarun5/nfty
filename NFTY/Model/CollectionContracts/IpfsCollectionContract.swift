@@ -45,14 +45,14 @@ class IpfsCollectionContract : ContractInterface {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
         .then { result -> Promise<Media.ImageData?> in
           
-          if let url = result.metadata.animation_url, let uri = URL(string:url) {
-            if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
+            if url.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           guard let media = result.media.first else { return Promise.value(nil) }
           
-          if let uri = URL(string:media.gateway) {
-            if media.gateway.hasSuffix(".mp4") && !media.gateway.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          if let uri = URL(string:ipfsUrl(media.gateway)) {
+            if media.gateway.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           return Promise { seal in
@@ -141,14 +141,14 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-            if let url = uriData.animation_url, let uri = URL(string:url) {
-              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs") { return seal.fulfill(Media.ImageData.video(uri)) }
+            if let url = uriData.animation_url, let uri = URL(string:ipfsUrl(url)) {
+              if url.hasSuffix(".mp4") { return seal.fulfill(Media.ImageData.video(uri)) }
             }
             
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
             
-            if let url = uri,let uri = URL(string:url) {
-              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return seal.fulfill(Media.ImageData.video(uri)) }
+            if let url = uri,let uri = URL(string:ipfsUrl(url)) {
+              if url.hasSuffix(".mp4") { return seal.fulfill(Media.ImageData.video(uri)) }
             }
             
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
@@ -251,6 +251,7 @@ class IpfsCollectionContract : ContractInterface {
               let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
             case .video(let url):
+              print("AVPlayer url=\(url)")
               let player = AVPlayer(url: url)
               return Media.IpfsImage(image:.videro(player),image_hd:.video(player))
             case .image(let data):
@@ -262,25 +263,29 @@ class IpfsCollectionContract : ContractInterface {
     )
 #else
     /*
-    return ObservablePromise(
-      promise:self.ethContract.image(tokenId)
-        .map {
-          $0.flatMap {
-            switch($0) {
-            case .svg(let data):
-              let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
-              return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
-            case .video(let url):
-              let player = AVPlayer(url: url)
-              return Media.IpfsImage(image:.video(player),image_hd:.video(player))
-            case .image(let data):
-              guard let image = UIImage(data:data) else { return nil }
-              return Media.IpfsImage(image:.image(image),image_hd:.image(image))
-            }
-          }
-        }
-    )
+     
+     return ObservablePromise(
+     promise:self.ethContract.image(tokenId)
+     .map {
+     $0.flatMap {
+     switch($0) {
+     case .svg(let data):
+     let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+     return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
+     case .video(let url):
+     print("AVPlayer url=\(url)")
+     let player = AVPlayer(url: url)
+     return Media.IpfsImage(image:.video(player),image_hd:.video(player))
+     case .image(let data):
+     guard let image = UIImage(data:data) else { return nil }
+     return Media.IpfsImage(image:.image(image),image_hd:.image(image))
+     }
+     }
+     }
+     )
+     
      */
+    
     return imageCache.image(tokenId)
 #endif
   }

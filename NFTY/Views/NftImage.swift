@@ -140,6 +140,9 @@ struct NftIpfsImageView: View {
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
                 .onAppear {
+                  player.isMuted = true
+                  player.automaticallyWaitsToMinimizeStalling = true
+                  player.audiovisualBackgroundPlaybackPolicy = .pauses
                   player.play()
                 }
             }

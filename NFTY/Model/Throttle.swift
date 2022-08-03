@@ -50,10 +50,11 @@ class UrlTaskThrottle {
         
         self.urlSession.dataTask(with: task.request, completionHandler: { data, response, error in
           self.queue.async {
+            task.completionHandler(data,response,error)
             self.isPending = false
             self.next()
+
           }
-          task.completionHandler(data,response,error)
         }).resume()
       }
     }
