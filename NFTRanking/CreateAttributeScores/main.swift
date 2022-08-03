@@ -7,12 +7,12 @@
 
 import Foundation
 
-let collectionName = "Illuminati"
-let attributesDir = "QmbBTpn7nZeAm4gZfK6DK5JGxZe9yBjqfGHvMYAFt9AXqa"
+let collectionName = "Apex Athletes"
+let attributesDir = "QmXJQdhhNSCWwUKVTYczV495Mzj8zQN3Q2ZrzGoVFeiXkx"
 
 let isFull = true
-let firstIndex = 0
-let lastIndex = isFull ? 8127 : 100
+let firstIndex = 1
+let lastIndex = isFull ? 1800 : 100
 
 // STAGES
 let doCalculatePercentiles = true

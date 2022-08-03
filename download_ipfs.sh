@@ -1,4 +1,4 @@
-export HASH=QmbBTpn7nZeAm4gZfK6DK5JGxZe9yBjqfGHvMYAFt9AXqa
+export HASH=QmXJQdhhNSCWwUKVTYczV495Mzj8zQN3Q2ZrzGoVFeiXkx
 tmpfile=$(mktemp /tmp/download_ipfs.$HASH.XXXXXX)
 curl https://ipfs.io/ipfs/$HASH > $tmpfile
 mkdir -p ipfs/$HASH
