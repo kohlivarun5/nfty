@@ -125,6 +125,7 @@ struct CKImageCacheCore {
         case .video(let url):
           // We do not implement caching for video
           print("Image is video, caching is skipped")
+          print("AVPlayer url=\(url)")
           let player = AVPlayer(url:url)
           return Media.IpfsImage(image:  .video(player),image_hd: .video(player))
           

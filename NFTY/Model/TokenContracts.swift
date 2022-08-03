@@ -851,11 +851,11 @@ var EthSpot = UserEthRate()
 
 func ipfsUrl(_ url:String) -> String {
   
-  _ = "https://cloudflare-ipfs.com/ipfs/"
-  let infura = "https://ipfs.infura.io:5001/api/v0/cat?arg="
-  let ipfsProvider = infura
+  let cloudfare = "https://cloudflare-ipfs.com/ipfs/"
+  _ = "https://ipfs.infura.io:5001/api/v0/cat?arg="
+  let provider = cloudfare
   return url
-    .replacingOccurrences(of: "ipfs://",with: ipfsProvider)
-    .replacingOccurrences(of: "https://ipfs.io/ipfs/",with: ipfsProvider)
-    .replacingOccurrences(of: "https://gateway.pinata.cloud/ipfs/",with: ipfsProvider)
+    .replacingOccurrences(of: "ipfs://",with: provider)
+    .replacingOccurrences(of: "https://ipfs.io/ipfs/",with: provider)
+    .replacingOccurrences(of: "https://gateway.pinata.cloud/ipfs/",with: provider)
 }

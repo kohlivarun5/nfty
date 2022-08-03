@@ -251,6 +251,7 @@ class IpfsCollectionContract : ContractInterface {
               let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
             case .video(let url):
+              print("AVPlayer url=\(url)")
               let player = AVPlayer(url: url)
               return Media.IpfsImage(image:.videro(player),image_hd:.video(player))
             case .image(let data):
@@ -261,27 +262,31 @@ class IpfsCollectionContract : ContractInterface {
         }
     )
 #else
+    /*
+     
+     return ObservablePromise(
+     promise:self.ethContract.image(tokenId)
+     .map {
+     $0.flatMap {
+     switch($0) {
+     case .svg(let data):
+     let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
+     return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
+     case .video(let url):
+     print("AVPlayer url=\(url)")
+     let player = AVPlayer(url: url)
+     return Media.IpfsImage(image:.video(player),image_hd:.video(player))
+     case .image(let data):
+     guard let image = UIImage(data:data) else { return nil }
+     return Media.IpfsImage(image:.image(image),image_hd:.image(image))
+     }
+     }
+     }
+     )
+     
+     */
     
-    return ObservablePromise(
-      promise:self.ethContract.image(tokenId)
-        .map {
-          $0.flatMap {
-            switch($0) {
-            case .svg(let data):
-              let svg = NFTYgoSVGImage(svg: String(data:data,encoding: .utf8)!)
-              return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
-            case .video(let url):
-              let player = AVPlayer(url: url)
-              return Media.IpfsImage(image:.video(player),image_hd:.video(player))
-            case .image(let data):
-              guard let image = UIImage(data:data) else { return nil }
-              return Media.IpfsImage(image:.image(image),image_hd:.image(image))
-            }
-          }
-        }
-    )
-    
-    // return imageCache.image(tokenId)
+    return imageCache.image(tokenId)
 #endif
   }
   
