@@ -45,14 +45,14 @@ class IpfsCollectionContract : ContractInterface {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
         .then { result -> Promise<Media.ImageData?> in
           
-          if let url = result.metadata.animation_url, let uri = URL(string:url) {
-            if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
+            if url.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           guard let media = result.media.first else { return Promise.value(nil) }
           
-          if let uri = URL(string:media.gateway) {
-            if media.gateway.hasSuffix(".mp4") && !media.gateway.hasPrefix("ipfs")  { return Promise.value(Media.ImageData.video(uri)) }
+          if let uri = URL(string:ipfsUrl(media.gateway)) {
+            if media.gateway.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           return Promise { seal in
@@ -261,7 +261,7 @@ class IpfsCollectionContract : ContractInterface {
         }
     )
 #else
-    /*
+    
     return ObservablePromise(
       promise:self.ethContract.image(tokenId)
         .map {
@@ -280,8 +280,8 @@ class IpfsCollectionContract : ContractInterface {
           }
         }
     )
-     */
-    return imageCache.image(tokenId)
+    
+    // return imageCache.image(tokenId)
 #endif
   }
   
