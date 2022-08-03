@@ -141,14 +141,14 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             
-            if let url = uriData.animation_url, let uri = URL(string:url) {
-              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs") { return seal.fulfill(Media.ImageData.video(uri)) }
+            if let url = uriData.animation_url, let uri = URL(string:ipfsUrl(url)) {
+              if url.hasSuffix(".mp4") { return seal.fulfill(Media.ImageData.video(uri)) }
             }
             
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
             
-            if let url = uri,let uri = URL(string:url) {
-              if url.hasSuffix(".mp4") && !url.hasPrefix("ipfs")  { return seal.fulfill(Media.ImageData.video(uri)) }
+            if let url = uri,let uri = URL(string:ipfsUrl(url)) {
+              if url.hasSuffix(".mp4") { return seal.fulfill(Media.ImageData.video(uri)) }
             }
             
             guard let uri = uri else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }

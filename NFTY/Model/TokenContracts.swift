@@ -13,7 +13,6 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 import CloudKit
-import HealthKit
 
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
