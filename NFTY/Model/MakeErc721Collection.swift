@@ -53,6 +53,7 @@ struct MakeErc721Collection {
   private static var cache : [String:Erc721ContractInfo] = [:]
   
   public struct Erc721ContractInfo : Codable {
+    let address : String
     let name : String?
   }
   
@@ -82,25 +83,23 @@ struct MakeErc721Collection {
       return Promise.value(nil)
     }
     .map(on:.global(qos: .userInteractive)) {
-      let ret = Erc721ContractInfo(name:$0)
+      let ret = Erc721ContractInfo(address:addressStr,name:$0)
       MakeErc721Collection.cache[addressStr] = ret
       return ret
     }
   }
 
 #if !os(macOS)
-  private static var collectionCache = CKObjectCache(
+  private static var collectionCache = CKObjectCache<String,Erc721ContractInfo,CollectionMetaData>(
     database: CloudKitContainers.defaultContainer.publicCloudDatabase,
     entityName: "CollectionMetaData",
     keyField: "address",
-    fallback: { (address:String,output:CollectionMetaData) in
-      return MakeErc721Collection.validateAddress(address)
-        .map {
-          guard let info = $0 else { return nil }
-          output.address = address
-          output.name = info.name
-          return output
-        }
+    fallback: MakeErc721Collection.validateAddress,
+    output : { (data,output) in
+      output.address = data.address
+      output.name = data.name
+    }, data : { output in
+      Erc721ContractInfo(address:output.address!,name:output.name)
     },
     keyToString: { $0 }
   )
@@ -115,7 +114,7 @@ struct MakeErc721Collection {
     }
     
     return collectionCache.get(addressStr)
-      .map { (info:CollectionMetaData?) -> Collection? in
+      .map { (info:Erc721ContractInfo?) -> Collection? in
         switch (info?.name) {
         case .none: return nil
         case .some(""): return nil

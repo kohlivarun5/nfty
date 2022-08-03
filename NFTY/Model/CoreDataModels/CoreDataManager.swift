@@ -31,23 +31,6 @@ class CoreDataManager {
     let context = persistentContainer.viewContext
     context.automaticallyMergesChangesFromParent = true
     return context
-  }
-  
-  // MARK: - Core Data Saving support
-  
-  func saveContext () {
-    let context = persistentContainer.viewContext
-    context.mergePolicy =  NSMergeByPropertyObjectTrumpMergePolicy
-    if context.hasChanges {
-      do {
-        print("Trying to save")
-        try context.save()
-      } catch {
-        let nserror = error as NSError
-        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-      }
-    }
-  }
-  
+  } 
   
 }

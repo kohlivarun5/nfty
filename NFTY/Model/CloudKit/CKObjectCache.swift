@@ -11,40 +11,46 @@ import PromiseKit
 import CoreData
 import CloudKit
 
-struct CKObjectCache<Key,Output:NSManagedObject> {
+struct CKObjectCache<Key,Data,Output:NSManagedObject> {
   
   let entityName : String
   let keyField : String
-  let fallback : (_ in:Key, _ output:Output) -> Promise<Output?>
+  let fallback: (_ in:Key) -> Promise<Data?>
+  let output:  (_ data:Data, _ output: inout Output) -> Void
+  let data:  (_ output:Output) -> Data?
   let keyToString : (_ in:Key) -> String
   let database : CKDatabase
-  let backgroundContext : NSManagedObjectContext
   
   init(
     database:CKDatabase,
     entityName:String,
     keyField:String,
-    fallback:@escaping (_ in:Key, _ output:Output) -> Promise<Output?>,
+    fallback:@escaping (_ in:Key) -> Promise<Data?>,
+    output:@escaping (_ data:Data, _ output:inout Output) -> Void,
+    data:@escaping (_ output:Output) -> Data?,
     keyToString: @escaping (_ in:Key) -> String)
   {
     self.database = database
     self.entityName = entityName
     self.keyField = keyField
     self.fallback = fallback
+    self.output = output
+    self.data = data
     self.keyToString = keyToString
-    self.backgroundContext = CoreDataManager.shared.persistentContainer.newBackgroundContext()
   }
   
-  private func onCacheMiss(_ key:Key) -> Promise<Output?> {
+  private func onCacheMiss(_ key:Key) -> Promise<Data?> {
     
-    let output = Output(context:self.backgroundContext)
-    return self.fallback(key,output)
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { output -> Promise<Output?> in
-        guard let output = output else { return Promise.value(nil) }
+    return self.fallback(key)
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { data -> Promise<Data?> in
+        guard let data = data else { return Promise.value(nil) }
         
-        try? self.backgroundContext.save()
-        
-        DispatchQueue.global(qos:.background).async {
+        CoreDataManager.shared.persistentContainer.performBackgroundTask { backgroundContext in
+          var output = Output(context: backgroundContext)
+          self.output(data,&output)
+          try? backgroundContext.save()
+          
+          
           let key = self.keyToString(key)
           let record = CKRecord(recordType: self.entityName, recordID:CKRecord.ID.init(recordName:key))
           
@@ -63,12 +69,13 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
               print("Save returned for recordId=\(key))")
             }
             .catch { print($0) }
+          
         }
-        return Promise.value(output)
+        return Promise.value(data)
       }
   }
   
-  func get(_ key:Key) -> Promise<Output?> {
+  func get(_ key:Key) -> Promise<Data?> {
     let keyStr = self.keyToString(key)
     
     // print("Fetching from coreData \(entityName):\(keyStr)")
@@ -78,29 +85,34 @@ struct CKObjectCache<Key,Output:NSManagedObject> {
     // print("Got results=\(String(describing: results)) for query=\(request)")
     
     if let data = results?.first {
-      return Promise.value(data)
+      return Promise.value(self.data(data))
     }
     
     // print("Failed to find in coredata \(entityName):\(keyStr)")
     return database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:keyStr))
-      .map(on:DispatchQueue.global(qos:.userInteractive)) { result -> Output? in
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Data?> in
         let (record,error) = result
         // print("Fetch returned with error=\(String(describing: error))")
-        guard error == nil else { return nil }
-        guard let record = record else { return nil }
+        guard error == nil else { return Promise.value(nil) }
+        guard let record = record else { return Promise.value(nil) }
         
-        print("*** Failed to find in coredata \(entityName):\(keyStr), but found in CloudKit")
-        let output = Output(context: self.backgroundContext)
-        output.setValuesForKeys(
-          Dictionary(
-            uniqueKeysWithValues:
-              record.allKeys().map { ($0,record[$0] as! String?) }
-          )
-        )
-        try? backgroundContext.save()
-        return output
+        return Promise { seal in
+          
+          print("*** Failed to find in coredata \(entityName):\(keyStr), but found in CloudKit")
+          CoreDataManager.shared.persistentContainer.performBackgroundTask { backgroundContext in
+            let output = Output(context: backgroundContext)
+            output.setValuesForKeys(
+              Dictionary(
+                uniqueKeysWithValues:
+                  record.allKeys().map { ($0,record[$0] as! String?) }
+              )
+            )
+            try? backgroundContext.save()
+            seal.fulfill(self.data(output))
+          }
+        }
       }
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Output?) -> Promise<Output?> in
+      .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Data?> in
         switch(data) {
         case .some(let data):
           return Promise.value(data)

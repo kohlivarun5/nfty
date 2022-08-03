@@ -13,6 +13,7 @@ import Web3
 import Web3PromiseKit
 import Web3ContractABI
 import CloudKit
+import HealthKit
 
 func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
   // print(address.hex(eip55: false))
@@ -26,12 +27,14 @@ func addressIfNotZero(_ address:EthereumAddress) -> EthereumAddress? {
 class TxFetcher {
   
   struct TxInfo : Codable {
+    let txHash : String
     let from: EthereumAddress
+    let to: EthereumAddress?
     let value : BigUInt
     let blockNumber : EthereumQuantity
   }
-  
-  static private func eventOfTx(_ transactionHash:EthereumData) -> Promise<EthereumTransactionObject?> {
+   
+  static private func eventOfTx(_ transactionHash:EthereumData) -> Promise<TxInfo?> {
     print("getTransactionByHash \(transactionHash.hex())");
     return web3.eth.getTransactionByHash(blockHash:transactionHash)
       .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionObject?) -> EthereumTransactionObject? in
@@ -39,6 +42,12 @@ class TxFetcher {
         case .none: return nil
         case .some: return txData
         }
+      }
+      .map {
+        guard let tx = $0 else { return nil }
+        guard let blockNumber = tx.blockNumber else { return nil }
+        return TxInfo(txHash:tx.hash.hex(),from:tx.from,to:tx.to,value:tx.value.quantity,blockNumber: blockNumber)
+        
       }
   }
   
@@ -50,31 +59,28 @@ class TxFetcher {
       return Promise.value(nil)
     case .some(let txHash):
       return TxFetcher.eventOfTx(txHash)
-        .map {
-          guard let tx = $0 else { return nil }
-          guard let blockNumber = tx.blockNumber else { return nil }
-          return TxInfo(from:tx.from,value:tx.value.quantity,blockNumber: blockNumber)
-          
-        }
     }
   }
 #else
-  private static var cache = CKObjectCache(
+  private static var cache = CKObjectCache<EthereumData,TxInfo,EthereumTransactionData>(
     database: CloudKitContainers.defaultContainer.publicCloudDatabase,
     entityName: "EthereumTransactionData",
     keyField: "txHash",
-    fallback: { (txHash:EthereumData,output:EthereumTransactionData) in
-      return TxFetcher.eventOfTx(txHash)
-        .map {
-          guard let tx = $0 else { return nil }
-          let key = txHash.hex()
-          output.txHash = tx.hash.hex()
-          output.from = tx.from.hex(eip55: true)
-          output.to = tx.to?.hex(eip55: true)
-          output.value = tx.value.hex()
-          output.blockNumber = tx.blockNumber?.hex()
-          return output
-        }
+    fallback: TxFetcher.eventOfTx,
+    output : { (data,output) in
+      output.txHash = data.txHash
+      output.from = data.from.hex(eip55: true)
+      output.to = data.to?.hex(eip55: true)
+      output.value = EthereumQuantity(quantity: data.value).hex()
+      output.blockNumber = data.blockNumber.hex()
+    }, data : { tx in
+      guard let blockNumber = (tx.blockNumber.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
+      guard let value = (tx.value.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
+      guard let from = (tx.from.flatMap { try? EthereumAddress(hex: $0, eip55: true) }) else { return nil }
+      guard let to = (tx.to.flatMap { try? EthereumAddress(hex: $0, eip55: true) }) else { return nil }
+      return tx.txHash.map {
+        TxInfo(txHash:$0,from:from,to:to,value:value.quantity,blockNumber: blockNumber)
+      }
     },
     keyToString: { $0.hex() }
   )
@@ -86,17 +92,6 @@ class TxFetcher {
       return Promise.value(nil)
     case .some(let txHash):
       return cache.get(txHash)
-        .map(on:DispatchQueue.global(qos:.userInitiated)) { (txData:EthereumTransactionData?) -> TxInfo? in
-          switch(txData) {
-          case .none:
-            return nil
-          case .some(let tx):
-            guard let blockNumber = (tx.blockNumber.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
-            guard let value = (tx.value.flatMap { try? EthereumQuantity.string($0) }) else { return nil }
-            guard let from = (tx.from.flatMap { try? EthereumAddress(hex: $0, eip55: true) }) else { return nil }
-            return TxInfo(from:from,value:value.quantity,blockNumber: blockNumber)
-          }
-        }
     }
   }
 #endif
