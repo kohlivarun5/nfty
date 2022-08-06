@@ -55,6 +55,14 @@ class IpfsCollectionContract : ContractInterface {
             if media.gateway.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
           }
           
+          guard !media.gateway.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix) else {
+            var index = media.gateway.firstIndex(of: ",")!
+            media.gateway.formIndex(after: &index)
+            let str : String = String(media.gateway.suffix(from:index))
+            let data =  Data(base64Encoded: str)!
+            return Promise.value(Media.ImageData.svg(data))
+          }
+          
           return Promise { seal in
             let uri = media.gateway // ?? media.raw
             guard let url = URL(string:uri) else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
