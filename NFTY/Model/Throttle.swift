@@ -20,6 +20,8 @@ class UrlTaskThrottle {
     let configuration = URLSessionConfiguration.default
     configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
     configuration.timeoutIntervalForResource = timeoutIntervalForResource
+    configuration.httpShouldUsePipelining = true
+    configuration.httpMaximumConnectionsPerHost = 2
     
     self.urlSession = URLSession(configuration:configuration)
   }

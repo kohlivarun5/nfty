@@ -197,10 +197,10 @@ struct NFTYApp: App {
         
         NavigationView {
           ENSAvatarChangedFeedView(events: ENSTextChangedViewModel(key: "avatar", limit: 5))
-            .navigationBarTitle("Avatars",displayMode: .inline)
+            .navigationBarTitle("Discover",displayMode: .inline)
         }
         .tabItem {
-          Label("Avatars",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
+          Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
