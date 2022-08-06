@@ -98,7 +98,7 @@ class FriendsFeedFetcher {
   
   init(from:[EthereumAddress],to:[EthereumAddress],action:Action.ActionType,fromBlock:BigUInt,limit:Int) {
     let cacheId = "FriendsFeedFetcher.initFromBlock"
-    let blockDecrements = BigUInt(500)
+    let blockDecrements = BigUInt(5000)
     self.limit = limit
     self.retries = 10
     self.addressesFilter = to
