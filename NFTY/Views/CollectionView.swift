@@ -46,6 +46,10 @@ struct CollectionView: View {
     }
   }
   
+  private func urlComponents() -> URLComponents? {
+    return self.collection.info.webLink.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false)}// ??  DappLink.openSeaPath(address: self.collection.info.address)
+  }
+  
   var body: some View {
     
     VStack(spacing:0) {
@@ -106,14 +110,12 @@ struct CollectionView: View {
     }
     .navigationBarTitle(info.name,displayMode: .inline)
     .navigationBarItems(
-      trailing:Button(action: {
-        openURL(
-          self.collection.info.webLink
-          ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
-        )
-      }) {
-        Label("Website", systemImage: "safari")
-      }
+      trailing:
+        self.urlComponents().map {
+          DappLink.DappLinkView(destination: $0, label: {
+            Label("Website", systemImage: "safari")
+          })
+        }
     )
     
   }

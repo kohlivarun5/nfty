@@ -13,6 +13,8 @@ class UserSettings: ObservableObject {
     case Native
     case Opera
     case Metamask
+    case InApp = "In-App"
+    case Coinbase
   }
   
   let userSettingsDappBrowserKey = "dappBrowser"
@@ -44,7 +46,7 @@ class UserSettings: ObservableObject {
   init() {
     dappBrowser =
       UserDefaults.standard.string(forKey: userSettingsDappBrowserKey)
-      .flatMap { DappBrowser(rawValue: $0) } ?? DappBrowser.Native
+      .flatMap { DappBrowser(rawValue: $0) } ?? DappBrowser.InApp
     
     quoteType = (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.quoteType.rawValue) as? String)
       .flatMap { QuoteType(rawValue: $0) } ?? .Both

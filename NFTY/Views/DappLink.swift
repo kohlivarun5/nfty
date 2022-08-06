@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct DappLink: View {
-  let destination : URLComponents
-  @StateObject var userSettings = UserSettings()
+struct DappLink {
+  
   
   static func openSeaPath(nft:NFT) -> URLComponents {
     
@@ -62,37 +61,71 @@ struct DappLink: View {
     }
   }
   
-  static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser?) -> URL {
+  static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser) -> URL {
     var components = comps
     switch(dappBrowser) {
-    case .none,.some(.Native):
+    case .Native,.InApp:
       components.scheme = "https"
-    case .some(.Metamask):
+    case .Metamask:
       components.scheme = "metamask"
-    case .some(.Opera):
+    case .Opera:
       components.scheme = "touch-https"
+    case .Coinbase:
+      // https://docs.cloud.coinbase.com/wallet-sdk/docs/deep-link-into-dapp-browser
+      let url = DappLink.url(comps,dappBrowser:.Native) // Get native url and encode it
+      components.scheme = "https"
+      components.host = "go.cb-w.com"
+      components.path = "/dapp"
+      components.queryItems = [URLQueryItem(name: "cb_url", value: url.absoluteString)]
     }
+    // print(components.url!)
     return components.url!
   }
   
-  static func openSeaUrl(nft:NFT,dappBrowser:UserSettings.DappBrowser?) -> URL {
-    DappLink.url(DappLink.openSeaPath(nft: nft),dappBrowser: dappBrowser)
-  }
-  
-  static func openSeaUrl(address:String,dappBrowser:UserSettings.DappBrowser?) -> URL {
-    DappLink.url(DappLink.openSeaPath(address: address),dappBrowser: dappBrowser)
-  }
-  
-  var body: some View {
-    Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
-      Image(systemName: "arrow.up.right.square.fill")
-        .foregroundColor(.tertiaryLabel)
+  struct DappLinkView<LabelView>: View  where LabelView:View {
+    let destination : URLComponents
+    @StateObject var userSettings = UserSettings()
+    let label : () -> LabelView
+    
+    var body: some View {
+      switch(userSettings.dappBrowser) {
+      case .InApp:
+        SheetButton(content: { self.label() }, sheetContent: {
+          VStack(spacing:0) {
+            WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
+            Menu {
+              ForEach(UserSettings.DappBrowser.allCases.filter { $0 != .InApp },id:\.self.rawValue) {
+                Link($0.rawValue,destination:DappLink.url(destination,dappBrowser:$0))
+              }
+            } label : {
+              Spacer()
+              
+              Text("Open in Browser")
+                .foregroundColor(.black)
+                //.font(.caption)
+                .bold()
+              Spacer()
+            }
+            .padding(10)
+            .background(
+              RoundedCorners(
+                color: .accentColor,
+                tl: 20, tr: 20, bl: 20, br: 20))
+            .padding([.leading,.trailing],50)
+            .padding(.bottom,25)
+            .padding(.top,10)
+            .background(Color.secondarySystemBackground)
+          }
+          .ignoresSafeArea(edges: [.top,.bottom])
+        })
+        .contextMenu(ContextMenu {
+          Link("Open in Browser",destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser))
+        })
+      default:
+        Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
+          self.label()
+        }
+      }
     }
-  }
-}
-
-struct DappLink_Previews: PreviewProvider {
-  static var previews: some View {
-    DappLink(destination: DappLink.openSeaPath(nft: SampleToken))
   }
 }

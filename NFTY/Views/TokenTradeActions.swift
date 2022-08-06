@@ -32,7 +32,7 @@ struct TokenTradeActions: View {
     case sellActions
   }
   @State private var actionsState : ActionsState? = nil
-
+  
   
   init(
     nft:NFT,
@@ -40,13 +40,13 @@ struct TokenTradeActions: View {
     collection:Collection,
     size : NftImage.Size,
     userWallet: UserWallet) {
-    
-    self.nft = nft
-    self.price = price
-    self.collection = collection
-    self.size = size
-    self.userWallet = userWallet
-  }
+      
+      self.nft = nft
+      self.price = price
+      self.collection = collection
+      self.size = size
+      self.userWallet = userWallet
+    }
   
   var body: some View {
     
@@ -158,39 +158,39 @@ struct TokenTradeActions: View {
                   )
                 })
             case (.buyActions,.none):
-              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                HStack {
-                  Spacer()
+              HStack {
+                Spacer()
+                DappLink.DappLinkView(destination: DappLink.openSeaPath(nft: nft), label: {
                   Text("Buy")
                     .foregroundColor(.black)
                     .font(.title3)
                     .bold()
-                  Spacer()
-                }
-                .padding(10)
-                .background(
-                  RoundedCorners(
-                    color: .accentColor,
-                    tl: 20, tr: 20, bl: 20, br: 20))
-                .padding([.leading,.trailing],50)
+                })
+                Spacer()
               }
+              .padding(10)
+              .background(
+                RoundedCorners(
+                  color: .accentColor,
+                  tl: 20, tr: 20, bl: 20, br: 20))
+              .padding([.leading,.trailing],50)
             case (.sellActions,.some),(.sellActions,.none):
-              Link(destination:DappLink.openSeaUrl(nft:nft,dappBrowser: userSettings.dappBrowser)) {
-                HStack {
-                  Spacer()
+              HStack {
+                Spacer()
+                DappLink.DappLinkView(destination: DappLink.openSeaPath(nft: nft), label: {
                   Text("Sell")
                     .foregroundColor(.black)
                     .font(.title3)
                     .bold()
-                  Spacer()
-                }
-                .padding(10)
-                .background(
-                  RoundedCorners(
-                    color: .accentColor,
-                    tl: 20, tr: 20, bl: 20, br: 20))
-                .padding([.leading,.trailing],50)
+                })
+                Spacer()
               }
+              .padding(10)
+              .background(
+                RoundedCorners(
+                  color: .accentColor,
+                  tl: 20, tr: 20, bl: 20, br: 20))
+              .padding([.leading,.trailing],50)
             }
           }
           .padding(.bottom,10)
@@ -218,7 +218,7 @@ struct TokenTradeActions: View {
           self.actionsState = self.tradeActions.flatMap { _ in
             let walletAccount = userWallet.userAccount()
             return (walletAccount?.ethAddress == account?.ethAddress
-            || (walletAccount?.nearAccount != nil && account?.nearAccount != nil && walletAccount?.nearAccount == account?.nearAccount))
+                    || (walletAccount?.nearAccount != nil && account?.nearAccount != nil && walletAccount?.nearAccount == account?.nearAccount))
             ? .sellActions : .buyActions
           }
         }
@@ -236,10 +236,10 @@ struct TokenTradeActions_Previews: PreviewProvider {
       collection:SampleCollection,
       size:.normal,
       userWallet: UserWallet())
-      .background(
-        RoundedCorners(
-          color: .secondarySystemBackground,
-          tl: 20, tr: 20, bl: 0, br: 0))
+    .background(
+      RoundedCorners(
+        color: .secondarySystemBackground,
+        tl: 20, tr: 20, bl: 0, br: 0))
     
   }
 }
