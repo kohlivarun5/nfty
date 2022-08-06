@@ -106,14 +106,10 @@ struct CollectionView: View {
     }
     .navigationBarTitle(info.name,displayMode: .inline)
     .navigationBarItems(
-      trailing:Button(action: {
-        openURL(
-          self.collection.info.webLink
-          ?? DappLink.openSeaUrl(address: self.collection.info.address, dappBrowser: userSettings.dappBrowser)
-        )
-      }) {
-        Label("Website", systemImage: "safari")
-      }
+      trailing:
+        DappLink.DappLinkView(destination: DappLink.openSeaPath(address: self.collection.info.address), label: {
+          Label("Website", systemImage: "safari")
+        })
     )
     
   }

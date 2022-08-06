@@ -61,25 +61,17 @@ struct DappLink {
     }
   }
   
-  static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser?) -> URL {
+  static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser) -> URL {
     var components = comps
     switch(dappBrowser) {
-    case .none,.some(.Native):
+    case .Native,.InApp:
       components.scheme = "https"
-    case .some(.Metamask):
+    case .Metamask:
       components.scheme = "metamask"
-    case .some(.Opera):
+    case .Opera:
       components.scheme = "touch-https"
     }
     return components.url!
-  }
-  
-  static func openSeaUrl(nft:NFT,dappBrowser:UserSettings.DappBrowser?) -> URL {
-    DappLink.url(DappLink.openSeaPath(nft: nft),dappBrowser: dappBrowser)
-  }
-  
-  static func openSeaUrl(address:String,dappBrowser:UserSettings.DappBrowser?) -> URL {
-    DappLink.url(DappLink.openSeaPath(address: address),dappBrowser: dappBrowser)
   }
   
   struct DappLinkView<LabelView>: View  where LabelView:View {
@@ -89,12 +81,15 @@ struct DappLink {
     
     var body: some View {
       switch(userSettings.dappBrowser) {
-      case .Native:
+      case .InApp:
         SheetButton(content: { self.label() }, sheetContent: {
           WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
             .ignoresSafeArea(edges: [.top,.bottom])
         })
-      case .Metamask,.Opera:
+        .contextMenu(ContextMenu {
+          Link("Open in Browser",destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser))
+        })
+      default:
         Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
           self.label()
         }
