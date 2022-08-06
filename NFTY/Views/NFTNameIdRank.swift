@@ -24,7 +24,10 @@ struct NFTNameIdRank: View {
           Text("#\(String(nft.tokenId))")
           switch(isExternalLink) {
           case true:
-            DappLink(destination: DappLink.openSeaPath(nft: nft))
+            DappLink.DappLinkView(destination: DappLink.openSeaPath(nft: nft),label : {
+              Image(systemName: "arrow.up.right.square.fill")
+              .foregroundColor(.tertiaryLabel)
+            })
           case false:
             Image(systemName: "arrow.right.square.fill")
               .foregroundColor(.tertiaryLabel)

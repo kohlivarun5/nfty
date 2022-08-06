@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct DappLink: View {
-  let destination : URLComponents
-  @StateObject var userSettings = UserSettings()
+struct DappLink {
+  
   
   static func openSeaPath(nft:NFT) -> URLComponents {
     
@@ -83,16 +82,23 @@ struct DappLink: View {
     DappLink.url(DappLink.openSeaPath(address: address),dappBrowser: dappBrowser)
   }
   
-  var body: some View {
-    Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
-      Image(systemName: "arrow.up.right.square.fill")
-        .foregroundColor(.tertiaryLabel)
+  struct DappLinkView<LabelView>: View  where LabelView:View {
+    let destination : URLComponents
+    @StateObject var userSettings = UserSettings()
+    let label : () -> LabelView
+    
+    var body: some View {
+      switch(userSettings.dappBrowser) {
+      case .Native:
+        SheetButton(content: { self.label() }, sheetContent: {
+          WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
+            .ignoresSafeArea(edges: [.top,.bottom])
+        })
+      case .Metamask,.Opera:
+        Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
+          self.label()
+        }
+      }
     }
-  }
-}
-
-struct DappLink_Previews: PreviewProvider {
-  static var previews: some View {
-    DappLink(destination: DappLink.openSeaPath(nft: SampleToken))
   }
 }
