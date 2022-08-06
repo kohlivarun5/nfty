@@ -14,6 +14,7 @@ class UserSettings: ObservableObject {
     case Opera
     case Metamask
     case InApp = "In-App"
+    case Coinbase
   }
   
   let userSettingsDappBrowserKey = "dappBrowser"

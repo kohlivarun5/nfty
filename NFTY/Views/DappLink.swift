@@ -70,7 +70,15 @@ struct DappLink {
       components.scheme = "metamask"
     case .Opera:
       components.scheme = "touch-https"
+    case .Coinbase:
+      // https://docs.cloud.coinbase.com/wallet-sdk/docs/deep-link-into-dapp-browser
+      let url = DappLink.url(comps,dappBrowser:.Native) // Get native url and encode it
+      components.scheme = "https"
+      components.host = "go.cb-w.com"
+      components.path = "/dapp"
+      components.queryItems = [URLQueryItem(name: "cb_url", value: url.absoluteString)]
     }
+    // print(components.url!)
     return components.url!
   }
   
