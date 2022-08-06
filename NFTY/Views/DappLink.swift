@@ -91,8 +91,32 @@ struct DappLink {
       switch(userSettings.dappBrowser) {
       case .InApp:
         SheetButton(content: { self.label() }, sheetContent: {
-          WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
-            .ignoresSafeArea(edges: [.top,.bottom])
+          VStack(spacing:0) {
+            WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
+            Menu {
+              ForEach(UserSettings.DappBrowser.allCases.filter { $0 != .InApp },id:\.self.rawValue) {
+                Link($0.rawValue,destination:DappLink.url(destination,dappBrowser:$0))
+              }
+            } label : {
+              Spacer()
+              
+              Text("Open in Browser")
+                .foregroundColor(.black)
+                //.font(.caption)
+                .bold()
+              Spacer()
+            }
+            .padding(10)
+            .background(
+              RoundedCorners(
+                color: .accentColor,
+                tl: 20, tr: 20, bl: 20, br: 20))
+            .padding([.leading,.trailing],50)
+            .padding(.bottom,25)
+            .padding(.top,10)
+            .background(Color.secondarySystemBackground)
+          }
+          .ignoresSafeArea(edges: [.top,.bottom])
         })
         .contextMenu(ContextMenu {
           Link("Open in Browser",destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser))
