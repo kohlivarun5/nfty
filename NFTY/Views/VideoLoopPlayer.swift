@@ -40,7 +40,6 @@ struct VideoLoopPlayer: UIViewRepresentable {
     let view = PlayerView()
     view.player = queuePlayer
     view.player?.isMuted = true
-    view.player?.automaticallyWaitsToMinimizeStalling = true
     view.player?.audiovisualBackgroundPlaybackPolicy = .pauses
     view.player?.play()
     return view
