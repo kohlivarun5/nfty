@@ -165,19 +165,19 @@ struct NFTYApp: App {
       TabView {
         
         /*
-        NavigationView {
-          let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
-          let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
-          
-          
-          TokenListPagedView(
-            collection: collection,
-            nfts: TokensListPaged(fetcher:collection.contract.floorFetcher(collection)!))
-        }
-        .tabItem {
-          Label("Test",systemImage:"person.crop.circle")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+         NavigationView {
+         let collectionAddress = try! EthereumAddress(hex: "0x7e6bc952d4b4bd814853301bee48e99891424de0", eip55: false)
+         let collection = MakeErc721Collection.ofName(name:"Saudis",address: collectionAddress)
+         
+         
+         TokenListPagedView(
+         collection: collection,
+         nfts: TokensListPaged(fetcher:collection.contract.floorFetcher(collection)!))
+         }
+         .tabItem {
+         Label("Test",systemImage:"person.crop.circle")
+         }
+         .navigationViewStyle(StackNavigationViewStyle())
          */
         
         
@@ -202,53 +202,50 @@ struct NFTYApp: App {
             Label("Mints",systemImage:"star.square.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
-        }
         
-        if (!addresses.isEmpty) {
           NavigationView {
             FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
-            .navigationBarTitle("Sales",displayMode: .inline)
+              .navigationBarTitle("Sales",displayMode: .inline)
           }
           .tabItem {
             Label("Sales",systemImage:"arrow.up.right.and.arrow.down.left.rectangle.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
-        }
         
-        
-        if (!addresses.isEmpty) {
-          
+          // When we have mints and Sales, we merge Recent and Avatar
           NavigationView {
-            FriendsView()
+            RecentDiscoverTab()
           }
           .tabItem {
-            Label("Following",systemImage:"person.2.square.stack")
+            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
+          
+        } else {
+          
+          NavigationView {
+            ENSAvatarChangedFeedView(events: ENSTextChangedViewModel(key: "avatar", limit: 5))
+              .navigationBarTitle("Discover",displayMode: .inline)
+          }
+          .tabItem {
+            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
+          NavigationView {
+            FeedView(trades:CompositeCollection)
+              .navigationBarTitle("Recent",displayMode: .inline)
+          }
+          .tabItem {
+            Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
         }
+        
         
         NavigationView {
-          FeedView(trades:CompositeCollection)
-            .navigationBarTitle("Recent",displayMode: .inline)
-        }
-        .tabItem {
-          Label("Recent",systemImage:"sparkles.rectangle.stack.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        
-        NavigationView {
-          ENSAvatarChangedFeedView(events: ENSTextChangedViewModel(key: "avatar", limit: 5))
-            .navigationBarTitle("Discover",displayMode: .inline)
-        }
-        .tabItem {
-          Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        
-        
-        NavigationView {
-          FavoritesView()
-            .navigationBarTitle("Favorites",displayMode: .inline)
+          SavedFavsUsersView(friends:friends,addresses:addresses)
         }
         .tabItem {
           Label("Saved",systemImage:"bookmark.circle.fill")
