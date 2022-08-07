@@ -102,7 +102,7 @@ struct DappLink {
               
               Text("Open in Browser")
                 .foregroundColor(.black)
-                //.font(.caption)
+                .font(.title3)
                 .bold()
               Spacer()
             }
@@ -112,7 +112,7 @@ struct DappLink {
                 color: .accentColor,
                 tl: 20, tr: 20, bl: 20, br: 20))
             .padding([.leading,.trailing],50)
-            .padding(.bottom,25)
+            .padding(.bottom,30)
             .padding(.top,10)
             .background(Color.secondarySystemBackground)
           }

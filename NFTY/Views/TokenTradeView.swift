@@ -102,7 +102,7 @@ struct TokenTradeView: View {
         collection:collection,
         size: .small,
         userWallet:userWallet)
-        .padding(.bottom,isSheet ? 12 : 0)
+        .padding(.bottom,isSheet ? 22 : 0)
         .background(
           RoundedCorners(
             color: .secondarySystemBackground,
