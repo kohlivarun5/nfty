@@ -67,6 +67,9 @@ struct CKImageCacheCore {
   private var imageCacheHD : DiskStorage<BigUInt,UIImage>
 #endif
   
+  private var svgCache : DiskStorage<BigUInt,String>
+  private var videoCache : DiskStorage<BigUInt,URL>
+  
   private let assetKey = "image"
   private let compressionAlgorithmKey = "compressionAlgorithm"
   private let neuralHashKey = "neuralHash"
@@ -93,6 +96,14 @@ struct CKImageCacheCore {
       config: DiskConfig(name: "\(bucket).ImageCacheHD",expiry: .never),
       transformer: TransformerFactory.forImage())
 #endif
+    
+    self.svgCache = try! DiskStorage<BigUInt, String>(
+      config: DiskConfig(name: "\(bucket).SVGCache",expiry: .never),
+      transformer: TransformerFactory.forCodable(ofType:String.self))
+    
+    self.videoCache = try! DiskStorage<BigUInt, URL>(
+      config: DiskConfig(name: "\(bucket).VideoCache",expiry: .never),
+      transformer: TransformerFactory.forCodable(ofType:URL.self))
   }
   
   
@@ -126,8 +137,7 @@ struct CKImageCacheCore {
           // We do not implement caching for video
           print("Image is video, caching is skipped")
           print("AVPlayer url=\(url)")
-          let player = AVPlayerItem(url:url)
-          return Media.IpfsImage(image:  .video(player),image_hd: .video(player))
+          return Media.IpfsImage(image:  .video(url),image_hd: .video(url))
           
         case .svg(let data):
           // We do not implement caching for svg
@@ -169,35 +179,22 @@ struct CKImageCacheCore {
       }
   }
   
-  /*
-   TokenImageCache
-   collectionAddress
-   STRING
-   Queryable
-   
-   compressionAlgorithm
-   INT(64)
-   None
-   
-   image
-   ASSET
-   None
-   
-   neuralHash
-   STRING
-   Sortable
-   
-   
-   */
-  
-  
   func image(_ tokenId:BigUInt) -> ObservablePromise<Media.IpfsImage?> {
     return ObservablePromise(promise: Promise { seal in
       DispatchQueue.global(qos:.userInteractive).async {
-        switch(try? self.imageCache.object(forKey:tokenId),try? self.imageCacheHD.object(forKey:tokenId)) {
-        case (.some(let image),.some(let image_hd)):
+        switch(
+          try? self.svgCache.object(forKey:tokenId),
+          try? self.videoCache.object(forKey:tokenId),
+          try? self.imageCache.object(forKey:tokenId),
+          try? self.imageCacheHD.object(forKey:tokenId)) {
+        case (.some(let svg),_,_,_):
+          let view = NFTYgoSVGImage(svg: svg)
+          seal.fulfill(Media.IpfsImage(image: .svg(view),image_hd: .svg(view)))
+        case (_,.some(let video),_,_):
+          seal.fulfill(Media.IpfsImage(image: .video(video),image_hd: .video(video)))
+        case (_,_,.some(let image),.some(let image_hd)):
           seal.fulfill(Media.IpfsImage(image: .image(image),image_hd: .image(image_hd)))
-        case (.none,_),(_,.none):
+        case (_,_,.none,_),(_,_,_,.none):
           let recordName = self.recordName(tokenId)
           print("Fetching for record=\(recordName)")
           database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:recordName))
@@ -219,8 +216,10 @@ struct CKImageCacheCore {
               DispatchQueue.global(qos:.background).async {
                 image.map {
                   switch($0.image) {
-                  case .svg,.video:
-                    break
+                  case .svg(let svg):
+                    try? self.svgCache.setObject(svg.svg, forKey: tokenId)
+                  case .video(let url):
+                    try? self.videoCache.setObject(url, forKey: tokenId)
                   case .image(let image):
                     try? self.imageCache.setObject(image, forKey: tokenId)
                   }

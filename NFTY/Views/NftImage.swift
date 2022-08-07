@@ -108,8 +108,8 @@ struct NftIpfsImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-            case .video(let item):
-              VideoLoopPlayer(item: item)
+            case .video(let url):
+              VideoLoopPlayer(url: url)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
@@ -127,8 +127,8 @@ struct NftIpfsImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-            case .video(let item):
-              VideoLoopPlayer(item: item)
+            case .video(let url):
+              VideoLoopPlayer(url: url)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)

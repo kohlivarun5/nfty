@@ -29,8 +29,8 @@ struct VideoLoopPlayer: UIViewRepresentable {
   let queuePlayer : AVQueuePlayer
   let playerLooper : AVPlayerLooper
   
-  init(item:AVPlayerItem) {
-    self.item = item
+  init(url:URL) {
+    self.item = AVPlayerItem(url: url)
     self.queuePlayer = AVQueuePlayer(playerItem: item)
     self.playerLooper = AVPlayerLooper(player: self.queuePlayer, templateItem: self.item)
     
