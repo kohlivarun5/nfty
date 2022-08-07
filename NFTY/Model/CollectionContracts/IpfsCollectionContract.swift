@@ -271,7 +271,7 @@ class IpfsCollectionContract : ContractInterface {
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
             case .video(let url):
               print("AVPlayer url=\(url)")
-              let player = AVPlayer(url: url)
+              let player = AVPlayerItem(url: url)
               return Media.IpfsImage(image:.videro(player),image_hd:.video(player))
             case .image(let data):
               guard let image = NSImage(data:data) else { return nil }
@@ -293,7 +293,7 @@ class IpfsCollectionContract : ContractInterface {
      return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
      case .video(let url):
      print("AVPlayer url=\(url)")
-     let player = AVPlayer(url: url)
+     let player = AVPlayerItem(url: url)
      return Media.IpfsImage(image:.video(player),image_hd:.video(player))
      case .image(let data):
      guard let image = UIImage(data:data) else { return nil }

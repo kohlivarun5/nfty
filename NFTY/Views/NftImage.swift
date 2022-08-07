@@ -53,32 +53,6 @@ enum NftImageResolution {
   case normal
 }
 
-class PlayerView: UIView {
-  
-  // Override the property to make AVPlayerLayer the view's backing layer.
-  override static var layerClass: AnyClass { AVPlayerLayer.self }
-  
-  // The associated player object.
-  var player: AVPlayer? {
-    get { playerLayer.player }
-    set { playerLayer.player = newValue }
-  }
-  
-  private var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
-}
-
-struct CustomVideoPlayer: UIViewRepresentable {
-  let player: AVPlayer
-  
-  func makeUIView(context: Context) -> PlayerView {
-    let view = PlayerView()
-    view.player = player
-    return view
-  }
-  
-  func updateUIView(_ uiView: PlayerView, context: Context) { }
-}
-
 struct NftIpfsImageView: View {
   
   @StateObject var image : ObservablePromise<Media.IpfsImage?>
@@ -134,17 +108,11 @@ struct NftIpfsImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-            case .video(let player):
-              CustomVideoPlayer(player: player)
+            case .video(let item):
+              VideoLoopPlayer(item: item)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-                .onAppear {
-                  player.isMuted = true
-                  player.automaticallyWaitsToMinimizeStalling = true
-                  player.audiovisualBackgroundPlaybackPolicy = .pauses
-                  player.play()
-                }
             }
           case .hd:
             switch image.image_hd {
@@ -159,17 +127,11 @@ struct NftIpfsImageView: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-            case .video(let player):
-              CustomVideoPlayer(player: player)
+            case .video(let item):
+              VideoLoopPlayer(item: item)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
                 .padding(padding ?? 0)
-                .onAppear {
-                  player.isMuted = true
-                  player.automaticallyWaitsToMinimizeStalling = true
-                  player.audiovisualBackgroundPlaybackPolicy = .pauses
-                  player.play()
-                }
             }
           }
         }

@@ -325,6 +325,7 @@
 		4FCB497026D1925C00696F91 /* CypherCity_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */; };
 		4FCB497326D1946B00696F91 /* CryptoHodlers_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */; };
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
+		4FD0047D289F64D2002F53BD /* VideoLoopPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD0047C289F64D2002F53BD /* VideoLoopPlayer.swift */; };
 		4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */; };
 		4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */; };
 		4FD95B94280FA0D9009EA52F /* ENSContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD95B93280FA0D9009EA52F /* ENSContract.swift */; };
@@ -789,6 +790,7 @@
 		4FCB496E26D1925C00696F91 /* CypherCity_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CypherCity_attributeRanks.json; sourceTree = "<group>"; };
 		4FCB497126D1946A00696F91 /* CryptoHodlers_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeScores.json; sourceTree = "<group>"; };
 		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
+		4FD0047C289F64D2002F53BD /* VideoLoopPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLoopPlayer.swift; sourceTree = "<group>"; };
 		4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSummaryView.swift; sourceTree = "<group>"; };
 		4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		4FD95B93280FA0D9009EA52F /* ENSContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSContract.swift; sourceTree = "<group>"; };
@@ -1188,6 +1190,7 @@
 				4FE148B52884DFFC00355ABA /* SetENSAvatarConfirmation.swift */,
 				4FE148B72884E3B700355ABA /* ProfileAvatarImage.swift */,
 				4F70ADCB289EE4CD00486531 /* SafariView.swift */,
+				4FD0047C289F64D2002F53BD /* VideoLoopPlayer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2007,6 +2010,7 @@
 				4F4C6982264F6483005B9A23 /* AutoglyphView.swift in Sources */,
 				4FB9A7E9262B353E00C58AF9 /* RoundedImage.swift in Sources */,
 				4F3856FA2899EB9700847F3D /* CloudKitContainers.swift in Sources */,
+				4FD0047D289F64D2002F53BD /* VideoLoopPlayer.swift in Sources */,
 				4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
