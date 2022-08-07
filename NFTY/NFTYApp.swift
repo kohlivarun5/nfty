@@ -137,6 +137,20 @@ struct NFTYApp: App {
   
   @StateObject var userWallet = UserWallet()
   
+  @State private var friends : [String : String] = [:]
+  
+  @State private var addresses : [EthereumAddress] = []
+  
+  private func updateFriends(_ dict : [String : String]) {
+    
+    DispatchQueue.main.async {
+      self.friends = dict
+      self.addresses = self.friends.compactMap { (key: String, value: String) in
+        try? EthereumAddress(hex: key, eip55: true)
+      }
+    }
+  }
+  
   init() {
     if let image = UIImage(systemName: "chevron.backward.circle.fill") {
       UINavigationBar.appearance().backIndicatorImage = image
@@ -175,7 +189,34 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        if (NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) != nil) {
+        if (!addresses.isEmpty) {
+          NavigationView {
+            FriendsFeedView(events:FriendsFeedViewModel(
+              from: [EthereumAddress(hexString:ETH_ADDRESS)!],
+              to : self.addresses,
+              action:.minted,
+              limit:2))
+            .navigationBarTitle("Mints",displayMode: .inline)
+          }
+          .tabItem {
+            Label("Mints",systemImage:"star.square.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+        }
+        
+        if (!addresses.isEmpty) {
+          NavigationView {
+            FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
+            .navigationBarTitle("Sales",displayMode: .inline)
+          }
+          .tabItem {
+            Label("Sales",systemImage:"arrow.up.right.and.arrow.down.left.rectangle.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+        }
+        
+        
+        if (!addresses.isEmpty) {
           
           NavigationView {
             FriendsView()
@@ -219,6 +260,9 @@ struct NFTYApp: App {
       }
       .themeStyle()
       .onAppear {
+        
+        let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
+        updateFriends(friendDict ?? [:])
         
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 90) {
           loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
