@@ -91,7 +91,7 @@ struct DappLink {
       
       SheetButton(content: { self.label() }, sheetContent: {
         VStack(spacing:0) {
-          WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
+          WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: .Native)))
           Link(destination:DappLink.url(destination,dappBrowser:self.userSettings.dappBrowser)) {
             Spacer()
             
