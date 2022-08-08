@@ -87,7 +87,11 @@ class IpfsCollectionContract : ContractInterface {
                 if let error = error { return seal.reject(error) }
                 guard let data = data else { return seal.reject(NSError(domain:"Failed to get data for url=\(url)", code:404, userInfo:nil)) }
                 // print(data,response,error)
-                seal.fulfill(Media.ImageData.image(data))
+                if (uri.hasSuffix(".svg")) {
+                  seal.fulfill(Media.ImageData.svg(data))
+                } else {
+                  seal.fulfill(Media.ImageData.image(data))
+                }
               }
             )
           }
@@ -193,7 +197,11 @@ class IpfsCollectionContract : ContractInterface {
                   if let error = error { return seal.reject(error) }
                   guard let data = data else { return seal.reject(NSError(domain:"Failed to get data for url=\(url)", code:404, userInfo:nil)) }
                   // print(data,response,error)
-                  seal.fulfill(Media.ImageData.image(data))
+                  if (uri.hasSuffix(".svg")) {
+                    seal.fulfill(Media.ImageData.svg(data))
+                  } else {
+                    seal.fulfill(Media.ImageData.image(data))
+                  }
                 }
               )
             }

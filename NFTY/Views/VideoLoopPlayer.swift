@@ -26,21 +26,22 @@ class PlayerView: UIView {
 
 struct VideoLoopPlayer: UIViewRepresentable {
   let item: AVPlayerItem
-  let queuePlayer : AVQueuePlayer
+  var queuePlayer : AVQueuePlayer
   let playerLooper : AVPlayerLooper
   
   init(url:URL) {
     self.item = AVPlayerItem(url: url)
     self.queuePlayer = AVQueuePlayer(playerItem: item)
+    self.queuePlayer.isMuted = true
+    self.queuePlayer.audiovisualBackgroundPlaybackPolicy = .pauses
+    self.queuePlayer.allowsExternalPlayback = false
+    self.queuePlayer.usesExternalPlaybackWhileExternalScreenIsActive = false
     self.playerLooper = AVPlayerLooper(player: self.queuePlayer, templateItem: self.item)
-    
   }
   
   func makeUIView(context: Context) -> PlayerView {
     let view = PlayerView()
     view.player = queuePlayer
-    view.player?.isMuted = true
-    view.player?.audiovisualBackgroundPlaybackPolicy = .pauses
     view.player?.play()
     return view
   }
