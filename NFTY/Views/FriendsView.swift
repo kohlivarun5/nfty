@@ -90,24 +90,7 @@ struct FriendsView: View {
       VStack(spacing:0) {
         switch(self.page,self.addresses.isEmpty) {
         case (.list,_),(_,true):
-          List(friends.sorted(by: { $0.value.lowercased() < $1.value.lowercased() }), id: \.key) { address,name in
-            NavigationLink(destination: PrivateCollectionView(account:account(address),isOwnerView:false) ){
-              HStack() {
-                Text(name)
-                  .font(.title3)
-              }
-              .padding()
-            }
-          }
-          .navigationBarItems(
-            trailing:
-              NavigationLink(destination: AddFriendSheet()) {
-                Image(systemName:"magnifyingglass.circle.fill")
-                  .font(.title3)
-                  .foregroundColor(.accentColor)
-                  .padding(10)
-              }
-          )
+          FriendsListView(friends:friends,addresses:addresses)
         case (.feed,false):
           FriendsFeedView(events:self.feedModel)
         case (.minted,false):

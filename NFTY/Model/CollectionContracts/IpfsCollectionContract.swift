@@ -46,7 +46,18 @@ class IpfsCollectionContract : ContractInterface {
         .then { result -> Promise<Media.ImageData?> in
           
           if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
-            if url.hasSuffix(".mp4") { return Promise.value(Media.ImageData.video(uri)) }
+            if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") { return Promise.value(Media.ImageData.video(uri)) }
+          }
+          
+          if let data = result.metadata.image_data {
+            
+            guard !data.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix) else {
+              var index = data.firstIndex(of: ",")!
+              data.formIndex(after: &index)
+              let str : String = String(data.suffix(from:index))
+              let data =  Data(base64Encoded: str)!
+              return Promise.value(Media.ImageData.svg(data))
+            }
           }
           
           guard let media = result.media.first else { return Promise.value(nil) }
@@ -150,7 +161,7 @@ class IpfsCollectionContract : ContractInterface {
           return Promise { seal in
             
             if let url = uriData.animation_url, let uri = URL(string:ipfsUrl(url)) {
-              if url.hasSuffix(".mp4") { return seal.fulfill(Media.ImageData.video(uri)) }
+              if url.hasSuffix(".mp4") || url.hasPrefix("ipfs")  { return seal.fulfill(Media.ImageData.video(uri)) }
             }
             
             let uri = uriData.image ?? uriData.image_url ?? uriData.image_data
@@ -260,8 +271,7 @@ class IpfsCollectionContract : ContractInterface {
               return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
             case .video(let url):
               print("AVPlayer url=\(url)")
-              let player = AVPlayer(url: url)
-              return Media.IpfsImage(image:.videro(player),image_hd:.video(player))
+              return Media.IpfsImage(image:.video(url),image_hd:.video(url))
             case .image(let data):
               guard let image = NSImage(data:data) else { return nil }
               return Media.IpfsImage(image:.image(image),image_hd:.image(image))
@@ -282,8 +292,8 @@ class IpfsCollectionContract : ContractInterface {
      return Media.IpfsImage(image:.svg(svg),image_hd:.svg(svg))
      case .video(let url):
      print("AVPlayer url=\(url)")
-     let player = AVPlayer(url: url)
-     return Media.IpfsImage(image:.video(player),image_hd:.video(player))
+     let player = AVPlayerItem(url: url)
+     return Media.IpfsImage(image:.video(url),image_hd:.video(url))
      case .image(let data):
      guard let image = UIImage(data:data) else { return nil }
      return Media.IpfsImage(image:.image(image),image_hd:.image(image))

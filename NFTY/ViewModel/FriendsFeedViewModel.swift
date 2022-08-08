@@ -52,7 +52,7 @@ class FriendsFeedViewModel : ObservableObject {
     
     switch(self.loadMoreState) {
     case .loading:
-      return callback()
+      return // callback()
     case .uninitialized,.notLoading:
       self.loadMoreState = .loading(LoadingProgress(current:initialCount,total:initialTotal))
     }
@@ -91,7 +91,7 @@ class FriendsFeedViewModel : ObservableObject {
     if currentIndex >= thresholdIndex {
       DispatchQueue.main.async { self.loadMore(callback) }
     } else {
-      callback()
+      // callback()
     }
   }
   

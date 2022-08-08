@@ -12,7 +12,7 @@
 		<key>CreateRankingFiles.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>4</integer>
 		</dict>
 		<key>Demo (Playground) 1.xcscheme</key>
 		<dict>
@@ -80,7 +80,7 @@
 		<key>DownloadCollection.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>3</integer>
 		</dict>
 		<key>DownloadCryptoPunks.xcscheme_^#shared#^_</key>
 		<dict>
