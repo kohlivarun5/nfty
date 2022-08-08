@@ -16,11 +16,13 @@ struct RecentDiscoverTab: View {
   
   @State private var page : Page = .avatars
   
+  let avatarEvents =  ENSTextChangedViewModel(key: "avatar", limit: 5)
+  
   var body: some View {
     VStack(spacing:5) {
       switch(page) {
       case .avatars:
-        ENSAvatarChangedFeedView(events: ENSTextChangedViewModel(key: "avatar", limit: 5))
+        ENSAvatarChangedFeedView(events:avatarEvents)
           .navigationBarTitle("Discover",displayMode: .inline)
       case .recent:
         FeedView(trades:CompositeCollection)
@@ -29,9 +31,7 @@ struct RecentDiscoverTab: View {
       Picker(selection: Binding<Int>(
         get: { self.page.rawValue },
         set: { tag in
-          withAnimation { // needed explicit for transitions
-            self.page = Page(rawValue: tag)!
-          }
+          self.page = Page(rawValue: tag)!
         }),
              label: Text("")) {
         Text("Discover").tag(Page.avatars.rawValue)
