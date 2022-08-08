@@ -14,7 +14,9 @@ struct WebView : UIViewRepresentable {
   let request: URLRequest
   
   func makeUIView(context: Context) -> WKWebView  {
-    return WKWebView()
+    let webConfiguration = WKWebViewConfiguration()
+    webConfiguration.limitsNavigationsToAppBoundDomains = false
+    return WKWebView(frame: .zero, configuration: webConfiguration)
   }
   
   func updateUIView(_ uiView: WKWebView, context: Context) {

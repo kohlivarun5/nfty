@@ -64,7 +64,7 @@ struct DappLink {
   static private func url(_ comps : URLComponents,dappBrowser:UserSettings.DappBrowser) -> URL {
     var components = comps
     switch(dappBrowser) {
-    case .Native,.InApp:
+    case .Native:
       components.scheme = "https"
     case .Metamask:
       components.scheme = "metamask"
@@ -88,44 +88,31 @@ struct DappLink {
     let label : () -> LabelView
     
     var body: some View {
-      switch(userSettings.dappBrowser) {
-      case .InApp:
-        SheetButton(content: { self.label() }, sheetContent: {
-          VStack(spacing:0) {
-            WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
-            Menu {
-              ForEach(UserSettings.DappBrowser.allCases.filter { $0 != .InApp },id:\.self.rawValue) {
-                Link($0.rawValue,destination:DappLink.url(destination,dappBrowser:$0))
-              }
-            } label : {
-              Spacer()
-              
-              Text("Open in Browser")
-                .foregroundColor(.black)
-                .font(.title3)
-                .bold()
-              Spacer()
-            }
-            .padding(10)
-            .background(
-              RoundedCorners(
-                color: .accentColor,
-                tl: 20, tr: 20, bl: 20, br: 20))
-            .padding([.leading,.trailing],50)
-            .padding(.bottom,30)
-            .padding(.top,10)
-            .background(Color.secondarySystemBackground)
+      
+      SheetButton(content: { self.label() }, sheetContent: {
+        VStack(spacing:0) {
+          WebView(request: URLRequest(url: DappLink.url(destination,dappBrowser: userSettings.dappBrowser)))
+          Link(destination:DappLink.url(destination,dappBrowser:self.userSettings.dappBrowser)) {
+            Spacer()
+            
+            Text("Open in Browser")
+              .foregroundColor(.black)
+              .font(.title3)
+              .bold()
+            Spacer()
           }
-          .ignoresSafeArea(edges: [.top,.bottom])
-        })
-        .contextMenu(ContextMenu {
-          Link("Open in Browser",destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser))
-        })
-      default:
-        Link(destination:DappLink.url(destination,dappBrowser: userSettings.dappBrowser)) {
-          self.label()
+          .padding(10)
+          .background(
+            RoundedCorners(
+              color: .accentColor,
+              tl: 20, tr: 20, bl: 20, br: 20))
+          .padding([.leading,.trailing],50)
+          .padding(.bottom,30)
+          .padding(.top,10)
+          .background(Color.secondarySystemBackground)
         }
-      }
+        .ignoresSafeArea(edges: [.top,.bottom])
+      })
     }
   }
 }
