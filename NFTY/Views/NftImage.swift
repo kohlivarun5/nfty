@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 import AVKit
 
 struct NftImageImpl: View {
