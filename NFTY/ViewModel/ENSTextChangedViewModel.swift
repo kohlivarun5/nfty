@@ -42,7 +42,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
-      .map(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
+      .done(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
         print("Loading friend events")
         fetcher.getRecentEvents(
           onDone:{
@@ -69,7 +69,7 @@ class ENSTextChangedViewModel : ObservableObject {
   }
   
   func getRecentEvents(currentIndex:Int,_ callback : @escaping () -> Void) {
-    let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -2)
+    let thresholdIndex = self.recentEvents.index(self.recentEvents.endIndex, offsetBy: -5)
     // print("getRecentEvents",thresholdIndex,index)
     if currentIndex >= thresholdIndex {
       DispatchQueue.main.async { self.loadMore(callback) }
@@ -94,7 +94,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
-      .map(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
+      .done(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
         fetcher.refreshLatestEvents(
           onDone:{
             DispatchQueue.main.async {

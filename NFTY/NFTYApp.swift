@@ -180,16 +180,17 @@ struct NFTYApp: App {
          .navigationViewStyle(StackNavigationViewStyle())
          */
         
-        
-        NavigationView {
-          WalletView()
-        }
-        .tabItem {
-          Label("Profile",systemImage:"person.crop.circle")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        
         if (!addresses.isEmpty) {
+          
+          // When we have mints and Sales, we merge Recent and Avatar
+          NavigationView {
+            RecentDiscoverTab()
+          }
+          .tabItem {
+            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
           NavigationView {
             FriendsFeedView(events:FriendsFeedViewModel(
               from: [EthereumAddress(hexString:ETH_ADDRESS)!],
@@ -209,15 +210,6 @@ struct NFTYApp: App {
           }
           .tabItem {
             Label("Sales",systemImage:"arrow.up.right.and.arrow.down.left.rectangle.fill")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-        
-          // When we have mints and Sales, we merge Recent and Avatar
-          NavigationView {
-            RecentDiscoverTab()
-          }
-          .tabItem {
-            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
           
@@ -252,7 +244,13 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        
+        NavigationView {
+          WalletView()
+        }
+        .tabItem {
+          Label("Profile",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
         
       }
       .themeStyle()

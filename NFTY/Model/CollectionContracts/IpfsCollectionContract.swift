@@ -43,7 +43,7 @@ class IpfsCollectionContract : ContractInterface {
     
     func image_Alchemy(_ tokenId:BigUInt) -> Promise<Media.ImageData?> {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
-        .then { result -> Promise<Media.ImageData?> in
+        .then(on:DispatchQueue.global(qos: .userInitiated)) { result -> Promise<Media.ImageData?> in
           
           if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
             if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") { return Promise.value(Media.ImageData.video(uri)) }
@@ -76,7 +76,7 @@ class IpfsCollectionContract : ContractInterface {
           
           return Promise { seal in
             let uri = media.gateway // ?? media.raw
-            guard let url = URL(string:uri) else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
+            guard let url = URL(string:uri.trimmingCharacters(in: .whitespacesAndNewlines)) else { return seal.reject(NSError(domain:"", code:404, userInfo:nil)) }
             
             var request = URLRequest(url:url)
             request.httpMethod = url.host.map { $0 == "ipfs.infura.io" ? "POST" : "GET"} ?? "GET"
