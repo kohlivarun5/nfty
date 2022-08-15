@@ -68,7 +68,7 @@ class ENSTextChangedFeed {
   
   init(key:String,fromBlock:BigUInt,limit:Int) {
     let cacheId = "ENSTextChangedFeed.initFromBlock"
-    let blockDecrements = BigUInt(500)
+    let blockDecrements = BigUInt(1500)
     self.limit = limit
     self.retries = 10
     self.logsFetcher = LogsFetcher(

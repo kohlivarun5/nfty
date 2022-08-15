@@ -19,12 +19,9 @@ struct ENSCached {
     let avatar : String?
   }
   
-  static let avatarCache = HybridStorage(
-    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig()),
-    diskStorage: try! DiskStorage<String, Avatar>(
-      config: DiskConfig(name: "ENSCached.Avatar"),
-      transformer:TransformerFactory.forCodable(ofType:Avatar.self))
-  )
+  static let avatarCache = try! DiskStorage<String, Avatar>(
+    config: DiskConfig(name: "ENSCached.Avatar"),
+    transformer:TransformerFactory.forCodable(ofType:Avatar.self))
   
   static public func avatarOwnerOfNamehash(_ nameHash:SolidityWrappedValue,block:BigUInt?,eth:Web3.Eth) -> Promise<(EthereumAddress?,String?)> {
     return Promise { seal in
@@ -36,7 +33,9 @@ struct ENSCached {
           ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar",block:block)
             .done(on:DispatchQueue.global(qos: .userInitiated)) {
               let (avatar,owner) = $0
-              try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
+              DispatchQueue.global(qos: .background).async {
+                try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
+              }
               seal.fulfill((owner,avatar))
             }
             .catch { seal.reject($0) }
