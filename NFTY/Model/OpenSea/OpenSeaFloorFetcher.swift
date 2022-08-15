@@ -13,6 +13,7 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
   let collection : Collection
   let limit : UInt
   private var cursor : String?
+  private var isDone : Bool = false
   
   init(collection:Collection,limit:UInt) {
     self.collection = collection
@@ -20,14 +21,16 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
   }
   
   func fetchNext() -> Promise<[NFTWithLazyPrice]> {
+    guard !self.isDone else { return Promise.value([]) }
     
-    OpenSeaApiCore.getCollectionInfo(contract:self.collection.contract.contractAddressHex)
+    return OpenSeaApiCore.getCollectionInfo(contract:self.collection.contract.contractAddressHex)
       .then(on:.global(qos: .userInteractive)) { (info:OpenSeaApiCore.CollectionInfo) -> Promise<[NFTWithLazyPrice]> in
         switch(info.slug) {
         case .some(let slug):
           let query = OpenSeaGQL.assetSearchQuery(collection:slug, cursor:self.cursor,limit:self.limit)
           return OpenSeaGQL.call(query:query)
             .map(on:.global(qos: .userInteractive)) { (result:OpenSeaGQL.QueryResult) -> [NFTWithLazyPrice] in
+              if (result.search.pageInfo.endCursor == nil) { self.isDone = true }
               self.cursor = result.search.pageInfo.endCursor
               return result.search.edges.compactMap { (edge:OpenSeaGQL.QueryResult.Search.Edge) -> NFTWithLazyPrice? in
                 

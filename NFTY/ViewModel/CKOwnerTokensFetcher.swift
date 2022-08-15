@@ -42,7 +42,7 @@ struct CKOwnerTokensFetcher {
     let database : CKDatabase
     let owner : EthereumAddress
     private var state : State = .uninitialized
-    private let limit : Int = 4
+    private let limit : Int = 10
     
     init(database:CKDatabase,owner:EthereumAddress) {
       self.database = database
