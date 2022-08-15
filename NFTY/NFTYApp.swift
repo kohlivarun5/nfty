@@ -151,6 +151,24 @@ struct NFTYApp: App {
     }
   }
   
+  private func backgroundRefresh() {
+    DispatchQueue.global(qos: .background).async {
+      performBackgroundFetch()
+        .done { _ in
+          DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
+            self.backgroundRefresh()
+          }
+        }
+        .catch {
+          // called when any promises throw an error
+          print($0)
+          DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
+            self.backgroundRefresh()
+          }
+        }
+    }
+  }
+  
   init() {
     if let image = UIImage(systemName: "chevron.backward.circle.fill") {
       UINavigationBar.appearance().backIndicatorImage = image
@@ -203,7 +221,7 @@ struct NFTYApp: App {
             Label("Mints",systemImage:"star.square.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
-        
+          
           NavigationView {
             FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
               .navigationBarTitle("Sales",displayMode: .inline)
@@ -259,13 +277,11 @@ struct NFTYApp: App {
         let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
         updateFriends(friendDict ?? [:])
         
-        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 90) {
-          loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
-        }
-        
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 120) {
           CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
+        
+        self.backgroundRefresh()
         
       }
       .onOpenURL { url in
