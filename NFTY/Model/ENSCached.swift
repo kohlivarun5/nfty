@@ -34,7 +34,7 @@ struct ENSCached {
           return seal.fulfill((info.owner,info.avatar))
         case .none:
           ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar",block:block)
-            .done {
+            .map(on:DispatchQueue.global(qos: .userInitiated)) {
               let (avatar,owner) = $0
               try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
               seal.fulfill((owner,avatar))

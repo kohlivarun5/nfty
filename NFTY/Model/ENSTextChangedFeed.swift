@@ -47,7 +47,7 @@ class ENSTextChangedFeed {
     guard let tokenId = BigUInt(tokenIdStr) else { print("TokenId not a match \(tokenIdStr)"); return Promise.value(nil) }
     
     return collectionsFactory.getByAddressOpt(address.hex(eip55: true))
-      .map  { collectionOpt -> NFTItem? in
+      .map(on:DispatchQueue.global(qos: .userInitiated)) { collectionOpt -> NFTItem? in
         guard let collection : Collection = collectionOpt else { return nil }
         let nft = collection.contract.getNFT(tokenId)
         return NFTItem(nft: nft, collection: collection)
@@ -99,7 +99,7 @@ class ENSTextChangedFeed {
         return processed
       }
     },onRetry:onRetry,limit:self.limit,retries:self.retries) { progress,log in
-      let p = processed.then { processed -> Promise<Int> in
+      let p = processed.then(on:DispatchQueue.global(qos: .userInitiated)) { processed -> Promise<Int> in
         
         // Use the node hash to get the value, as it is not in the event
         guard let removed = log.removed else { return Promise.value(processed) }
@@ -110,10 +110,10 @@ class ENSTextChangedFeed {
         
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
         return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
-          .then { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+          .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
             guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
             return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
-              .then { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+              .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
                 let (item,address) = info
                 guard let _ = item else { return Promise.value((nil,address,nil)) }
                 guard let address = address else { return Promise.value((nil,address,nil)) }
@@ -121,7 +121,7 @@ class ENSTextChangedFeed {
                   .map { (item,address,$0) }
               }
           }
-          .map  { info -> Int in
+          .map(on:DispatchQueue.global(qos: .userInitiated)) { info -> Int in
             
             let (nftItem,address,name) = info
             guard let address = address else { return processed }
@@ -155,10 +155,10 @@ class ENSTextChangedFeed {
         // Use the node hash to get the value, as it is not in the event
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
         return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
-          .then { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+          .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
             guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
             return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
-              .then { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+              .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
                 let (item,address) = info
                 guard let _ = item else { return Promise.value((nil,address,nil)) }
                 guard let address = address else { return Promise.value((nil,address,nil)) }

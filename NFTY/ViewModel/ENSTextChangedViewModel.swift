@@ -42,7 +42,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
-      .done { fetcher in
+      .map(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
         print("Loading friend events")
         fetcher.getRecentEvents(
           onDone:{
@@ -94,7 +94,7 @@ class ENSTextChangedViewModel : ObservableObject {
     
     var newItems : [ENSTextChangedFeed.FeedItem] = []
     self.fetcher
-      .done { fetcher in
+      .map(on:DispatchQueue.global(qos: .userInitiated)) { fetcher in
         fetcher.refreshLatestEvents(
           onDone:{
             DispatchQueue.main.async {
