@@ -152,19 +152,15 @@ struct NFTYApp: App {
   }
   
   private func backgroundRefresh() {
-    DispatchQueue.global(qos: .background).async {
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 600) {
       performBackgroundFetch()
         .done { _ in
-          DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
-            self.backgroundRefresh()
-          }
+          self.backgroundRefresh()
         }
         .catch {
           // called when any promises throw an error
           print($0)
-          DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 60) {
-            self.backgroundRefresh()
-          }
+          self.backgroundRefresh()
         }
     }
   }
