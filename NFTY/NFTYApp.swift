@@ -151,6 +151,20 @@ struct NFTYApp: App {
     }
   }
   
+  private func backgroundRefresh() {
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 600) {
+      performBackgroundFetch()
+        .done { _ in
+          self.backgroundRefresh()
+        }
+        .catch {
+          // called when any promises throw an error
+          print($0)
+          self.backgroundRefresh()
+        }
+    }
+  }
+  
   init() {
     if let image = UIImage(systemName: "chevron.backward.circle.fill") {
       UINavigationBar.appearance().backIndicatorImage = image
@@ -180,16 +194,17 @@ struct NFTYApp: App {
          .navigationViewStyle(StackNavigationViewStyle())
          */
         
-        
-        NavigationView {
-          WalletView()
-        }
-        .tabItem {
-          Label("Profile",systemImage:"person.crop.circle")
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-        
         if (!addresses.isEmpty) {
+          
+          // When we have mints and Sales, we merge Recent and Avatar
+          NavigationView {
+            RecentDiscoverTab()
+          }
+          .tabItem {
+            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
+          }
+          .navigationViewStyle(StackNavigationViewStyle())
+          
           NavigationView {
             FriendsFeedView(events:FriendsFeedViewModel(
               from: [EthereumAddress(hexString:ETH_ADDRESS)!],
@@ -202,22 +217,13 @@ struct NFTYApp: App {
             Label("Mints",systemImage:"star.square.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
-        
+          
           NavigationView {
             FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
               .navigationBarTitle("Sales",displayMode: .inline)
           }
           .tabItem {
             Label("Sales",systemImage:"arrow.up.right.and.arrow.down.left.rectangle.fill")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-        
-          // When we have mints and Sales, we merge Recent and Avatar
-          NavigationView {
-            RecentDiscoverTab()
-          }
-          .tabItem {
-            Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
           
@@ -252,7 +258,13 @@ struct NFTYApp: App {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
-        
+        NavigationView {
+          WalletView()
+        }
+        .tabItem {
+          Label("Profile",systemImage:"person.crop.circle")
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
         
       }
       .themeStyle()
@@ -261,13 +273,11 @@ struct NFTYApp: App {
         let friendDict = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
         updateFriends(friendDict ?? [:])
         
-        DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 90) {
-          loadFeed().done { _ in print("Feed Loaded") }.catch { error in print(error) }
-        }
-        
         DispatchQueue.global(qos:.utility).asyncAfter(deadline: .now() + 120) {
           CompositeCollection.getRecentTrades(currentIndex: 0) { print("Loaded feed") }
         }
+        
+        self.backgroundRefresh()
         
       }
       .onOpenURL { url in

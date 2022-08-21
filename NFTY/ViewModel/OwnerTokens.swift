@@ -149,13 +149,13 @@ class NftOwnerTokens : ObservableObject,Identifiable {
           case .some(let nearAddress):
             return ParasApi.token(owner_id: nearAddress, offset: self.parasOffset, limit: self.limit)
               .map { (results:ParasApi.Token) -> [NFTToken] in
-                results.data.results.compactMap { token -> NFTToken? in
+                tokens + results.data.results.compactMap { token -> NFTToken? in
                   guard let tokenId = UInt(token.token_id) else { return nil }
                   let collection = NearCollection(address:token.contract_id)
                   return NFTToken(
                     collection:collection,
                     nft: collection.contract.getToken(tokenId))
-                } + tokens
+                }
               }.recover { error -> Promise<[NFTToken]> in
                 return Promise.value(tokens)
               }
