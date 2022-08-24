@@ -29,8 +29,8 @@ struct ActionSummaryView: View {
     }
   }
   
-  private func labelOfAction(action:Action.ActionType) -> String {
-    return action.rawValue
+  private func labelOfAction(action:Action) -> String {
+    return "\(action.action.rawValue)\(action.count > 1 ? "(\(action.count) items)" : "")"
   }
   
   var body: some View {
@@ -42,7 +42,7 @@ struct ActionSummaryView: View {
         ActionSummaryView.labelOfAccount(account: action.account)
           .map { AnyView(Text($0)) }
         ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
-        Text(" \(labelOfAction(action:action.action))")
+        Text(" \(labelOfAction(action:action))")
         Image(systemName: "arrow.right.square.fill").padding(.leading,5)
       }
     }
