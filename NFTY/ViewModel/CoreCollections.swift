@@ -1,9 +1,9 @@
-//
-//  CoreCollections.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 6/22/21.
-//
+  //
+  //  CoreCollections.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 6/22/21.
+  //
 
 import Foundation
 import SwiftUI
@@ -676,14 +676,16 @@ class CollectionsFactory {
     case .some(let x):
       return Promise.value(x)
     case .none:
-      // Add some throttle here
+        // Add some throttle here
       return after(seconds: 0.2).then { _ -> Promise<Collection> in
         if (address.hasSuffix(".near")) {
           return Promise.value(NearCollection(address: address))
         } else {
           return openSeaCollection(address: address)
             .map { collection -> Collection in
-              self.collections[address.lowercased()] = collection;
+              DispatchQueue.global(qos: .userInitiated).async {
+                self.collections[address.lowercased()] = collection;
+              }
               return collection
             }
         }
@@ -692,11 +694,14 @@ class CollectionsFactory {
   }
   
   func getByAddressOpt(_ address:String) -> Promise<Collection?> {
-    switch(collections[address.lowercased()]) {
+    switch(
+      DispatchQueue.global(qos: .userInitiated)
+        .sync { collections[address.lowercased()]}
+    ) {
     case .some(let x):
       return Promise.value(x)
     case .none:
-      // Add some throttle here
+        // Add some throttle here
       if (address.hasSuffix(".near")) {
         return Promise.value(NearCollection(address: address))
       } else {
@@ -704,7 +709,9 @@ class CollectionsFactory {
           .map { collectionOpt -> Collection? in
             switch(collectionOpt) {
             case .some(let collection):
-              self.collections[address.lowercased()] = collection;
+              DispatchQueue.global(qos: .userInitiated).async {
+                self.collections[address.lowercased()] = collection;
+              }
               return collection
             case .none:
               return collectionOpt
@@ -712,25 +719,25 @@ class CollectionsFactory {
           }
       }
     }
-  }
-  
-  func getAll() -> [Collection] {
-    collections.map { _,value in value }
-  }
-  
-}
-
-let collectionsFactory = CollectionsFactory()
-
-let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
-  hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
-  eip55:false)
-
-enum CloudDefaultStorageKeys : String {
-  case walletAddress = "walletAddress"
-  case nearAccount = "nearAccount"
-  case favoritesDict = "favoritesDict"
-  case friendsDict = "friendsDict"
-  case quoteType = "quoteType"
-  case offerNotificationMinimum = "offerNotificationMinimum"
-}
+           }
+           
+           func getAll() -> [Collection] {
+      collections.map { _,value in value }
+    }
+           
+           }
+           
+           let collectionsFactory = CollectionsFactory()
+           
+           let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
+            hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
+            eip55:false)
+           
+           enum CloudDefaultStorageKeys : String {
+    case walletAddress = "walletAddress"
+    case nearAccount = "nearAccount"
+    case favoritesDict = "favoritesDict"
+    case friendsDict = "friendsDict"
+    case quoteType = "quoteType"
+    case offerNotificationMinimum = "offerNotificationMinimum"
+    }
