@@ -301,6 +301,7 @@ struct Action {
     case sold
   }
   let action : ActionType
+  let count : Int
 }
 
 struct NFTWithPrice : Identifiable {

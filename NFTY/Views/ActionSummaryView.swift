@@ -1,9 +1,9 @@
-//
-//  ActionSummaryView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 4/10/22.
-//
+  //
+  //  ActionSummaryView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 4/10/22.
+  //
 
 import SwiftUI
 
@@ -23,14 +23,22 @@ struct ActionSummaryView: View {
   
   static public func labelOfAccount(account:UserAccount) -> String? {
     let key = ActionSummaryView.key(account: account)
-    return key.flatMap {
+    let userName : String? = key.flatMap {
       let friends = NSUbiquitousKeyValueStore.default.object(forKey: CloudDefaultStorageKeys.friendsDict.rawValue) as? [String : String]
       return friends?[$0] ?? account.nearAccount
     }
+    switch (userName,account.ethAddress) {
+    case (.some(let userName),_):
+      return userName
+    case (_,.some(let address)):
+      return address.hex(eip55: true).trunc(length: 10)
+    case (.none, .none):
+      return nil
+    }
   }
   
-  private func labelOfAction(action:Action.ActionType) -> String {
-    return action.rawValue
+  private func labelOfAction(action:Action) -> String {
+    return "\(action.action.rawValue)\(action.count > 1 ? " (\(action.count) items)" : "")"
   }
   
   var body: some View {
@@ -39,10 +47,7 @@ struct ActionSummaryView: View {
       destination:PrivateCollectionView(account:action.account,isOwnerView:false)
     ) {
       HStack(spacing:0) {
-        ActionSummaryView.labelOfAccount(account: action.account)
-          .map { AnyView(Text($0)) }
-        ?? (action.account.ethAddress?.hex(eip55: true)).map { AnyView(AddressLabel(address:$0,maxLen: 10)) }
-        Text(" \(labelOfAction(action:action.action))")
+        Text("\(ActionSummaryView.labelOfAccount(account: action.account) ?? "") \(labelOfAction(action:action))")
         Image(systemName: "arrow.right.square.fill").padding(.leading,5)
       }
     }

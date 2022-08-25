@@ -1,9 +1,9 @@
-//
-//  ENSCached.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 7/5/22.
-//
+  //
+  //  ENSCached.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 7/5/22.
+  //
 
 import Foundation
 import Web3
@@ -19,9 +19,12 @@ struct ENSCached {
     let avatar : String?
   }
   
-  static let avatarCache = try! DiskStorage<String, Avatar>(
-    config: DiskConfig(name: "ENSCached.Avatar"),
-    transformer:TransformerFactory.forCodable(ofType:Avatar.self))
+  static let avatarCache = HybridStorage(
+    memoryStorage: MemoryStorage<String, Avatar>(config: MemoryConfig()),
+    diskStorage: try! DiskStorage<String, Avatar>(
+      config: DiskConfig(name: "ENSCached.Avatar"),
+      transformer:TransformerFactory.forCodable(ofType:Avatar.self))
+  )
   
   static public func avatarOwnerOfNamehash(_ nameHash:SolidityWrappedValue,block:BigUInt?,eth:Web3.Eth) -> Promise<(EthereumAddress?,String?)> {
     return Promise { seal in
@@ -31,9 +34,9 @@ struct ENSCached {
           return seal.fulfill((info.owner,info.avatar))
         case .none:
           ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar",block:block)
-            .done(on:DispatchQueue.global(qos: .userInitiated)) {
+            .done {
               let (avatar,owner) = $0
-              DispatchQueue.global(qos: .background).async {
+              DispatchQueue.global(qos: .userInitiated).async {
                 try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
               }
               seal.fulfill((owner,avatar))
@@ -65,9 +68,11 @@ struct ENSCached {
           return seal.fulfill(info.name)
         case .none:
           ENSWrapper.shared.nameOfOwner(address, eth: eth)
-            .done {
-              try? nameOfOwnerCache.setObject(NameOfOwner(name: $0), forKey: address)
-              seal.fulfill($0)
+            .done { name in
+              DispatchQueue.global(qos: .userInitiated).async {
+                try? nameOfOwnerCache.setObject(NameOfOwner(name: name), forKey: address)
+              }
+              seal.fulfill(name)
             }
             .catch { seal.reject($0) }
         }
