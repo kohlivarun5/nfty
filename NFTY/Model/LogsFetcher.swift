@@ -1,9 +1,9 @@
-//
-//  LogsFetcher.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 6/26/21.
-//
+  //
+  //  LogsFetcher.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 6/26/21.
+  //
 
 import Foundation
 import BigInt
@@ -164,7 +164,7 @@ class LogsFetcher {
       topics: self.topics
     )
     
-    // print("Logs=\(params)")
+      // print("Logs=\(params)")
     return alchemyWeb3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
         if case let logs? = result.result {
@@ -200,7 +200,13 @@ class LogsFetcher {
     }
   }
   
-  func fetchWithPromise(onDone: @escaping (Bool) -> Promise<Int>,onRetry: @escaping () -> Void,limit:Int,retries:Int = 0,_ response: @escaping (LoadingProgress,EthereumLogObject) -> Void) {
+  func fetchWithPromise(
+    onDone: @escaping (Bool) -> Promise<Int>,
+    onRetry: @escaping () -> Void,
+    limit:Int,
+    retries:Int = 0,
+    _ response: @escaping ([EthereumLogObject]) -> Void)
+  {
     
     print("fetchWithPromise",self.fromBlock,self.toBlock)
     let params = EthereumGetLogParams(
@@ -210,21 +216,18 @@ class LogsFetcher {
       topics: self.topics
     )
     
-    // print("Logs=\(params)")
+      // print("Logs=\(params)")
     
     return alchemyWeb3.eth.getLogs(params:params) { result in
       DispatchQueue.global(qos:.userInteractive).async {
-        // print("fetchWithPromise",result.result?.count)
+          // print("fetchWithPromise",result.result?.count)
         if case let logs? = result.result {
           print("Found \(logs.count) logs")
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements
-          // print("fetchWithPromise after",self.fromBlock,self.toBlock)
+            // print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
-          
-          let total = logs.count
-          
-          logs.sorted {
+          response(logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):
               return x > y
@@ -235,16 +238,11 @@ class LogsFetcher {
             case (.none,.none):
               return false
             }
-          }
-          .enumerated()
-          .forEach { (index,log) in
-            self.updateMostRecent(log.blockNumber)
-            response(LoadingProgress(current: index, total: total), log)
-          }
+          })
           
           onDone(retries <= 0)
             .map { processed in
-              // print("Done with ",processed,limit,retries)
+                // print("Done with ",processed,limit,retries)
               if (processed < limit && retries > 0) {
                 onRetry()
                 self.fetchWithPromise(onDone:onDone,onRetry:onRetry,limit:limit,retries:retries-1,response);
@@ -254,7 +252,7 @@ class LogsFetcher {
         } else {
           print("Got logs without results\(result)")
           onDone(retries <= 0).map { processed in
-            // print("Done with ",processed,limit,retries)
+              // print("Done with ",processed,limit,retries)
             if (processed < limit && retries > 0) {
               onRetry()
               self.fetchWithPromise(onDone:onDone,onRetry:onRetry,limit:limit,retries:retries-1,response);
