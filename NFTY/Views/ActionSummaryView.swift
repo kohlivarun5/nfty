@@ -1,9 +1,9 @@
-//
-//  ActionSummaryView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 4/10/22.
-//
+  //
+  //  ActionSummaryView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 4/10/22.
+  //
 
 import SwiftUI
 
