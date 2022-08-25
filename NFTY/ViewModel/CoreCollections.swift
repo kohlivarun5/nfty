@@ -694,50 +694,53 @@ class CollectionsFactory {
   }
   
   func getByAddressOpt(_ address:String) -> Promise<Collection?> {
-    switch(
+    
+    return Promise { seal in
       DispatchQueue.global(qos: .userInitiated)
-        .sync { collections[address.lowercased()]}
-    ) {
-    case .some(let x):
-      return Promise.value(x)
-    case .none:
-        // Add some throttle here
-      if (address.hasSuffix(".near")) {
-        return Promise.value(NearCollection(address: address))
-      } else {
-        return erc721Collection(address: address)
-          .map { collectionOpt -> Collection? in
-            switch(collectionOpt) {
-            case .some(let collection):
-              DispatchQueue.global(qos: .userInitiated).async {
-                self.collections[address.lowercased()] = collection;
-              }
-              return collection
-            case .none:
-              return collectionOpt
+        .async {
+          switch(self.collections[address.lowercased()]) {
+          case .some(let x):
+            seal.fulfill(x)
+          case .none:
+              // Add some throttle here
+            if (address.hasSuffix(".near")) {
+              seal.fulfill(NearCollection(address: address))
+            } else {
+              erc721Collection(address: address)
+                .map { collectionOpt -> Collection? in
+                  switch(collectionOpt) {
+                  case .some(let collection):
+                    DispatchQueue.global(qos: .userInitiated).async {
+                      self.collections[address.lowercased()] = collection;
+                    }
+                    return collection
+                  case .none:
+                    return collectionOpt
+                  }
+                }.done {
+                  seal.fulfill($0)
+                }.catch { seal.reject($0) }
             }
           }
-      }
+        }
     }
-           }
-           
-           func getAll() -> [Collection] {
-      collections.map { _,value in value }
-    }
-           
-           }
-           
-           let collectionsFactory = CollectionsFactory()
-           
-           let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
-            hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
-            eip55:false)
-           
-           enum CloudDefaultStorageKeys : String {
-    case walletAddress = "walletAddress"
-    case nearAccount = "nearAccount"
-    case favoritesDict = "favoritesDict"
-    case friendsDict = "friendsDict"
-    case quoteType = "quoteType"
-    case offerNotificationMinimum = "offerNotificationMinimum"
-    }
+  }
+  
+  func getAll() -> [Collection] { collections.map { _,value in value } }
+  
+}
+
+let collectionsFactory = CollectionsFactory()
+
+let SAMPLE_WALLET_ADDRESS = try! EthereumAddress(
+  hex: "0x208b82b04449cd51803fae4b1561450ba13d9510",
+  eip55:false)
+
+enum CloudDefaultStorageKeys : String {
+  case walletAddress = "walletAddress"
+  case nearAccount = "nearAccount"
+  case favoritesDict = "favoritesDict"
+  case friendsDict = "friendsDict"
+  case quoteType = "quoteType"
+  case offerNotificationMinimum = "offerNotificationMinimum"
+}
