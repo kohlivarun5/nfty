@@ -708,15 +708,11 @@ class CollectionsFactory {
             } else {
               erc721Collection(address: address)
                 .map { collectionOpt -> Collection? in
-                  switch(collectionOpt) {
-                  case .some(let collection):
-                    DispatchQueue.global(qos: .userInitiated).async {
-                      self.collections[address.lowercased()] = collection;
-                    }
-                    return collection
-                  case .none:
-                    return collectionOpt
+                  guard let collection = collectionOpt else { return nil }
+                  DispatchQueue.global(qos: .userInitiated).async {
+                    self.collections[address.lowercased()] = collection;
                   }
+                  return collection
                 }.done {
                   seal.fulfill($0)
                 }.catch { seal.reject($0) }
