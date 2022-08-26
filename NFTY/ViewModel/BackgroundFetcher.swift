@@ -1,9 +1,9 @@
-//
-//  BackgroundFetcher.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 10/4/21.
-//
+  //
+  //  BackgroundFetcher.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 10/4/21.
+  //
 
 import Foundation
 import PromiseKit
@@ -115,7 +115,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
       $0,
       false, { accu,result -> Promise<Bool> in
         let (collection,orders) = result
-        // print(orders)
+          // print(orders)
         
         let filtered =
         orders
@@ -124,7 +124,7 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
             let key = "\(order.contract_address):\(order.token_id)"
             
             if let entry = try? salesCache.object(forKey: key) {
-              // Entry in cache, lets compare and clean if needed
+                // Entry in cache, lets compare and clean if needed
               let entry_expiry = entry.expiration_time ?? 0
               
               if (entry_expiry != 0
@@ -171,12 +171,12 @@ func fetchFavoriteSales(_ spot : Double?) -> Promise<Bool> {
                 "tokenId" : String(order.token_id) // Needs to be string as BigUInt doesn't conform to secure encoding https://github.com/kohlivarun5/nfty/pull/320
               ]
               
-              // show this notification five seconds from now
+                // show this notification five seconds from now
               let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
               
               let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
               
-              // add our notification request
+                // add our notification request
               UNUserNotificationCenter.current().add(request)
               return (accu || true)
             }
@@ -196,12 +196,12 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
   
   let userSettings = UserSettings()
   
-  // TODO Support Near
+    // TODO Support Near
   let orders = OpenSeaApi.userAssetOrders(address:.owner(address),side:OpenSeaApi.Side.buy)
   return orders
     .then { orders -> Promise<Bool> in
       
-      // TODO : Better cache checks
+        // TODO : Better cache checks
       let offersCache = try! DiskStorage<String, OpenSeaApi.AssetOrder>(
         config: DiskConfig(name: "OwnerBuyOffers.cache",expiry: .never),
         transformer: TransformerFactory.forCodable(ofType: OpenSeaApi.AssetOrder.self))
@@ -220,7 +220,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
               let key = "\(order.asset.asset_contract.address):\(order.asset.token_id)"
               
               if let entry = try? offersCache.object(forKey: key) {
-                // Entry in cache, lets compare and clean if needed
+                  // Entry in cache, lets compare and clean if needed
                 if (entry.expiration_time != 0 && Date(timeIntervalSince1970: Double(entry.expiration_time)).timeIntervalSinceNow.sign == .minus) {
                   try? offersCache.removeObject(forKey: key)
                 }
@@ -230,7 +230,7 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
               
               return collection.contract.indicativeFloor()
                 .map { floor -> (Collection,OpenSeaApi.AssetOrder)? in
-                  // Check user settings limit
+                    // Check user settings limit
                   var withinLimit = false
                   switch(floor,Double(order.current_price).map { BigUInt($0) },userSettings.offerNotificationMinimum) {
                   case (.none,_,_),(_,.none,_):
@@ -298,10 +298,10 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                   
                   let content = UNMutableNotificationContent()
                   content.title = "New Offer"
-                  //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
+                    //content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
                   print(order)
                   
-                  // TODO : Handle currency tokens
+                    // TODO : Handle currency tokens
                   let wei = Double(order.current_price).map { BigUInt($0) }
                   content.subtitle = "\(collection.info.name) #\(order.asset.token_id)"
                   content.body = "Offer: \(spot.map { "\(UsdString(wei: wei!, rate: $0)) (\(EthString(wei: wei!)))" } ?? EthString(wei: wei!) )"
@@ -319,13 +319,13 @@ func fetchOffers(_ spot:Double?) -> Promise<Bool> {
                     "tokenId" : tokenId
                   ]
                   
-                  // show this notification five seconds from now
+                    // show this notification five seconds from now
                   let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
                   
-                  // choose a random identifier
+                    // choose a random identifier
                   let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
                   
-                  // add our notification request
+                    // add our notification request
                   UNUserNotificationCenter.current().add(request)
                   return accu || true
                 }
@@ -354,7 +354,7 @@ func loadMints() -> Promise<Bool> {
   let fakeKey = ""
   
   let lastNotifiedBlock = try? lastNotifiedBlockCache.object(forKey: fakeKey)
-  // let lastNotifiedBlock : BigUInt? = 15160111 // For testing
+    // let lastNotifiedBlock : BigUInt? = 15160111 // For testing
   print("lastNotifiedBlock=",lastNotifiedBlock.map { String($0)} ?? "None")
   
   var newLatestBlock : BigUInt? = nil
@@ -365,73 +365,56 @@ func loadMints() -> Promise<Bool> {
     })
   }.map {
     
-    let grouped = Dictionary(
-      grouping: $0,
-      by: { ($0.nft.nftWithPrice.action?.account).flatMap { ActionSummaryView.labelOfAccount(account:$0) } })
-      .map { (
-        $0.key,
-        Dictionary(
-          grouping: $0.value,
-          by: { $0.collection.info.name }
-        ).map { ($0.key,$0.value) }
-      )}
-    
-    // print("Grouped=",grouped)
-    
-    grouped.forEach {
-      let (accountLabel,grouped_events) = $0
-      guard let accountLabel = accountLabel else { return }
-      grouped_events.forEach {
-        let (name,events) = $0
-        
-        let seenBlock = events
-          .compactMap { $0.nft.nftWithPrice.blockNumber?.id }
-          .max()
-        
-        guard let seenBlock = seenBlock else { return }
-        
+    $0.forEach {
+      let name = $0.collection.info.name
+      guard let action = $0.nft.nftWithPrice.action else { return }
+      
+      guard let accountLabel = ActionSummaryView.labelOfAccount(account:action.account) else { return }
+      
+      guard let seenBlock = $0.nft.nftWithPrice.blockNumber?.id else { return }
+      
         // This has not been seen, lets save
-        switch(newLatestBlock) {
-        case .none:
-          newLatestBlock = seenBlock
-        case .some(let newLatestBlockVal):
-          newLatestBlock = max(newLatestBlockVal,seenBlock)
-        }
-        
-        switch(lastNotifiedBlock) {
-        case .some(let block):
-          if (block >= seenBlock) { return }
-          else { break }
-        case .none:
-          // lastNotifiedBlock is nil, lets not spam on first run
-          return
-        }
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Mint Alert 🚨"
-        content.subtitle = "\(accountLabel) minted"
-        content.body = "\(name) \(events.count > 1 ? "[\(events.count) items]" : "[1 item]")"
-        
-        
-        if let ethereumAddress = events.first?.nft.nftWithPrice.action?.account.ethAddress {
-          content.userInfo = [
-            "sheetState": "user",
-            "ethereumAddress" : ethereumAddress.hex(eip55: true),
-            "friendName" : accountLabel,
-            "page" : PrivateCollectionView.TokensPage.minted.rawValue
-          ]
-        }
-        
-        // show this notification five seconds from now
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        
-        // choose a random identifier
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        // add our notification request
-        UNUserNotificationCenter.current().add(request)
+      switch(newLatestBlock) {
+      case .none:
+        newLatestBlock = seenBlock
+      case .some(let newLatestBlockVal):
+        newLatestBlock = max(newLatestBlockVal,seenBlock)
       }
+      
+      switch(lastNotifiedBlock) {
+      case .some(let block):
+        if (block >= seenBlock) { return }
+        else { break }
+      case .none:
+          // lastNotifiedBlock is nil, lets not spam on first run
+        return
+      }
+      
+      let content = UNMutableNotificationContent()
+      content.title = "Mint Alert 🚨"
+      content.subtitle = "\(accountLabel) minted"
+      content.body = "\(name) \(action.count > 1 ? "[\(action.count) items]" : "[1 item]")"
+      
+      
+      if let ethereumAddress = action.account.ethAddress {
+        content.userInfo = [
+          "sheetState": "user",
+          "ethereumAddress" : ethereumAddress.hex(eip55: true),
+          "friendName" : accountLabel,
+          "page" : PrivateCollectionView.TokensPage.minted.rawValue
+        ]
+      }
+      
+        // show this notification five seconds from now
+      let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+      
+        // choose a random identifier
+      let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+      
+        // add our notification request
+      UNUserNotificationCenter.current().add(request)
     }
+    
     
     print("newLatestBlock=",newLatestBlock.map { String($0) } ?? "None")
     switch(newLatestBlock) {
@@ -529,7 +512,7 @@ func loadRecentsFeed() -> Promise<Bool> {
 }
 
 func performBackgroundFetch() -> Promise<Bool> {
-  // Dispatch to multiple fetchers
+    // Dispatch to multiple fetchers
   
   return loadMints()
     .recover { error -> Promise<Bool> in

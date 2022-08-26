@@ -668,6 +668,8 @@ let SampleCollection = CompositeCollection.loaders[0].collection
 
 class CollectionsFactory {
   
+  let serialQueue = DispatchQueue(label: "CollectionsFactory.queue")
+  
   var collections : [String : Collection] = Dictionary(
     uniqueKeysWithValues: CompositeCollection.loaders.map { $0.collection }.map{ ($0.info.address.lowercased(),$0) })
   
@@ -683,7 +685,7 @@ class CollectionsFactory {
         } else {
           return openSeaCollection(address: address)
             .map { collection -> Collection in
-              DispatchQueue.global(qos: .userInitiated).async {
+              self.serialQueue.async {
                 self.collections[address.lowercased()] = collection;
               }
               return collection
@@ -696,8 +698,7 @@ class CollectionsFactory {
   func getByAddressOpt(_ address:String) -> Promise<Collection?> {
     
     return Promise { seal in
-      DispatchQueue.global(qos: .userInitiated)
-        .async {
+      serialQueue.async {
           switch(self.collections[address.lowercased()]) {
           case .some(let x):
             seal.fulfill(x)
@@ -708,15 +709,11 @@ class CollectionsFactory {
             } else {
               erc721Collection(address: address)
                 .map { collectionOpt -> Collection? in
-                  switch(collectionOpt) {
-                  case .some(let collection):
-                    DispatchQueue.global(qos: .userInitiated).async {
-                      self.collections[address.lowercased()] = collection;
-                    }
-                    return collection
-                  case .none:
-                    return collectionOpt
+                  guard let collection = collectionOpt else { return nil }
+                  self.serialQueue.async {
+                    self.collections[address.lowercased()] = collection;
                   }
+                  return collection
                 }.done {
                   seal.fulfill($0)
                 }.catch { seal.reject($0) }

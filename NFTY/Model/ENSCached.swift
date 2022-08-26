@@ -14,6 +14,8 @@ import BigInt
 
 struct ENSCached {
   
+  static private let serialQueue = DispatchQueue(label: "ENSCached.queue")
+  
   struct Avatar : Codable {
     let owner : EthereumAddress?
     let avatar : String?
@@ -28,7 +30,7 @@ struct ENSCached {
   
   static public func avatarOwnerOfNamehash(_ nameHash:SolidityWrappedValue,block:BigUInt?,eth:Web3.Eth) -> Promise<(EthereumAddress?,String?)> {
     return Promise { seal in
-      DispatchQueue.global(qos: .userInitiated).async {
+      serialQueue.async {
         switch(try? avatarCache.object(forKey:"\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")) {
         case .some(let info):
           return seal.fulfill((info.owner,info.avatar))
@@ -36,7 +38,7 @@ struct ENSCached {
           ENSWrapper.shared.textAddrOfName(namehash: nameHash, key: "avatar",block:block)
             .done {
               let (avatar,owner) = $0
-              DispatchQueue.global(qos: .userInitiated).async {
+              serialQueue.async {
                 try? avatarCache.setObject(Avatar(owner: owner, avatar: avatar), forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(block ?? "")")
               }
               seal.fulfill((owner,avatar))
@@ -61,7 +63,7 @@ struct ENSCached {
   
   static public func nameOfOwner(_ address:EthereumAddress,eth:Web3.Eth) -> Promise<String?> {
     return Promise { seal in
-      DispatchQueue.global(qos: .userInitiated).async {
+      serialQueue.async {
         try? nameOfOwnerCache.removeExpiredObjects()
         switch(try? nameOfOwnerCache.object(forKey:address)) {
         case .some(let info):
@@ -69,7 +71,7 @@ struct ENSCached {
         case .none:
           ENSWrapper.shared.nameOfOwner(address, eth: eth)
             .done { name in
-              DispatchQueue.global(qos: .userInitiated).async {
+              serialQueue.async {
                 try? nameOfOwnerCache.setObject(NameOfOwner(name: name), forKey: address)
               }
               seal.fulfill(name)
