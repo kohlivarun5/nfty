@@ -227,6 +227,10 @@ class LogsFetcher {
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements
             // print("fetchWithPromise after",self.fromBlock,self.toBlock)
           
+          logs.forEach {
+            self.updateMostRecent($0.blockNumber)
+          }
+          
           response(logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {
             case (.some(let x),.some(let y)):

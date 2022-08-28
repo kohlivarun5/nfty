@@ -151,9 +151,10 @@ class ENSTextChangedFeed {
     
     print("refreshLatestEvents")
     self.logsFetcher.updateLatest(onDone: {
+      print("onDone")
       prev.done { onDone() }.catch { print($0); onDone() }
     }) { (progress,log) in
-      let p = prev.then { () -> Promise<Void> in
+      prev = prev.then { () -> Promise<Void> in
         
         guard let blockNumber = log.blockNumber else { return Promise.value(()) }
         
@@ -186,7 +187,6 @@ class ENSTextChangedFeed {
             return Promise.value(())
           }
       }
-      prev = p
     }
   }
 }
