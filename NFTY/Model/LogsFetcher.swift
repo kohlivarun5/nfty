@@ -42,7 +42,7 @@ extension Web3.Eth {
     params: EthereumGetLogParams,
     response: @escaping Web3ResponseCompletion<[EthereumLogObject]>
   ) {
-    print("calling web3.eth.getLogs")// with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
+    print("calling web3.eth.getLogs with fromBlock=\(String(describing:params.fromBlock)) -> toBlock=\(String(describing:params.toBlock))")
     let req = RPCRequest<[EthereumGetLogParams]>(
       id: properties.rpcId,
       jsonrpc: Web3.jsonrpc,
@@ -226,6 +226,10 @@ class LogsFetcher {
           self.toBlock = EthereumQuantityTag.block(self.fromBlock - 1)
           self.fromBlock = self.fromBlock - 1 - self.blockDecrements
             // print("fetchWithPromise after",self.fromBlock,self.toBlock)
+          
+          logs.forEach {
+            self.updateMostRecent($0.blockNumber)
+          }
           
           response(logs.sorted {
             switch($0.blockNumber?.quantity,$1.blockNumber?.quantity) {

@@ -180,9 +180,8 @@ class FriendsFeedFetcher {
           
           let progress = LoadingProgress(current: current, total: total)
           
-          guard let logData = logsData.first else { return Promise.value(processed) }
+          guard let logData = logsData.sorted(by: { a,b in a.blockNumber.quantity > b.blockNumber.quantity }).first else { return Promise.value(processed) }
           
-          let res = logData.res
           let transactionHash = logData.transactionHash
           let actionAccount = logData.actionAccount
           let tokenId = logData.tokenId
