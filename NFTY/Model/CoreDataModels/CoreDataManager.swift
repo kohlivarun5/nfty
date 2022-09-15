@@ -27,10 +27,4 @@ class CoreDataManager {
     return container
   }()
   
-  var managedContext: NSManagedObjectContext {
-    let context = persistentContainer.viewContext
-    context.automaticallyMergesChangesFromParent = true
-    return context
-  } 
-  
 }

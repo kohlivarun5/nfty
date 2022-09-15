@@ -1,9 +1,9 @@
-//
-//  CKObjectCache.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 6/19/22.
-//
+  //
+  //  CKObjectCache.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 6/19/22.
+  //
 
 import Foundation
 
@@ -76,50 +76,58 @@ struct CKObjectCache<Key,Data,Output:NSManagedObject> {
   }
   
   func get(_ key:Key) -> Promise<Data?> {
-    let keyStr = self.keyToString(key)
     
-    // print("Fetching from coreData \(entityName):\(keyStr)")
-    let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
-    request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
-    let results = try? CoreDataManager.shared.managedContext.fetch(request)
-    // print("Got results=\(String(describing: results)) for query=\(request)")
-    
-    if let data = results?.first {
-      return Promise.value(self.data(data))
-    }
-    
-    // print("Failed to find in coredata \(entityName):\(keyStr)")
-    return database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:keyStr))
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Data?> in
-        let (record,error) = result
-        // print("Fetch returned with error=\(String(describing: error))")
-        guard error == nil else { return Promise.value(nil) }
-        guard let record = record else { return Promise.value(nil) }
+    return Promise { seal in
+      
+      CoreDataManager.shared.persistentContainer.performBackgroundTask { backgroundContext in
+        let keyStr = self.keyToString(key)
         
-        return Promise { seal in
-          
-          print("*** Failed to find in coredata \(entityName):\(keyStr), but found in CloudKit")
-          CoreDataManager.shared.persistentContainer.performBackgroundTask { backgroundContext in
-            let output = Output(context: backgroundContext)
-            output.setValuesForKeys(
-              Dictionary(
-                uniqueKeysWithValues:
-                  record.allKeys().map { ($0,record[$0] as! String?) }
-              )
-            )
-            try? backgroundContext.save()
-            seal.fulfill(self.data(output))
+          // print("Fetching from coreData \(entityName):\(keyStr)")
+        let request: NSFetchRequest<Output> = NSFetchRequest<Output>(entityName: entityName)
+        request.predicate = NSPredicate(format: "\(keyField) == %@", keyStr)
+        let results = try? backgroundContext.fetch(request)
+          // print("Got results=\(String(describing: results)) for query=\(request)")
+        
+        if let data = results?.first {
+          return seal.fulfill(self.data(data))
+        }
+        
+          // print("Failed to find in coredata \(entityName):\(keyStr)")
+        database.fetchRecordWithID(recordID:CKRecord.ID.init(recordName:keyStr))
+          .then(on:DispatchQueue.global(qos:.userInteractive)) { result -> Promise<Data?> in
+            let (record,error) = result
+              // print("Fetch returned with error=\(String(describing: error))")
+            guard error == nil else { return Promise.value(nil) }
+            guard let record = record else { return Promise.value(nil) }
+            
+            return Promise { seal in
+              
+              print("*** Failed to find in coredata \(entityName):\(keyStr), but found in CloudKit")
+              CoreDataManager.shared.persistentContainer.performBackgroundTask { backgroundContext in
+                let output = Output(context: backgroundContext)
+                output.setValuesForKeys(
+                  Dictionary(
+                    uniqueKeysWithValues:
+                      record.allKeys().map { ($0,record[$0] as! String?) }
+                  )
+                )
+                try? backgroundContext.save()
+                seal.fulfill(self.data(output))
+              }
+            }
           }
-        }
+          .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Data?> in
+            switch(data) {
+            case .some(let data):
+              return Promise.value(data)
+            case .none:
+              return onCacheMiss(key)
+            }
+          }
+          .done { seal.fulfill($0) }
+          .catch { seal.reject($0) }
       }
-      .then(on:DispatchQueue.global(qos:.userInteractive)) { (data:Data?) -> Promise<Data?> in
-        switch(data) {
-        case .some(let data):
-          return Promise.value(data)
-        case .none:
-          return onCacheMiss(key)
-        }
-      }
-    
+      
+    }
   }
 }
