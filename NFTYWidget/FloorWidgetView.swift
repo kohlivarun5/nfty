@@ -97,7 +97,7 @@ struct FloorWidgetView : View {
           ) {
             FloorWidgetStackView(collections:sorted.prefix(24))
           }
-        case .accessoryCircular,.accessoryRectangular,.accessoryInline:
+        case .accessoryCircular,.accessoryRectangular,.accessoryInline: // TODO
           EmptyView()
         }
         
@@ -132,7 +132,7 @@ struct FloorWidgetView : View {
                 .foregroundColor(Color.secondaryLabel)
             }
           }
-        case .accessoryCircular,.accessoryRectangular,.accessoryInline:
+        case .accessoryCircular,.accessoryRectangular,.accessoryInline:  // TODO
           EmptyView()
         }
       }
