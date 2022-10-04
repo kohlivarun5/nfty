@@ -38,7 +38,8 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
                 
                 guard let ask = edge.node.asset.orderData.bestAsk else { return nil }
                 
-                let quantityInEth = ask.paymentAssetQuantity.quantityInEth ?? (
+                // print("quantity=\(ask.paymentAssetQuantity.quantity)")
+                let quantityInEth = ask.paymentAssetQuantity.quantity ?? (
                   ask.paymentAssetQuantity.asset.symbol == "ETH" || ask.paymentAssetQuantity.asset.symbol == "WETH"
                   ? ask.paymentAssetQuantity.quantity : nil);
                 
