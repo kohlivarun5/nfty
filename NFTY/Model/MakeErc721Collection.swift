@@ -49,6 +49,7 @@ struct MakeErc721Collection {
   }
   
   static private let KnownUnsupportedName = "com.nftygo.unsupported"
+  static private let serialQueue = DispatchQueue(label: "ENSCached.queue")
   
   private static var cache : [String:Erc721ContractInfo] = [:]
   
@@ -82,7 +83,7 @@ struct MakeErc721Collection {
       print("Error = \(e)")
       return Promise.value(nil)
     }
-    .map(on:.global(qos: .userInteractive)) {
+    .map(on:serialQueue) {
       let ret = Erc721ContractInfo(address:addressStr,name:$0)
       MakeErc721Collection.cache[addressStr] = ret
       return ret

@@ -1,9 +1,9 @@
-//
-//  FriendsFeedFetcher.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 3/20/22.
-//
+  //
+  //  FriendsFeedFetcher.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 3/20/22.
+  //
 
 import Foundation
 import Web3
@@ -32,17 +32,14 @@ class FriendsFeedFetcher {
   
   let action : Action.ActionType
   
-  private func actionOfLog(res:[String : Any]) -> Action {
+  private func actionAccount(res:[String : Any]) -> EthereumAddress? {
     switch(self.action) {
     case .sold:
-      return Action(account: UserAccount(ethAddress: res["from"] as? EthereumAddress, nearAccount: nil),
-                    action:.sold)
+      return res["from"] as? EthereumAddress
     case .bought:
-      return Action(account: UserAccount(ethAddress: res["to"] as? EthereumAddress, nearAccount: nil),
-                    action:.bought)
+      return res["to"] as? EthereumAddress
     case .minted:
-      return Action(account: UserAccount(ethAddress: res["to"] as? EthereumAddress, nearAccount: nil),
-                    action:.minted)
+      return res["to"] as? EthereumAddress
     }
   }
   
@@ -134,84 +131,121 @@ class FriendsFeedFetcher {
     self.logsFetcher.fetchWithPromise(onDone: { (isFinal:Bool) in
       return processed.map { processed in
         if (isFinal || processed >= self.limit) {
-          // print("done")
+            // print("done")
           onDone()
         }
         return processed
       }
-    },onRetry:onRetry,limit:self.limit,retries:self.retries) { progress,log in
-      let p = processed.then { processed -> Promise<Int> in
-        
-        let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
-        
-        // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
-        
-        guard let tokenId = (res["tokenId"] as? BigUInt) else { return Promise.value(processed)  }
-        // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
-        
-        guard let removed = log.removed else { return Promise.value(processed) }
-        if (removed) { return Promise.value(processed) }
-        
-        guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
-        
-        // print("eventOfTx for ",transactionHash.hex())
-        return TxFetcher.eventOfTx(transactionHash:transactionHash)
-          .then { txInfo -> Promise<Int> in
-            
-            guard let txInfo = txInfo else { return Promise.value(processed) }
-            
-            switch(self.addressesFilter) {
-            case .some(let filter):
-              if (filter.first(where: { $0 == txInfo.from }) == nil) {
-                // tx from is not one of requested addresses, skip such as can be spam
-                return Promise.value(processed)
-              }
-            case .none:
-              break
-            }
-            
-            guard let price = priceIfNotZero(txInfo.value) else { return Promise.value(processed) }
-            
-            // print("Log for Address=\(log.address.hex(eip55: true))");
-            return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
-              .map  { collectionOpt -> Int in
-                
-                guard let collection = collectionOpt else { return processed }
-                
-                // TODO Fix : Bring price from tx /WETH
-                // print("log=",tokenId,log.transactionHash?.hex())
-                response(
-                  progress,
-                  FriendsFeedFetcher.NFTItem(
-                    nft: NFTWithPriceAndInfo(
-                      nftWithPrice: NFTWithPrice(
-                        nft:collection.contract.getNFT(tokenId),
-                        blockNumber: log.blockNumber.map { .ethereum($0) },
-                        indicativePrice:.lazy {
-                          ObservablePromise(
-                            resolved:NFTPriceStatus.known(
-                              NFTPriceInfo(
-                                wei: price,
-                                blockNumber:.ethereum(txInfo.blockNumber),
-                                type: .transfer
-                              )
-                            )
-                          ) // TODO
-                        },
-                        action:self.actionOfLog(res:res)
-                      ),
-                      info: collection.info),
-                    collection: collection)
-                )
-                return processed + 1
-                
-              }
-          }.recover { error -> Promise<Int> in
-            print(error)
-            return Promise.value(processed)
-          }
+    },onRetry:onRetry,limit:self.limit,retries:self.retries) { logs in
+      
+      let total = logs.count
+      
+      struct LogData {
+        let tokenId : BigUInt
+        let transactionHash : EthereumData
+        let actionAccount : EthereumAddress
+        let contractAddress : EthereumAddress
+        let blockNumber: EthereumQuantity
+        let res : [String : Any]
       }
-      processed = p
+      
+      let grouped = Dictionary(
+        grouping:
+          logs
+          .compactMap { log -> LogData? in
+            let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
+            guard let tokenId = (res["tokenId"] as? BigUInt) else { return nil }
+            
+              // guard let removed = log.removed && !removed else { return nil }
+            guard let transactionHash = log.transactionHash else { return nil }
+            guard let actionAccount = self.actionAccount(res: res) else { return nil }
+            guard let blockNumber = log.blockNumber else { return nil }
+            
+            return LogData(
+              tokenId: tokenId,
+              transactionHash:transactionHash,
+              actionAccount: actionAccount,
+              contractAddress:log.address,
+              blockNumber:blockNumber,
+              res: res)
+          },
+        by: { "\($0.actionAccount.hex(eip55:true)):\($0.transactionHash.hex())" })
+      
+      var current = 0
+      processed = processed.then {
+        reduce_p(grouped.map { $1 }, $0, { processed,logsData -> Promise<Int>in
+          
+          let actionCount = logsData.count
+          current = current + actionCount
+          
+          let progress = LoadingProgress(current: current, total: total)
+          
+          guard let logData = logsData.sorted(by: { a,b in a.blockNumber.quantity > b.blockNumber.quantity }).first else { return Promise.value(processed) }
+          
+          let transactionHash = logData.transactionHash
+          let actionAccount = logData.actionAccount
+          let tokenId = logData.tokenId
+          
+          return TxFetcher.eventOfTx(transactionHash:transactionHash)
+            .then { txInfo -> Promise<Int> in
+              
+              guard let txInfo = txInfo else { return Promise.value(processed) }
+              
+              switch(self.addressesFilter) {
+              case .some(let filter):
+                if (filter.first(where: { $0 == txInfo.from }) == nil) {
+                    // tx from is not one of requested addresses, skip such as can be spam
+                  return Promise.value(processed)
+                }
+              case .none:
+                break
+              }
+              
+              guard let price = priceIfNotZero(txInfo.value) else { return Promise.value(processed) }
+              
+                // print("Log for Address=\(log.address.hex(eip55: true))");
+              return collectionsFactory.getByAddressOpt(logData.contractAddress.hex(eip55: true))
+                .map  { collectionOpt -> Int in
+                  
+                  guard let collection = collectionOpt else { return processed }
+                  
+                    // TODO Fix : Bring price from tx /WETH
+                    // print("log=",tokenId,log.transactionHash?.hex())
+                  response(
+                    progress,
+                    FriendsFeedFetcher.NFTItem(
+                      nft: NFTWithPriceAndInfo(
+                        nftWithPrice: NFTWithPrice(
+                          nft:collection.contract.getNFT(tokenId),
+                          blockNumber: .ethereum(logData.blockNumber),
+                          indicativePrice:.lazy {
+                            ObservablePromise(
+                              resolved:NFTPriceStatus.known(
+                                NFTPriceInfo(
+                                  wei: price,
+                                  blockNumber:.ethereum(txInfo.blockNumber),
+                                  type: .transfer
+                                )
+                              )
+                            ) // TODO
+                          },
+                          action:Action(account: UserAccount(ethAddress: actionAccount,
+                                                             nearAccount: nil),
+                                        action: self.action,
+                                        count: actionCount)
+                        ),
+                        info: collection.info),
+                      collection: collection)
+                  )
+                  return processed + 1
+                  
+                }
+            }.recover { error -> Promise<Int> in
+              print(error)
+              return Promise.value(processed)
+            }
+        })
+      }
     }
   }
   
@@ -224,7 +258,7 @@ class FriendsFeedFetcher {
     }) { (progress,log) in
       let p = prev.then { () -> Promise<Void> in
         
-        //print("Log for Address=\(log.address.hex(eip55: true))");
+          //print("Log for Address=\(log.address.hex(eip55: true))");
         return collectionsFactory.getByAddressOpt(log.address.hex(eip55: true))
           .map  { collectionOpt -> Void in
             
@@ -232,19 +266,19 @@ class FriendsFeedFetcher {
             
             let res = try! web3.eth.abi.decodeLog(event:self.Transfer,from:log);
             
-            // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
+              // print("Found Collection Address=\(collection.contract.contractAddressHex),tokenId=\(res["tokenId"] as? BigUInt) for log=\(log)")
             
             guard let tokenId = (res["tokenId"] as? BigUInt) else { return }
-            // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
-            // TODO Fix : Bring price from tx /WETH
+              // let isMint = res["from"] as! EthereumAddress == EthereumAddress(hexString:ETH_ADDRESS)!
+              // TODO Fix : Bring price from tx /WETH
             TxFetcher.eventOfTx(transactionHash: log.transactionHash)
               .map { txInfo in
                 
                 guard let txInfo = txInfo else { return }
                 
                 guard let price = priceIfNotZero(txInfo.value) else { return }
-                // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
-                // TODO Fix : Bring price from tx /WETH
+                  // if (self.addresses.first(where: { $0 == txInfo.from }) == nil) { return processed }
+                  // TODO Fix : Bring price from tx /WETH
                 response(
                   progress,
                   FriendsFeedFetcher.NFTItem(

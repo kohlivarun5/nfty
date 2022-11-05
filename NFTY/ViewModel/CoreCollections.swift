@@ -1,9 +1,9 @@
-//
-//  CoreCollections.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 6/22/21.
-//
+  //
+  //  CoreCollections.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 6/22/21.
+  //
 
 import Foundation
 import SwiftUI
@@ -668,6 +668,8 @@ let SampleCollection = CompositeCollection.loaders[0].collection
 
 class CollectionsFactory {
   
+  let serialQueue = DispatchQueue(label: "CollectionsFactory.queue")
+  
   var collections : [String : Collection] = Dictionary(
     uniqueKeysWithValues: CompositeCollection.loaders.map { $0.collection }.map{ ($0.info.address.lowercased(),$0) })
   
@@ -676,14 +678,16 @@ class CollectionsFactory {
     case .some(let x):
       return Promise.value(x)
     case .none:
-      // Add some throttle here
+        // Add some throttle here
       return after(seconds: 0.2).then { _ -> Promise<Collection> in
         if (address.hasSuffix(".near")) {
           return Promise.value(NearCollection(address: address))
         } else {
           return openSeaCollection(address: address)
             .map { collection -> Collection in
-              self.collections[address.lowercased()] = collection;
+              self.serialQueue.async {
+                self.collections[address.lowercased()] = collection;
+              }
               return collection
             }
         }
@@ -692,31 +696,34 @@ class CollectionsFactory {
   }
   
   func getByAddressOpt(_ address:String) -> Promise<Collection?> {
-    switch(collections[address.lowercased()]) {
-    case .some(let x):
-      return Promise.value(x)
-    case .none:
-      // Add some throttle here
-      if (address.hasSuffix(".near")) {
-        return Promise.value(NearCollection(address: address))
-      } else {
-        return erc721Collection(address: address)
-          .map { collectionOpt -> Collection? in
-            switch(collectionOpt) {
-            case .some(let collection):
-              self.collections[address.lowercased()] = collection;
-              return collection
-            case .none:
-              return collectionOpt
+    
+    return Promise { seal in
+      serialQueue.async {
+          switch(self.collections[address.lowercased()]) {
+          case .some(let x):
+            seal.fulfill(x)
+          case .none:
+              // Add some throttle here
+            if (address.hasSuffix(".near")) {
+              seal.fulfill(NearCollection(address: address))
+            } else {
+              erc721Collection(address: address)
+                .map { collectionOpt -> Collection? in
+                  guard let collection = collectionOpt else { return nil }
+                  self.serialQueue.async {
+                    self.collections[address.lowercased()] = collection;
+                  }
+                  return collection
+                }.done {
+                  seal.fulfill($0)
+                }.catch { seal.reject($0) }
             }
           }
-      }
+        }
     }
   }
   
-  func getAll() -> [Collection] {
-    collections.map { _,value in value }
-  }
+  func getAll() -> [Collection] { collections.map { _,value in value } }
   
 }
 

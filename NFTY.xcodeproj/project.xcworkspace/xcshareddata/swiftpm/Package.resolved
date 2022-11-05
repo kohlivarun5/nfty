@@ -22,8 +22,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
       "state" : {
-        "revision" : "12f2389aca4a07e0dd54c86ec23d0721ed88b8db",
-        "version" : "1.4.3"
+        "revision" : "19b3c3ceed117c5cc883517c4e658548315ba70b",
+        "version" : "1.6.0"
       }
     },
     {
@@ -31,8 +31,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mxcl/PromiseKit.git",
       "state" : {
-        "revision" : "c946b7561fbe11379a874e59faa2c5f8077ae0e1",
-        "version" : "6.17.1"
+        "revision" : "43772616c46a44a9977e41924ae01d0e55f2f9ca",
+        "version" : "6.18.1"
       }
     },
     {
@@ -40,8 +40,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Boilertalk/secp256k1.swift.git",
       "state" : {
-        "revision" : "45e458ec3be46cf0a6eb68bc947f797852dc65d8",
-        "version" : "0.1.6"
+        "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
+        "version" : "0.1.7"
       }
     },
     {
@@ -49,17 +49,53 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/daltoniam/Starscream.git",
       "state" : {
-        "revision" : "e6b65c6d9077ea48b4a7bdda8994a1d3c6969c8d",
-        "version" : "3.1.1"
+        "revision" : "a063fda2b8145a231953c20e7a646be254365396",
+        "version" : "3.1.2"
       }
     },
     {
-      "identity" : "swift-nio-zlib-support",
+      "identity" : "swift-atomics",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-zlib-support.git",
+      "location" : "https://github.com/apple/swift-atomics.git",
       "state" : {
-        "revision" : "37760e9a52030bb9011972c5213c3350fa9d41fd",
-        "version" : "1.0.0"
+        "revision" : "919eb1d83e02121cdb434c7bfc1f0c66ef17febe",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "f504716c27d2e5d4144fa4794b12129301d17729",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swift-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio.git",
+      "state" : {
+        "revision" : "edfceecba13d68c1c993382806e72f7e96feaa86",
+        "version" : "2.44.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-ssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-ssl.git",
+      "state" : {
+        "revision" : "4fb7ead803e38949eb1d6fabb849206a72c580f3",
+        "version" : "2.23.0"
+      }
+    },
+    {
+      "identity" : "swift-nio-transport-services",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-nio-transport-services.git",
+      "state" : {
+        "revision" : "c0d9a144cfaec8d3d596aadde3039286a266c15c",
+        "version" : "1.15.0"
       }
     },
     {
@@ -74,10 +110,10 @@
     {
       "identity" : "walletconnectswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/WalletConnect/WalletConnectSwift.git",
+      "location" : "https://github.com/EtherTix/WalletConnectSwift",
       "state" : {
-        "revision" : "f951da68a32666712e8c80ba0c77e9df5dce9fd6",
-        "version" : "1.6.0"
+        "branch" : "1.6.0",
+        "revision" : "fd13b1e05b9728349ec9c1310bdc3d8c4ee37163"
       }
     },
     {
@@ -85,8 +121,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Boilertalk/Web3.swift",
       "state" : {
-        "revision" : "1a6830ecc093f0f19054fed4c135dfee7bebe2b2",
-        "version" : "0.5.3"
+        "revision" : "c076d6acc54682450bc4bb324431e77e84491dd3",
+        "version" : "0.7.3"
+      }
+    },
+    {
+      "identity" : "websocket-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/websocket-kit",
+      "state" : {
+        "revision" : "2d9d2188a08eef4a869d368daab21b3c08510991",
+        "version" : "2.6.1"
       }
     }
   ],
