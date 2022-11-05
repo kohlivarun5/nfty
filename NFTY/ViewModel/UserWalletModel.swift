@@ -167,7 +167,10 @@ class UserWallet: ObservableObject {
      */
     
     // https://github.com/gnosis/safe-ios/blob/d4301687ce0a84e6bab2de398948d980deef3873/Multisig/Cross-layer/Configuration/Config.Example.xcconfig#L85
-    let bridgeUrl = "https://safe-walletconnect.gnosis.io/" //https://wcbridge.zerion.io" //"https://bridge.walletconnect.org"
+    let bridgeUrl =  "https://safe-walletconnect.safe.global/"
+      // https://safe-walletconnect.gnosis.io/
+      // https://wcbridge.zerion.io"
+      // https://bridge.walletconnect.org
     
     let wcUrl =  WCURL(topic: UUID().uuidString,
                        bridgeURL: URL(string: bridgeUrl)!,
@@ -212,7 +215,7 @@ class UserWallet: ObservableObject {
         from:tx.from!.hex(eip55: true),
         to:tx.to?.hex(eip55: true),
         data:tx.data.hex(),
-        gas:tx.gas?.hex(),
+        gas:tx.gasLimit?.hex(),
         gasPrice:tx.gasPrice?.hex(),
         value:tx.value?.hex(),
         nonce: tx.nonce?.hex(),
