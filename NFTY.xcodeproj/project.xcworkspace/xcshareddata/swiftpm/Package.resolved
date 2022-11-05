@@ -45,6 +45,15 @@
       }
     },
     {
+      "identity" : "starscream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/daltoniam/Starscream.git",
+      "state" : {
+        "revision" : "a063fda2b8145a231953c20e7a646be254365396",
+        "version" : "3.1.2"
+      }
+    },
+    {
       "identity" : "swift-atomics",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-atomics.git",
@@ -103,8 +112,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EtherTix/WalletConnectSwift",
       "state" : {
-        "branch" : "master",
-        "revision" : "6e4ebf0902629e8fc9ce9ff4f31596e30e01a88e"
+        "branch" : "1.6.0",
+        "revision" : "fd13b1e05b9728349ec9c1310bdc3d8c4ee37163"
       }
     },
     {

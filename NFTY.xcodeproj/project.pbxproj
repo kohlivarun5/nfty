@@ -2663,7 +2663,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EtherTix/WalletConnectSwift";
 			requirement = {
-				branch = master;
+				branch = 1.6.0;
 				kind = branch;
 			};
 		};
