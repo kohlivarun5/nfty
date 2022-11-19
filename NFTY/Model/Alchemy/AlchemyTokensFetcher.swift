@@ -48,6 +48,10 @@ class AlchemyTokensFetcher {
               guard let collection = collection else { return () }
               
               let nfts = tokens.compactMap { ownedNft -> NFTToken? in
+                // print(ownedNft.contract.address,ownedNft.id.tokenId)
+                
+                // Some contracts return incorrectly encoded ints
+                if ownedNft.id.tokenId.count < (SolidityType(.uint256).staticPartLength) { return nil }
                 
                 guard let tokenId = try? ABI.decodeParameter(type: .uint256, from: ownedNft.id.tokenId) as? BigUInt else {
                   print("Could not hex parse \(ownedNft.id.tokenId)")

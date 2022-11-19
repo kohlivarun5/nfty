@@ -118,11 +118,15 @@ class ENSContract : EthereumContract {
       let method = SolidityPayableFunction(name: "setText", inputs: inputs, outputs: [], handler: self)
 
       return method.invoke(namehash.value,key,value).createTransaction(
-        nonce:nil,
+        nonce: nil,
+        gasPrice: nil,
+        maxFeePerGas:nil,
+        maxPriorityFeePerGas:nil,
+        gasLimit: 200000,
         from: from,
         value:nil,
-        gas: 200000,
-        gasPrice: nil)!
+        accessList:[:],
+        transactionType:.legacy)!
     }
   }
 

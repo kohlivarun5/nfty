@@ -99,6 +99,7 @@ public struct Web3HttpProviderWithRetry: Web3Provider {
           let rpcResponse = try self.decoder.decode(RPCResponse<Result>.self, from: data)
           // We got the Result object
           let res = Web3Response(rpcResponse: rpcResponse)
+          // print(request,Result.self,res)
           response(res)
         } catch {
           // We don't have the response we expected...
