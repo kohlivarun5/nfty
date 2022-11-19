@@ -66,10 +66,14 @@ class PhunksContract : ContractInterface {
       
       return method.invoke(tokenId).createTransaction(
         nonce: nil,
+        gasPrice: nil,
+        maxFeePerGas:nil,
+        maxPriorityFeePerGas:nil,
+        gasLimit: 200000,
         from: from,
         value:EthereumQuantity(quantity: wei),
-        gas: 200000,
-        gasPrice: nil)!
+        accessList:[:],
+        transactionType:.legacy)!
     }
     
     func buyPhunk(tokenId: BigUInt,wei:BigUInt,from:EthereumAddress) -> EthereumTransaction {
@@ -80,10 +84,14 @@ class PhunksContract : ContractInterface {
       
       return method.invoke(tokenId).createTransaction(
         nonce: nil,
+        gasPrice: nil,
+        maxFeePerGas:nil,
+        maxPriorityFeePerGas:nil,
+        gasLimit: 200000,
         from: from,
         value:EthereumQuantity(quantity: wei),
-        gas: 200000,
-        gasPrice: nil)!
+        accessList:[:],
+        transactionType:.legacy)!
     }
   }
   
