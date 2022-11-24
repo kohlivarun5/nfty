@@ -89,11 +89,9 @@ struct CollectionView: View {
           Text(title(.recent)).tag(Page.recent.rawValue)
         }
         
-        /*
         collection.contract.floorFetcher(collection).map { _ in
           Text(title(.floor)).tag(Page.floor.rawValue)
         }
-       */
         
         collection.contract.vaultContract.map { _ in
           Text(title(.vault)).tag(Page.vault.rawValue)
