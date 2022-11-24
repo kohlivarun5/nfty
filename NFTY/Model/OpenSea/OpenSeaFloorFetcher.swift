@@ -65,8 +65,8 @@ class OpenSeaFloorFetcher : PagedTokensFetcher {
       }
   }
   
-  static func make(collection:Collection) -> PagedTokensFetcher {
-    return OpenSeaFloorFetcher(collection:collection,limit:20)
+  static func make(collection:Collection) -> PagedTokensFetcher? {
+    return nil//OpenSeaFloorFetcher(collection:collection,limit:20)
   }
   
 }
