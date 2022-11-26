@@ -55,6 +55,8 @@ struct UpdateENSStatusView: View {
   
   var body: some View {
     
+    Spacer()
+    
     VStack {
       
       HStack(spacing:0) {
@@ -150,6 +152,7 @@ struct UpdateENSStatusView: View {
       .cornerRadius(40)
       .padding()
       .padding([.trailing,.leading])
+      .padding(.bottom)
       
     }
     .onAppear {
