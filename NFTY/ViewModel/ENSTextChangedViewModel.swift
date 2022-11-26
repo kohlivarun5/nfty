@@ -22,7 +22,7 @@ class ENSTextChangedViewModel : ObservableObject {
   
   private var fetcher : Promise<ENSTextChangedFeed>
   
-  init(key:String,limit:Int) {
+  init(key:String?,limit:Int) {
     self.fetcher = web3.eth.blockNumber().map { fromBlock in
       ENSTextChangedFeed(key:key,fromBlock:fromBlock.quantity, limit:limit)
     }

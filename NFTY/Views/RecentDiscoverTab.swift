@@ -11,12 +11,14 @@ struct RecentDiscoverTab: View {
   
   enum Page : Int {
     case avatars
+    case updates
     case recent
   }
   
-  @State private var page : Page = .avatars
+  @State private var page : Page = .updates
   
   let avatarView = ENSAvatarChangedFeedView(events:ENSTextChangedViewModel(key: "avatar", limit: 5))
+  let updatesView = ENSTextChangedFeedView(events:ENSTextChangedViewModel(key: "description", limit: 5))
   let feedView = FeedView(trades:CompositeCollection)
   
   var body: some View {
@@ -24,7 +26,10 @@ struct RecentDiscoverTab: View {
       switch(page) {
       case .avatars:
         avatarView
-          .navigationBarTitle("Discover",displayMode: .inline)
+          .navigationBarTitle("Avatars",displayMode: .inline)
+      case .updates:
+        updatesView
+          .navigationBarTitle("Updates",displayMode: .inline)
       case .recent:
         feedView
           .navigationBarTitle("Recent",displayMode: .inline)
@@ -35,7 +40,8 @@ struct RecentDiscoverTab: View {
           self.page = Page(rawValue: tag)!
         }),
              label: Text("")) {
-        Text("Discover").tag(Page.avatars.rawValue)
+        Text("Avatars").tag(Page.avatars.rawValue)
+        Text("Updates").tag(Page.updates.rawValue)
         Text("Recent").tag(Page.recent.rawValue)
       }
              .pickerStyle(SegmentedPickerStyle())
