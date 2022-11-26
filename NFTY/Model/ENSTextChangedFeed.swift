@@ -119,27 +119,32 @@ class ENSTextChangedFeed {
           let key = res["key"] as! String
           let namehash = SolidityWrappedValue.fixedBytes(res["node"] as! Data)
           return ENSCached.avatarOwnerOfNamehash(namehash, block: blockNumber.quantity,eth:web3.eth)
-            .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
-              guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
+            .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?,String?)> in
+              guard let avatar = avatar else { return Promise.value((nil,address,nil,nil)) }
               return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
-                .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+                .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?,String?)> in
                   let (item,address) = info
-                  guard let _ = item else { return Promise.value((nil,address,nil)) }
-                  guard let address = address else { return Promise.value((nil,address,nil)) }
+                  guard let _ = item else { return Promise.value((nil,address,nil,nil)) }
+                  guard let address = address else { return Promise.value((nil,address,nil,nil)) }
                   return ENSCached.nameOfOwner(address, eth: web3.eth)
-                    .map { (item,address,$0) }
+                    .map { (item,address,$0,avatar) }
                 }
             }
             .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<FeedItem?> in
               
-              let (nftItem,address,name) = info
+              let (nftItem,address,name,avatar) = info
               guard let address = address else { return Promise.value(nil) }
               guard let nftItem = nftItem else { return Promise.value(nil) }
               
-              return ENSCached.textOfName(nameHash: namehash, key: key, block: blockNumber.quantity, eth: web3.eth)
-                .map {
-                  FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: $0)
-                }
+              if (key == "avatar") {
+                guard let avatar = avatar else { return Promise.value(nil) }
+                return Promise.value(FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: avatar))
+              } else {
+                return ENSCached.textOfName(nameHash: namehash, key: key, block: blockNumber.quantity, eth: web3.eth)
+                  .map {
+                    FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: $0)
+                  }
+              }
             }
             .map(on:DispatchQueue.global(qos: .userInitiated)) { item  -> Int in
               
