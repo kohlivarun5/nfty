@@ -37,9 +37,6 @@ struct UpdateENSStatusView: View {
         DispatchQueue.main.async { self.txState = .processing }
         return walletProvider.sendTransaction(tx:tx)
       }
-    /* .then { txHash -> Promise<EthereumTransactionReceiptObject?> in
-     return processTx(txHash: txHash, retries: 300, sleepSecs: 0.1) // 30 seconds wait
-     } */
       .done(on:.main) { _ in
         self.txState = .submitted
         presentationMode.wrappedValue.dismiss()
