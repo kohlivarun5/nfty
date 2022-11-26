@@ -9,12 +9,11 @@ import SwiftUI
 import Web3
 
 struct ENSTextChangedFeedView: View {
+  @ObservedObject var userWallet : UserWallet
   @StateObject var events : ENSTextChangedViewModel
   @State private var action: NFT.NftID? = nil
   
   @State private var isInitialized : Bool = false
-  
-  @EnvironmentObject var userWallet: UserWallet
   
   enum RefreshButton {
     case hidden
