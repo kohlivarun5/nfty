@@ -1,9 +1,9 @@
-//
-//  ENSTextChangedFeedView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 11/25/22.
-//
+  //
+  //  ENSTextChangedFeedView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 11/25/22.
+  //
 
 import SwiftUI
 import Web3
@@ -13,6 +13,8 @@ struct ENSTextChangedFeedView: View {
   @State private var action: NFT.NftID? = nil
   
   @State private var isInitialized : Bool = false
+  
+  @EnvironmentObject var userWallet: UserWallet
   
   enum RefreshButton {
     case hidden
@@ -116,25 +118,17 @@ struct ENSTextChangedFeedView: View {
           }
           .navigationBarItems(
             trailing:
-              HStack {
-                switch refreshButton {
-                case .hidden:
+              WithWalletProviderView(
+                userWallet:userWallet,
+                instruction:"Sign-In to activate trading",
+                label: {
+                  Image(systemName:"plus.bubble.fill")
+                    .font(.title3)
+                    .foregroundColor(.accentColor)
+                    .padding(10)
+                },content: { walletProvider in
                   EmptyView()
-                case .loading:
-                  ProgressView()
-                case .loaded:
-                  Button(action: {
-                    self.triggerRefresh()
-                    let impactMed = UIImpactFeedbackGenerator(style: .light)
-                    impactMed.impactOccurred()
-                  }) {
-                    Image(systemName:"arrow.clockwise.circle.fill")
-                      .font(.title3)
-                      .foregroundColor(.accentColor)
-                      .padding(10)
-                  }
-                }
-              }
+                })
           )
         }
         
