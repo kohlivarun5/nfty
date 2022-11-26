@@ -136,7 +136,7 @@ class ENSTextChangedFeed {
               guard let address = address else { return Promise.value(nil) }
               guard let nftItem = nftItem else { return Promise.value(nil) }
               
-              return ENSWrapper.shared.textOfName(namehash: namehash, key: key, block: blockNumber.quantity)
+              return ENSCached.textOfName(nameHash: namehash, key: key, block: blockNumber.quantity, eth: web3.eth)
                 .map {
                   FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: $0)
                 }

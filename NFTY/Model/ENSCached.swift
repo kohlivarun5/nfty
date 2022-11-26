@@ -49,6 +49,34 @@ struct ENSCached {
     }
   }
   
+  static let textCache = HybridStorage(
+    memoryStorage: MemoryStorage<String, String>(config: MemoryConfig()),
+    diskStorage: try! DiskStorage<String, String>(
+      config: DiskConfig(name: "ENSCached.Text"),
+      transformer:TransformerFactory.forCodable(ofType:String.self))
+  )
+  
+  static public func textOfName(nameHash:SolidityWrappedValue,key:String,block:BigUInt?,eth:Web3.Eth) -> Promise<String> {
+    return Promise { seal in
+      serialQueue.async {
+        switch(try? textCache.object(forKey:"\(nameHash.value.abiEncode(dynamic: false)!)@\(key)@\(block ?? "")")) {
+        case .some(let info):
+          return seal.fulfill(info)
+        case .none:
+          ENSWrapper.shared.textOfName(namehash: nameHash, key: key,block:block)
+            .done {
+              let text = $0
+              serialQueue.async {
+                try? textCache.setObject(text, forKey: "\(nameHash.value.abiEncode(dynamic: false)!)@\(key)@\(block ?? "")")
+              }
+              seal.fulfill(text)
+            }
+            .catch { seal.reject($0) }
+        }
+      }
+    }
+  }
+  
   struct NameOfOwner : Codable {
     let name : String?
   }
