@@ -1,9 +1,9 @@
-//
-//  ENSTextSetCardView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 11/25/22.
-//
+  //
+  //  ENSTextSetCardView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 11/25/22.
+  //
 
 import SwiftUI
 
@@ -51,39 +51,41 @@ struct ENSTextSetCardView: View {
   
   var body: some View {
     
-    HStack(spacing:0) {
+    NavigationLink(destination: PrivateCollectionView(
+      account:UserAccount(ethAddress: item.address, nearAccount: nil),
+      isOwnerView:false,
+      avatar:(item.nft.collection,item.nft.nft),
+      ensName:item.ensName,
+      page:nil,
+      isSheet:false)
+    ) {
       
-      NavigationLink(
-        destination: NftDetail(
-          nft: item.nft.nft,
-          price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
-          collection: item.nft.collection,
-          hideOwnerLink: false,
-          selectedProperties: [])
-      ) {
-        NftImage(
-          nft:item.nft.nft,
-          sample:item.nft.collection.info.sample,
-          themeColor:item.nft.collection.info.themeColor,
-          themeLabelColor:item.nft.collection.info.themeLabelColor,
-          size:.xxsmall,
-          resolution:.hd,
-          favButton:.none)
-        .frame(height:120)
-        .border(Color.secondary)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-        .shadow(color:.accentColor,radius:0)
-      }
-      
-      NavigationLink(destination: PrivateCollectionView(
-        account:UserAccount(ethAddress: item.address, nearAccount: nil),
-        isOwnerView:false,
-        avatar:(item.nft.collection,item.nft.nft),
-        ensName:item.ensName,
-        page:nil,
-        isSheet:false)
-      ) {
+      HStack(spacing:0) {
+        
+        NavigationLink(
+          destination: NftDetail(
+            nft: item.nft.nft,
+            price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
+            collection: item.nft.collection,
+            hideOwnerLink: false,
+            selectedProperties: [])
+        ) {
+          NftImage(
+            nft:item.nft.nft,
+            sample:item.nft.collection.info.sample,
+            themeColor:item.nft.collection.info.themeColor,
+            themeLabelColor:item.nft.collection.info.themeLabelColor,
+            size:.xxsmall,
+            resolution:.hd,
+            favButton:.none)
+          .border(Color.secondary)
+          .clipShape(Circle())
+          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
+          .shadow(color:.accentColor,radius:0)
+        }
+        .padding([.leading,.trailing])
+        .frame(maxWidth:130)
+        
         VStack(alignment:.leading,spacing:5) {
           
           switch(friendName) {
@@ -93,30 +95,25 @@ struct ENSTextSetCardView: View {
           case .none:
             HStack {
               AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
+                .font(.caption)
               Spacer()
             }
           }
           
-          Text(item.nft.nft.name)
-            .lineLimit(1)
-            .foregroundColor(.secondary)
-          Text("#\(String(item.nft.nft.tokenId))")
-            .font(.footnote)
-            .foregroundColor(.secondary)
-          
-          Text(item.key)
-            .font(.footnote)
-            .foregroundColor(.secondary)
+          Spacer()
           
           Text(item.value)
-            .font(.footnote)
+            .font(.callout)
             .foregroundColor(.secondary)
+            .multilineTextAlignment(.leading)
           
           BlockTimestampView(
             block:BlocksFetcher.getBlock(blockNumber:BlockNumber.ethereum(item.blockNumber))
           )
           .font(.caption)
           .foregroundColor(Color.tertiaryLabel)
+          
+          Spacer()
           
           switch(friendName) {
           case .some(let name):
@@ -134,7 +131,7 @@ struct ENSTextSetCardView: View {
             .padding([.leading,.trailing])
             .background(.ultraThinMaterial, in: Capsule())
             .padding(.top,10)
-            .padding(.trailing)
+            .padding([.leading,.trailing])
             .foregroundColor(isFollowing ? .accentColor : .label)
             .if(!isFollowing){
               $0.colorMultiply(.accentColor)

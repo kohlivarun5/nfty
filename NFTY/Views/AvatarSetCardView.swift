@@ -103,14 +103,6 @@ struct AvatarSetCardView: View {
             .font(.footnote)
             .foregroundColor(.secondary)
           
-          Text(item.key)
-            .font(.footnote)
-            .foregroundColor(.secondary)
-          
-          Text(item.value)
-            .font(.footnote)
-            .foregroundColor(.secondary)
-          
           BlockTimestampView(
             block:BlocksFetcher.getBlock(blockNumber:BlockNumber.ethereum(item.blockNumber))
           )

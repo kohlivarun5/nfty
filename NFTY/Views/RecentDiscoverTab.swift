@@ -26,7 +26,7 @@ struct RecentDiscoverTab: View {
       switch(page) {
       case .avatars:
         avatarView
-          .navigationBarTitle("Discover",displayMode: .inline)
+          .navigationBarTitle("Avatars",displayMode: .inline)
       case .updates:
         updatesView
           .navigationBarTitle("Updates",displayMode: .inline)
@@ -40,7 +40,7 @@ struct RecentDiscoverTab: View {
           self.page = Page(rawValue: tag)!
         }),
              label: Text("")) {
-        Text("Discover").tag(Page.avatars.rawValue)
+        Text("Avatars").tag(Page.avatars.rawValue)
         Text("Updates").tag(Page.updates.rawValue)
         Text("Recent").tag(Page.recent.rawValue)
       }
