@@ -283,6 +283,10 @@
 		4FAB56E126DB5EC2007076BE /* WickedApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */; };
 		4FAC369C287F783800A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369B287F783800A1D734 /* Cache */; };
 		4FAC369E287F8CC200A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369D287F8CC200A1D734 /* Cache */; };
+		4FB4D5842931A9500094AB21 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB4D5832931A9500094AB21 /* PromiseKit */; };
+		4FB4D5862931A9570094AB21 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB4D5852931A9570094AB21 /* Web3 */; };
+		4FB4D5882931A9570094AB21 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB4D5872931A9570094AB21 /* Web3ContractABI */; };
+		4FB4D58A2931A9570094AB21 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB4D5892931A9570094AB21 /* Web3PromiseKit */; };
 		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
@@ -341,7 +345,7 @@
 		4FDEAB81278E3F5500F92160 /* NFTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB80278E3F5500F92160 /* NFTYWidget.swift */; };
 		4FDEAB84278E3F5700F92160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FDEAB83278E3F5700F92160 /* Assets.xcassets */; };
 		4FDEAB86278E3F5700F92160 /* NFTYWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEAB82278E3F5500F92160 /* NFTYWidget.intentdefinition */; };
-		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4FDEAB7A278E3F5500F92160 /* NFTYWidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */; };
 		4FDEAB99278E53E000F92160 /* CryptoPunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB8445426B0FEAF005163D4 /* CryptoPunks.swift */; };
 		4FDEAB9A278E53E600F92160 /* IpfsCollectionContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0B2A626C09B5500821413 /* IpfsCollectionContract.swift */; };
@@ -531,15 +535,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		4FDEAB8B278E3F5700F92160 /* Embed App Extensions */ = {
+		4FDEAB8B278E3F5700F92160 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed App Extensions */,
+				4FDEAB8A278E3F5700F92160 /* NFTYWidgetExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -848,7 +852,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FB4D5862931A9570094AB21 /* Web3 in Frameworks */,
 				4F2989C728835E3100DC6840 /* Cache in Frameworks */,
+				4FB4D5882931A9570094AB21 /* Web3ContractABI in Frameworks */,
+				4FB4D58A2931A9570094AB21 /* Web3PromiseKit in Frameworks */,
+				4FB4D5842931A9500094AB21 /* PromiseKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1438,6 +1446,10 @@
 			name = DownloadCollection;
 			packageProductDependencies = (
 				4F2989C628835E3100DC6840 /* Cache */,
+				4FB4D5832931A9500094AB21 /* PromiseKit */,
+				4FB4D5852931A9570094AB21 /* Web3 */,
+				4FB4D5872931A9570094AB21 /* Web3ContractABI */,
+				4FB4D5892931A9570094AB21 /* Web3PromiseKit */,
 			);
 			productName = DownloadCollection;
 			productReference = 4FA10FF226A8E0E200719D22 /* DownloadCollection */;
@@ -1467,7 +1479,7 @@
 				4FB9A7A9262B28A300C58AF9 /* Sources */,
 				4FB9A7AA262B28A300C58AF9 /* Frameworks */,
 				4FB9A7AB262B28A300C58AF9 /* Resources */,
-				4FDEAB8B278E3F5700F92160 /* Embed App Extensions */,
+				4FDEAB8B278E3F5700F92160 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -1560,7 +1572,7 @@
 					TokenRanking,
 				);
 				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					4F1E4F3A26C850B7009D27E6 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -2177,6 +2189,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2191,6 +2204,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2205,6 +2219,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2221,6 +2236,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2236,6 +2252,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = C28QWE5379;
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2251,6 +2268,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
@@ -2798,6 +2816,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FAC369A287F783800A1D734 /* XCRemoteSwiftPackageReference "Cache" */;
 			productName = Cache;
+		};
+		4FB4D5832931A9500094AB21 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F0F29E02915E287006DD478 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+		4FB4D5852931A9570094AB21 /* Web3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F03CD052929547A007889D9 /* XCRemoteSwiftPackageReference "Web3.swift" */;
+			productName = Web3;
+		};
+		4FB4D5872931A9570094AB21 /* Web3ContractABI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F03CD052929547A007889D9 /* XCRemoteSwiftPackageReference "Web3.swift" */;
+			productName = Web3ContractABI;
+		};
+		4FB4D5892931A9570094AB21 /* Web3PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F03CD052929547A007889D9 /* XCRemoteSwiftPackageReference "Web3.swift" */;
+			productName = Web3PromiseKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 
