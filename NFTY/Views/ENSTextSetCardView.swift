@@ -1,16 +1,17 @@
 //
-//  AvatarSetCardView.swift
+//  ENSTextSetCardView.swift
 //  NFTY
 //
-//  Created by Varun Kohli on 7/3/22.
+//  Created by Varun Kohli on 11/25/22.
 //
 
 import SwiftUI
 
+
 import Web3
 import PromiseKit
 
-struct AvatarSetCardView: View {
+struct ENSTextSetCardView: View {
   
   let item : ENSTextChangedFeed.FeedItem
   

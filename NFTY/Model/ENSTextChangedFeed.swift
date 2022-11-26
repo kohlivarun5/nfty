@@ -68,7 +68,7 @@ class ENSTextChangedFeed {
   let limit : Int
   let retries : Int
   
-  init(key:String,fromBlock:BigUInt,limit:Int) {
+  init(key:String?,fromBlock:BigUInt,limit:Int) {
     let cacheId = "ENSTextChangedFeed.initFromBlock"
     let blockDecrements = BigUInt(1500)
     self.limit = limit
@@ -83,7 +83,7 @@ class ENSTextChangedFeed {
         EthereumGetLogTopics.and(
           // Strings are encoded as special in events
           // https://docs.soliditylang.org/en/v0.8.15/abi-spec.html#indexed-event-encoding
-          "0x"+key.sha3(.keccak256)
+          key.map { "0x"+$0.sha3(.keccak256) }
         )
       ],
       blockDecrements: blockDecrements)
