@@ -188,7 +188,7 @@ class LogsFetcher {
             self.updateMostRecent(log.blockNumber)
           }
           
-          if (logs.isEmpty && retries > 0) {
+          if (retries > 0) {
             return self.fetch(onDone:onDone,retries:retries-1,response);
           }
           
