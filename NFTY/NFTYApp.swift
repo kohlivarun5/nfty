@@ -198,7 +198,7 @@ struct NFTYApp: App {
           
           // When we have mints and Sales, we merge Recent and Avatar
           NavigationView {
-            RecentDiscoverTab()
+            RecentDiscoverTab(userWallet:userWallet)
           }
           .tabItem {
             Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")

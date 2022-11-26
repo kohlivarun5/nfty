@@ -9,6 +9,19 @@ import SwiftUI
 
 struct RecentDiscoverTab: View {
   
+  @ObservedObject var userWallet : UserWallet
+  
+  private let avatarView : ENSAvatarChangedFeedView
+  private let updatesView : ENSTextChangedFeedView
+  private let feedView : FeedView
+  
+  init(userWallet:UserWallet) {
+    self.userWallet = userWallet
+    self.avatarView = ENSAvatarChangedFeedView(events:ENSTextChangedViewModel(key: "avatar", limit: 5))
+    self.updatesView = ENSTextChangedFeedView(userWallet:userWallet,events:ENSTextChangedViewModel(key: "description", limit: 5))
+    self.feedView = FeedView(trades:CompositeCollection)
+  }
+  
   enum Page : Int {
     case avatars
     case updates
@@ -16,10 +29,6 @@ struct RecentDiscoverTab: View {
   }
   
   @State private var page : Page = .updates
-  
-  let avatarView = ENSAvatarChangedFeedView(events:ENSTextChangedViewModel(key: "avatar", limit: 5))
-  let updatesView = ENSTextChangedFeedView(events:ENSTextChangedViewModel(key: "description", limit: 5))
-  let feedView = FeedView(trades:CompositeCollection)
   
   var body: some View {
     VStack(spacing:5) {
@@ -49,11 +58,5 @@ struct RecentDiscoverTab: View {
              .padding([.trailing,.leading])
              .padding(.bottom,7)
     }
-  }
-}
-
-struct RecentDiscoverTab_Previews: PreviewProvider {
-  static var previews: some View {
-    RecentDiscoverTab()
   }
 }
