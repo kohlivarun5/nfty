@@ -119,7 +119,7 @@ struct ENSTextChangedFeedView: View {
             trailing:
               WithWalletProviderView(
                 userWallet:userWallet,
-                instruction:"Sign-In to activate trading",
+                instruction:"Sign-In to post status update",
                 label: {
                   Image(systemName:"plus.bubble.fill")
                     .font(.title3)
