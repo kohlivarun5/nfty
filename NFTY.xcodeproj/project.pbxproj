@@ -285,6 +285,7 @@
 		4FAC369E287F8CC200A1D734 /* Cache in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC369D287F8CC200A1D734 /* Cache */; };
 		4FB4D58E2931BF780094AB21 /* ENSTextChangedFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4D58D2931BF780094AB21 /* ENSTextChangedFeedView.swift */; };
 		4FB4D5902931BFB00094AB21 /* ENSTextSetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4D58F2931BFB00094AB21 /* ENSTextSetCardView.swift */; };
+		4FB4D5922931CD350094AB21 /* UpdateENSStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4D5912931CD350094AB21 /* UpdateENSStatusView.swift */; };
 		4FB7E9D22850284F001CB086 /* CKImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB7E9D12850284F001CB086 /* CKImageCache.swift */; };
 		4FB7E9D5285028AE001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
 		4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB7E9D4285028AE001CB086 /* CloudKit.framework */; };
@@ -752,6 +753,7 @@
 		4FAB56DF26DB5EC2007076BE /* WickedApes_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WickedApes_nearestTokens.json; sourceTree = "<group>"; };
 		4FB4D58D2931BF780094AB21 /* ENSTextChangedFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSTextChangedFeedView.swift; sourceTree = "<group>"; };
 		4FB4D58F2931BFB00094AB21 /* ENSTextSetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENSTextSetCardView.swift; sourceTree = "<group>"; };
+		4FB4D5912931CD350094AB21 /* UpdateENSStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateENSStatusView.swift; sourceTree = "<group>"; };
 		4FB7E9D12850284F001CB086 /* CKImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKImageCache.swift; sourceTree = "<group>"; };
 		4FB7E9D4285028AE001CB086 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4FB7E9DD28502CCF001CB086 /* CloudKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitExtensions.swift; sourceTree = "<group>"; };
@@ -1222,6 +1224,7 @@
 				4FED1E4626D857C7006274CE /* WithWalletProviderView.swift */,
 				4FB4D58D2931BF780094AB21 /* ENSTextChangedFeedView.swift */,
 				4FB4D58F2931BFB00094AB21 /* ENSTextSetCardView.swift */,
+				4FB4D5912931CD350094AB21 /* UpdateENSStatusView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2050,6 +2053,7 @@
 				4FAB56DD26DB54ED007076BE /* TokensByPropertiesList.swift in Sources */,
 				4FB9A81E262B53DE00C58AF9 /* NftDetail.swift in Sources */,
 				4F6D3975262BE4F3007E79BB /* NftImage.swift in Sources */,
+				4FB4D5922931CD350094AB21 /* UpdateENSStatusView.swift in Sources */,
 				4FB9A7B1262B28A300C58AF9 /* NFTYApp.swift in Sources */,
 				4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */,
 				4F881F8E28722A6E00CA7465 /* AvatarSetCardView.swift in Sources */,

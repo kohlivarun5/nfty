@@ -126,6 +126,9 @@ struct ENSTextChangedFeedView: View {
                     .foregroundColor(.accentColor)
                     .padding(10)
                 },content: { walletProvider in
+                  UpdateENSStatusView(
+                    walletProvider: walletProvider,
+                    account: userWallet.userAccount()!)
                   EmptyView()
                 })
           )
