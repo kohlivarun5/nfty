@@ -114,7 +114,8 @@ struct UpdateENSStatusView: View {
       .foregroundColor(.black)
       .background(Color.accentColor)
       .cornerRadius(40)
-      .padding(10)
+      .padding()
+      .padding([.trailing,.leading])
       
     }
     .onAppear {
