@@ -70,6 +70,7 @@ struct UpdateENSStatusView: View {
           ensName.map {
             Text($0)
               .lineLimit(1)
+              .foregroundColor(Color.accentColor)
           }
           
           Spacer()
