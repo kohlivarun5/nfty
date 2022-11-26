@@ -209,6 +209,16 @@ class ENSContract : EthereumContract {
         return contract.setText(from:from,namehash:namehash,key:"avatar",value:avatarValue)
       }
   }
+  
+  static func setStatus(_ name:String,from:EthereumAddress,status:String,eth:Web3.Eth) -> Promise<EthereumTransaction> {
+    let contract = ENSContract(eth: eth)
+    let namehash = ENSContract.namehash(name)
+    return contract.resolver(namehash:namehash)
+      .map { (address:EthereumAddress?) -> EthereumTransaction in
+        let contract = AddrResolverContract(address:address, eth: eth);
+        return contract.setText(from:from,namehash:namehash,key:"description",value:status)
+      }
+  }
 }
 
 // 0x74D0A6358d96c3c24Ea0116D9B33Dfdd9912aEd8

@@ -13,6 +13,8 @@ import PromiseKit
 
 struct UpdateENSStatusView: View {
   
+  @Environment(\.presentationMode) var presentationMode
+  
   let walletProvider : WalletProvider
   
   let account : UserAccount
@@ -21,8 +23,34 @@ struct UpdateENSStatusView: View {
   
   @State var status : String = ""
   
+  enum TxState {
+    case submitted
+    case processing
+  }
+  
+  @State var txState : TxState?
+  
   private func onSetStatus(_ status:String) {
-    print(status)
+    guard let ensName = self.ensName else { return }
+    ENSContract.setStatus(ensName, from: walletProvider.ethAddress, status:status, eth: web3.eth)
+      .then { tx -> Promise<EthereumData> in
+        DispatchQueue.main.async { self.txState = .processing }
+        return walletProvider.sendTransaction(tx:tx)
+      }
+    /* .then { txHash -> Promise<EthereumTransactionReceiptObject?> in
+     return processTx(txHash: txHash, retries: 300, sleepSecs: 0.1) // 30 seconds wait
+     } */
+      .done(on:.main) { _ in
+        self.txState = .submitted
+        presentationMode.wrappedValue.dismiss()
+      }
+      .catch {
+        print("sendTransactionErrored",$0)
+        DispatchQueue.main.async {
+          self.txState = .submitted
+          presentationMode.wrappedValue.dismiss()
+        }
+      }
   }
   
   var body: some View {
@@ -104,15 +132,21 @@ struct UpdateENSStatusView: View {
       }) {
         HStack {
           Spacer()
-          Text("Update Status")
-            .font(.title3)
-            .fontWeight(.bold)
+          switch(txState) {
+          case .processing:
+            ProgressView()
+          case .submitted,.none:
+            Text("Update Status")
+              .font(.title3)
+              .fontWeight(.bold)
+          }
           Spacer()
         }
       }
+      .disabled(self.status == "" || self.ensName == nil || self.txState == .processing)
       .padding(10)
       .foregroundColor(.black)
-      .background(Color.accentColor)
+      .background(self.status == "" || self.ensName == nil || self.txState == .processing ? .tertiarySystemBackground : Color.accentColor)
       .cornerRadius(40)
       .padding()
       .padding([.trailing,.leading])
