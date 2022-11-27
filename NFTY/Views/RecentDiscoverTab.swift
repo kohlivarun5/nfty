@@ -47,8 +47,7 @@ struct RecentDiscoverTab: View {
           self.page = Page(rawValue: tag)!
         }
       ), label: Text("")) {
-        Text("Avatars")
-          .tag(Page.avatars.rawValue)
+        Text("Avatars").tag(Page.avatars.rawValue)
         Text("Updates").tag(Page.updates.rawValue)
         Text("Recent").tag(Page.recent.rawValue)
       }
