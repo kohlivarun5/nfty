@@ -92,6 +92,7 @@ struct ENSTextSetCardView: View {
           case .some(let name):
             Text(name)
               .lineLimit(1)
+              .colorMultiply(.accentColor)
           case .none:
             HStack {
               AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
@@ -104,7 +105,7 @@ struct ENSTextSetCardView: View {
           
           Text(item.value)
             .font(.callout)
-            .foregroundColor(.secondary)
+            .foregroundColor(.label)
             .multilineTextAlignment(.leading)
           
           BlockTimestampView(
@@ -144,7 +145,7 @@ struct ENSTextSetCardView: View {
       }
     }
     .padding([.top,.bottom])
-    .background(Color.secondarySystemBackground)
+    .background(.ultraThinMaterial)
     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     .overlay(
       RoundedRectangle(cornerRadius:10, style: .continuous).stroke(Color.secondary, lineWidth: 2))
