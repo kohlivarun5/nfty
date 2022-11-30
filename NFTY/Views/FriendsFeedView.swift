@@ -161,14 +161,7 @@ struct FriendsFeedView: View {
               }
           )
         }
-        
-        switch (loadMoreState) {
-        case .uninitialized,.notLoading:
-          EmptyView()
-        case .loading(let progress):
-          ProgressView(value: Double(progress.current), total:Double(progress.total))
-            .animation(.linear, value: self.events.loadMoreState)
-        }
+
       }
     }
   }
