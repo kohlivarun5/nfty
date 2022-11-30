@@ -15,23 +15,6 @@ struct FollowingFeedView: View {
   let friends : [String : String]
   let addresses : [EthereumAddress]
   
-  @State var mintedFeed : FriendsFeedViewModel
-  @State var salesFeed : FriendsFeedViewModel
-  
-  init(userWallet: UserWallet, friends: [String : String], addresses: [EthereumAddress]) {
-    self.userWallet = userWallet
-    self.friends = friends
-    self.addresses = addresses
-    
-    self.mintedFeed = FriendsFeedViewModel(
-      from: [EthereumAddress(hexString:ETH_ADDRESS)!],
-      to : addresses,
-      action:.minted,
-      limit:2)
-    
-    self.salesFeed = FriendsFeedViewModel(from: self.addresses,limit:2)
-  }
-  
   enum Page : Int {
     case mints
     case sales
@@ -49,11 +32,15 @@ struct FollowingFeedView: View {
           self.page = Page(rawValue: tag)!
         })) {
           
-          FriendsFeedView(events:self.mintedFeed)
+          FriendsFeedView(events:FriendsFeedViewModel(
+            from: [EthereumAddress(hexString:ETH_ADDRESS)!],
+            to : addresses,
+            action:.minted,
+            limit:2))
           .tag(Page.mints.rawValue)
           .navigationBarTitle("Mints")
           
-          FriendsFeedView(events:self.salesFeed)
+          FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
             .tag(Page.sales.rawValue)
             .navigationBarTitle("Sales")
           
