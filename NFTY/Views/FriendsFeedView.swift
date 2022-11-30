@@ -60,7 +60,7 @@ struct FriendsFeedView: View {
             .animation(.linear, value: self.events.loadMoreState)
         }
       }
-    case (true,let loadMoreState,let loadRecentState):
+    case (true,_,let loadRecentState):
       switch(self.events.recentEvents.isEmpty) {
       case true:
         VStack {
