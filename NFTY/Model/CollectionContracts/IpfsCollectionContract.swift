@@ -28,6 +28,7 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
       let image_data : String?
       let animation_url : String?
+      let external_url : String?
     }
     
     static let UrlSession = UrlTaskThrottle(
@@ -46,7 +47,8 @@ class IpfsCollectionContract : ContractInterface {
         .then(on:DispatchQueue.global(qos: .userInitiated)) { result -> Promise<Media.ImageData?> in
           
           if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
-            if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") { return Promise.value(Media.ImageData.video(uri)) }
+            if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") || url != result.metadata.external_url
+            { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           if let data = result.metadata.image_data {
