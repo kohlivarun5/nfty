@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F01ADE92936E9F000B428F6 /* FollowingFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F01ADE82936E9F000B428F6 /* FollowingFeedView.swift */; };
 		4F03CD072929547A007889D9 /* Web3 in Frameworks */ = {isa = PBXBuildFile; productRef = 4F03CD062929547A007889D9 /* Web3 */; };
 		4F03CD092929547A007889D9 /* Web3ContractABI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F03CD082929547A007889D9 /* Web3ContractABI */; };
 		4F03CD0B2929547A007889D9 /* Web3PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F03CD0A2929547A007889D9 /* Web3PromiseKit */; };
@@ -333,7 +334,6 @@
 		4FCB497426D1946B00696F91 /* CryptoHodlers_attributeRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */; };
 		4FD0047D289F64D2002F53BD /* VideoLoopPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD0047C289F64D2002F53BD /* VideoLoopPlayer.swift */; };
 		4FD0047F289F6F33002F53BD /* RecentDiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD0047E289F6F33002F53BD /* RecentDiscoverTab.swift */; };
-		4FD00481289F7206002F53BD /* SavedFavsUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD00480289F7206002F53BD /* SavedFavsUsersView.swift */; };
 		4FD00483289F72DC002F53BD /* FriendsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD00482289F72DC002F53BD /* FriendsListView.swift */; };
 		4FD529282802A10700ABD7F3 /* ActionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */; };
 		4FD5292A28032A3100ABD7F3 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */; };
@@ -548,6 +548,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F01ADE82936E9F000B428F6 /* FollowingFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingFeedView.swift; sourceTree = "<group>"; };
 		4F03CD012929521C007889D9 /* vk_web3 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = vk_web3; path = ../vk_web3; sourceTree = "<group>"; };
 		4F03CD0229295229007889D9 /* vk_web3 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = vk_web3; path = ../vk_web3; sourceTree = "<group>"; };
 		4F03CD0329295261007889D9 /* vk_web3 */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = vk_web3; path = ../vk_web3; sourceTree = "<group>"; };
@@ -805,7 +806,6 @@
 		4FCB497226D1946A00696F91 /* CryptoHodlers_attributeRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoHodlers_attributeRanks.json; sourceTree = "<group>"; };
 		4FD0047C289F64D2002F53BD /* VideoLoopPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoLoopPlayer.swift; sourceTree = "<group>"; };
 		4FD0047E289F6F33002F53BD /* RecentDiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentDiscoverTab.swift; sourceTree = "<group>"; };
-		4FD00480289F7206002F53BD /* SavedFavsUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFavsUsersView.swift; sourceTree = "<group>"; };
 		4FD00482289F72DC002F53BD /* FriendsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListView.swift; sourceTree = "<group>"; };
 		4FD529272802A10700ABD7F3 /* ActionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSummaryView.swift; sourceTree = "<group>"; };
 		4FD5292928032A3100ABD7F3 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
@@ -1193,7 +1193,6 @@
 				4FD0047E289F6F33002F53BD /* RecentDiscoverTab.swift */,
 				4FB9A7E8262B353E00C58AF9 /* RoundedImage.swift */,
 				4F70ADCB289EE4CD00486531 /* SafariView.swift */,
-				4FD00480289F7206002F53BD /* SavedFavsUsersView.swift */,
 				4FE148B52884DFFC00355ABA /* SetENSAvatarConfirmation.swift */,
 				4F4557D026ACC0A400092AC0 /* SheetButton.swift */,
 				4F58A047263688C500E258C1 /* SimilarTokensView.swift */,
@@ -1225,6 +1224,7 @@
 				4FB4D58D2931BF780094AB21 /* ENSTextChangedFeedView.swift */,
 				4FB4D58F2931BFB00094AB21 /* ENSTextSetCardView.swift */,
 				4FB4D5912931CD350094AB21 /* UpdateENSStatusView.swift */,
+				4F01ADE82936E9F000B428F6 /* FollowingFeedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2033,6 +2033,7 @@
 				4FB9A7F3262B3A5700C58AF9 /* NFT.swift in Sources */,
 				4F08724D2651EAC0002DD748 /* FriendsView.swift in Sources */,
 				4F673C9E2696820900CA6918 /* TokenTradeView.swift in Sources */,
+				4F01ADE92936E9F000B428F6 /* FollowingFeedView.swift in Sources */,
 				4F70ADCC289EE4CD00486531 /* SafariView.swift in Sources */,
 				4FA9C62127C13D83001219F9 /* CollectionRecentView.swift in Sources */,
 				4F3FE32C27E978340036E46C /* MakeErc721Collection.swift in Sources */,
@@ -2072,7 +2073,6 @@
 				4F343D73285E79E6009FFB6D /* LoadingProtocol.swift in Sources */,
 				4F2D6B2927C84C26009908C5 /* UserAccount.swift in Sources */,
 				4F55A8E62648BB17007C8002 /* WalletView.swift in Sources */,
-				4FD00481289F7206002F53BD /* SavedFavsUsersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
