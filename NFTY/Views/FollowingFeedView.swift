@@ -10,8 +10,6 @@ import Web3
 
 struct FollowingFeedView: View {
   
-  @ObservedObject var userWallet : UserWallet
-  
   let friends : [String : String]
   let addresses : [EthereumAddress]
   

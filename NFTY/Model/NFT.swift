@@ -445,7 +445,7 @@ struct NFTWithPriceAndInfo : Identifiable {
   let info : CollectionInfo
   
   var id : NFT.NftID {
-    return nftWithPrice.nft.id
+    return nftWithPrice.id
   }
   
 }

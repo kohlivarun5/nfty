@@ -206,7 +206,7 @@ struct NFTYApp: App {
           .navigationViewStyle(StackNavigationViewStyle())
           
           NavigationView {
-            FollowingFeedView(userWallet: userWallet, friends: friends, addresses: addresses)
+            FollowingFeedView(friends: friends, addresses: addresses)
           }
           .tabItem {
             Label("Feed",systemImage:"star.square.on.square.fill")
