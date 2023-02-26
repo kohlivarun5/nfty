@@ -30,7 +30,11 @@ struct UserWalletConnectorView : View {
         HStack {
           Spacer()
           
-          VStack {
+          VStack(spacing:20) {
+            Text("Connect using")
+              .font(.subheadline)
+              .bold()
+            
             HStack(spacing:20) {
               
               let config = [
@@ -225,12 +229,7 @@ struct ConnectWalletSheet: View {
           .background(Color.systemBackground)
       }
       
-      
       UserWalletConnectorView(userWallet:userWallet)
-      
-      
-      
-      
       
       Spacer()
     }
