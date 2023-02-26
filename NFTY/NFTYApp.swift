@@ -209,7 +209,7 @@ struct NFTYApp: App {
             FollowingFeedView(friends: friends, addresses: addresses)
           }
           .tabItem {
-            Label("Feed",systemImage:"star.square.on.square.fill")
+            Label("Following",systemImage:"rectangle.stack.badge.person.crop.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
           
