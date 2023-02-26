@@ -35,7 +35,7 @@ struct RecentDiscoverTab: View {
             .navigationBarTitle("Avatars")
           FeedView(trades:CompositeCollection)
             .tag(Page.recent.rawValue)
-            .navigationBarTitle("Recent")
+            .navigationBarTitle("Trades")
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .navigationBarTitleDisplayMode(.inline)
@@ -49,7 +49,7 @@ struct RecentDiscoverTab: View {
       ), label: Text("")) {
         Text("Posts").tag(Page.posts.rawValue)
         Text("Avatars").tag(Page.avatars.rawValue)
-        Text("Recent").tag(Page.recent.rawValue)
+        Text("Trades").tag(Page.recent.rawValue)
       }
       .pickerStyle(SegmentedPickerStyle())
       .colorMultiply(.accentColor)

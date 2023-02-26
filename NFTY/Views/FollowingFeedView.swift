@@ -44,7 +44,7 @@ struct FollowingFeedView: View {
           
           FriendsListView(friends:friends,addresses:addresses)
             .tag(Page.following.rawValue)
-            .navigationBarTitle("Following")
+            .navigationBarTitle("Users")
           
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
@@ -59,7 +59,7 @@ struct FollowingFeedView: View {
       ), label: Text("")) {
         Text("Mints").tag(Page.mints.rawValue)
         Text("Sales").tag(Page.sales.rawValue)
-        Text("Following").tag(Page.following.rawValue)
+        Text("Users").tag(Page.following.rawValue)
       }
       .pickerStyle(SegmentedPickerStyle())
       .colorMultiply(.accentColor)
