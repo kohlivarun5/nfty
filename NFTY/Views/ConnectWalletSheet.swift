@@ -1,9 +1,9 @@
-//
-//  ConnectWalletSheet.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 5/9/21.
-//
+  //
+  //  ConnectWalletSheet.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 5/9/21.
+  //
 
 import SwiftUI
 import Web3
@@ -31,11 +31,6 @@ struct UserWalletConnectorView : View {
           Spacer()
           
           VStack {
-            Text("Sign-in using")
-              .foregroundColor(.secondary)
-              .font(.subheadline)
-              .bold()
-            
             HStack(spacing:20) {
               
               let config = [
@@ -82,7 +77,7 @@ struct UserWalletConnectorView : View {
         case (false,_),(_,.none):
           EmptyView()
         case (true,.some(let wallet)):
-          Text("Currently signed-in using \(wallet)")
+          Text("Currently connected to \(wallet)")
             .foregroundColor(.secondary)
             .font(.caption)
             .italic()
@@ -105,20 +100,8 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      UserWalletConnectorView(userWallet:userWallet)
-      
-      ZStack {
-        Divider()
-        Text("OR")
-          .font(.caption).italic()
-          .foregroundColor(.secondaryLabel)
-          .padding(.trailing)
-          .padding(.leading)
-          .background(Color.systemBackground)
-      }
-      
       VStack {
-        Text("Add Wallet Address")
+        Text("Add Wallet")
           .font(.title2)
           .fontWeight(.bold)
           .padding(.bottom,10)
@@ -126,7 +109,7 @@ struct ConnectWalletSheet: View {
         HStack {
           Button(action: {
             if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
+                // text was found and placed in the "string" constant
               switch(try? EthereumAddress(hex:string,eip55: false)) {
               case .none:
                 self.badAddressError = "Invalid Address Pasted"
@@ -151,7 +134,7 @@ struct ConnectWalletSheet: View {
               }
               
             }
-            //.frame(minWidth: 0, maxWidth: .infinity)
+              //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .foregroundColor(.black)
             .background(Color.accentColor)
@@ -161,7 +144,7 @@ struct ConnectWalletSheet: View {
           
           Button(action: {
             if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
+                // text was found and placed in the "string" constant
               print("Pasted near address=\(string)")
               if (!string.lowercased().hasSuffix("near")) {
                 self.badAddressError = "Invalid Address Pasted"
@@ -185,7 +168,7 @@ struct ConnectWalletSheet: View {
               }
               
             }
-            //.frame(minWidth: 0, maxWidth: .infinity)
+              //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .foregroundColor(.black)
             .background(Color.accentColor)
@@ -200,6 +183,23 @@ struct ConnectWalletSheet: View {
           .animation(.easeIn)
       }
       .padding()
+      
+      ZStack {
+        Divider()
+        Text("OR")
+          .font(.caption).italic()
+          .foregroundColor(.secondaryLabel)
+          .padding(.trailing)
+          .padding(.leading)
+          .background(Color.systemBackground)
+      }
+      
+      
+      UserWalletConnectorView(userWallet:userWallet)
+      
+      
+      
+      
       
       Spacer()
     }
