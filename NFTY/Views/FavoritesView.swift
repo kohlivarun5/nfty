@@ -1,9 +1,9 @@
-//
-//  FavoritesView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 4/23/21.
-//
+  //
+  //  FavoritesView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 4/23/21.
+  //
 
 import SwiftUI
 import BigInt
@@ -34,7 +34,7 @@ struct FavoritesView: View {
             
             switch(favorites[address],isFav) {
             case (.some(let (collection,token_items)),true):
-              // In collection and fav, add if not already there
+                // In collection and fav, add if not already there
               if (token_items[tokenId] == nil) {
                 favorites[address]!.1[tokenId] = collection.contract.getToken(UInt(tokenId)!)
               }
@@ -89,7 +89,15 @@ struct FavoritesView: View {
                 columns: RoundedImage.columnsFlexIcons(width: metrics.size.width),
                 pinnedViews: [.sectionHeaders])
               {
-                ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: { $0.0 < $1.0 }),id:\.0) { key_value in
+                ForEach(self.favorites.map { ($0.key,$0.value) }.sorted(by: {
+                  if ($0.0.lowercased() == "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb") {
+                    return true
+                  } else if ($1.0.lowercased() == "0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb") {
+                    return false
+                  } else {
+                    return $0.0 < $1.0
+                  }
+                }),id:\.0) { key_value in
                   let (collection,tokens) = key_value.1;
                   Section(
                     header:
@@ -147,7 +155,7 @@ struct FavoritesView: View {
                           .shadow(color:.accentColor,radius:0)
                           .padding()
                           .onTapGesture {
-                            //perform some tasks if needed before opening Destination view
+                              //perform some tasks if needed before opening Destination view
                             self.selectedTokenId = nft.nft.tokenId
                           }
                           
@@ -166,7 +174,7 @@ struct FavoritesView: View {
                           .shadow(color:.secondary,radius:5)
                           .padding(10)
                           .onTapGesture {
-                            //perform some tasks if needed before opening Destination view
+                              //perform some tasks if needed before opening Destination view
                             self.selectedTokenId = nft.nft.tokenId
                           }
                           
