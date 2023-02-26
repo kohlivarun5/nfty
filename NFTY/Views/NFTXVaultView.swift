@@ -35,7 +35,7 @@ struct NFTXVaultView: View {
             let info = collection.info
             ForEachWithIndex(nfts.tokens,id:\.self.id) { index,nft in
                   ZStack {
-                    if (UIDevice.current.userInterfaceIdiom == .pad) {
+                    if (RoundedImage.isIpadStyle(width:metrics.size.width)) {
                       
                       RoundedImage(
                         nft:nft.nft,

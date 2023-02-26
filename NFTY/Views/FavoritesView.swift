@@ -135,7 +135,7 @@ struct FavoritesView: View {
                       
                       ZStack {
                         
-                        if (UIDevice.current.userInterfaceIdiom == .pad) {
+                        if (RoundedImage.isIpadStyle(width:metrics.size.width)) {
                           
                           RoundedImage(
                             nft:nft.nft,
