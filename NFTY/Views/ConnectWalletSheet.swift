@@ -1,9 +1,9 @@
-//
-//  ConnectWalletSheet.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 5/9/21.
-//
+  //
+  //  ConnectWalletSheet.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 5/9/21.
+  //
 
 import SwiftUI
 import Web3
@@ -30,9 +30,8 @@ struct UserWalletConnectorView : View {
         HStack {
           Spacer()
           
-          VStack {
-            Text("Sign-in using")
-              .foregroundColor(.secondary)
+          VStack(spacing:20) {
+            Text("Connect using")
               .font(.subheadline)
               .bold()
             
@@ -82,7 +81,7 @@ struct UserWalletConnectorView : View {
         case (false,_),(_,.none):
           EmptyView()
         case (true,.some(let wallet)):
-          Text("Currently signed-in using \(wallet)")
+          Text("Currently connected to \(wallet)")
             .foregroundColor(.secondary)
             .font(.caption)
             .italic()
@@ -98,6 +97,7 @@ struct UserWalletConnectorView : View {
 struct ConnectWalletSheet: View {
   
   @Environment(\.presentationMode) var presentationMode
+  @Environment(\.colorScheme) var colorScheme
   @ObservedObject var userWallet: UserWallet
   
   @State var badAddressError : String = ""
@@ -105,28 +105,47 @@ struct ConnectWalletSheet: View {
   var body: some View {
     VStack {
       Spacer()
-      UserWalletConnectorView(userWallet:userWallet)
-      
-      ZStack {
-        Divider()
-        Text("OR")
-          .font(.caption).italic()
-          .foregroundColor(.secondaryLabel)
-          .padding(.trailing)
-          .padding(.leading)
-          .background(Color.systemBackground)
-      }
-      
       VStack {
-        Text("Add Wallet Address")
+        Text("Add Wallet")
           .font(.title2)
           .fontWeight(.bold)
           .padding(.bottom,10)
         
-        HStack {
+        HStack(spacing:20) {
+          
+          SheetButton(content: {
+            VStack {
+              Image("ENS_icon")
+                .resizable()
+                .frame(width: 50,height:50)
+              
+              Text("ENS")
+                .font(.caption)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color.blue)
+            }
+            .padding()
+            .border(Color.blue)
+            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+            .overlay(
+              RoundedRectangle(cornerRadius:20, style: .continuous)
+                .stroke(Color.blue, lineWidth: 3))
+            
+          }, sheetContent: {
+            AddEnsWalletSheet(onSelect: { userAccount in
+              if let address = userAccount.ethAddress {
+                userWallet.saveWalletAddress(address:address)
+              }
+              
+              presentationMode.wrappedValue.dismiss()
+            },entryType: .ens)
+          })
+          
+          
           Button(action: {
             if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
+                // text was found and placed in the "string" constant
               switch(try? EthereumAddress(hex:string,eip55: false)) {
               case .none:
                 self.badAddressError = "Invalid Address Pasted"
@@ -141,57 +160,56 @@ struct ConnectWalletSheet: View {
             VStack {
               Image(systemName: "doc.on.clipboard")
                 .font(.title)
-              VStack(spacing:0) {
-                Text("Paste")
-                  .fontWeight(.semibold)
-                  .font(.subheadline)
-                Text("ETH address")
-                  .fontWeight(.semibold)
-                  .font(.subheadline)
-              }
+              
+              Text("Paste")
+                .fontWeight(.semibold)
+                .font(.subheadline)
+              
+              Text("ETH address")
+                .fontWeight(.semibold)
+                .font(.subheadline)
               
             }
-            //.frame(minWidth: 0, maxWidth: .infinity)
+            .foregroundColor(Color.accentColor)
             .padding()
-            .foregroundColor(.black)
-            .background(Color.accentColor)
-            .cornerRadius(40)
+            .border(Color.accentColor)
+            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+            .overlay(
+              RoundedRectangle(cornerRadius:20, style: .continuous)
+                .stroke(Color.accentColor, lineWidth: 3))
           }
           
-          
-          Button(action: {
-            if let string = UIPasteboard.general.string {
-              // text was found and placed in the "string" constant
-              print("Pasted near address=\(string)")
-              if (!string.lowercased().hasSuffix("near")) {
-                self.badAddressError = "Invalid Address Pasted"
-              } else {
-                self.badAddressError = ""
-                userWallet.saveNearAccount(account:string)
-                presentationMode.wrappedValue.dismiss()
-              }
-            }
-          }) {
+          SheetButton(content: {
             VStack {
-              Image(systemName: "doc.on.clipboard")
-                .font(.title)
+              Image(colorScheme == .dark ? "NEAR_ICON_white" : "NEAR_ICON_black")
+                .resizable()
+                .frame(width: 50,height:50)
+              
               VStack(spacing:0) {
-                Text("Paste")
-                  .fontWeight(.semibold)
-                  .font(.subheadline)
-                Text("NEAR address")
+                Text("NEAR")
                   .fontWeight(.semibold)
                   .font(.subheadline)
               }
-              
+              .font(.caption)
+              .multilineTextAlignment(.center)
+              .foregroundColor(Color.label)
             }
-            //.frame(minWidth: 0, maxWidth: .infinity)
             .padding()
-            .foregroundColor(.black)
-            .background(Color.accentColor)
-            .cornerRadius(40)
-          }
-          
+            .border(Color.label)
+            .clipShape(RoundedRectangle(cornerRadius:20, style: .continuous))
+            .overlay(
+              RoundedRectangle(cornerRadius:20, style: .continuous)
+                .stroke(Color.label, lineWidth: 3))
+            
+          }, sheetContent: {
+            AddEnsWalletSheet(onSelect: { userAccount in
+              
+              if let account = userAccount.nearAccount {
+                userWallet.saveNearAccount(account: account)
+              }
+              presentationMode.wrappedValue.dismiss()
+            },entryType: .near)
+          })
         }
         
         Text(badAddressError)
@@ -200,6 +218,18 @@ struct ConnectWalletSheet: View {
           .animation(.easeIn)
       }
       .padding()
+      
+      ZStack {
+        Divider()
+        Text("OR")
+          .font(.caption).italic()
+          .foregroundColor(.secondaryLabel)
+          .padding(.trailing)
+          .padding(.leading)
+          .background(Color.systemBackground)
+      }
+      
+      UserWalletConnectorView(userWallet:userWallet)
       
       Spacer()
     }

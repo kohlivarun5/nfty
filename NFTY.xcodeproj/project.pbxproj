@@ -50,6 +50,7 @@
 		4F12FAA42718EC9E004C3E16 /* CryptoMories_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */; };
 		4F12FAA72718F47B004C3E16 /* CryptoMories_rarityRanks.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */; };
 		4F12FAA82718F47B004C3E16 /* CryptoMories_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */; };
+		4F14AE3B29ABE9A5009EF5F4 /* AddEnsWalletSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AE3A29ABE9A5009EF5F4 /* AddEnsWalletSheet.swift */; };
 		4F196E04287B87F40019ACD8 /* MakeErc721Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3FE32B27E978340036E46C /* MakeErc721Collection.swift */; };
 		4F196E05287B88020019ACD8 /* NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB9A7F2262B3A5700C58AF9 /* NFT.swift */; };
 		4F196E07287B88460019ACD8 /* ContractInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F196E06287B88460019ACD8 /* ContractInterface.swift */; };
@@ -583,6 +584,7 @@
 		4F12FAA22718EC9E004C3E16 /* CryptoMories_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_attributeScores.json; sourceTree = "<group>"; };
 		4F12FAA52718F47B004C3E16 /* CryptoMories_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_rarityRanks.json; sourceTree = "<group>"; };
 		4F12FAA62718F47B004C3E16 /* CryptoMories_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CryptoMories_nearestTokens.json; sourceTree = "<group>"; };
+		4F14AE3A29ABE9A5009EF5F4 /* AddEnsWalletSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEnsWalletSheet.swift; sourceTree = "<group>"; };
 		4F196E06287B88460019ACD8 /* ContractInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInterface.swift; sourceTree = "<group>"; };
 		4F196E22287B8E3B0019ACD8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		4F196E24287B8E7E0019ACD8 /* DownloadCollection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DownloadCollection.entitlements; sourceTree = "<group>"; };
@@ -1225,6 +1227,7 @@
 				4FB4D58F2931BFB00094AB21 /* ENSTextSetCardView.swift */,
 				4FB4D5912931CD350094AB21 /* UpdateENSStatusView.swift */,
 				4F01ADE82936E9F000B428F6 /* FollowingFeedView.swift */,
+				4F14AE3A29ABE9A5009EF5F4 /* AddEnsWalletSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2011,6 +2014,7 @@
 				4F881F932876924E00CA7465 /* Web3HttpProviderWithRetry.swift in Sources */,
 				4F3FE32827E7EA4A0036E46C /* FriendsFeedView.swift in Sources */,
 				4F43153D2638EF7400C16872 /* TokenPrice.swift in Sources */,
+				4F14AE3B29ABE9A5009EF5F4 /* AddEnsWalletSheet.swift in Sources */,
 				4FAB56DB26DB51D3007076BE /* TokensByPropertiesObject.swift in Sources */,
 				4FED1E4126D4757C006274CE /* WalletProvider.swift in Sources */,
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
