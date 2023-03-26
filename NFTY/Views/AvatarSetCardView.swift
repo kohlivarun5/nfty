@@ -74,6 +74,7 @@ struct AvatarSetCardView: View {
         .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
         .shadow(color:.accentColor,radius:0)
       }
+      .buttonStyle(PlainButtonStyle())  // Here is what you need
       
       NavigationLink(destination: PrivateCollectionView(
         account:UserAccount(ethAddress: item.address, nearAccount: nil),
