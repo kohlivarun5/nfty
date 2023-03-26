@@ -70,19 +70,9 @@ struct ENSTextSetCardView: View {
             hideOwnerLink: false,
             selectedProperties: [])
         ) {
-          NftImage(
-            nft:item.nft.nft,
-            sample:item.nft.collection.info.sample,
-            themeColor:item.nft.collection.info.themeColor,
-            themeLabelColor:item.nft.collection.info.themeLabelColor,
-            size:.xxsmall,
-            resolution:.hd,
-            favButton:.none)
-          .border(Color.secondary)
-          .clipShape(Circle())
-          .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
-          .shadow(color:.accentColor,radius:0)
+          ProfileAvatarImage(nft: item.nft.nft, collection: item.nft.collection, size: .xxsmall)
         }
+        .buttonStyle(PlainButtonStyle())
         .padding([.leading,.trailing])
         .frame(maxWidth:130)
         

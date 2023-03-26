@@ -104,6 +104,7 @@ struct ProfileViewHeader: View {
           ProfileAvatarImage(nft: nft, collection: collection, size: .xxsmall)
             .frame(height:120)
         }
+        .buttonStyle(PlainButtonStyle())
       }
       
       VStack(alignment:.leading,spacing:5) {
