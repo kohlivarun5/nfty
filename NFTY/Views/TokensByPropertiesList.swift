@@ -39,11 +39,13 @@ struct TokensByPropertiesList: View {
   var body: some View {
     VStack(spacing:0) {
       GeometryReader { metrics in
+        
+        let isIpadStyle = RoundedImage.isIpadStyle(width:metrics.size.width)
         ScrollView {
           LazyVGrid(
             columns: Array(
-              repeating:GridItem(.flexible(maximum: UIDevice.current.userInterfaceIdiom == .pad ? RoundedImage.NarrowSize+40 : min(200,(metrics.size.width - 20) / Double(2)))),
-              count:UIDevice.current.userInterfaceIdiom == .pad
+              repeating:GridItem(.flexible(maximum: isIpadStyle ? RoundedImage.NarrowSize+40 : min(200,(metrics.size.width - 20) / Double(2)))),
+              count:isIpadStyle
               ? min(4,Int(metrics.size.width / RoundedImage.NarrowSize) - 1)
               : 2)
           ) {

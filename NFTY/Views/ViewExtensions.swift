@@ -64,7 +64,7 @@ public struct ForEachWithIndex<Data: RandomAccessCollection, ID: Hashable, Conte
   
   public var body: some View {
     ForEach(
-      zip(self.data.indices, self.data).map { index, element in
+      zip(self.data.indices, self.data).map { index, element -> IndexInfo in
         IndexInfo(
           index: index,
           id: self.id,

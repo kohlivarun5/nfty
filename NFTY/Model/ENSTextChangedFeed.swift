@@ -22,6 +22,8 @@ class ENSTextChangedFeed {
     let blockNumber : EthereumQuantity
     let address : EthereumAddress
     let ensName : String?
+    let key : String
+    let value : String
   }
   
   static public func parseENSAvatar(avatar:String) -> Promise<NFTItem?> {
@@ -66,7 +68,7 @@ class ENSTextChangedFeed {
   let limit : Int
   let retries : Int
   
-  init(key:String,fromBlock:BigUInt,limit:Int) {
+  init(key:String?,fromBlock:BigUInt,limit:Int) {
     let cacheId = "ENSTextChangedFeed.initFromBlock"
     let blockDecrements = BigUInt(1500)
     self.limit = limit
@@ -81,7 +83,7 @@ class ENSTextChangedFeed {
         EthereumGetLogTopics.and(
           // Strings are encoded as special in events
           // https://docs.soliditylang.org/en/v0.8.15/abi-spec.html#indexed-event-encoding
-          "0x"+key.sha3(.keccak256)
+          key.map { "0x"+$0.sha3(.keccak256) }
         )
       ],
       blockDecrements: blockDecrements)
@@ -114,27 +116,42 @@ class ENSTextChangedFeed {
             // guard let transactionHash = log.transactionHash else { return Promise.value(processed) }
           
           let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
-          return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
-            .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
-              guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
+          let key = res["key"] as! String
+          let namehash = SolidityWrappedValue.fixedBytes(res["node"] as! Data)
+          return ENSCached.avatarOwnerOfNamehash(namehash, block: blockNumber.quantity,eth:web3.eth)
+            .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?,String?)> in
+              guard let avatar = avatar else { return Promise.value((nil,address,nil,nil)) }
               return ENSTextChangedFeed.parseENSAvatar(avatar: avatar).map { ($0,address) }
-                .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?)> in
+                .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<(NFTItem?,EthereumAddress?,String?,String?)> in
                   let (item,address) = info
-                  guard let _ = item else { return Promise.value((nil,address,nil)) }
-                  guard let address = address else { return Promise.value((nil,address,nil)) }
+                  guard let _ = item else { return Promise.value((nil,address,nil,nil)) }
+                  guard let address = address else { return Promise.value((nil,address,nil,nil)) }
                   return ENSCached.nameOfOwner(address, eth: web3.eth)
-                    .map { (item,address,$0) }
+                    .map { (item,address,$0,avatar) }
                 }
             }
-            .map(on:DispatchQueue.global(qos: .userInitiated)) { info -> Int in
+            .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<FeedItem?> in
               
-              let (nftItem,address,name) = info
-              guard let address = address else { return processed }
-              guard let nftItem = nftItem else { return processed }
+              let (nftItem,address,name,avatar) = info
+              guard let address = address else { return Promise.value(nil) }
+              guard let nftItem = nftItem else { return Promise.value(nil) }
               
+              if (key == "avatar") {
+                guard let avatar = avatar else { return Promise.value(nil) }
+                return Promise.value(FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: avatar))
+              } else {
+                return ENSCached.textOfName(nameHash: namehash, key: key, block: blockNumber.quantity, eth: web3.eth)
+                  .map {
+                    FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: $0)
+                  }
+              }
+            }
+            .map(on:DispatchQueue.global(qos: .userInitiated)) { item  -> Int in
+              
+              guard let item = item else { return processed }
                 // TODO Fix : Bring price from tx /WETH
                 // print("log=",tokenId,log.transactionHash?.hex())
-              response(progress,ENSTextChangedFeed.FeedItem(nft:nftItem,blockNumber:blockNumber,address: address,ensName:name))
+              response(progress,item)
               return processed + 1
             }
             .recover { error -> Promise<Int> in
@@ -160,6 +177,8 @@ class ENSTextChangedFeed {
         
         // Use the node hash to get the value, as it is not in the event
         let res = try! web3.eth.abi.decodeLog(event:self.TextChanged,from:log);
+        let key = res["key"] as! String
+        let namehash = SolidityWrappedValue.fixedBytes(res["node"] as! Data)
         return ENSCached.avatarOwnerOfNamehash(SolidityWrappedValue.fixedBytes(res["node"] as! Data), block: blockNumber.quantity,eth:web3.eth)
           .then(on:DispatchQueue.global(qos: .userInitiated)) { (address,avatar) -> Promise<(NFTItem?,EthereumAddress?,String?)> in
             guard let avatar = avatar else { return Promise.value((nil,address,nil)) }
@@ -172,15 +191,23 @@ class ENSTextChangedFeed {
                   .map { (item,address,$0) }
               }
           }
-          .map  { info -> Void in
+          .then(on:DispatchQueue.global(qos: .userInitiated)) { info -> Promise<FeedItem?> in
             
             let (nftItem,address,name) = info
-            guard let address = address else { return }
-            guard let nftItem = nftItem else { return }
+            guard let address = address else { return Promise.value(nil) }
+            guard let nftItem = nftItem else { return Promise.value(nil) }
             
+            return ENSWrapper.shared.textOfName(namehash: namehash, key: key, block: blockNumber.quantity)
+              .map {
+                FeedItem(nft: nftItem, blockNumber: blockNumber, address: address, ensName: name, key: key, value: $0)
+              }
+          }
+          .map(on:DispatchQueue.global(qos: .userInitiated)) { item  -> Void in
+            
+            guard let item = item else { return }
             // TODO Fix : Bring price from tx /WETH
             // print("log=",tokenId,log.transactionHash?.hex())
-            response(progress,ENSTextChangedFeed.FeedItem(nft:nftItem,blockNumber:blockNumber,address: address,ensName:name))
+            response(progress,item)
           }
           .recover { error -> Promise<Void> in
             print(error)

@@ -1,16 +1,17 @@
-//
-//  AvatarSetCardView.swift
-//  NFTY
-//
-//  Created by Varun Kohli on 7/3/22.
-//
+  //
+  //  ENSTextSetCardView.swift
+  //  NFTY
+  //
+  //  Created by Varun Kohli on 11/25/22.
+  //
 
 import SwiftUI
+
 
 import Web3
 import PromiseKit
 
-struct AvatarSetCardView: View {
+struct ENSTextSetCardView: View {
   
   let item : ENSTextChangedFeed.FeedItem
   
@@ -50,29 +51,31 @@ struct AvatarSetCardView: View {
   
   var body: some View {
     
-    HStack(spacing:0) {
+    NavigationLink(destination: PrivateCollectionView(
+      account:UserAccount(ethAddress: item.address, nearAccount: nil),
+      isOwnerView:false,
+      avatar:(item.nft.collection,item.nft.nft),
+      ensName:item.ensName,
+      page:nil,
+      isSheet:false)
+    ) {
       
-      NavigationLink(
-        destination: NftDetail(
-          nft: item.nft.nft,
-          price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
-          collection: item.nft.collection,
-          hideOwnerLink: false,
-          selectedProperties: [])
-      ) {
-        ProfileAvatarImage(nft: item.nft.nft, collection: item.nft.collection, size: .xxsmall)
-          .frame(height:120)
-      }
-      .buttonStyle(PlainButtonStyle())
-      
-      NavigationLink(destination: PrivateCollectionView(
-        account:UserAccount(ethAddress: item.address, nearAccount: nil),
-        isOwnerView:false,
-        avatar:(item.nft.collection,item.nft.nft),
-        ensName:item.ensName,
-        page:nil,
-        isSheet:false)
-      ) {
+      HStack(spacing:0) {
+        
+        NavigationLink(
+          destination: NftDetail(
+            nft: item.nft.nft,
+            price: TokenPriceType.eager(NFTPriceInfo.init(wei: nil, date: nil, type: TradeEventType.transfer)),
+            collection: item.nft.collection,
+            hideOwnerLink: false,
+            selectedProperties: [])
+        ) {
+          ProfileAvatarImage(nft: item.nft.nft, collection: item.nft.collection, size: .xxsmall)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding([.leading,.trailing])
+        .frame(maxWidth:130)
+        
         VStack(alignment:.leading,spacing:5) {
           
           switch(friendName) {
@@ -83,22 +86,25 @@ struct AvatarSetCardView: View {
           case .none:
             HStack {
               AddressLabel(address:item.address.hex(eip55:true),maxLen:15)
+                .font(.caption)
               Spacer()
             }
           }
           
-          Text(item.nft.nft.name)
-            .lineLimit(1)
-            .foregroundColor(.secondary)
-          Text("#\(String(item.nft.nft.tokenId))")
-            .font(.footnote)
-            .foregroundColor(.secondary)
+          Spacer()
+          
+          Text(item.value)
+            .font(.callout)
+            .foregroundColor(.label)
+            .multilineTextAlignment(.leading)
           
           BlockTimestampView(
             block:BlocksFetcher.getBlock(blockNumber:BlockNumber.ethereum(item.blockNumber))
           )
           .font(.caption)
           .foregroundColor(Color.tertiaryLabel)
+          
+          Spacer()
           
           switch(friendName) {
           case .some(let name):
@@ -116,7 +122,7 @@ struct AvatarSetCardView: View {
             .padding([.leading,.trailing])
             .background(.ultraThinMaterial, in: Capsule())
             .padding(.top,10)
-            .padding(.trailing)
+            .padding([.leading,.trailing])
             .foregroundColor(isFollowing ? .accentColor : .label)
             .if(!isFollowing){
               $0.colorMultiply(.accentColor)

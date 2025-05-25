@@ -61,7 +61,7 @@ struct TokenListPagedView: View {
               ForEachWithIndex(nfts.tokens) { index,nft in
                 ZStack {
                   
-                  if (UIDevice.current.userInterfaceIdiom == .pad) {
+                  if (RoundedImage.isIpadStyle(width:metrics.size.width)) {
                     
                     RoundedImage(
                       nft:nft.nft,

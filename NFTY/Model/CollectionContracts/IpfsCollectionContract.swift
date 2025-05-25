@@ -28,6 +28,7 @@ class IpfsCollectionContract : ContractInterface {
       let image_url : String?
       let image_data : String?
       let animation_url : String?
+      let external_url : String?
     }
     
     static let UrlSession = UrlTaskThrottle(
@@ -45,8 +46,10 @@ class IpfsCollectionContract : ContractInterface {
       return AlchemyApi.GetNFTMetaData.get(contractAddress: ethContract.address!, tokenId: tokenId, tokenType: .ERC721)
         .then(on:DispatchQueue.global(qos: .userInitiated)) { result -> Promise<Media.ImageData?> in
           
+          //print("Got metadata=\(result)")
           if let url = result.metadata.animation_url, let uri = URL(string:ipfsUrl(url)) {
-            if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") { return Promise.value(Media.ImageData.video(uri)) }
+            if url.hasSuffix(".mp4") || url.hasPrefix("ipfs") || url != result.metadata.external_url
+            { return Promise.value(Media.ImageData.video(uri)) }
           }
           
           if let data = result.metadata.image_data {
@@ -70,6 +73,14 @@ class IpfsCollectionContract : ContractInterface {
             var index = media.gateway.firstIndex(of: ",")!
             media.gateway.formIndex(after: &index)
             let str : String = String(media.gateway.suffix(from:index))
+            let data =  Data(base64Encoded: str)!
+            return Promise.value(Media.ImageData.svg(data))
+          }
+          
+          guard !media.raw.hasPrefix(IpfsImageEthContract.base64SvgXmlPrefix) else {
+            var index = media.raw.firstIndex(of: ",")!
+            media.raw.formIndex(after: &index)
+            let str : String = String(media.raw.suffix(from:index))
             let data =  Data(base64Encoded: str)!
             return Promise.value(Media.ImageData.svg(data))
           }

@@ -158,8 +158,6 @@ struct TokenTradeActions: View {
                   )
                 })
             case (.buyActions,.none):
-              EmptyView()
-              /*
                DappLink.DappLinkView(destination: DappLink.openSeaPath(nft: nft), label: {
                 HStack {
                   Spacer()
@@ -176,10 +174,7 @@ struct TokenTradeActions: View {
                   color: .accentColor,
                   tl: 20, tr: 20, bl: 20, br: 20))
               .padding([.leading,.trailing],50)
-               */
             case (.sellActions,.some),(.sellActions,.none):
-              EmptyView()
-              /*
               DappLink.DappLinkView(destination: DappLink.openSeaPath(nft: nft), label: {
                 HStack {
                   Spacer()
@@ -196,7 +191,6 @@ struct TokenTradeActions: View {
                   color: .accentColor,
                   tl: 20, tr: 20, bl: 20, br: 20))
               .padding([.leading,.trailing],50)
-               */
             }
           }
           .padding(.bottom,10)

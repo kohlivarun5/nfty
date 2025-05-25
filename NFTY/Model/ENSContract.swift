@@ -209,6 +209,16 @@ class ENSContract : EthereumContract {
         return contract.setText(from:from,namehash:namehash,key:"avatar",value:avatarValue)
       }
   }
+  
+  static func setStatus(_ name:String,from:EthereumAddress,status:String,eth:Web3.Eth) -> Promise<EthereumTransaction> {
+    let contract = ENSContract(eth: eth)
+    let namehash = ENSContract.namehash(name)
+    return contract.resolver(namehash:namehash)
+      .map { (address:EthereumAddress?) -> EthereumTransaction in
+        let contract = AddrResolverContract(address:address, eth: eth);
+        return contract.setText(from:from,namehash:namehash,key:"description",value:status)
+      }
+  }
 }
 
 // 0x74D0A6358d96c3c24Ea0116D9B33Dfdd9912aEd8
@@ -250,7 +260,7 @@ class ENSWrapper : EthereumContract {
   }
 
   //  function textOfName(address ensAddress,bytes32 node,string calldata key) public view returns (string memory) {
-  private func textOfName(namehash:SolidityWrappedValue,key:String) -> Promise<String> {
+  public func textOfName(namehash:SolidityWrappedValue,key:String,block:BigUInt?) -> Promise<String> {
     let inputs = [
       SolidityFunctionParameter(name: "ensAddress", type: .address),
       SolidityFunctionParameter(name: "node", type: .bytes(length: 32)),
@@ -261,7 +271,7 @@ class ENSWrapper : EthereumContract {
     ]
     let method = SolidityConstantFunction(name: "textOfName", inputs: inputs, outputs: outputs, handler: self)
     print("calling ENSWrapper.textAddrOfName")
-    return method.invoke(self.ensAddress,namehash.value,key).call()
+    return method.invoke(self.ensAddress,namehash.value,key).call(block: block.map { .block($0) } ?? .latest)
       .map(on:DispatchQueue.global(qos:.userInteractive)) { outputs in
         let text = outputs["text"] as! String
         print("textOfName returned with \(key)=\(text)")
@@ -316,7 +326,7 @@ class ENSWrapper : EthereumContract {
 
   public func avatarOfOwner(_ name:String,eth:Web3.Eth) -> Promise<String?> {
     let namehash = ENSContract.namehash(name)
-    return self.textOfName(namehash: namehash,key: "avatar").map { $0.isEmpty ? nil : $0 }
+    return self.textOfName(namehash: namehash,key: "avatar",block:nil).map { $0.isEmpty ? nil : $0 }
   }
 
   public func nameToOwner(_ name:String,eth:Web3.Eth) -> Promise<EthereumAddress?> {

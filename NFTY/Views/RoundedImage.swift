@@ -35,16 +35,27 @@ struct RoundedImage: View {
         width > RoundedImage.NormalSize * 3 ? 2 : 1)
   }
   
+  static func isIpadStyle(width:Double) -> Bool {
+    if Int(width / RoundedImage.NormalSize) < 3 {
+      return false
+    } else {
+      return UIDevice.current.userInterfaceIdiom == .pad
+    }
+  }
+  
   static func columnsFlexIcons(width:Double) -> [GridItem] {
+    let isIpadStyle = RoundedImage.isIpadStyle(width: width)
     return Array(
       repeating:
         GridItem(.flexible(
-          maximum: UIDevice.current.userInterfaceIdiom == .pad
+          maximum: isIpadStyle
           ? RoundedImage.NormalSize+80 : min(200,(width - 40) / Double(2)))),
-      count:UIDevice.current.userInterfaceIdiom == .pad
-      ? min(4,Int(width / RoundedImage.NormalSize) - 1)
+      count:isIpadStyle
+      ? min(4,max(1,Int(width / RoundedImage.NormalSize) - 1))
       : 2)
   }
+  
+  
   
   init(nft:NFT,
        price:TokenPriceType,

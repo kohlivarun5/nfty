@@ -198,7 +198,7 @@ struct NFTYApp: App {
           
           // When we have mints and Sales, we merge Recent and Avatar
           NavigationView {
-            RecentDiscoverTab()
+            RecentDiscoverTab(userWallet:userWallet)
           }
           .tabItem {
             Label("Discover",systemImage:"person.crop.square.filled.and.at.rectangle.fill")
@@ -206,24 +206,10 @@ struct NFTYApp: App {
           .navigationViewStyle(StackNavigationViewStyle())
           
           NavigationView {
-            FriendsFeedView(events:FriendsFeedViewModel(
-              from: [EthereumAddress(hexString:ETH_ADDRESS)!],
-              to : self.addresses,
-              action:.minted,
-              limit:2))
-            .navigationBarTitle("Mints",displayMode: .inline)
+            FollowingFeedView(friends: friends, addresses: addresses)
           }
           .tabItem {
-            Label("Mints",systemImage:"star.square.fill")
-          }
-          .navigationViewStyle(StackNavigationViewStyle())
-          
-          NavigationView {
-            FriendsFeedView(events:FriendsFeedViewModel(from: self.addresses,limit:2))
-              .navigationBarTitle("Sales",displayMode: .inline)
-          }
-          .tabItem {
-            Label("Sales",systemImage:"arrow.up.right.and.arrow.down.left.rectangle.fill")
+            Label("Following",systemImage:"rectangle.stack.badge.person.crop.fill")
           }
           .navigationViewStyle(StackNavigationViewStyle())
           
@@ -249,12 +235,12 @@ struct NFTYApp: App {
           
         }
         
-        
         NavigationView {
-          SavedFavsUsersView(friends:friends,addresses:addresses)
+          FavoritesView()
+            .navigationBarTitle("Saved",displayMode: .inline)
         }
         .tabItem {
-          Label("Saved",systemImage:"bookmark.circle.fill")
+          Label("Saved",systemImage:"heart.rectangle.fill")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         
