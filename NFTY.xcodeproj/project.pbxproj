@@ -193,6 +193,9 @@
 		4F6EB34227A33F8A00E6FD9A /* 0xApes_attributeScores.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77227A0E48600938036 /* 0xApes_attributeScores.json */; };
 		4F6EB34327A33F8A00E6FD9A /* 0xApes_nearestTokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F11C77027A0E48600938036 /* 0xApes_nearestTokens.json */; };
 		4F7027762DE3D0C300DA4E91 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7027752DE3D0C300DA4E91 /* WalletConnect */; };
+		4F7027782DE3D37400DA4E91 /* ReownAppKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7027772DE3D37400DA4E91 /* ReownAppKit */; };
+		4F70277A2DE3D72C00DA4E91 /* AppKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7027792DE3D72C00DA4E91 /* AppKitConfig.swift */; };
+		4F70277B2DE3D72C00DA4E91 /* AppKitConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7027792DE3D72C00DA4E91 /* AppKitConfig.swift */; };
 		4F70ADCC289EE4CD00486531 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F70ADCB289EE4CD00486531 /* SafariView.swift */; };
 		4F70ADCE289EEABF00486531 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F70ADCD289EEABF00486531 /* WebView.swift */; };
 		4F7C89702795D9D900D5FC35 /* OpenSeaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */; };
@@ -680,6 +683,7 @@
 		4F6EB33627A33D8400E6FD9A /* asac.near_nearestTokens.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_nearestTokens.json; sourceTree = "<group>"; };
 		4F6EB33727A33D8400E6FD9A /* asac.near_attributeScores.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_attributeScores.json; sourceTree = "<group>"; };
 		4F6EB33827A33D8400E6FD9A /* asac.near_rarityRanks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = asac.near_rarityRanks.json; sourceTree = "<group>"; };
+		4F7027792DE3D72C00DA4E91 /* AppKitConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKitConfig.swift; sourceTree = "<group>"; };
 		4F70ADCB289EE4CD00486531 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		4F70ADCD289EEABF00486531 /* WebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		4F7C896F2795D9D900D5FC35 /* OpenSeaCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSeaCollection.swift; sourceTree = "<group>"; };
@@ -878,6 +882,7 @@
 				4F03CD0B2929547A007889D9 /* Web3PromiseKit in Frameworks */,
 				4F7027762DE3D0C300DA4E91 /* WalletConnect in Frameworks */,
 				4FAC369C287F783800A1D734 /* Cache in Frameworks */,
+				4F7027782DE3D37400DA4E91 /* ReownAppKit in Frameworks */,
 				4F0F29E52915E30A006DD478 /* BigInt in Frameworks */,
 				4FB7E9D62850290C001CB086 /* CloudKit.framework in Frameworks */,
 			);
@@ -1009,6 +1014,7 @@
 		4F74AA452688C4E4000C7A7C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				4F7027792DE3D72C00DA4E91 /* AppKitConfig.swift */,
 				4F0606D4270BE34300C4CDC9 /* BackgroundFetcher.swift */,
 				4F27A7D82682D2BE008CCB0A /* CoreCollections.swift */,
 				4F3FE32527E7EA360036E46C /* FriendsFeedViewModel.swift */,
@@ -1496,6 +1502,7 @@
 				4F03CD082929547A007889D9 /* Web3ContractABI */,
 				4F03CD0A2929547A007889D9 /* Web3PromiseKit */,
 				4F7027752DE3D0C300DA4E91 /* WalletConnect */,
+				4F7027772DE3D37400DA4E91 /* ReownAppKit */,
 			);
 			productName = NFTY;
 			productReference = 4FB9A7AD262B28A300C58AF9 /* NFTY.app */;
@@ -2021,6 +2028,7 @@
 				4F856BB82632620400BB5E07 /* TokenContracts.swift in Sources */,
 				4F55A8E82648D1DF007C8002 /* WalletTokensView.swift in Sources */,
 				4FC639DD264F5EC000ECF7CF /* Erc721Contract.swift in Sources */,
+				4F70277A2DE3D72C00DA4E91 /* AppKitConfig.swift in Sources */,
 				4F881F8A2871613100CA7465 /* ENSTextChangedViewModel.swift in Sources */,
 				4F5F8F60265331AB00FAD814 /* AddressLabel.swift in Sources */,
 				4FFAE79A27A32AEA002129E9 /* NearNFTContract.swift in Sources */,
@@ -2113,6 +2121,7 @@
 				4FDEABB6278E577900F92160 /* WidgetStorage.swift in Sources */,
 				4FDEAB92278E538F00F92160 /* CoreCollections.swift in Sources */,
 				4FDEABA7278E541400F92160 /* TokenProtocols.swift in Sources */,
+				4F70277B2DE3D72C00DA4E91 /* AppKitConfig.swift in Sources */,
 				4F493CED2877E0CB00F42777 /* NeuralHash.swift in Sources */,
 				4F2D6B2A27C84D6F009908C5 /* UserAccount.swift in Sources */,
 				4F11C76C27978C8300938036 /* NFTYWidgetModel.swift in Sources */,
@@ -2807,6 +2816,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F7027742DE3D0C300DA4E91 /* XCRemoteSwiftPackageReference "reown-swift" */;
 			productName = WalletConnect;
+		};
+		4F7027772DE3D37400DA4E91 /* ReownAppKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F7027742DE3D0C300DA4E91 /* XCRemoteSwiftPackageReference "reown-swift" */;
+			productName = ReownAppKit;
 		};
 		4FAC369B287F783800A1D734 /* Cache */ = {
 			isa = XCSwiftPackageProductDependency;
