@@ -1,4 +1,5 @@
 {
+  "originHash" : "35907ea88de84f9af35cdb00f88c6dbf239e8a6c0757d57d01167eabe2b24e8b",
   "pins" : [
     {
       "identity" : "bigint",
@@ -36,21 +37,30 @@
       }
     },
     {
+      "identity" : "qrcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WalletConnect/QRCode",
+      "state" : {
+        "revision" : "263f280d2c8144adfb0b6676109846cfc8dd552b",
+        "version" : "14.3.1"
+      }
+    },
+    {
+      "identity" : "reown-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/reown-com/reown-swift",
+      "state" : {
+        "revision" : "20bd38e6d07ca5381a854e72d04bced722e65a8c",
+        "version" : "1.6.2"
+      }
+    },
+    {
       "identity" : "secp256k1.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Boilertalk/secp256k1.swift.git",
       "state" : {
         "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
         "version" : "0.1.7"
-      }
-    },
-    {
-      "identity" : "starscream",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/daltoniam/Starscream.git",
-      "state" : {
-        "revision" : "a063fda2b8145a231953c20e7a646be254365396",
-        "version" : "3.1.2"
       }
     },
     {
@@ -99,6 +109,24 @@
       }
     },
     {
+      "identity" : "swift-qrcode-generator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/swift-qrcode-generator",
+      "state" : {
+        "revision" : "5ca09b6a2ad190f94aa3d6ddef45b187f8c0343b",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swiftimagereadwrite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/SwiftImageReadWrite",
+      "state" : {
+        "revision" : "5596407d1cf61b953b8e658fa8636a471df3c509",
+        "version" : "1.1.6"
+      }
+    },
+    {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
@@ -108,12 +136,12 @@
       }
     },
     {
-      "identity" : "walletconnectswift",
+      "identity" : "wallet-mobile-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EtherTix/WalletConnectSwift",
+      "location" : "https://github.com/MobileWalletProtocol/wallet-mobile-sdk",
       "state" : {
-        "branch" : "1.6.0",
-        "revision" : "fd13b1e05b9728349ec9c1310bdc3d8c4ee37163"
+        "revision" : "4aa89e682f8d7ab1515d85d0797f0d25306bb56a",
+        "version" : "1.0.5"
       }
     },
     {
@@ -133,7 +161,16 @@
         "revision" : "2d9d2188a08eef4a869d368daab21b3c08510991",
         "version" : "2.6.1"
       }
+    },
+    {
+      "identity" : "yttrium",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/reown-com/yttrium",
+      "state" : {
+        "revision" : "f6566a2b028ae60746254298ce1d5ba822ca5388",
+        "version" : "0.9.0"
+      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

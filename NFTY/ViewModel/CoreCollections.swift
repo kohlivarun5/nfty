@@ -243,324 +243,324 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : RarityRankingImpl(load("MutantApes_rarityRanks.json"))
     ),
     contract:MAYC_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:fameLadyContract.contractAddressHex,
-      sample:SAMPLE_FLS[0],
-      name:"FameLadySquad",
-      webLink: URL(string:"https://fameladysquad.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Ladies",
-        nearestTokensFileName:"FameLadySquad_nearestTokens.json",
-        propertiesJsonFileName:"FameLadySquad_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(FLS_rarityRanks)
-    ),
-    contract:fameLadyContract),
-  Collection(
-    info:CollectionInfo(
-      address:CRHDL_Contract.contractAddressHex,
-      sample:SAMPLE_CRHDL[0],
-      name:CRHDL_Contract.name,
-      webLink: URL(string:"https://cryptohodlers.io/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Hodlers",
-        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
-        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
-    ),
-    contract:CRHDL_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:CROWNS_Contract.contractAddressHex,
-      sample:SAMPLE_CROWNS[0],
-      name:CROWNS_Contract.name,
-      webLink: URL(string:"https://fameladysquad.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens: nil,
-      rarityRanking: nil
-    ),
-    contract:CROWNS_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:CYPHER_CITY_Contract.contractAddressHex,
-      sample:SAMPLE_CYPHER[0],
-      name:CYPHER_CITY_Contract.name,
-      webLink: URL(string:"https://cyphercity.io/home")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Cyphers",
-        nearestTokensFileName:"CypherCity_nearestTokens.json",
-        propertiesJsonFileName:"CypherCity_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
-    ),
-    contract:CYPHER_CITY_Contract),
-  
-  Collection(
-    info:CollectionInfo(
-      address:CCB_Contract.contractAddressHex,
-      sample:SAMPLE_CCB[0],
-      name:CCB_Contract.name,
-      webLink: URL(string:"https://cryptocannabisclub.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"NFTokers",
-        nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json",
-        propertiesJsonFileName:"CryptoCannabisClub_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(CCD_rarityRanks)
-    ),
-    contract:CCB_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:CoolCats_Contract.contractAddressHex,
-      sample:SAMPLE_COOL_CATS[0],
-      name:CoolCats_Contract.name,
-      webLink: URL(string:"https://www.coolcatsnft.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Cats",
-        nearestTokensFileName:"CoolCats_nearestTokens.json",
-        propertiesJsonFileName:"CoolCats_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
-    ),
-    contract:CoolCats_Contract),
-  
-  Collection(
-    info:CollectionInfo(
-      address:ABS_Contract.contractAddressHex,
-      sample:"SAMPLE_ABS",
-      name:ABS_Contract.name,
-      webLink: URL(string:"https://abs.thehundreds.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Bombs",
-        nearestTokensFileName:"Bombs_nearestTokens.json"
-        //,propertiesJsonFileName:"Bombs_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
-    ),
-    contract:ABS_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:LIONS_Contract.contractAddressHex,
-      sample:"SAMPLE_LAZY_LION",
-      name:LIONS_Contract.name,
-      webLink: URL(string:"https://www.lazylionsnft.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Lions",
-        nearestTokensFileName:"LazyLions_nearestTokens.json",
-        propertiesJsonFileName:"LazyLions_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("LazyLions_rarityRanks.json"))
-    ),
-    contract:LIONS_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:DADS_Contract.contractAddressHex,
-      sample:"SAMPLE_DAD",
-      name:DADS_Contract.name,
-      webLink: URL(string:"https://www.cryptodadsnft.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Dads",
-        nearestTokensFileName:"Dads_nearestTokens.json",
-        propertiesJsonFileName:"Dads_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
-    ),
-    contract:DADS_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:DeadFellaz_Contract.contractAddressHex,
-      sample:SAMPLE_DEAD_FELLAZ[0],
-      name:DeadFellaz_Contract.name,
-      webLink: URL(string:"https://www.deadfellaz.io")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Fellaz",
-        nearestTokensFileName:"DeadFellaz_nearestTokens.json",
-        propertiesJsonFileName:"DeadFellaz_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
-    ),
-    contract:DeadFellaz_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:Birdhouse_Contract.contractAddressHex,
-      sample:SAMPLE_TBH[0],
-      name:Birdhouse_Contract.name,
-      webLink: URL(string:"https://thebirdhouse.app")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Birds",
-        nearestTokensFileName:"BirdHouse_nearestTokens.json",
-        propertiesJsonFileName:"BirdHouse_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
-    ),
-    contract:Birdhouse_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:ON1_Force_Contract.contractAddressHex,
-      sample:"SAMPLE_0N1",
-      name:ON1_Force_Contract.name,
-      webLink: URL(string:"https://www.0n1force.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : nil/*SimilarTokensGetter(
-                          label:"Birds",
-                          nearestTokensFileName:"BirdHouse_nearestTokens.json",
-                          propertiesJsonFileName:"BirdHouse_attributeScores.json"
-                          )*/,
-      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
-    ),
-    contract:ON1_Force_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:WABC_Contract.contractAddressHex,
-      sample:"SAMPLE_WABC",
-      name:WABC_Contract.name,
-      webLink: URL(string:"https://wickedapes.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Apes",
-        nearestTokensFileName:"WickedApes_nearestTokens.json",
-        propertiesJsonFileName:"WickedApes_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("WickedApes_rarityRanks.json"))
-    ),
-    contract:WABC_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:Craniums_Contract.contractAddressHex,
-      sample:"SAMPLE_WICKED_CRANIUM",
-      name:Craniums_Contract.name,
-      webLink: URL(string:"https://wickedcranium.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Craniums",
-        nearestTokensFileName:"Craniums_nearestTokens.json",
-        propertiesJsonFileName:"Craniums_attributeScores.json"),
-      rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
-    ),
-    contract:Craniums_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:MORIES_Contract.contractAddressHex,
-      sample:"SAMPLE_MORIES",
-      name:MORIES_Contract.name,
-      webLink: URL(string:"https://cryptomories.iwwon.com/home")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Mories",
-        nearestTokensFileName:"CryptoMories_nearestTokens.json",
-        propertiesJsonFileName:"CryptoMories_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
-    ),
-    contract:MORIES_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:JUNGLE_FREAKS_Contract.contractAddressHex,
-      sample:"SAMPLE_JUNGLE_FREAK",
-      name:JUNGLE_FREAKS_Contract.name,
-      webLink: URL(string:"https://junglefreaks.io/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Freaks",
-        nearestTokensFileName:"JungleFreaks_nearestTokens.json",
-        propertiesJsonFileName:"JungleFreaks_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("JungleFreaks_rarityRanks.json"))
-    ),
-    contract:JUNGLE_FREAKS_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:DOODLES_Contract.contractAddressHex,
-      sample:"SAMPLE_DOODLE",
-      name:DOODLES_Contract.name,
-      webLink: URL(string:"https://doodles.app")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Doodles",
-        nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
-        propertiesJsonFileName:"Doodles_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("Doodles_attributeRanks.json"))
-    ),
-    contract:DOODLES_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:FRWC_Contract.contractAddressHex,
-      sample:"SAMPLE_FRWC",
-      name:FRWC_Contract.name,
-      webLink: URL(string:"https://www.forgottenrunes.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Wizards",
-        nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
-        propertiesJsonFileName:"FRWC_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("FRWC_attributeRanks.json"))
-    ),
-    contract:FRWC_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:PHUNKS_Contract.contractAddressHex,
-      sample:"SAMPLE_PHUNK",
-      name:PHUNKS_Contract.name,
-      webLink: URL(string:"https://www.cryptophunks.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Phunk",
-        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
-        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
-    ),
-    contract:PHUNKS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:fameLadyContract.contractAddressHex,
+//      sample:SAMPLE_FLS[0],
+//      name:"FameLadySquad",
+//      webLink: URL(string:"https://fameladysquad.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Ladies",
+//        nearestTokensFileName:"FameLadySquad_nearestTokens.json",
+//        propertiesJsonFileName:"FameLadySquad_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(FLS_rarityRanks)
+//    ),
+//    contract:fameLadyContract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:CRHDL_Contract.contractAddressHex,
+//      sample:SAMPLE_CRHDL[0],
+//      name:CRHDL_Contract.name,
+//      webLink: URL(string:"https://cryptohodlers.io/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Hodlers",
+//        nearestTokensFileName:"CryptoHodlers_nearestTokens.json",
+//        propertiesJsonFileName:"CryptoHodlers_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(CRHDL_rarityRanks)
+//    ),
+//    contract:CRHDL_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:CROWNS_Contract.contractAddressHex,
+//      sample:SAMPLE_CROWNS[0],
+//      name:CROWNS_Contract.name,
+//      webLink: URL(string:"https://fameladysquad.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens: nil,
+//      rarityRanking: nil
+//    ),
+//    contract:CROWNS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:CYPHER_CITY_Contract.contractAddressHex,
+//      sample:SAMPLE_CYPHER[0],
+//      name:CYPHER_CITY_Contract.name,
+//      webLink: URL(string:"https://cyphercity.io/home")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Cyphers",
+//        nearestTokensFileName:"CypherCity_nearestTokens.json",
+//        propertiesJsonFileName:"CypherCity_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(CypherCity_rarityRanks)
+//    ),
+//    contract:CYPHER_CITY_Contract),
+//  
+//  Collection(
+//    info:CollectionInfo(
+//      address:CCB_Contract.contractAddressHex,
+//      sample:SAMPLE_CCB[0],
+//      name:CCB_Contract.name,
+//      webLink: URL(string:"https://cryptocannabisclub.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"NFTokers",
+//        nearestTokensFileName:"CryptoCannabisClub_nearestTokens.json",
+//        propertiesJsonFileName:"CryptoCannabisClub_attributeScores.json"),
+//      rarityRanking : RarityRankingImpl(CCD_rarityRanks)
+//    ),
+//    contract:CCB_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:CoolCats_Contract.contractAddressHex,
+//      sample:SAMPLE_COOL_CATS[0],
+//      name:CoolCats_Contract.name,
+//      webLink: URL(string:"https://www.coolcatsnft.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Cats",
+//        nearestTokensFileName:"CoolCats_nearestTokens.json",
+//        propertiesJsonFileName:"CoolCats_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(CoolCats_rarityRanks)
+//    ),
+//    contract:CoolCats_Contract),
+//  
+//  Collection(
+//    info:CollectionInfo(
+//      address:ABS_Contract.contractAddressHex,
+//      sample:"SAMPLE_ABS",
+//      name:ABS_Contract.name,
+//      webLink: URL(string:"https://abs.thehundreds.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Bombs",
+//        nearestTokensFileName:"Bombs_nearestTokens.json"
+//        //,propertiesJsonFileName:"Bombs_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("Bombs_rarityRanks.json"))
+//    ),
+//    contract:ABS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:LIONS_Contract.contractAddressHex,
+//      sample:"SAMPLE_LAZY_LION",
+//      name:LIONS_Contract.name,
+//      webLink: URL(string:"https://www.lazylionsnft.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Lions",
+//        nearestTokensFileName:"LazyLions_nearestTokens.json",
+//        propertiesJsonFileName:"LazyLions_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("LazyLions_rarityRanks.json"))
+//    ),
+//    contract:LIONS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:DADS_Contract.contractAddressHex,
+//      sample:"SAMPLE_DAD",
+//      name:DADS_Contract.name,
+//      webLink: URL(string:"https://www.cryptodadsnft.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Dads",
+//        nearestTokensFileName:"Dads_nearestTokens.json",
+//        propertiesJsonFileName:"Dads_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("Dads_rarityRanks.json"))
+//    ),
+//    contract:DADS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:DeadFellaz_Contract.contractAddressHex,
+//      sample:SAMPLE_DEAD_FELLAZ[0],
+//      name:DeadFellaz_Contract.name,
+//      webLink: URL(string:"https://www.deadfellaz.io")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Fellaz",
+//        nearestTokensFileName:"DeadFellaz_nearestTokens.json",
+//        propertiesJsonFileName:"DeadFellaz_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(DeadFellaz_rarityRanks)
+//    ),
+//    contract:DeadFellaz_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:Birdhouse_Contract.contractAddressHex,
+//      sample:SAMPLE_TBH[0],
+//      name:Birdhouse_Contract.name,
+//      webLink: URL(string:"https://thebirdhouse.app")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Birds",
+//        nearestTokensFileName:"BirdHouse_nearestTokens.json",
+//        propertiesJsonFileName:"BirdHouse_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(BirdHouse_rarityRanks)
+//    ),
+//    contract:Birdhouse_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:ON1_Force_Contract.contractAddressHex,
+//      sample:"SAMPLE_0N1",
+//      name:ON1_Force_Contract.name,
+//      webLink: URL(string:"https://www.0n1force.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : nil/*SimilarTokensGetter(
+//                          label:"Birds",
+//                          nearestTokensFileName:"BirdHouse_nearestTokens.json",
+//                          propertiesJsonFileName:"BirdHouse_attributeScores.json"
+//                          )*/,
+//      rarityRanking : nil//RarityRankingImpl(BirdHouse_rarityRanks)
+//    ),
+//    contract:ON1_Force_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:WABC_Contract.contractAddressHex,
+//      sample:"SAMPLE_WABC",
+//      name:WABC_Contract.name,
+//      webLink: URL(string:"https://wickedapes.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Apes",
+//        nearestTokensFileName:"WickedApes_nearestTokens.json",
+//        propertiesJsonFileName:"WickedApes_attributeScores.json"),
+//      rarityRanking : RarityRankingImpl(load("WickedApes_rarityRanks.json"))
+//    ),
+//    contract:WABC_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:Craniums_Contract.contractAddressHex,
+//      sample:"SAMPLE_WICKED_CRANIUM",
+//      name:Craniums_Contract.name,
+//      webLink: URL(string:"https://wickedcranium.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Craniums",
+//        nearestTokensFileName:"Craniums_nearestTokens.json",
+//        propertiesJsonFileName:"Craniums_attributeScores.json"),
+//      rarityRanking : RarityRankingImpl(load("Craniums_rarityRanks.json"))
+//    ),
+//    contract:Craniums_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:MORIES_Contract.contractAddressHex,
+//      sample:"SAMPLE_MORIES",
+//      name:MORIES_Contract.name,
+//      webLink: URL(string:"https://cryptomories.iwwon.com/home")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Mories",
+//        nearestTokensFileName:"CryptoMories_nearestTokens.json",
+//        propertiesJsonFileName:"CryptoMories_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("CryptoMories_rarityRanks.json"))
+//    ),
+//    contract:MORIES_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:JUNGLE_FREAKS_Contract.contractAddressHex,
+//      sample:"SAMPLE_JUNGLE_FREAK",
+//      name:JUNGLE_FREAKS_Contract.name,
+//      webLink: URL(string:"https://junglefreaks.io/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Freaks",
+//        nearestTokensFileName:"JungleFreaks_nearestTokens.json",
+//        propertiesJsonFileName:"JungleFreaks_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("JungleFreaks_rarityRanks.json"))
+//    ),
+//    contract:JUNGLE_FREAKS_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:DOODLES_Contract.contractAddressHex,
+//      sample:"SAMPLE_DOODLE",
+//      name:DOODLES_Contract.name,
+//      webLink: URL(string:"https://doodles.app")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Doodles",
+//        nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
+//        propertiesJsonFileName:"Doodles_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("Doodles_attributeRanks.json"))
+//    ),
+//    contract:DOODLES_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:FRWC_Contract.contractAddressHex,
+//      sample:"SAMPLE_FRWC",
+//      name:FRWC_Contract.name,
+//      webLink: URL(string:"https://www.forgottenrunes.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Wizards",
+//        nearestTokensFileName:nil,//"Doodles_nearestTokens.json",
+//        propertiesJsonFileName:"FRWC_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("FRWC_attributeRanks.json"))
+//    ),
+//    contract:FRWC_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:PHUNKS_Contract.contractAddressHex,
+//      sample:"SAMPLE_PHUNK",
+//      name:PHUNKS_Contract.name,
+//      webLink: URL(string:"https://www.cryptophunks.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Phunk",
+//        nearestTokensFileName:"CryptoPunks_nearestTokens.json",
+//        propertiesJsonFileName:"CryptoPunks_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(CryptoPunks_rarityRanks)
+//    ),
+//    contract:PHUNKS_Contract),
   Collection(
     info:CollectionInfo(
       address:PUDGY_Contract.contractAddressHex,
@@ -574,88 +574,88 @@ let CompositeCollection = CompositeRecentTradesObject([
       rarityRanking : nil
     ),
     contract:PUDGY_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:ILLUMINATI_Contract.contractAddressHex,
-      sample:"SAMPLE_ILLUMINATI",
-      name:ILLUMINATI_Contract.name,
-      webLink: URL(string:"https://www.illuminatinft.com/")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Illuminati",
-        nearestTokensFileName:nil,
-        propertiesJsonFileName:"Illuminati_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("Illuminati_attributeRanks.json"))
-    ),
-    contract:ILLUMINATI_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:APEX_Contract.contractAddressHex,
-      sample:"SAMPLE_APEX",
-      name:APEX_Contract.name,
-      webLink: URL(string:"https://apexathletes.io")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:true,
-      similarTokens : SimilarTokensGetter(
-        label:"Athlete",
-        nearestTokensFileName:nil,
-        propertiesJsonFileName:"ApexAthletes_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("ApexAthletes_attributeRanks.json"))
-    ),
-    contract:APEX_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:XAPES_Contract.contractAddressHex,
-      sample:"SAMPLE_XAPES",
-      name:XAPES_Contract.name,
-      webLink: URL(string:"https://www.0xapes.com")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens:SimilarTokensGetter(
-        label:"Apes",
-        nearestTokensFileName:"0xApes_nearestTokens.json",
-        propertiesJsonFileName:"0xApes_attributeScores.json"
-      ),
-      rarityRanking : nil
-    ),
-    contract:XAPES_Contract),
-  Collection(
-    info:CollectionInfo(
-      address:ASAC_Contract.contractAddressHex,
-      sample:"SAMPLE_ASAC",
-      name:ASAC_Contract.name,
-      webLink: URL(string:"https://antisocialape.club")!,
-      themeColor:Color.gunmetal,
-      themeLabelColor:Color.white,
-      disableRecentTrades:false,
-      similarTokens : SimilarTokensGetter(
-        label:"Apes",
-        nearestTokensFileName:"asac.near_nearestTokens.json",
-        propertiesJsonFileName:"asac.near_attributeScores.json"
-      ),
-      rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
-    ),
-    contract:ASAC_Contract),
-  
-  Collection(
-    info:CollectionInfo(
-      address:cryptoKittiesContract.contractAddressHex,
-      sample:SAMPLE_KITTIES[0],
-      name:"CryptoKitties",
-      webLink: URL(string:"https://www.cryptokitties.co")!,
-      themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
-      themeLabelColor:Color.systemBackground,
-      disableRecentTrades:true,
-      similarTokens: nil,
-      rarityRanking: nil
-    ),
-    contract:cryptoKittiesContract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:ILLUMINATI_Contract.contractAddressHex,
+//      sample:"SAMPLE_ILLUMINATI",
+//      name:ILLUMINATI_Contract.name,
+//      webLink: URL(string:"https://www.illuminatinft.com/")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Illuminati",
+//        nearestTokensFileName:nil,
+//        propertiesJsonFileName:"Illuminati_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("Illuminati_attributeRanks.json"))
+//    ),
+//    contract:ILLUMINATI_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:APEX_Contract.contractAddressHex,
+//      sample:"SAMPLE_APEX",
+//      name:APEX_Contract.name,
+//      webLink: URL(string:"https://apexathletes.io")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:true,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Athlete",
+//        nearestTokensFileName:nil,
+//        propertiesJsonFileName:"ApexAthletes_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("ApexAthletes_attributeRanks.json"))
+//    ),
+//    contract:APEX_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:XAPES_Contract.contractAddressHex,
+//      sample:"SAMPLE_XAPES",
+//      name:XAPES_Contract.name,
+//      webLink: URL(string:"https://www.0xapes.com")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens:SimilarTokensGetter(
+//        label:"Apes",
+//        nearestTokensFileName:"0xApes_nearestTokens.json",
+//        propertiesJsonFileName:"0xApes_attributeScores.json"
+//      ),
+//      rarityRanking : nil
+//    ),
+//    contract:XAPES_Contract),
+//  Collection(
+//    info:CollectionInfo(
+//      address:ASAC_Contract.contractAddressHex,
+//      sample:"SAMPLE_ASAC",
+//      name:ASAC_Contract.name,
+//      webLink: URL(string:"https://antisocialape.club")!,
+//      themeColor:Color.gunmetal,
+//      themeLabelColor:Color.white,
+//      disableRecentTrades:false,
+//      similarTokens : SimilarTokensGetter(
+//        label:"Apes",
+//        nearestTokensFileName:"asac.near_nearestTokens.json",
+//        propertiesJsonFileName:"asac.near_attributeScores.json"
+//      ),
+//      rarityRanking : RarityRankingImpl(load("asac.near_attributeRanks.json"))
+//    ),
+//    contract:ASAC_Contract),
+//  
+//  Collection(
+//    info:CollectionInfo(
+//      address:cryptoKittiesContract.contractAddressHex,
+//      sample:SAMPLE_KITTIES[0],
+//      name:"CryptoKitties",
+//      webLink: URL(string:"https://www.cryptokitties.co")!,
+//      themeColor: /* 78e08f */ Color(red: 120/255, green: 224/255, blue: 143/255),
+//      themeLabelColor:Color.systemBackground,
+//      disableRecentTrades:true,
+//      similarTokens: nil,
+//      rarityRanking: nil
+//    ),
+//    contract:cryptoKittiesContract),
 ]
 )
 
