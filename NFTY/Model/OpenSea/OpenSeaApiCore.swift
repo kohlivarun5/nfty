@@ -20,7 +20,7 @@ struct OpenSeaApiCore {
                      forHTTPHeaderField:"referrer")
   }
   
-  static let API_KEY = "5302eafecee44b198cfa1fb8bfbd5e5d"
+  static let API_KEY = "35de2a1e2b9b443f95bedd4da1578d67"
   
   static let UrlSession = UrlTaskThrottle(
     queue:DispatchQueue(label: "OpenSeaApiCore.serialQueue",qos:.userInitiated),
